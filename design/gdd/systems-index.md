@@ -33,8 +33,8 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 8 | Layer Clearing | Gameplay | MVP | Designed | design/gdd/layer-clearing.md | Board / Grid, Fall, Drop & Lock |
 | 9 | Level Goals & Fail States | Gameplay | MVP | Designed | design/gdd/level-goals-fail-states.md | Board / Grid, Layer Clearing |
 | 10 | Rule-Twist Framework | Gameplay | MVP | Designed | design/gdd/rule-twist-framework.md | Board / Grid, Piece Spawner & Queue, Movement & Rotation, Fall, Drop & Lock, Layer Clearing |
-| 11 | Level-Specific Mechanics | Gameplay | MVP | Not Started | — | Rule-Twist Framework |
-| 12 | Twist Library | Gameplay | MVP | Not Started | — | Rule-Twist Framework |
+| 11 | Level-Specific Mechanics | Gameplay | MVP | Designed | design/gdd/level-specific-mechanics.md | Rule-Twist Framework |
+| 12 | Twist Library | Gameplay | MVP | Designed | design/gdd/twist-library.md | Rule-Twist Framework |
 | 13 | Level Data & Definition (inferred) | Gameplay | MVP | Not Started | — | Level Goals & Fail States, Rule-Twist Framework, Level-Specific Mechanics, Twist Library |
 | 14 | HUD (inferred) | UI | MVP | Not Started | — | Piece Spawner & Queue, Level Goals & Fail States |
 | 15 | Obstacles | Gameplay | Vertical Slice | Not Started | — | Board / Grid, Rule-Twist Framework |
@@ -221,10 +221,10 @@ None found, after three relationships were directed one way:
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 37 |
-| Design docs started | 10 |
+| Design docs started | 12 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
-| MVP systems designed | 10/14 |
+| MVP systems designed | 12/14 |
 | Vertical Slice systems designed | 0/13 |
 
 > Gates: TD-SYSTEM-BOUNDARY, PR-SCOPE and CD-SYSTEMS skipped — lean review mode.

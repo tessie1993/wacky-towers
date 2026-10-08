@@ -22,7 +22,7 @@ The Board reports which layers are full; it never removes anything. Layer Cleari
 
 **When it runs**
 1. A clear check runs when a piece has been written to the board (Fall, Drop & Lock lock event) and whenever a rule outside the player's control changes the board's contents (a twist spawns blocks, an item places cubes). The board is in **Resolving** for the whole routine and returns to Live when it ends.
-2. If `clear_enabled` is off (a level, twist or mechanic switched it off), the check does nothing: full layers simply stay on the board. They are still reported by the board for goals that count them.
+2. If `clear_enabled` is off (a level, twist or mechanic switched it off), the check does nothing: full layers simply stay on the board. They are still reported by the board for goals that count them. Rescue wipes requested by Level Goals carry a `rescue` flag and run regardless.
 3. Only layers perpendicular to the board's current **down axis** are checked ("layer" and "full" are defined by Board / Grid).
 
 **The routine**

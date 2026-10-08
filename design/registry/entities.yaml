@@ -647,6 +647,107 @@ formulas:
     output_range: [0, duration]
     added: 2026-10-09
     revised: ""
+  - name: conveyor_shift
+    status: active
+    source: design/gdd/level-specific-mechanics.md
+    referenced_by:
+      - design/gdd/level-specific-mechanics.md
+    variables:
+      - p
+      - d
+      - W
+      - D
+    output_range: [inside footprint]
+    added: 2026-10-09
+    revised: ""
+  - name: build_race_time
+    status: active
+    source: design/gdd/level-specific-mechanics.md
+    referenced_by:
+      - design/gdd/level-specific-mechanics.md
+    variables:
+      - H_target
+      - height_coverage
+      - A
+      - c
+      - t_piece
+    output_range: [guide, s]
+    added: 2026-10-09
+    revised: ""
+  - name: shape_fill_time
+    status: active
+    source: design/gdd/level-specific-mechanics.md
+    referenced_by:
+      - design/gdd/level-specific-mechanics.md
+    variables:
+      - M
+      - c
+      - eta_shape
+      - t_piece
+    output_range: [guide, s]
+    added: 2026-10-09
+    revised: ""
+  - name: sticky_aim_time
+    status: active
+    source: design/gdd/level-specific-mechanics.md
+    referenced_by:
+      - design/gdd/level-specific-mechanics.md
+    variables:
+      - d
+      - g
+      - sticky_gravity_scale
+    output_range: [s]
+    added: 2026-10-09
+    revised: ""
+  - name: gusts_per_piece
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    variables:
+      - t_fall_active
+      - wind_interval_ms
+    output_range: [0, unbounded]
+    added: 2026-10-09
+    revised: ""
+  - name: block_alpha
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    variables:
+      - t
+      - visible_ms
+      - fade_ms
+      - invisible_alpha
+    output_range: [invisible_alpha, 1]
+    added: 2026-10-09
+    revised: ""
+  - name: flip_due
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    variables:
+      - layers_since_flip
+      - flip_every_layers
+      - play_ms_since_flip
+      - flip_every_ms
+    output_range: [true, false]
+    added: 2026-10-09
+    revised: ""
+  - name: objects_spawned
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    variables:
+      - locks
+      - spawn_every_locks
+      - objects_max
+    output_range: [0, objects_max on board]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -1232,6 +1333,132 @@ constants:
       - design/gdd/rule-twist-framework.md
     value: 0.5
     unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: sticky_gravity_scale
+    status: active
+    source: design/gdd/level-specific-mechanics.md
+    referenced_by:
+      - design/gdd/level-specific-mechanics.md
+    value: 0.7
+    unit: x
+    added: 2026-10-09
+    revised: ""
+  - name: conveyor_every
+    status: active
+    source: design/gdd/level-specific-mechanics.md
+    referenced_by:
+      - design/gdd/level-specific-mechanics.md
+    value: 1
+    unit: locks
+    added: 2026-10-09
+    revised: ""
+  - name: wind_interval_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 6000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: wind_jitter_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 2000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: wind_warn_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 1000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: visible_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 4000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: invisible_fade_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 1000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: invisible_alpha
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 0.1
+    unit: opacity
+    added: 2026-10-09
+    revised: ""
+  - name: reveal_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 600
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: flip_every_layers
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 2
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: flip_every_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 45000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: flip_warn_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 2000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: spawn_every_locks
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 6
+    unit: locks
+    added: 2026-10-09
+    revised: ""
+  - name: objects_max
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 4
+    unit: objects
     added: 2026-10-09
     revised: ""
 
