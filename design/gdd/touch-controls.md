@@ -21,9 +21,9 @@ Touch Controls turn thumbs into piece commands: move the falling piece across th
 ### Core Rules
 
 **Shared rules (both schemes)**
-1. **Commands, not physics.** Controls emit discrete commands — `move(dir)`, `rotate(axis, ±90°)`, `soft_drop(on/off)`, `hard_drop`, `rotate_view(±90°)`, `use_item(slot)`, `use_skill(slot)`. Movement & Rotation and Fall/Drop/Lock decide whether a command succeeds.
-2. **Screen-relative mapping.** "Left/right/up/down" are screen directions. They are re-mapped to world x/z by the current view quadrant every time the view rotates, so left always moves the piece toward screen-left.
-3. **Rotation axes named in screen terms.** Yaw = **spin** (about the vertical axis), pitch = **tilt** (about the screen-horizontal axis, "toward/away from me"), roll = **roll** (about the view axis). Every rotation is a 90° step. The UI never shows x/y/z.
+1. **Commands, not physics.** Controls emit discrete commands — `move(dir)`, `rotate(axis, ±90°)`, `soft_drop(on/off)`, `hard_drop`, `rotate_view(±1)` (one 30° step, Camera & Rotate-View), `use_item(slot)`, `use_skill(slot)`. Movement & Rotation and Fall/Drop/Lock decide whether a command succeeds.
+2. **Screen-relative mapping.** "Left/right/up/down" are screen directions. They are re-mapped to world ±x / ±z using the camera's direction map (Camera & Rotate-View F3) every time the view turns, so left always moves the piece toward the world direction that looks most like screen-left.
+3. **Rotation axes named in screen terms.** Yaw = **spin** (about the vertical axis), pitch = **tilt** (about the screen-horizontal axis, "toward/away from me"), roll = **roll** (about the view axis). Every rotation is a 90° step about a **world** axis: spin = the vertical axis; tilt = the horizontal world axis closest to screen-horizontal (from the camera's direction map); roll = the other horizontal world axis. The UI never shows x/y/z.
 4. **Fingers off the board.** No gameplay input starts on the board's screen area. The board shows only the piece, the landing ghost and (optionally) the axis gizmo.
 5. **Thumb zones (landscape, default right-handed).** Rotate and drop sit in the **right** thumb arc; movement in the **left** thumb arc; items and skills in a tap-only strip on the **left** side, away from movement; rotate-view is a 56 pt button at the top of the right zone. A **left-hand mirror** setting swaps the sides.
 6. **One finger, no chords.** Every action works with a single touch. Two simultaneous touches are allowed (move with one thumb while rotating with the other) but never required.
@@ -63,7 +63,7 @@ Drag vs. flick is decided at release by speed and distance (Formulas F2). Flick 
 - All controls move into one cluster in the dominant hand's corner, using the Scheme A layout compacted: d-pad, rotation diamond and drop button share the arc; roll and rotate-view sit above it; items move to a tap-only row along the top of the cluster. Fall speed can optionally be slowed (Onboarding & Accessibility). Not part of prototype selection; tested separately.
 
 **Board-area gestures**
-- Off by default. An optional setting allows one-finger drag on the board to rotate the view (camera orbit snaps to the four 90° views). Off by default to avoid accidental orbits.
+- Off by default. An optional setting allows one-finger drag on the board to rotate the view (camera orbit snaps to the nearest of the 12 views, 30° apart). Off by default to avoid accidental orbits.
 
 ### States and Transitions
 
@@ -80,7 +80,7 @@ Drag vs. flick is decided at release by speed and distance (Formulas F2). Flick 
 |---|---|---|
 | Movement & Rotation | Touch → | `move(dir)`, `rotate(axis, ±90°)`; returns success or blocked (for feedback) |
 | Fall, Drop & Lock | Touch → | `soft_drop`, `hard_drop`; returns lock events (end of Ready) |
-| Camera & Rotate-View | ↔ | `rotate_view`; current view quadrant for screen-to-world mapping |
+| Camera & Rotate-View | ↔ | `rotate_view(±1)`; current yaw and screen-to-world direction map |
 | Board / Grid | ← | Board screen rectangle (the no-input area) |
 | Piece Set | ← | Shape and spawn orientation for the ghost and gizmo |
 | Items, Skills | Touch → | `use_item(slot)`, `use_skill(slot)` |
@@ -177,7 +177,7 @@ The repeat_count formula is defined as:
 
 ## Dependencies
 
-**Upstream (this system depends on):** none required to accept input. It reads the board's screen rectangle (Board / Grid) and the view quadrant (Camera & Rotate-View) when available.
+**Upstream (this system depends on):** none required to accept input. It reads the board's screen rectangle (Board / Grid) and the direction map (Camera & Rotate-View) when available.
 
 **Downstream (depend on this system):**
 
@@ -185,7 +185,7 @@ The repeat_count formula is defined as:
 |---|---|---|
 | Movement & Rotation | Hard | `move`, `rotate` commands; success/blocked result for feedback |
 | Fall, Drop & Lock | Hard | `soft_drop`, `hard_drop`; lock events |
-| Camera & Rotate-View | Hard | `rotate_view`; view quadrant for mapping |
+| Camera & Rotate-View | Hard | `rotate_view(±1)`; direction map |
 | Items, Skills | Hard | `use_item`, `use_skill` |
 | HUD | Soft | Shares safe-area layout |
 | Local Multiplayer Setup | Hard | Per-player input ownership |
@@ -220,6 +220,7 @@ Controls should feel snappy and trustworthy: every touch produces a visible resu
 | `design/art/art-bible.md` §7 | Landscape default, thumb zones, target sizes, item placement, left-hand mirror, reduced motion, scale |
 | `design/gdd/board-grid.md` F5 | Cube size (~28 px) and cell footprint on screen (~56 px), which rule out on-board input |
 | `design/gdd/piece-set.md` Core Rules 9–10 | 90° rotations on three axes; spawn orientation |
+| `design/gdd/camera-rotate-view.md` F1, F3 | 12 view steps of 30°; screen-to-world direction map |
 | `design/gdd/game-concept.md` | Touch-controls risk; prototype-first recommendation |
 
 ## Acceptance Criteria
@@ -227,7 +228,7 @@ Controls should feel snappy and trustworthy: every touch produces a visible resu
 **[U]** = unit test, **[I]** = integration / automated input test, **[M]** = manual, device or playtest. Default values from Formulas.
 
 **Shared rules**
-1. [I] **GIVEN** the view rotated 0°, 90°, 180° or 270°, **WHEN** the player moves left, **THEN** the piece moves toward screen-left in all four views.
+1. [I] **GIVEN** each of the 12 camera yaws, **WHEN** the player moves left, **THEN** the piece moves in the world direction the camera's direction map gives for screen-left, and on screen it moves leftward (within 45° of screen-left).
 2. [I] **GIVEN** board-orbit off, **WHEN** a touch starts on the board area, **THEN** no command is sent; **GIVEN** board-orbit on, **THEN** that touch can only rotate the view.
 3. [I] **GIVEN** the left-hand mirror on, **WHEN** the layout loads, **THEN** zones swap sides and "left" still moves the piece screen-left.
 4. [I] **GIVEN** single-touch input only, **WHEN** every command is triggered, **THEN** each works; **GIVEN** a second touch on an already-held control, **THEN** it is ignored until the first lifts.

@@ -305,6 +305,43 @@ formulas:
     output_range: [0, unbounded]
     added: 2026-10-09
     revised: ""
+  - name: view_yaw
+    status: active
+    source: design/gdd/camera-rotate-view.md
+    referenced_by:
+      - design/gdd/camera-rotate-view.md
+    variables:
+      - k
+      - yaw_offset
+    output_range: [0, 359]
+    added: 2026-10-09
+    revised: ""
+  - name: ortho_size
+    status: active
+    source: design/gdd/camera-rotate-view.md
+    referenced_by:
+      - design/gdd/camera-rotate-view.md
+    variables:
+      - W
+      - D
+      - board_height
+      - elev
+      - aspect_area
+      - margin
+    output_range: [world units]
+    added: 2026-10-09
+    revised: ""
+  - name: direction_map
+    status: active
+    source: design/gdd/camera-rotate-view.md
+    referenced_by:
+      - design/gdd/camera-rotate-view.md
+      - design/gdd/touch-controls.md
+    variables:
+      - yaw
+    output_range: [+x, -x, +z, -z]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -512,6 +549,60 @@ constants:
       - design/gdd/touch-controls.md
     value: 50
     unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: view_steps
+    status: active
+    source: design/gdd/camera-rotate-view.md
+    referenced_by:
+      - design/gdd/camera-rotate-view.md
+    value: 12
+    unit: views
+    added: 2026-10-09
+    revised: ""
+  - name: view_step_deg
+    status: active
+    source: design/gdd/camera-rotate-view.md
+    referenced_by:
+      - design/gdd/camera-rotate-view.md
+    value: 30
+    unit: deg
+    added: 2026-10-09
+    revised: ""
+  - name: camera_elevation_deg
+    status: active
+    source: design/gdd/camera-rotate-view.md
+    referenced_by:
+      - design/gdd/camera-rotate-view.md
+    value: 30
+    unit: deg
+    added: 2026-10-09
+    revised: ""
+  - name: turn_anim_ms
+    status: active
+    source: design/gdd/camera-rotate-view.md
+    referenced_by:
+      - design/gdd/camera-rotate-view.md
+    value: 150
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: fade_alpha
+    status: active
+    source: design/gdd/camera-rotate-view.md
+    referenced_by:
+      - design/gdd/camera-rotate-view.md
+    value: 0.3
+    unit: opacity
+    added: 2026-10-09
+    revised: ""
+  - name: max_faded_blocks
+    status: active
+    source: design/gdd/camera-rotate-view.md
+    referenced_by:
+      - design/gdd/camera-rotate-view.md
+    value: 40
+    unit: blocks
     added: 2026-10-09
     revised: ""
 
