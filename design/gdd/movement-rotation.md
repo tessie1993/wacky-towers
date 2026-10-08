@@ -278,7 +278,7 @@ None directly. Touch Controls owns the buttons and gestures; the HUD owns the gh
 - **Kick table values**: are 1-cell lateral, 1 up and 2-cell for extent ≥ 4 enough, or is a bigger table needed for the 3D Specials? Validate in the Touch Controls prototype.
 - **Kick preview**: should the ghost show where a kick will land before the player commits? Decide after playtests.
 - **Pivot feel**: rotating about the pivot cube moves the piece's visual centre for odd shapes; consider a per-shape pivot override if rotations feel off.
-- **Lock-delay reset**: do kicks and rotations reset lock delay, and how many times? Owned by Fall, Drop & Lock; the up-kick budget is only a backstop.
+- **Lock-delay reset**: answered in Fall, Drop & Lock (successful moves and rotations, kicked ones included, restart the lock timer, up to 10 resets per piece, restored when the piece reaches a lower layer). The up-kick budget is a backstop.
 - **Wrap-around boards**: should a twist be allowed to wrap the board edges (move off one side, appear on the other)? Rule-Twist Framework to decide.
 - **Non-solid contents**: Board's `is_free` is defined as empty cells; this GDD lets `solid = false` content pass. Confirm in Board / Grid and Obstacles, including what happens when such a piece locks onto it.
 - **Landed restriction as a perk**: `landed_move_rule = supported` is a level or perk property; Characters & Perks and Level Data should decide which levels use it.

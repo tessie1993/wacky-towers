@@ -428,6 +428,71 @@ formulas:
     output_range: [true, false]
     added: 2026-10-09
     revised: ""
+  - name: fall_speed
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    variables:
+      - g0
+      - ramp_per_clear
+      - ramp_per_min
+      - layers_cleared
+      - minutes
+      - g_max
+      - gravity_scale
+      - soft_drop_factor
+      - soft_drop_min
+      - soft_drop_max
+    output_range: [0, g_max x scale]
+    added: 2026-10-09
+    revised: ""
+  - name: fall_time
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    variables:
+      - d
+      - g
+    output_range: [0, 50 s]
+    added: 2026-10-09
+    revised: ""
+  - name: drop_distance
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    variables:
+      - cells
+      - down
+    output_range: [0, board_height - 1]
+    added: 2026-10-09
+    revised: ""
+  - name: lock_stall
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    variables:
+      - lock_delay_ms
+      - lock_resets_max
+    output_range: [0, 46500 ms]
+    added: 2026-10-09
+    revised: ""
+  - name: cycle_time
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    variables:
+      - t_fall
+      - lock_delay_ms
+      - t_resolve
+      - entry_delay_ms
+    output_range: [350 ms, unbounded]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -779,6 +844,96 @@ constants:
       - design/gdd/movement-rotation.md
     value: 14
     unit: tests
+    added: 2026-10-09
+    revised: ""
+  - name: base_gravity
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 1.0
+    unit: cells/s
+    added: 2026-10-09
+    revised: ""
+  - name: max_gravity
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 6
+    unit: cells/s
+    added: 2026-10-09
+    revised: ""
+  - name: ramp_per_clear
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 0.05
+    unit: cells/s per layer
+    added: 2026-10-09
+    revised: ""
+  - name: soft_drop_factor
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 10
+    unit: x
+    added: 2026-10-09
+    revised: ""
+  - name: soft_drop_min
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 8
+    unit: cells/s
+    added: 2026-10-09
+    revised: ""
+  - name: soft_drop_max
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 30
+    unit: cells/s
+    added: 2026-10-09
+    revised: ""
+  - name: hard_drop_grace_ms
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 150
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: lock_delay_ms
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 500
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: lock_resets_max
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 10
+    unit: resets
+    added: 2026-10-09
+    revised: ""
+  - name: entry_delay_ms
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 200
+    unit: ms
     added: 2026-10-09
     revised: ""
 
