@@ -377,6 +377,57 @@ formulas:
     output_range: [0, 1]
     added: 2026-10-09
     revised: ""
+  - name: occupied_cells
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    variables:
+      - p
+      - R
+      - o_i
+    output_range: [1, 8 cells]
+    added: 2026-10-09
+    revised: ""
+  - name: kick_candidates
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    variables:
+      - cx
+      - cz
+      - px
+      - pz
+      - kick_wide_min_extent
+      - max_up_kicks_per_piece
+    output_range: [1, 14 tests]
+    added: 2026-10-09
+    revised: ""
+  - name: kick_restore
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    variables:
+      - p_now
+      - offset_kick
+      - R_now
+    output_range: [pre-rotation pose]
+    added: 2026-10-09
+    revised: ""
+  - name: resting_test
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    variables:
+      - c
+      - down
+      - solid
+    output_range: [true, false]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -701,6 +752,33 @@ constants:
       - design/gdd/piece-spawner-queue.md
     value: 1
     unit: uses
+    added: 2026-10-09
+    revised: ""
+  - name: max_up_kicks_per_piece
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    value: 2
+    unit: kicks
+    added: 2026-10-09
+    revised: ""
+  - name: kick_wide_min_extent
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    value: 4
+    unit: cubes
+    added: 2026-10-09
+    revised: ""
+  - name: max_kick_tests
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    value: 14
+    unit: tests
     added: 2026-10-09
     revised: ""
 

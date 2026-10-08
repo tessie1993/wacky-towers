@@ -28,7 +28,7 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 3 | Touch Controls | Core | MVP | Designed | design/gdd/touch-controls.md | — |
 | 4 | Camera & Rotate-View | Core | MVP | Designed | design/gdd/camera-rotate-view.md | Board / Grid |
 | 5 | Piece Spawner & Queue (inferred) | Gameplay | MVP | Designed | design/gdd/piece-spawner-queue.md | Piece Set |
-| 6 | Movement & Rotation | Gameplay | MVP | Not Started | — | Board / Grid, Piece Set, Touch Controls, Camera & Rotate-View |
+| 6 | Movement & Rotation | Gameplay | MVP | Designed | design/gdd/movement-rotation.md | Board / Grid, Piece Set, Touch Controls, Camera & Rotate-View |
 | 7 | Fall, Drop & Lock (inferred) | Gameplay | MVP | Not Started | — | Board / Grid, Movement & Rotation |
 | 8 | Layer Clearing | Gameplay | MVP | Not Started | — | Board / Grid, Fall, Drop & Lock |
 | 9 | Level Goals & Fail States | Gameplay | MVP | Not Started | — | Board / Grid, Layer Clearing |
@@ -221,10 +221,10 @@ None found, after three relationships were directed one way:
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 37 |
-| Design docs started | 5 |
+| Design docs started | 6 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
-| MVP systems designed | 5/14 |
+| MVP systems designed | 6/14 |
 | Vertical Slice systems designed | 0/13 |
 
 > Gates: TD-SYSTEM-BOUNDARY, PR-SCOPE and CD-SYSTEMS skipped — lean review mode.
