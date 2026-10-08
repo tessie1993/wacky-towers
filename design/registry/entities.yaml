@@ -47,7 +47,7 @@
 #   Each entry: name, status, source, referenced_by[], attributes{}, added, revised
 
 version: 1
-last_updated: ""
+last_updated: "2026-10-09"
 
 # ─── ENTITIES ────────────────────────────────────────────────────────────────
 # Named game-world objects: enemies, NPCs, characters, factions, bosses.
@@ -116,7 +116,69 @@ items: []
 #   output_range[min, max], added
 # Optional: expression (the actual formula), notes
 
-formulas: []
+formulas:
+  - name: active_cells
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    variables:
+      - W
+      - D
+      - mask
+    output_range: [12, 36]
+    added: 2026-10-09
+    revised: ""
+  - name: pieces_per_clear
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    variables:
+      - A
+      - c
+      - eta
+    output_range: [3, 15]
+    added: 2026-10-09
+    revised: ""
+  - name: board_capacity
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    variables:
+      - A
+      - H_play
+    output_range: [72, 432]
+    added: 2026-10-09
+    revised: ""
+  - name: board_height
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    variables:
+      - H_play
+      - L_max
+    output_range: [9, 17]
+    added: 2026-10-09
+    revised: ""
+  - name: cube_size
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    variables:
+      - S_h
+      - S_w
+      - f
+      - g
+      - W
+      - D
+      - board_height
+    output_range: [20, 45]
+    added: 2026-10-09
+    revised: ""
 
 # Example:
 #
@@ -149,7 +211,70 @@ formulas: []
 #
 # Required fields: name, status, source, referenced_by, value, unit, added
 
-constants: []
+constants:
+  - name: default_board_width
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    value: 4
+    unit: cells
+    added: 2026-10-09
+    revised: ""
+  - name: default_board_depth
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    value: 4
+    unit: cells
+    added: 2026-10-09
+    revised: ""
+  - name: default_playable_height
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    value: 8
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: spawn_clearance
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    value: 4
+    unit: layers (= L_max)
+    added: 2026-10-09
+    revised: ""
+  - name: default_board_height
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    value: 12
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: min_active_cells_per_layer
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    value: 12
+    unit: cells
+    added: 2026-10-09
+    revised: ""
+  - name: min_cube_edge_px
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    value: 20
+    unit: px (art bible floor)
+    added: 2026-10-09
+    revised: ""
 
 # Example:
 #
