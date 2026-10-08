@@ -265,6 +265,46 @@ formulas:
     output_range: [1, 24]
     added: 2026-10-09
     revised: ""
+  - name: drag_cells
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    variables:
+      - p
+      - dead_zone_px
+      - drag_px_per_cell
+    output_range: [-7, 7]
+    added: 2026-10-09
+    revised: ""
+  - name: gesture_class
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    variables:
+      - t
+      - d
+      - tap_ms
+      - flick_ms
+      - flick_min_px
+      - flick_cone_deg
+      - hold_ms
+    output_range: [tap, flick, hold, drag, ignored]
+    added: 2026-10-09
+    revised: ""
+  - name: repeat_count
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    variables:
+      - t
+      - repeat_delay_ms
+      - repeat_interval_ms
+    output_range: [0, unbounded]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -373,6 +413,105 @@ constants:
       - design/gdd/piece-set.md
     value: 10
     unit: shapes
+    added: 2026-10-09
+    revised: ""
+  - name: drag_px_per_cell
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    value: 44
+    unit: px
+    added: 2026-10-09
+    revised: ""
+  - name: drag_dead_zone_px
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    value: 12
+    unit: px
+    added: 2026-10-09
+    revised: ""
+  - name: tap_ms
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    value: 200
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: flick_ms
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    value: 200
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: flick_min_px
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    value: 70
+    unit: px
+    added: 2026-10-09
+    revised: ""
+  - name: flick_cone_deg
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    value: 30
+    unit: deg
+    added: 2026-10-09
+    revised: ""
+  - name: hold_ms
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    value: 200
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: repeat_delay_ms
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    value: 240
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: repeat_interval_ms
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    value: 90
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: input_buffer_ms
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    value: 100
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: input_latency_max_ms
+    status: active
+    source: design/gdd/touch-controls.md
+    referenced_by:
+      - design/gdd/touch-controls.md
+    value: 50
+    unit: ms
     added: 2026-10-09
     revised: ""
 
