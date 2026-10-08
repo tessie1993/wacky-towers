@@ -342,6 +342,41 @@ formulas:
     output_range: [+x, -x, +z, -z]
     added: 2026-10-09
     revised: ""
+  - name: bag_copies
+    status: active
+    source: design/gdd/piece-spawner-queue.md
+    referenced_by:
+      - design/gdd/piece-spawner-queue.md
+    variables:
+      - w_i
+      - w_min
+      - bag_max_size
+    output_range: [1, 32]
+    added: 2026-10-09
+    revised: ""
+  - name: max_drought
+    status: active
+    source: design/gdd/piece-spawner-queue.md
+    referenced_by:
+      - design/gdd/piece-spawner-queue.md
+    variables:
+      - B
+      - copies_i
+    output_range: [0, 2(B-1)]
+    added: 2026-10-09
+    revised: ""
+  - name: roll_fallthrough
+    status: active
+    source: design/gdd/piece-spawner-queue.md
+    referenced_by:
+      - design/gdd/piece-spawner-queue.md
+    variables:
+      - history_len
+      - history_tries
+      - S
+    output_range: [0, 1]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -603,6 +638,69 @@ constants:
       - design/gdd/camera-rotate-view.md
     value: 40
     unit: blocks
+    added: 2026-10-09
+    revised: ""
+  - name: bag_max_size
+    status: active
+    source: design/gdd/piece-spawner-queue.md
+    referenced_by:
+      - design/gdd/piece-spawner-queue.md
+    value: 32
+    unit: pieces
+    added: 2026-10-09
+    revised: ""
+  - name: history_len
+    status: active
+    source: design/gdd/piece-spawner-queue.md
+    referenced_by:
+      - design/gdd/piece-spawner-queue.md
+    value: 4
+    unit: pieces
+    added: 2026-10-09
+    revised: ""
+  - name: history_tries
+    status: active
+    source: design/gdd/piece-spawner-queue.md
+    referenced_by:
+      - design/gdd/piece-spawner-queue.md
+    value: 4
+    unit: rolls
+    added: 2026-10-09
+    revised: ""
+  - name: queue_lookahead
+    status: active
+    source: design/gdd/piece-spawner-queue.md
+    referenced_by:
+      - design/gdd/piece-spawner-queue.md
+    value: 3
+    unit: pieces
+    added: 2026-10-09
+    revised: ""
+  - name: preview_count_default
+    status: active
+    source: design/gdd/piece-spawner-queue.md
+    referenced_by:
+      - design/gdd/piece-spawner-queue.md
+    value: 1
+    unit: pieces
+    added: 2026-10-09
+    revised: ""
+  - name: preview_cap
+    status: active
+    source: design/gdd/piece-spawner-queue.md
+    referenced_by:
+      - design/gdd/piece-spawner-queue.md
+    value: 3
+    unit: pieces
+    added: 2026-10-09
+    revised: ""
+  - name: hold_uses_per_piece
+    status: active
+    source: design/gdd/piece-spawner-queue.md
+    referenced_by:
+      - design/gdd/piece-spawner-queue.md
+    value: 1
+    unit: uses
     added: 2026-10-09
     revised: ""
 
