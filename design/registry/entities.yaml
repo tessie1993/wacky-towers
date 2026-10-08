@@ -493,6 +493,54 @@ formulas:
     output_range: [350 ms, unbounded]
     added: 2026-10-09
     revised: ""
+  - name: slice_shift
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    variables:
+      - C
+      - y
+      - y_new
+    output_range: [0, board_height - 1]
+    added: 2026-10-09
+    revised: ""
+  - name: resolve_time
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    variables:
+      - n
+      - clear_anim_ms
+      - clear_stagger_ms
+      - clear_settle_ms
+      - resolve_max_ms
+    output_range: [0, 1000 ms]
+    added: 2026-10-09
+    revised: ""
+  - name: cubes_cleared
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    variables:
+      - active_cells_in_layer
+    output_range: [0, board_capacity]
+    added: 2026-10-09
+    revised: ""
+  - name: cascade_time
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    variables:
+      - chain_max
+      - max_fall
+      - cascade_step_ms
+    output_range: [0, ~10 s worst case]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -934,6 +982,60 @@ constants:
       - design/gdd/fall-drop-lock.md
     value: 200
     unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: clear_anim_ms
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    value: 250
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: clear_stagger_ms
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    value: 100
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: clear_settle_ms
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    value: 200
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: resolve_max_ms
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    value: 1000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: cascade_step_ms
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    value: 180
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: chain_max
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    value: 10
+    unit: rounds
     added: 2026-10-09
     revised: ""
 
