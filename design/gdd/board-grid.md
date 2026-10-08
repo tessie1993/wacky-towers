@@ -273,7 +273,7 @@ Defaults unless stated: 8 × 8 footprint, H_play 12, C 4, board_height 16, A = 6
 15. [U] **GIVEN** a Block at (0,0,0), **WHEN** the down axis flips to +y, **THEN** the Block stays at (0,0,0), its layer index becomes y' = 15, and the height limit and spawn zone move to the opposite end.
 16. [U] **GIVEN** an occupied cell, **WHEN** a twist masks it off, **THEN** a clear event fires for that cell before it becomes inactive.
 17. [U] **GIVEN** level data with content at (1,0,1) while (1,1) is masked, or a layer with A < 12, **WHEN** the level loads, **THEN** validation fails, the error names the cell or rule, and the board never reaches Live.
-18. [U] *(provisional until the Rule-Twist Framework GDD)* **GIVEN** two framework writes to one cell in one resolve step with an injected priority A < B, **THEN** the cell holds B's content.
+18. [U] *(Rule-Twist Framework Core Rule 9)* **GIVEN** two framework writes to one cell in one resolve step with an injected priority A < B, **THEN** the cell holds B's content.
 
 ## Open Questions
 

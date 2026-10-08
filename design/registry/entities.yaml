@@ -594,6 +594,59 @@ formulas:
     output_range: [0, 1]
     added: 2026-10-09
     revised: ""
+  - name: effective_parameter
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    variables:
+      - v_base
+      - s_top
+      - m_i
+      - a_i
+      - v_min
+      - v_max
+    output_range: [v_min, v_max]
+    added: 2026-10-09
+    revised: ""
+  - name: rule_priority
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    variables:
+      - layer_rank
+      - activated_at
+      - rule_id
+    output_range: [total order]
+    added: 2026-10-09
+    revised: ""
+  - name: rule_budget
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    variables:
+      - n_twists
+      - n_level_mechanics
+      - max_twists
+      - max_level_mechanics
+    output_range: [true, false]
+    added: 2026-10-09
+    revised: ""
+  - name: rule_lifetime
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    variables:
+      - duration_ms
+      - active_play_ms
+      - pieces
+      - locks_since_start
+    output_range: [0, duration]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -1142,6 +1195,42 @@ constants:
     referenced_by:
       - design/gdd/level-goals-fail-states.md
     value: 3000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: max_twists_per_level
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    value: 2
+    unit: twists
+    added: 2026-10-09
+    revised: ""
+  - name: max_level_mechanics
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    value: 1
+    unit: mechanics
+    added: 2026-10-09
+    revised: ""
+  - name: max_hook_depth
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    value: 4
+    unit: levels
+    added: 2026-10-09
+    revised: ""
+  - name: framework_budget_ms
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    value: 0.5
     unit: ms
     added: 2026-10-09
     revised: ""
