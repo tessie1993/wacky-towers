@@ -541,6 +541,59 @@ formulas:
     output_range: [0, ~10 s worst case]
     added: 2026-10-09
     revised: ""
+  - name: default_clear_target
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    variables:
+      - T_level
+      - P_eff
+      - t_piece
+    output_range: [1, unbounded]
+    added: 2026-10-09
+    revised: ""
+  - name: tower_height
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    variables:
+      - filled
+      - active_cells_in_layer
+      - height_coverage
+    output_range: [0, board_height]
+    added: 2026-10-09
+    revised: ""
+  - name: rescue_wipe
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    variables:
+      - s
+      - H_play
+      - rescue_margin
+    output_range: [1, s + 1]
+    added: 2026-10-09
+    revised: ""
+  - name: goal_progress
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    variables:
+      - layers_cleared
+      - height
+      - clock
+      - filled_M
+      - N
+      - H_target
+      - T
+      - M
+    output_range: [0, 1]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -1036,6 +1089,60 @@ constants:
       - design/gdd/layer-clearing.md
     value: 10
     unit: rounds
+    added: 2026-10-09
+    revised: ""
+  - name: target_level_seconds
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    value: 480
+    unit: s
+    added: 2026-10-09
+    revised: ""
+  - name: avg_piece_seconds
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    value: 8
+    unit: s
+    added: 2026-10-09
+    revised: ""
+  - name: height_coverage
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    value: 0.5
+    unit: fraction
+    added: 2026-10-09
+    revised: ""
+  - name: warnings_max
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    value: 1
+    unit: warnings
+    added: 2026-10-09
+    revised: ""
+  - name: rescue_margin
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    value: 2
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: countdown_ms
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    value: 3000
+    unit: ms
     added: 2026-10-09
     revised: ""
 

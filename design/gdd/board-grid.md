@@ -40,7 +40,7 @@ The Board / Grid is the 3D space every piece lands in: a footprint of cells (wid
 
 **Layers and height limit**
 9. A layer is **full** when every active cell in it holds content with `fills_layer = true`. The board reports full layers; Layer Clearing decides what happens to them.
-10. The **height limit** is a layer index (default `H_play` = `board_height − spawn_clearance`, see Formulas F4). After every lock, the board reports **over limit** if any solid content sits at or above it. The current mode decides the result; the default is a loss.
+10. The **height limit** is a layer index (default `H_play` = `board_height − spawn_clearance`, see Formulas F4). After every lock, the board reports **over limit** if any solid content sits at or above it. The current mode decides the result; the default is one warning (a rescue wipe), then a loss (Level Goals & Fail States).
 11. The **spawn zone** is the space above the height limit where new pieces appear. It is part of the board's coordinate space but blocks never lock there in normal play (see Edge Cases).
 
 **Queries the board answers** (the contract every other system uses)
@@ -189,7 +189,7 @@ Projection assumption: fixed 2:1 dimetric camera — a cell's top face is a diam
 
 - **If a layer has zero active cells** (the mask removes a whole level, e.g. a ring footprint seen from a flipped down axis): it can never be full; `layer_full` returns false for it and goals skip it.
 - **If a piece locks partly inside the spawn zone** (above the height limit): it locks normally and the board reports **over limit**; the mode decides (default: loss). Pieces are never silently deleted.
-- **If a new piece cannot spawn because its spawn cells are occupied**: the board reports **spawn blocked**; this is treated the same as over limit (mode decides, default loss).
+- **If a new piece cannot spawn because its spawn cells are occupied**: the board reports **spawn blocked**; this is treated the same as over limit (mode decides; default one warning, then loss).
 - **If a twist flips the down axis**: layers are re-indexed along the new axis (for a flip to `+y`: `y' = board_height − 1 − y`), and `over_limit` and the spawn zone are checked against `y'`, so they move to the new "top". Contents do not move by themselves — whether they fall is the twist's rule.
 - **If a twist or level mechanic switches off a cell that holds content**: the content is removed first (as a clear, so effects and scoring still fire), then the cell becomes inactive. A twist may instead refuse to switch off occupied cells; the twist's GDD says which.
 - **If a twist switches an inactive cell back on**: it becomes active and empty; any layer it belongs to now needs one more cell to be full.
