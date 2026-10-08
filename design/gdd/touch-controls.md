@@ -280,5 +280,6 @@ Controls should feel snappy and trustworthy: every touch produces a visible resu
 - **Lock delay and reset count**: owned by Fall, Drop & Lock; they strongly affect how forgiving these controls feel.
 - **Item targeting**: items that need a target (a rival's board, a cell) — tap a rival's portrait, or drag-to-aim? Decide in Items.
 - **4-player on one phone**: out of scope for this prototype (Local Multiplayer Setup).
+- **Hold command**: Piece Spawner & Queue defines an optional `hold` (off by default, enabled by level, perk or item). When enabled it needs a tap-only control; default home is the item/skill strip. Decide after the scheme prototype.
 - **Smallest supported device**: needed as the reference for the 150% scale check; the 6.1" 2532 × 1170 phone is the primary reference until then.
 
