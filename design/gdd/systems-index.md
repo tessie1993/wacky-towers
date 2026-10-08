@@ -24,7 +24,7 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | # | System Name | Category | Priority | Status | Design Doc | Depends On |
 |---|-------------|----------|----------|--------|------------|------------|
 | 1 | Board / Grid | Core | MVP | Designed | design/gdd/board-grid.md | — |
-| 2 | Piece Set (inferred) | Core | MVP | Not Started | — | — |
+| 2 | Piece Set (inferred) | Core | MVP | Designed | design/gdd/piece-set.md | — |
 | 3 | Touch Controls | Core | MVP | Not Started | — | — |
 | 4 | Camera & Rotate-View | Core | MVP | Not Started | — | Board / Grid |
 | 5 | Piece Spawner & Queue (inferred) | Gameplay | MVP | Not Started | — | Piece Set |
@@ -221,10 +221,10 @@ None found, after three relationships were directed one way:
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 37 |
-| Design docs started | 1 |
+| Design docs started | 2 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
-| MVP systems designed | 1/14 |
+| MVP systems designed | 2/14 |
 | Vertical Slice systems designed | 0/13 |
 
 > Gates: TD-SYSTEM-BOUNDARY, PR-SCOPE and CD-SYSTEMS skipped — lean review mode.

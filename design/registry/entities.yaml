@@ -126,7 +126,7 @@ formulas:
       - W
       - D
       - mask
-    output_range: [12, 36]
+    output_range: [12, 64]
     added: 2026-10-09
     revised: ""
   - name: pieces_per_clear
@@ -134,11 +134,12 @@ formulas:
     source: design/gdd/board-grid.md
     referenced_by:
       - design/gdd/board-grid.md
+      - design/gdd/piece-set.md
     variables:
       - A
       - c
       - eta
-    output_range: [3, 15]
+    output_range: [3, 30]
     added: 2026-10-09
     revised: ""
   - name: board_capacity
@@ -149,7 +150,7 @@ formulas:
     variables:
       - A
       - H_play
-    output_range: [72, 432]
+    output_range: [72, 768]
     added: 2026-10-09
     revised: ""
   - name: board_height
@@ -157,10 +158,11 @@ formulas:
     source: design/gdd/board-grid.md
     referenced_by:
       - design/gdd/board-grid.md
+      - design/gdd/piece-set.md
     variables:
       - H_play
       - L_max
-    output_range: [9, 17]
+    output_range: [7, 20]
     added: 2026-10-09
     revised: ""
   - name: cube_size
@@ -176,7 +178,7 @@ formulas:
       - W
       - D
       - board_height
-    output_range: [20, 45]
+    output_range: [24, 45]
     added: 2026-10-09
     revised: ""
 
@@ -211,39 +213,92 @@ formulas:
 #
 # Required fields: name, status, source, referenced_by, value, unit, added
 
+  - name: mean_cubes
+    status: active
+    source: design/gdd/piece-set.md
+    referenced_by:
+      - design/gdd/piece-set.md
+      - design/gdd/board-grid.md
+    variables:
+      - w_i
+      - n_i
+    output_range: [1, 8]
+    added: 2026-10-09
+    revised: ""
+  - name: longest_extent
+    status: active
+    source: design/gdd/piece-set.md
+    referenced_by:
+      - design/gdd/piece-set.md
+      - design/gdd/board-grid.md
+    variables:
+      - ex_i
+      - ey_i
+      - ez_i
+    output_range: [1, 8]
+    added: 2026-10-09
+    revised: ""
+  - name: piece_fits
+    status: active
+    source: design/gdd/piece-set.md
+    referenced_by:
+      - design/gdd/piece-set.md
+      - design/gdd/board-grid.md
+    variables:
+      - e_x
+      - e_y
+      - e_z
+      - w
+      - d
+      - H_play
+    output_range: [false, true]
+    added: 2026-10-09
+    revised: ""
+  - name: orientations
+    status: active
+    source: design/gdd/piece-set.md
+    referenced_by:
+      - design/gdd/piece-set.md
+      - design/gdd/board-grid.md
+    variables:
+      - G_i
+    output_range: [1, 24]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
     source: design/gdd/board-grid.md
     referenced_by:
       - design/gdd/board-grid.md
-    value: 4
+    value: 8
     unit: cells
     added: 2026-10-09
-    revised: ""
+    revised: "2026-10-09"
   - name: default_board_depth
     status: active
     source: design/gdd/board-grid.md
     referenced_by:
       - design/gdd/board-grid.md
-    value: 4
+    value: 8
     unit: cells
     added: 2026-10-09
-    revised: ""
+    revised: "2026-10-09"
   - name: default_playable_height
     status: active
     source: design/gdd/board-grid.md
     referenced_by:
       - design/gdd/board-grid.md
-    value: 8
+    value: 12
     unit: layers
     added: 2026-10-09
-    revised: ""
+    revised: "2026-10-09"
   - name: spawn_clearance
     status: active
     source: design/gdd/board-grid.md
     referenced_by:
       - design/gdd/board-grid.md
+      - design/gdd/piece-set.md
     value: 4
     unit: layers (= L_max)
     added: 2026-10-09
@@ -253,10 +308,10 @@ constants:
     source: design/gdd/board-grid.md
     referenced_by:
       - design/gdd/board-grid.md
-    value: 12
+    value: 16
     unit: layers
     added: 2026-10-09
-    revised: ""
+    revised: "2026-10-09"
   - name: min_active_cells_per_layer
     status: active
     source: design/gdd/board-grid.md
@@ -273,6 +328,51 @@ constants:
       - design/gdd/board-grid.md
     value: 20
     unit: px (art bible floor)
+    added: 2026-10-09
+    revised: ""
+  - name: piece_extent_cap
+    status: active
+    source: design/gdd/piece-set.md
+    referenced_by:
+      - design/gdd/piece-set.md
+    value: 4
+    unit: cells
+    added: 2026-10-09
+    revised: ""
+  - name: max_piece_cubes
+    status: active
+    source: design/gdd/piece-set.md
+    referenced_by:
+      - design/gdd/piece-set.md
+    value: 8
+    unit: cubes
+    added: 2026-10-09
+    revised: ""
+  - name: starter_shape_count
+    status: active
+    source: design/gdd/piece-set.md
+    referenced_by:
+      - design/gdd/piece-set.md
+    value: 19
+    unit: shapes
+    added: 2026-10-09
+    revised: ""
+  - name: max_active_shapes_per_level
+    status: active
+    source: design/gdd/piece-set.md
+    referenced_by:
+      - design/gdd/piece-set.md
+    value: 8
+    unit: shapes
+    added: 2026-10-09
+    revised: ""
+  - name: max_active_shapes_minigame
+    status: active
+    source: design/gdd/piece-set.md
+    referenced_by:
+      - design/gdd/piece-set.md
+    value: 10
+    unit: shapes
     added: 2026-10-09
     revised: ""
 

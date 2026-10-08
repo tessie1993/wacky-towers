@@ -8,13 +8,13 @@
 
 ## Summary
 
-The Board / Grid is the shared 3D arena: a footprint of cells (default a 4 × 4 square platform) stacked to a height limit (default 8 playable layers plus a 4-layer spawn zone). It stores what every cell holds — empty, block, obstacle or object — answers placement and layer-full questions for every other system, and reports when the stack goes over the limit, leaving the consequence to the mode. Levels can change its size and shape with a cell mask, and twists can change its "down" direction, always through the Rule-Twist Framework.
+The Board / Grid is the shared 3D arena: a footprint of cells (default an 8 × 8 square platform) stacked to a height limit (default 12 playable layers plus a spawn zone as tall as the longest piece, 4 by default). It stores what every cell holds — empty, block, obstacle or object — answers placement and layer-full questions for every other system, and reports when the stack goes over the limit, leaving the consequence to the mode. Levels can change its size and shape with a cell mask, and twists can change its "down" direction, always through the Rule-Twist Framework.
 
 > **Quick reference** — Layer: `Foundation` · Priority: `MVP` · Key deps: `None`
 
 ## Overview
 
-The Board / Grid is the 3D space every piece lands in: a footprint of cells (width × depth) stacked up to a height limit, where each cell is either empty, inactive (switched off for this level), or holding a block, obstacle or object. It is the single source of truth for "what is where" — movement, dropping, clearing, goals, twists and obstacles all read and change it, and none of them keep their own copy. To the player it is the floating-island platform from the art bible: by default a **square platform**, sized per level type, with the layer-clearing default chosen by the board-size math in Formulas so a layer is challenging but completable on a phone screen. Levels may change the size and shape (an L-shaped island, holes, pillars) through a cell mask. The board also tracks the **height limit** and reports when a block sits above it; what that means is the mode's call, defaulting to a loss. Without this system there is no shared arena — and Pillar 1, *The Block Is the Constant*, needs every mode, twist and minigame to stand on the same kind of board. Like the rest of the design docs, every value here is a starting default.
+The Board / Grid is the 3D space every piece lands in: a footprint of cells (width × depth) stacked up to a height limit, where each cell is either empty, inactive (switched off for this level), or holding a block, obstacle or object. It is the single source of truth for "what is where" — movement, dropping, clearing, goals, twists and obstacles all read and change it, and none of them keep their own copy. To the player it is the floating-island platform from the art bible: by default a **square platform**, sized per level type, with the layer-clearing default set to 8 × 8 × 12 (user decision, checked against the board-size math in Formulas). Levels may change the size and shape (an L-shaped island, holes, pillars) through a cell mask. The board also tracks the **height limit** and reports when a block sits above it; what that means is the mode's call, defaulting to a loss. Without this system there is no shared arena — and Pillar 1, *The Block Is the Constant*, needs every mode, twist and minigame to stand on the same kind of board. Like the rest of the design docs, every value here is a starting default.
 
 ## Detailed Design
 
@@ -79,7 +79,7 @@ The board itself has few states; game flow lives in Level Goals & Fail States.
 
 All values are starting defaults to tune by prototype and simulation. Height is the `y` axis (see Core Rules).
 
-**Default layer-clearing board (user decision 2026-10-09): 4 × 4 footprint, 8 playable layers, 4-layer spawn clearance (12 layers drawn).** It is the smallest square footprint where every tetracube fits in every rotation, a layer divides cleanly by 4-cube pieces, clears come about every 5 pieces, and cubes render at about 42 px on a 6.1" phone. Larger or masked boards are per-level overrides within the safe ranges below.
+**Default layer-clearing board (user decision 2026-10-09): 8 × 8 footprint, 12 playable layers, 4-layer spawn clearance (16 layers drawn).** The board-size math first recommended 4 × 4 × 8 for the fastest clears and largest cubes; the user chose 8 × 8 × 12 so big Special pieces (up to 8 cubes, see Piece Set) fit and play is more strategic. Consequences accepted with that choice: about 21 pieces per layer clear and cubes at about 28 px, right on the readability target. Smaller boards (4 × 4 to 6 × 6) remain per-level overrides for tutorials, fast modes and early tiers.
 
 ### F1. Active cells per layer
 
@@ -90,12 +90,12 @@ The active_cells formula is defined as:
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
-| W, D | int | 4–6 | data file | Footprint width and depth (bounding box) |
+| W, D | int | 4–8 | data file | Footprint width and depth (bounding box) |
 | mask | set of footprint cells | A ≥ 12 | data file | Active footprint cells; default all |
-| A | int | 12–36 | calculated | Cells a layer needs to be full |
+| A | int | 12–64 | calculated | Cells a layer needs to be full |
 
-**Output Range:** 12 to 36 under the safe ranges; default 16.
-**Example:** 4 × 4, no mask → A = 16. An L-shaped 5 × 5 with a 2 × 2 corner removed → A = 21.
+**Output Range:** 12 to 64 under the safe ranges; default 64.
+**Example:** 8 × 8, no mask → A = 64. A 5 × 5 with a 2 × 2 corner removed → A = 21.
 
 ### F2. Pieces per layer clear
 
@@ -106,14 +106,14 @@ The pieces_per_clear formula is defined as:
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
-| A | int | 12–36 | calculated (F1) | Active cells per layer |
-| c | float | 3–5 | calculated (Piece Set) | Mean cubes per piece; 4 for a tetracube-only set |
-| η | float | 0.6–0.9 | constant (tuning) | Packing efficiency — share of placed cubes that end up in completed layers. **Placeholder; measure by bot simulation per footprint** |
-| P_eff | float | 3–15 | calculated | Expected pieces placed per layer clear |
+| A | int | 12–64 | calculated (F1) | Active cells per layer |
+| c | float | 1–8 | calculated (Piece Set) | Mean cubes per piece for the level's piece set; ≈ 4 for tetracubes |
+| η | float | 0.6–0.9 | constant (tuning) | Packing efficiency — share of placed cubes that end up in completed layers. **Placeholder; measure by bot simulation per footprint and piece set** |
+| P_eff | float | 3–30 | calculated | Expected pieces placed per layer clear |
 
-**Output Range:** about 3 (trivial) to 15 (slow); target band 4–8 for layer-clearing levels.
-**Example:** A = 16, c = 4, η = 0.75 → P = 4, P_eff ≈ 5.3 pieces per clear.
-**Parity:** with c = 4, footprints of 16 or 36 cells (4×4, 6×6) divide cleanly every layer; 25 cells (5×5) only every 4 layers; 9 cells (3×3) never. A mixed piece set (3- and 4-cube pieces) makes parity irrelevant.
+**Output Range:** about 3 (trivial) to 30 (very slow). Default board ≈ 21.
+**Example:** A = 64, c = 4, η = 0.75 → P = 16, P_eff ≈ 21.3 pieces per clear. Big Special pieces raise c and lower P_eff (c = 5 → ≈ 17).
+**Parity:** with c = 4, footprints of 16, 36 or 64 cells divide cleanly every layer; mixed piece sizes (Helpers, Special) make parity irrelevant.
 
 ### F3. Board capacity
 
@@ -124,29 +124,29 @@ The board_capacity formula is defined as:
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
-| A | int | 12–36 | calculated (F1) | Active cells per layer |
+| A | int | 12–64 | calculated (F1) | Active cells per layer |
 | H_play | int | 6–12 | data file | Playable layers below the height limit |
-| K | int | 72–432 | calculated | Total playable cells |
+| K | int | 72–768 | calculated | Total playable cells |
 
-**Output Range:** 72 to 432; default 128.
-**Example:** 16 × 8 = 128 cells ≈ 32 tetracubes of room before topping out.
+**Output Range:** 72 to 768; default 768.
+**Example:** 64 × 12 = 768 cells ≈ 192 tetracubes of room before topping out.
 
 ### F4. Height limit and spawn clearance
 
 The board_height formula is defined as:
 
-`board_height = H_play + C`, with `C = L_max`; height limit = layer index `H_play`; **over limit** when any solid content has `y ≥ H_play`; a spawn is blocked only when the new piece's spawn cells are occupied (see Edge Cases) — over limit and spawn blocked are separate reports.
+`board_height = H_play + C`, with `C = L_max` of the level's piece set; height limit = layer index `H_play`; **over limit** when any solid content has `y ≥ H_play`; a spawn is blocked only when the new piece's spawn cells are occupied (see Edge Cases) — over limit and spawn blocked are separate reports.
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
 | H_play | int | 6–12 | data file | Playable layers |
-| L_max | int | 3–5 | calculated (Piece Set) | Longest piece extent; 4 for the straight tetracube |
+| L_max | int | 1–8 | calculated (Piece Set) | Longest piece extent in the level's piece set; default cap 4 |
 | C | int | = L_max | calculated | Spawn clearance, so a new piece fits in any rotation |
-| board_height | int | 9–17 | calculated | Layers drawn, including the spawn zone |
+| board_height | int | 7–20 | calculated | Layers drawn, including the spawn zone |
 
-**Output Range:** 9 to 17 layers drawn; default 12.
-**Example:** H_play = 8, L_max = 4 → C = 4, board_height = 12; a block locking at y = 8 reports over limit.
+**Output Range:** 7 to 20 layers drawn; default 16.
+**Example:** H_play = 12, L_max = 4 → C = 4, board_height = 16; a block locking at y = 12 reports over limit.
 
 ### F5. On-screen cube size (readability check)
 
@@ -161,30 +161,29 @@ Projection assumption: fixed 2:1 dimetric camera — a cell's top face is a diam
 |----------|------|-------|--------|-------------|
 | S_h, S_w | int | 1170, 2532 | constant | Reference phone screen height and width in px (6.1", landscape) |
 | f | float | 0.55–0.60 | constant | Share of screen height the board gets |
-| g | float | ~0.45 | constant | Share of screen width the board gets (HUD and thumb zones take the rest). **Placeholder until HUD layout is set** |
-| n | float | 4–6 | calculated | Mean footprint side |
-| board_height | int | 9–17 | calculated (F4) | Layers drawn |
+| g | float | ~0.45 | constant | Share of screen width the board gets. **Placeholder until HUD layout is set** |
+| n | float | 4–8 | calculated | Mean footprint side |
+| board_height | int | 7–20 | calculated (F4) | Layers drawn |
 | a | float | ≥ 20 | calculated | Cube edge on screen, px |
 
-**Output Range:** about 28–45 px within the safe ranges; must stay ≥ 20 px (art bible). Design cap: `n + board_height ≤ 24`, which keeps a ≥ 28 px.
-**Example:** 4 × 4, board_height 12: 0.575 × 1170 = 670 px; 670 / (4 + 12) ≈ 42 px. Width check: 2 × 42 × 4 = 336 px, well inside the ~1140 px width budget.
+**Output Range:** about 24–45 px within the safe ranges; must stay ≥ 20 px (art bible). Design target: `n + board_height ≤ 24`, which keeps a ≥ 28 px; the default board sits exactly on it.
+**Example:** 8 × 8, board_height 16: 0.575 × 1170 = 670 px; 670 / (8 + 16) ≈ 28 px. Width check: 2 × 28 × 8 = 448 px, inside the ~1140 px width budget. A level using pieces longer than 4 (C = 5+) on the default board drops below 28 px and needs a device check.
 
 ### Footprint comparison (source of the default)
 
-| Footprint | P_eff (η = 0.75) | Cube size | Notes |
+| Footprint (12 playable) | P_eff (η = 0.75, c = 4) | Cube size | Notes |
 |---|---|---|---|
-| 3×3 | 3.0 | ~45 px | Straight piece can't lie flat; 9 cells never divide by 4; trivial |
-| **4×4** | **5.3** | **~42 px** | **Default.** Every piece fits every rotation; clean parity; ~20 s per clear at ~4 s per piece (guess) |
-| 5×5 | 8.3 | ~35 px | More hidden cells and rotation load; ~33 s per clear |
-| 6×6 | 12 | ~34 px | Slow (~48 s per clear); cells hidden behind the stack on a phone |
+| 4×4 | 5.3 | ~36 px | Fastest clears; only small Special pieces fit. Good for tutorials and fast modes |
+| 5×5 | 8.3 | ~34 px | Parity every 4 layers with tetracubes |
+| 6×6 | 12 | ~32 px | Middle ground |
+| **8×8** | **21.3** | **~28 px** | **Default (user choice).** Room for big Special pieces; slow, strategic clears; more cells hidden behind the stack, so camera and ghost aids matter |
 
 ### Safe ranges for per-level overrides
 
-- Footprint bounding box: 4–6 per side; masked layers need A ≥ 12, and every active region must fit the straight piece.
+- Footprint bounding box: 4–8 per side; masked layers need A ≥ 12, and every active region must fit the level's longest piece.
 - Playable height: 6–12.
-- Readability: `n + board_height ≤ 24`.
-- Spawn clearance: C = L_max (5 if pentacubes are added). Only a mode may reduce it.
-- A tromino-only piece set may go down to a 3-wide footprint.
+- Readability: `n + board_height ≤ 24` as the target; below 28 px needs a device check, below 20 px is not allowed.
+- Spawn clearance: C = L_max of the level's piece set. Only a mode may reduce it.
 
 ## Edge Cases
 
@@ -233,7 +232,7 @@ Follows the art bible; nothing here overrides it.
 
 ## Game Feel
 
-The board should feel like a solid, tidy toy tray: the player always knows which cells are free. Targets: cube edge at least 28 px on the reference phone (F5); no cell fully hidden from both camera angles at the default 4 × 4 size; the danger line visible from both rotate-view angles.
+The board should feel like a solid, tidy toy tray: the player always knows which cells are free. Targets: cube edge at least 28 px on the reference phone (F5); cube edge about 28 px at the default 8 × 8 size, with the landing ghost and rotate-view making every free cell findable; the danger line visible from both rotate-view angles.
 
 ## UI Requirements
 
@@ -246,42 +245,42 @@ The board exposes `stack_height()`, the height limit and `over_limit()` for the 
 | `design/art/art-bible.md` §2, §3, §4.3, §6 | Tile look, danger line, readability floor (20 px), island diorama |
 | `design/gdd/game-concept.md` | Pillars, mobile target, fixed angled camera with rotate-view |
 | `design/gdd/systems-index.md` | Downstream systems listed in Dependencies |
-| Piece Set (no GDD yet) | `c` (mean cubes per piece) and `L_max` (longest piece) in F2 and F4 — provisional values 4 and 4 |
+| `design/gdd/piece-set.md` | `c` (mean cubes per piece) and `L_max` (longest piece extent) in F2 and F4 |
 
 ## Acceptance Criteria
 
-Defaults unless stated: 4 × 4 footprint, H_play 8, C 4, board_height 12, A = 16. **[U]** = automated unit test (`tests/unit/board_grid/`), **[M]** = manual or device check.
+Defaults unless stated: 8 × 8 footprint, H_play 12, C 4, board_height 16, A = 64. **[U]** = automated unit test (`tests/unit/board_grid/`), **[M]** = manual or device check.
 
 **Core rules**
-1. [U] **GIVEN** no level data, **WHEN** a board is created, **THEN** it is 4 × 4 × 12, every footprint cell is active, the down axis is −y, `y = 0` is the floor, and `stack_height()` returns −1.
-2. [U] **GIVEN** footprint cell (1,1) is masked off, **WHEN** `is_free(1, y, 1)` is called for y = 0–11, **THEN** every call returns false and `set` on those cells is rejected.
+1. [U] **GIVEN** no level data, **WHEN** a board is created, **THEN** it is 8 × 8 × 16, every footprint cell is active, the down axis is −y, `y = 0` is the floor, and `stack_height()` returns −1.
+2. [U] **GIVEN** footprint cell (1,1) is masked off, **WHEN** `is_free(1, y, 1)` is called for y = 0–15, **THEN** every call returns false and `set` on those cells is rejected.
 3. [U] **GIVEN** an empty active cell, **WHEN** a Block is set there, **THEN** `get` returns it with piece ID, owner, `solid = true`, `fills_layer = true`, and nothing else in that cell.
-4. [U] **GIVEN** 15 of 16 cells in layer 0 hold Blocks, **WHEN** the 16th is filled, **THEN** `layer_full(0)` goes from false to true and `full_layers()` returns [0].
-5. [U] **GIVEN** a Block locks at y = 7, **THEN** `over_limit()` is false; **GIVEN** it locks at y = 8, **THEN** `over_limit()` is true.
-6. [U] **GIVEN** a lock at y = 9 (spawn zone), **WHEN** it resolves, **THEN** the Block is stored at y = 9 (not deleted) and `over_limit()` is true.
-7. [U] **GIVEN** (0,0,0) is occupied, **THEN** `can_place` is false for any cell set containing it or any cell outside x 0–3 / y 0–11 / z 0–3, and true for a set of free active cells.
-8. [U] **GIVEN** an obstacle with `fills_layer = false` in layer 0 and the other 15 cells filled, **THEN** `layer_full(0)` is false.
+4. [U] **GIVEN** 63 of 64 cells in layer 0 hold Blocks, **WHEN** the 64th is filled, **THEN** `layer_full(0)` goes from false to true and `full_layers()` returns [0].
+5. [U] **GIVEN** a Block locks at y = 11, **THEN** `over_limit()` is false; **GIVEN** it locks at y = 12, **THEN** `over_limit()` is true.
+6. [U] **GIVEN** a lock at y = 13 (spawn zone), **WHEN** it resolves, **THEN** the Block is stored at y = 13 (not deleted) and `over_limit()` is true.
+7. [U] **GIVEN** (0,0,0) is occupied, **THEN** `can_place` is false for any cell set containing it or any cell outside x 0–7 / y 0–15 / z 0–7, and true for a set of free active cells.
+8. [U] **GIVEN** an obstacle with `fills_layer = false` in layer 0 and the other 63 cells filled, **THEN** `layer_full(0)` is false.
 
 **Formulas**
 9. [U] F1: a 5 × 5 board with a 2 × 2 corner masked off gives `active_cells_in_layer(0)` = 21.
-10. [U] F2: A = 16, c = 4, η = 0.75 gives P = 4 and P_eff ≈ 5.33. [M] *(provisional)* A bot simulation on 4 × 4 averages 4–8 pieces per clear.
-11. [U] F3: the default board gives K = 128.
-12. [U] F4: H_play = 8, L_max = 4 gives board_height = 12 and a height limit at layer 8.
-13. [U] F5: the default board gives a ≈ 42 px (±1). [M] *(provisional until HUD layout)* On a 6.1" phone in landscape (2532 × 1170), a screenshot shows a cube edge ≥ 40 px and the whole board visible from both rotate-view angles.
+10. [U] F2: A = 64, c = 4, η = 0.75 gives P = 16 and P_eff ≈ 21.3. [M] *(provisional)* A bot simulation on 8 × 8 with tetracubes averages 15–28 pieces per clear.
+11. [U] F3: the default board gives K = 768.
+12. [U] F4: H_play = 12, L_max = 4 gives board_height = 16 and a height limit at layer 12; L_max = 5 gives board_height 17.
+13. [U] F5: the default board gives a ≈ 28 px (±1). [M] *(provisional until HUD layout)* On a 6.1" phone in landscape (2532 × 1170), a screenshot shows a cube edge ≥ 27 px and the whole board visible from both rotate-view angles.
 
 **Edge cases**
 14. [U] **GIVEN** the spawn cells are occupied, **WHEN** a spawn is attempted, **THEN** spawn blocked is reported once and, in the default mode, the level is lost.
-15. [U] **GIVEN** a Block at (0,0,0), **WHEN** the down axis flips to +y, **THEN** the Block stays at (0,0,0), its layer index becomes y' = 11, and the height limit and spawn zone move to the opposite end.
+15. [U] **GIVEN** a Block at (0,0,0), **WHEN** the down axis flips to +y, **THEN** the Block stays at (0,0,0), its layer index becomes y' = 15, and the height limit and spawn zone move to the opposite end.
 16. [U] **GIVEN** an occupied cell, **WHEN** a twist masks it off, **THEN** a clear event fires for that cell before it becomes inactive.
 17. [U] **GIVEN** level data with content at (1,0,1) while (1,1) is masked, or a layer with A < 12, **WHEN** the level loads, **THEN** validation fails, the error names the cell or rule, and the board never reaches Live.
 18. [U] *(provisional until the Rule-Twist Framework GDD)* **GIVEN** two framework writes to one cell in one resolve step with an injected priority A < B, **THEN** the cell holds B's content.
 
 ## Open Questions
 
-- **Piece set**: F2 and F4 assume tetracubes (c = 4, L_max = 4). Confirm in the Piece Set GDD.
+- **Piece set**: F2 and F4 take c and L_max from the level's piece set (Piece Set GDD); default cap L_max = 4.
 - **Packing efficiency η**: placeholder 0.75; measure by bot simulation per footprint before tuning level sizes.
 - **20 px floor**: device pixels or logical points? At 3× scale they differ a lot.
 - **Board width share `g`**: depends on HUD plate and thumb-zone widths (UX).
 - **Per-piece time ~4 s**: a guess for casual players; measure in the touch-controls prototype.
-- **Hidden cells**: is a cube edge ≥ 28 px plus a landing ghost enough to judge depth? Prototype.
+- **Hidden cells on 8 × 8**: at ~28 px with a deep stack, many cells hide behind others. Is the landing ghost plus rotate-view enough? Prototype early; it is the main risk of the 8 × 8 default.
 - **Obstacles and `fills_layer`**: Obstacles GDD decides the default per obstacle type.
