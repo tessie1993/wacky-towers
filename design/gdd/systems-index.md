@@ -47,9 +47,9 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 22 | Mode / Minigame Randomizer | Gameplay | Vertical Slice | Designed | design/gdd/mode-minigame-randomizer.md | Level Goals & Fail States, Level Data & Definition |
 | 23 | Tournament Flow | Gameplay | Vertical Slice | Designed | design/gdd/tournament-flow.md | Scoring & Stars, Mode / Minigame Randomizer, Items |
 | 24 | Local Multiplayer Setup (inferred) | Core | Vertical Slice | Designed | design/gdd/local-multiplayer-setup.md | Touch Controls, Camera & Rotate-View |
-| 25 | Save & Profile (inferred) | Persistence | Vertical Slice | Not Started | — | Campaign Structure, Scoring & Stars |
-| 26 | Menus & Level Select (inferred) | UI | Vertical Slice | Not Started | — | Campaign Structure, Save & Profile |
-| 27 | Game Feel & VFX (inferred) | UI | Vertical Slice | Not Started | — | Layer Clearing, Buffs & Debuffs, Items |
+| 25 | Save & Profile (inferred) | Persistence | Vertical Slice | Designed | design/gdd/save-profile.md | Campaign Structure, Scoring & Stars |
+| 26 | Menus & Level Select (inferred) | UI | Vertical Slice | Designed | design/gdd/menus-level-select.md | Campaign Structure, Save & Profile |
+| 27 | Game Feel & VFX (inferred) | UI | Vertical Slice | Designed | design/gdd/game-feel-vfx.md | Layer Clearing, Buffs & Debuffs, Items |
 | 28 | Physics Mode | Gameplay | Alpha | Not Started | — | Board / Grid, Piece Set, Fall, Drop & Lock, Rule-Twist Framework |
 | 29 | Block Status Effects (inferred) | Gameplay | Alpha | Not Started | — | Board / Grid, Rule-Twist Framework |
 | 30 | Skills | Gameplay | Alpha | Not Started | — | Rule-Twist Framework, Buffs & Debuffs |
@@ -221,11 +221,11 @@ None found, after three relationships were directed one way:
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 37 |
-| Design docs started | 24 |
+| Design docs started | 27 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
 | MVP systems designed | 14/14 |
-| Vertical Slice systems designed | 10/13 |
+| Vertical Slice systems designed | 13/13 |
 
 > Gates: TD-SYSTEM-BOUNDARY, PR-SCOPE and CD-SYSTEMS skipped — lean review mode.
 

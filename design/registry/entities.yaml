@@ -1030,6 +1030,53 @@ formulas:
     output_range: [px, >= 20 to allow]
     added: 2026-10-09
     revised: ""
+  - name: save_merge
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    variables:
+      - best_stars
+      - best_time_s
+      - best_score
+      - unlocks
+      - settings_changed_at
+    output_range: [merged record]
+    added: 2026-10-09
+    revised: ""
+  - name: save_size
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    variables:
+      - profiles
+      - levels
+    output_range: [~18 KB]
+    added: 2026-10-09
+    revised: ""
+  - name: taps_to_play
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    variables:
+      - route
+    output_range: [1, 3]
+    added: 2026-10-09
+    revised: ""
+  - name: feel_intensity
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    variables:
+      - size
+      - intensity_step
+      - intensity_cap
+    output_range: [1, 2]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -2209,6 +2256,78 @@ constants:
       - design/gdd/tournament-flow.md
     value: 4
     unit: players
+    added: 2026-10-09
+    revised: ""
+  - name: max_profiles
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 4
+    unit: profiles
+    added: 2026-10-09
+    revised: ""
+  - name: sync_min_interval_s
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 60
+    unit: s
+    added: 2026-10-09
+    revised: ""
+  - name: intensity_step
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 0.25
+    unit: x per size
+    added: 2026-10-09
+    revised: ""
+  - name: intensity_cap
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 2
+    unit: x
+    added: 2026-10-09
+    revised: ""
+  - name: max_vfx_systems
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 6
+    unit: systems
+    added: 2026-10-09
+    revised: ""
+  - name: max_particles
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 600
+    unit: particles
+    added: 2026-10-09
+    revised: ""
+  - name: max_punch_px
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 6
+    unit: px
+    added: 2026-10-09
+    revised: ""
+  - name: vfx_budget_ms
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 2
+    unit: ms GPU
     added: 2026-10-09
     revised: ""
 
