@@ -933,6 +933,56 @@ formulas:
     output_range: [up to 27 cells]
     added: 2026-10-09
     revised: ""
+  - name: biome_unlock
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    variables:
+      - stars_b
+      - biome_star_gate
+    output_range: [true, false]
+    added: 2026-10-09
+    revised: ""
+  - name: campaign_g0
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    variables:
+      - b
+      - t
+      - g0_start
+      - g0_per_tier
+      - g0_per_biome
+    output_range: [0.8, 1.7 cells/s]
+    added: 2026-10-09
+    revised: ""
+  - name: arcade_speed
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    variables:
+      - L
+      - g0
+      - ramp_per_clear
+      - g_max
+    output_range: [1.0, 6 cells/s]
+    added: 2026-10-09
+    revised: ""
+  - name: arcade_twists
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    variables:
+      - L
+      - pool
+      - twist_rotation_layers
+    output_range: [1, 2]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -1976,6 +2026,78 @@ constants:
     referenced_by:
       - design/gdd/items.md
     value: 1
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: biome_star_gate
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 15
+    unit: stars
+    added: 2026-10-09
+    revised: ""
+  - name: levels_per_biome
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 10
+    unit: levels
+    added: 2026-10-09
+    revised: ""
+  - name: biome_count
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 10
+    unit: biomes
+    added: 2026-10-09
+    revised: ""
+  - name: g0_per_tier
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 0.04
+    unit: cells/s
+    added: 2026-10-09
+    revised: ""
+  - name: g0_per_biome
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 0.06
+    unit: cells/s
+    added: 2026-10-09
+    revised: ""
+  - name: arcade_ramp_per_clear
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 0.08
+    unit: cells/s per layer
+    added: 2026-10-09
+    revised: ""
+  - name: twist_rotation_layers
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 5
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: specials_after_layers
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 10
     unit: layers
     added: 2026-10-09
     revised: ""

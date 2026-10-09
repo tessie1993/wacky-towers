@@ -21,7 +21,7 @@ Level Goals & Fail States turns the board's reports into a result. It reads the 
 ### Core Rules
 
 **Goals**
-1. Each level has exactly **one goal** from Level Data: `clear`, `height`, `survive` or `shape`, with its target. A level with no goal uses `clear` with the default N (Formulas F1).
+1. Each level has exactly **one goal** from Level Data: `clear`, `height`, `survive` or `shape`, with its target. Arcade also uses `endless`: no win condition; the run ends on a loss (Arcade Mode). A level with no goal uses `clear` with the default N (Formulas F1).
 2. **Clear N layers.** The goal is met when `layers_cleared ≥ N`. Only layers cleared by Layer Clearing count; rescue wipes do not.
 3. **Height H.** The tower's **height** is the number of layers from the floor up to the highest layer that is at least `height_coverage` full (default 50% of its active cells; Formulas F2). The goal is met when height ≥ `H_target`. `H_target` must be below the height limit (default `H_play − 2`). Height levels usually set `clear_enabled = false` (Layer Clearing).
 4. **Survive T.** The goal is met when the level clock reaches `T` without a loss. The level usually ramps gravity (Fall, Drop & Lock).
