@@ -748,6 +748,19 @@ formulas:
     output_range: [0, objects_max on board]
     added: 2026-10-09
     revised: ""
+  - name: level_length_estimate
+    status: active
+    source: design/gdd/level-data-definition.md
+    referenced_by:
+      - design/gdd/level-data-definition.md
+    variables:
+      - N
+      - P_eff
+      - t_piece
+      - T
+    output_range: [warn outside 5-15 min]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -1459,6 +1472,33 @@ constants:
       - design/gdd/twist-library.md
     value: 4
     unit: objects
+    added: 2026-10-09
+    revised: ""
+  - name: mvp_level_count
+    status: active
+    source: design/gdd/level-data-definition.md
+    referenced_by:
+      - design/gdd/level-data-definition.md
+    value: 10
+    unit: levels
+    added: 2026-10-09
+    revised: ""
+  - name: level_length_warn_min
+    status: active
+    source: design/gdd/level-data-definition.md
+    referenced_by:
+      - design/gdd/level-data-definition.md
+    value: 5
+    unit: min
+    added: 2026-10-09
+    revised: ""
+  - name: level_length_warn_max
+    status: active
+    source: design/gdd/level-data-definition.md
+    referenced_by:
+      - design/gdd/level-data-definition.md
+    value: 15
+    unit: min
     added: 2026-10-09
     revised: ""
 
