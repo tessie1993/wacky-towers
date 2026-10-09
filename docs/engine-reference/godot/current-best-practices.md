@@ -163,3 +163,17 @@ Sources:
 - **SDL3 gamepad driver**: Better cross-platform gamepad support
 - **Android**: Edge-to-edge display, camera feed access, 16KB page support (Android 15+)
 - **Linux**: Wayland subwindow support for multi-window capability
+
+## 4.7 additions relevant to this project
+
+Source: https://godotengine.org/releases/4.7/ (verified 2026-10-09). Nothing here is a recommendation the page makes; these are features it lists.
+
+- **`VirtualJoystick` node** (three modes): candidate for touch movement; this game's scheme is in `design/gdd/touch-controls.md`, so prototype before adopting.
+- **Mobile renderer** is the recommended renderer for new XR projects; no statement about phones in general: NOT SOURCEABLE.
+- **Android**: stable GABE (export/publish from an Android device), Perfetto as default tracing tool, export splash-screen options.
+- **iOS**: controller support moves to SDL3. HDR output on iOS.
+- **Tweens**: `Tween.tween_await()` pauses until a signal.
+- **Control offset transforms** survive container re-sorting (useful for HUD juice).
+- **AreaLight3D** and per-pass environment uniform buffers (rendering cost on mobile: NOT SOURCEABLE; measure).
+- **Asset Store** replaces the Asset Library; new export template downloader.
+- **Jolt**: see `breaking-changes.md` 4.6 → 4.7 before using `SoftBody3D` or `Area3D` with Jolt (relevant to Physics Mode).
