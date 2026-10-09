@@ -15,6 +15,8 @@
 - **Rendering**: Mobile renderer (matches project.godot)
 - **Physics**: Jolt (3D). Final physics configuration is an ADR.
 - **Asset tool**: Blender, exported as glTF/GLB into the Godot import pipeline
+- **Blender**: 5.2 at `C:/Program Files/Blender Foundation/Blender 5.2/blender.exe` (also set in Godot editor settings `filesystem/import/blender/blender_path`). Source project: `D:/TESSA/blender-projects/wacky-towers/` (see its SPEC.md); `scripts/export_glb.py` exports to `assets/models/`.
+- **Test framework install**: gdUnit4 6.2.1 in `addons/gdUnit4/` (verified running on 4.7.2)
 - **Godot project folder**: `wacky-towers/` (holds project.godot)
 
 ## Input & Platform
