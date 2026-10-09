@@ -36,7 +36,7 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 11 | Level-Specific Mechanics | Gameplay | MVP | Designed | design/gdd/level-specific-mechanics.md | Rule-Twist Framework |
 | 12 | Twist Library | Gameplay | MVP | Designed | design/gdd/twist-library.md | Rule-Twist Framework |
 | 13 | Level Data & Definition (inferred) | Gameplay | MVP | Designed | design/gdd/level-data-definition.md | Level Goals & Fail States, Rule-Twist Framework, Level-Specific Mechanics, Twist Library |
-| 14 | HUD (inferred) | UI | MVP | Not Started | — | Piece Spawner & Queue, Level Goals & Fail States |
+| 14 | HUD (inferred) | UI | MVP | Designed | design/gdd/hud.md | Piece Spawner & Queue, Level Goals & Fail States |
 | 15 | Obstacles | Gameplay | Vertical Slice | Not Started | — | Board / Grid, Rule-Twist Framework |
 | 16 | Obstacle Clearing | Gameplay | Vertical Slice | Not Started | — | Layer Clearing, Obstacles |
 | 17 | Scoring & Stars | Progression | Vertical Slice | Not Started | — | Layer Clearing, Level Goals & Fail States |
@@ -221,10 +221,10 @@ None found, after three relationships were directed one way:
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 37 |
-| Design docs started | 13 |
+| Design docs started | 14 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
-| MVP systems designed | 13/14 |
+| MVP systems designed | 14/14 |
 | Vertical Slice systems designed | 0/13 |
 
 > Gates: TD-SYSTEM-BOUNDARY, PR-SCOPE and CD-SYSTEMS skipped — lean review mode.

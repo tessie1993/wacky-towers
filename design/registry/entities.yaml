@@ -761,6 +761,42 @@ formulas:
     output_range: [warn outside 5-15 min]
     added: 2026-10-09
     revised: ""
+  - name: top_band_height
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    variables:
+      - inset_top
+      - preview_first_pt
+      - plate_min_pt
+      - margin_pt
+    output_range: [80, 130 pt]
+    added: 2026-10-09
+    revised: ""
+  - name: danger_state
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    variables:
+      - stack_height
+      - H_play
+      - danger_margin
+    output_range: [true, false]
+    added: 2026-10-09
+    revised: ""
+  - name: preview_plate_size
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    variables:
+      - i
+      - preview_first_pt
+    output_range: [48, preview_first_pt]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -1499,6 +1535,51 @@ constants:
       - design/gdd/level-data-definition.md
     value: 15
     unit: min
+    added: 2026-10-09
+    revised: ""
+  - name: preview_first_pt
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    value: 64
+    unit: pt
+    added: 2026-10-09
+    revised: ""
+  - name: plate_min_pt
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    value: 48
+    unit: pt
+    added: 2026-10-09
+    revised: ""
+  - name: hud_margin_pt
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    value: 8
+    unit: pt
+    added: 2026-10-09
+    revised: ""
+  - name: danger_margin
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    value: 2
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: rule_strip_max_icons
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    value: 5
+    unit: icons
     added: 2026-10-09
     revised: ""
 

@@ -204,7 +204,7 @@ The next piece should appear the instant the last one locks (after the Waiting d
 
 ## UI Requirements
 
-- Preview plate(s): upper corner on the side away from the movement thumb (default right-handed: upper left) outside the board's screen rectangle, 1–3 stacked, nearest on top and largest; each at least 64 pt for the first, 48 pt for the others.
+- Preview plate(s): top-right, above the rotate thumb (HUD; the left-hand mirror swaps it), outside the board's screen rectangle, 1–3 stacked, nearest on top and largest; each at least 64 pt for the first, 48 pt for the others.
 - Hold plate: beside the preview, only if enabled; tapping it is the `hold` command (tap-only, in the item strip's thumb zone per Touch Controls, to be settled when hold is first enabled).
 - Four-player layouts show the first preview plate only.
 - Settings: none by default (preview count is a level or perk property, not a user preference).
