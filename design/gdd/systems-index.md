@@ -50,8 +50,8 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 25 | Save & Profile (inferred) | Persistence | Vertical Slice | Designed | design/gdd/save-profile.md | Campaign Structure, Scoring & Stars |
 | 26 | Menus & Level Select (inferred) | UI | Vertical Slice | Designed | design/gdd/menus-level-select.md | Campaign Structure, Save & Profile |
 | 27 | Game Feel & VFX (inferred) | UI | Vertical Slice | Designed | design/gdd/game-feel-vfx.md | Layer Clearing, Buffs & Debuffs, Items |
-| 28 | Physics Mode | Gameplay | Alpha | Not Started | — | Board / Grid, Piece Set, Fall, Drop & Lock, Rule-Twist Framework |
-| 29 | Block Status Effects (inferred) | Gameplay | Alpha | Not Started | — | Board / Grid, Rule-Twist Framework |
+| 28 | Physics Mode | Gameplay | Alpha | Designed | design/gdd/physics-mode.md | Board / Grid, Piece Set, Fall, Drop & Lock, Rule-Twist Framework |
+| 29 | Block Status Effects (inferred) | Gameplay | Alpha | Designed | design/gdd/block-status-effects.md | Board / Grid, Rule-Twist Framework |
 | 30 | Skills | Gameplay | Alpha | Not Started | — | Rule-Twist Framework, Buffs & Debuffs |
 | 31 | Characters & Perks | Progression | Alpha | Not Started | — | Skills, Buffs & Debuffs |
 | 32 | Points System | Economy | Alpha | Not Started | — | Scoring & Stars, Tournament Flow |
@@ -221,7 +221,7 @@ None found, after three relationships were directed one way:
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 37 |
-| Design docs started | 27 |
+| Design docs started | 29 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
 | MVP systems designed | 14/14 |
