@@ -1,8 +1,36 @@
 # Godot — Breaking Changes
 
-Last verified: 2026-02-12
+Last verified: 2026-10-09
 
 Changes between Godot versions, focused on post-LLM-cutoff changes (4.4+).
+
+## 4.6 → 4.7 (POST-CUTOFF, HIGH RISK)
+
+Source: https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.7.html (verified 2026-10-09). Release date: NOT SOURCEABLE.
+
+| Subsystem | Change | Details |
+|-----------|--------|---------|
+| Physics (Jolt) | `WorldBoundaryShape3D.plane.d` sign flipped | Flip the sign to match 4.6 behaviour. |
+| Physics (Jolt) | `SoftBody3D` mass and stiffness | Mass defaults to 1 kg for the whole body; `linear_stiffness` applied differently — retune `linear_stiffness` and `damping_coefficient`. |
+| Physics (Jolt) | `Area3D` reports overlaps with `SoftBody3D` | Use collision layers/masks to exclude them. |
+| Audio | `AudioStreamPlayer.area_mask` default is now disabled (was layer 1) | Projects using `audio_bus_override` must reset it to layer 1. |
+| Audio | `AudioEffectSpectrumAnalyzer.tap_back_pos` removed | |
+| Input | Mouse/keyboard device IDs | Now `InputEvent.DEVICE_ID_MOUSE` / `DEVICE_ID_KEYBOARD` instead of `0`. Check by event type. |
+| GDScript | Packed array element assignment | No longer calls the setter for the whole packed array property. |
+| GDScript | Typed-return overrides | Must include an explicit return (e.g. `return null`). |
+| Rendering | `LinearToSRGB` visual shader no longer clamps to [0,1] on Mobile and Forward+ | |
+| Rendering | `CanvasItem` lines lose their antialiasing feather | Lines render thinner. |
+| Rendering | `RenderingServer.particles_request_process_time` renames `time` to `process_time`, adds `process_time_residual` | Not C# source compatible. Same optional parameter added to CPU/GPU Particles 2D/3D `request_particles_process`. |
+| Rendering | `RenderingServer.viewport_set_size` adds optional `view_count`; `Image.save_exr*` add optional `color_image`, `max_linear_value`; `ImageTexture.get_format` moved to `Texture2D` | |
+| GUI | `Control.accessibility_live` type moves to `AccessibilityServer.AccessibilityLiveMode` | |
+| GUI | `RichTextLabel` image API | `UPDATE_WIDTH_IN_PERCENT` renamed `UPDATE_WIDTH_UNIT`; `add_image`/`update_image` width/height now `float`, `width_in_percent`/`height_in_percent` renamed `width_unit`/`height_unit` (`RichTextLabel.ImageUnit`). |
+| Core | `Object.is_class` takes `StringName`; `OptimizedTranslation.generate` returns `bool`; `ZIPPacker.start_file` gains optional `permissions`, `modified_time` | `generate` is not C# binary compatible. |
+| Animation | `Animation.length` metadata is `double`; `AnimationNodeBlendSpace1D/2D.add_blend_point` gains optional `name` | `length` not C# compatible. |
+| Editor | `EditorSceneFormatImporter.IMPORT_*` constants moved to `ImportFlags` enum | Not C# source compatible. Matters for custom import plugins. |
+
+Changed defaults: `LookAtModifier3D.relative` true→false; `rendering/reflections/sky_reflections/roughness_layers` 7→8; `ResourceImporterDynamicFont.hinting` 1→3; new projects use stretch mode `canvas_items` and aspect `expand`.
+
+4.7.1 (78 fixes) and 4.7.2 are maintenance releases; 4.7.1 lists no known incompatibilities with 4.7 (https://godotengine.org/article/maintenance-release-godot-4-7-1/). 4.7.2 details: NOT SOURCEABLE (official page not fetched).
 
 ## 4.5 → 4.6 (Jan 2026 — POST-CUTOFF, HIGH RISK)
 

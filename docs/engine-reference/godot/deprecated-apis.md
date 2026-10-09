@@ -41,3 +41,14 @@ with the "Use Instead" column.
 | `Texture2D` in `Shader.set_default_texture_parameter()` / `get_default_texture_parameter()` | `Texture` base type | Changed in 4.4; the shading language's `sampler2D` / `texture()` did not change |
 | Manual post-process viewport chains | `Compositor` + `CompositorEffect` | Structured post-processing (4.3+) |
 | GodotPhysics3D for new projects | Jolt Physics 3D | Default since 4.6; better stability |
+
+## 4.6 → 4.7
+
+The official 4.7 upgrade guide (https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.7.html) has no deprecated-APIs section. Renames and removals are in `breaking-changes.md` (4.6 → 4.7). Deprecations beyond that: NOT SOURCEABLE.
+
+| Removed / renamed | Use Instead | Since |
+|-------------------|-------------|-------|
+| `AudioEffectSpectrumAnalyzer.tap_back_pos` | NOT SOURCEABLE — no replacement stated | 4.7 |
+| `RichTextLabel.ImageUpdateMask.UPDATE_WIDTH_IN_PERCENT` | `UPDATE_WIDTH_UNIT` | 4.7 |
+| `width_in_percent` / `height_in_percent` params | `width_unit` / `height_unit` | 4.7 |
+| `EditorSceneFormatImporter.IMPORT_*` constants | `EditorSceneFormatImporter.ImportFlags` enum | 4.7 |

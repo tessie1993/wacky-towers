@@ -104,7 +104,6 @@ Saved/
 *.opensdf
 *.sdf
 *.cachefile
-*.VC.db
 # Uncomment if using Unreal:
 # *.uasset
 # *.umap
@@ -115,7 +114,6 @@ Saved/
 *.dxbc
 
 # === Temporary and Cache ===
-*.tmp
 *.temp
 *.cache
 *.log
@@ -183,10 +181,8 @@ $RECYCLE.BIN/
 .import/
 export.cfg
 export_credentials.cfg
-*.tmp
 
 # Imported translations (automatically generated from CSV files)
-*.translation
 
 # Mono-specific ignores
 .mono/
@@ -194,6 +190,8 @@ data_*/
 mono_crash.*.json
 
 # Export outputs
-*.exe
 # Uncomment if your project does not version PCK files as runtime dependencies.
 # *.pck
+
+# Godot Android build
+/android/
