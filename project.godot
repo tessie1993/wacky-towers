@@ -35,3 +35,12 @@ enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
 
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
+
+[importer_defaults]
+
+scene={
+"import_script/path": "res://tools/asset-pipeline/block_post_import.gd",
+"meshes/create_shadow_meshes": false,
+"meshes/generate_lods": false,
+"meshes/light_baking": 0
+}
