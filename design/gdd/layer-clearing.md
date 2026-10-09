@@ -28,7 +28,7 @@ The Board reports which layers are full; it never removes anything. Layer Cleari
 **The routine**
 4. **Find.** Ask the board for `full_layers()`; sort them from the bottom up (along the down axis). A layer with no active cells is never full. If there are none, the routine ends with `t_resolve = 0`.
 5. **Notify.** For each cell in a full layer, fire the `on_clear(cell, content)` hook before removal, so status effects (burning, honey, bomb tags and the like) and objects can react. Hooks run in layer order, bottom to top, in cell order.
-6. **Remove.** All contents in every full layer are removed as one logical step (blocks, obstacles and objects alike; Obstacle Clearing may later add exceptions, see Open Questions). The cleared cubes' piece ids, owners, hues and status are recorded for the events below.
+6. **Remove.** All contents in every full layer are removed as one logical step (blocks, obstacles and objects alike), with the exceptions Obstacle Clearing defines: a layer held by a breakable obstacle with hit points left is deferred, and stone pillar cells stay in place. The cleared cubes' piece ids, owners, hues and status are recorded for the events below.
 7. **Settle.** The stack above is settled by the level's `collapse_mode` (rules 8–10).
 8. **Slice shift (default).** Each remaining layer moves down by the number of cleared layers below it (Formulas F1), all contents together with their flags and status. The order of layers is preserved. Slice shift never creates a new full layer, so it never chains.
 9. **Cascade (level option).** After removal, every cube that is not supported falls one layer at a time, all unsupported cubes together, one layer per `cascade_step_ms`, until nothing can fall. A cube is *supported* if the cell below it is the floor or holds solid content. Then the board is checked again: if layers are now full, they clear (the next *round*, chain index +1) and the settle repeats. Rounds stop at `chain_max`; any layers still full are handled by the next clear check.
@@ -270,7 +270,7 @@ None directly. The HUD shows the layers-cleared count and goals (Level Goals & F
 
 ## Open Questions
 
-- **Obstacles and survivors**: should obstacles be removable by a layer clear by default, and may some survive (leaving a hole in the slice)? Owned by Obstacles and Obstacle Clearing; until then everything in a full layer is removed.
+- **Obstacles and survivors**: answered in Obstacle Clearing (layers with surviving rocks are deferred; pillars stay).
 - **Over-limit timing**: this GDD evaluates `over_limit()` after the clear. Board / Grid and Fall, Drop & Lock say "after a lock" — confirm they mean after the resolve; no number changes.
 - **Cascade and chunk balance**: both modes are provisional until a level wants them; chain rules, scoring and support rules need a prototype pass.
 - **Versus attacks**: do multi-layer clears send junk or trigger comeback items, and by how much? Items and Tournament Flow to decide; this system only reports owners and counts.

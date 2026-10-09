@@ -797,6 +797,53 @@ formulas:
     output_range: [48, preview_first_pt]
     added: 2026-10-09
     revised: ""
+  - name: pieces_per_clear_obstacles
+    status: active
+    source: design/gdd/obstacles.md
+    referenced_by:
+      - design/gdd/obstacles.md
+    variables:
+      - A
+      - n_obs
+      - c
+      - eta
+    output_range: [below Board P_eff]
+    added: 2026-10-09
+    revised: ""
+  - name: pillar_share
+    status: active
+    source: design/gdd/obstacles.md
+    referenced_by:
+      - design/gdd/obstacles.md
+    variables:
+      - n_pillars
+      - A
+      - pillar_max_share
+    output_range: [0, pillar_max_share]
+    added: 2026-10-09
+    revised: ""
+  - name: resolves_to_clear
+    status: active
+    source: design/gdd/obstacle-clearing.md
+    referenced_by:
+      - design/gdd/obstacle-clearing.md
+    variables:
+      - max_hp
+      - layer_damage
+    output_range: [1, 5]
+    added: 2026-10-09
+    revised: ""
+  - name: pillar_shift
+    status: active
+    source: design/gdd/obstacle-clearing.md
+    referenced_by:
+      - design/gdd/obstacle-clearing.md
+    variables:
+      - C
+      - y
+    output_range: [0, board_height - 1]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -1580,6 +1627,60 @@ constants:
       - design/gdd/hud.md
     value: 5
     unit: icons
+    added: 2026-10-09
+    revised: ""
+  - name: crate_hp
+    status: active
+    source: design/gdd/obstacles.md
+    referenced_by:
+      - design/gdd/obstacles.md
+    value: 1
+    unit: hp
+    added: 2026-10-09
+    revised: ""
+  - name: rock_hp
+    status: active
+    source: design/gdd/obstacles.md
+    referenced_by:
+      - design/gdd/obstacles.md
+    value: 2
+    unit: hp
+    added: 2026-10-09
+    revised: ""
+  - name: junk_hp
+    status: active
+    source: design/gdd/obstacles.md
+    referenced_by:
+      - design/gdd/obstacles.md
+    value: 1
+    unit: hp
+    added: 2026-10-09
+    revised: ""
+  - name: pillar_max_share
+    status: active
+    source: design/gdd/obstacles.md
+    referenced_by:
+      - design/gdd/obstacles.md
+    value: 0.25
+    unit: fraction
+    added: 2026-10-09
+    revised: ""
+  - name: layer_damage
+    status: active
+    source: design/gdd/obstacle-clearing.md
+    referenced_by:
+      - design/gdd/obstacle-clearing.md
+    value: 1
+    unit: hp per resolve
+    added: 2026-10-09
+    revised: ""
+  - name: adjacent_damage
+    status: active
+    source: design/gdd/obstacle-clearing.md
+    referenced_by:
+      - design/gdd/obstacle-clearing.md
+    value: 0
+    unit: hp
     added: 2026-10-09
     revised: ""
 
