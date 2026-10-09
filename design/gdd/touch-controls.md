@@ -8,7 +8,7 @@
 
 ## Summary
 
-Touch Controls turn thumbs into piece commands — move, rotate on three axes (spin, tilt, roll), soft/hard drop, rotate the view, and use items — in landscape on a phone. Two candidate schemes go to a prototype: **Twin Pads** (on-screen buttons) and **Drag & Flick** (gestures in side zones beside the board), with optional axis-ring hints for learning; measured playtest targets pick the default. Both keep fingers off the board, follow the screen after view changes, need only one finger, and let any move be undone until the piece locks.
+Touch Controls turn thumbs into piece commands — move, rotate on three axes (spin, tilt, roll), soft/hard drop, rotate the view, hold (when enabled), and use items — on a phone in **landscape or portrait**. Two candidate schemes go to a prototype: **Twin Pads** (on-screen buttons) and **Drag & Flick** (gestures in side zones beside the board), with optional axis-ring hints for learning; measured playtest targets pick the default. Both keep fingers off the board, follow the screen after view changes, need only one finger, and let any move be undone until the piece locks.
 
 > **Quick reference** — Layer: `Foundation` · Priority: `MVP` · Key deps: `None`
 
@@ -21,14 +21,17 @@ Touch Controls turn thumbs into piece commands: move the falling piece across th
 ### Core Rules
 
 **Shared rules (both schemes)**
-1. **Commands, not physics.** Controls emit discrete commands — `move(dir)`, `rotate(axis, ±90°)`, `soft_drop(on/off)`, `hard_drop`, `rotate_view(±1)` (one 30° step, Camera & Rotate-View), `use_item(slot)`, `use_skill(slot)`. Movement & Rotation and Fall/Drop/Lock decide whether a command succeeds.
+1. **Commands, not physics.** Controls emit discrete commands — `move(dir)`, `rotate(axis, ±90°)`, `soft_drop(on/off)`, `hard_drop`, `rotate_view(±1)` (one 30° step, Camera & Rotate-View), `hold` (only when enabled), `use_item(slot)`, `use_skill(slot)`. Movement & Rotation and Fall/Drop/Lock decide whether a command succeeds.
 2. **Screen-relative mapping.** "Left/right/up/down" are screen directions. They are re-mapped to world ±x / ±z using the camera's direction map (Camera & Rotate-View F3) every time the view turns, so left always moves the piece toward the world direction that looks most like screen-left.
-3. **Rotation axes named in screen terms.** Yaw = **spin** (about the vertical axis), pitch = **tilt** (about the screen-horizontal axis, "toward/away from me"), roll = **roll** (about the view axis). Every rotation is a 90° step about a **world** axis: spin = the vertical axis; tilt = the horizontal world axis closest to screen-horizontal (from the camera's direction map); roll = the other horizontal world axis. The UI never shows x/y/z.
+3. **Rotation axes named in screen terms.** Yaw = **spin** (about the vertical axis), pitch = **tilt** (about the screen-horizontal axis, "toward/away from me"), roll = **roll** (about the view axis). Every rotation is a 90° step about a **world** axis: spin = the vertical axis; tilt = the horizontal world axis closest to screen-horizontal (from the camera's direction map), with ties at the corner snaps going to the axis that appears **up-right**; roll = the other horizontal world axis (Movement & Rotation rule 9). The mapping is **screen-fixed**: it depends only on the camera snap, never on the gravity direction. The UI never shows x/y/z.
 4. **Fingers off the board.** No gameplay input starts on the board's screen area. The board shows only the piece, the landing ghost and (optionally) the axis gizmo.
 5. **Thumb zones (landscape, default right-handed).** Rotate and drop sit in the **right** thumb arc; movement in the **left** thumb arc; items and skills in a tap-only strip on the **left** side, away from movement; rotate-view is a 56 pt button at the top of the right zone. A **left-hand mirror** setting swaps the sides.
+5a. **Thumb zones (portrait).** The board sits in the upper part of the screen and **both thumbs work at the bottom**: movement in the bottom-left, rotate and drop in the bottom-right, items and skills in a tap-only row just above the movement zone, rotate-view at the top of the right cluster. The same scheme (A or B) and the same mirror setting apply; only the zone positions change. Minimum sizes are unchanged.
+5b. **Turning the phone mid-level** pauses the game (Paused); the layout switches and play resumes on the player's tap (Camera & Rotate-View rule 5a). Touches in progress are cancelled.
 6. **One finger, no chords.** Every action works with a single touch. Two simultaneous touches are allowed (move with one thumb while rotating with the other) but never required.
 7. **Undo until lock.** Any move or rotation can be reversed until the piece locks (the opposite command). Lock timing belongs to Fall/Drop/Lock.
 8. **Feedback on every command.** Landing ghost always on; on rotation, the axis gizmo flashes on the pivot (shape- and colour-coded); optional haptic tick on move, pulse on rotate, stronger pulse on lock; a failed command (blocked move or rotation) gives a short "bonk" (no movement, small shake respecting reduced motion).
+8a. **Hold control.** When hold is enabled (by level, perk or difficulty; Piece Spawner & Queue rule 11), a tap-only **hold plate** appears in the item/skill strip's thumb zone. It works any time a piece is active, including while it rests during the lock delay, and is never buffered. When hold is off, no control is shown.
 9. **Progressive disclosure.** The first levels enable one rotation axis (spin); tilt and roll are introduced one at a time over early levels (Onboarding). Disabled axes' controls are hidden, not greyed.
 
 **Scheme A — Twin Pads (buttons)**
@@ -71,8 +74,8 @@ Drag vs. flick is decided at release by speed and distance (Formulas F2). Flick 
 |---|---|---|---|
 | **Disabled** | Input ignored (menus, cutscene, round over) | Level not running; mode ends | Level becomes Live |
 | **Ready** | Accepting commands for the falling piece | A piece spawns | Piece locks → Waiting; pause → Paused |
-| **Waiting** | Between lock and next spawn; commands are buffered for at most `input_buffer_ms` and applied to the new piece (rotate and move only, never hard drop) | Piece locks | Next piece spawns → Ready |
-| **Paused** | Only the pause menu takes input | Pause button or app backgrounded | Resume → Ready |
+| **Waiting** | Between lock and next spawn; the buffer keeps **only the latest** move or rotate pressed within the last `input_buffer_ms`, and applies it to the new piece (each new press replaces the previous one; never hard drop or hold) | Piece locks | Next piece spawns → Ready |
+| **Paused** | Only the pause menu takes input | Pause button, app backgrounded, or phone turned mid-level | Resume → Ready |
 
 ### Interactions with Other Systems
 
@@ -156,7 +159,7 @@ The repeat_count formula is defined as:
 | Value | Range | Default | Source | Meaning |
 |---|---|---|---|---|
 | rotate_anim_ms | 80–160 | 120 | data file | Visual rotation length; the logical rotation happens instantly |
-| input_buffer_ms | 0–150 | 100 | data file | How long a move or rotate pressed in the Waiting state (between lock and spawn) is kept for the next piece |
+| input_buffer_ms | 0–150 | 100 | data file | How long the latest move or rotate pressed in the Waiting state (between lock and spawn) is kept for the next piece; only one command is kept |
 | one_cell_screen_px | — | ≈ 56 px wide diamond | calculated (Board F5) | Cell footprint on screen at the default board; a fingertip covers 3–4 cells, which is why no input is on the board |
 
 ## Edge Cases
@@ -249,7 +252,9 @@ Controls should feel snappy and trustworthy: every touch produces a visible resu
 13. [U] F3: held 239 ms → 0 repeats; 240 ms → 1; 600 ms → 5; 690 ms → 6 (a 7-cell cross).
 
 **Edge cases**
-14. [U] **GIVEN** Waiting, **WHEN** hard drop is pressed, **THEN** it is ignored and not buffered; **WHEN** move or rotate is pressed within 100 ms before spawn, **THEN** it applies to the new piece.
+14. [U] **GIVEN** Waiting, **WHEN** hard drop is pressed, **THEN** it is ignored and not buffered; **WHEN** move or rotate is pressed within 100 ms before spawn, **THEN** it applies to the new piece; **WHEN** a move and then a rotate are both pressed in that window, **THEN** only the rotate (the latest) is applied.
+14a. [I] **GIVEN** portrait, **WHEN** the layout loads, **THEN** movement is bottom-left, rotate and drop bottom-right, no control overlaps the board rectangle, and sizes meet the minimums; **GIVEN** the phone turns mid-level, **THEN** the game pauses and touches are cancelled.
+14b. [I] **GIVEN** hold enabled and a resting piece in its lock delay, **WHEN** the hold plate is tapped, **THEN** the hold happens; **GIVEN** hold disabled, **THEN** no hold plate is shown.
 15. [U] **GIVEN** a rotation animation playing, **WHEN** rotate is pressed twice, **THEN** both rotations apply immediately, in order.
 16. [I] **GIVEN** a drag in progress, **WHEN** the view rotates, **THEN** the drag ends and steps already taken are unchanged.
 17. [I] **GIVEN** a touch starting in one zone, **WHEN** it slides into another zone or onto the board, **THEN** the starting zone owns it until the finger lifts.
@@ -274,12 +279,13 @@ Controls should feel snappy and trustworthy: every touch produces a visible resu
 ## Open Questions
 
 - **Which scheme wins**: decided by the prototype against the targets in Acceptance Criteria; the loser may stay as an option.
-- **Landscape vs portrait**: the art bible defaults to landscape but says to revisit after this prototype.
+- ~~**Landscape vs portrait**~~: resolved — both are supported (user decision 2026-10-09; rules 5–5b).
+- **Designer defaults of 2026-10-09, open to playtest**: portrait thumbs both at the bottom (rule 5a); pause on a mid-level phone turn (rule 5b); latest-only input buffer; screen-fixed rotation mapping under sideways gravity (rule 3); hold usable until lock (rule 8a).
 - **Roll**: is roll needed at all, or can most pieces be placed with spin and tilt? If roll is rarely used, it could move behind a secondary control.
 - **Smart rotate**: if neither scheme meets the 3D targets, try reducing rotation scope (fewer axes, or an auto-fit rotate) before adding controls — a game-design call.
 - **Lock delay and reset count**: owned by Fall, Drop & Lock; they strongly affect how forgiving these controls feel.
 - **Item targeting**: items that need a target (a rival's board, a cell) — tap a rival's portrait, or drag-to-aim? Decide in Items.
 - **4-player on one phone**: out of scope for this prototype (Local Multiplayer Setup).
-- **Hold command**: Piece Spawner & Queue defines an optional `hold` (off by default, enabled by level, perk or item). When enabled it needs a tap-only control; default home is the item/skill strip. Decide after the scheme prototype.
+- **Hold plate position**: rule 8a puts it in the item/skill strip's zone; fine-tune its exact spot after the scheme prototype.
 - **Smallest supported device**: needed as the reference for the 150% scale check; the 6.1" 2532 × 1170 phone is the primary reference until then.
 

@@ -21,7 +21,8 @@ This system owns the clock of a falling piece. From the moment a piece spawns un
 ### Core Rules
 
 **Gravity**
-1. Each falling piece has a **fall speed** `g` in cells per second along the board's **down axis** (default −y). A fall step moves the piece one cell down through `try_translate` (Movement & Rotation) if the cells below pass `can_place`; the interval between steps is `1 / g` (Formulas F1).
+1. Each falling piece has a **fall speed** `g` in cells per second along the board's **down axis** (default −y; any of ±x, ±y, ±z, Board / Grid rule 3). A fall step moves the piece one cell along the down axis through `try_translate` (Movement & Rotation) if the target cells pass `can_place`; the interval between steps is `1 / g` (Formulas F1).
+1a. **Gravity clock.** Each piece has a clock counting time since its last fall step. It **resets to zero when the piece spawns** (so the first step comes one full interval after the spawn). Turning soft drop on or off does **not** reset it: the elapsed time carries over, and the next step happens as soon as the elapsed time reaches the interval for the current speed. A successful fall step resets it to zero.
 2. A level sets a **base speed** `g0` and may add a **ramp**: per layer cleared and/or per minute, up to a cap `g_max`. A **gravity scale** (twists, buffs, potions) multiplies the result. A scale of 0 stops the piece from falling by itself; soft and hard drop still work.
 3. When a fall step is blocked, the piece is **resting** (Movement & Rotation F4) and the lock delay starts.
 
@@ -35,22 +36,34 @@ This system owns the clock of a falling piece. From the moment a piece spawns un
 8. A second `hard_drop` during grace **commits**: the piece locks at once. A hard drop while already resting drops zero cells and starts the grace in the same way.
 
 **Lock delay**
-9. While the piece is resting, a **lock timer** runs, starting at `lock_delay_ms` (default 500). When it reaches 0, the piece locks. The timer pauses with the game and is cleared whenever the piece stops resting.
+9. The **lock timer** starts, at `lock_delay_ms` (default 500), **every time the piece comes to rest**, whatever the cause: a blocked fall step, a move or rotation that ends resting, or content appearing under it. It counts down while the piece rests; at 0 the piece locks. The timer pauses with the game and is cleared whenever the piece stops resting. (Hard drop uses the grace of rules 7–8 instead.)
 10. A **successful** move or rotation while resting (a kicked rotation included; a blocked command does not count) restarts the timer to full and uses one of the piece's `lock_resets_max` resets (default 10). When the resets are used up, the timer still runs but no longer restarts, so the piece locks at the end of the current delay.
-11. If the piece falls to a layer lower than any it has reached before, its reset count is restored to full. This lets a piece that is genuinely making progress down a stack keep its resets.
+11. If the piece falls to a layer lower than any it has reached before, its reset count is restored to full. "Lower" is measured by the piece's **lowest cube** along the current down axis (the cube furthest in the down direction), so the rule works for all 6 gravity directions. This lets a piece that is genuinely making progress down a stack keep its resets.
 12. If the piece stops resting (the player slides it off a ledge, or a clear or twist removes its support), the timer is cleared (resets used are kept) and gravity resumes. When it rests again the timer restarts from full.
 13. `lock_delay_ms = 0` locks the instant the piece rests, which makes this an instant-lock level.
 
 **Lock and after**
-14. When the piece locks, its cubes are written to the board as Blocks (`set`, with piece id, owner, hue, tags), the piece instance ends (Piece Set: Locked), and the board goes into Resolving (Board / Grid). The last position and the lock cause (delay, hard drop, commit) go to the event stream.
-15. Fall, Drop & Lock then waits for the board to return to Live (Layer Clearing finishes) and for the **entry delay** `entry_delay_ms` (default 200). Then, unless the board reports over limit or the mode has ended, it calls `spawn()` (Piece Spawner & Queue). During this **Waiting** time Touch Controls buffers a move or rotate pressed within its last 100 ms for the new piece.
-16. After a lock, the board reports `over_limit()`; if it is true, no spawn happens and the mode decides (default: loss). A spawn that cannot happen because the cells are occupied is reported by the Spawner as spawn blocked.
+14. When the piece locks, each cube is written to the board as a Block with the record `{shape_id, piece_instance_id, owner, tags, status}` (Board / Grid rule 6). Hue is not stored: it comes from `shape_id` plus the level's art set (`design/art/block-art-sets.md`). The piece instance ends (Piece Set: Locked) and the board goes into Resolving (Board / Grid). The last position and the lock cause (delay, hard drop, commit) go to the event stream.
+
+**Per-lock sequence (the single owner)**
+15. Every lock runs this sequence, in this order, and no other GDD defines its own order. Each step finishes before the next starts:
+    1. **Lock**: cubes written (rule 14); board → Resolving.
+    2. **`on_lock`** hooks (Rule-Twist Framework).
+    3. **Clear**: Layer Clearing's routine runs with the level's `clear_detector` and `collapse` (all chain rounds included). No clear → it ends at once.
+    4. **`on_resolve_end`** hooks.
+    5. **Goal check** (Level Goals rule 6, including `on_goal_check`). A met goal ends the level here: the win counts even if the stack is over the limit.
+    6. **Top-out check**: `over_limit()` is read **now, after clears**, never earlier.
+    7. **`on_top_out`** hooks (only if step 6 found a top-out).
+    8. **Top-out outcome** by the level's `topout_rule` (Level Goals rule 10a): `rescue` (wipe through Layer Clearing's `wipe_bottom`), `trim`, or `lose`. A loss ends the level here.
+    9. Board → Live. **Entry delay** `entry_delay_ms` (default 200); this is the **Waiting** state, in which Touch Controls keeps the latest move or rotate for the new piece.
+    10. **Spawn**: `spawn()` (Piece Spawner & Queue). If the spawn is blocked, it is a top-out and goes back to steps 7–8 (Level Goals); after a rescue or trim, `spawn()` is called again once.
+16. Steps 3–8 run with the board in Resolving and no piece active, so nothing the player does can change the outcome mid-sequence. A pause during the sequence freezes it between steps.
 
 **Landing ghost**
 17. The landing ghost shows the drop target (F3) at all times while a piece falls, updating in the same frame as every move, rotation or fall step. It is an outline of the piece in its hue and sits at the piece's own position when the piece is resting.
 
 **Rules from outside**
-18. The Rule-Twist Framework can: change the gravity scale, base speed or ramp; set `lock_delay_ms` or `lock_resets_max`; flip the down axis (gravity direction follows it); call `try_translate` for wind or drift; or switch gravity off. Physics Mode may replace this system's rules with physics entirely.
+18. The Rule-Twist Framework can: change the gravity scale, base speed or ramp; set `lock_delay_ms` or `lock_resets_max`; set the down axis to any of the 6 directions (gravity direction follows it; only between pieces or as Board / Grid allows); call `try_translate` for wind or drift; or switch gravity off. Physics Mode may replace this system's rules with physics entirely.
 
 ### States and Transitions
 
@@ -74,7 +87,7 @@ Per player:
 | Board / Grid | ↔ | FDL writes locked cubes with `set`; reads down axis, `over_limit()`, state (Live / Resolving) |
 | Piece Spawner & Queue | FDL → | `spawn()` after Waiting |
 | Layer Clearing | FDL → | Lock event starts it; its end (Board Live) ends the wait |
-| Level Goals & Fail States | FDL → | Lock events, `over_limit()` result; layers cleared feed the gravity ramp |
+| Level Goals & Fail States | ↔ | FDL runs the per-lock sequence (rule 15) and calls Goals for the goal check, top-out check and `topout_rule` outcome; layers cleared feed the gravity ramp |
 | Rule-Twist Framework, Twist Library, Items, Characters & Perks | ↔ | Gravity scale, base speed and ramp, lock delay and resets, down-axis flip, wind/drift translations |
 | Physics Mode | ↔ | May replace the whole system |
 | HUD, Game Feel & VFX, Audio | FDL → | Ghost, lock cue, land / lock / drop events |
@@ -180,7 +193,9 @@ The cycle_time formula is defined as:
 - **If `lock_delay_ms = 0`**: the piece locks the instant it rests (instant lock); resets are irrelevant.
 - **If `gravity_scale = 0`**: the piece does not fall by itself; soft drop uses `soft_drop_min`; hard drop works. A level with no other way to end must provide a timer (Level Goals).
 - **If soft drop is held when a piece locks**: it is cleared; the next piece falls at normal speed until the player presses again.
-- **If a piece locks partly in the spawn zone**: it locks normally; the board reports over limit; no spawn follows (Board / Grid).
+- **If a piece locks partly in the spawn zone**: it locks normally; clears run first; if the stack is still over the limit after them, the level's `topout_rule` decides (rule 15, steps 6–8).
+- **If a spawn is still blocked after a rescue or trim has run for it**: the level is lost (no second rescue for the same spawn).
+- **If soft drop is toggled between fall steps**: the gravity clock keeps its elapsed time (rule 1a); turning soft drop on 900 ms into a 1 000 ms interval steps the piece at once.
 - **If the down axis flips while a piece is falling or resting**: gravity direction updates, the piece keeps its cells, the resting state is recomputed and the lock timer is cleared (resets kept).
 - **If a lock and a pause happen in the same frame**: the lock completes first, then the game pauses.
 - **If the app is backgrounded**: all timers freeze (Frozen); touches are cancelled (Touch Controls).
@@ -292,8 +307,12 @@ None directly. The HUD may show speed level or time (HUD); Settings may offer gh
 16. [U] **GIVEN** `lock_delay_ms = 0`, **THEN** the piece locks on the frame it rests.
 
 **Lock and next piece**
-17. [U] **GIVEN** a lock, **THEN** the board holds Blocks at the piece's cells with its id, owner and hue, the board is Resolving, and the piece instance is Locked.
-18. [I] **GIVEN** the board returns to Live, **WHEN** 200 ms pass, **THEN** `spawn()` is called; **GIVEN** `over_limit()` is true, **THEN** no spawn is called.
+17. [U] **GIVEN** a lock, **THEN** the board holds Blocks at the piece's cells, each with `{shape_id, piece_instance_id, owner, tags, status}` and no stored hue, the board is Resolving, and the piece instance is Locked.
+18. [I] **GIVEN** the board returns to Live, **WHEN** 200 ms pass, **THEN** `spawn()` is called; **GIVEN** `over_limit()` is still true after the clears and `topout_rule = lose`, **THEN** the level is lost and no spawn is called.
+18a. [U] **GIVEN** an instrumented lock that clears one layer and leaves the stack over the limit, **THEN** the events fire in exactly this order: lock, `on_lock`, clear, `on_resolve_end`, goal check, top-out check, `on_top_out`, top-out outcome, entry delay, spawn.
+18b. [U] **GIVEN** a lock that goes over the limit and a clear that brings it back under, **THEN** no top-out is reported.
+18c. [U] **GIVEN** `g = 1` and 900 ms elapsed since the last step, **WHEN** soft drop turns on, **THEN** the piece steps at once; **GIVEN** a spawn, **THEN** the first step comes 1 000 ms later.
+18d. [U] **GIVEN** the down axis is +x, **WHEN** the piece's lowest cube (along +x) reaches a new lowest position, **THEN** its lock resets are restored.
 19. [I] **GIVEN** a move pressed 80 ms before the spawn, **THEN** it applies to the new piece (Touch Controls buffer).
 20. [U] **GIVEN** pause, **THEN** gravity, lock timer, grace and entry delay all stop and resume exactly.
 21. [U] **GIVEN** the down axis flips while a piece is falling, **THEN** gravity follows the new axis, the cells are unchanged, and the lock timer is cleared.
@@ -313,3 +332,5 @@ None directly. The HUD may show speed level or time (HUD); Settings may offer gh
 - **Speed in versus**: should a trailing player fall slower (Comeback Energy) — via items only, or as a built-in handicap? Items / Tournament Flow to decide.
 - **Wind and drift**: how often twist translations run relative to gravity is the Twist Library's job; they use `try_translate` and do not reset the lock timer unless the twist says so.
 - **Physics Mode**: define which of these rules it keeps (hard drop, ghost) when it designs itself.
+- **Tunable defaults, open to playtest**: the per-lock order (rule 15), the gravity clock carrying over across soft drop (rule 1a), the lock timer starting on every rest (rule 9) and "lower" by lowest cube (rule 11) are designer defaults of 2026-10-09; revisit if playtests show stalls or surprise locks.
+- **Funny failures** (creative direction 2026-10-09): the lock itself stays clean and readable; the wacky moments belong to the top-out outcome (Level Goals) and the biome mascot's reactions.

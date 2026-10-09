@@ -21,32 +21,56 @@ With 100 campaign levels plus arcade and tournament rounds, levels must be conte
 ### Core Rules
 
 **The level file**
-1. Each level is one data record with an `id` (e.g. `meadow_03`), a display name, a `biome`, a `tier` (1–10) and the sections in rule 3. The storage format (engine resources, JSON, etc.) is an implementation choice → becomes an ADR after `/setup-engine`.
+1. Each level is one data record with an `id` (e.g. `meadow_03`), a display name, a `biome`, a `tier` (1–10; 11 = the biome's bonus level, Campaign Structure rule 17) and the sections in rule 3. The storage format (engine resources, JSON, etc.) is an implementation choice → becomes an ADR after `/setup-engine`.
 2. **Every field is optional except `id`, `biome` and `tier`.** An omitted field takes the default from the GDD that owns it (rule 3). Level values replace those defaults as the level's base; they are not framework rules and have no priority.
 3. Sections and owners:
 
 | Section | Fields (examples) | Owner GDD |
 |---|---|---|
-| `board` | `width`, `depth`, `H_play`, `mask`, `down_axis`, `starting_contents` | Board / Grid |
-| `pieces` | `shapes`, `weights`, `tags` | Piece Set, Spawner |
-| `spawner` | `randomizer`, `preview_count`, `hold_enabled`, `sequence_mode` | Piece Spawner & Queue |
+| `board` | `width`, `depth`, `H_play`, `mask`, `down_axis`, `spawn_anchor`, `starting_contents` | Board / Grid |
+| `pieces` | `shapes`, `weights`, `tags`, `opening_set`, `opening_count` | Piece Set, Spawner |
+| `spawner` | `randomizer`, `queue_lookahead`, `preview_count`, `hold_enabled`, `sequence_mode`, `seed` | Piece Spawner & Queue |
 | `controls` | `rotation_axes_enabled`, `landed_move_rule`, `kick_enabled` | Movement & Rotation, Touch Controls |
 | `fall` | `g0`, `ramp_per_clear`, `ramp_per_min`, `g_max`, `lock_delay_ms`, `lock_resets_max`, `entry_delay_ms` | Fall, Drop & Lock |
 | `clearing` | `clear_enabled`, `collapse_mode` | Layer Clearing |
 | `camera` | `occlusion_mode`, elevation override | Camera & Rotate-View |
-| `goal` | `type`, target, `warnings_max`, `time_limit`, extra fail conditions | Level Goals & Fail States |
+| `goal` | `type`, target (`N`, `H_target`, `T` or `target_shape`), `height_coverage`, `T_level`, `t_piece`, `warnings_max`, `rescue_margin`, `topout_rule`, `countdown_ms`, `time_limit`, extra fail conditions | Level Goals & Fail States |
 | `mechanic` | `id` and parameters (at most one) | Level-Specific Mechanics |
 | `twists` | list of `id` and parameters (at most two) | Twist Library |
 | `stars` | star times (added by Scoring & Stars) | Scoring & Stars |
 
 4. A level never contains behaviour; new behaviour is a new twist or mechanic in its own GDD.
+4a. **Grid fields use ASCII rows** (one string per row; row 0 = `z = 0`, character 0 = `x = 0`), so levels are readable and diff cleanly:
+   - `board.mask`: `#` active, `.` off (Board / Grid rule 4). Omitted = all active.
+   - `board.starting_contents`: `{layers: {y: [rows]}}` with `#` = starter block (`shape_id: starter`, drawn in the biome's stone style), `m` = the biome object, `.` = empty.
+   - `goal.target_shape`: `{layers: {y: [rows]}}` with `#` = target cell. This is the Shape goal's `M`.
+4b. `board.spawn_anchor` `{x, z}` sets where pieces spawn (Board / Grid rule 11a); default the footprint centre (lower cell on ties).
+4c. Schema sketch (every field optional except `id`, `biome`, `tier`; `version` is set by the tools):
+
+```
+id, version, name, biome, tier
+board:    width, depth, H_play, down_axis, mask, spawn_anchor, starting_contents
+pieces:   shapes[], weights{}, tags{}, opening_set[], opening_count, fixed_list[]   # fixed_list = puzzle levels
+spawner:  randomizer, queue_lookahead, preview_count, hold_enabled, sequence_mode, seed
+controls: rotation_axes_enabled, landed_move_rule, kick_enabled
+fall:     g0, ramp_per_clear, ramp_per_min, g_max, lock_delay_ms, lock_resets_max, entry_delay_ms
+clearing: clear_enabled, collapse_mode
+camera:   occlusion_mode, elevation
+goal:     type, N | H_target | T | target_shape, height_coverage, T_level, t_piece,
+          warnings_max, rescue_margin, topout_rule, countdown_ms, time_limit
+mechanic: {id, params}          # at most 1
+twists:   [{id, params}]        # at most 2
+stars:    t2, t3 | s2, s3
+```
 
 **Validation**
 5. The validator runs when a level is authored (editor check) and again at load. A failing level cannot be played; the error names the level, the field and the rule. Warnings allow play but are listed.
 6. Checks (failures unless marked *warn*):
    - **Board**: footprint and height within Board / Grid ranges; at least `min_active_cells_per_layer` active cells per layer; readability F5 cube edge ≥ 20 px on the reference phone (*warn* below 28 px).
    - **Pieces**: set not empty; every shape fits each active region (Piece Set rule 8); at most 8 shapes (10 in minigames) and at most 3 in one 60° hue band (*warn* on hues within 15°); spawn clearance = `L_max` (Board F4).
-   - **Spawner**: `preview_count ≤ queue_lookahead ≤` cap; bag size ≤ `bag_max_size` (*warn* and scale).
+   - **Spawner**: `preview_count ≤ queue_lookahead ≤` cap; bag size ≤ `bag_max_size` (*warn* and scale); every `opening_set` shape is in the level's set and `1 ≤ opening_count ≤ 10`.
+   - **Spawn**: `spawn_anchor` is an active cell, and every shape's spawn cells around it are active (Board / Grid rule 11a).
+   - **Grids**: every ASCII grid has `depth` rows of `width` characters and only its legal characters; no starting content or target cell on an inactive cell or at or above `H_play`.
    - **Goal**: valid target (Level Goals edge cases); Shape cells active and below the limit; Height target below the limit.
    - **Rules**: at most 2 twists and 1 mechanic (framework F3); no incompatible pairs (Twist Library, Level-Specific Mechanics); every parameter within its safe range; every rule has an icon; *warn* when two rules set one parameter.
    - **Mechanic-specific**: Conveyor only on unmasked boards; Gravity Flip not with Build Race or Target Shape.
@@ -56,22 +80,23 @@ With 100 campaign levels plus arcade and tournament rounds, levels must be conte
 7. A level has no fixed seed by default; each attempt gets a new `round_seed`. A level may pin a seed (puzzle-style levels, daily challenges). Versus rounds take the seed from Tournament Flow.
 
 **The MVP biome: grass / meadow (tier 1–10)**
-8. The MVP ships **10 meadow levels**: two control tutorials, then each twist and each mechanic introduced once, ending with a full stack. Rotation axes follow Touch Controls' progressive disclosure. All use the default randomizer (bag), preview 1, no hold, 1 warning, and the defaults above unless listed.
+8. The MVP ships **10 meadow levels**: two control tutorials, then each twist and each mechanic introduced once, ending with a full stack. Rotation axes follow Touch Controls' progressive disclosure. Board size is picked per level for fun (user decision 2026-10-09), not fixed at 8 × 8. **The full level specs (masks, starting contents, target shape, star times) live in `design/levels/meadow.md`**; this table is the summary, and all values are tunable defaults.
 
-| # | id | Name | Board (W×D, H_play) | Pieces | Axes | Goal | Mechanic | Twists | g0 |
+| # | id | Name | Board (W×D, H_play / mask) | Pieces | Axes | Goal | Mechanic | Twists | g0 |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | meadow_01 | First Sprout | 6×6, 10 | 5 flat Standard | spin | Clear, N by F1 (5) | — | — | 0.8 |
-| 2 | meadow_02 | Tilt & Roll | 6×6, 10 | 8 Standard | spin, tilt, roll | Clear (5) | — | — | 0.8 |
-| 3 | meadow_03 | Breezy Hill | 8×8, 12 | 8 Standard | all | Clear (3) | — | Wind | 0.9 |
-| 4 | meadow_04 | Mushroom Ring | 8×8, 12 | 8 Standard | all | Clear (3) | — | Spawned Objects | 0.9 |
-| 5 | meadow_05 | Tall Tower | 6×6, 12 | 8 Standard | all | Height 10 | No-Clear Build Race | Wind | 1.0 |
-| 6 | meadow_06 | Flower Bed | 8×8, 12 | 8 Standard | all | Shape (~60-cell flower) | Fill the Target Shape | — | 1.0 |
-| 7 | meadow_07 | Hide & Seek | 8×8, 12 | 8 Standard | all | Clear (3) | — | Invisible Blocks | 1.0 |
-| 8 | meadow_08 | Dewdrop | 8×8, 12 | 8 Standard | all | Clear (3) | Sticky Landing | Wind | 1.1 |
-| 9 | meadow_09 | Topsy-Turvy | 8×8, 12 | 8 Standard | all | Clear (3) | — | Gravity Flip | 1.1 |
-| 10 | meadow_10 | Meadow Mill | 8×8, 12 | 7 Standard (no S) + Chair | all | Clear (3) | Conveyor Floor | Wind, Spawned Objects | 1.2 |
+| 1 | meadow_01 | First Sprout | 4×4, 8 | 5 flat Standard; opening {O, I} × 2 | spin | Clear 4 | — | — | 0.6 |
+| 2 | meadow_02 | Tilt & Roll | 6×6, 10 + 2 starter layers with 3D pockets | 8 Standard; opening {Tripod, Screws} × 3 | spin, tilt, roll | Clear 3 | — | — | 0.6 |
+| 3 | meadow_03 | Breezy Hill | 8×4 lane, 10 | 8 Standard | all | Clear 5 | — | Wind | 0.7 |
+| 4 | meadow_04 | Mushroom Ring | 7×7 ring (A = 40), 10; anchor (3, 5) | 8 Standard | all | Clear 3 | — | Spawned Objects | 0.75 |
+| 5 | meadow_05 | Tall Tower | 5×5, 12 | 8 Standard + Big Cube (w 0.5) | all | Height 10, coverage 0.6 | No-Clear Build Race (trim) | — | 0.8 |
+| 6 | meadow_06 | Flower Bed | 8×8, 8 | I, O, T, L, S, Tripod, Duo, Tri-Corner | all | Shape (50-cell flower) | Fill the Target Shape (trim) | — | 0.7 |
+| 7 | meadow_07 | Hide & Seek | 6×6, 10 + 2 starter layers | 8 Standard | all | Clear 4 | — | Invisible Blocks | 0.85 |
+| 8 | meadow_08 | Dewdrop | 5×5, 8 | 8 Standard | all | Survive 150 s | Sticky Landing | — | 0.9 |
+| 9 | meadow_09 | Topsy-Turvy | 6×6, 10 | 8 Standard | all | Clear 4 | — | Gravity Flip | 0.95 |
+| 10 | meadow_10 | Meadow Mill | 8×6 (A = 48), 12 | 7 Standard (no S) + Chair | all | Clear 3 | Conveyor Floor | Wind, Spawned Objects | 1.0 |
+| B | meadow_bonus | Picnic Puzzle | 4×4, 6 | `fixed_list` of 6 (I, O, Big Cube ×2 each) | all | Shape (4×4×2 box) | Fill the Target Shape | — | 0.5 |
 
-9. Level 10 is the systems index's risk test: two twists and a mechanic stacked. Level 1 has no twist so the first playtest measures the controls alone.
+9. Level 10 is the systems index's risk test: two twists and a mechanic stacked. Level 1 has no twist so the first playtest measures the controls alone. Speeds are hand-set per level and agree with Campaign Structure F2 (`0.6 + 0.045 × (tier − 1)`) within ±0.05; a level's own `g0` always wins.
 
 ### States and Transitions
 
@@ -95,17 +120,17 @@ A level file has: **Draft** (authored, may fail validation) → **Valid** (passe
 
 The level_length_estimate formula is defined as:
 
-`t_est = N × P_eff × t_piece` (Clear); `build_race_time` (Height, Level-Specific Mechanics F2); `shape_fill_time` (Shape, Level-Specific Mechanics F3); `T` (Survive)
+`t_est = N × t_beat` (Clear); `build_race_time` (Height, Level-Specific Mechanics F2); `shape_fill_time` (Shape, Level-Specific Mechanics F3); `T` (Survive)
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
-| N | int | ≥ 1 | data file / Level Goals F1 | Layers to clear |
-| P_eff | float | 3–40 | calculated (Board F2) | Pieces per clear |
-| t_piece | float | 4–12 s | data file (Level Goals) | Average time per piece; default 8 s |
+| N | int | ≥ 1 | data file (suggested by Level Goals F1) | Clears to make |
+| t_beat | float | 5–340 s | calculated (Board F6) | Seconds between clears for this board, clear rule, piece set and `t_piece` (layer clears: `P_eff × t_piece`) |
+| t_piece | float | 4–12 s | data file (Level Goals) | Average time per piece, inside t_beat; default 8 s |
 | T | float | > 0 | data file | Survive time |
 
-**Output Range:** used only for the *warn* check (5–15 min). **Example:** meadow_01: 6 × 6, c = 4, η = 0.75 → `P_eff = 36 / 3 = 12`; N = round(480 / 96) = 5 → `t_est = 5 × 12 × 8 = 480 s = 8 min`. meadow_05: Height 10, coverage 0.5, A = 36 → 45 pieces → 6 min. meadow_03: 3 × 21.3 × 8 ≈ 512 s ≈ 8.5 min.
+**Output Range:** used only for *warn* checks: length 5–15 min, plus t_beat, hidden share and survive pressure inside the level type's bands (Board / Grid "Recommended board per level type"). **Example:** meadow_01: 4 × 4, layer, c = 4, η 0.75 → `t_beat ≈ 42.7 s`; N = 4 → `t_est ≈ 171 s` (short on purpose; warns). meadow_05: Height 10, coverage 0.6, A = 25, c ≈ 4.24 → 35 pieces ≈ 283 s. meadow_03: 8 × 4 lane, `t_beat ≈ 85 s`, N = 5 → ≈ 427 s ≈ 7 min. meadow_10: 8 × 6 (A 48), c ≈ 4.1 → `t_beat ≈ 125 s`; N = 3 → ≈ 375 s. A default 6 × 6 level: `t_beat = 96 s`, N = 5 → 480 s. F1 ignores `starting_contents`, so levels with pre-built layers set their star times by hand.
 
 ## Edge Cases
 
@@ -118,7 +143,9 @@ The level_length_estimate formula is defined as:
 - **If two levels share an id**: validation fails for the campaign as a whole.
 - **If `starting_contents` places content in inactive cells or over the limit**: validation fails.
 - **If the length estimate is outside 5–15 min**: warning only; tutorials and minigames may be short on purpose.
-- **If the shape target M in meadow_06 is not yet authored**: the level stays Draft (fails validation for an empty M).
+- **If a Shape level has an empty or missing `target_shape`**: the level stays Draft (fails validation for an empty M).
+- **If the footprint centre is inactive and no `spawn_anchor` is given**: validation fails, naming the field.
+- **If `opening_count` is larger than the number of pieces the level deals before ending**: allowed; the rest of the opening is never used.
 
 ## Dependencies
 
@@ -146,7 +173,7 @@ None at runtime beyond what the systems it configures draw. The editor validator
 
 ## Game Feel
 
-Level difficulty should rise smoothly through a biome: one new idea per level, and the last level of the biome combines them. The meadow sequence raises base speed from 0.8 to 1.2 cells/s and adds one idea per level.
+Level difficulty should rise smoothly through a biome: one new idea per level, and the last level of the biome combines them. The meadow sequence raises base speed from 0.6 to 1.0 cells/s (very slow early, user decision) and adds one idea per level; the build-race and shape levels (5, 6) are a low-pressure break before the second half.
 
 ## UI Requirements
 
@@ -171,14 +198,15 @@ Player-facing: none (Menus & Level Select shows names). Designer-facing: an edit
 
 **[U]** unit, **[I]** integration, **[M]** manual or device.
 
-1. [U] **GIVEN** a level with only `id`, `biome` and `tier`, **THEN** it validates and plays with every default (8 × 8 × 12, 8 Standard shapes, Clear N = 3).
+1. [U] **GIVEN** a level with only `id`, `biome` and `tier`, **THEN** it validates and plays with every default (6 × 6 footprint, H_play 10, 8 Standard shapes, Clear with N from Level Goals F1 for that board).
 2. [U] **GIVEN** an unknown field or an out-of-range value, **THEN** validation fails naming the field and range.
 3. [U] **GIVEN** a shape that doesn't fit a masked region, 9 shapes, or 4 shapes in one hue band, **THEN** validation fails.
 4. [U] **GIVEN** 3 twists, 2 mechanics, Gravity Flip with Build Race, or Conveyor on a masked board, **THEN** validation fails.
 5. [U] **GIVEN** a board whose cube edge would be 18 px, **THEN** validation fails; 25 px → warning.
-6. [U] F1: meadow_01 → about 8 min; meadow_05 → about 6 min; a 2-minute level → warning, still playable.
-7. [I] **GIVEN** each of the 10 meadow levels, **THEN** all validate (meadow_06 once its shape is authored) and load.
-8. [I] **GIVEN** meadow_01, **THEN** only spin is enabled and only the 5 flat shapes appear.
+6. [U] F1: meadow_01 → about 171 s (warning, still playable); meadow_05 → about 283 s; meadow_03 → about 427 s.
+7. [I] **GIVEN** each of the 10 meadow levels, **THEN** all validate and load.
+8. [I] **GIVEN** meadow_01, **THEN** only spin is enabled, only the 5 flat shapes appear, and the first 2 pieces are O or I.
+8a. [U] **GIVEN** a mask with the footprint centre off and no `spawn_anchor`, an anchor on an inactive cell, an ASCII grid with the wrong row count, or an `opening_set` shape outside the level's set, **THEN** validation fails naming the field.
 9. [I] **GIVEN** meadow_10, **THEN** Conveyor Floor, Wind and Spawned Objects are all active and shown on the Intro card.
 10. [U] **GIVEN** a shipped level edited, **THEN** its version increments.
 11. [M] **GIVEN** a playtest of the 10 meadow levels, **THEN** each level's median length is 5–15 min and testers report that difficulty rises without a sudden spike.
@@ -186,7 +214,7 @@ Player-facing: none (Menus & Level Select shows names). Designer-facing: an edit
 ## Open Questions
 
 - **Storage format** (engine resources vs. JSON) → ADR after `/setup-engine`.
-- **meadow_06 shape**: author the flower target (about 60 cells, within the 8 × 8 footprint and below the limit).
+- ~~**meadow_06 shape**~~: authored in `design/levels/meadow.md` (50-cell flower, 2 layers).
 - **Tier meaning**: in the campaign, tiers re-run biomes with added mechanics; the MVP uses tier = level number in one biome. Confirm in Campaign Structure.
 - **Level editor**: build a simple in-engine editor with live validation, or author in text first? Tools decision after the prototype.
 - **Star times**: added when Scoring & Stars is designed.

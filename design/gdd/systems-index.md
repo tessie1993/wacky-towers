@@ -56,7 +56,7 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 31 | Characters & Perks | Progression | Alpha | Not Started | — | Skills, Buffs & Debuffs |
 | 32 | Points System | Economy | Alpha | Not Started | — | Scoring & Stars, Tournament Flow |
 | 33 | Shop | Economy | Alpha | Not Started | — | Points System, Characters & Perks, Buffs & Debuffs |
-| 34 | Tournament Minigames | Gameplay | Alpha | Not Started | — | Board / Grid, Piece Set, Level Goals & Fail States, Mode / Minigame Randomizer |
+| 34 | Tournament Minigames | Gameplay | Alpha | Designed | design/gdd/tournament-minigames.md (ideas: design/gdd/mechanics-catalog.md) | Board / Grid, Piece Set, Level Goals & Fail States, Mode / Minigame Randomizer |
 | 35 | Mascot Reactions (inferred) | UI | Alpha | Not Started | — | Characters & Perks, Level Goals & Fail States |
 | 36 | Audio (inferred) | Audio | Alpha | Not Started | — | Layer Clearing, Items, Campaign Structure |
 | 37 | Onboarding & Accessibility (inferred) | Meta | Alpha | Not Started | — | Touch Controls, HUD, Campaign Structure |

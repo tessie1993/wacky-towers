@@ -26,20 +26,22 @@ The Piece Spawner & Queue sits between the Piece Set (which defines the shapes) 
 3. **Default randomizer: weighted bag.** A *bag* holds `copies_i` copies of each shape `i` in the level's set (Formulas F1). It is shuffled (Fisher–Yates with the stream's generator) and dealt in order; when it is empty it is refilled and reshuffled. The set is read at each refill, so a change to the set takes effect from the **next refill** (Piece Set edge case).
 4. A level may override the randomizer with **history-roll** (pick at random, re-roll up to `history_tries` times if the shape is among the last `history_len` pieces; Formulas F3) or **pure random** (an independent weighted pick each time, `P(i) = w_i / Σw`).
 5. **Injected pieces** (an item that sends a piece, a twist that forces a shape) are placed at the front of a player's queue **outside** the stream: they do not use up a stream index, so the stream stays identical for everyone.
-5a. **Opening pieces are picked before the level starts.** At level load, before play begins, the randomizer deals the opening pieces (the queue and preview) from the stream. A level may give an `opening_set` (shape ids) and `opening_count`: the randomizer then draws the first `opening_count` pieces from that set only, still at random, then continues with the level's normal set. Tutorial levels use this to introduce a new shape; there is no hand-scripted fixed sequence (user decision 2026-10-09).
+5a. **Opening pieces are picked before the level starts.** At level load, before play begins, the randomizer deals the opening pieces (the queue and preview) from the stream. A level may give an `opening_set` (shape ids) and `opening_count`: the randomizer then draws the first `opening_count` pieces from that set only, still at random, then continues with the level's normal set. The opening draws use a bag of `opening_set` (each shape once, shuffled), so `opening_count = |opening_set|` deals every opening shape exactly once in a random order. Tutorial levels use this to introduce a new shape; there is no hand-scripted fixed sequence (user decision 2026-10-09).
+5b. **Puzzle levels** (user decision 2026-10-09, round 3) are the one exception: a level may give `fixed_list`, an ordered list of shape ids dealt exactly in that order, with no randomizer and no refill. When the list is used up, no more pieces spawn (Level Goals: "out of pieces").
 
 **Queue and preview**
 6. The Spawner keeps the next `queue_lookahead` pieces (default 3) generated ahead of the falling piece. `preview_count` (default 1; level range 0–3) of them are shown. A perk or item can raise `preview_count` up to `preview_cap` (3).
 7. The preview shows the **real upcoming pieces** in their spawn orientation; the first in line is the one that spawns next. If an injected piece or a twist changes the queue, the preview updates at once.
 
 **Spawn**
-8. Fall, Drop & Lock calls `spawn()` when its Waiting state ends. The Spawner takes the head of the queue, creates a piece instance (Piece Set: Queued → Falling), and places it in the spawn zone in the shape's **spawn orientation**, centred on the active region's footprint centre (the lower cell when the centre falls between cells) with its lowest cube at layer `H_play`.
-9. If the spawn cells are occupied, the Spawner reports **spawn blocked** (Board / Grid) once. The piece stays at the head of the queue (it is not consumed or skipped), the Spawner does not retry on its own, and the mode decides what happens (default: loss). A mode that carries on calls `spawn()` again when it is ready.
+8. Fall, Drop & Lock calls `spawn()` when its Waiting state ends. The Spawner takes the head of the queue, creates a piece instance (Piece Set: Queued → Falling), and places it in the spawn zone in the shape's **spawn orientation**, centred on the level's `spawn_anchor` (Board / Grid rule 11a; default the footprint centre, the lower cell when the centre falls between cells) with its lowest cube at layer `H_play`.
+8a. **Spawn placement rule.** The piece's bounding box (in its spawn orientation) is centred on `spawn_anchor` across the two ground axes, with its **long axis along x** (screen-left/right at the default camera); when a bounding-box side is even, the lower cell takes the centre. The spawn zone is at the "top" of the current down axis (any of the 6 directions; the lowest cube along the down axis sits at layer `H_play`). Arrival styles other than a top spawn (side, slide-in, two-way) are `spawn_entry` options defined in Level-Specific Mechanics M9–M11.
+9. If the spawn cells are occupied, the Spawner reports **spawn blocked** (Board / Grid) once. The piece stays at the head of the queue (it is not consumed or skipped), the Spawner does not retry on its own, and the level's `topout_rule` decides what happens (Level Goals rule 10a; the per-lock sequence in Fall, Drop & Lock rule 15 calls `spawn()` once more after a rescue or trim).
 10. A spawn is never skipped, reordered or "fixed" to avoid a loss: Readable Chaos means the player can always see why they lost.
 
 **Hold (optional, off by default)**
-11. When `hold_enabled` is on (by level, perk or item), each player has **one hold slot**. A `hold` command swaps the falling piece with the held piece; if the slot is empty it stores the piece and spawns the next one from the queue (using up one stream index).
-12. Hold can be used **once per falling piece** (the allowance resets when a piece spawns from the queue), only while a piece is falling (not in Waiting), and a swapped-in piece appears at the spawn position in its spawn orientation. If the swapped-in piece's spawn cells are occupied, the swap is refused and nothing changes.
+11. Hold is **off by default**. When `hold_enabled` is on (by level, perk, item or **difficulty setting**), each player has **one hold slot**. A `hold` command swaps the falling piece with the held piece; if the slot is empty it stores the piece and spawns the next one from the queue (using up one stream index).
+12. Hold can be used **once per falling piece** (the allowance resets when a piece spawns from the queue), any time a piece is active **until it locks** — while falling, resting in its lock delay, or in hard-drop grace — but not in Waiting, and it is never buffered. A swapped-in piece appears at the spawn position in its spawn orientation, with a fresh gravity clock, lock timer and lock resets. If the swapped-in piece's spawn cells are occupied, the swap is refused and nothing changes.
 
 **Versus and seeds**
 13. Each round has a `round_seed`. With `sequence_mode = shared` (default) every player's stream is built from `round_seed` alone, so everyone sees the same pieces in the same order. With `independent`, each stream also mixes in the player's id. The level decides the mode.
@@ -182,8 +184,10 @@ Board / Grid and Piece Set describe the Spawner already (spawn blocked, weights 
 | history_tries | 1–8 | 4 | data file | Same (F3) |
 | queue_lookahead | 1–5 | 3 | data file | Pieces generated ahead; must be ≥ preview_count (F4) |
 | preview_count | 0–3 | 1 | data file (level, perk, item) | How far ahead the player can plan |
+| opening_set | shape ids in the level's set | none | data file (level) | Shapes the first pieces are drawn from (rule 5a) |
+| opening_count | 1–10 | 0 (off) | data file (level) | How many opening pieces use `opening_set` (rule 5a) |
 | preview_cap | 1–5 | 3 | data file | Largest preview any source can give (HUD space) |
-| hold_enabled | true / false | false | data file (level, perk, item) | Whether a hold slot exists |
+| hold_enabled | true / false | false | data file (level, perk, item, difficulty) | Whether a hold slot exists |
 | hold_uses_per_piece | 1–2 | 1 | data file | Hold swaps allowed per falling piece |
 | sequence_mode | shared / independent | shared | data file (level) | Luck vs. fairness in versus play |
 | w_i (weights) | > 0 | 1 | data file (level) | How often each shape appears (F1) |
@@ -253,6 +257,8 @@ The next piece should appear the instant the last one locks (after the Waiting d
 17. [U] **GIVEN** hold is enabled and the slot is empty, **WHEN** `hold` is used, **THEN** the piece is stored and the next queue piece spawns (using one stream index); a second `hold` on that piece is refused.
 18. [U] **GIVEN** a held piece, **WHEN** `hold` is used on a new falling piece, **THEN** the pieces swap and the held piece appears in its spawn orientation; if its spawn cells are occupied, the swap is refused and nothing changes.
 19. [U] **GIVEN** hold is used during Waiting, **THEN** it is ignored and not buffered.
+19a. [U] **GIVEN** hold is enabled and the piece is resting with lock delay left, **WHEN** `hold` is used, **THEN** the swap happens and the new piece starts with a fresh gravity clock, lock timer and resets.
+19b. [U] **GIVEN** a 2 × 1 × 3 bounding box in spawn orientation on the default 8 × 8 board, **WHEN** it spawns, **THEN** its long axis lies along x and its box is centred on the anchor (lower cell on even sides).
 
 **Versus**
 20. [I] **GIVEN** `sequence_mode = shared` and two players on the same seed, **WHEN** 100 pieces are dealt to each, **THEN** the two sequences are identical, even when one player plays much faster and uses items.
@@ -269,7 +275,8 @@ The next piece should appear the instant the last one locks (after the Waiting d
 - **Perks in shared mode** (Core Rule 14): is extras-in-next-bag fair enough, or should a perk add pieces to the queue front instead? Decide when Characters & Perks is designed.
 - **Weights per level vs. per player**: handicap weights for a trailing player (Comeback Energy) — Rule-Twist Framework or Items to decide.
 - **Spawn delay**: the Waiting time between lock and spawn is owned by Fall, Drop & Lock; it affects how fast the queue feels.
-- **Hold button placement**: depends on the Touch Controls prototype result; the item strip is the default home.
+- **Hold button placement**: depends on the Touch Controls prototype result; the item strip is the default home (Touch Controls rule 8a).
+- **Hold until lock (rule 12), open to playtest**: designer default 2026-10-09 lets hold work during the lock delay, as in classic stackers. If it makes levels too easy with hold on, restrict it to falling only.
 - **Bot simulation**: measure real drought and run statistics per set (with Board η) before tuning weights.
-- **Spawn position on masked boards**: footprint-centred may land on an inactive cell; Board / Grid or Level Data should supply a `spawn_anchor` per level (default centre).
+- ~~**Spawn position on masked boards**~~: resolved — `spawn_anchor` per level (Board / Grid rule 11a; default centre).
 - **Injected pieces and the preview**: do they show in the preview slot count or as a separate marked piece?

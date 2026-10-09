@@ -26,7 +26,8 @@ The Camera shows the board as a toy diorama from a fixed, angled, **orthographic
 3. The camera never changes elevation or zoom during play. A level may set a different default yaw or elevation (within the safe ranges in Formulas), fixed for that level.
 
 **Framing**
-4. One orthographic size per level, computed once at load so the whole board — footprint plus all `board_height` layers, including the spawn zone — fits inside the board's screen area (Board / Grid F5: about 57.5% of screen height, about 45% of width) at **every** one of the 12 yaws. Corner views are the widest; framing for them fits all angles. No zoom change happens when the view turns.
+4. One orthographic size per level **and per screen orientation**, computed at load (and again on an orientation change, rule 5a) so the whole board — footprint plus all `board_height` layers, including the spawn zone — fits inside the board's screen area for the current orientation (landscape and portrait each have their own board rectangle from the HUD layout; Board / Grid F5) at **every** one of the 12 yaws. Corner views are the widest; framing for them fits all angles. No zoom change happens when the view turns.
+5a. **Portrait and landscape.** Both orientations are supported. If the phone is turned during a level, the game **pauses**, re-lays out the screen (board rectangle, controls), recomputes the framing, and waits for the player to tap Resume. The yaw step `k` is kept. Turning the phone in menus just re-lays out.
 5. The board is centred in its screen area; HUD plates and thumb zones never overlap it (art bible §7, Touch Controls rule 4).
 
 **Rotate-view**
@@ -34,6 +35,7 @@ The Camera shows the board as a toy diorama from a fixed, angled, **orthographic
 7. Holding the rotate-view button repeats steps using Touch Controls F3 timings. A half-turn (6 steps = 1 press + 5 repeats) takes about 600 ms of holding (240 + 4 × 90 ms).
 8. Optional board-drag orbit (Touch Controls, off by default) moves the yaw continuously while dragging and snaps to the nearest of the 12 steps on release.
 9. Turning never moves the piece or the board; only the view changes.
+9a. **Sideways gravity.** When the board's down axis is a ground axis (±x or ±z; e.g. Level-Specific Mechanics M9, or a gravity twist), only the **side-on snaps** are allowed, so the piece falls across the screen rather than toward or away from the player. A snap is side-on when the angle between the camera's horizontal view direction and the down axis is at least `side_on_min_deg` (default 45°, inclusive) from both parallel directions. With the default yaws this allows 8 of the 12 snaps (all four corner views included) and skips the 4 that look almost along the fall. `rotate_view` skips the disallowed snaps. If the current snap becomes disallowed when gravity changes, the camera turns to the nearest allowed snap (a normal animated turn). Up/down gravity (±y) allows all 12.
 
 **Screen-to-world mapping (for Touch Controls)**
 10. The camera publishes the **current yaw** and, for each of the four screen directions (left, right, up, down), the **world ground direction** (±x or ±z) whose on-screen projection is closest to it. Each screen direction gets a different world direction.
@@ -41,7 +43,7 @@ The Camera shows the board as a toy diorama from a fixed, angled, **orthographic
 
 **Occlusion aid (per level)**
 12. Level Data picks one mode; default **Fade**:
-    - **Fade:** any locked block whose cell is crossed by a line from the centre of any cube of the falling piece or its landing ghost toward the camera (along the view direction) becomes see-through (alpha `fade_alpha`) with its outline kept. Blocks return to full opacity when no longer in front.
+    - **Fade:** any locked block whose cell is crossed by a line from the centre of any cube of the falling piece or its landing ghost toward the camera (along the view direction) becomes see-through (alpha `fade_alpha`), and **its ink outline fades with it** to the same alpha, so faded blocks never draw a wireframe over the piece. Blocks return to full opacity when no longer in front.
     - **Cutaway:** every layer above the landing ghost's top layer is hidden (or drawn as outlines only); the falling piece is always drawn.
     - **Ghost only:** no fading or cutaway; the landing ghost plus a highlighted column outline (the footprint cells under the piece) carry the information.
 13. Whatever the mode, the falling piece, its landing ghost and the height-limit line are never hidden or faded.
@@ -96,20 +98,21 @@ The ortho_size formula is defined as:
 
 `ortho_h = max( H_screen_world , W_screen_world / aspect_area )`, with
 `W_screen_world = max over the 12 yaws of ( W × |cos yaw| + D × |sin yaw| )`,
-`H_screen_world = (W_screen_world × sin(elev)) + (board_height × cos(elev))`; `margin` (in cells) is added to both W_screen_world and H_screen_world **before** the aspect comparison. On-screen cube edge = `cos(elev) × S_h × f / ortho_h` (the vertical edge, identical at every yaw in orthographic projection).
+`H_screen_world = (W_screen_world × sin(elev)) + (board_height × cos(elev))`; `margin` (in cells) is added to both W_screen_world and H_screen_world **before** the aspect comparison. On-screen cube edge = `cos(elev) × Sa_h / ortho_h` (the vertical edge, identical at every yaw in orthographic projection) — Board / Grid F5. The values are computed for the **orientation profile** in use (landscape or portrait).
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
-| W, D | int | 4–8 | data file (Board) | Footprint width and depth in cells |
+| W, D | int | 4+ | data file (Board) | Footprint width and depth in cells |
 | board_height | int | 7–20 | calculated (Board F4) | Layers drawn, including the spawn zone |
 | elev | float | 25–40° | data file | Camera elevation above horizontal; default 30° (2:1 dimetric) |
-| aspect_area | float | ~1.7 | calculated | Width / height of the board's screen area (≈ 0.45 × 2532 / 0.575 × 1170) |
+| Sa_w, Sa_h | float | px | constant (profile, Board F5) | Board screen area. Landscape 1139 × 673 (45% × 57.5% of 2532 × 1170); portrait 1076 × 1139 (92% × 45% of 1170 × 2532). Placeholders until the HUD layout is set |
+| aspect_area | float | landscape ~1.69, portrait ~0.94 | calculated | `Sa_w / Sa_h` |
 | margin | float | 0.3–1.0 cells | data file | Breathing room around the board; default 0.5 |
 | ortho_h | float | world units | calculated | Orthographic view height that fits the board at every yaw |
 
-**Output Range:** depends on board size; the result must keep the cube edge ≥ 20 px (target ≥ 28 px, Board F5).
-**Example:** 8 × 8 × 16, elev 30°: W_screen = 8 × (cos 45° + sin 45°) ≈ 11.3; H_screen ≈ 11.3 × 0.5 + 16 × 0.87 ≈ 19.5 → plus margin ≈ 20.0–20.5 world units tall; 670 px / 20.5 ≈ 32.7 px per world unit, so the vertical cube edge = 0.87 × 32.7 ≈ 28 px, consistent with Board F5.
+**Output Range:** depends on board size and profile; the result must keep the cube edge ≥ 20 px (target ≥ 28 px, Board F5). Landscape gives the smaller cube for every square board up to about 17 × 17, so it is the profile the readability check binds on.
+**Example:** default 6 × 6 × 14, elev 30°: W_screen = 6 × (cos 45° + sin 45°) ≈ 8.49 (the 45° corner yaw is the widest of the 12); H_screen ≈ 8.49 × 0.5 + 14 × 0.866 ≈ 16.37 → plus margin ≈ 16.87 world units. Landscape: 673 / 16.87 ≈ 39.9 px per unit (width 1139 / 8.99 ≈ 127, not binding) → cube edge ≈ 34.5 px. Portrait: 1139 / 16.87 ≈ 67.5 (width 1076 / 8.99 ≈ 120, not binding) → ≈ 58.5 px. 8 × 8 × 16: ≈ 29.1 px landscape, ≈ 49.3 px portrait.
 
 ### F3. Direction mapping
 
@@ -134,6 +137,7 @@ For each screen direction `s` in {left, right, up, down}: `world(s) = argmin ove
 | fade_alpha | 0.15–0.5 | 0.3 | data file | Opacity of blocks in front of the piece in Fade mode |
 | fade_ms | 60–150 | 100 | data file | Fade in/out time |
 | max_faded_blocks | 20–64 | 40 | data file | Above this many faded blocks in one frame, Fade falls back to Cutaway for that frame |
+| side_on_min_deg | 30–60 | 45 | data file | Under sideways gravity, how far from the fall direction a snap's view must be to be allowed (rule 9a) |
 
 ## Edge Cases
 
@@ -170,7 +174,7 @@ Board / Grid lists Camera as a downstream system (size and mask) — consistent.
 ## Visual/Audio Requirements
 
 - The diorama look (art bible §6): the island body and underside are visible at the default elevation; backdrop stays low-contrast behind the board.
-- Faded blocks keep their outline and hue at reduced opacity so the stack's shape stays readable; cutaway layers show as thin outlines.
+- Faded blocks keep their hue at reduced opacity and their outline fades with them (same alpha); the stack's shape stays readable from the faded fills. Cutaway layers show as thin outlines.
 - A small compass or view indicator (12 ticks, current one lit) sits near the rotate-view button so the player knows which way they face.
 - Audio: a soft "whirr" per turn step (owned by Audio).
 
@@ -225,7 +229,9 @@ Turning should feel like spinning a lazy Susan under a toy diorama: quick (150 m
 19. [U] **GIVEN** k = 0, 3, 6, 9, **THEN** the tie rule gives right = up-right, left = down-left, up = up-left, down = down-right, consistently in all four corner views.
 
 **Occlusion (F4)**
-20. [I] **Fade:** **GIVEN** a locked block crossed by the line from a piece or ghost cube toward the camera, **THEN** it fades to alpha 0.3 over 100 ms with its outline kept, and returns to full when no longer crossed.
+20. [I] **Fade:** **GIVEN** a locked block crossed by the line from a piece or ghost cube toward the camera, **THEN** it fades to alpha 0.3 over 100 ms with its outline faded to the same alpha, and returns to full when no longer crossed.
+20a. [U] **GIVEN** down axis −x, **WHEN** `rotate_view` steps through all snaps, **THEN** only the 8 side-on snaps are visited; **GIVEN** gravity changes to −x while at a disallowed snap, **THEN** the camera turns to the nearest allowed snap.
+20b. [I] **GIVEN** a level in progress, **WHEN** the phone turns from landscape to portrait, **THEN** the game pauses, the framing is recomputed for the portrait board rectangle, `k` is unchanged, and the whole board fits at all allowed snaps.
 21. [I] **Fade fallback:** **GIVEN** 41 blocks to fade in one frame, **THEN** that frame uses Cutaway; at 40 or fewer it stays Fade.
 22. [I] **Cutaway:** **GIVEN** the ghost's top layer L, **THEN** layers above L are hidden or outlined and the piece is drawn; at L = 0, everything above layer 0 shows as outlines.
 23. [I] **Ghost only:** **GIVEN** that mode, **THEN** nothing fades or is cut away, and the footprint column outline under the piece is shown.
@@ -244,3 +250,4 @@ Turning should feel like spinning a lazy Susan under a toy diorama: quick (150 m
 - **Elevation**: is 30° (2:1 dimetric) right for an 8 × 8 × 12 stack, or does a steeper look help see inside? Prototype 30° vs 35–40°.
 - **Fade threshold**: is 40 faded blocks the right fallback point to Cutaway?
 - **Local multiplayer**: one shared camera or one per board on a split screen (Local Multiplayer Setup).
+- **Designer defaults of 2026-10-09, open to playtest**: side-on snaps only under sideways gravity (rule 9a, `side_on_min_deg` 45°); pause-and-re-layout on a phone turn (rule 5a); faded outlines (rule 12).
