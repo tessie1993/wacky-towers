@@ -84,6 +84,8 @@ Board / Grid (content tags), Rule-Twist Framework (hooks, priority, random), Obs
 
 ## Visual/Audio Requirements
 
+> **Status look rule (user decision 2026-10-09):** biome block sets may use the same surface details as statuses (cracks, frost, vines, glowing seams…), so a status must be recognised by its own look: an **animation** on the block (pulse, wobble, flicker), a **buff/debuff colour pulse** on the shell rim, and its **icon badge**. Surface texture alone never identifies a status.
+
 Shells per art bible §3 (re-skin surface, never outline): frost, honey gloss, vine wraps, ember glow and flames, cracks, shadow tint, spikes. Each status also gets a small badge icon (chevron shape not used — those are for buffs/debuffs). Audio: `freeze`, `thaw`, `vine_grow`, `honey_stick`, `ignite`, `burn_out`, `crumble`, `spike_bounce`.
 
 ## Game Feel

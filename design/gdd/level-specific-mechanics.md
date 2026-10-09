@@ -80,7 +80,7 @@ The conveyor_shift formula is defined as:
 |----------|------|-------|--------|-------------|
 | p | int[3] | inside the board | calculated | A content's cell |
 | d | int[3] | one of ±x, ±z (unit) | data file (level) | Conveyor direction |
-| W, D | int | 4–12 | data file (Board) | Footprint width and depth |
+| W, D | int | 4+ (no max) | data file (Board) | Footprint width and depth |
 
 **Output Range:** inside the footprint (wrap) or removed (no wrap). **Example:** `d = +x` on 8 × 8: a block at x = 7 moves to x = 0; a block at x = 3 moves to x = 4. After 8 shifts the stack is back where it started.
 
