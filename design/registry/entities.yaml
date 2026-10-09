@@ -844,6 +844,59 @@ formulas:
     output_range: [0, board_height - 1]
     added: 2026-10-09
     revised: ""
+  - name: star_times
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    variables:
+      - t_est
+      - star2_share
+      - star3_share
+    output_range: [t3 < t2]
+    added: 2026-10-09
+    revised: ""
+  - name: clear_score
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    variables:
+      - n
+      - clear_base
+      - A
+      - chain_bonus
+      - round
+    output_range: [25, unbounded]
+    added: 2026-10-09
+    revised: ""
+  - name: combo_score
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    variables:
+      - k
+      - combo_bonus
+      - drop_points
+      - place_points
+    output_range: [0, unbounded]
+    added: 2026-10-09
+    revised: ""
+  - name: survive_stars
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    variables:
+      - T
+      - P_eff
+      - t_piece
+      - survive2_share
+      - survive3_share
+    output_range: [s3 > s2 >= 1]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -1681,6 +1734,69 @@ constants:
       - design/gdd/obstacle-clearing.md
     value: 0
     unit: hp
+    added: 2026-10-09
+    revised: ""
+  - name: star2_share
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 0.85
+    unit: fraction
+    added: 2026-10-09
+    revised: ""
+  - name: star3_share
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 0.6
+    unit: fraction
+    added: 2026-10-09
+    revised: ""
+  - name: clear_base
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 100
+    unit: points
+    added: 2026-10-09
+    revised: ""
+  - name: chain_bonus
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 0.5
+    unit: x per round
+    added: 2026-10-09
+    revised: ""
+  - name: combo_bonus
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 50
+    unit: points
+    added: 2026-10-09
+    revised: ""
+  - name: drop_points
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 2
+    unit: points per cell
+    added: 2026-10-09
+    revised: ""
+  - name: place_points
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 1
+    unit: points per cube
     added: 2026-10-09
     revised: ""
 

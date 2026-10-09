@@ -39,7 +39,7 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 14 | HUD (inferred) | UI | MVP | Designed | design/gdd/hud.md | Piece Spawner & Queue, Level Goals & Fail States |
 | 15 | Obstacles | Gameplay | Vertical Slice | Designed | design/gdd/obstacles.md | Board / Grid, Rule-Twist Framework |
 | 16 | Obstacle Clearing | Gameplay | Vertical Slice | Designed | design/gdd/obstacle-clearing.md | Layer Clearing, Obstacles |
-| 17 | Scoring & Stars | Progression | Vertical Slice | Not Started | — | Layer Clearing, Level Goals & Fail States |
+| 17 | Scoring & Stars | Progression | Vertical Slice | Designed | design/gdd/scoring-stars.md | Layer Clearing, Level Goals & Fail States |
 | 18 | Buffs & Debuffs | Gameplay | Vertical Slice | Not Started | — | Rule-Twist Framework |
 | 19 | Items | Gameplay | Vertical Slice | Not Started | — | Buffs & Debuffs |
 | 20 | Arcade Mode | Gameplay | Vertical Slice | Not Started | — | Level Goals & Fail States, Scoring & Stars, Twist Library |
@@ -221,11 +221,11 @@ None found, after three relationships were directed one way:
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 37 |
-| Design docs started | 16 |
+| Design docs started | 17 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
 | MVP systems designed | 14/14 |
-| Vertical Slice systems designed | 2/13 |
+| Vertical Slice systems designed | 3/13 |
 
 > Gates: TD-SYSTEM-BOUNDARY, PR-SCOPE and CD-SYSTEMS skipped — lean review mode.
 
