@@ -111,3 +111,12 @@ References: `D:/TESSA/blender-projects/wacky-towers/refs/Oct 09 - 04_36/` (23 sh
 | Celestial | The purple cosmic look (Cosmic Dust / Starry Glow / Nebula Swirls in deep violet, gold accents as in the reference) | Golden Galaxies |
 
 Sheets `_14`, `_15`, `_16`, `_17`, `_18` draw separate cubes with tight seams and are the guide for how cubes join; the other sheets guide material and surface only. Open: Neon/Ice/Underwater use cyan and magenta (buff/debuff hues), and Clockwork/Celestial use gold (reward colour) — keep, or shift the status/reward colours.
+
+## Review panel decisions (2026-10-09, user: "listen to reviewers")
+
+After a fresh-eyes review panel (art-bible compliance, gameplay readability, creative direction vs references, store appeal):
+1. **Per-piece tint in every set.** Each piece gets its own tint within the theme's material (wood species/stains, crystal colours, glass tints, gem colours…), with at least 5–6 clearly different lightness steps per set so pieces pass a greyscale check.
+2. **One hero prop per piece**, about 25–35% of a cube, on the top face of one cube (sprout/flower, crystal cluster, coral, snow cap, twig, ember vent, star charm…), readable at phone size. Other cubes stay clean.
+3. **Reserved colours stay off pieces:** buff cyan (186° ±25°), debuff magenta (322° ±25°), hazard orange, reward gold. Settled pieces glow at most faintly; strong glow belongs to the falling piece.
+4. **Meadow follows its reference** (turf over a soil band, pastel-tinted per piece). The rainbow **Toy Box** becomes its own set made of real toy materials (painted wood, lacquer, stripes, dots).
+5. **Look rules for all sets:** painterly face gradient and stepped shadows; thick wobbly ink on each piece's outer silhouette with soft seams inside; upper-left gloss window; seams stay the strongest line inside a piece; per-biome backdrop and ambient particles in review renders; every set reviewed as a stacked board at phone size and in greyscale.
