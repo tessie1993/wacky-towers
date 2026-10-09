@@ -90,7 +90,7 @@ The active_cells formula is defined as:
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
-| W, D | int | 4–8 | data file | Footprint width and depth (bounding box) |
+| W, D | int | 4+ (no max; default 8) | data file | Footprint width and depth (bounding box) |
 | mask | set of footprint cells | A ≥ 12 | data file | Active footprint cells; default all |
 | A | int | 12–64 | calculated | Cells a layer needs to be full |
 
@@ -180,7 +180,7 @@ Projection assumption: fixed 2:1 dimetric camera — a cell's top face is a diam
 
 ### Safe ranges for per-level overrides
 
-- Footprint bounding box: 4–8 per side; masked layers need A ≥ 12, and every active region must fit the level's longest piece.
+- Footprint bounding box: at least 4 per side, **no maximum** (user decision 2026-10-09; 8 × 8 is the default, and large boards need a readability check with F5); masked layers need A ≥ 12, and every active region must fit the level's longest piece.
 - Playable height: 6–12.
 - Readability: `n + board_height ≤ 24` as the target; below 28 px needs a device check, below 20 px is not allowed.
 - Spawn clearance: C = L_max of the level's piece set. Only a mode may reduce it.

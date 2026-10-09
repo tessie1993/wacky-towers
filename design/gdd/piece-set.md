@@ -21,7 +21,7 @@ The Piece Set defines every piece shape the game can drop: which unit cubes it i
 ### Core Rules
 
 **What a piece is**
-1. A piece is a set of 1–8 unit cubes that together form **one face-connected group** (no edge- or corner-only joins, no separate parts), stored as cube offsets from a **pivot cube**.
+1. A piece is a set of unit cubes (1–8 by default; the **Giant** family goes up to 27, user decision 2026-10-09) that together form **one face-connected group** (no edge- or corner-only joins, no separate parts), stored as cube offsets from a **pivot cube**.
 2. Every shape has: a unique `shape_id`, a display name, a **family**, a cube count, a **bounding box** (its extent on x, y, z), a **hue**, a **face motif** (art bible §3), and a spawn orientation.
 3. A shape's **longest extent** is the largest side of its bounding box. **Default cap: 4**, so the default spawn clearance stays at 4 (Board / Grid F4). A level may allow longer pieces; the board's spawn clearance then grows to match.
 4. Shapes are identified up to rotation: two cube sets that are rotations of each other are the same shape. **Mirror images are different shapes** (the two screw tetracubes are separate), because in a grid game a piece cannot be flipped through a mirror.
@@ -33,6 +33,15 @@ The Piece Set defines every piece shape the game can drop: which unit cubes it i
 | **Standard** | 4 | **Flat (5):** I (straight), O (square), T, L, S. **3D (3):** Tripod (corner of three arms), Screw-Left, Screw-Right | Every layer-clearing level |
 | **Special** | 5–8 | Starter list, tuned by level design: **Chair** (5), **Big Tripod** (7: a corner cube with a 2-cube arm along each axis; extent 3), **Staircase** (6, steps in 3D), **Twist-Left** and **Twist-Right** (5, mirror pair), **Big Cube** (8: 2 × 2 × 2), **Tall Corner** (6) | Harder tiers, special levels, minigames, items |
 | **Helper** | 1–3 | **Mono** (1), **Duo** (2), **Tri-Straight** (3), **Tri-Corner** (3) | Low levels (tutorial / early tiers) or when a perk, potion or item grants them; never in default sets past the early tiers |
+| **Pento Flat** | 5 | All 12 pentominoes as flat pieces: `pento_f`, `pento_i`, `pento_l`, `pento_n`, `pento_p`, `pento_t`, `pento_u`, `pento_v`, `pento_w`, `pento_x`, `pento_y`, `pento_z` | Mid tiers; Fill Target Shape levels |
+| **Pento 3D** | 5 | `nook`, `antenna`, `signpost`, `crank`, plus mirror pairs `hook`, `kink`, `wiggle`, `periscope`, `claw` (each `_left` / `_right`) | Late tiers; mirror-themed levels |
+| **Chunky** | 6–8 | `slab`, `plank`, `step_block`, `stool`, `dented_cube`, `big_zigzag`, `jack` | Build races, Fill Target Shape |
+| **Hollow** | 6–8 | `ring`, `arch`, `loop` | Party sets; pillar levels (rings drop over pillars) |
+| **Party** | 6–8 | `heart`, `mushroom`, `rocket`, `dog_bone`, `crown`, `snake_left`, `snake_right` | Minigames, versus, biome sets |
+| **Long Bar** | 6 | `pole` (with `pento_i` as the 5-long bar) | Build races, conveyor levels; opt-in longest extent above 4 |
+| **Giant** | 9–27 | `giant_slab` (9), `giant_fridge` (12), `giant_ring` (12), `giant_mega_cube` (27) | Campaign (late tiers, Celestial finale), boss drops, physics and minigames; low weight |
+
+The full **shape bank is 67 shapes in 10 families** (bank proposal 2026-10-09, validated: every shape face-connected, no two equal up to rotation, mirror images kept separate). Cube coordinates live in the shape data file exported from the asset pipeline (`wt_shapes` in `blocks.blend`); levels pick a pool from the bank. The family and pool lists are starting defaults for level design to tune.
 
 The 3D Standard shapes are the main difficulty step from classic Tetris; levels can hold them back early and add them as a tier's "new twist".
 
@@ -202,6 +211,27 @@ Board / Grid already lists Piece Set as the source of `c` and `L_max`. The other
 
 ## Visual/Audio Requirements
 
+> **Colour update (2026-10-09, user decision): colour by family in the default set, by biome in biome sets.** The bank is now 67 shapes, so a unique hue per shape no longer scales.
+> - **Default set** (`candy_toy`): **one hue per family**, and a **face motif per shape** tells shapes within a family apart.
+> - **Biome art sets** (one per biome): every shape is made in the biome's own cube style, material and palette, so colours come from the biome palette, not the family table.
+> - **Colour as a difficulty step:** at higher tiers a level may simplify or hide motifs, so players identify blocks by colour and silhouette; this is a deliberate difficulty knob, not a readability failure.
+> The per-shape hue table below is kept as the legacy starting palette for the original 19 shapes; the family hues below are starting values.
+>
+> | Family | Starting hex (creative director, 2026-10-09) |
+> |---|---|
+> | Standard | Sky `#6EA4F0` |
+> | Special | Lemon `#F5DD6A` |
+> | Helper | Mint `#5DCB9E` |
+> | Pento Flat | Peach `#FFB48C` |
+> | Pento 3D | Lavender `#A78BEB` |
+> | Chunky | Cocoa `#9A6A4A` |
+> | Party | Strawberry `#EE7A8C` |
+> | Hollow | Lime `#9FD65B` |
+> | Long Bar | Cobalt `#5468D8` |
+> | Giant | Blackberry `#6E4F9E` |
+>
+> Hollow, Long Bar and Giant take the hues that collide under colour-vision deficiency because their silhouettes (a hole, extreme length, huge size) identify them anyway. Values are unverified estimates: check all ten with a CVD simulator (protan, deutan, tritan) and a greyscale pass on a shaded render before locking. The face motif stays on every face at every difficulty for colourblind players.
+
 > **Art bible §4.7 override (2026-10-09).** The art bible's §4.2 starts with six piece hues, and says to prefer a face motif over a seventh hue. The Piece Set instead gives each of its 19 shapes its own hue (user decision), so the palette expands from 6 to 19. The six existing hues are kept. Thirteen new hues sit at least about 25° from buff cyan (186°) and debuff magenta (322°), and stay away from hazard orange and danger red. Pieces stay pastel (about 45-65% saturation), and Helpers go slightly lower (about 38%). Several pairs fall within about 15° and are not distinguishable for colourblind players, so §4.6 relies on silhouette and face motif as the primary identifiers, with hue as confirmation only. Default: at most 8 shapes active per level (10 in minigames), with no more than 3 from one fixed 60° hue band (0–59°, 60–119°, … 300–359°). Junk uses a neutral matte material and behaviour tags use a parchment sticker, so neither adds a hue. All hex values are starting guesses to tune in-engine with a colour-vision simulator.
 
 | Shape | Family | Hue (°) | Starting hex | Face motif |
@@ -262,7 +292,7 @@ The Piece Set supplies shape, hue and motif for the HUD's next-piece preview, wh
 1. [U] **GIVEN** each library shape, **WHEN** it loads, **THEN** its cubes form one face-connected group; **GIVEN** a test shape joined only at an edge or corner, or in two parts, **WHEN** it loads, **THEN** it is rejected.
 2. [U] **GIVEN** any shape, **WHEN** each of its 24 rotations is canonicalised, **THEN** all give the same `shape_id`; Screw-Left never matches Screw-Right, and Twist-Left never matches Twist-Right.
 3. [U] **GIVEN** the default set, **WHEN** validated, **THEN** L_max = 4 and the board's spawn clearance = 4.
-4. [U] **GIVEN** the library, **WHEN** shapes are counted by family, **THEN** there are 8 Standard (4 cubes each), 7 Special (5–8 cubes), 4 Helper (1–3 cubes), 19 total.
+4. [U] **GIVEN** the library, **WHEN** shapes are counted by family, **THEN** there are 67 shapes: 8 Standard, 7 Special, 4 Helper, 12 Pento Flat, 14 Pento 3D, 7 Chunky, 3 Hollow, 7 Party, 1 Long Bar, 4 Giant; Giant shapes have 9–27 cubes and every other shape 1–8.
 5. [U] **GIVEN** a T tagged `behaviour: bomb`, `junk` or `owner_set`, **WHEN** compared with an untagged T, **THEN** `shape_id` and cube offsets are identical.
 6. [U] **GIVEN** a level with no `piece_set` field, **WHEN** it loads, **THEN** its set is exactly the 8 Standard shapes.
 7. [U] **GIVEN** each shape, **WHEN** its listed orientations are compared, **THEN** they are pairwise distinct and their count equals F4.
@@ -292,5 +322,5 @@ The Piece Set supplies shape, hue and motif for the HUD's next-piece preview, wh
 - **Helper availability**: which early tiers include Helpers by default, and which perks, potions or items grant them (Campaign Structure, Characters & Perks, Items).
 - **Active-shape cap**: is 8 shapes per level the right default once all 19 shapes and colourblind testing are in? Validate with a colour-vision simulator.
 - **3D shapes on the default 8 × 8 board**: is rotating Tripod/Screw/Twist readable at ~28 px? Prototype with touch controls.
-- **Character/biome pieces**: their shapes are defined in their own GDDs but must be added to this library's data and follow its rules (face-connected, extent cap, own hue or a documented shared hue).
+- **Character pieces**: their shapes are defined in their own GDDs but must be added to this library's data and follow its rules (face-connected, extent cap, family hue). Biomes never add shapes: a biome is an art style (material, texture, edge style, palette) applied to the whole bank.
 

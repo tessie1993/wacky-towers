@@ -64,8 +64,16 @@ These are defaults. A game mode or biome can override them; run the check in 4.7
 
 ### Blocks are the hero shapes (Pillar 1)
 By default every piece is built from the same unit cube.
-- **Bevel:** about 15% of the cube edge, rounded, so a cube still reads as chunky at about 20 px.
-- **Seams:** cubes inside one piece join with a shallow seam groove, about a third of the outer bevel. The piece reads as one toy, and its cube count stays countable for judging fit in 3D.
+- **Bevel:** about 15% of the cube edge, rounded, so a cube still reads as chunky at about 20 px. This is the default set's value; each biome art set picks its own roundness (see **Block art sets** below).
+- **Seams:** every cube is a separate object for game mechanics, but neighbouring cubes sit tight together (cube size about 1.03 of a cell, slightly overlapping) so the groove between them is shallow. The piece reads as one toy, and its cube count stays countable for judging fit in 3D. Tight-edged sets add a painted seam line where the modelled groove is too small to see.
+
+### Block art sets (2026-10-09, user decision)
+- A **set** is the whole shape bank (67 shapes, Piece Set GDD) built in one look. Each piece is an empty at the pivot cube with one child object per cube.
+- The **default set** (`candy_toy`) colours pieces **by family** (one hue per family) with a face motif per shape.
+- There is **one art set per biome**. A biome is an **art style only** (block material, texture, edge style, palette); it never changes which shapes exist, so every biome set holds the same full shape bank. Biome styles follow the user's per-biome reference images (`design/art/block-art-sets.md`). Each biome set has a clearly different **cube style** (fat and puffy, medium, tight, or chamfered), its own **details** (for example wood grain and end rings, chipped stone edges, rivets and panel lines, facets, glaze pooling) and its own **material and palette** fitting the biome scene.
+- New sets are always made by **copying the default set** and editing the copy; existing sets are never overwritten.
+- Materials start from **Poly Haven** (CC0) and **BlenderKit** (free) assets, stylised to the cute reference look; every external asset is logged in the Blender project's `LICENCES.md`.
+- **Status effects have their own look (user decision 2026-10-09):** every status is animated, carries a buff/debuff colour pulse and shows its icon. So biome art sets may use any detail from the user's references (cracks, frost and snow caps, icicles, glowing seams, vines and roots, drips, swirls, embers); a status is recognised by its animation, pulse and icon, not by its surface texture. Every cube stays a cube for gameplay.
 - **Outline:** a darker tint of the piece's own hue, kept at a constant width on screen.
 - **Gloss:** the highlight sits at the top-left by default, matching the key light.
 
@@ -139,7 +147,7 @@ Six candy hues to start, one per piece type. Shape tells pieces apart, and colou
 |---|---|---|---|---|---|
 | `#F5DD6A` | `#9FD65B` | `#5DCB9E` | `#6EA4F0` | `#A78BEB` | `#FFB48C` |
 
-There are no pink or cyan pieces, because those hues belong to debuff and buff. Pieces keep these colours in every biome by default. If we need more piece types, a face motif is easier to read than a seventh hue.
+There are no pink or cyan pieces, because those hues belong to debuff and buff. The bank has grown to 67 shapes (2026-10-09), so the default set now uses **one hue per family plus a face motif per shape**, and each **biome set uses its own biome palette** (see Block art sets, §3). At higher difficulty, identifying blocks by colour alone is an intended skill.
 
 ### 4.3 Semantic colours
 | Role | Starting hex | Default use |
@@ -363,20 +371,8 @@ The 4-player view on one phone is cramped. In reference 13 each board takes abou
 | `ui_` | `ui_lava_frame_score.png` |
 | `vfx_` | `vfx_confetti_burst.png` |
 
-### Starting targets (to tune)
-| Asset | Tris (target) | Texture (target) |
-|---|---|---|
-| Unit cube | about 150-250 | Shared block atlas, about 512² (albedo/mask + normal) |
-| Shell, per cube | about 300 | Same atlas |
-| Island | about 10-15k | Biome atlas, about 2048² |
-| Prop | about 300-2k | about 512-1024 |
-| Wizard + cloud | about 4-6k | To be set |
-| Boss, living objects | To be set | To be set |
-| UI | n/a | Atlas, about 2048² |
-
-- **Scene targets:** about 400k tris with four boards.
-- **Draw calls:** about 150 with one board, about 250 with four.
-- **Memory:** about 100 MB of textures resident with one biome loaded; about 600 MB for the whole app.
+### Budgets
+No polygon, texture or draw-call budgets for now (removed 2026-10-09 by decision). Build for the look first; profile real builds on device and set budgets only if performance needs them.
 
 ### Materials, LOD and VFX (starting approach)
 - **Shaders:** a small shared set of about five (block, shell, environment, particle, UI). Toon ramp, one directional light, gloss as a step or matcap term.
