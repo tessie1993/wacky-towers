@@ -14,7 +14,7 @@ The atoms are grouped into 14 slots. Each atom has an ID, a one-line rule, the g
 |---|---|---|---|
 | 1 | Board / Layout | BL | box, well, tubes, islands, track, creature back |
 | 2 | Arrival / Piece source | AR | top drop, slide-in, crane, tray of three |
-| 3 | Control / Verb | CV | rotate, swap, tap-pop, pull, chisel, throw |
+| 3 | Control / Verb | CV | rotate, swap, tap-pop, pull, chisel, throw, push cube, gravity nudge |
 | 4 | Placement rule | PL | trim, wobble, laser line, crosswise |
 | 5 | Clear / Match | CL | layer, row, colour pop, sweep, merge |
 | 6 | Collapse | CO | slice, cascade, refill, launch |
@@ -50,8 +50,10 @@ The atoms are grouped into 14 slots. Each atom has an ID, a one-line rule, the g
    The full list is in module §3.
 6. **Check the readability budget** (module F1):
    - A campaign level has at most 2 atoms new to the player and 4 non-default atoms.
-   - A minigame has at most 3 new and 5 non-default.
+   - Showpiece levels in tiers 7–10 may have up to 6 non-default atoms.
+   - A minigame has at most 3 new and 5 non-default, and lasts 30–240 s.
    - The idea must fit one sentence and be visible within the first two pieces.
+   - **No drift curve.** How far a level strays from classic Tetris, and how much physics silliness it has, goes up and down from level to level, with only a general trend toward variety. A calm, near-classic level after a wild one is fine.
 7. **Write the level JSON.**
    - Each atom becomes a slot knob, a `mechanic`/`twists` rule, `starting_contents` content, or minigame data.
    - Keep the `recipe` block (atoms plus story card) for the editor and reviews.

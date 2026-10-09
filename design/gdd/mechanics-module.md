@@ -8,7 +8,7 @@
 
 ## Overview
 
-The Mechanics Module is a library of composable **mechanic atoms**. Each atom is one small rule built from our Piece Set blocks: a board, a way pieces arrive, a verb, a placement rule, a clear rule, a collapse, a goal, a fail rule, a scoring rule, an interaction, an event, a special object, a secret or a world/mascot rule. A level, a tournament minigame or the daily challenge is a **recipe**: one atom from each required slot, plus optional atoms, plus a one-line **story card**. Every atom maps to exactly one engine hook that already exists in ADR-0004: a strategy-slot plugin id, a rule (data or `RuleBehaviour`), a content type, or a minigame-scene parameter. So a recipe becomes level or minigame JSON with no new framework, except for the one gap named in Dependencies (`control.verb`). The atoms are distilled from popular games: Candy Crush, Toon Blast, Royal Match, Puyo, Lumines, Tetris 99, Tetris Effect, Tricky Towers, Stack, Tower Bloxx, 2048, Suika, Block Blast, Woodoku, Ball Sort, Jenga, Panel de Pon, Dr. Mario, Meteos, Picross 3D, Boom Blox, Minecraft Build Battle, Ultimate Chicken Horse, Mario Party, Mario Kart, Fall Guys, Lemmings and Baba Is You. Atom ideas here are **Candidates** unless marked otherwise. When a level or minigame picks one, its full rules move into the owning GDD and the row here links to it. All numbers are tunable defaults.
+The Mechanics Module is a library of composable **mechanic atoms**. Each atom is one small rule built from our Piece Set blocks: a board, a way pieces arrive, a verb, a placement rule, a clear rule, a collapse, a goal, a fail rule, a scoring rule, an interaction, an event, a special object, a secret or a world/mascot rule. A level, a tournament minigame or the daily challenge is a **recipe**: one atom from each required slot, plus optional atoms, plus a one-line **story card**. Every atom maps to exactly one engine hook that already exists in ADR-0004: a strategy-slot plugin id, a rule (data or `RuleBehaviour`), a content type, or a minigame-scene parameter. So a recipe becomes level or minigame JSON with no new framework. Verbs use ADR-0004's `control.verb` slot (`ControlVerb` plugin base). The atoms are distilled from popular games: Candy Crush, Toon Blast, Royal Match, Puyo, Lumines, Tetris 99, Tetris Effect, Tricky Towers, Stack, Tower Bloxx, 2048, Suika, Block Blast, Woodoku, Ball Sort, Jenga, Panel de Pon, Dr. Mario, Meteos, Picross 3D, Boom Blox, Minecraft Build Battle, Ultimate Chicken Horse, Mario Party, Mario Kart, Fall Guys, Lemmings and Baba Is You. Atom ideas here are **Candidates** unless marked otherwise. When a level or minigame picks one, its full rules move into the owning GDD and the row here links to it. All numbers are tunable defaults.
 
 ## Player Fantasy
 
@@ -36,6 +36,7 @@ Target MDA aesthetics: **Discovery** (new atom combinations), **Challenge** (eac
 | `grid` / `phys` | Needs `board.kind` grid / physics |
 | `fall` / `nofall` | Needs a falling piece / has no falling piece |
 | `floor` | Needs a fixed down axis (no gravity flip or side gravity) |
+| `axis` | Changes the down axis during play (conflicts with `floor`) |
 | `clr` / `noclr` | Needs clears on / clears off |
 | `col` | Uses colour keys (2 or more colours in the level) |
 | `tgt` | Needs target cells in the level data |
@@ -63,7 +64,7 @@ Target MDA aesthetics: **Discovery** (new atom combinations), **Challenge** (eac
 | BL04 | Tubes | Row of 1×1 or 2×2 columns, each with capacity H | Ball Sort | grid col | S | C |
 | BL05 | Pre-built tower | Level starts with a placed stack | Jenga, Boom Blox | grid daily | S | C |
 | BL06 | Strip | Long 8×3 lane with cliffs at both ends | Fall Guys course | grid | S | C |
-| BL07 | Islands | Several small boards; the player picks where each piece goes | Tricky Towers, Mario Party boards | multi | M | D (ADR-0002 §7, layout) |
+| BL07 | Islands | Several small boards; the player picks where each piece goes. Meadow remix "Two Fields" = 2 boards | Tricky Towers, Mario Party boards | multi | M | D (ADR-0002 §7, layout) |
 | BL08 | Track | Chain of boards; finishing one moves you to the next | Fall Guys race | multi rt | L | C |
 | BL09 | Shared tower | 2–4 players build one board, each in their own colour | Overcooked, Tetris Effect Connected | shared coop | L | P |
 | BL10 | Tray | Small moving board that catches pieces | MG15 Catch Tower | grid | M | D (tournament-minigames) |
@@ -72,6 +73,7 @@ Target MDA aesthetics: **Discovery** (new atom combinations), **Challenge** (eac
 | BL13 | Physics plate | Real physics tower | Tricky Towers | phys | L | D (physics-mode) |
 | BL14 | Creature back | The board rides a creature (turtle, whale, sleepy cat). Every `creature_step_locks` it takes a step: the stack shifts one cell (wrap off) or the camera bobs; telegraphed by the creature's head turning | world research | grid floor | M | C |
 | BL15 | Stage medley | A level of 2–3 short stages, each its own mini-recipe; finishing a stage swaps the board with a fanfare | level research, WarioWare | grid | M | C |
+| BL16 | Seesaw board | The board sits on a pivot. Mass left and right of centre tilts it; past `seesaw_max` degrees a lip of cubes slides off | Tricky Towers, Boom Blox | phys | L | C |
 
 #### Slot 2. Arrival / Piece source: hook `spawn.arrival`, `spawn.router`, Spawner knobs
 
@@ -90,7 +92,7 @@ Target MDA aesthetics: **Discovery** (new atom combinations), **Challenge** (eac
 | AR11 | Bi-colour pieces | Each piece's cubes carry 2 colour keys | Puyo pair, Dr. Mario, Lumines | col daily | S | C |
 | AR12 | Shared belt | Pieces ride a belt past all players; the first to grab takes it | Overcooked | shared coop | M | P |
 
-#### Slot 3. Control / Verb: hook Movement and Touch knobs + vetoes; new `control.verb` slot (see Dependencies)
+#### Slot 3. Control / Verb: hook Movement and Touch knobs + vetoes; `control.verb` slot (ADR-0004 `ControlVerb`)
 
 | ID | Atom | One line | From | Tags | Cost | Status |
 |---|---|---|---|---|---|---|
@@ -107,6 +109,9 @@ Target MDA aesthetics: **Discovery** (new atom combinations), **Challenge** (eac
 | CV11 | Steer tray | Move the board, not the piece | MG15 | — | M | D (MG15) |
 | CV12 | Zone | A meter fills from clears; tap to freeze gravity for `zone_ms` | Tetris Effect | fall clr | S | C |
 | CV13 | Throw | Flick the piece in an arc at a target column. It lands on the column's top surface; a miss lands on the nearest valid column | Boom Blox, world research | grid fall | M | C |
+| CV14 | Push cube | Tap a locked cube: it slides one cell away from you along the floor into the next empty cell. It can push one other cube, never off the edge | Sokoban, ROTA, PuzzleScript | grid floor turn | M | C |
+| CV15 | Gravity nudge | Tap to rotate the down axis 90° for the whole stack; one use per `gravity_nudge_cd` locks. Player-driven (EV03 is a rule event; BL11 turns the stack on a timer) | ROTA | grid fall axis | M | C |
+| CV16 | Tilt charges | Variant of CV15: 1–3 `tilt_charges` per level; each one rotates the down axis 90° for the current piece only | ROTA | grid fall axis | M | C |
 
 #### Slot 4. Placement rule: hook rule vetoes on `board.write` / `on_lock` behaviours
 
@@ -152,6 +157,7 @@ Target MDA aesthetics: **Discovery** (new atom combinations), **Challenge** (eac
 | CO05 | Refill | New seeded cubes rain into the gaps from the top | Candy, Toon Blast | clr col | M | C |
 | CO06 | Launch | The cleared group rockets up, carrying the cubes above it. The biome's `lift` decides whether they escape or fall back | Meteos | clr | M | C |
 | CO07 | Topple | Unsupported pieces tip over | Tricky Towers, Boom Blox | phys | L | C |
+| CO08 | Pour | A "liquid" piece does not lock as a solid: it spreads sideways and down into the lowest open cells, then sets as a flat layer | The Powder Toy | grid fall | M | C |
 
 #### Slot 7. Goal / Win: hook `goal.type`
 
@@ -179,6 +185,10 @@ Target MDA aesthetics: **Discovery** (new atom combinations), **Challenge** (eac
 | GO20 | Critter walkers | Critters walk along the top surface, turn at walls and step up or down ≤ 1. Guide `walkers_needed` of them to the exit | Lemmings | grid floor | M | C |
 | GO21 | Dig to rescue | Clear down to free buried critters (catalog G4) | Dr. Mario, Mr. Driller | clr daily | S | C |
 | GO22 | Sculpt reveal | Start from a full block; clears carve it until only the hidden figure (protected cells) remains | level research (reverse level) | clr tgt | M | C |
+| GO23 | Bridge race | The first player to build a continuous cube path across the gap to the flag wins; the mascot then walks it. The vs version of GO10 | Mascot Bridge Race, Fall Guys | vs rt mg | M | C |
+| GO24 | Echo | The mascot shows a sequence of 3 placements (cell and colour); repeat them in order. Each wrong step costs a heart. GO12 copies a shape; this tests order | Simon, WarioWare memory games | turn tgt | S | C |
+| GO25 | Slide-clear | Clear the whole board using at most M board slides (needs CV09) | Puznic / Wizznic | grid nofall | M | C |
+| GO26 | Impatient order | Variant parameter of GO06 / GO19, not a separate goal: each order's reward bar shrinks over time, so early delivery pays more (`order_decay_s`) | Hurry Curry! | — | S | C |
 
 #### Slot 8. Fail / Top-out: hook `goal.top_out`
 
@@ -208,6 +218,9 @@ Target MDA aesthetics: **Discovery** (new atom combinations), **Challenge** (eac
 | SC06 | Underdog finish | Points only if some but not all finish; underdog bonus | Ultimate Chicken Horse | vs | S | C |
 | SC07 | Coins | Coin cells are collected by covering or clearing them | Ultimate Chicken Horse, Boom Blox gems | daily | S | C |
 | SC08 | Residents | Score = how tidy and full each layer is | Tower Bloxx City | — | M | C |
+| SC09 | Push your luck | After a clear, bank the points or keep building for a bigger multiplier; a top-out loses the unbanked points | Board-game push-your-luck | solo | S | C |
+| SC10 | Party awards | At round end, three silly awards (Tidiest Tower, Most Bonks, Comeback Kid) each give fixed points. Rewards style; pairs with SC06 | Super Tux Party | vs | S | C |
+| SC11 | On-beat lock | Locking inside the beat window gives a small bonus and a visible pulse. The scoring half of EV08 (needs EV08) | osu! | fall | S | C |
 
 #### Slot 10. Interaction / Sabotage / Items: hook minigame `interaction_hook`, Items, Buffs & Debuffs effects, `StandingFn`
 
@@ -238,6 +251,7 @@ All of these are competitive. Every incoming effect is telegraphed for `attack_w
 | IN20a | Hit the Leader | The payoff sends a telegraphed junk layer to the leader (the leader's own payoff hits 2nd) | Mario Kart | vs | S | C |
 | IN20b | Chaos meter | The payoff fills a shared table meter; when it is full, a table-wide event card fires for every player | party chaos | vs | M | C |
 | IN20c | Power unlock | The payoff unlocks a one-use power for you (hold, a bomb, slow time) | Tetris Effect Zone | vs | S | C |
+| IN21 | Tug of war | Each clear moves a shared marker one step toward the rival's side; the first to push it to the edge wins | Mario Party tug-of-war | vs | S | C |
 
 #### Slot 11. Modifiers / Events: hook `RuleBehaviour` twists (layer 3) and level mechanics (layer 4)
 
@@ -256,7 +270,7 @@ All of these are competitive. Every incoming effect is telegraphed for `attack_w
 | EV05 | Conveyor | The stack shifts each lock (M4) | — | rect | M | D (M4) |
 | EV06 | Lava and lid | The floor melts up, or a lid lowers (catalog B4, G5) | Fall Guys | floor rt | S | D (MG13) |
 | EV07 | Junk rise | A junk layer pushes up every N locks (catalog A7) | Panel de Pon | floor | S | C |
-| EV08 | Beat tempo | Gravity steps and the sweep follow the music's BPM | Lumines, Tetris Effect | rt | M | C |
+| EV08 | Beat tempo | Gravity steps and the sweep follow the music's BPM. Its scoring half is SC11 | Lumines, Tetris Effect | rt | M | C |
 | EV09 | Ice | Landed pieces slide 1 cell along the camera-forward axis | Tricky Towers dark spell | fall absurd daily | S | C |
 | EV10 | Balloon | One piece floats at ½ gravity and may drift up 1 | Tricky Towers dark spell | fall absurd daily | S | C |
 | EV11 | Goo spread | Each lock, goo takes over one cube next to it unless a clear happens next to the goo | Candy chocolate | grid | M | C |
@@ -265,6 +279,9 @@ All of these are competitive. Every incoming effect is telegraphed for `attack_w
 | EV14 | Rule cubes | Word cubes (`RED`, `IS`, `BOMB`, …) arrive as pieces. Lining up a sentence in one row sets that rule until the row is broken. Sentences come from a closed list | Baba Is You | grid absurd | L | C |
 | EV15 | Mystery event card | Every `event_card_locks` locks a card flips and plays a random event from the level's pool (seeded) | level research, party games | absurd daily | M | C |
 | EV16 | Biome event | One biome-themed event with a telegraph and a `counter` (above) | world research | daily | M each | C |
+| EV17 | Speed-up bump | Each completed stage, or every `bump_locks` locks, raises gravity one notch with a clear cue (EV08 follows the music; BL15 is the stage wrapper) | WarioWare | rt | S | C |
+| EV18 | Lift tiles | A few marked floor cells rise and sink on a short cycle, so the same drop lands one cell higher or lower depending on timing | Puznic / Wizznic lifts | grid fall | M | C |
+| EV19 | Nanogame interlude | Every `nanogame_every` pieces the board freezes for a 5-second one-tap challenge (tap the bubble, stop the spinner). Win: the next piece is a free pick. Lose: nothing happens | Librerama, WarioWare | grid | M | C |
 
 #### Slot 12. Special pieces and objects: hook content JSON + optional `RuleBehaviour`
 
@@ -293,7 +310,7 @@ All of these are competitive. Every incoming effect is telegraphed for `attack_w
 | SP19 | Mushroom | The meadow spawned object | — | daily | S | D (T4) |
 | SP20 | Moody cube | Living block. Its face shows a mood. Grumpy (not touching its own colour) means it does not count toward clears; a same-colour neighbour makes it happy and it counts again | living blocks | col | M | C |
 | SP21 | Hatching egg | Living block. Hatches after `hatch_locks` into a chick cube that hops to the lowest free neighbour cell; clearing the egg first gives a bonus | living blocks | grid | M | C |
-| SP22 | Growing sprout | Living block. Grows one cube upward every `grow_locks` until capped by a cube above it | living blocks | grid floor | S | C |
+| SP22 | Growing sprout | Meadow remix "Seed Sprouts". Living block. Grows one cube upward every `grow_locks` until capped by a cube above it | living blocks | grid floor | S | C |
 | SP23 | Sleepy piece | Living block. Falls at half speed. After landing it naps and does not count toward clears until a clear happens next to it | living blocks | fall | S | C |
 | SP24 | Magnet block | A falling piece within `magnet_range` cells is pulled one cell toward the magnet each fall step | board tricks | fall | S | C |
 | SP25 | Jelly piece | On landing, the piece squishes: one cube may slump into an empty cell directly below it | special pieces | fall floor | M | C |
@@ -302,9 +319,13 @@ All of these are competitive. Every incoming effect is telegraphed for `attack_w
 | SP28 | Split piece | On landing, it splits into its two halves (seeded cut), which fall separately | special pieces | fall | M | C |
 | SP29 | Frosting | Multi-layer blocker cell: each clear next to it peels one layer (1–3) | Candy frosting | clr | S | C |
 | SP30 | Lock | Locked cube: it cannot clear or move until a clear next to it unlocks it | Candy locks | clr | S | C |
-| SP31 | Pest | Each lock, it moves to a neighbouring cube and eats it; cleared by a pop next to it | Candy spreading pests | grid | M | C |
+| SP31 | Pest | Meadow remix "Picnic Ants". Each lock, it moves to a neighbouring cube and eats it; cleared by a pop next to it | Candy spreading pests | grid | M | C |
 | SP32 | Countdown bomb | A number counts down by 1 per lock. Clear it before 0, or it blasts junk (or costs a heart) | Candy bombs | clr | S | C |
 | SP33 | Walker critter | The walking critter used by GO20 | Lemmings | grid floor | M | C |
+| SP34 | Crumble cube | A locked cube dissolves `crumble_s` seconds after another cube lands on it (BL12 shrinks the rim; this is per cube) | Kenney platformer falling platforms, Fall Guys | floor rt | S | C |
+| SP35 | Bounce pad | A piece landing on it hops up `bounce_h` cells and relocks one cell onward in its move direction; once per landing | 3D platformers | fall | S | C |
+| SP36 | Bouncy ball | A ball bounces inside the tower for a few seconds and pops the jelly cells it touches; it ends when it leaves the board | Breakout | phys | L | C |
+| SP37 | Pickup crate | A cube with a bow. When it breaks (chisel, bomb or clear), the next piece carries a pickup: a size-1 bonus cell or one free rotation. It is the carrier, not the reward | DynaDungeons | grid | S | C |
 
 #### Slot 13. Secrets & Discovery: hook content + `RuleBehaviour` + Save & Profile flags
 
@@ -333,6 +354,7 @@ None of these ever affects stars or tournament results (fun-only, like weather o
 | WO07 | Mascot: prankster | The mascot sometimes pulls a harmless prank (spins the next piece's preview, tickles) and is always telegraphed | world research | absurd | M | C |
 | WO08 | Mascot: mood swing | The mascot flips between helper and prankster, driven by WO01 | world research | — | M | C |
 | WO09 | Mascot: watcher | The mascot only reacts (cheers, gasps); no gameplay effect | world research | daily | S | C |
+| WO10 | Mascot pick | Each player picks a mascot with one small, capped passive (for example, a longer preview). WO06–WO09 are the AI mascot behaviours | Variable player powers, Mario Party characters | vs | M | C |
 
 ### 3. Recipes
 
@@ -362,16 +384,18 @@ The level's design must fit its story: the premise explains why the atoms are th
 
 | Context | Players | Interaction | Forbidden tags | Novelty budget (F1) |
 |---|---|---|---|---|
-| campaign | solo | none (Items only as board effects) | `vs`, `coop`, `shared`, `mg` | ≤ 2 new atoms, ≤ 4 non-default atoms |
-| minigame | 2–4, **always competitive** | ≥ 1 IN atom required | `coop`, `shared`, `solo` | ≤ 3 new, ≤ 5 non-default |
+| campaign | solo | none (Items only as board effects) | `vs`, `coop`, `shared`, `mg` | ≤ 2 new atoms, ≤ 4 non-default atoms; **showpiece levels in tiers 7–10: ≤ 6 non-default** (user decision 2026-10-10) |
+| minigame | 2–4, **always competitive** (Kitchen Rush, R4, is the approved default) | ≥ 1 IN atom required | `coop`, `shared`, `solo` | ≤ 3 new, ≤ 5 non-default; length 30–240 s |
 | daily | solo, same puzzle for everyone | none | everything without `daily` | see §4 |
 | arcade | solo | none | `vs`, `coop`, `shared` | ≤ 3 non-default |
+
+**No drift curve** (user decision 2026-10-10). How far a recipe drifts from classic Tetris, and how much physics silliness it has, is set per level by its mechanics and difficulty. It goes up and down across the campaign, with only a general trend toward more variety. Nothing in this module ramps drift in a straight line. A gentle, near-classic level after a wild one is intended.
 
 **Conflicts.** The validator rejects these. They extend ADR-0004 `incompatible_with`:
 - `noclr` ✕ `clr`
 - `nofall` ✕ `fall`
 - `phys` ✕ CL02–CL13, CV04, CV05, CV07–CV09, CO04–CO06
-- `floor` ✕ EV03, AR02, AR04
+- `floor` ✕ `axis` (EV03, CV15, CV16) and ✕ AR02, AR04
 - `col` needs a colour count of 2 or more
 - `rect` ✕ BL02 masks
 - `turn` ✕ `rt`, unless the event is set to tick per move
@@ -382,6 +406,10 @@ The level's design must fit its story: the premise explains why the atoms are th
 - GO08 needs SP11
 - GO20 needs SP33
 - IN02 needs IN01
+- SC11 needs EV08
+- GO25 needs CV09
+- GO26 needs GO06 or GO19
+- `phys` ✕ CV14, CO08
 
 #### The ten example recipes
 
@@ -389,8 +417,8 @@ The level's design must fit its story: the premise explains why the atoms are th
 |---|---|---|---|---|
 | R1 | **Sky Sprint** | minigame · standard | BL08 (3 islands) · AR01 · CV01 · CL14 · GO02 per island · FT02 · IN08 · SC06 | "The cloud ferry leaves at sunset: build up to each island's ribbon and hop across, and plant a trap on a rival's island before you go." · watcher |
 | R2 | **Toy Box Critter** | campaign | BL01 5×5×5 · AR08 · CV01 · PL07 · CL14 · GO15 · FT07 · SC04 · SE05 | "Someone hid a toy in the toy box: fill its glowing outline and see who it is." · helper |
-| R3 | **Candy Cascade** | campaign (Candy) | BL02 heart mask 6×6×7 · AR01 · CV01 · CL05 (5) · CO02 · GO06 + GO07 · SP04 · SP06 · SP08 · FT07 (30 pieces) | "The candy mascot spilled jelly all over the shop floor: pop colour groups to clean it before the customers arrive." · mood swing |
-| R4 | **Kitchen Rush** (competitive rework) | minigame · standard | BL01 5×5×6 per player · AR01 · CV01 · CL14 · GO19 order rush · EV11 goo · IN01 (each claimed order sends goo) · FT02 | "Lunch rush at the block café: build the orders on the rail before your rivals do, and every order you win slops goo onto their counter." · prankster |
+| R3 | **Candy Cascade** | campaign (Candy, tier 8 showpiece) | BL02 heart mask 6×6×7 · AR01 · CV01 · CL05 (5) · CO02 · GO06 + GO07 · SP04 · SP06 · SP08 · FT07 (30 pieces) | "The candy mascot spilled jelly all over the shop floor: pop colour groups to clean it before the customers arrive." · mood swing |
+| R4 | **Kitchen Rush** (competitive; approved default 2026-10-10) | minigame · standard | BL01 5×5×6 per player · AR01 · CV01 · CL14 · GO19 order rush · EV11 goo · IN01 (each claimed order sends goo) · FT02 | "Lunch rush at the block café: build the orders on the rail before your rivals do, and every order you win slops goo onto their counter." · prankster |
 | R5 | **Melon Merge** | arcade or daily | BL03 4×4×10 · AR01 (small-tier pieces) · CV02 · CL12 · CO02 · GO13 · FT03 | "The picnic jar is filling up: merge matching snacks into the golden Giant before the lid won't close." · watcher |
 | R6 | **Beat Sweep** | campaign (Neon) | BL01 8×4×8 · AR11 · CV01 · CL09 + CL10 · SP15 · EV08 · GO05 · SC05 | "The neon club's light-bar sweeps on the beat: build colour cubes and let the music wipe them for a ×16." · helper |
 | R7 | **Wobble Pull** | minigame · showpiece | BL05 (the same tower for everyone) · CV06 · PL06 · PL03 · FT10 · GO18 · SP09 · IN01 (each pull adds wobble to the leader's tower) | "Everyone got the same wobbly wedding cake: pull pieces out and stack them on top, and the last tower standing wins." · prankster |
@@ -413,7 +441,7 @@ Each atom maps 1:1 to a field of the ADR-0005 level file:
 `recipe` is an optional block kept for the editor panel, the daily generator and design review; the runtime ignores it. Example (R3; knob names are illustrative until the knob JSON files are written):
 
 ```json
-{ "id": "candy_04", "layout": { "kind": "single" },
+{ "id": "candy_08", "layout": { "kind": "single" },
   "board": { "width": 6, "depth": 6, "h_play": 7, "mask": ["..##.##.", "..."],
              "starting_contents": [ { "cell": [2,0,3], "content": "jelly_tile" },
                                     { "cell": [1,2,1], "content": "ice_cage" } ] },
@@ -423,7 +451,7 @@ Each atom maps 1:1 to a field of the ADR-0005 level file:
   "twists": [],
   "goal": { "type": "orders", "piece_budget": 30,
             "orders": [ { "content": "jelly_tile", "count": 6 }, { "colour": "berry", "count": 20 } ] },
-  "recipe": { "context": "campaign",
+  "recipe": { "context": "campaign", "showpiece": true,
               "atoms": ["BL02","AR01","CV01","CL05","CO02","GO06","GO07","SP04","SP06","SP08","FT07"],
               "story": { "premise": "The candy mascot spilled jelly all over the shop floor.",
                          "mascot_role": "mood_swing" } } }
@@ -458,11 +486,14 @@ Valid if `new ≤ new_max[context]` and `nd ≤ nd_max[context]`.
 | Variable | Type | Range | Source | Description |
 |---|---|---|---|---|
 | new_max | int | 0–4 | data | campaign 2, minigame 3, daily 1, arcade 2 |
-| nd_max | int | 1–6 | data | campaign 4, minigame 5, daily 4, arcade 3 |
+| nd_max | int | 1–6 | data | campaign 4 (6 for `showpiece` levels in tiers 7–10), minigame 5, daily 4, arcade 3 |
 
 "Met before" in the campaign means the atom appeared in an earlier level of the path order. Minigames count every atom not used by the base game as new.
 
-**Example**: R3 (Candy level 4, with CL05 met in Candy 2 and SP06 in Candy 3). Non-default atoms: BL02, CL05, CO02, GO06+GO07 (count as 1 goal), SP04, SP06, SP08, FT07 = 8. **That is over nd_max 4**, so R3 as written is a late-Candy showpiece: the level-designer must either split it over two levels or raise nd_max for tier ≥ 7 levels (open question 1).
+**Example**: R3 (with CL05 met in Candy 2 and SP06 in Candy 3). Non-default atoms: BL02, CL05, CO02, GO06+GO07 (count as 1 goal), SP04, SP06, SP08, FT07 = 8.
+- As a tier-4 level that is over nd_max 4.
+- As the tier-8 showpiece (`candy_08`) it is still over 6, so the level-designer drops two atoms (for example SP08 and the BL02 mask) or splits it. With those two dropped: 6, which is legal.
+- New atoms: SP04 and SP08 = 2, which is legal.
 
 ### F2. Daily goal sizing
 
@@ -556,7 +587,11 @@ Mood bands: happy if tidy ≥ 0.9, neutral if ≥ 0.7, otherwise grumpy. **Examp
 - **SE secrets in a tournament**: off. Secrets are solo-only.
 - **WO06 helper nudge would push a piece into a worse spot under a twist**: the nudge only runs on the frame it is telegraphed and uses `try_translate`; a blocked nudge fails silently.
 - **Story card missing**: validation error for campaign and minigame recipes; the daily generates its own.
-- **Burst minigame shorter than Tournament Minigames' current `t_mg` minimum (60 s)**: conflict with that GDD. See open question 2.
+- **Minigame length outside 30–240 s**: validation error (user decision 2026-10-10). Tournament Minigames' `t_mg` range must be widened from 60–180 s to match when it is next revised.
+- **CV15 or CV16 in a recipe with a `floor` atom**: validation error. A tilt mid-piece is applied at the next Resolving (down-axis rule).
+- **CO08 pour piece meets a full layer**: it fills what it can and the rest is lost (no overflow over the height limit).
+- **SC09: the top-out happens in the same tick as a bank tap**: the bank wins (input before resolve).
+- **SC11 without EV08 active**: validation error (needs EV08).
 
 ## Dependencies
 
@@ -566,7 +601,7 @@ Mood bands: happy if tidy ≥ 0.9, neutral if ≥ 0.7, otherwise grumpy. **Examp
 | Level Data & Definition (ADR-0005) | ↔ | Recipe → level JSON; the optional `recipe` block; the validator runs the tag and conflict checks |
 | Level-Specific Mechanics, Twist Library | ↔ | Designed atoms link here. Picked candidates move their rules there |
 | Layer Clearing, Level Goals & Fail States, Fall/Drop/Lock, Movement & Rotation | → atoms | The plugin base classes the CL, CO, GO, FT, AR and CV atoms extend |
-| Tournament Minigames | ↔ | Minigame recipes; IN atoms; length classes (burst and showpiece need a wider `t_mg`) |
+| Tournament Minigames | ↔ | Minigame recipes; IN atoms; length classes (30–240 s, user decision; that GDD's `t_mg` range is to be widened) |
 | Items, Buffs & Debuffs | ↔ | IN14–IN20 become item and effect ids |
 | Obstacles, Obstacle Clearing, Block Status Effects | ↔ | SP blockers (SP06–SP09, SP29–SP32) are obstacle content |
 | Mode / Minigame Randomizer, RNG/Seeds (ADR-0006) | → | Daily seed by date; per-rule streams for F9 and EV15 |
@@ -575,7 +610,7 @@ Mood bands: happy if tidy ≥ 0.9, neutral if ≥ 0.7, otherwise grumpy. **Examp
 | Scoring & Stars | ← | SC atoms; F4 |
 | mechanics-catalog.md | ↔ | The catalog's idea IDs map to atom IDs (catalog §9) |
 
-**Architecture gap for the dev team.** The CV atoms CV04–CV09 and CV13 replace the input-to-command mapping. ADR-0004 has no slot for this. Proposal: a new plugin base `ControlVerb`, slot `control.verb`, default `piece`, with the same recipe as `ArrivalStyle`. Until it exists, those verbs can only be used in minigame scenes.
+**Verbs.** The CV atoms CV04–CV09 and CV13–CV16 replace the input-to-command mapping through ADR-0004's `control.verb` slot (`ControlVerb` plugin base, default `piece`). So they work in campaign levels as well as in minigames.
 
 Bidirectional notes: the GDDs above should list the Mechanics Module when they are next revised.
 
@@ -608,6 +643,13 @@ Bidirectional notes: the GDDs above should list the Mechanics Module when they a
 | legendary_p | 0.001–0.02 | 0.005 | curve | Legendary piece rarity |
 | poke_secret_count | 3–20 | 7 | feel | Mascot poke secret |
 | length class bounds | burst 30–60 s, standard 60–180 s, showpiece 180–240 s | — | gate | Minigame mix |
+| gravity_nudge_cd / tilt_charges | 3–15 / 1–3 | 8 / 2 | gate | CV15 / CV16 |
+| seesaw_max | 5–30° | 15° | feel | BL16 |
+| crumble_s / bounce_h | 1–5 s / 1–3 | 2 / 2 | feel | SP34 / SP35 |
+| bump_locks | 5–30 | 12 | gate | EV17 |
+| nanogame_every | 5–20 pieces | 10 | gate | EV19 |
+| order_decay_s | 10–60 | 30 | curve | GO26 |
+| luck_mult_step | 0.1–1.0 | 0.25 | curve | SC09 multiplier gain per unbanked clear |
 
 ## Acceptance Criteria
 
@@ -631,8 +673,12 @@ Bidirectional notes: the GDDs above should list the Mechanics Module when they a
 
 ## Open Questions
 
-1. **F1 budget for late tiers**: should tiers 7–10 allow nd_max 6 so showpiece levels like R3 are legal without a warning? (level-designer)
-2. **Minigame length**: Tournament Minigames' `t_mg` is 60–180 s. Burst (30–60 s) and showpiece (180–240 s) need the range widened to 30–240 s; the tournament cap is already 240 s. (tournament-minigames.md owner)
-3. **`control.verb` slot**: to the architecture team as an ADR-0004 amendment.
+Resolved 2026-10-10 (user):
+- Showpiece levels in tiers 7–10 allow up to 6 non-default atoms.
+- Minigame length is 30–240 s.
+- Kitchen Rush (competitive) is the approved default.
+- `control.verb` now exists in ADR-0004.
+
+Still open:
 4. **Story-card display**: does the premise show on the Intro goal card, or only drive mascot lines? (ux-designer, HUD)
 5. **EV14 rule cubes** are L cost and readability-risky. Prototype one sentence (`COLOUR IS BOMB`) before any level uses it.

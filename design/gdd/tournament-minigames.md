@@ -7,7 +7,7 @@
 
 ## Summary
 
-Fifteen short party rounds (1–3 minutes) that join the tournament Randomizer pool next to the versus modes. Each one changes the **verb** (fit, copy, match, time, catch, sort, survive), keeps the **blocks** as the star, and has at least one way to mess with your rivals, Mario Party style. Every player plays on their own phone.
+Fifteen party rounds (30 s bursts to 4 min showpieces) that join the tournament Randomizer pool next to the versus modes. Each one changes the **verb** (fit, copy, match, time, catch, sort, survive), keeps the **blocks** as the star, and has at least one way to mess with your rivals, Mario Party style. Every player plays on their own phone.
 
 > **Quick reference** — Layer: `Feature` · Priority: `Alpha` · Key deps: `Mode / Minigame Randomizer, Items, Buffs & Debuffs, Local Multiplayer Setup, Piece Set`
 
@@ -26,7 +26,7 @@ Versus modes (Clear, Build, Shape, Survival races) are "normal Wacky Towers, fas
 1. **Template.** A minigame is a Level Data round template tagged `minigame`. It has:
    - `minigame_id`, an icon, a two-word name, and a one-sentence rule shown on the Randomizer card
    - its strategy slots (`board_kind`, `spawn_entry`, `clear_detector`, `collapse`, `top_out_check`, `goal_evaluator`; `none` where unused)
-   - `t_mg` (60–180 s), `standing_metric`, `interaction_hook`, and an `item_whitelist`
+   - `t_mg` (30–240 s), `standing_metric`, `interaction_hook`, and an `item_whitelist`
 2. **Blocks are the star.** Every minigame's main object is a Piece Set shape. Grid placement is optional.
 3. **Shared randomness.** Pieces, walls, models and spawn lanes come from the round seed (Randomizer rule 7), so every player gets the same challenge sequence. Sends and steals change only the target's own copy.
 4. **Standing.** Each minigame declares a `standing_metric`. It is used for:
@@ -279,7 +279,7 @@ Bidirectional notes to add: the Randomizer has an addendum for minigames; the ot
 | attack_warn_ms | 500–2 000 | 1 000 | feel | Telegraph time; hides latency |
 | pick_window_ms | 0–3 000 | 1 500 | feel | Tap-to-pick time; 0 = auto only |
 | ghost_send_ms | 5 000–30 000 | 15 000 | gate | Ghost interaction rate |
-| t_mg per minigame | 60–180 s | see table | gate | Round length |
+| t_mg per minigame | 30–240 s | see table | gate | Round length |
 | base_charge per minigame | 1–10 | see rules | curve | Sabotage frequency |
 | wall_interval / hole_slack (MG1) | 2–8 s / 0–4 | 6 → 3 / 2 → 0 | curve | Difficulty ramp |
 | show_ms (MG2) | 2 000–8 000 | 5 000 | curve | Memory difficulty |
@@ -324,7 +324,7 @@ Rule card, charge button (bottom corner, glows when Ready), opponent mini-boards
 10. [U] Same round seed → identical walls (MG1), models (MG2), golden-piece times (MG9) and sky lanes (MG15) on every device.
 11. [I] A player knocked out in MG13 becomes a ghost and can Pump the leader every 15 s.
 12. [M] Party playtest (3–4 players, all 15 minigames): ≥ 80% understand each minigame from the rule card alone; no single Send costs more than about 10% of round progress; trailing players use their interaction at least once in ≥ 90% of rounds.
-13. [M] Every minigame's median round length is within 60–180 s.
+13. [M] Every minigame's median round length is within 30–240 s.
 
 ## Open Questions
 

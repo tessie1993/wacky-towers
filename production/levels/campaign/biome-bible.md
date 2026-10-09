@@ -44,14 +44,16 @@ Each entry: mini story, quirk, block weather, mascot, atoms owned, borrowed/remi
 
 ### 2.1 MEADOW (Established; see `design/levels/meadow.md`)
 
-**Mini story.** The sky-mill that turns weather into blocks has stopped rolling, so the Miller started tossing everything up himself. Help the critter tidy the island and get the mill turning again.
-- **Quirk: "Gentle weather."** One visible disturbance at a time, learned slowly. Plain layer clears are the home base.
-- **Block weather:** Dandelion Seed Fall (soft blocks drift down like seeds).
-- **Mascot:** the meadow critter. Helper in 01-02, watcher in 05-06 and the bonus, prankster-lite in 03-04 and 07-09 (seeds on its face, mushroom grin), boss (the Miller) in 10.
-- **Atoms owned:** Wind (Dandelion Gust), Spawned Objects (Mushroom Pop-up), Invisible Blocks (Morning Fog), Gravity Flip (Topsy Tumble), Conveyor Floor, Sticky Landing, Build Race (trim), Target Shape, Survive.
+**Mini story: Pip's Picnic** (per `biome-stories.md`). Pip the harvest mouse wants a picnic on the hilltop. The Miller, a flour-dusted badger who likes his mill quiet and his gusts loud, rigs the mill to blow gusts, toss mushrooms, fog the grass and finally flip the hill. The finale bonks him off his roof into a flour cloud; he stomps off vowing a rematch. Keepsake: a tiny windmill.
+- **Quirk: "Gentle weather."** One visible disturbance at a time, learned slowly. Plain layer clears are the home base; the biome is the most classic (about 85%), but strangeness zig-zags per level rather than rising in a straight line.
+- **Block weather:** block drizzle from a sunny sky.
+- **Mascot: Pip** (Meadow only). Small help on tiers 1–3 (points at a good cell, catches one bad drop per level); reactions only from tier 4 on. The Miller is visible on the hill from 03 and is the boss in 10.
+- **Islands:** one per level, shaped by the story (seed plot, burrow, hillside lane, pond ring, hilltop, garden bed, foggy hollow, dewy lawn, tree island, mill yard).
+- **Atoms owned:** Wind (Dandelion Gust), Spawned Objects (Mushroom Pop-up), Invisible Blocks (Morning Fog), Gravity Flip (Topsy Tumble), Conveyor (Mill Belt), Sticky Landing, Build Race (trim), Target Shape, Survive. Proposed living blocks and special pieces: puff pieces (SP28), wobble (PL03, the Meadow's one physics level), growing sprouts (SP22), fog ghost (SP26), hatching eggs (SP21); hard track adds ants (SP31) and two fields (BL07).
 - **Borrows:** nothing.
-- **Finale: boss duel** (the Miller; Wind + Spawned Objects + Conveyor).
-- **Ramp:** exactly the ten listed in `meadow.md`. Use it as the template for ramps below.
+- **Finale: two-phase boss duel** (the Miller): phase 1 belt + gusts; after two clears he flips the hill for the last clear (Conveyor + Wind + Gravity Flip).
+- **Hard track:** bonus Picnic Puzzle (fixed list, the ants arrive in 60 s) and three remixes: Seed Sprouts, Picnic Ants, Two Fields.
+- **Ramp and sketches:** `production/levels/meadow/layout.md` (levels 01–10, bonus, H1–H3). Use it as the template for ramps below.
 
 ### 2.2 CANDY
 
