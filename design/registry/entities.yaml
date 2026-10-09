@@ -897,6 +897,42 @@ formulas:
     output_range: [s3 > s2 >= 1]
     added: 2026-10-09
     revised: ""
+  - name: expected_items
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    variables:
+      - pieces
+      - p_item
+      - p_collect
+    output_range: [0, unbounded]
+    added: 2026-10-09
+    revised: ""
+  - name: item_weight
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    variables:
+      - base_i
+      - bias_i
+      - r
+      - P
+    output_range: [probabilities sum to 1]
+    added: 2026-10-09
+    revised: ""
+  - name: bomb_blast
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    variables:
+      - bomb_radius
+      - c
+    output_range: [up to 27 cells]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -1797,6 +1833,150 @@ constants:
       - design/gdd/scoring-stars.md
     value: 1
     unit: points per cube
+    added: 2026-10-09
+    revised: ""
+  - name: p_item
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 0.12
+    unit: probability per piece
+    added: 2026-10-09
+    revised: ""
+  - name: item_slots
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 2
+    unit: slots
+    added: 2026-10-09
+    revised: ""
+  - name: item_slots_max
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 3
+    unit: slots
+    added: 2026-10-09
+    revised: ""
+  - name: full_slot_points
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 50
+    unit: points
+    added: 2026-10-09
+    revised: ""
+  - name: slow_time_scale
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 0.5
+    unit: x
+    added: 2026-10-09
+    revised: ""
+  - name: slow_time_ms
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 10000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: speed_up_scale
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 1.5
+    unit: x
+    added: 2026-10-09
+    revised: ""
+  - name: speed_up_ms
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 15000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: bomb_radius
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 1
+    unit: cells
+    added: 2026-10-09
+    revised: ""
+  - name: bomb_rock_damage
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 2
+    unit: hp
+    added: 2026-10-09
+    revised: ""
+  - name: helper_drop_count
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 3
+    unit: pieces
+    added: 2026-10-09
+    revised: ""
+  - name: preview_peek_ms
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 20000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: fog_ms
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 10000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: fog_visible_ms
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 1000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: spin_lock_ms
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 10000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: junk_rain_layers
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 1
+    unit: layers
     added: 2026-10-09
     revised: ""
 

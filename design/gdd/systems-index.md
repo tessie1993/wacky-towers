@@ -40,8 +40,8 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 15 | Obstacles | Gameplay | Vertical Slice | Designed | design/gdd/obstacles.md | Board / Grid, Rule-Twist Framework |
 | 16 | Obstacle Clearing | Gameplay | Vertical Slice | Designed | design/gdd/obstacle-clearing.md | Layer Clearing, Obstacles |
 | 17 | Scoring & Stars | Progression | Vertical Slice | Designed | design/gdd/scoring-stars.md | Layer Clearing, Level Goals & Fail States |
-| 18 | Buffs & Debuffs | Gameplay | Vertical Slice | Not Started | — | Rule-Twist Framework |
-| 19 | Items | Gameplay | Vertical Slice | Not Started | — | Buffs & Debuffs |
+| 18 | Buffs & Debuffs | Gameplay | Vertical Slice | Designed | design/gdd/buffs-debuffs.md | Rule-Twist Framework |
+| 19 | Items | Gameplay | Vertical Slice | Designed | design/gdd/items.md | Buffs & Debuffs |
 | 20 | Arcade Mode | Gameplay | Vertical Slice | Not Started | — | Level Goals & Fail States, Scoring & Stars, Twist Library |
 | 21 | Campaign Structure | Progression | Vertical Slice | Not Started | — | Level Data & Definition, Scoring & Stars |
 | 22 | Mode / Minigame Randomizer | Gameplay | Vertical Slice | Not Started | — | Level Goals & Fail States, Level Data & Definition |
@@ -221,11 +221,11 @@ None found, after three relationships were directed one way:
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 37 |
-| Design docs started | 17 |
+| Design docs started | 19 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
 | MVP systems designed | 14/14 |
-| Vertical Slice systems designed | 3/13 |
+| Vertical Slice systems designed | 5/13 |
 
 > Gates: TD-SYSTEM-BOUNDARY, PR-SCOPE and CD-SYSTEMS skipped — lean review mode.
 
