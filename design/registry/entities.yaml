@@ -983,6 +983,53 @@ formulas:
     output_range: [1, 2]
     added: 2026-10-09
     revised: ""
+  - name: majority_target
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    variables:
+      - R
+    output_range: [2, 7]
+    added: 2026-10-09
+    revised: ""
+  - name: tournament_length
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    variables:
+      - R_played
+      - t_round
+      - t_between
+    output_range: [~7, ~47 min]
+    added: 2026-10-09
+    revised: ""
+  - name: round_pick
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    variables:
+      - w_j
+    output_range: [probabilities sum to 1]
+    added: 2026-10-09
+    revised: ""
+  - name: split_cube_size
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    variables:
+      - S_half_h
+      - S_half_w
+      - n
+      - board_height
+      - f_h
+      - f_w
+    output_range: [px, >= 20 to allow]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -2099,6 +2146,69 @@ constants:
       - design/gdd/campaign-structure.md
     value: 10
     unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: round_time_cap_s
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 240
+    unit: s
+    added: 2026-10-09
+    revised: ""
+  - name: between_round_ms
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 12000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: versus_round_seconds
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 180
+    unit: s
+    added: 2026-10-09
+    revised: ""
+  - name: trailing_rerolls
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 1
+    unit: per tournament
+    added: 2026-10-09
+    revised: ""
+  - name: sync_hz
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 4
+    unit: Hz
+    added: 2026-10-09
+    revised: ""
+  - name: mp_timeout_ms
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 5000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: max_local_players
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 4
+    unit: players
     added: 2026-10-09
     revised: ""
 
