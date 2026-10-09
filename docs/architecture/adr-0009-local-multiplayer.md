@@ -13,7 +13,7 @@ Proposed
 
 ## Last Verified
 
-2026-10-09 (API names checked against `docs/engine-reference/godot/` only — see Verification Required)
+2026-10-10 (API names checked against `docs/engine-reference/godot/` only — see Verification Required)
 
 ## Decision Makers
 
@@ -108,7 +108,8 @@ No networking code exists. `design/gdd/local-multiplayer-setup.md` describes the
    - Ceiling: networks larger than /24 need the QR code.
 3. **QR code.**
    - The host shows a QR code for `wt://join?v=1&ip=<ipv4>&p=<port>&c=<room_code>`. It carries the full IP, so there is no /24 assumption.
-   - *Generation* is pure GDScript: a small QR encoder (an MIT-licensed Asset Library addon, or roughly 300 lines written in-house), drawn into an `Image`.
+   - *Generation* is pure GDScript using the **kenyoni QR code add-on** (Asset Library, generation only; recorded in `assets/data/credits.json`), drawn into an `Image`. It does not scan.
+   - *Scanning* defaults to **option C (system camera + `wt://` intent)** below (lead-programmer scan and architecture review, 2026-10-10); A is the fallback if C proves unreliable. No in-app scanner is planned.
    - *Scanning*, options (to be chosen at implementation, see Open Questions):
      - **A (recommended for Android): an Android plugin around Google's ML Kit "code scanner" (`GmsBarcodeScanning`).** Google Play services shows the camera UI and returns the string. Per Google's documentation this needs **no `CAMERA` permission** in the app (verify). The cost is native Kotlin/Java plugin code, outside "GDScript only". iOS later would use `AVFoundation`/VisionKit through an iOS plugin.
      - **B: Godot `CameraFeed` plus a decoder.** This stays in Godot, but needs the Android `CAMERA` permission (a dangerous permission with a runtime prompt), Android camera-feed support in 4.7.2 (unverified), and a decoder. A GDScript decoder is too slow per frame, so in practice it would be a GDExtension (e.g. ZXing-cpp, quirc).
@@ -202,7 +203,7 @@ All values live in one knob file, `res://assets/data/knobs/net.json` (JSON, ADR-
 ### 9. Path to online play: peer-to-peer WebRTC (user Q6)
 
 - Swap `ENetMultiplayerPeer` for `WebRTCMultiplayerPeer` in `create_client`/`create_server` mode, so the topology stays a star around the host peer. Same `NetSession`, same messages, same `TournamentHost` on the host peer.
-- **Native plugin:** on Android, iOS and desktop, WebRTC needs the `webrtc-native` GDExtension (it is built in only on the web export). This needs checking for 4.7.2.
+- **Native plugin:** on Android, iOS and desktop, WebRTC needs the `webrtc-native` GDExtension (it is built in only on the web export). This is a **binary dependency** on Android (per-ABI `.so`, rebuilt or re-downloaded per Godot version) and the first native code in the project; it falls under ADR-0008's rules (pinned version, recorded in credits, loaded only in the online build path, LAN play must work without it). Needs checking for 4.7.2.
 - **Signaling:** a small WebSocket signaling and lobby service (room code → SDP/ICE exchange). It is the one server online play cannot avoid; hosting it is devops-engineer's call.
 - **NAT:** STUN (public or self-hosted) handles most home NATs. **TURN is required** for symmetric NATs and many mobile carriers, so a share of sessions will relay through TURN. TURN costs bandwidth, which is low at about 2 KB/s per player.
 - **No neutral referee.** Each peer is trusted for its own board, and the host peer is trusted for routing and results.

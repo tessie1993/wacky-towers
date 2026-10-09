@@ -12,7 +12,7 @@ Proposed
 
 ## Last Verified
 
-2026-10-09
+2026-10-10
 
 ## Decision Makers
 
@@ -80,6 +80,7 @@ The game's promise is variety on constant blocks: wind, gravity flips (all 6 dir
 | `LayoutKind` | `layout.kind` (level data, fixed at start) | single (default), islands, lanes, track; places and links the boards of ADR-0002 section 7 |
 | `PieceRouter` | slot `spawn.router` | which board/lane the next piece enters: active (default), player_choice, round_robin, track_follow |
 | `StandingFn` | minigame/round data | item-roll standing per minigame (ADR-0009) |
+| `ControlVerb` | slot `control.verb` | what the player's input does: piece (default: move/rotate/drop the falling piece), swap, tap_pop, pull_replace, chisel, tube_move, board_slide, tray_place. Turns touch gestures into `SimCommand`s and applies them through `RuleApi` |
 
 - Duplicate `PLUGIN_ID` within a kind is a startup error (and a test failure).
 - If `get_global_class_list()` proves unreliable in exports, fallback: a generated `res://assets/data/plugins.json` written by a tool script and checked by a test. Same registry interface.
@@ -87,6 +88,8 @@ The game's promise is variety on constant blocks: wind, gravity flips (all 6 dir
 ### 2. Rule data (how values are found)
 
 - Each rule is a JSON file `res://assets/data/rules/<rule_id>.json` (internal, trusted): `rule_id`, `layer`, `icon`, `name`, `params` schema (`type`, `min`, `max`, `default` per param), `modifiers` (knob operations), `vetoes`, optional `behaviour` (a `RuleBehaviour` plugin id), `lifetime`, `incompatible_with`.
+- **Mechanic atoms** (`design/gdd/mechanics-module.md`, ~90+ atoms in the slots Board/Layout, Arrival, Control Verb, Placement, Clear, Collapse, Goal, Fail, Scoring, Interaction, Events, Special pieces) map onto this ADR with no new concept: a slot atom is a plugin of that slot's base class; Placement, Scoring, Interaction, Events and Special-piece atoms are `RuleBehaviour`s (scoring needs no slot) or content types (ADR-0002). Each atom carries **compatibility tags** in its JSON/plugin metadata: `requires` and `provides` from a tag vocabulary (`grid`/`phys`, `fall`/`nofall`, `clr`/`noclr`, `col`, `rect`, `turn`/`rt`, …) kept in `res://assets/data/atom_tags.json`. The validator (ADR-0005) rejects a level or generated mix where an atom's `requires` is not provided by the chosen board kind, layout and slots, or where two atoms carry conflicting tags (the pairs list in `atom_tags.json`). `incompatible_with` stays for one-off exceptions.
+- **Shared-board atoms are parked**: minigames are always competitive (one board per player). Nothing here prevents adding them later.
 - A rule that only changes numbers or forbids actions needs **no code** — modifiers and vetoes are data.
 - Levels (ADR-0005) reference rules by `rule_id` with parameter values; the validator checks them against the schema.
 
@@ -151,6 +154,14 @@ Minigames are separate scenes (user decision Q2), found through `assets/data/min
 ```
 
 ### Key Interfaces
+
+```gdscript
+@abstract class_name ControlVerb extends RefCounted
+## Touch gestures in, SimCommands out; applies them through RuleApi on the tick.
+@abstract func commands_for(gesture: Dictionary, api: RuleApi) -> Array[SimCommand]
+@abstract func apply(cmd: SimCommand, api: RuleApi) -> void
+func tags() -> PackedStringArray: return []     # compatibility tags (requires/provides)
+```
 
 ```gdscript
 @abstract class_name RuleBehaviour extends RefCounted

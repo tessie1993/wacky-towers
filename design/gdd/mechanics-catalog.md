@@ -107,6 +107,28 @@ These are suggestions only; the biome order is per `design/art/block-art-sets.md
 | M6 Colour Bridge | Cave or Lava (bridge over a chasm) | Spatial path-building suits a mid-to-late biome. |
 | M11 Two-Way Meet | Clockwork (two gear chutes), tiers 7+ | The highest readability load, so it goes late. |
 
+## 9. Atom IDs (Mechanics Module)
+
+Every idea in this catalog is also an atom in the Mechanics Module (`design/gdd/mechanics-module.md`, the "box of tricks"). The module is the shared vocabulary for building levels, minigames and the daily challenge. This catalog stays the idea menu with pick status. New ideas get an atom ID when they are added to the module.
+
+| Catalog ID | Atom ID | | Catalog ID | Atom ID |
+|---|---|---|---|---|
+| C1 Colour Pop | CL05 | | B1 Turntable | BL11 |
+| C2 Colour Bridge | CL06 | | B2 Crumbling Edge | BL12 |
+| C3 Mono Layer | CL07 | | B3 Twin Towers | BL07 (islands, alternating router) |
+| C4 Row Clear | CL02 | | B4 Lava Floor | EV06 |
+| C5 Pillar Clear | CL03 | | B5 Donut and Stairs | BL02 |
+| C6 Ring Clear | CL04 | | G1 Shadow Match | GO09 |
+| C7 Cube Pop | CL09 | | G2 Mascot Path | GO10 |
+| A1 Sideways Gravity | AR02 | | G3 Perfect Box | GO11 |
+| A2 Slide-In | AR03 | | G4 Dig Out | GO21 |
+| A3 Two-Way Meet | AR04 | | G5 Sinking Ceiling | EV06 |
+| A4 Pick a Gate | AR03 (gate param) | | P1 Stack Trim | PL02 |
+| A5 Twin Drop | AR11 (paired variant) | | P2 Wobble Meter | PL03 |
+| A6 Shelf Draft | AR08 | | P3 Crane Drop | AR05 |
+| A7 Rising Floor | EV07 | | P4 Pull Out | CV06 (grid variant is a Candidate; physics variant stays Parked) |
+| §6 Trim / Shake / Bonk / Hearts | FT02 / FT04 / FT05 / FT06 | | | |
+
 ## Cross-References
 
-`level-specific-mechanics.md` (M5–M11 full rules), `tournament-minigames.md`, `level-goals-fail-states.md` (`topout_rule`), `twist-library.md`, `physics-mode.md`, `piece-set.md` (families), `design/art/block-art-sets.md` (colour per set), `game-concept.md` (pillars).
+`mechanics-module.md` (atom library, recipes, daily generator), `design/mechanics/README.md` (how to compose), `level-specific-mechanics.md` (M5–M11 full rules), `tournament-minigames.md`, `level-goals-fail-states.md` (`topout_rule`), `twist-library.md`, `physics-mode.md`, `piece-set.md` (families), `design/art/block-art-sets.md` (colour per set), `game-concept.md` (pillars).

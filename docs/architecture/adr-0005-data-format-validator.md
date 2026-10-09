@@ -12,7 +12,7 @@ Proposed
 
 ## Last Verified
 
-2026-10-09
+2026-10-10
 
 ## Decision Makers
 
@@ -91,11 +91,17 @@ Official levels use the same loader and validator as player levels, so the untru
   "mechanic": { "id": "fill_target_shape", "params": {} },
   "twists": [ { "id": "wind", "params": { "every_ms": 3000 } } ],
   "stars": { "times_ms": [180000, 240000, 300000] },
-  "seed": null
+  "seed": null,
+  "recipe": [ {"slot": "arrival", "atom": "side_travel"}, {"slot": "clear", "atom": "colour_connect"} ],
+  "story": { "title_key": "LVL_MEADOW_06_TITLE", "text_key": "LVL_MEADOW_06_STORY", "icon": "flower" }
 }
 ```
 
 - **Several boards** (islands, lanes, tracks): `layout.kind` names a `LayoutKind` plugin (ADR-0004) and `boards` replaces `board` with a list, each entry a full board section plus `id`, `transform` (position/yaw in the diorama) and optional `links` (which board a piece or content passes to, e.g. a lane edge leading to the next lane). One-board levels keep the short `board` form. Layout-specific checks live in the `LayoutKind` plugin's `validate()`.
+- **`recipe`** (optional): the list of mechanic atoms (`design/gdd/mechanics-module.md`) the level is built from, by slot. It is authoring metadata for the editor panel and the daily "box of tricks" generator: the loader expands it into slot knobs and rule entries, and explicit `knobs`/`twists`/`mechanic` win over it. The validator checks the expanded result, including atom compatibility tags (ADR-0004).
+- **`story`** (optional): an intro card (title, text, icon).
+- **Text is translation keys.** Every player-visible text field (`name`, `story.*`, goal text, rule names) holds a translation key (`LVL_MEADOW_06_TITLE`), resolved with `tr()` in the UI, never shown raw. Player-made levels may instead carry literal text in a `text` sub-field (no translation); the UI shows it as plain text, escaped.
+- **Daily box of tricks**: a generator picks a compatible atom set and parameters from `round_seed` (ADR-0006 stream `["daily", date]`) and produces a `LevelData` through the same `recipe` path, then runs the same validator; an invalid mix is re-rolled up to `daily.max_rerolls` (knob).
 - `knobs` is a flat map of knob id → value: the level's base overrides (any knob in `assets/data/knobs/*.json`, rule-adjustable or not, within its range). Named sections (`board`, `pieces`, `goal`) hold structured data that is not a single knob.
 - Down axis and arrival travel use the 6 direction tokens `+x -x +y -y +z -z`.
 - `schema` integer; the loader upgrades older schemas step by step (`LevelMigrations`), rejects newer ones.
@@ -135,7 +141,8 @@ func validate(level: LevelData, ctx: ValidationContext) -> Array[ValidationIssue
 ### Implementation Guidelines
 
 - A test greps `src/` for `load(` / `ResourceLoader.load` with any `user://` path or variable path from level data and fails on a hit.
-- Export presets must include `*.json` in the non-resource export filter (devops/ADR-0008 owner).
+- **Export presets must include `*.json`** in the non-resource export filter, or all data is missing from the APK (devops; checked by an export smoke test).
+- **Asset credits** from day one: `res://assets/data/credits.json` lists every third-party asset (name, author, licence, source URL, files), e.g. Kenney CC0 packs, rFXGen/jsfxr sounds, add-ons. A test fails if a file under `assets/third_party/` or `addons/` has no credits entry. The credits screen reads this file.
 - Keep JSON field names snake_case and equal to GDD knob names where one exists.
 
 ## Alternatives Considered

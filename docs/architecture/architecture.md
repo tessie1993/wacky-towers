@@ -1,7 +1,7 @@
 # Wacky Towers — Architecture Overview
 
 > **Status**: Proposed (all nine ADRs are `Proposed`; only the user, or technical-director on the user's confirmation, may accept them)
-> **Date**: 2026-10-09
+> **Date**: 2026-10-09 (updated 2026-10-10: mechanic atoms, control verb, tools scan)
 > **Engine**: Godot 4.7.2, Mobile renderer, Jolt physics, GDScript (C++ GDExtension later, only on profiler evidence)
 > **Owner**: godot-specialist (lead architect), with engine-programmer, godot-gdextension-specialist, network-programmer
 
@@ -93,6 +93,10 @@ Each recipe touches only the files listed. If a recipe ever needs a core edit, s
 | **Arrival style** (top, side then fall, side travel) | An `ArrivalStyle` plugin that returns spawn cells, orientation and `travel_dir`, plus a choices entry | `src/gameplay/arrival/<id>.gd`, `assets/data/knobs/spawn.json` |
 | **Goal type** | A `GoalEvaluator` plugin, plus a choices entry | `src/gameplay/goals/<id>.gd`, `assets/data/knobs/goals.json` |
 | **Top-out rule** (warnings, trim, lose) | A `TopOutPolicy` plugin, plus a choices entry | `src/gameplay/goals/`, knob JSON |
+| **Control verb** (swap, tap-pop, pull and re-place, chisel, tube move, board slide, tray drag-to-place) | A `ControlVerb` plugin that turns gestures into `SimCommand`s and applies them through `RuleApi`, plus its tags and a `control.verb` choices entry. Default is `piece` | `src/gameplay/verbs/<id>.gd`, `assets/data/knobs/controls.json` |
+| **Mechanic atom** (any slot in `design/gdd/mechanics-module.md`) | Find its slot. Board/Layout, Arrival, Control Verb, Clear, Collapse, Goal and Fail atoms are plugins of that slot's base. Placement, Scoring, Interaction, Events and Special-piece atoms are `RuleBehaviour`s and/or content types. Give it compatibility tags (`requires`/`provides`). A new tag or conflict pair goes in `atom_tags.json`. Add a test | the plugin or rule files above, `assets/data/atom_tags.json` |
+| **Level built from atoms** | Write the `recipe` array (slot → atom), plus optional `story` with translation keys. The validator checks tag compatibility | level JSON |
+| **Daily "box of tricks" pool** | Mark atoms and parameter ranges as daily-eligible in their data. The generator seeds from `["daily", date]` and re-rolls invalid mixes | atom data, `assets/data/knobs/daily.json` |
 | **Piece router** (which board or lane gets the piece) | A `PieceRouter` plugin, plus a choices entry | `src/gameplay/layout/`, knob JSON |
 | **Board kind** (grid, physics) | A `BoardKind` plugin that speaks the same `SimCommand`/`SimEvent` contract | `src/gameplay/board_kinds/<id>/` |
 | **Layout** (floating islands, lanes, track) | A `LayoutKind` plugin that places, links and validates boards. Levels use `layout.kind` plus a `boards[]` list with `transform` and `links` | `src/gameplay/layout/<id>.gd` |
@@ -108,6 +112,8 @@ Each recipe touches only the files listed. If a recipe ever needs a core edit, s
 | **Minigame** | Make a scene with its own root script, plus a minigame JSON (`scene`, players, `standing` id, weights). It reuses `BoardSim`, `BoardState`, `ShapeBank` and `Seeds` as a library. Network uses generic `mg_event`/`mg_state` with its own kind table (ADR-0009) | `src/minigames/<id>/`, `assets/data/minigames/<id>.json` |
 | **Standing rule for item rolls** | A `StandingFn` plugin, named in the minigame or round data | `src/gameplay/standing/<id>.gd` |
 | **Network message** | Append a message type. Readers ignore unknown types and trailing bytes; anything else bumps `proto_ver` (ADR-0009) | `src/net/` |
+| **Player-visible text** | Add a translation key to the translation CSV and use the key in data | `assets/i18n/*.csv` |
+| **Third-party asset or add-on** | Add the files, then add a `credits.json` entry (licence, author, source). A test enforces the entry | `assets/data/credits.json` |
 | **Native hot path** | Profile first. Then a `Wt<X>` GDExtension class with the same API as its GDScript twin, chosen by the factory, with parity tests (ADR-0008) | `src/native/` (later) |
 
 Discovery: a plugin is any `class_name` script whose base chain reaches a plugin base class and that declares `const PLUGIN_ID`. `PluginRegistry` finds it with `ProjectSettings.get_global_class_list()`. If that fails in an Android export, the fallback is a generated `plugins.json` (ADR-0004).
@@ -123,10 +129,10 @@ src/
     rules/      rule_runtime.gd, knob_registry.gd, rule_api.gd, rule_instance.gd,
                 plugin_registry.gd, bases/ (rule_behaviour, clear_detector, collapse_policy,
                 arrival_style, goal_evaluator, top_out_policy, piece_router, board_kind,
-                layout_kind, standing_fn)                                       (ADR-0004)
+                layout_kind, standing_fn, control_verb)                         (ADR-0004)
     rng/        seeds.gd                                                         (ADR-0006)
   data/         data_loader.gd, level_data.gd, level_validator.gd, level_migrations.gd (ADR-0005)
-  gameplay/     rules/ clear/ arrival/ goals/ layout/ board_kinds/ standing/  ← plugins only
+  gameplay/     rules/ clear/ arrival/ verbs/ goals/ layout/ board_kinds/ standing/ daily/  ← plugins only
   view/         board_view.gd, piece_view.gd, preview_baker.gd, shaders/       (ADR-0007)
   input/        touch_controls.gd, camera_rig.gd
   ui/           hud/, menus/
@@ -135,17 +141,30 @@ src/
   app/          main.tscn, scene flow, save/profile
   native/       (empty until ADR-0008 triggers)
   dev/          block_set_preview (existing dev tool)
-assets/data/    levels/ rules/ knobs/ content/ biomes/ minigames/ shapes/ palette.json
+assets/data/    levels/ rules/ knobs/ content/ biomes/ minigames/ shapes/ palette.json atom_tags.json credits.json
+assets/i18n/    translation CSVs (all player text is keys)
+assets/third_party/  Kenney CC0 packs, rFXGen/jsfxr sounds (each in credits.json)
 tools/asset-pipeline/  block_post_import.gd (existing), extract_shape_bank.gd
 addons/wt_level_tools/ editor validator panel (planned, built when authoring needs it)
 tests/unit/     sim/ board_grid/ shapes/ rules/ rng/ data/ gameplay/ net/
 tests/integration/  level_flow/ multiplayer_loopback/
 ```
 
-**Export note.** Add `*.json` to the export filter for non-resource files, or the data will be missing from the APK.
+**Export note.** The export filter **must include `*.json`**, or all data is missing from the APK. An export smoke test checks this.
+
+**Adopted tools** (lead-programmer scan of awesome-gamedev and awesome-godot, 2026-10-10):
+- **gdUnit4**: tests, already installed.
+- **godot-ci**: CI export and test images.
+- **Kenney CC0 assets**: placeholder and UI art.
+- **rFXGen / jsfxr**: sound effects.
+- **kenyoni QR add-on**: join QR generation only (ADR-0009).
+- **webrtc-native**: later, for online play only (ADR-0009, under ADR-0008's native rules).
+
+Every third-party item gets a `credits.json` entry from day one.
 
 ## 7. Build order
 
+0. **Housekeeping**: `credits.json`, the `*.json` export filter, translation CSV stub, godot-ci.
 1. **RNG** (`Seeds`, FNV, goldens). Tests first.
 2. **Shapes**: `Orientations` tables, extractor, `shape_bank.tres`, block-set test switched over to the bank.
 3. **Board**: `BoardSpec` validation, `BoardState` queries and deltas, all 6 down axes.
@@ -157,7 +176,7 @@ tests/integration/  level_flow/ multiplayer_loopback/
 9. **Meadow twists and mechanics** as plugins and data (wind, spawned objects, invisible, gravity flip, build race / trim, target shape, sticky, conveyor), then meadow_02 to meadow_10.
 10. **Multi-board layouts** (islands, lanes) when the first level design needs them.
 11. **Multiplayer**: loopback tests, then ENet on the LAN, discovery, room code, QR.
-12. **Editor validator panel**, once there is pain in authoring levels.
+12. **Editor validator panel** (with recipe/atom picking), once there is pain in authoring levels. **Daily box-of-tricks generator** after the atom library has enough tagged atoms.
 13. **Alpha**: Physics Mode (`BoardKind` physics), minigame scenes, native hot paths only if profiling shows the need.
 
 ## 8. Multiplayer in brief (ADR-0009)
@@ -177,6 +196,14 @@ tests/integration/  level_flow/ multiplayer_loopback/
 | Multiple boards per level: each board stays a box, joined by data `links`. Layout and routing are plugins | 0002 §7, 0004, 0005 |
 | The board stores hue ids; colours come from `palette.json` | 0002, 0003, 0007 |
 | Visual tunables and status looks are data | 0007 §7 |
+| Control verb is a slot (`control.verb`, `ControlVerb` base, default `piece`). Scoring atoms are `RuleBehaviour`s with no slot | 0004 |
+| Atom compatibility tags (`requires`/`provides`, conflict pairs in `atom_tags.json`) extend `incompatible_with` | 0004, 0005 |
+| Level JSON gets optional `recipe` and `story`. The daily generator uses the `recipe` path and the same validator | 0005, 0006 |
+| Shared-board atoms are parked: minigames are always competitive | 0004 |
+| All player-visible text in data is translation keys. Player levels may carry literal escaped text | 0005 |
+| No float noise feeds the sim | 0006 |
+| QR is generation-only (kenyoni). Scanning uses the system camera. webrtc-native is a later binary dependency | 0009 |
+| Asset credits JSON from day one, enforced by a test | 0005 |
 | Attack randomness uses its own RNG stream keyed by `instance_id` | 0006, 0009 |
 
 ## 10. Open items

@@ -12,7 +12,7 @@ Proposed
 
 ## Last Verified
 
-2026-10-09
+2026-10-10
 
 ## Decision Makers
 
@@ -73,6 +73,7 @@ The Spawner GDD makes the piece stream a pure function of `(round_seed, player s
 | Extras (shared mode) | `["extra", player_id, k]` | Per-player additions to bag k (Spawner rule 14) |
 | Rule instance | `["rule", rule_id, instance_n]` | One stateful RNG per active rule (`RuleApi.rng()`) |
 | Strategy | `["slot", slot_id]` | Stateful RNG for a strategy that needs randomness |
+| Daily box of tricks | `["daily", yyyymmdd]` | Same daily mini-levels on every phone (ADR-0005) |
 | Attack | `["attack", instance_id]` | Randomness of a received attack (e.g. Junk Rain's gap), so it replays on the target (ADR-0009 requirement 5) |
 | Minigame / mode picks | `["round", round_index]`, `["minigame", id]` | Host-side picks (Randomizer, Tournament) |
 
@@ -88,6 +89,7 @@ The Spawner GDD makes the piece stream a pure function of `(round_seed, player s
 
 ### Rules
 
+- **No float noise in the sim.** `FastNoiseLite`, `randf*`, `Noise`-based textures or any float-producing generator must never feed gameplay state (positions, timers, choices, spawns). They are allowed only in the view (wobble, VFX, dressing). Gameplay needing "noise" (e.g. wind gusts) derives integers from a rule stream. Grep test over `src/core/` and `src/gameplay/`.
 - `randi()`, `randf()`, `randomize()` and global RNG functions are banned in `src/core/`, `src/gameplay/` and plugins (grep test). Only `Seeds` creates gameplay RNGs.
 - Shuffle: Fisher–Yates from the end, `j = rng.randi_range(0, i)`.
 - Weighted pick: integer weights, `r = rng.randi_range(0, total - 1)`, walk the cumulative sum.
