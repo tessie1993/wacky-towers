@@ -377,6 +377,729 @@ formulas:
     output_range: [0, 1]
     added: 2026-10-09
     revised: ""
+  - name: occupied_cells
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    variables:
+      - p
+      - R
+      - o_i
+    output_range: [1, 8 cells]
+    added: 2026-10-09
+    revised: ""
+  - name: kick_candidates
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    variables:
+      - cx
+      - cz
+      - px
+      - pz
+      - kick_wide_min_extent
+      - max_up_kicks_per_piece
+    output_range: [1, 14 tests]
+    added: 2026-10-09
+    revised: ""
+  - name: kick_restore
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    variables:
+      - p_now
+      - offset_kick
+      - R_now
+    output_range: [pre-rotation pose]
+    added: 2026-10-09
+    revised: ""
+  - name: resting_test
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    variables:
+      - c
+      - down
+      - solid
+    output_range: [true, false]
+    added: 2026-10-09
+    revised: ""
+  - name: fall_speed
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    variables:
+      - g0
+      - ramp_per_clear
+      - ramp_per_min
+      - layers_cleared
+      - minutes
+      - g_max
+      - gravity_scale
+      - soft_drop_factor
+      - soft_drop_min
+      - soft_drop_max
+    output_range: [0, g_max x scale]
+    added: 2026-10-09
+    revised: ""
+  - name: fall_time
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    variables:
+      - d
+      - g
+    output_range: [0, 50 s]
+    added: 2026-10-09
+    revised: ""
+  - name: drop_distance
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    variables:
+      - cells
+      - down
+    output_range: [0, board_height - 1]
+    added: 2026-10-09
+    revised: ""
+  - name: lock_stall
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    variables:
+      - lock_delay_ms
+      - lock_resets_max
+    output_range: [0, 46500 ms]
+    added: 2026-10-09
+    revised: ""
+  - name: cycle_time
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    variables:
+      - t_fall
+      - lock_delay_ms
+      - t_resolve
+      - entry_delay_ms
+    output_range: [350 ms, unbounded]
+    added: 2026-10-09
+    revised: ""
+  - name: slice_shift
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    variables:
+      - C
+      - y
+      - y_new
+    output_range: [0, board_height - 1]
+    added: 2026-10-09
+    revised: ""
+  - name: resolve_time
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    variables:
+      - n
+      - clear_anim_ms
+      - clear_stagger_ms
+      - clear_settle_ms
+      - resolve_max_ms
+    output_range: [0, 1000 ms]
+    added: 2026-10-09
+    revised: ""
+  - name: cubes_cleared
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    variables:
+      - active_cells_in_layer
+    output_range: [0, board_capacity]
+    added: 2026-10-09
+    revised: ""
+  - name: cascade_time
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    variables:
+      - chain_max
+      - max_fall
+      - cascade_step_ms
+    output_range: [0, ~10 s worst case]
+    added: 2026-10-09
+    revised: ""
+  - name: default_clear_target
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    variables:
+      - T_level
+      - P_eff
+      - t_piece
+    output_range: [1, unbounded]
+    added: 2026-10-09
+    revised: ""
+  - name: tower_height
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    variables:
+      - filled
+      - active_cells_in_layer
+      - height_coverage
+    output_range: [0, board_height]
+    added: 2026-10-09
+    revised: ""
+  - name: rescue_wipe
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    variables:
+      - s
+      - H_play
+      - rescue_margin
+    output_range: [1, s + 1]
+    added: 2026-10-09
+    revised: ""
+  - name: goal_progress
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    variables:
+      - layers_cleared
+      - height
+      - clock
+      - filled_M
+      - N
+      - H_target
+      - T
+      - M
+    output_range: [0, 1]
+    added: 2026-10-09
+    revised: ""
+  - name: effective_parameter
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    variables:
+      - v_base
+      - s_top
+      - m_i
+      - a_i
+      - v_min
+      - v_max
+    output_range: [v_min, v_max]
+    added: 2026-10-09
+    revised: ""
+  - name: rule_priority
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    variables:
+      - layer_rank
+      - activated_at
+      - rule_id
+    output_range: [total order]
+    added: 2026-10-09
+    revised: ""
+  - name: rule_budget
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    variables:
+      - n_twists
+      - n_level_mechanics
+      - max_twists
+      - max_level_mechanics
+    output_range: [true, false]
+    added: 2026-10-09
+    revised: ""
+  - name: rule_lifetime
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    variables:
+      - duration_ms
+      - active_play_ms
+      - pieces
+      - locks_since_start
+    output_range: [0, duration]
+    added: 2026-10-09
+    revised: ""
+  - name: conveyor_shift
+    status: active
+    source: design/gdd/level-specific-mechanics.md
+    referenced_by:
+      - design/gdd/level-specific-mechanics.md
+    variables:
+      - p
+      - d
+      - W
+      - D
+    output_range: [inside footprint]
+    added: 2026-10-09
+    revised: ""
+  - name: build_race_time
+    status: active
+    source: design/gdd/level-specific-mechanics.md
+    referenced_by:
+      - design/gdd/level-specific-mechanics.md
+    variables:
+      - H_target
+      - height_coverage
+      - A
+      - c
+      - t_piece
+    output_range: [guide, s]
+    added: 2026-10-09
+    revised: ""
+  - name: shape_fill_time
+    status: active
+    source: design/gdd/level-specific-mechanics.md
+    referenced_by:
+      - design/gdd/level-specific-mechanics.md
+    variables:
+      - M
+      - c
+      - eta_shape
+      - t_piece
+    output_range: [guide, s]
+    added: 2026-10-09
+    revised: ""
+  - name: sticky_aim_time
+    status: active
+    source: design/gdd/level-specific-mechanics.md
+    referenced_by:
+      - design/gdd/level-specific-mechanics.md
+    variables:
+      - d
+      - g
+      - sticky_gravity_scale
+    output_range: [s]
+    added: 2026-10-09
+    revised: ""
+  - name: gusts_per_piece
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    variables:
+      - t_fall_active
+      - wind_interval_ms
+    output_range: [0, unbounded]
+    added: 2026-10-09
+    revised: ""
+  - name: block_alpha
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    variables:
+      - t
+      - visible_ms
+      - fade_ms
+      - invisible_alpha
+    output_range: [invisible_alpha, 1]
+    added: 2026-10-09
+    revised: ""
+  - name: flip_due
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    variables:
+      - layers_since_flip
+      - flip_every_layers
+      - play_ms_since_flip
+      - flip_every_ms
+    output_range: [true, false]
+    added: 2026-10-09
+    revised: ""
+  - name: objects_spawned
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    variables:
+      - locks
+      - spawn_every_locks
+      - objects_max
+    output_range: [0, objects_max on board]
+    added: 2026-10-09
+    revised: ""
+  - name: level_length_estimate
+    status: active
+    source: design/gdd/level-data-definition.md
+    referenced_by:
+      - design/gdd/level-data-definition.md
+    variables:
+      - N
+      - P_eff
+      - t_piece
+      - T
+    output_range: [warn outside 5-15 min]
+    added: 2026-10-09
+    revised: ""
+  - name: top_band_height
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    variables:
+      - inset_top
+      - preview_first_pt
+      - plate_min_pt
+      - margin_pt
+    output_range: [80, 130 pt]
+    added: 2026-10-09
+    revised: ""
+  - name: danger_state
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    variables:
+      - stack_height
+      - H_play
+      - danger_margin
+    output_range: [true, false]
+    added: 2026-10-09
+    revised: ""
+  - name: preview_plate_size
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    variables:
+      - i
+      - preview_first_pt
+    output_range: [48, preview_first_pt]
+    added: 2026-10-09
+    revised: ""
+  - name: pieces_per_clear_obstacles
+    status: active
+    source: design/gdd/obstacles.md
+    referenced_by:
+      - design/gdd/obstacles.md
+    variables:
+      - A
+      - n_obs
+      - c
+      - eta
+    output_range: [below Board P_eff]
+    added: 2026-10-09
+    revised: ""
+  - name: pillar_share
+    status: active
+    source: design/gdd/obstacles.md
+    referenced_by:
+      - design/gdd/obstacles.md
+    variables:
+      - n_pillars
+      - A
+      - pillar_max_share
+    output_range: [0, pillar_max_share]
+    added: 2026-10-09
+    revised: ""
+  - name: resolves_to_clear
+    status: active
+    source: design/gdd/obstacle-clearing.md
+    referenced_by:
+      - design/gdd/obstacle-clearing.md
+    variables:
+      - max_hp
+      - layer_damage
+    output_range: [1, 5]
+    added: 2026-10-09
+    revised: ""
+  - name: pillar_shift
+    status: active
+    source: design/gdd/obstacle-clearing.md
+    referenced_by:
+      - design/gdd/obstacle-clearing.md
+    variables:
+      - C
+      - y
+    output_range: [0, board_height - 1]
+    added: 2026-10-09
+    revised: ""
+  - name: star_times
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    variables:
+      - t_est
+      - star2_share
+      - star3_share
+    output_range: [t3 < t2]
+    added: 2026-10-09
+    revised: ""
+  - name: clear_score
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    variables:
+      - n
+      - clear_base
+      - A
+      - chain_bonus
+      - round
+    output_range: [25, unbounded]
+    added: 2026-10-09
+    revised: ""
+  - name: combo_score
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    variables:
+      - k
+      - combo_bonus
+      - drop_points
+      - place_points
+    output_range: [0, unbounded]
+    added: 2026-10-09
+    revised: ""
+  - name: survive_stars
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    variables:
+      - T
+      - P_eff
+      - t_piece
+      - survive2_share
+      - survive3_share
+    output_range: [s3 > s2 >= 1]
+    added: 2026-10-09
+    revised: ""
+  - name: expected_items
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    variables:
+      - pieces
+      - p_item
+      - p_collect
+    output_range: [0, unbounded]
+    added: 2026-10-09
+    revised: ""
+  - name: item_weight
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    variables:
+      - base_i
+      - bias_i
+      - r
+      - P
+    output_range: [probabilities sum to 1]
+    added: 2026-10-09
+    revised: ""
+  - name: bomb_blast
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    variables:
+      - bomb_radius
+      - c
+    output_range: [up to 27 cells]
+    added: 2026-10-09
+    revised: ""
+  - name: biome_unlock
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    variables:
+      - stars_b
+      - biome_star_gate
+    output_range: [true, false]
+    added: 2026-10-09
+    revised: ""
+  - name: campaign_g0
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    variables:
+      - b
+      - t
+      - g0_start
+      - g0_per_tier
+      - g0_per_biome
+    output_range: [0.8, 1.7 cells/s]
+    added: 2026-10-09
+    revised: ""
+  - name: arcade_speed
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    variables:
+      - L
+      - g0
+      - ramp_per_clear
+      - g_max
+    output_range: [1.0, 6 cells/s]
+    added: 2026-10-09
+    revised: ""
+  - name: arcade_twists
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    variables:
+      - L
+      - pool
+      - twist_rotation_layers
+    output_range: [1, 2]
+    added: 2026-10-09
+    revised: ""
+  - name: majority_target
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    variables:
+      - R
+    output_range: [2, 7]
+    added: 2026-10-09
+    revised: ""
+  - name: tournament_length
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    variables:
+      - R_played
+      - t_round
+      - t_between
+    output_range: [~7, ~47 min]
+    added: 2026-10-09
+    revised: ""
+  - name: round_pick
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    variables:
+      - w_j
+    output_range: [probabilities sum to 1]
+    added: 2026-10-09
+    revised: ""
+  - name: split_cube_size
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    variables:
+      - S_half_h
+      - S_half_w
+      - n
+      - board_height
+      - f_h
+      - f_w
+    output_range: [px, >= 20 to allow]
+    added: 2026-10-09
+    revised: ""
+  - name: save_merge
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    variables:
+      - best_stars
+      - best_time_s
+      - best_score
+      - unlocks
+      - settings_changed_at
+    output_range: [merged record]
+    added: 2026-10-09
+    revised: ""
+  - name: save_size
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    variables:
+      - profiles
+      - levels
+    output_range: [~18 KB]
+    added: 2026-10-09
+    revised: ""
+  - name: taps_to_play
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    variables:
+      - route
+    output_range: [1, 3]
+    added: 2026-10-09
+    revised: ""
+  - name: feel_intensity
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    variables:
+      - size
+      - intensity_step
+      - intensity_cap
+    output_range: [1, 2]
+    added: 2026-10-09
+    revised: ""
+  - name: tower_height_physics
+    status: active
+    source: design/gdd/physics-mode.md
+    referenced_by:
+      - design/gdd/physics-mode.md
+    variables:
+      - settled_pieces
+      - platform_top
+    output_range: [cells]
+    added: 2026-10-09
+    revised: ""
+  - name: active_bodies
+    status: active
+    source: design/gdd/physics-mode.md
+    referenced_by:
+      - design/gdd/physics-mode.md
+    variables:
+      - tower_top
+      - freeze_depth
+      - max_active_bodies
+    output_range: [0, 40]
+    added: 2026-10-09
+    revised: ""
 constants:
   - name: default_board_width
     status: active
@@ -701,6 +1424,1023 @@ constants:
       - design/gdd/piece-spawner-queue.md
     value: 1
     unit: uses
+    added: 2026-10-09
+    revised: ""
+  - name: max_up_kicks_per_piece
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    value: 2
+    unit: kicks
+    added: 2026-10-09
+    revised: ""
+  - name: kick_wide_min_extent
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    value: 4
+    unit: cubes
+    added: 2026-10-09
+    revised: ""
+  - name: max_kick_tests
+    status: active
+    source: design/gdd/movement-rotation.md
+    referenced_by:
+      - design/gdd/movement-rotation.md
+    value: 14
+    unit: tests
+    added: 2026-10-09
+    revised: ""
+  - name: base_gravity
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 1.0
+    unit: cells/s
+    added: 2026-10-09
+    revised: ""
+  - name: max_gravity
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 6
+    unit: cells/s
+    added: 2026-10-09
+    revised: ""
+  - name: ramp_per_clear
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 0.05
+    unit: cells/s per layer
+    added: 2026-10-09
+    revised: ""
+  - name: soft_drop_factor
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 10
+    unit: x
+    added: 2026-10-09
+    revised: ""
+  - name: soft_drop_min
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 8
+    unit: cells/s
+    added: 2026-10-09
+    revised: ""
+  - name: soft_drop_max
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 30
+    unit: cells/s
+    added: 2026-10-09
+    revised: ""
+  - name: hard_drop_grace_ms
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 150
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: lock_delay_ms
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 500
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: lock_resets_max
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 10
+    unit: resets
+    added: 2026-10-09
+    revised: ""
+  - name: entry_delay_ms
+    status: active
+    source: design/gdd/fall-drop-lock.md
+    referenced_by:
+      - design/gdd/fall-drop-lock.md
+    value: 200
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: clear_anim_ms
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    value: 250
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: clear_stagger_ms
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    value: 100
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: clear_settle_ms
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    value: 200
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: resolve_max_ms
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    value: 1000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: cascade_step_ms
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    value: 180
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: chain_max
+    status: active
+    source: design/gdd/layer-clearing.md
+    referenced_by:
+      - design/gdd/layer-clearing.md
+    value: 10
+    unit: rounds
+    added: 2026-10-09
+    revised: ""
+  - name: target_level_seconds
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    value: 480
+    unit: s
+    added: 2026-10-09
+    revised: ""
+  - name: avg_piece_seconds
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    value: 8
+    unit: s
+    added: 2026-10-09
+    revised: ""
+  - name: height_coverage
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    value: 0.5
+    unit: fraction
+    added: 2026-10-09
+    revised: ""
+  - name: warnings_max
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    value: 1
+    unit: warnings
+    added: 2026-10-09
+    revised: ""
+  - name: rescue_margin
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    value: 2
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: countdown_ms
+    status: active
+    source: design/gdd/level-goals-fail-states.md
+    referenced_by:
+      - design/gdd/level-goals-fail-states.md
+    value: 3000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: max_twists_per_level
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    value: 2
+    unit: twists
+    added: 2026-10-09
+    revised: ""
+  - name: max_level_mechanics
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    value: 1
+    unit: mechanics
+    added: 2026-10-09
+    revised: ""
+  - name: max_hook_depth
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    value: 4
+    unit: levels
+    added: 2026-10-09
+    revised: ""
+  - name: framework_budget_ms
+    status: active
+    source: design/gdd/rule-twist-framework.md
+    referenced_by:
+      - design/gdd/rule-twist-framework.md
+    value: 0.5
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: sticky_gravity_scale
+    status: active
+    source: design/gdd/level-specific-mechanics.md
+    referenced_by:
+      - design/gdd/level-specific-mechanics.md
+    value: 0.7
+    unit: x
+    added: 2026-10-09
+    revised: ""
+  - name: conveyor_every
+    status: active
+    source: design/gdd/level-specific-mechanics.md
+    referenced_by:
+      - design/gdd/level-specific-mechanics.md
+    value: 1
+    unit: locks
+    added: 2026-10-09
+    revised: ""
+  - name: wind_interval_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 6000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: wind_jitter_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 2000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: wind_warn_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 1000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: visible_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 4000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: invisible_fade_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 1000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: invisible_alpha
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 0.1
+    unit: opacity
+    added: 2026-10-09
+    revised: ""
+  - name: reveal_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 600
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: flip_every_layers
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 2
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: flip_every_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 45000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: flip_warn_ms
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 2000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: spawn_every_locks
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 6
+    unit: locks
+    added: 2026-10-09
+    revised: ""
+  - name: objects_max
+    status: active
+    source: design/gdd/twist-library.md
+    referenced_by:
+      - design/gdd/twist-library.md
+    value: 4
+    unit: objects
+    added: 2026-10-09
+    revised: ""
+  - name: mvp_level_count
+    status: active
+    source: design/gdd/level-data-definition.md
+    referenced_by:
+      - design/gdd/level-data-definition.md
+    value: 10
+    unit: levels
+    added: 2026-10-09
+    revised: ""
+  - name: level_length_warn_min
+    status: active
+    source: design/gdd/level-data-definition.md
+    referenced_by:
+      - design/gdd/level-data-definition.md
+    value: 5
+    unit: min
+    added: 2026-10-09
+    revised: ""
+  - name: level_length_warn_max
+    status: active
+    source: design/gdd/level-data-definition.md
+    referenced_by:
+      - design/gdd/level-data-definition.md
+    value: 15
+    unit: min
+    added: 2026-10-09
+    revised: ""
+  - name: preview_first_pt
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    value: 64
+    unit: pt
+    added: 2026-10-09
+    revised: ""
+  - name: plate_min_pt
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    value: 48
+    unit: pt
+    added: 2026-10-09
+    revised: ""
+  - name: hud_margin_pt
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    value: 8
+    unit: pt
+    added: 2026-10-09
+    revised: ""
+  - name: danger_margin
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    value: 2
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: rule_strip_max_icons
+    status: active
+    source: design/gdd/hud.md
+    referenced_by:
+      - design/gdd/hud.md
+    value: 5
+    unit: icons
+    added: 2026-10-09
+    revised: ""
+  - name: crate_hp
+    status: active
+    source: design/gdd/obstacles.md
+    referenced_by:
+      - design/gdd/obstacles.md
+    value: 1
+    unit: hp
+    added: 2026-10-09
+    revised: ""
+  - name: rock_hp
+    status: active
+    source: design/gdd/obstacles.md
+    referenced_by:
+      - design/gdd/obstacles.md
+    value: 2
+    unit: hp
+    added: 2026-10-09
+    revised: ""
+  - name: junk_hp
+    status: active
+    source: design/gdd/obstacles.md
+    referenced_by:
+      - design/gdd/obstacles.md
+    value: 1
+    unit: hp
+    added: 2026-10-09
+    revised: ""
+  - name: pillar_max_share
+    status: active
+    source: design/gdd/obstacles.md
+    referenced_by:
+      - design/gdd/obstacles.md
+    value: 0.25
+    unit: fraction
+    added: 2026-10-09
+    revised: ""
+  - name: layer_damage
+    status: active
+    source: design/gdd/obstacle-clearing.md
+    referenced_by:
+      - design/gdd/obstacle-clearing.md
+    value: 1
+    unit: hp per resolve
+    added: 2026-10-09
+    revised: ""
+  - name: adjacent_damage
+    status: active
+    source: design/gdd/obstacle-clearing.md
+    referenced_by:
+      - design/gdd/obstacle-clearing.md
+    value: 0
+    unit: hp
+    added: 2026-10-09
+    revised: ""
+  - name: star2_share
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 0.85
+    unit: fraction
+    added: 2026-10-09
+    revised: ""
+  - name: star3_share
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 0.6
+    unit: fraction
+    added: 2026-10-09
+    revised: ""
+  - name: clear_base
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 100
+    unit: points
+    added: 2026-10-09
+    revised: ""
+  - name: chain_bonus
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 0.5
+    unit: x per round
+    added: 2026-10-09
+    revised: ""
+  - name: combo_bonus
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 50
+    unit: points
+    added: 2026-10-09
+    revised: ""
+  - name: drop_points
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 2
+    unit: points per cell
+    added: 2026-10-09
+    revised: ""
+  - name: place_points
+    status: active
+    source: design/gdd/scoring-stars.md
+    referenced_by:
+      - design/gdd/scoring-stars.md
+    value: 1
+    unit: points per cube
+    added: 2026-10-09
+    revised: ""
+  - name: p_item
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 0.12
+    unit: probability per piece
+    added: 2026-10-09
+    revised: ""
+  - name: item_slots
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 2
+    unit: slots
+    added: 2026-10-09
+    revised: ""
+  - name: item_slots_max
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 3
+    unit: slots
+    added: 2026-10-09
+    revised: ""
+  - name: full_slot_points
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 50
+    unit: points
+    added: 2026-10-09
+    revised: ""
+  - name: slow_time_scale
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 0.5
+    unit: x
+    added: 2026-10-09
+    revised: ""
+  - name: slow_time_ms
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 10000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: speed_up_scale
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 1.5
+    unit: x
+    added: 2026-10-09
+    revised: ""
+  - name: speed_up_ms
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 15000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: bomb_radius
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 1
+    unit: cells
+    added: 2026-10-09
+    revised: ""
+  - name: bomb_rock_damage
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 2
+    unit: hp
+    added: 2026-10-09
+    revised: ""
+  - name: helper_drop_count
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 3
+    unit: pieces
+    added: 2026-10-09
+    revised: ""
+  - name: preview_peek_ms
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 20000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: fog_ms
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 10000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: fog_visible_ms
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 1000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: spin_lock_ms
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 10000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: junk_rain_layers
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+    value: 1
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: biome_star_gate
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 15
+    unit: stars
+    added: 2026-10-09
+    revised: ""
+  - name: levels_per_biome
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 10
+    unit: levels
+    added: 2026-10-09
+    revised: ""
+  - name: biome_count
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 10
+    unit: biomes
+    added: 2026-10-09
+    revised: ""
+  - name: g0_per_tier
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 0.04
+    unit: cells/s
+    added: 2026-10-09
+    revised: ""
+  - name: g0_per_biome
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 0.06
+    unit: cells/s
+    added: 2026-10-09
+    revised: ""
+  - name: arcade_ramp_per_clear
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 0.08
+    unit: cells/s per layer
+    added: 2026-10-09
+    revised: ""
+  - name: twist_rotation_layers
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 5
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: specials_after_layers
+    status: active
+    source: design/gdd/campaign-structure.md
+    referenced_by:
+      - design/gdd/campaign-structure.md
+    value: 10
+    unit: layers
+    added: 2026-10-09
+    revised: ""
+  - name: round_time_cap_s
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 240
+    unit: s
+    added: 2026-10-09
+    revised: ""
+  - name: between_round_ms
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 12000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: versus_round_seconds
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 180
+    unit: s
+    added: 2026-10-09
+    revised: ""
+  - name: trailing_rerolls
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 1
+    unit: per tournament
+    added: 2026-10-09
+    revised: ""
+  - name: sync_hz
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 4
+    unit: Hz
+    added: 2026-10-09
+    revised: ""
+  - name: mp_timeout_ms
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 5000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: max_local_players
+    status: active
+    source: design/gdd/tournament-flow.md
+    referenced_by:
+      - design/gdd/tournament-flow.md
+    value: 4
+    unit: players
+    added: 2026-10-09
+    revised: ""
+  - name: max_profiles
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 4
+    unit: profiles
+    added: 2026-10-09
+    revised: ""
+  - name: sync_min_interval_s
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 60
+    unit: s
+    added: 2026-10-09
+    revised: ""
+  - name: intensity_step
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 0.25
+    unit: x per size
+    added: 2026-10-09
+    revised: ""
+  - name: intensity_cap
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 2
+    unit: x
+    added: 2026-10-09
+    revised: ""
+  - name: max_vfx_systems
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 6
+    unit: systems
+    added: 2026-10-09
+    revised: ""
+  - name: max_particles
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 600
+    unit: particles
+    added: 2026-10-09
+    revised: ""
+  - name: max_punch_px
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 6
+    unit: px
+    added: 2026-10-09
+    revised: ""
+  - name: vfx_budget_ms
+    status: active
+    source: design/gdd/save-profile.md
+    referenced_by:
+      - design/gdd/save-profile.md
+    value: 2
+    unit: ms GPU
+    added: 2026-10-09
+    revised: ""
+  - name: settle_ms
+    status: active
+    source: design/gdd/physics-mode.md
+    referenced_by:
+      - design/gdd/physics-mode.md
+    value: 400
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: settle_max_ms
+    status: active
+    source: design/gdd/physics-mode.md
+    referenced_by:
+      - design/gdd/physics-mode.md
+    value: 3000
+    unit: ms
+    added: 2026-10-09
+    revised: ""
+  - name: freeze_depth
+    status: active
+    source: design/gdd/physics-mode.md
+    referenced_by:
+      - design/gdd/physics-mode.md
+    value: 4
+    unit: cells
+    added: 2026-10-09
+    revised: ""
+  - name: max_active_bodies
+    status: active
+    source: design/gdd/physics-mode.md
+    referenced_by:
+      - design/gdd/physics-mode.md
+    value: 40
+    unit: bodies
+    added: 2026-10-09
+    revised: ""
+  - name: drops_allowed
+    status: active
+    source: design/gdd/physics-mode.md
+    referenced_by:
+      - design/gdd/physics-mode.md
+    value: 3
+    unit: drops
+    added: 2026-10-09
+    revised: ""
+  - name: physics_variant_count
+    status: active
+    source: design/gdd/physics-mode.md
+    referenced_by:
+      - design/gdd/physics-mode.md
+    value: 13
+    unit: variants
+    added: 2026-10-09
+    revised: ""
+  - name: vine_every_locks
+    status: active
+    source: design/gdd/physics-mode.md
+    referenced_by:
+      - design/gdd/physics-mode.md
+    value: 4
+    unit: locks
+    added: 2026-10-09
+    revised: ""
+  - name: burn_locks
+    status: active
+    source: design/gdd/physics-mode.md
+    referenced_by:
+      - design/gdd/physics-mode.md
+    value: 3
+    unit: locks
+    added: 2026-10-09
+    revised: ""
+  - name: burn_spread_p
+    status: active
+    source: design/gdd/physics-mode.md
+    referenced_by:
+      - design/gdd/physics-mode.md
+    value: 0.3
+    unit: probability
+    added: 2026-10-09
+    revised: ""
+  - name: crumble_locks
+    status: active
+    source: design/gdd/physics-mode.md
+    referenced_by:
+      - design/gdd/physics-mode.md
+    value: 2
+    unit: locks
     added: 2026-10-09
     revised: ""
 
