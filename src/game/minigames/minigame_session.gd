@@ -60,7 +60,7 @@ func setup(descriptor: Dictionary, seed: int, game_catalog: GameCatalog, owner: 
 	rng = Seeds.make_rng(seed, ["minigame", id, "challenges"])
 	attack_rng = Seeds.make_rng(seed, ["minigame", id, "incoming", owner])
 	spawner = Spawner.new({"shapes": shape_pool()}, 4, seed)
-	var script_path: String = "res://src/game/minigames/rules_b.gd" if id in [&"mg06", &"mg07", &"mg08", &"mg10", &"mg11", &"mg12", &"mg13", &"mg14", &"mg19", &"mg20", &"mg21"] else "res://src/game/minigames/rules_a.gd"
+	var script_path: String = str(template.get("rules_script", "")) if template.has("rules_script") else "res://src/game/minigames/rules_b.gd" if id in [&"mg06", &"mg07", &"mg08", &"mg10", &"mg11", &"mg12", &"mg13", &"mg14", &"mg19", &"mg20", &"mg21"] else "res://src/game/minigames/rules_a.gd"
 	if not ResourceLoader.exists(script_path): return false
 	_rules = load(script_path).new()
 	_runtime.execute(_rules, &"start", [self])

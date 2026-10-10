@@ -8,6 +8,8 @@ const MINT := Color("b8ddc7")
 const ORANGE := Color("eaa05b")
 const Art := preload("res://src/view/wt_minigame_art.gd")
 const NAMES := ["Hole in the Wall", "Copycat", "Colour Rush", "Perfect Stack", "Crane Tower", "Mascot Bridge Race", "Box Packers", "Gift Exchange", "Speed Sort", "Shadow Duel", "Memory Tower", "Spin Cycle", "Floor Is Lava", "Hot Block", "Catch Tower", "Rhythm Stack", "Magnet Maze", "Balloon Volley", "Gem Grab", "Paint Dash", "Balance Budget"]
+## Wave-2 drawers/controls live in extension scripts with static handles/actions/draw/note.
+const EXTENSIONS := ["res://src/ui/minigame_ext_c.gd", "res://src/ui/minigame_ext_d.gd"]
 var snapshot: Dictionary = {}
 var _prefs: Dictionary = {}
 var _built_id := ""
@@ -178,7 +180,19 @@ func _action(label: String, id: StringName, args: Dictionary = {}) -> void:
 	_controls.add_child(button)
 	_buttons.append(button)
 
+## Returns the extension script that renders `id`, or null for built-in minigames.
+static func ext_for(id: String) -> Script:
+	for path: String in EXTENSIONS:
+		if not ResourceLoader.exists(path): continue
+		var script: Script = load(path)
+		if script != null and script.call("handles", id): return script
+	return null
+
 func _build_actions() -> void:
+	var ext: Script = ext_for(_built_id)
+	if ext != null:
+		for row: Array in ext.call("actions", _built_id): _action(str(row[0]), StringName(row[1]), row[2] if row.size() > 2 else {})
+		return
 	if _built_id == "mg09":
 		for bin: int in 3: _action(["← Bin 1", "↓ Bin 2", "Bin 3 →"][bin], &"mg_sort", {"bin":bin})
 		return
@@ -247,6 +261,8 @@ func _update() -> void:
 	elif _built_id=="mg21": _state_note.text = "Balance the masses · Left %d / Right %d"%[int(view.get("left_mass",0)),int(view.get("right_mass",0))]
 	elif _built_id=="mg17": _state_note.text = "Pull +" if int(view.get("polarity",1))==1 else "Push −"
 	elif _built_id=="mg16": _state_note.text = "Tap the matching lane on the mint line · combo %d"%int(view.get("combo",0))
+	var ext: Script = ext_for(_built_id)
+	if ext != null: _state_note.text = str(ext.call("note", _built_id, view, snapshot))
 	if phase == "ghost": _state_note.text = "Your tower rests. Send a little surprise when your ghost charge is ready."
 	if phase == "finished": _state_note.text = "Round complete · waiting for your friends"
 	_state_note.visible = not _state_note.text.is_empty()
@@ -328,6 +344,10 @@ class Arena extends Control:
 		var view: Dictionary = data.get("view", {})
 		var id := str(data.get("id", "mg01"))
 		var area := Rect2(Vector2(18,40), Vector2(size.x-36,size.y-54))
+		var ext: Script = WtMinigameUi.ext_for(id)
+		if ext != null:
+			ext.call("draw", self, id, area, view, data)
+			return
 		match id:
 			"mg01":
 				var hole: Array = []
