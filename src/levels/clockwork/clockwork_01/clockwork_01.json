@@ -1,0 +1,145 @@
+{
+  "schema": 1,
+  "id": "clockwork_01",
+  "biome": "clockwork",
+  "tier": 1,
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 8,
+    "mask": [
+      "##.##",
+      "#####",
+      ".###.",
+      "#####",
+      "##.##"
+    ],
+    "spawn_anchor": [
+      2,
+      1
+    ]
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "opening_set": [
+      "o",
+      "i"
+    ],
+    "opening_count": 2
+  },
+  "knobs": {
+    "fall.g0": 0.97,
+    "goal.warnings_max": 2,
+    "goal.top_out": "rescue"
+  },
+  "goal": {
+    "type": "clear_n",
+    "T_level": 180,
+    "n": 3
+  },
+  "rules": [],
+  "stars": {
+    "t2": 145000,
+    "t3": 100000
+  },
+  "music": "clockwork_01_tbd",
+  "story": {
+    "mascot_role": "watcher",
+    "icon": "cog"
+  },
+  "name": "LVL_CLOCKWORK_01_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/clockwork.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "clockwork_01",
+      "biome": "clockwork",
+      "tier": 1,
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 8,
+        "mask": {
+          "layers": {
+            "all": [
+              "##.##",
+              "#####",
+              ".###.",
+              "#####",
+              "##.##"
+            ]
+          }
+        },
+        "spawn_anchor": {
+          "x": 2,
+          "z": 1
+        }
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "screw_r"
+        ],
+        "opening_set": [
+          "o",
+          "i"
+        ],
+        "opening_count": 2
+      },
+      "knobs": {
+        "fall.g0": 0.97,
+        "goal.warnings_max": 2,
+        "goal.top_out": "rescue"
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3,
+        "T_level": 180
+      },
+      "rules": [
+        {
+          "id": "wo09_watcher",
+          "params": {}
+        }
+      ],
+      "stars": {
+        "t2": 145000,
+        "t3": 100000
+      },
+      "music": "clockwork_01_tbd",
+      "story": {
+        "mascot_role": "watcher",
+        "icon": "cog"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "wo09_watcher",
+        "runtime": "story.mascot_role=watcher",
+        "presentation_only": true
+      }
+    ],
+    "design_amendments": []
+  }
+}

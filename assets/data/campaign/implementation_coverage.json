@@ -1,0 +1,1197 @@
+{
+  "schema": 1,
+  "warning": "Playable subsets preserve the full authored source spec in metadata.design_spec; unsupported entries are explicit and are not silently aliased. No tuning claims.",
+  "levels": [
+    {
+      "id": "meadow_01",
+      "source": "production/levels/meadow/data/meadow_01.json",
+      "implemented_rule_ids": [],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "meadow_02",
+      "source": "production/levels/meadow/data/meadow_02.json",
+      "implemented_rule_ids": [
+        "mascot_catch"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "meadow_03",
+      "source": "production/levels/meadow/data/meadow_03.json",
+      "implemented_rule_ids": [
+        "gust",
+        "dandelion_puff",
+        "mascot_catch"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "meadow_04",
+      "source": "production/levels/meadow/data/meadow_04.json",
+      "implemented_rule_ids": [
+        "mushroom_popup"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "meadow_05",
+      "source": "production/levels/meadow/data/meadow_05.json",
+      "implemented_rule_ids": [
+        "build_race",
+        "wobble"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "meadow_06",
+      "source": "production/levels/meadow/data/meadow_06.json",
+      "implemented_rule_ids": [
+        "fill_shape",
+        "sprouts"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "meadow_07",
+      "source": "production/levels/meadow/data/meadow_07.json",
+      "implemented_rule_ids": [
+        "fog",
+        "fog_ghost"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "meadow_08",
+      "source": "production/levels/meadow/data/meadow_08.json",
+      "implemented_rule_ids": [
+        "sticky_landing"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "meadow_09",
+      "source": "production/levels/meadow/data/meadow_09.json",
+      "implemented_rule_ids": [
+        "topsy_tumble",
+        "hatching_eggs"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "meadow_10",
+      "source": "production/levels/meadow/data/meadow_10.json",
+      "implemented_rule_ids": [
+        "mill_belt",
+        "gust",
+        "topsy_tumble"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "meadow_bonus",
+      "source": "design/levels/meadow.md",
+      "implemented_rule_ids": [
+        "fill_shape"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_01",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "mono_layer",
+        "mascot_mood",
+        "mascot_catch",
+        "angle_gem"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_02",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "mono_layer",
+        "gumdrop_hail",
+        "mascot_mood",
+        "mascot_catch",
+        "angle_gem"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_03",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "mono_layer",
+        "syrup_band",
+        "gumdrop_hail",
+        "mascot_mood",
+        "mascot_catch"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_04",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "mono_layer",
+        "jelly_piece",
+        "mascot_mood"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_05",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "build_race",
+        "tier_frosting",
+        "mascot_mood"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_06",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "fill_shape",
+        "rainbow_piece",
+        "mascot_mood"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_07",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "colour_pop",
+        "pest",
+        "mascot_mood"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_08",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "colour_pop",
+        "speed_bump",
+        "earned_specials",
+        "mascot_mood"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_09",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "colour_pop",
+        "goo_spread",
+        "licorice_lock",
+        "flip",
+        "mascot_mood"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_10",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "bake_stage",
+        "climber_boss",
+        "gumdrop_hail",
+        "mascot_mood"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_bonus",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "fill_shape",
+        "mascot_paw"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_h1",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "colour_pop",
+        "moody_cube",
+        "mascot_mood"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_h2",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "syrup_band",
+        "frosting",
+        "mascot_mood"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "candy_h3",
+      "source": "design/levels/candy.md",
+      "implemented_rule_ids": [
+        "colour_pop",
+        "climber_boss",
+        "countdown_bomb"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "ice_01",
+      "source": "design/levels/ice.md",
+      "implemented_rule_ids": [
+        "mascot_hint",
+        "angle_gem"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "ice_02",
+      "source": "design/levels/ice.md",
+      "implemented_rule_ids": [
+        "ice_slide",
+        "mascot_hint",
+        "angle_gem"
+      ],
+      "unsupported": [
+        "field:recipe"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "ice_03",
+      "source": "design/levels/ice.md",
+      "implemented_rule_ids": [],
+      "unsupported": [
+        "field:recipe"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "ice_04",
+      "source": "design/levels/ice.md",
+      "implemented_rule_ids": [
+        "snowball"
+      ],
+      "unsupported": [
+        "field:recipe"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "ice_05",
+      "source": "design/levels/ice.md",
+      "implemented_rule_ids": [
+        "build_race",
+        "ice_slide"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "ice_06",
+      "source": "design/levels/ice.md",
+      "implemented_rule_ids": [
+        "fill_shape",
+        "snowball"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "ice_07",
+      "source": "design/levels/ice.md",
+      "implemented_rule_ids": [
+        "fog",
+        "ice_slide"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "ice_08",
+      "source": "design/levels/ice.md",
+      "implemented_rule_ids": [
+        "thin_ice"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "ice_09",
+      "source": "design/levels/ice.md",
+      "implemented_rule_ids": [
+        "flip",
+        "ice_slide"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "ice_10",
+      "source": "design/levels/ice.md",
+      "implemented_rule_ids": [
+        "side_travel",
+        "gust",
+        "ice_slide"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "ice_bonus",
+      "source": "design/levels/ice.md",
+      "implemented_rule_ids": [
+        "fill_shape",
+        "undo_reset"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "underwater_01",
+      "source": "design/levels/underwater.md",
+      "implemented_rule_ids": [
+        "mascot_hint",
+        "mascot_catch",
+        "angle_gem"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "underwater_02",
+      "source": "design/levels/underwater.md",
+      "implemented_rule_ids": [
+        "mascot_hint",
+        "mascot_catch",
+        "angle_gem"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "underwater_03",
+      "source": "design/levels/underwater.md",
+      "implemented_rule_ids": [
+        "gust"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "underwater_04",
+      "source": "design/levels/underwater.md",
+      "implemented_rule_ids": [
+        "bounce_pad",
+        "mushroom_popup"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "underwater_05",
+      "source": "design/levels/underwater.md",
+      "implemented_rule_ids": [
+        "build_race",
+        "gust"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "underwater_06",
+      "source": "design/levels/underwater.md",
+      "implemented_rule_ids": [
+        "fill_shape",
+        "undo_reset"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "underwater_07",
+      "source": "design/levels/underwater.md",
+      "implemented_rule_ids": [
+        "fog"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "underwater_08",
+      "source": "design/levels/underwater.md",
+      "implemented_rule_ids": [
+        "rising_silt"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "underwater_09",
+      "source": "design/levels/underwater.md",
+      "implemented_rule_ids": [
+        "turntable",
+        "gust"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "underwater_10",
+      "source": "design/levels/underwater.md",
+      "implemented_rule_ids": [
+        "conveyor",
+        "gust",
+        "crab_claw"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "underwater_bonus",
+      "source": "design/levels/underwater.md",
+      "implemented_rule_ids": [
+        "fill_shape"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_01",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [],
+      "unsupported": [
+        "field:recipe"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_02",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "ember"
+      ],
+      "unsupported": [
+        "field:recipe"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_03",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "lava_rise"
+      ],
+      "unsupported": [
+        "field:layout",
+        "field:recipe"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_04",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "mushroom_popup",
+        "bounce_pad"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_05",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "build_race"
+      ],
+      "unsupported": [
+        "field:recipe"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_06",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "fill_shape"
+      ],
+      "unsupported": [
+        "field:recipe"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_07",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "fog",
+        "ember"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_08",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "quake"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_09",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "conveyor",
+        "lava_rise",
+        "lava_rock_spawn"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_10",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "lava_rock_spawn",
+        "quake",
+        "fog"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_bonus",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "fill_shape"
+      ],
+      "unsupported": [
+        "field:recipe"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_h1",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "lava_rise",
+        "lava_rock_spawn"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_h2",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "locked_cube",
+        "quake"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "lava_h3",
+      "source": "design/levels/lava.md",
+      "implemented_rule_ids": [
+        "ember"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "forest_01",
+      "source": "design/levels/forest.md",
+      "implemented_rule_ids": [],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "forest_02",
+      "source": "design/levels/forest.md",
+      "implemented_rule_ids": [
+        "anchored_shelf"
+      ],
+      "unsupported": [
+        "field:recipe"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "forest_03",
+      "source": "design/levels/forest.md",
+      "implemented_rule_ids": [
+        "mushroom_popup"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "forest_04",
+      "source": "design/levels/forest.md",
+      "implemented_rule_ids": [
+        "squirrel_heist"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "forest_05",
+      "source": "design/levels/forest.md",
+      "implemented_rule_ids": [
+        "build_race"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "forest_06",
+      "source": "design/levels/forest.md",
+      "implemented_rule_ids": [
+        "fill_shape"
+      ],
+      "unsupported": [
+        "field:solution"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "forest_07",
+      "source": "design/levels/forest.md",
+      "implemented_rule_ids": [
+        "gust",
+        "dandelion_puff"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "forest_08",
+      "source": "design/levels/forest.md",
+      "implemented_rule_ids": [
+        "woodpecker_knock",
+        "vines"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "forest_09",
+      "source": "design/levels/forest.md",
+      "implemented_rule_ids": [
+        "conveyor",
+        "squirrel_heist"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "forest_10",
+      "source": "design/levels/forest.md",
+      "implemented_rule_ids": [
+        "conveyor",
+        "gust",
+        "mushroom_popup"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "forest_bonus",
+      "source": "design/levels/forest.md",
+      "implemented_rule_ids": [
+        "fill_shape"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_01",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [],
+      "unsupported": [
+        "field:secrets"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_02",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "rock_obstacle"
+      ],
+      "unsupported": [
+        "field:recipe",
+        "field:secrets"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_03",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "conveyor"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_04",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "gust",
+        "mushroom_popup"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_05",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "build_race",
+        "rock_obstacle"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_06",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "mirror"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_07",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "fill_shape",
+        "mirror"
+      ],
+      "unsupported": [
+        "field:solution"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_08",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "fog"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_09",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "mirror",
+        "fog"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_10",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "conveyor",
+        "woodpecker_knock",
+        "fog"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_bonus",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "fill_shape",
+        "mirror"
+      ],
+      "unsupported": [
+        "field:solution"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_h1",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "conveyor",
+        "gust"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_h2",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "woodpecker_knock",
+        "mushroom_popup",
+        "rock_obstacle"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "cave_h3",
+      "source": "design/levels/cave.md",
+      "implemented_rule_ids": [
+        "fog"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "clockwork_01",
+      "source": "design/levels/clockwork.md",
+      "implemented_rule_ids": [],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "clockwork_02",
+      "source": "design/levels/clockwork.md",
+      "implemented_rule_ids": [
+        "turntable"
+      ],
+      "unsupported": [
+        "field:recipe"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "clockwork_03",
+      "source": "design/levels/clockwork.md",
+      "implemented_rule_ids": [
+        "conveyor"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "clockwork_04",
+      "source": "design/levels/clockwork.md",
+      "implemented_rule_ids": [
+        "piston_punch"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "clockwork_05",
+      "source": "design/levels/clockwork.md",
+      "implemented_rule_ids": [
+        "build_race"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "clockwork_06",
+      "source": "design/levels/clockwork.md",
+      "implemented_rule_ids": [
+        "fill_shape"
+      ],
+      "unsupported": [
+        "authoring:redraw_disabled_fixed_or_kit",
+        "field:solution"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "clockwork_07",
+      "source": "design/levels/clockwork.md",
+      "implemented_rule_ids": [
+        "stopwatch"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "clockwork_08",
+      "source": "design/levels/clockwork.md",
+      "implemented_rule_ids": [
+        "key_stamp"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "clockwork_09",
+      "source": "design/levels/clockwork.md",
+      "implemented_rule_ids": [
+        "turntable",
+        "flip"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "clockwork_10",
+      "source": "design/levels/clockwork.md",
+      "implemented_rule_ids": [
+        "conveyor",
+        "piston_punch",
+        "stopwatch"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "clockwork_bonus",
+      "source": "design/levels/clockwork.md",
+      "implemented_rule_ids": [
+        "fill_shape",
+        "turntable"
+      ],
+      "unsupported": [
+        "authoring:redraw_disabled_fixed_or_kit",
+        "field:solution"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "neon_01",
+      "source": "design/levels/neon.md",
+      "implemented_rule_ids": [],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "neon_02",
+      "source": "design/levels/neon.md",
+      "implemented_rule_ids": [
+        "stopwatch"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "neon_03",
+      "source": "design/levels/neon.md",
+      "implemented_rule_ids": [
+        "conveyor"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "neon_04",
+      "source": "design/levels/neon.md",
+      "implemented_rule_ids": [
+        "mirror"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "neon_05",
+      "source": "design/levels/neon.md",
+      "implemented_rule_ids": [
+        "build_race"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "neon_06",
+      "source": "design/levels/neon.md",
+      "implemented_rule_ids": [
+        "fill_shape"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "neon_07",
+      "source": "design/levels/neon.md",
+      "implemented_rule_ids": [
+        "bubble"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "neon_08",
+      "source": "design/levels/neon.md",
+      "implemented_rule_ids": [
+        "stopwatch"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "neon_09",
+      "source": "design/levels/neon.md",
+      "implemented_rule_ids": [
+        "turntable",
+        "gust"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "neon_10",
+      "source": "design/levels/neon.md",
+      "implemented_rule_ids": [
+        "conveyor",
+        "mirror",
+        "gust"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "celestial_01",
+      "source": "design/levels/celestial.md",
+      "implemented_rule_ids": [
+        "mascot_hint",
+        "angle_gem"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "celestial_02",
+      "source": "design/levels/celestial.md",
+      "implemented_rule_ids": [
+        "mascot_hint",
+        "angle_gem"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "celestial_03",
+      "source": "design/levels/celestial.md",
+      "implemented_rule_ids": [
+        "gust"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "celestial_04",
+      "source": "design/levels/celestial.md",
+      "implemented_rule_ids": [
+        "mushroom_popup"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "celestial_05",
+      "source": "design/levels/celestial.md",
+      "implemented_rule_ids": [
+        "build_race",
+        "balloon"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "celestial_06",
+      "source": "design/levels/celestial.md",
+      "implemented_rule_ids": [
+        "fill_shape"
+      ],
+      "unsupported": [
+        "field:solution"
+      ],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "celestial_07",
+      "source": "design/levels/celestial.md",
+      "implemented_rule_ids": [
+        "fog",
+        "balloon"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "celestial_08",
+      "source": "design/levels/celestial.md",
+      "implemented_rule_ids": [],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "celestial_09",
+      "source": "design/levels/celestial.md",
+      "implemented_rule_ids": [
+        "turntable",
+        "balloon"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "celestial_10",
+      "source": "design/levels/celestial.md",
+      "implemented_rule_ids": [
+        "event_card",
+        "lava_lid"
+      ],
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "celestial_bonus",
+      "source": "design/levels/celestial.md",
+      "implemented_rule_ids": [
+        "fill_shape",
+        "undo_reset"
+      ],
+      "unsupported": [
+        "field:solution"
+      ],
+      "blocking_gameplay": []
+    }
+  ]
+}

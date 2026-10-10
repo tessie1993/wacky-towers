@@ -1,0 +1,249 @@
+{
+  "schema": 1,
+  "id": "candy_10",
+  "biome": "candy",
+  "tier": 10,
+  "name": "LVL_CANDY_10_TITLE",
+  "board": {
+    "width": 7,
+    "depth": 7,
+    "h_play": 14,
+    "mask": [
+      ".#####.",
+      "#######",
+      "#######",
+      "#######",
+      "#######",
+      "#######",
+      ".#####."
+    ]
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "chair"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.05,
+    "goal.top_out": "trim",
+    "goal.warnings_max": 1,
+    "spawn.colour_count": 3
+  },
+  "goal": {
+    "type": "bake_oven",
+    "height_coverage": 0.6,
+    "h_target": 4
+  },
+  "rules": [
+    {
+      "id": "bake_stage",
+      "params": {
+        "bake_warn_ms": 2000,
+        "frost_layers": 2,
+        "stage2": {
+          "goal": {
+            "type": "bonk_boss",
+            "bonks_needed": 3
+          },
+          "clear.detector": "colour_connect",
+          "clear.collapse": "gummy",
+          "goal.top_out": "rescue",
+          "goal.warnings_max": 1
+        }
+      }
+    },
+    {
+      "id": "climber_boss",
+      "params": {
+        "size": [
+          2,
+          2,
+          1
+        ],
+        "skin": "meringue"
+      }
+    },
+    {
+      "id": "gumdrop_hail",
+      "params": {
+        "object": "icing_dollop",
+        "spawn_every_locks": 5,
+        "objects_max": 4
+      }
+    },
+    {
+      "id": "mascot_mood",
+      "params": {
+        "role": "watcher"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 340000,
+    "t3": 240000
+  },
+  "music": "mus_candy_10",
+  "story": {
+    "title_key": "LVL_CANDY_10_TITLE",
+    "premise_key": "LVL_CANDY_10_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "meringue"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/candy.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "candy_10",
+      "biome": "candy",
+      "tier": 10,
+      "name": "LVL_CANDY_10_TITLE",
+      "board": {
+        "width": 7,
+        "depth": 7,
+        "h_play": 14,
+        "mask": [
+          ".#####.",
+          "#######",
+          "#######",
+          "#######",
+          "#######",
+          "#######",
+          ".#####."
+        ]
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "tripod",
+          "screw_left",
+          "screw_right",
+          "chair"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.05,
+        "goal.top_out": "trim",
+        "goal.warnings_max": 1,
+        "spawn.colour_count": 3
+      },
+      "goal": {
+        "type": "height",
+        "H_target": 4,
+        "height_coverage": 0.6
+      },
+      "rules": [
+        {
+          "id": "bake_stage*",
+          "params": {
+            "bake_warn_ms": 2000,
+            "frost_layers": 2,
+            "stage2": {
+              "goal": {
+                "type": "bonk_boss",
+                "bonks_needed": 3
+              },
+              "clear.detector": "colour_connect",
+              "clear.collapse": "gummy",
+              "goal.top_out": "rescue",
+              "goal.warnings_max": 1
+            }
+          }
+        },
+        {
+          "id": "climber_boss*",
+          "params": {
+            "size": [
+              2,
+              2,
+              1
+            ],
+            "skin": "meringue"
+          }
+        },
+        {
+          "id": "mushroom_popup",
+          "params": {
+            "object": "icing_dollop",
+            "spawn_every_locks": 5,
+            "objects_max": 4
+          }
+        },
+        {
+          "id": "mascot_mood",
+          "params": {
+            "role": "watcher"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 340000,
+        "t3": 240000
+      },
+      "music": "mus_candy_10",
+      "story": {
+        "title_key": "LVL_CANDY_10_TITLE",
+        "premise_key": "LVL_CANDY_10_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "meringue"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "bake_stage*",
+        "runtime": "bake_stage",
+        "params": {
+          "bake_warn_ms": 2000,
+          "frost_layers": 2,
+          "stage2": {
+            "goal": {
+              "type": "bonk_boss",
+              "bonks_needed": 3
+            },
+            "clear.detector": "colour_connect",
+            "clear.collapse": "gummy",
+            "goal.top_out": "rescue",
+            "goal.warnings_max": 1
+          }
+        }
+      },
+      {
+        "source": "climber_boss*",
+        "runtime": "climber_boss",
+        "params": {
+          "size": [
+            2,
+            2,
+            1
+          ],
+          "skin": "meringue"
+        }
+      },
+      {
+        "source": "mushroom_popup",
+        "runtime": "gumdrop_hail",
+        "params": {
+          "object": "icing_dollop",
+          "spawn_every_locks": 5,
+          "objects_max": 4
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

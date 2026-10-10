@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://b0qku427rv3t1"]
+
+[ext_resource type="PackedScene" path="res://src/levels/_template/level_stage_base.tscn" id="1"]
+[ext_resource type="Script" uid="uid://bget2chj4yyf3" path="res://src/view/wt_stage.gd" id="2_rogbh"]
+
+[node name="cave_02" unique_id=221344656 instance=ExtResource("1")]
+level_json = "res://src/levels/cave/cave_02/cave_02.json"
+biome = &"cave"
+
+[node name="MascotSpot" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 2)
+
+[node name="World" type="Node3D" parent="." index="2" unique_id=1627198276]
+script = ExtResource("2_rogbh")
+
+[node name="StoryOrigin" type="Marker3D" parent="World" index="0" unique_id=492983293]

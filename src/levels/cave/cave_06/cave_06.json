@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "id": "cave_06",
+  "biome": "cave",
+  "tier": 6,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "spawn_anchor": [
+      1,
+      2
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.2,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "mirror",
+      "params": {
+        "mirror_axis": "x",
+        "skin": "crystal_echo"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 195000,
+    "t3": 140000
+  },
+  "music": "cave_06_tbd",
+  "name": "LVL_CAVE_06_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/cave.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "cave_06",
+      "biome": "cave",
+      "tier": 6,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "spawn_anchor": {
+          "x": 1,
+          "z": 2
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.2,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "pond_mirror",
+          "params": {
+            "mirror_axis": "x",
+            "skin": "crystal_echo"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 195000,
+        "t3": 140000
+      },
+      "music": "cave_06_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "pond_mirror",
+        "runtime": "mirror",
+        "params": {
+          "mirror_axis": "x",
+          "skin": "crystal_echo"
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "author": "Wacky Towers game suite art team",
+  "blender_version": "4.5.9 LTS",
+  "blender_build_hash": "8bf95cbd38d1",
+  "units": "metres; 1 unit = 1 grid cell",
+  "godot_axes": "Y-up; flat play surface Y=0; X/Z centre square [-2.5,2.5]",
+  "play_area": {
+    "min_x": -2.5,
+    "max_x": 2.5,
+    "min_z": -2.5,
+    "max_z": 2.5,
+    "surface_y": 0.0
+  },
+  "collision": "decorative models only; gameplay owns the grid and collision",
+  "license": "MIT (repository LICENSE); original geometry and flat matte materials; no external assets",
+  "assets": [
+    {
+      "name": "env_meadow_arcade",
+      "path": "assets/models/arcade_pack/env_meadow_arcade.glb",
+      "triangles": 15354,
+      "mesh_objects": 58,
+      "godot_bounds_min": [
+        -4.679999828338623,
+        -2.319999933242798,
+        -4.517082691192627
+      ],
+      "godot_bounds_max": [
+        4.571051597595215,
+        1.6700000762939453,
+        4.442855358123779
+      ],
+      "raised_vertices_in_play_area": 0,
+      "primary_story_prop_vertices_in_quiet_margin": 0,
+      "bytes": 538272,
+      "sha256": "519098e174c3012dd2c8857e9e5321df77cc8b7e91dc7ed3978d6c5e2791c017"
+    },
+    {
+      "name": "env_clockwork_arcade",
+      "path": "assets/models/arcade_pack/env_clockwork_arcade.glb",
+      "triangles": 16600,
+      "mesh_objects": 31,
+      "godot_bounds_min": [
+        -4.531766891479492,
+        -2.319999933242798,
+        -4.6031293869018555
+      ],
+      "godot_bounds_max": [
+        4.587819576263428,
+        1.3899999856948853,
+        4.444019794464111
+      ],
+      "raised_vertices_in_play_area": 0,
+      "primary_story_prop_vertices_in_quiet_margin": 0,
+      "bytes": 481028,
+      "sha256": "ea2a25d87a554df6c38abc6df4a5b84e8acc16893f472eb33763eebb8f655c65"
+    },
+    {
+      "name": "env_celestial_arcade",
+      "path": "assets/models/arcade_pack/env_celestial_arcade.glb",
+      "triangles": 13926,
+      "mesh_objects": 32,
+      "godot_bounds_min": [
+        -4.608785629272461,
+        -2.319999933242798,
+        -4.565588474273682
+      ],
+      "godot_bounds_max": [
+        4.568441390991211,
+        1.630248785018921,
+        4.601014614105225
+      ],
+      "raised_vertices_in_play_area": 0,
+      "primary_story_prop_vertices_in_quiet_margin": 0,
+      "bytes": 396020,
+      "sha256": "e03652921bcafa9cc86036164f0202545896615b7c014e2711240afdb38cfcd6"
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "schema": 1,
+  "id": "meadow_bonus",
+  "biome": "meadow",
+  "tier": 11,
+  "name": "LVL_MEADOW_BONUS_TITLE",
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 6
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "big_cube"
+    ],
+    "fixed_list": [
+      "i",
+      "o",
+      "big_cube",
+      "i",
+      "o",
+      "big_cube"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.5,
+    "goal.top_out": "trim",
+    "goal.warnings_max": 0
+  },
+  "goal": {
+    "type": "shape",
+    "piece_budget": 6,
+    "time_limit_ms": 60000,
+    "target_shape": {
+      "layers": {
+        "0": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ],
+        "1": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ]
+      }
+    }
+  },
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {
+        "topout_rule": "trim",
+        "stick_when_filled": false
+      }
+    }
+  ],
+  "stars": {
+    "t2": 45000,
+    "t3": 30000
+  },
+  "story": {
+    "title_key": "LVL_MEADOW_BONUS_TITLE",
+    "premise_key": "LVL_MEADOW_BONUS_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "picnic"
+  },
+  "metadata": {
+    "source": "design/levels/meadow.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "meadow_bonus",
+      "biome": "meadow",
+      "tier": 11,
+      "name": "LVL_MEADOW_BONUS_TITLE",
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 6
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "big_cube"
+        ],
+        "fixed_list": [
+          "i",
+          "o",
+          "big_cube",
+          "i",
+          "o",
+          "big_cube"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.5,
+        "goal.top_out": "trim",
+        "goal.warnings_max": 0
+      },
+      "goal": {
+        "type": "shape",
+        "piece_budget": 6,
+        "time_limit_ms": 60000,
+        "target_shape": {
+          "layers": {
+            "0": [
+              "++++",
+              "++++",
+              "++++",
+              "++++"
+            ],
+            "1": [
+              "++++",
+              "++++",
+              "++++",
+              "++++"
+            ]
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "fill_shape",
+          "params": {
+            "topout_rule": "trim",
+            "stick_when_filled": false
+          }
+        }
+      ],
+      "stars": {
+        "t2": 45000,
+        "t3": 30000
+      },
+      "story": {
+        "title_key": "LVL_MEADOW_BONUS_TITLE",
+        "premise_key": "LVL_MEADOW_BONUS_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "picnic"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

@@ -1,3 +1,65 @@
-{ "id": "meadow", "art_set": "candy_toy", "palette": "candy_toy",
-  "levels": [ { "id": "meadow_01", "scene": "res://src/levels/meadow/meadow_01/meadow_01.tscn",
-                "json": "res://src/levels/meadow/meadow_01/meadow_01.json" } ] }
+{
+  "id": "meadow",
+  "index": 1,
+  "art_set": "candy_toy",
+  "palette": "meadow",
+  "side_island": false,
+  "default_music": "mus_meadow_default",
+  "levels": [
+    {
+      "id": "meadow_01",
+      "json": "res://src/levels/meadow/meadow_01/meadow_01.json",
+      "scene": "res://src/levels/meadow/meadow_01/meadow_01.tscn"
+    },
+    {
+      "id": "meadow_02",
+      "json": "res://src/levels/meadow/meadow_02/meadow_02.json",
+      "scene": "res://src/levels/meadow/meadow_02/meadow_02.tscn"
+    },
+    {
+      "id": "meadow_03",
+      "json": "res://src/levels/meadow/meadow_03/meadow_03.json",
+      "scene": "res://src/levels/meadow/meadow_03/meadow_03.tscn"
+    },
+    {
+      "id": "meadow_04",
+      "json": "res://src/levels/meadow/meadow_04/meadow_04.json",
+      "scene": "res://src/levels/meadow/meadow_04/meadow_04.tscn"
+    },
+    {
+      "id": "meadow_05",
+      "json": "res://src/levels/meadow/meadow_05/meadow_05.json",
+      "scene": "res://src/levels/meadow/meadow_05/meadow_05.tscn"
+    },
+    {
+      "id": "meadow_06",
+      "json": "res://src/levels/meadow/meadow_06/meadow_06.json",
+      "scene": "res://src/levels/meadow/meadow_06/meadow_06.tscn"
+    },
+    {
+      "id": "meadow_07",
+      "json": "res://src/levels/meadow/meadow_07/meadow_07.json",
+      "scene": "res://src/levels/meadow/meadow_07/meadow_07.tscn"
+    },
+    {
+      "id": "meadow_08",
+      "json": "res://src/levels/meadow/meadow_08/meadow_08.json",
+      "scene": "res://src/levels/meadow/meadow_08/meadow_08.tscn"
+    },
+    {
+      "id": "meadow_09",
+      "json": "res://src/levels/meadow/meadow_09/meadow_09.json",
+      "scene": "res://src/levels/meadow/meadow_09/meadow_09.tscn"
+    },
+    {
+      "id": "meadow_10",
+      "json": "res://src/levels/meadow/meadow_10/meadow_10.json",
+      "scene": "res://src/levels/meadow/meadow_10/meadow_10.tscn"
+    },
+    {
+      "id": "meadow_bonus",
+      "json": "res://src/levels/meadow/meadow_bonus/meadow_bonus.json",
+      "scene": "res://src/levels/meadow/meadow_bonus/meadow_bonus.tscn"
+    }
+  ]
+}

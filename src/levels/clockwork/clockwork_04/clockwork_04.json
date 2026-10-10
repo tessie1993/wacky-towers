@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "id": "clockwork_04",
+  "biome": "clockwork",
+  "tier": 4,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.15,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "piston_punch",
+      "params": {
+        "piston_locks": 4,
+        "pistons": [
+          {
+            "wall": "west",
+            "row": 1,
+            "y": 0
+          },
+          {
+            "wall": "west",
+            "row": 1,
+            "y": 1
+          },
+          {
+            "wall": "east",
+            "row": 4,
+            "y": 0
+          },
+          {
+            "wall": "east",
+            "row": 4,
+            "y": 1
+          }
+        ]
+      }
+    }
+  ],
+  "stars": {
+    "t2": 245000,
+    "t3": 175000
+  },
+  "music": "clockwork_04_tbd",
+  "name": "LVL_CLOCKWORK_04_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/clockwork.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "clockwork_04",
+      "biome": "clockwork",
+      "tier": 4,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.15,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "pistons",
+          "params": {
+            "piston_locks": 4,
+            "pistons": [
+              {
+                "wall": "-x",
+                "row": 1,
+                "y": 0
+              },
+              {
+                "wall": "-x",
+                "row": 1,
+                "y": 1
+              },
+              {
+                "wall": "+x",
+                "row": 4,
+                "y": 0
+              },
+              {
+                "wall": "+x",
+                "row": 4,
+                "y": 1
+              }
+            ]
+          }
+        }
+      ],
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
+      "music": "clockwork_04_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "pistons",
+        "runtime": "piston_punch",
+        "params": {
+          "piston_locks": 4,
+          "pistons": [
+            {
+              "wall": "west",
+              "row": 1,
+              "y": 0
+            },
+            {
+              "wall": "west",
+              "row": 1,
+              "y": 1
+            },
+            {
+              "wall": "east",
+              "row": 4,
+              "y": 0
+            },
+            {
+              "wall": "east",
+              "row": 4,
+              "y": 1
+            }
+          ]
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

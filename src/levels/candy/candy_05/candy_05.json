@@ -1,0 +1,179 @@
+{
+  "schema": 1,
+  "id": "candy_05",
+  "biome": "candy",
+  "tier": 5,
+  "name": "LVL_CANDY_05_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "mask": [
+      ".####.",
+      "######",
+      "######",
+      "######",
+      "######",
+      ".####."
+    ]
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "big_cube"
+    ],
+    "weights": {
+      "big_cube": 0.5
+    }
+  },
+  "knobs": {
+    "fall.g0": 0.85,
+    "goal.top_out": "trim",
+    "spawn.colour_count": 3,
+    "spawn.colour_streak": 0.4
+  },
+  "goal": {
+    "type": "height",
+    "height_coverage": 0.6,
+    "h_target": 8
+  },
+  "rules": [
+    {
+      "id": "build_race",
+      "params": {
+        "top_out": "trim"
+      }
+    },
+    {
+      "id": "tier_frosting",
+      "params": {
+        "tier_layers": 2,
+        "frost_share": 0.5
+      }
+    },
+    {
+      "id": "mascot_mood",
+      "params": {
+        "prank": "lick_swap"
+      }
+    }
+  ],
+  "stars": {
+    "s2": 3,
+    "s3": 4,
+    "metric": "frosted_tiers"
+  },
+  "music": "mus_candy_05",
+  "story": {
+    "title_key": "LVL_CANDY_05_TITLE",
+    "premise_key": "LVL_CANDY_05_PREMISE",
+    "mascot_role": "mood_swing",
+    "icon": "cake_tiers"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/candy.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "candy_05",
+      "biome": "candy",
+      "tier": 5,
+      "name": "LVL_CANDY_05_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "mask": [
+          ".####.",
+          "######",
+          "######",
+          "######",
+          "######",
+          ".####."
+        ]
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right",
+          "big_cube"
+        ],
+        "weights": {
+          "big_cube": 0.5
+        }
+      },
+      "knobs": {
+        "fall.g0": 0.85,
+        "goal.top_out": "trim",
+        "spawn.colour_count": 3,
+        "spawn.colour_streak": 0.4
+      },
+      "goal": {
+        "type": "height",
+        "H_target": 8,
+        "height_coverage": 0.6
+      },
+      "rules": [
+        {
+          "id": "build_race",
+          "params": {
+            "top_out": "trim"
+          }
+        },
+        {
+          "id": "tier_frosting*",
+          "params": {
+            "tier_layers": 2,
+            "frost_share": 0.5
+          }
+        },
+        {
+          "id": "mascot_mood",
+          "params": {
+            "prank": "lick_swap"
+          }
+        }
+      ],
+      "stars": {
+        "s2": 3,
+        "s3": 4
+      },
+      "music": "mus_candy_05",
+      "story": {
+        "title_key": "LVL_CANDY_05_TITLE",
+        "premise_key": "LVL_CANDY_05_PREMISE",
+        "mascot_role": "mood_swing",
+        "icon": "cake_tiers"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "tier_frosting*",
+        "runtime": "tier_frosting",
+        "params": {
+          "tier_layers": 2,
+          "frost_share": 0.5
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

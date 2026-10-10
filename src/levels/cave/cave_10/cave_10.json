@@ -1,0 +1,158 @@
+{
+  "schema": 1,
+  "id": "cave_10",
+  "biome": "cave",
+  "tier": 10,
+  "board": {
+    "width": 8,
+    "depth": 6,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "chair"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.35,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "conveyor",
+      "params": {
+        "conveyor_every": 3,
+        "conveyor_wrap": true,
+        "skin": "minecart",
+        "conveyor_dir": "+x"
+      }
+    },
+    {
+      "id": "woodpecker_knock",
+      "params": {
+        "knock_interval_ms": 14000,
+        "knock_jitter_ms": 3000,
+        "knock_warn_ms": 1500,
+        "knock_pop_max": 3,
+        "skin": "geode_stomp"
+      }
+    },
+    {
+      "id": "fog",
+      "params": {
+        "visible_ms": 5000,
+        "fade_ms": 1000,
+        "invisible_alpha": 0.15,
+        "reveal_ms": 800,
+        "lantern_radius": 2,
+        "skin": "lantern_chain"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "cave_10_tbd",
+  "story": {
+    "mascot_role": "boss",
+    "icon": "geode",
+    "friend_unlock": "glim"
+  },
+  "name": "LVL_CAVE_10_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/cave.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "cave_10",
+      "biome": "cave",
+      "tier": 10,
+      "board": {
+        "width": 8,
+        "depth": 6,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "tripod",
+          "screw_l",
+          "screw_r",
+          "chair"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.35,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "conveyor",
+          "params": {
+            "dir": "+x",
+            "conveyor_every": 3,
+            "conveyor_wrap": true,
+            "skin": "minecart"
+          }
+        },
+        {
+          "id": "woodpecker_knock",
+          "params": {
+            "knock_interval_ms": 14000,
+            "knock_jitter_ms": 3000,
+            "knock_warn_ms": 1500,
+            "knock_pop_max": 3,
+            "skin": "geode_stomp"
+          }
+        },
+        {
+          "id": "fog",
+          "params": {
+            "visible_ms": 5000,
+            "fade_ms": 1000,
+            "invisible_alpha": 0.15,
+            "reveal_ms": 800,
+            "lantern_radius": 2,
+            "skin": "lantern_chain"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "music": "cave_10_tbd",
+      "story": {
+        "mascot_role": "boss",
+        "icon": "geode",
+        "friend_unlock": "glim"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": "v2.5.stable",
+  "godot_compatibility": "4.7.x",
+  "license": "Apache-2.0",
+  "release_url": "https://github.com/CraterCrash/godot-orchestrator/releases/tag/v2.5.stable",
+  "archive_url": "https://github.com/CraterCrash/godot-orchestrator/releases/download/v2.5.stable/godot-orchestrator-v2.5-stable-plugin.zip",
+  "archive_size": 63914270,
+  "archive_sha256": "3e4bab7811b89002627495973e1aa0fdf502bb8cec718a2693cce354d203efd7",
+  "install_command": "python3 tools/setup/install_orchestrator.py",
+  "android_supported_abis": ["armeabi-v7a", "arm64-v8a"],
+  "android_elf_alignment": 4096,
+  "web_requires_extensions_support": true
+}

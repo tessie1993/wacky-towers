@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "id": "forest_08",
+  "biome": "forest",
+  "tier": 8,
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 12
+  },
+  "knobs": {
+    "fall.g0": 1.2,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "woodpecker_knock",
+      "params": {
+        "knock_interval_ms": 13000,
+        "knock_jitter_ms": 3000,
+        "knock_warn_ms": 1500,
+        "knock_pop_max": 4
+      }
+    },
+    {
+      "id": "vines",
+      "params": {
+        "vine_per_bag": 1
+      }
+    }
+  ],
+  "stars": {
+    "t2": 180000,
+    "t3": 130000
+  },
+  "music": "forest_08_tbd",
+  "name": "LVL_FOREST_08_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/forest.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "forest_08",
+      "biome": "forest",
+      "tier": 8,
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 12
+      },
+      "knobs": {
+        "fall.g0": 1.2,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 5
+      },
+      "rules": [
+        {
+          "id": "woodpecker_knock",
+          "params": {
+            "knock_interval_ms": 13000,
+            "knock_jitter_ms": 3000,
+            "knock_warn_ms": 1500,
+            "knock_pop_max": 4
+          }
+        },
+        {
+          "id": "vines",
+          "params": {
+            "vine_per_bag": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 180000,
+        "t3": 130000
+      },
+      "music": "forest_08_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

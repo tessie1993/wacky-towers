@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "id": "celestial_08",
+  "biome": "celestial",
+  "tier": 8,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 6
+  },
+  "knobs": {
+    "fall.g0": 1.3,
+    "goal.warnings_max": 1,
+    "control.verb": "choose_down",
+    "control.travel_dirs": [
+      "down",
+      "+x",
+      "-x",
+      "+z",
+      "-z"
+    ]
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "stars": {
+    "t2": 245000,
+    "t3": 175000
+  },
+  "music": "celestial_08_tbd",
+  "name": "LVL_CELESTIAL_08_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "rules": [],
+  "metadata": {
+    "source": "design/levels/celestial.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "celestial_08",
+      "biome": "celestial",
+      "tier": 8,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 6
+      },
+      "knobs": {
+        "fall.g0": 1.3,
+        "goal.warnings_max": 1,
+        "control.verb": "choose_down*",
+        "control.travel_dirs": [
+          "down",
+          "+x",
+          "-x",
+          "+z",
+          "-z"
+        ]
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
+      "music": "celestial_08_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

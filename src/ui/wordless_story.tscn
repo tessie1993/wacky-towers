@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://c4k6tka6bp4ww"]
+
+[ext_resource type="Script" uid="uid://pyy85j6xyohc" path="res://src/ui/wordless_story.gd" id="1_4e0se"]
+
+[node name="WordlessStory" type="Control" unique_id=8517047]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_4e0se")

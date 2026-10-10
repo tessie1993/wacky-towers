@@ -1,0 +1,165 @@
+{
+  "schema": 1,
+  "id": "lava_bonus",
+  "biome": "lava",
+  "tier": 11,
+  "name": "level.lava_bonus.name",
+  "board": {
+    "width": 8,
+    "depth": 2,
+    "h_play": 6,
+    "spawn_anchor": [
+      3,
+      0
+    ]
+  },
+  "pieces": {
+    "fixed_list": [
+      "big_cube",
+      "duo",
+      "duo",
+      "i",
+      "i",
+      "i",
+      "i"
+    ],
+    "shapes": [
+      "big_cube",
+      "duo",
+      "i"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.7,
+    "spawn.preview_count": 3,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "shape",
+    "target_shape": {
+      "layers": {
+        "0": [
+          "..++++..",
+          "..++++.."
+        ],
+        "1": [
+          "...++...",
+          "...++..."
+        ],
+        "2": [
+          "++++++++",
+          "++++++++"
+        ]
+      }
+    }
+  },
+  "stars": {
+    "t2": 100000,
+    "t3": 60000
+  },
+  "music": "lava_bonus",
+  "story": {
+    "mascot_role": "watcher",
+    "icon": "anvil"
+  },
+  "seed": null,
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {
+        "topout_rule": "trim"
+      }
+    }
+  ],
+  "metadata": {
+    "source": "design/levels/lava.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "lava_bonus",
+      "biome": "lava",
+      "tier": 11,
+      "name": "level.lava_bonus.name",
+      "board": {
+        "width": 8,
+        "depth": 2,
+        "h_play": 6,
+        "spawn_anchor": {
+          "x": 3,
+          "z": 0
+        }
+      },
+      "pieces": {
+        "fixed_list": [
+          "big_cube",
+          "duo",
+          "duo",
+          "i",
+          "i",
+          "i",
+          "i"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.7,
+        "spawn.preview_count": 3
+      },
+      "goal": {
+        "type": "fill_shape",
+        "target_shape": {
+          "layers": {
+            "0": [
+              "..++++..",
+              "..++++.."
+            ],
+            "1": [
+              "...++...",
+              "...++..."
+            ],
+            "2": [
+              "++++++++",
+              "++++++++"
+            ]
+          }
+        }
+      },
+      "recipe": [
+        {
+          "slot": "arrival",
+          "atom": "AR09"
+        },
+        {
+          "slot": "goal",
+          "atom": "GO03"
+        },
+        {
+          "slot": "clear",
+          "atom": "CL14"
+        },
+        {
+          "slot": "fail",
+          "atom": "FT07"
+        }
+      ],
+      "stars": {
+        "t2": 100000,
+        "t3": 60000
+      },
+      "music": "lava_bonus",
+      "story": {
+        "mascot_role": "watcher",
+        "icon": "anvil"
+      }
+    },
+    "unsupported": [
+      "field:recipe"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:recipe"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

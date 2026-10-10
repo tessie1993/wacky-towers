@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "id": "celestial_04",
+  "biome": "celestial",
+  "tier": 4,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.25,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "mushroom_popup",
+      "params": {
+        "spawn_every_locks": 4,
+        "objects_max": 4,
+        "skin": "star_rock"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 245000,
+    "t3": 175000
+  },
+  "music": "celestial_04_tbd",
+  "name": "LVL_CELESTIAL_04_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/celestial.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "celestial_04",
+      "biome": "celestial",
+      "tier": 4,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.25,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "mushroom_popup",
+          "params": {
+            "spawn_every_locks": 4,
+            "objects_max": 4,
+            "skin": "star_rock"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
+      "music": "celestial_04_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

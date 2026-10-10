@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "id": "flip",
+  "name_key": "RULE_FLIP",
+  "layer": "twist",
+  "icon": "flip",
+  "behaviour": "flip",
+  "params": {
+    "flip_mode": {
+      "type": "string"
+    },
+    "flip_to_axis": {
+      "type": "string"
+    },
+    "flip_every_layers": {
+      "type": "number"
+    },
+    "flip_every_ms": {
+      "type": "number"
+    },
+    "flip_warn_ms": {
+      "type": "number"
+    },
+    "flip_max": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

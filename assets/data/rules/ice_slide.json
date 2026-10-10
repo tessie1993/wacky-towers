@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "ice_slide",
+  "name_key": "RULE_ICE_SLIDE",
+  "layer": "twist",
+  "icon": "ice_slide",
+  "behaviour": "ice_slide",
+  "params": {
+    "slide_dir": {
+      "type": "string"
+    },
+    "slide_cells": {
+      "type": "number"
+    },
+    "start_after_clears": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

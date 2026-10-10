@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "wobble",
+  "name_key": "RULE_WOBBLE",
+  "layer": "twist",
+  "icon": "wobble",
+  "behaviour": "wobble",
+  "params": {
+    "wobble_max": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

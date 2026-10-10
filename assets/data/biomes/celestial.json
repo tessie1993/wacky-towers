@@ -1,0 +1,65 @@
+{
+  "id": "celestial",
+  "index": 10,
+  "art_set": "candy_toy",
+  "palette": "meadow",
+  "side_island": false,
+  "default_music": "mus_celestial_default",
+  "levels": [
+    {
+      "id": "celestial_01",
+      "json": "res://src/levels/celestial/celestial_01/celestial_01.json",
+      "scene": "res://src/levels/celestial/celestial_01/celestial_01.tscn"
+    },
+    {
+      "id": "celestial_02",
+      "json": "res://src/levels/celestial/celestial_02/celestial_02.json",
+      "scene": "res://src/levels/celestial/celestial_02/celestial_02.tscn"
+    },
+    {
+      "id": "celestial_03",
+      "json": "res://src/levels/celestial/celestial_03/celestial_03.json",
+      "scene": "res://src/levels/celestial/celestial_03/celestial_03.tscn"
+    },
+    {
+      "id": "celestial_04",
+      "json": "res://src/levels/celestial/celestial_04/celestial_04.json",
+      "scene": "res://src/levels/celestial/celestial_04/celestial_04.tscn"
+    },
+    {
+      "id": "celestial_05",
+      "json": "res://src/levels/celestial/celestial_05/celestial_05.json",
+      "scene": "res://src/levels/celestial/celestial_05/celestial_05.tscn"
+    },
+    {
+      "id": "celestial_06",
+      "json": "res://src/levels/celestial/celestial_06/celestial_06.json",
+      "scene": "res://src/levels/celestial/celestial_06/celestial_06.tscn"
+    },
+    {
+      "id": "celestial_07",
+      "json": "res://src/levels/celestial/celestial_07/celestial_07.json",
+      "scene": "res://src/levels/celestial/celestial_07/celestial_07.tscn"
+    },
+    {
+      "id": "celestial_08",
+      "json": "res://src/levels/celestial/celestial_08/celestial_08.json",
+      "scene": "res://src/levels/celestial/celestial_08/celestial_08.tscn"
+    },
+    {
+      "id": "celestial_09",
+      "json": "res://src/levels/celestial/celestial_09/celestial_09.json",
+      "scene": "res://src/levels/celestial/celestial_09/celestial_09.tscn"
+    },
+    {
+      "id": "celestial_10",
+      "json": "res://src/levels/celestial/celestial_10/celestial_10.json",
+      "scene": "res://src/levels/celestial/celestial_10/celestial_10.tscn"
+    },
+    {
+      "id": "celestial_bonus",
+      "json": "res://src/levels/celestial/celestial_bonus/celestial_bonus.json",
+      "scene": "res://src/levels/celestial/celestial_bonus/celestial_bonus.tscn"
+    }
+  ]
+}

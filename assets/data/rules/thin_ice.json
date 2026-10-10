@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "thin_ice",
+  "name_key": "RULE_THIN_ICE",
+  "layer": "twist",
+  "icon": "thin_ice",
+  "behaviour": "thin_ice",
+  "params": {
+    "shrink_every_ms": {
+      "type": "number"
+    },
+    "shrink_warn_ms": {
+      "type": "number"
+    },
+    "shrink_steps": {
+      "type": "number"
+    },
+    "shrink_order": {
+      "type": "structure"
+    }
+  },
+  "incompatible_with": []
+}

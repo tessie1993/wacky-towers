@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "id": "clockwork_02",
+  "biome": "clockwork",
+  "tier": 2,
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.05,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "turntable",
+      "params": {
+        "turn_warn_locks": 1,
+        "turn_locks": 4,
+        "clockwise": true
+      }
+    }
+  ],
+  "stars": {
+    "t2": 170000,
+    "t3": 120000
+  },
+  "music": "clockwork_02_tbd",
+  "name": "LVL_CLOCKWORK_02_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/clockwork.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "clockwork_02",
+      "biome": "clockwork",
+      "tier": 2,
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.05,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "turntable",
+          "params": {
+            "turn_every_locks": 4,
+            "turn_dir": "cw",
+            "turn_warn_locks": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "recipe": {
+        "atoms": [
+          "BL11",
+          "AR01",
+          "CV01",
+          "CL01",
+          "CO01",
+          "GO01",
+          "FT01",
+          "SE05",
+          "WO09"
+        ]
+      },
+      "music": "clockwork_02_tbd"
+    },
+    "unsupported": [
+      "field:recipe"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:recipe"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

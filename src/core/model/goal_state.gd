@@ -18,3 +18,10 @@ var level_ms: int = 0
 var locks: int = 0
 ## RESULT_RUNNING, RESULT_WON or RESULT_LOST.
 var result: int = RESULT_RUNNING
+
+## Overflow rescues used (warnings can be modified during a run).
+var warnings_used: int = 0
+## Final score, fed by simulation events.
+var score: int = 0
+## Goal-specific counters (freed critters, bonks, wound keys, frosted tiers).
+var metrics: Dictionary = {}

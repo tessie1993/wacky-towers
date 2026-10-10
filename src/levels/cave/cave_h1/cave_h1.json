@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "id": "cave_h1",
+  "biome": "cave",
+  "tier": 12,
+  "board": {
+    "width": 7,
+    "depth": 5,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.3,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "conveyor",
+      "params": {
+        "conveyor_every": 2,
+        "conveyor_wrap": true,
+        "skin": "minecart",
+        "conveyor_dir": "+x"
+      }
+    },
+    {
+      "id": "gust",
+      "params": {
+        "wind_mode": "fixed",
+        "wind_dir": "+z",
+        "wind_interval_ms": 10000,
+        "wind_jitter_ms": 2500,
+        "wind_warn_ms": 1000,
+        "skin": "bat_flap"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 395000,
+    "t3": 280000
+  },
+  "music": "cave_h1_tbd",
+  "name": "LVL_CAVE_H1_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/cave.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "cave_h1",
+      "biome": "cave",
+      "tier": 12,
+      "board": {
+        "width": 7,
+        "depth": 5,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.3,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 5
+      },
+      "rules": [
+        {
+          "id": "conveyor",
+          "params": {
+            "dir": "+x",
+            "conveyor_every": 2,
+            "conveyor_wrap": true,
+            "skin": "minecart"
+          }
+        },
+        {
+          "id": "gust",
+          "params": {
+            "wind_mode": "fixed",
+            "wind_dir": "+z",
+            "wind_interval_ms": 10000,
+            "wind_jitter_ms": 2500,
+            "wind_warn_ms": 1000,
+            "skin": "bat_flap"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 395000,
+        "t3": 280000
+      },
+      "music": "cave_h1_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

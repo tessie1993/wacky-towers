@@ -1,0 +1,80 @@
+{
+  "id": "lava",
+  "index": 5,
+  "art_set": "candy_toy",
+  "palette": "meadow",
+  "side_island": false,
+  "default_music": "mus_lava_default",
+  "levels": [
+    {
+      "id": "lava_01",
+      "json": "res://src/levels/lava/lava_01/lava_01.json",
+      "scene": "res://src/levels/lava/lava_01/lava_01.tscn"
+    },
+    {
+      "id": "lava_02",
+      "json": "res://src/levels/lava/lava_02/lava_02.json",
+      "scene": "res://src/levels/lava/lava_02/lava_02.tscn"
+    },
+    {
+      "id": "lava_03",
+      "json": "res://src/levels/lava/lava_03/lava_03.json",
+      "scene": "res://src/levels/lava/lava_03/lava_03.tscn"
+    },
+    {
+      "id": "lava_04",
+      "json": "res://src/levels/lava/lava_04/lava_04.json",
+      "scene": "res://src/levels/lava/lava_04/lava_04.tscn"
+    },
+    {
+      "id": "lava_05",
+      "json": "res://src/levels/lava/lava_05/lava_05.json",
+      "scene": "res://src/levels/lava/lava_05/lava_05.tscn"
+    },
+    {
+      "id": "lava_06",
+      "json": "res://src/levels/lava/lava_06/lava_06.json",
+      "scene": "res://src/levels/lava/lava_06/lava_06.tscn"
+    },
+    {
+      "id": "lava_07",
+      "json": "res://src/levels/lava/lava_07/lava_07.json",
+      "scene": "res://src/levels/lava/lava_07/lava_07.tscn"
+    },
+    {
+      "id": "lava_08",
+      "json": "res://src/levels/lava/lava_08/lava_08.json",
+      "scene": "res://src/levels/lava/lava_08/lava_08.tscn"
+    },
+    {
+      "id": "lava_09",
+      "json": "res://src/levels/lava/lava_09/lava_09.json",
+      "scene": "res://src/levels/lava/lava_09/lava_09.tscn"
+    },
+    {
+      "id": "lava_10",
+      "json": "res://src/levels/lava/lava_10/lava_10.json",
+      "scene": "res://src/levels/lava/lava_10/lava_10.tscn"
+    },
+    {
+      "id": "lava_bonus",
+      "json": "res://src/levels/lava/lava_bonus/lava_bonus.json",
+      "scene": "res://src/levels/lava/lava_bonus/lava_bonus.tscn"
+    },
+    {
+      "id": "lava_h1",
+      "json": "res://src/levels/lava/lava_h1/lava_h1.json",
+      "scene": "res://src/levels/lava/lava_h1/lava_h1.tscn"
+    },
+    {
+      "id": "lava_h2",
+      "json": "res://src/levels/lava/lava_h2/lava_h2.json",
+      "scene": "res://src/levels/lava/lava_h2/lava_h2.tscn"
+    },
+    {
+      "id": "lava_h3",
+      "json": "res://src/levels/lava/lava_h3/lava_h3.json",
+      "scene": "res://src/levels/lava/lava_h3/lava_h3.tscn"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "cave",
+  "index": 7,
+  "art_set": "candy_toy",
+  "palette": "meadow",
+  "side_island": false,
+  "default_music": "mus_cave_default",
+  "levels": [
+    {
+      "id": "cave_01",
+      "json": "res://src/levels/cave/cave_01/cave_01.json",
+      "scene": "res://src/levels/cave/cave_01/cave_01.tscn"
+    },
+    {
+      "id": "cave_02",
+      "json": "res://src/levels/cave/cave_02/cave_02.json",
+      "scene": "res://src/levels/cave/cave_02/cave_02.tscn"
+    },
+    {
+      "id": "cave_03",
+      "json": "res://src/levels/cave/cave_03/cave_03.json",
+      "scene": "res://src/levels/cave/cave_03/cave_03.tscn"
+    },
+    {
+      "id": "cave_04",
+      "json": "res://src/levels/cave/cave_04/cave_04.json",
+      "scene": "res://src/levels/cave/cave_04/cave_04.tscn"
+    },
+    {
+      "id": "cave_05",
+      "json": "res://src/levels/cave/cave_05/cave_05.json",
+      "scene": "res://src/levels/cave/cave_05/cave_05.tscn"
+    },
+    {
+      "id": "cave_06",
+      "json": "res://src/levels/cave/cave_06/cave_06.json",
+      "scene": "res://src/levels/cave/cave_06/cave_06.tscn"
+    },
+    {
+      "id": "cave_07",
+      "json": "res://src/levels/cave/cave_07/cave_07.json",
+      "scene": "res://src/levels/cave/cave_07/cave_07.tscn"
+    },
+    {
+      "id": "cave_08",
+      "json": "res://src/levels/cave/cave_08/cave_08.json",
+      "scene": "res://src/levels/cave/cave_08/cave_08.tscn"
+    },
+    {
+      "id": "cave_09",
+      "json": "res://src/levels/cave/cave_09/cave_09.json",
+      "scene": "res://src/levels/cave/cave_09/cave_09.tscn"
+    },
+    {
+      "id": "cave_10",
+      "json": "res://src/levels/cave/cave_10/cave_10.json",
+      "scene": "res://src/levels/cave/cave_10/cave_10.tscn"
+    },
+    {
+      "id": "cave_bonus",
+      "json": "res://src/levels/cave/cave_bonus/cave_bonus.json",
+      "scene": "res://src/levels/cave/cave_bonus/cave_bonus.tscn"
+    },
+    {
+      "id": "cave_h1",
+      "json": "res://src/levels/cave/cave_h1/cave_h1.json",
+      "scene": "res://src/levels/cave/cave_h1/cave_h1.tscn"
+    },
+    {
+      "id": "cave_h2",
+      "json": "res://src/levels/cave/cave_h2/cave_h2.json",
+      "scene": "res://src/levels/cave/cave_h2/cave_h2.tscn"
+    },
+    {
+      "id": "cave_h3",
+      "json": "res://src/levels/cave/cave_h3/cave_h3.json",
+      "scene": "res://src/levels/cave/cave_h3/cave_h3.tscn"
+    }
+  ]
+}

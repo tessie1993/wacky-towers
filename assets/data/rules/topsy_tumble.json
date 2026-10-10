@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "topsy_tumble",
+  "name_key": "RULE_TOPSY_TUMBLE",
+  "layer": "twist",
+  "icon": "topsy_tumble",
+  "behaviour": "topsy_tumble",
+  "params": {
+    "flip_every_layers": {
+      "type": "number"
+    },
+    "flip_every_ms": {
+      "type": "number"
+    },
+    "flip_warn_ms": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

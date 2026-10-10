@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "id": "underwater_bonus",
+  "biome": "underwater",
+  "tier": 11,
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 6
+  },
+  "pieces": {
+    "fixed_list": [
+      "big_cube",
+      "big_cube",
+      "i",
+      "i",
+      "i",
+      "i",
+      "o"
+    ],
+    "shapes": [
+      "big_cube",
+      "i",
+      "o"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.5,
+    "spawn.preview_count": 3,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "shape",
+    "target_shape": {
+      "layers": {
+        "0": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ],
+        "1": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ],
+        "2": [
+          "....",
+          ".++.",
+          ".++.",
+          "...."
+        ]
+      }
+    }
+  },
+  "rules": [
+    {
+      "id": "fill_shape"
+    }
+  ],
+  "stars": {
+    "t2": 75000,
+    "t3": 50000
+  },
+  "music": "underwater_bonus",
+  "name": "LVL_UNDERWATER_BONUS_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_bonus",
+      "biome": "underwater",
+      "tier": 11,
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 6
+      },
+      "pieces": {
+        "fixed_list": [
+          "big_cube",
+          "big_cube",
+          "I",
+          "I",
+          "I",
+          "I",
+          "O"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.5,
+        "spawn.preview_count": 3,
+        "goal.top_out": "out_of_pieces"
+      },
+      "goal": {
+        "type": "shape",
+        "target_shape": {
+          "layers": {
+            "0": [
+              "++++",
+              "++++",
+              "++++",
+              "++++"
+            ],
+            "1": [
+              "++++",
+              "++++",
+              "++++",
+              "++++"
+            ],
+            "2": [
+              "....",
+              ".++.",
+              ".++.",
+              "...."
+            ]
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "fill_shape"
+        }
+      ],
+      "stars": {
+        "t2": 75000,
+        "t3": 50000
+      },
+      "music": "underwater_bonus"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

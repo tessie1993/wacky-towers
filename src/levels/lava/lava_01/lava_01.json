@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "id": "lava_01",
+  "biome": "lava",
+  "tier": 1,
+  "name": "level.lava_01.name",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 8
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s"
+    ],
+    "opening_set": [
+      "o",
+      "i"
+    ],
+    "opening_count": 2
+  },
+  "knobs": {
+    "fall.g0": 0.85
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "stars": {
+    "t2": 170000,
+    "t3": 120000
+  },
+  "music": "lava_01",
+  "story": {
+    "mascot_role": "watcher",
+    "icon": "campfire"
+  },
+  "seed": null,
+  "rules": [],
+  "metadata": {
+    "source": "design/levels/lava.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "lava_01",
+      "biome": "lava",
+      "tier": 1,
+      "name": "level.lava_01.name",
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 8
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s"
+        ],
+        "opening_set": [
+          "o",
+          "i"
+        ],
+        "opening_count": 2
+      },
+      "knobs": {
+        "fall.g0": 0.85
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "recipe": [
+        {
+          "slot": "se",
+          "atom": "SE05"
+        }
+      ],
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "music": "lava_01",
+      "story": {
+        "mascot_role": "watcher",
+        "icon": "campfire"
+      }
+    },
+    "unsupported": [
+      "field:recipe"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:recipe"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

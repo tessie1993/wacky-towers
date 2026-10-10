@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "id": "neon_09",
+  "biome": "neon",
+  "tier": 9,
+  "name": "LVL_NEON_09_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "fixed_list": []
+  },
+  "knobs": {
+    "fall.g0": 1.25,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "turntable",
+      "params": {}
+    },
+    {
+      "id": "gust",
+      "params": {}
+    }
+  ],
+  "stars": {
+    "t2": 410000,
+    "t3": 290000
+  },
+  "story": {
+    "title_key": "LVL_NEON_09_TITLE",
+    "premise_key": "LVL_NEON_09_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "star"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/neon.md",
+    "status": "Proposed",
+    "design_spec": {
+      "schema": 1,
+      "id": "neon_09",
+      "biome": "neon",
+      "tier": 9,
+      "name": "LVL_NEON_09_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ],
+        "fixed_list": []
+      },
+      "knobs": {
+        "fall.g0": 1.25,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 5
+      },
+      "rules": [
+        {
+          "id": "turntable",
+          "params": {}
+        },
+        {
+          "id": "gust",
+          "params": {}
+        }
+      ],
+      "stars": {
+        "t2": 410000,
+        "t3": 290000
+      },
+      "story": {
+        "title_key": "LVL_NEON_09_TITLE",
+        "premise_key": "LVL_NEON_09_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "star"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

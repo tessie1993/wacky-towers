@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "countdown_bomb",
+  "name_key": "RULE_COUNTDOWN_BOMB",
+  "layer": "content",
+  "icon": "countdown_bomb",
+  "behaviour": "countdown_bomb",
+  "params": {
+    "thrown_every_locks": {
+      "type": "number"
+    },
+    "cd_start": {
+      "type": "number"
+    },
+    "blast_layers": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

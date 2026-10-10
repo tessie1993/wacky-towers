@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "vines",
+  "name_key": "RULE_VINES",
+  "layer": "content",
+  "icon": "vines",
+  "behaviour": "vines",
+  "params": {
+    "vine_per_bag": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

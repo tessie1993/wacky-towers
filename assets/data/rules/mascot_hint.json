@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "id": "mascot_hint",
+  "name_key": "RULE_MASCOT_HINT",
+  "layer": "mascot",
+  "icon": "mascot_hint",
+  "behaviour": "mascot_hint",
+  "params": {},
+  "incompatible_with": []
+}

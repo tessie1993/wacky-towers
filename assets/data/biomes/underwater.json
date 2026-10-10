@@ -1,0 +1,65 @@
+{
+  "id": "underwater",
+  "index": 4,
+  "art_set": "candy_toy",
+  "palette": "meadow",
+  "side_island": false,
+  "default_music": "mus_underwater_default",
+  "levels": [
+    {
+      "id": "underwater_01",
+      "json": "res://src/levels/underwater/underwater_01/underwater_01.json",
+      "scene": "res://src/levels/underwater/underwater_01/underwater_01.tscn"
+    },
+    {
+      "id": "underwater_02",
+      "json": "res://src/levels/underwater/underwater_02/underwater_02.json",
+      "scene": "res://src/levels/underwater/underwater_02/underwater_02.tscn"
+    },
+    {
+      "id": "underwater_03",
+      "json": "res://src/levels/underwater/underwater_03/underwater_03.json",
+      "scene": "res://src/levels/underwater/underwater_03/underwater_03.tscn"
+    },
+    {
+      "id": "underwater_04",
+      "json": "res://src/levels/underwater/underwater_04/underwater_04.json",
+      "scene": "res://src/levels/underwater/underwater_04/underwater_04.tscn"
+    },
+    {
+      "id": "underwater_05",
+      "json": "res://src/levels/underwater/underwater_05/underwater_05.json",
+      "scene": "res://src/levels/underwater/underwater_05/underwater_05.tscn"
+    },
+    {
+      "id": "underwater_06",
+      "json": "res://src/levels/underwater/underwater_06/underwater_06.json",
+      "scene": "res://src/levels/underwater/underwater_06/underwater_06.tscn"
+    },
+    {
+      "id": "underwater_07",
+      "json": "res://src/levels/underwater/underwater_07/underwater_07.json",
+      "scene": "res://src/levels/underwater/underwater_07/underwater_07.tscn"
+    },
+    {
+      "id": "underwater_08",
+      "json": "res://src/levels/underwater/underwater_08/underwater_08.json",
+      "scene": "res://src/levels/underwater/underwater_08/underwater_08.tscn"
+    },
+    {
+      "id": "underwater_09",
+      "json": "res://src/levels/underwater/underwater_09/underwater_09.json",
+      "scene": "res://src/levels/underwater/underwater_09/underwater_09.tscn"
+    },
+    {
+      "id": "underwater_10",
+      "json": "res://src/levels/underwater/underwater_10/underwater_10.json",
+      "scene": "res://src/levels/underwater/underwater_10/underwater_10.tscn"
+    },
+    {
+      "id": "underwater_bonus",
+      "json": "res://src/levels/underwater/underwater_bonus/underwater_bonus.json",
+      "scene": "res://src/levels/underwater/underwater_bonus/underwater_bonus.tscn"
+    }
+  ]
+}

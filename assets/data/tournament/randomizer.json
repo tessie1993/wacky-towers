@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "minigame_share": 0.4,
+  "mg_no_repeat_rounds": 3,
+  "rerolls_per_player": 1,
+  "show_ms": 3000,
+  "reroll_window_ms": 5000,
+  "twists_round1": 0,
+  "twists_round2": 1,
+  "twists_round4": 2
+}

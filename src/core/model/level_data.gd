@@ -34,3 +34,16 @@ var stars: Dictionary = {}
 var seed: int = NO_SEED
 ## Story/flavour data.
 var story: Dictionary = {}
+
+## Run-owned mutable dictionaries prevent stage transitions and undo from changing cached content.
+func duplicate_runtime() -> LevelData:
+	var copy: LevelData = LevelData.new()
+	for property: Dictionary in get_property_list():
+		if int(property["usage"]) & PROPERTY_USAGE_SCRIPT_VARIABLE == 0:
+			continue
+		var key: StringName = property["name"]
+		var value: Variant = get(key)
+		if value is Dictionary or value is Array:
+			value = value.duplicate(true)
+		copy.set(key, value)
+	return copy

@@ -1,0 +1,188 @@
+{
+  "schema": 1,
+  "id": "lava_10",
+  "biome": "lava",
+  "tier": 10,
+  "name": "level.lava_10.name",
+  "board": {
+    "width": 7,
+    "depth": 7,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "chair"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.25
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "lava_rock_spawn",
+      "params": {
+        "every_locks": 6,
+        "objects_max": 3,
+        "object": "SP19",
+        "object_kind": "rock",
+        "hard_hits": 2
+      }
+    },
+    {
+      "id": "quake",
+      "params": {
+        "quake_every_s": 40,
+        "active_after_clears": 1,
+        "quake_warn_ms": 2000,
+        "quake_max_cubes": 6
+      }
+    },
+    {
+      "id": "fog",
+      "params": {
+        "visible_ms": 4500,
+        "fade_ms": 1000,
+        "reveal_ms": 800,
+        "active_after_clears": 2,
+        "invisible_alpha": 0.1
+      }
+    }
+  ],
+  "stars": {
+    "t2": 335000,
+    "t3": 235000
+  },
+  "music": "lava_10",
+  "story": {
+    "mascot_role": "watcher",
+    "icon": "spa",
+    "boss": "smolder",
+    "friend_join": "boulder"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/lava.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "lava_10",
+      "biome": "lava",
+      "tier": 10,
+      "name": "level.lava_10.name",
+      "board": {
+        "width": 7,
+        "depth": 7,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "tripod",
+          "screw_l",
+          "screw_r",
+          "chair"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.25
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "EV04",
+          "params": {
+            "every_locks": 6,
+            "objects_max": 3,
+            "object": "SP19"
+          }
+        },
+        {
+          "id": "EV12",
+          "params": {
+            "quake_every_s": 40,
+            "active_after_clears": 1,
+            "quake_warn_ms": 2000,
+            "quake_max_cubes": 6
+          }
+        },
+        {
+          "id": "EV02",
+          "params": {
+            "visible_ms": 4500,
+            "fade_ms": 1000,
+            "alpha": 0.1,
+            "reveal_ms": 800,
+            "active_after_clears": 2
+          }
+        }
+      ],
+      "stars": {
+        "t2": 335000,
+        "t3": 235000
+      },
+      "music": "lava_10",
+      "story": {
+        "mascot_role": "watcher",
+        "icon": "spa",
+        "boss": "smolder",
+        "friend_join": "boulder"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "EV04",
+        "runtime": "lava_rock_spawn",
+        "params": {
+          "every_locks": 6,
+          "objects_max": 3,
+          "object": "SP19",
+          "object_kind": "rock",
+          "hard_hits": 2
+        }
+      },
+      {
+        "source": "EV12",
+        "runtime": "quake",
+        "params": {
+          "quake_every_s": 40,
+          "active_after_clears": 1,
+          "quake_warn_ms": 2000,
+          "quake_max_cubes": 6
+        }
+      },
+      {
+        "source": "EV02",
+        "runtime": "fog",
+        "params": {
+          "visible_ms": 4500,
+          "fade_ms": 1000,
+          "reveal_ms": 800,
+          "active_after_clears": 2,
+          "invisible_alpha": 0.1
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

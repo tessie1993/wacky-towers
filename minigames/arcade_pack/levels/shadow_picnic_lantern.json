@@ -1,0 +1,153 @@
+{
+  "id": "shadow_picnic_lantern",
+  "mode": "shadow",
+  "name": "Picnic Lantern",
+  "biome": "meadow",
+  "story": "Pip brings a picnic lantern with its sign in pieces. Build its two shadows so everyone can find the picnic.",
+  "objective": "Repair three lantern blueprints by matching both silhouettes.",
+  "twist": "A small shared cube tray makes one cube do useful work in two shadows.",
+  "rule": "Match both raised silhouettes exactly. Any 3D build that fits is valid; cubes can float and be removed at any time.",
+  "controls": "Arrows: move across tray. E/Q: raise/lower cursor. Space: add/remove cube. U: undo last edit.",
+  "time_limit": 300,
+  "star_times": [
+    180,
+    240
+  ],
+  "grid_size": 3,
+  "ending": "The lantern glows; Pip points the picnic guests toward home.",
+  "puzzles": [
+    {
+      "id": "lantern_post",
+      "name": "The lantern post",
+      "grid_size": 3,
+      "cube_budget": 4,
+      "front": [
+        "###",
+        ".#.",
+        "..."
+      ],
+      "side": [
+        ".#.",
+        ".#.",
+        "..."
+      ],
+      "blocked_cells": [],
+      "solution": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          1
+        ],
+        [
+          2,
+          0,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "story": "Pip holds up the lantern post. The FRONT panel reads width; the SIDE panel reads depth.",
+      "payoff": "The lantern has a sturdy little foot."
+    },
+    {
+      "id": "picnic_arrow",
+      "name": "A sign with depth",
+      "grid_size": 3,
+      "cube_budget": 5,
+      "front": [
+        "###",
+        "#..",
+        "..."
+      ],
+      "side": [
+        "###",
+        ".#.",
+        "..."
+      ],
+      "blocked_cells": [],
+      "solution": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          1
+        ],
+        [
+          2,
+          0,
+          2
+        ],
+        [
+          0,
+          1,
+          1
+        ]
+      ],
+      "story": "Pip turns the sign sideways: a wide front can also cast a wide side. One cube helps both.",
+      "payoff": "The picnic arrow points the right way."
+    },
+    {
+      "id": "firefly_roof",
+      "name": "A roof for fireflies",
+      "grid_size": 3,
+      "cube_budget": 6,
+      "front": [
+        "#.#",
+        "###",
+        ".#."
+      ],
+      "side": [
+        ".#.",
+        "#.#",
+        ".#."
+      ],
+      "blocked_cells": [],
+      "solution": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          2,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          1,
+          2
+        ],
+        [
+          2,
+          1,
+          0
+        ],
+        [
+          1,
+          2,
+          1
+        ]
+      ],
+      "story": "Three fireflies need a tiny roof. Match its bright raised tiles and remove any extra shadow.",
+      "payoff": "The fireflies settle under the lantern roof."
+    }
+  ]
+}

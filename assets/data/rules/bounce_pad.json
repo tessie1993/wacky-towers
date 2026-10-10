@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "bounce_pad",
+  "name_key": "RULE_BOUNCE_PAD",
+  "layer": "content",
+  "icon": "bounce_pad",
+  "behaviour": "bounce_pad",
+  "params": {
+    "bounce_h": {
+      "type": "number"
+    },
+    "dir_mode": {
+      "type": "string"
+    }
+  },
+  "incompatible_with": []
+}

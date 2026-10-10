@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "conveyor",
+  "name_key": "RULE_CONVEYOR",
+  "layer": "mechanic",
+  "icon": "conveyor",
+  "behaviour": "conveyor",
+  "params": {
+    "conveyor_every": {
+      "type": "number"
+    },
+    "conveyor_wrap": {
+      "type": "flag"
+    },
+    "conveyor_dir": {
+      "type": "string"
+    },
+    "skin": {
+      "type": "string"
+    }
+  },
+  "incompatible_with": []
+}

@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "lava_rock_spawn",
+  "name_key": "RULE_LAVA_ROCK_SPAWN",
+  "layer": "twist",
+  "icon": "lava_rock_spawn",
+  "behaviour": "lava_rock_spawn",
+  "params": {
+    "every_locks": {
+      "type": "number"
+    },
+    "objects_max": {
+      "type": "number"
+    },
+    "object": {
+      "type": "string"
+    },
+    "object_kind": {
+      "type": "string"
+    },
+    "hard_hits": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

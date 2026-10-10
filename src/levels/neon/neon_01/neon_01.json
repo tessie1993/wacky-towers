@@ -1,0 +1,101 @@
+{
+  "schema": 1,
+  "id": "neon_01",
+  "biome": "neon",
+  "tier": 1,
+  "name": "LVL_NEON_01_TITLE",
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 8
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "fixed_list": []
+  },
+  "knobs": {
+    "fall.g0": 0.95,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [],
+  "stars": {
+    "t2": 145000,
+    "t3": 105000
+  },
+  "story": {
+    "title_key": "LVL_NEON_01_TITLE",
+    "premise_key": "LVL_NEON_01_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "star"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/neon.md",
+    "status": "Proposed",
+    "design_spec": {
+      "schema": 1,
+      "id": "neon_01",
+      "biome": "neon",
+      "tier": 1,
+      "name": "LVL_NEON_01_TITLE",
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 8
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ],
+        "fixed_list": []
+      },
+      "knobs": {
+        "fall.g0": 0.95,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 3
+      },
+      "rules": [],
+      "stars": {
+        "t2": 145000,
+        "t3": 105000
+      },
+      "story": {
+        "title_key": "LVL_NEON_01_TITLE",
+        "premise_key": "LVL_NEON_01_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "star"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

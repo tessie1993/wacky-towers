@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "id": "ice_08",
+  "biome": "ice",
+  "tier": 8,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 8
+  },
+  "knobs": {
+    "fall.g0": 1.0,
+    "fall.ramp_per_min": 0.15
+  },
+  "goal": {
+    "type": "survive",
+    "T": 140,
+    "t_ms": 140000
+  },
+  "rules": [
+    {
+      "id": "thin_ice",
+      "params": {
+        "shrink_every_ms": 35000,
+        "shrink_warn_ms": 3000,
+        "shrink_steps": 3,
+        "shrink_order": [
+          "+z",
+          "+x",
+          "+z"
+        ]
+      }
+    }
+  ],
+  "stars": {
+    "s2": 1,
+    "s3": 2
+  },
+  "music": "ice_08",
+  "name": "LVL_ICE_08_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/ice.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "ice_08",
+      "biome": "ice",
+      "tier": 8,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 8
+      },
+      "knobs": {
+        "fall.g0": 1.0,
+        "fall.ramp_per_min": 0.15
+      },
+      "goal": {
+        "type": "survive",
+        "T": 140
+      },
+      "rules": [
+        {
+          "id": "thin_ice",
+          "params": {
+            "shrink_every_ms": 35000,
+            "shrink_warn_ms": 3000,
+            "shrink_steps": 3,
+            "shrink_order": [
+              "+z",
+              "+x",
+              "+z"
+            ]
+          }
+        }
+      ],
+      "stars": {
+        "s2": 1,
+        "s3": 2
+      },
+      "music": "ice_08"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

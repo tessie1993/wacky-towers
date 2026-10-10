@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "earned_specials",
+  "name_key": "RULE_EARNED_SPECIALS",
+  "layer": "content",
+  "icon": "earned_specials",
+  "behaviour": "earned_specials",
+  "params": {
+    "bomb_at": {
+      "type": "number"
+    },
+    "rocket_at": {
+      "type": "number",
+      "min": 0,
+      "max": 0
+    },
+    "colour_bomb_at": {
+      "type": "number",
+      "min": 0,
+      "max": 0
+    }
+  },
+  "incompatible_with": []
+}

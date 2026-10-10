@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "fill_shape",
+  "name_key": "RULE_FILL_SHAPE",
+  "layer": "mechanic",
+  "icon": "fill_shape",
+  "behaviour": "fill_shape",
+  "params": {
+    "top_out": {
+      "type": "string"
+    },
+    "topout_rule": {
+      "type": "string"
+    },
+    "stick_when_filled": {
+      "type": "flag"
+    }
+  },
+  "incompatible_with": []
+}

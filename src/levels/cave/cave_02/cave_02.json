@@ -1,0 +1,221 @@
+{
+  "schema": 1,
+  "id": "cave_02",
+  "biome": "cave",
+  "tier": 2,
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 10,
+    "spawn_anchor": [
+      3,
+      3
+    ],
+    "starting_contents": {
+      "layers": {
+        "0": [
+          ".....",
+          ".....",
+          "..R..",
+          ".....",
+          "....."
+        ],
+        "1": [
+          ".....",
+          ".....",
+          "..R..",
+          ".....",
+          "....."
+        ],
+        "2": [
+          "RR...",
+          ".....",
+          ".....",
+          ".....",
+          "....."
+        ]
+      }
+    }
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "opening_set": [
+      "o",
+      "i"
+    ],
+    "opening_count": 2
+  },
+  "knobs": {
+    "fall.g0": 1.0,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "rock_obstacle",
+      "params": {
+        "cells": [
+          [
+            2,
+            0,
+            2
+          ],
+          [
+            2,
+            1,
+            2
+          ],
+          [
+            0,
+            2,
+            0
+          ],
+          [
+            1,
+            2,
+            0
+          ]
+        ]
+      }
+    }
+  ],
+  "stars": {
+    "t2": 155000,
+    "t3": 110000
+  },
+  "music": "cave_02_tbd",
+  "name": "LVL_CAVE_02_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/cave.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "cave_02",
+      "biome": "cave",
+      "tier": 2,
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 10,
+        "rock": {
+          "layers": {
+            "0": [
+              ".....",
+              ".....",
+              "..R..",
+              ".....",
+              "....."
+            ],
+            "1": [
+              ".....",
+              ".....",
+              "..R..",
+              ".....",
+              "....."
+            ],
+            "2": [
+              "RR...",
+              ".....",
+              ".....",
+              ".....",
+              "....."
+            ]
+          }
+        },
+        "spawn_anchor": {
+          "x": 3,
+          "z": 3
+        }
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "screw_r"
+        ],
+        "opening_set": [
+          "o",
+          "i"
+        ],
+        "opening_count": 2
+      },
+      "knobs": {
+        "fall.g0": 1.0,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "wo09_watcher",
+          "params": {}
+        }
+      ],
+      "secrets": [
+        {
+          "id": "SE05",
+          "params": {
+            "prop": "rubber_duck_bats",
+            "view_snap": "low_3"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 155000,
+        "t3": 110000
+      },
+      "recipe": {
+        "atoms": [
+          "BL18",
+          "AR01",
+          "CV01",
+          "CL01",
+          "CO01",
+          "GO01",
+          "FT01",
+          "SE05",
+          "WO09"
+        ]
+      },
+      "music": "cave_02_tbd"
+    },
+    "unsupported": [
+      "field:recipe",
+      "field:secrets"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:recipe",
+      "field:secrets"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "wo09_watcher",
+        "runtime": "story.mascot_role=watcher",
+        "presentation_only": true
+      }
+    ],
+    "design_amendments": []
+  }
+}

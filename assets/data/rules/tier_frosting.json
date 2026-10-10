@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "tier_frosting",
+  "name_key": "RULE_TIER_FROSTING",
+  "layer": "content",
+  "icon": "tier_frosting",
+  "behaviour": "tier_frosting",
+  "params": {
+    "tier_layers": {
+      "type": "number"
+    },
+    "frost_share": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

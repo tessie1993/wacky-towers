@@ -1,0 +1,176 @@
+{
+  "schema": 1,
+  "id": "candy_04",
+  "biome": "candy",
+  "tier": 4,
+  "name": "LVL_CANDY_04_TITLE",
+  "board": {
+    "width": 8,
+    "depth": 3,
+    "h_play": 9,
+    "down_axis": "-y"
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "weights": {
+      "i": 1.5,
+      "o": 1.5,
+      "l": 1.5
+    },
+    "tags": {
+      "jelly": {
+        "per_bag": 1
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 0.8,
+    "clear.collapse": "gummy",
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1,
+    "spawn.colour_count": 2,
+    "spawn.colour_streak": 0.6
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "mono_layer",
+      "params": {
+        "mono_extra_layers": 1
+      }
+    },
+    {
+      "id": "jelly_piece",
+      "params": {
+        "per_bag": 1,
+        "jelly_bounce": 1
+      }
+    },
+    {
+      "id": "mascot_mood",
+      "params": {
+        "prank": "bridge_jump"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 265000,
+    "t3": 185000
+  },
+  "music": "mus_candy_04",
+  "story": {
+    "title_key": "LVL_CANDY_04_TITLE",
+    "premise_key": "LVL_CANDY_04_PREMISE",
+    "mascot_role": "mood_swing",
+    "icon": "jelly"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/candy.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "candy_04",
+      "biome": "candy",
+      "tier": 4,
+      "name": "LVL_CANDY_04_TITLE",
+      "board": {
+        "width": 8,
+        "depth": 3,
+        "h_play": 9,
+        "down_axis": "-y"
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ],
+        "weights": {
+          "i": 1.5,
+          "o": 1.5,
+          "l": 1.5
+        },
+        "tags": {
+          "jelly": 1
+        }
+      },
+      "knobs": {
+        "fall.g0": 0.8,
+        "clear.collapse": "gummy",
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1,
+        "spawn.colour_count": 2,
+        "spawn.colour_streak": 0.6
+      },
+      "goal": {
+        "type": "clear",
+        "N": 5
+      },
+      "rules": [
+        {
+          "id": "mono_layer",
+          "params": {
+            "mono_extra_layers": 1
+          }
+        },
+        {
+          "id": "jelly_piece*",
+          "params": {
+            "per_bag": 1,
+            "jelly_bounce": 1
+          }
+        },
+        {
+          "id": "mascot_mood",
+          "params": {
+            "prank": "bridge_jump"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 265000,
+        "t3": 185000
+      },
+      "music": "mus_candy_04",
+      "story": {
+        "title_key": "LVL_CANDY_04_TITLE",
+        "premise_key": "LVL_CANDY_04_PREMISE",
+        "mascot_role": "mood_swing",
+        "icon": "jelly"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "jelly_piece*",
+        "runtime": "jelly_piece",
+        "params": {
+          "per_bag": 1,
+          "jelly_bounce": 1
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

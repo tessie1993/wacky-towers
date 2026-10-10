@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "id": "celestial_03",
+  "biome": "celestial",
+  "tier": 3,
+  "board": {
+    "width": 8,
+    "depth": 4,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.23,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "gust",
+      "params": {
+        "wind_mode": "fixed",
+        "wind_dir": "+x",
+        "wind_interval_ms": 7000,
+        "wind_jitter_ms": 2000,
+        "wind_strength": 1,
+        "wind_warn_ms": 1000
+      }
+    }
+  ],
+  "stars": {
+    "t2": 365000,
+    "t3": 255000
+  },
+  "music": "celestial_03_tbd",
+  "name": "LVL_CELESTIAL_03_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/celestial.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "celestial_03",
+      "biome": "celestial",
+      "tier": 3,
+      "board": {
+        "width": 8,
+        "depth": 4,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.23,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 5
+      },
+      "rules": [
+        {
+          "id": "gust",
+          "params": {
+            "wind_mode": "fixed",
+            "wind_dir": "+x",
+            "wind_interval_ms": 7000,
+            "wind_jitter_ms": 2000,
+            "wind_strength": 1,
+            "wind_warn_ms": 1000
+          }
+        }
+      ],
+      "stars": {
+        "t2": 365000,
+        "t3": 255000
+      },
+      "music": "celestial_03_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

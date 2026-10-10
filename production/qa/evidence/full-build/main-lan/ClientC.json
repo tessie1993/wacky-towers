@@ -1,0 +1,363 @@
+{
+	"checkpoints": [
+		{
+			"hashes": {
+				"1": 2707002845,
+				"1319081669": 4038281484,
+				"397703866": 4072826557,
+				"706839511": 2628644811
+			},
+			"tick": 30
+		},
+		{
+			"hashes": {
+				"1": 514865287,
+				"1319081669": 3757522730,
+				"397703866": 3374685679,
+				"706839511": 2283938333
+			},
+			"tick": 60
+		},
+		{
+			"hashes": {
+				"1": 3053247586,
+				"1319081669": 2923047323,
+				"397703866": 2918021478,
+				"706839511": 4283266380
+			},
+			"tick": 90
+		},
+		{
+			"hashes": {
+				"1": 2372345060,
+				"1319081669": 505746289,
+				"397703866": 3945426408,
+				"706839511": 3903419774
+			},
+			"tick": 120
+		},
+		{
+			"hashes": {
+				"1": 3459370671,
+				"1319081669": 1405954946,
+				"397703866": 1073215159,
+				"706839511": 617189013
+			},
+			"tick": 150
+		},
+		{
+			"hashes": {
+				"1": 1172701096,
+				"1319081669": 3412465469,
+				"397703866": 2366414940,
+				"706839511": 3620013711
+			},
+			"tick": 180
+		},
+		{
+			"hashes": {
+				"1": 1011729369,
+				"1319081669": 1434838924,
+				"397703866": 956771357,
+				"706839511": 3807883538
+			},
+			"tick": 210
+		},
+		{
+			"hashes": {
+				"1": 4145847693,
+				"1319081669": 1040065662,
+				"397703866": 288840075,
+				"706839511": 711389884
+			},
+			"tick": 240
+		},
+		{
+			"hashes": {
+				"1": 816756502,
+				"1319081669": 1946880194,
+				"397703866": 893567343,
+				"706839511": 3413190192
+			},
+			"tick": 270
+		},
+		{
+			"hashes": {
+				"1": 180497040,
+				"1319081669": 1934832917,
+				"397703866": 3995931080,
+				"706839511": 1371189343
+			},
+			"tick": 300
+		},
+		{
+			"hashes": {
+				"1": 1893174003,
+				"1319081669": 4216436978,
+				"397703866": 142562987,
+				"706839511": 2633596556
+			},
+			"tick": 330
+		},
+		{
+			"hashes": {
+				"1": 1698997462,
+				"1319081669": 2663583783,
+				"397703866": 1116491542,
+				"706839511": 4081284125
+			},
+			"tick": 360
+		},
+		{
+			"hashes": {
+				"1": 3921028872,
+				"1319081669": 2367246001,
+				"397703866": 3066040948,
+				"706839511": 1118916276
+			},
+			"tick": 390
+		},
+		{
+			"hashes": {
+				"1": 930217135,
+				"1319081669": 1294244502,
+				"397703866": 92046767,
+				"706839511": 2077459363
+			},
+			"tick": 420
+		},
+		{
+			"hashes": {
+				"1": 360406122,
+				"1319081669": 2740278605,
+				"397703866": 2214751761,
+				"706839511": 349350248
+			},
+			"tick": 450
+		},
+		{
+			"hashes": {
+				"1": 2342500984,
+				"1319081669": 1035064582,
+				"397703866": 32606183,
+				"706839511": 614505978
+			},
+			"tick": 480
+		},
+		{
+			"hashes": {
+				"1": 3798227343,
+				"1319081669": 1091397449,
+				"397703866": 3681130668,
+				"706839511": 250607644
+			},
+			"tick": 510
+		},
+		{
+			"hashes": {
+				"1": 954438067,
+				"1319081669": 382823305,
+				"397703866": 855847716,
+				"706839511": 2435738048
+			},
+			"tick": 540
+		}
+	],
+	"commands": {
+		"1319081669:cmd_hard_drop": 1,
+		"1319081669:cmd_move": 1,
+		"1319081669:cmd_rotate": 3,
+		"1319081669:cmd_use_skill": 1,
+		"1:cmd_hard_drop": 1,
+		"1:cmd_move": 1,
+		"1:cmd_rotate": 3,
+		"1:cmd_use_skill": 1,
+		"397703866:cmd_hard_drop": 1,
+		"397703866:cmd_move": 1,
+		"397703866:cmd_rotate": 3,
+		"397703866:cmd_use_skill": 1,
+		"706839511:cmd_hard_drop": 1,
+		"706839511:cmd_move": 1,
+		"706839511:cmd_rotate": 3,
+		"706839511:cmd_use_skill": 1
+	},
+	"effective_character": "glim",
+	"frames": 540,
+	"hashes": {
+		"1": 954438067,
+		"1319081669": 382823305,
+		"397703866": 855847716,
+		"706839511": 2435738048
+	},
+	"loadouts": {
+		"1": {
+			"ability_character": "cloud",
+			"character": "c1",
+			"edge_milli": 60,
+			"effects": {
+				"gravity_scale": 0.92
+			},
+			"owned_perks": [
+				"breeze_brake"
+			],
+			"perks": [
+				"breeze_brake"
+			]
+		},
+		"397703866": {
+			"ability_character": "lana",
+			"character": "c2",
+			"edge_milli": 30,
+			"effects": {
+				"drop_grace_scale": 1.5
+			},
+			"owned_perks": [
+				"gentle_landing"
+			],
+			"perks": [
+				"gentle_landing"
+			]
+		},
+		"706839511": {
+			"ability_character": "boulder",
+			"character": "c3",
+			"edge_milli": 30,
+			"effects": {
+				"lock_resets_add": 3.0
+			},
+			"owned_perks": [
+				"solid_footing"
+			],
+			"perks": [
+				"solid_footing"
+			]
+		},
+		"1319081669": {
+			"ability_character": "glim",
+			"character": "c4",
+			"edge_milli": 50,
+			"effects": {
+				"preview_add": 1.0
+			},
+			"owned_perks": [
+				"long_look"
+			],
+			"perks": [
+				"long_look"
+			]
+		}
+	},
+	"mode": "mg21",
+	"orientations": {
+		"1": 14,
+		"1319081669": 14,
+		"397703866": 14,
+		"706839511": 14
+	},
+	"players": [
+		{
+			"character": "c1",
+			"id": 1,
+			"loadout": {
+				"ability_character": "cloud",
+				"character": "c1",
+				"edge_milli": 60,
+				"effects": {
+					"gravity_scale": 0.92
+				},
+				"owned_perks": [
+					"breeze_brake"
+				],
+				"perks": [
+					"breeze_brake"
+				]
+			},
+			"name": "Host",
+			"owned_perks": [
+				"breeze_brake"
+			],
+			"perks": [
+				"breeze_brake"
+			]
+		},
+		{
+			"character": "c2",
+			"id": 397703866,
+			"loadout": {
+				"ability_character": "lana",
+				"character": "c2",
+				"edge_milli": 30,
+				"effects": {
+					"drop_grace_scale": 1.5
+				},
+				"owned_perks": [
+					"gentle_landing"
+				],
+				"perks": [
+					"gentle_landing"
+				]
+			},
+			"name": "ClientA",
+			"owned_perks": [
+				"gentle_landing"
+			],
+			"perks": [
+				"gentle_landing"
+			]
+		},
+		{
+			"character": "c3",
+			"id": 706839511,
+			"loadout": {
+				"ability_character": "boulder",
+				"character": "c3",
+				"edge_milli": 30,
+				"effects": {
+					"lock_resets_add": 3.0
+				},
+				"owned_perks": [
+					"solid_footing"
+				],
+				"perks": [
+					"solid_footing"
+				]
+			},
+			"name": "ClientB",
+			"owned_perks": [
+				"solid_footing"
+			],
+			"perks": [
+				"solid_footing"
+			]
+		},
+		{
+			"character": "c4",
+			"id": 1319081669,
+			"loadout": {
+				"ability_character": "glim",
+				"character": "c4",
+				"edge_milli": 50,
+				"effects": {
+					"preview_add": 1.0
+				},
+				"owned_perks": [
+					"long_look"
+				],
+				"perks": [
+					"long_look"
+				]
+			},
+			"name": "ClientC",
+			"owned_perks": [
+				"long_look"
+			],
+			"perks": [
+				"long_look"
+			]
+		}
+	],
+	"requested_character": "c4",
+	"requested_perk": "long_look",
+	"role": "ClientC",
+	"seed": 3470070187
+}

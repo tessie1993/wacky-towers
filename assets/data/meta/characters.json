@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "edge_cap": 0.15,
+  "edge_slots": 2,
+  "characters": [
+    {
+      "id": "c1",
+      "name": "Cloud Wizard",
+      "name_key": "CHARACTER_C1",
+      "skill": "calm_skies",
+      "signature": "light_feet",
+      "joins_at": "meadow_01",
+      "edge_perks": [
+        "breeze_brake",
+        "patient_hands",
+        "quick_study"
+      ],
+      "signature_effects": {
+        "lock_delay_scale": 1.2,
+        "ramp_scale": 1.15
+      }
+    },
+    {
+      "id": "c2",
+      "name": "Lana",
+      "name_key": "CHARACTER_C2",
+      "skill": "stitch",
+      "signature": "sturdy",
+      "joins_at": "ice_10",
+      "edge_perks": [
+        "second_wind",
+        "gentle_landing",
+        "builders_charge"
+      ],
+      "signature_effects": {
+        "warnings_add": 1,
+        "lock_delay_scale": 0.85
+      }
+    },
+    {
+      "id": "c3",
+      "name": "Boulder",
+      "name_key": "CHARACTER_C3",
+      "skill": "smash",
+      "signature": "big_steps",
+      "joins_at": "lava_10",
+      "edge_perks": [
+        "rubble_charge",
+        "deep_pockets",
+        "solid_footing"
+      ],
+      "signature_effects": {
+        "gravity_scale": 1.1,
+        "lock_resets_add": 4
+      }
+    },
+    {
+      "id": "c4",
+      "name": "Glim",
+      "name_key": "CHARACTER_C4",
+      "skill": "redraw",
+      "signature": "juggle",
+      "joins_at": "cave_10",
+      "edge_perks": [
+        "lucky_bag",
+        "long_look",
+        "trick_charge"
+      ],
+      "signature_effects": {
+        "hold_enabled": true,
+        "lock_delay_scale": 0.85
+      }
+    }
+  ],
+  "skills": [
+    {
+      "id": "calm_skies",
+      "seconds": 8,
+      "effect": {
+        "gravity_scale": 0.25,
+        "lock_delay_scale": 1.5
+      },
+      "rider": "speed_up"
+    },
+    {
+      "id": "stitch",
+      "seconds": 10,
+      "effect": {
+        "pin_stack": true,
+        "veto_rank_bonus": 1
+      },
+      "rider": null
+    },
+    {
+      "id": "smash",
+      "effect": {
+        "width": 3,
+        "depth": 3,
+        "layers": 3,
+        "rock_damage": 1
+      },
+      "rider": "junk_rain"
+    },
+    {
+      "id": "redraw",
+      "effect": {
+        "reroll_pieces": 3,
+        "fit_marks": 2
+      },
+      "rider": "fog"
+    }
+  ],
+  "skill_contexts": {
+    "campaign": "charge",
+    "arcade": "charge",
+    "versus": "once",
+    "tournament": "once",
+    "sudden_death": "off"
+  },
+  "charge": {
+    "per_layer": 0.125,
+    "per_combo_step": 0.03,
+    "rank_bias": 0.5
+  }
+}

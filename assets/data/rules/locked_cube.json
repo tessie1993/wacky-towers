@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "id": "locked_cube",
+  "name_key": "RULE_LOCKED_CUBE",
+  "layer": "content",
+  "icon": "locked_cube",
+  "behaviour": "locked_cube",
+  "params": {},
+  "incompatible_with": []
+}

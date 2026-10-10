@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites id="2026-10-10" name="report_11" tests="327" failures="0" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="official_campaign_sim_test" package="tests/integration/gameplay" timestamp="2026-10-10T08:31:20" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.914">
+		<testcase name="test_meadow_authored_levels_spawn_and_resolve_multiple_locks" classname="official_campaign_sim_test" time="0.365">
+		</testcase>
+		<testcase name="test_official_meadow_fixed_point_gravity_is_not_converted_twice" classname="official_campaign_sim_test" time="0.038">
+		</testcase>
+		<testcase name="test_meadow_four_cell_beam_fits_default_even_width_anchor" classname="official_campaign_sim_test" time="0.036">
+		</testcase>
+		<testcase name="test_every_official_campaign_entry_loads_and_spawns_a_real_shape" classname="official_campaign_sim_test" time="0.450">
+		</testcase>
+	</testsuite>
+	<testsuite id="1" name="block_view_math_test" package="tests/unit/view" timestamp="2026-10-10T08:31:21" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.025">
+		<testcase name="test_outline_width" classname="block_view_math_test" time="0.004">
+		</testcase>
+		<testcase name="test_custom_clamps" classname="block_view_math_test" time="0.003">
+		</testcase>
+		<testcase name="test_custom_default" classname="block_view_math_test" time="0.003">
+		</testcase>
+		<testcase name="test_ripple_ranks" classname="block_view_math_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="2" name="camera_rig_test" package="tests/unit/view" timestamp="2026-10-10T08:31:21" hostname="localhost" tests="8" failures="0" errors="0" skipped="0" flaky="0" time="0.088">
+		<testcase name="test_starts_at_k0" classname="camera_rig_test" time="0.006">
+		</testcase>
+		<testcase name="test_rotate_wraps" classname="camera_rig_test" time="0.011">
+		</testcase>
+		<testcase name="test_yaw_changed_emitted" classname="camera_rig_test" time="0.012">
+		</testcase>
+		<testcase name="test_mapping_switches_instantly" classname="camera_rig_test" time="0.008">
+		</testcase>
+		<testcase name="test_world_axis_for" classname="camera_rig_test" time="0.008">
+		</testcase>
+		<testcase name="test_frame_board_sets_ortho_size" classname="camera_rig_test" time="0.008">
+		</testcase>
+		<testcase name="test_instant_cut_when_anim_zero" classname="camera_rig_test" time="0.006">
+		</testcase>
+		<testcase name="test_scene_contains_phantom_camera_and_host" classname="camera_rig_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="3" name="palette_table_test" package="tests/unit/view" timestamp="2026-10-10T08:31:21" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.029">
+		<testcase name="test_parses_hex" classname="palette_table_test" time="0.004">
+		</testcase>
+		<testcase name="test_unknown_hue_falls_back" classname="palette_table_test" time="0.006">
+		</testcase>
+		<testcase name="test_bad_hex_errors" classname="palette_table_test" time="0.003">
+		</testcase>
+		<testcase name="test_real_candy_palette" classname="palette_table_test" time="0.005">
+		</testcase>
+	</testsuite>
+	<testsuite id="4" name="camera_math_test" package="tests/unit/view" timestamp="2026-10-10T08:31:21" hostname="localhost" tests="11" failures="0" errors="0" skipped="0" flaky="0" time="0.067">
+		<testcase name="test_yaw_degrees" classname="camera_math_test" time="0.004">
+		</testcase>
+		<testcase name="test_mapping_all_12_snaps" classname="camera_math_test" time="0.004">
+		</testcase>
+		<testcase name="test_yaw_75_right_is_plus_x" classname="camera_math_test" time="0.004">
+		</testcase>
+		<testcase name="test_corner_tie_rule_k0" classname="camera_math_test" time="0.004">
+		</testcase>
+		<testcase name="test_mapping_is_one_to_one" classname="camera_math_test" time="0.005">
+		</testcase>
+		<testcase name="test_bad_screen_dir_is_zero" classname="camera_math_test" time="0.004">
+		</testcase>
+		<testcase name="test_view_axes" classname="camera_math_test" time="0.004">
+		</testcase>
+		<testcase name="test_ortho_default_board_landscape" classname="camera_math_test" time="0.003">
+		</testcase>
+		<testcase name="test_ortho_width_binding" classname="camera_math_test" time="0.004">
+		</testcase>
+		<testcase name="test_ortho_8x8x16" classname="camera_math_test" time="0.004">
+		</testcase>
+		<testcase name="test_ortho_widest_yaw_is_corner" classname="camera_math_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="5" name="slot_map_test" package="tests/unit/view" timestamp="2026-10-10T08:31:21" hostname="localhost" tests="7" failures="0" errors="0" skipped="0" flaky="0" time="0.090">
+		<testcase name="test_add_dense" classname="slot_map_test" time="0.003">
+		</testcase>
+		<testcase name="test_remove_swaps_last" classname="slot_map_test" time="0.004">
+		</testcase>
+		<testcase name="test_remove_last" classname="slot_map_test" time="0.004">
+		</testcase>
+		<testcase name="test_remove_absent_noop" classname="slot_map_test" time="0.003">
+		</testcase>
+		<testcase name="test_move_rekeys" classname="slot_map_test" time="0.003">
+		</testcase>
+		<testcase name="test_inverse_holds" classname="slot_map_test" time="0.051">
+		</testcase>
+		<testcase name="test_reset_clears" classname="slot_map_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="6" name="content_meta_test" package="tests/unit/meta" timestamp="2026-10-10T08:31:21" hostname="localhost" tests="12" failures="0" errors="0" skipped="0" flaky="0" time="0.286">
+		<testcase name="test_all_official_levels_validate_and_main_path_has_one_hundred" classname="content_meta_test" time="0.095">
+		</testcase>
+		<testcase name="test_next_biome_requires_finale_and_fifteen_earned_stars" classname="content_meta_test" time="0.004">
+		</testcase>
+		<testcase name="test_profiles_keep_best_stars_and_replay_pays_once" classname="content_meta_test" time="0.005">
+		</testcase>
+		<testcase name="test_four_profiles_and_settings_are_isolated" classname="content_meta_test" time="0.004">
+		</testcase>
+		<testcase name="test_buying_debits_wallet_without_lowering_earned_stars" classname="content_meta_test" time="0.006">
+		</testcase>
+		<testcase name="test_tournament_majorities_sudden_death_and_award_decay" classname="content_meta_test" time="0.004">
+		</testcase>
+		<testcase name="test_profile_rename_delete_and_lost_index_recovery_keep_other_progress" classname="content_meta_test" time="0.006">
+		</testcase>
+		<testcase name="test_disk_backup_checksum_and_newer_schema_are_recoverable" classname="content_meta_test" time="0.004">
+		</testcase>
+		<testcase name="test_shared_level_unknown_goal_rule_and_schema_are_refused" classname="content_meta_test" time="0.038">
+		</testcase>
+		<testcase name="test_inventory_consumption_persists_only_after_explicit_commit" classname="content_meta_test" time="0.006">
+		</testcase>
+		<testcase name="test_tournament_uses_selected_supported_round_pool" classname="content_meta_test" time="0.039">
+		</testcase>
+		<testcase name="test_structured_goal_selects_the_matching_strategy_slot" classname="content_meta_test" time="0.039">
+		</testcase>
+	</testsuite>
+	<testsuite id="7" name="perfect_fit_test" package="tests/unit/mechanics" timestamp="2026-10-10T08:31:22" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="1.460">
+		<testcase name="test_clear_placement_wins_and_search_never_consumes_rng" classname="perfect_fit_test" time="0.008">
+		</testcase>
+		<testcase name="test_supported_beam_with_a_covered_hole_is_excluded" classname="perfect_fit_test" time="0.007">
+		</testcase>
+		<testcase name="test_drop_search_works_under_all_six_gravity_directions" classname="perfect_fit_test" time="1.417">
+		</testcase>
+		<testcase name="test_no_mark_for_impossible_footprint_or_disabled_marks" classname="perfect_fit_test" time="0.008">
+		</testcase>
+	</testsuite>
+	<testsuite id="8" name="biome_behaviours_test" package="tests/unit/mechanics" timestamp="2026-10-10T08:31:23" hostname="localhost" tests="13" failures="0" errors="0" skipped="0" flaky="0" time="0.166">
+		<testcase name="test_colour_pop_requires_minimum_separate_piece_ids" classname="biome_behaviours_test" time="0.007">
+		</testcase>
+		<testcase name="test_colour_pop_does_not_join_diagonal_cubes" classname="biome_behaviours_test" time="0.008">
+		</testcase>
+		<testcase name="test_mono_layer_includes_next_occupied_layer_only" classname="biome_behaviours_test" time="0.022">
+		</testcase>
+		<testcase name="test_gummy_chunk_keeps_overhang_but_ordinary_cascade_drops_it" classname="biome_behaviours_test" time="0.005">
+		</testcase>
+		<testcase name="test_silt_leaves_reachable_gaps_and_lifts_existing_cube" classname="biome_behaviours_test" time="0.010">
+		</testcase>
+		<testcase name="test_silt_skips_closed_sky_columns_until_a_clear" classname="biome_behaviours_test" time="0.008">
+		</testcase>
+		<testcase name="test_snowball_roll_grows_and_stops_at_large_step" classname="biome_behaviours_test" time="0.019">
+		</testcase>
+		<testcase name="test_pest_only_eats_blocks_and_clears_old_cell" classname="biome_behaviours_test" time="0.009">
+		</testcase>
+		<testcase name="test_goo_clear_cancels_one_spread" classname="biome_behaviours_test" time="0.012">
+		</testcase>
+		<testcase name="test_flip_max_one_prevents_second_axis_change" classname="biome_behaviours_test" time="0.005">
+		</testcase>
+		<testcase name="test_top_arrival_honours_anchor_and_spawn_layer_in_six_axes" classname="biome_behaviours_test" time="0.015">
+		</testcase>
+		<testcase name="test_angle_secret_only_collects_explicit_matching_tap" classname="biome_behaviours_test" time="0.005">
+		</testcase>
+		<testcase name="test_piston_pushes_prefix_from_all_four_walls" classname="biome_behaviours_test" time="0.007">
+		</testcase>
+	</testsuite>
+	<testsuite id="9" name="goal_plugins_test" package="tests/unit/mechanics" timestamp="2026-10-10T08:31:23" hostname="localhost" tests="8" failures="0" errors="0" skipped="0" flaky="0" time="0.056">
+		<testcase name="test_height_needs_coverage_at_exact_target_layer" classname="goal_plugins_test" time="0.006">
+		</testcase>
+		<testcase name="test_shape_uses_targets_and_counts_living_content" classname="goal_plugins_test" time="0.005">
+		</testcase>
+		<testcase name="test_empty_target_never_auto_wins" classname="goal_plugins_test" time="0.004">
+		</testcase>
+		<testcase name="test_flavour_targets_reject_smudges_accept_rainbow_and_win_threshold" classname="goal_plugins_test" time="0.004">
+		</testcase>
+		<testcase name="test_survive_clock_threshold" classname="goal_plugins_test" time="0.003">
+		</testcase>
+		<testcase name="test_trim_keeps_legal_cube_and_counts_only_overflow" classname="goal_plugins_test" time="0.004">
+		</testcase>
+		<testcase name="test_rescue_spends_warning_without_clear_credit" classname="goal_plugins_test" time="0.004">
+		</testcase>
+		<testcase name="test_none_detector_disables_full_layer_clears" classname="goal_plugins_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="10" name="meadow_behaviours_test" package="tests/unit/mechanics" timestamp="2026-10-10T08:31:23" hostname="localhost" tests="11" failures="0" errors="0" skipped="0" flaky="0" time="0.178">
+		<testcase name="test_sprout_grows_at_four_locks_and_respects_cap" classname="meadow_behaviours_test" time="0.040">
+		</testcase>
+		<testcase name="test_uncapped_sprout_survives_clearing_its_original_root" classname="meadow_behaviours_test" time="0.020">
+		</testcase>
+		<testcase name="test_capped_sprout_retries_on_next_growth_cycle" classname="meadow_behaviours_test" time="0.020">
+		</testcase>
+		<testcase name="test_egg_hatches_at_six_locks_to_first_lowest_column" classname="meadow_behaviours_test" time="0.022">
+		</testcase>
+		<testcase name="test_egg_hop_drops_to_lowest_reachable_cell" classname="meadow_behaviours_test" time="0.007">
+		</testcase>
+		<testcase name="test_belt_wrap_is_simultaneous_and_preserves_status" classname="meadow_behaviours_test" time="0.006">
+		</testcase>
+		<testcase name="test_puff_balanced_cut_and_virtual_half_settlement" classname="meadow_behaviours_test" time="0.004">
+		</testcase>
+		<testcase name="test_wobble_popoff_and_meter_reset" classname="meadow_behaviours_test" time="0.017">
+		</testcase>
+		<testcase name="test_fog_starts_at_spawn_reveals_on_clear_then_fades" classname="meadow_behaviours_test" time="0.005">
+		</testcase>
+		<testcase name="test_seeded_gust_schedule_replays_exactly" classname="meadow_behaviours_test" time="0.004">
+		</testcase>
+		<testcase name="test_layers_only_flip_requests_one_structural_flip" classname="meadow_behaviours_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="11" name="gestures_test" package="tests/unit/game" timestamp="2026-10-10T08:31:23" hostname="localhost" tests="7" failures="0" errors="0" skipped="0" flaky="0" time="0.041">
+		<testcase name="test_tap_and_hold" classname="gestures_test" time="0.004">
+		</testcase>
+		<testcase name="test_flick_dirs" classname="gestures_test" time="0.004">
+		</testcase>
+		<testcase name="test_flick_rotation_axis_pairs" classname="gestures_test" time="0.004">
+		</testcase>
+		<testcase name="test_diagonal_flick_ignored" classname="gestures_test" time="0.003">
+		</testcase>
+		<testcase name="test_slow_long_is_drag" classname="gestures_test" time="0.003">
+		</testcase>
+		<testcase name="test_drag_cells" classname="gestures_test" time="0.004">
+		</testcase>
+		<testcase name="test_is_hold" classname="gestures_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="12" name="content_types_test" package="tests/unit/board_grid" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="7" failures="0" errors="0" skipped="0" flaky="0" time="0.041">
+		<testcase name="test_lookups_for_block_and_starter" classname="content_types_test" time="0.003">
+		</testcase>
+		<testcase name="test_unknown_lookups_are_neutral" classname="content_types_test" time="0.003">
+		</testcase>
+		<testcase name="test_glyphs_is_legal_string" classname="content_types_test" time="0.004">
+		</testcase>
+		<testcase name="test_solid_overlay_rejected" classname="content_types_test" time="0.003">
+		</testcase>
+		<testcase name="test_duplicate_kind_and_glyph_rejected" classname="content_types_test" time="0.004">
+		</testcase>
+		<testcase name="test_bad_kind_id_rejected" classname="content_types_test" time="0.003">
+		</testcase>
+		<testcase name="test_blocks_json_is_valid_and_loads" classname="content_types_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="13" name="board_limits_test" package="tests/unit/board_grid" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="0.020">
+		<testcase name="test_defaults_match_adr" classname="board_limits_test" time="0.004">
+		</testcase>
+		<testcase name="test_from_dict_overrides_known_keys" classname="board_limits_test" time="0.003">
+		</testcase>
+		<testcase name="test_from_dict_ignores_unknown_and_bad_values" classname="board_limits_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="14" name="board_state_queries_test" package="tests/unit/board_grid" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="11" failures="0" errors="0" skipped="0" flaky="0" time="0.163">
+		<testcase name="test_is_free" classname="board_state_queries_test" time="0.004">
+		</testcase>
+		<testcase name="test_can_place" classname="board_state_queries_test" time="0.004">
+		</testcase>
+		<testcase name="test_cast_down_empty_board" classname="board_state_queries_test" time="0.004">
+		</testcase>
+		<testcase name="test_cast_stops_on_content" classname="board_state_queries_test" time="0.003">
+		</testcase>
+		<testcase name="test_cast_side_dir" classname="board_state_queries_test" time="0.004">
+		</testcase>
+		<testcase name="test_cast_all_6_dirs_full_3d_piece" classname="board_state_queries_test" time="0.004">
+		</testcase>
+		<testcase name="test_cast_blocked_now_is_zero" classname="board_state_queries_test" time="0.003">
+		</testcase>
+		<testcase name="test_cast_respects_mask" classname="board_state_queries_test" time="0.004">
+		</testcase>
+		<testcase name="test_stack_height_6_axes" classname="board_state_queries_test" time="0.005">
+		</testcase>
+		<testcase name="test_limit_and_over_limit" classname="board_state_queries_test" time="0.004">
+		</testcase>
+		<testcase name="test_no_allocation_smoke" classname="board_state_queries_test" time="0.099">
+		</testcase>
+	</testsuite>
+	<testsuite id="15" name="board_spec_parse_test" package="tests/unit/board_grid" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="21" failures="0" errors="0" skipped="0" flaky="0" time="0.121">
+		<testcase name="test_minimal_valid_board" classname="board_spec_parse_test" time="0.005">
+		</testcase>
+		<testcase name="test_int_values_also_accepted" classname="board_spec_parse_test" time="0.004">
+		</testcase>
+		<testcase name="test_json_numbers_are_floats_pinned" classname="board_spec_parse_test" time="0.003">
+		</testcase>
+		<testcase name="test_non_whole_numbers_rejected" classname="board_spec_parse_test" time="0.004">
+		</testcase>
+		<testcase name="test_unknown_and_missing_keys" classname="board_spec_parse_test" time="0.003">
+		</testcase>
+		<testcase name="test_size_limits" classname="board_spec_parse_test" time="0.004">
+		</testcase>
+		<testcase name="test_down_axis" classname="board_spec_parse_test" time="0.003">
+		</testcase>
+		<testcase name="test_mask_hole_ok" classname="board_spec_parse_test" time="0.004">
+		</testcase>
+		<testcase name="test_mask_all_masked" classname="board_spec_parse_test" time="0.004">
+		</testcase>
+		<testcase name="test_min_active_y_axis" classname="board_spec_parse_test" time="0.003">
+		</testcase>
+		<testcase name="test_min_active_depends_on_axis" classname="board_spec_parse_test" time="0.004">
+		</testcase>
+		<testcase name="test_default_anchor_masked" classname="board_spec_parse_test" time="0.004">
+		</testcase>
+		<testcase name="test_field_prefix_used" classname="board_spec_parse_test" time="0.003">
+		</testcase>
+		<testcase name="test_error_cap" classname="board_spec_parse_test" time="0.005">
+		</testcase>
+		<testcase name="test_meadow02_contents" classname="board_spec_parse_test" time="0.005">
+		</testcase>
+		<testcase name="test_contents_on_masked_cell" classname="board_spec_parse_test" time="0.004">
+		</testcase>
+		<testcase name="test_contents_unknown_glyph_passthrough" classname="board_spec_parse_test" time="0.004">
+		</testcase>
+		<testcase name="test_contents_layer_in_clearance_rejected" classname="board_spec_parse_test" time="0.003">
+		</testcase>
+		<testcase name="test_explicit_anchor" classname="board_spec_parse_test" time="0.003">
+		</testcase>
+		<testcase name="test_bad_anchor" classname="board_spec_parse_test" time="0.003">
+		</testcase>
+		<testcase name="test_explicit_anchor_overrides_masked_default" classname="board_spec_parse_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="16" name="board_state_down_test" package="tests/unit/board_grid" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.024">
+		<testcase name="test_tokens_map_to_enum" classname="board_state_down_test" time="0.003">
+		</testcase>
+		<testcase name="test_bad_tokens_are_minus_one" classname="board_state_down_test" time="0.003">
+		</testcase>
+		<testcase name="test_down_vectors_all_six" classname="board_state_down_test" time="0.004">
+		</testcase>
+		<testcase name="test_down_vector_bad_value_is_zero" classname="board_state_down_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="17" name="board_state_layout_test" package="tests/unit/board_grid" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="13" failures="0" errors="0" skipped="0" flaky="0" time="0.110">
+		<testcase name="test_size_and_count" classname="board_state_layout_test" time="0.003">
+		</testcase>
+		<testcase name="test_index_formula" classname="board_state_layout_test" time="0.004">
+		</testcase>
+		<testcase name="test_in_bounds" classname="board_state_layout_test" time="0.003">
+		</testcase>
+		<testcase name="test_mask_expands_full_height" classname="board_state_layout_test" time="0.004">
+		</testcase>
+		<testcase name="test_starting_contents_written" classname="board_state_layout_test" time="0.004">
+		</testcase>
+		<testcase name="test_empty_cells_are_zero" classname="board_state_layout_test" time="0.005">
+		</testcase>
+		<testcase name="test_layer_count_6_axes" classname="board_state_layout_test" time="0.004">
+		</testcase>
+		<testcase name="test_layer_cells_goldens" classname="board_state_layout_test" time="0.004">
+		</testcase>
+		<testcase name="test_order_is_permutation_6_axes" classname="board_state_layout_test" time="0.020">
+		</testcase>
+		<testcase name="test_stepping_down_lowers_layer_6_axes" classname="board_state_layout_test" time="0.013">
+		</testcase>
+		<testcase name="test_layer_full_from_contents_6_axes" classname="board_state_layout_test" time="0.006">
+		</testcase>
+		<testcase name="test_masked_cells_do_not_block_full" classname="board_state_layout_test" time="0.004">
+		</testcase>
+		<testcase name="test_empty_layer_not_full" classname="board_state_layout_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="18" name="json_num_test" package="tests/unit/board_grid" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="0.014">
+		<testcase name="test_accepts_whole" classname="json_num_test" time="0.004">
+		</testcase>
+		<testcase name="test_rejects" classname="json_num_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="19" name="ascii_grid_test" package="tests/unit/board_grid" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="12" failures="0" errors="0" skipped="0" flaky="0" time="0.070">
+		<testcase name="test_mask_all_active" classname="ascii_grid_test" time="0.004">
+		</testcase>
+		<testcase name="test_mask_index_is_x_plus_w_z" classname="ascii_grid_test" time="0.004">
+		</testcase>
+		<testcase name="test_mask_wrong_row_count" classname="ascii_grid_test" time="0.004">
+		</testcase>
+		<testcase name="test_mask_wrong_row_length" classname="ascii_grid_test" time="0.003">
+		</testcase>
+		<testcase name="test_mask_bad_char_names_cell" classname="ascii_grid_test" time="0.003">
+		</testcase>
+		<testcase name="test_mask_non_string_row" classname="ascii_grid_test" time="0.004">
+		</testcase>
+		<testcase name="test_layers_cells_and_order" classname="ascii_grid_test" time="0.003">
+		</testcase>
+		<testcase name="test_layers_empty_dict_is_ok" classname="ascii_grid_test" time="0.003">
+		</testcase>
+		<testcase name="test_layers_bad_keys" classname="ascii_grid_test" time="0.004">
+		</testcase>
+		<testcase name="test_layers_wrong_rows" classname="ascii_grid_test" time="0.004">
+		</testcase>
+		<testcase name="test_layers_unknown_glyph_names_cell" classname="ascii_grid_test" time="0.004">
+		</testcase>
+		<testcase name="test_layers_unknown_section_key_and_missing_layers" classname="ascii_grid_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="20" name="sim_clock_test" package="tests/unit/sim" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.025">
+		<testcase name="test_ms_at" classname="sim_clock_test" time="0.004">
+		</testcase>
+		<testcase name="test_sixty_ticks_is_one_second" classname="sim_clock_test" time="0.003">
+		</testcase>
+		<testcase name="test_deadline_500_fires_on_tick_30" classname="sim_clock_test" time="0.003">
+		</testcase>
+		<testcase name="test_starts_in_countdown" classname="sim_clock_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="21" name="replay_test" package="tests/unit/sim" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="0.021">
+		<testcase name="test_same_log_same_events" classname="replay_test" time="0.004">
+		</testcase>
+		<testcase name="test_run_twice_identical" classname="replay_test" time="0.004">
+		</testcase>
+		<testcase name="test_log_not_mutated" classname="replay_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="22" name="sim_command_queue_test" package="tests/unit/sim" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.026">
+		<testcase name="test_command_applies_next_tick" classname="sim_command_queue_test" time="0.004">
+		</testcase>
+		<testcase name="test_arrival_order_kept" classname="sim_command_queue_test" time="0.004">
+		</testcase>
+		<testcase name="test_future_tick_waits" classname="sim_command_queue_test" time="0.004">
+		</testcase>
+		<testcase name="test_step_returns_copy" classname="sim_command_queue_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="23" name="sim_types_test" package="tests/unit/sim" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="0.023">
+		<testcase name="test_make_command" classname="sim_types_test" time="0.004">
+		</testcase>
+		<testcase name="test_make_event_and_equals" classname="sim_types_test" time="0.004">
+		</testcase>
+		<testcase name="test_vocabulary_values_unique" classname="sim_types_test" time="0.005">
+		</testcase>
+	</testsuite>
+	<testsuite id="24" name="board_sim_gameplay_test" package="tests/unit/sim" timestamp="2026-10-10T08:31:24" hostname="localhost" tests="20" failures="0" errors="0" skipped="0" flaky="0" time="0.312">
+		<testcase name="test_countdown_excludes_clock_and_hard_drop_locks_on_command_tick" classname="board_sim_gameplay_test" time="0.009">
+		</testcase>
+		<testcase name="test_three_locks_clear_goal_and_emit_one_typed_result" classname="board_sim_gameplay_test" time="0.008">
+		</testcase>
+		<testcase name="test_goal_wins_before_topout_on_same_lock" classname="board_sim_gameplay_test" time="0.008">
+		</testcase>
+		<testcase name="test_survive_clock_is_checked_every_tick" classname="board_sim_gameplay_test" time="0.008">
+		</testcase>
+		<testcase name="test_s4c_clears_hook_write_once_without_repeating_resolve_hook" classname="board_sim_gameplay_test" time="0.008">
+		</testcase>
+		<testcase name="test_second_clear_tumble_applies_in_same_lock_structural_stage" classname="board_sim_gameplay_test" time="0.008">
+		</testcase>
+		<testcase name="test_same_seed_and_command_log_have_identical_events_and_state_hash" classname="board_sim_gameplay_test" time="0.102">
+		</testcase>
+		<testcase name="test_rule_content_writes_are_buffered_and_batch_moves_preserve_status" classname="board_sim_gameplay_test" time="0.010">
+		</testcase>
+		<testcase name="test_rotation_restriction_leaves_piece_unchanged" classname="board_sim_gameplay_test" time="0.009">
+		</testcase>
+		<testcase name="test_hold_is_disabled_by_default_and_one_swap_when_enabled" classname="board_sim_gameplay_test" time="0.011">
+		</testcase>
+		<testcase name="test_fixed_list_deals_exact_order_then_exhausts" classname="board_sim_gameplay_test" time="0.005">
+		</testcase>
+		<testcase name="test_rescue_is_silent_and_does_not_count_as_clear" classname="board_sim_gameplay_test" time="0.008">
+		</testcase>
+		<testcase name="test_trim_does_not_clear_or_warn_and_loses_third_star" classname="board_sim_gameplay_test" time="0.008">
+		</testcase>
+		<testcase name="test_modifier_set_priority_then_multiply_add_and_clamp" classname="board_sim_gameplay_test" time="0.007">
+		</testcase>
+		<testcase name="test_protected_rule_write_waits_until_stack_protection_ends" classname="board_sim_gameplay_test" time="0.009">
+		</testcase>
+		<testcase name="test_kicked_rotation_opposite_restores_original_pivot_exactly" classname="board_sim_gameplay_test" time="0.007">
+		</testcase>
+		<testcase name="test_survive_clear_threshold_stars_and_clean_finish_requirement" classname="board_sim_gameplay_test" time="0.006">
+		</testcase>
+		<testcase name="test_replace_preview_preserves_future_bag_and_drawn_count" classname="board_sim_gameplay_test" time="0.005">
+		</testcase>
+		<testcase name="test_goal_time_limit_fails_without_lock_and_countdown_is_excluded" classname="board_sim_gameplay_test" time="0.008">
+		</testcase>
+		<testcase name="test_fixed_piece_hue_matches_preview_and_locked_cube" classname="board_sim_gameplay_test" time="0.008">
+		</testcase>
+	</testsuite>
+	<testsuite id="25" name="json_reader_test" package="tests/unit/data" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="10" failures="0" errors="0" skipped="0" flaky="0" time="0.058">
+		<testcase name="test_json_num_whole_int_delegates" classname="json_reader_test" time="0.004">
+		</testcase>
+		<testcase name="test_json_numbers_are_floats_pinned" classname="json_reader_test" time="0.003">
+		</testcase>
+		<testcase name="test_read_ok" classname="json_reader_test" time="0.003">
+		</testcase>
+		<testcase name="test_read_missing" classname="json_reader_test" time="0.004">
+		</testcase>
+		<testcase name="test_read_over_cap" classname="json_reader_test" time="0.003">
+		</testcase>
+		<testcase name="test_read_parse_error_has_line" classname="json_reader_test" time="0.003">
+		</testcase>
+		<testcase name="test_read_array_root" classname="json_reader_test" time="0.004">
+		</testcase>
+		<testcase name="test_read_dir_keys_by_stem" classname="json_reader_test" time="0.003">
+		</testcase>
+		<testcase name="test_read_dir_rejects_user_path" classname="json_reader_test" time="0.004">
+		</testcase>
+		<testcase name="test_read_dir_missing" classname="json_reader_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="26" name="knob_files_test" package="tests/unit/data" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.038">
+		<testcase name="test_all_knob_files_parse" classname="knob_files_test" time="0.005">
+		</testcase>
+		<testcase name="test_knob_tables_build_without_errors" classname="knob_files_test" time="0.006">
+		</testcase>
+		<testcase name="test_every_default_coerces" classname="knob_files_test" time="0.008">
+		</testcase>
+		<testcase name="test_meadow_slot_knobs_exist" classname="knob_files_test" time="0.006">
+		</testcase>
+	</testsuite>
+	<testsuite id="27" name="repeat_timer_test" package="tests/unit/game_input" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="7" failures="0" errors="0" skipped="0" flaky="0" time="0.039">
+		<testcase name="test_press_fires_once_immediately" classname="repeat_timer_test" time="0.004">
+		</testcase>
+		<testcase name="test_no_input_never_fires" classname="repeat_timer_test" time="0.003">
+		</testcase>
+		<testcase name="test_no_repeat_before_delay" classname="repeat_timer_test" time="0.003">
+		</testcase>
+		<testcase name="test_repeat_at_delay_then_every_interval" classname="repeat_timer_test" time="0.003">
+		</testcase>
+		<testcase name="test_long_frame_fires_multiple" classname="repeat_timer_test" time="0.003">
+		</testcase>
+		<testcase name="test_release_resets" classname="repeat_timer_test" time="0.003">
+		</testcase>
+		<testcase name="test_direction_change_is_new_press" classname="repeat_timer_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="28" name="game_input_test" package="tests/unit/game_input" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="0.031">
+		<testcase name="test_default_axes_both_emit" classname="game_input_test" time="0.004">
+		</testcase>
+		<testcase name="test_disallowed_axis_emits_nothing" classname="game_input_test" time="0.004">
+		</testcase>
+		<testcase name="test_empty_axes_emit_nothing" classname="game_input_test" time="0.004">
+		</testcase>
+		<testcase name="test_disabled_emits_nothing" classname="game_input_test" time="0.003">
+		</testcase>
+		<testcase name="test_snap_dir_dominant_axis" classname="game_input_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="29" name="test_runner_sanity_test" package="tests/unit/core" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="0.009">
+		<testcase name="test_runner_executes_returns_true" classname="test_runner_sanity_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="30" name="level_platform_test" package="tests/unit/levels" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.028">
+		<testcase name="test_default_top_spans_board_plus_margin" classname="level_platform_test" time="0.004">
+		</testcase>
+		<testcase name="test_top_surface_is_y_zero" classname="level_platform_test" time="0.003">
+		</testcase>
+		<testcase name="test_board_size_change_rebuilds" classname="level_platform_test" time="0.004">
+		</testcase>
+		<testcase name="test_margin_change_rebuilds" classname="level_platform_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="31" name="biome_files_test" package="tests/unit/levels" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="0.023">
+		<testcase name="test_meadow_biome_parses" classname="biome_files_test" time="0.004">
+		</testcase>
+		<testcase name="test_level_json_exists" classname="biome_files_test" time="0.004">
+		</testcase>
+		<testcase name="test_art_set_dir_exists" classname="biome_files_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="32" name="model_containers_test" package="tests/unit/model" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="0.022">
+		<testcase name="test_level_defaults" classname="model_containers_test" time="0.004">
+		</testcase>
+		<testcase name="test_level_typed_fields" classname="model_containers_test" time="0.003">
+		</testcase>
+		<testcase name="test_catalog_holds_parts" classname="model_containers_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="33" name="block_set_import_test" package="tests/unit/assets" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="8" failures="0" errors="0" skipped="0" flaky="0" time="0.108">
+		<testcase name="test_block_sets_each_set_has_a_cube_file" classname="block_set_import_test" time="0.005">
+		</testcase>
+		<testcase name="test_block_glbs_every_file_loads_as_scene" classname="block_set_import_test" time="0.003">
+		</testcase>
+		<testcase name="test_block_meshes_have_no_vertex_colours" classname="block_set_import_test" time="0.009">
+		</testcase>
+		<testcase name="test_block_cubes_stay_inside_their_grid_cell" classname="block_set_import_test" time="0.009">
+		</testcase>
+		<testcase name="test_block_pieces_child_count_matches_shape_bank" classname="block_set_import_test" time="0.008">
+		</testcase>
+		<testcase name="test_cube_res_for_every_cube_glb" classname="block_set_import_test" time="0.004">
+		</testcase>
+		<testcase name="test_cube_res_matches_glb" classname="block_set_import_test" time="0.004">
+		</testcase>
+		<testcase name="test_block_import_flags" classname="block_set_import_test" time="0.010">
+		</testcase>
+	</testsuite>
+	<testsuite id="34" name="rule_def_test" package="tests/unit/rules" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="0.020">
+		<testcase name="test_defaults" classname="rule_def_test" time="0.005">
+		</testcase>
+		<testcase name="test_budget_layers" classname="rule_def_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="35" name="knob_defs_test" package="tests/unit/rules" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="16" failures="0" errors="0" skipped="0" flaky="0" time="0.092">
+		<testcase name="test_valid_table_loads" classname="knob_defs_test" time="0.004">
+		</testcase>
+		<testcase name="test_scalar_is_fixed_point" classname="knob_defs_test" time="0.004">
+		</testcase>
+		<testcase name="test_count_and_defaults" classname="knob_defs_test" time="0.003">
+		</testcase>
+		<testcase name="test_slot_choices" classname="knob_defs_test" time="0.003">
+		</testcase>
+		<testcase name="test_bad_entries_rejected" classname="knob_defs_test" time="0.004">
+		</testcase>
+		<testcase name="test_unknown_def_is_empty" classname="knob_defs_test" time="0.004">
+		</testcase>
+		<testcase name="test_coerce_scalar_fixed_point" classname="knob_defs_test" time="0.003">
+		</testcase>
+		<testcase name="test_coerce_scalar_out_of_range" classname="knob_defs_test" time="0.004">
+		</testcase>
+		<testcase name="test_coerce_count" classname="knob_defs_test" time="0.004">
+		</testcase>
+		<testcase name="test_coerce_flag" classname="knob_defs_test" time="0.004">
+		</testcase>
+		<testcase name="test_coerce_slot_and_choice" classname="knob_defs_test" time="0.004">
+		</testcase>
+		<testcase name="test_coerce_unknown_id" classname="knob_defs_test" time="0.004">
+		</testcase>
+		<testcase name="test_coerce_bad_types" classname="knob_defs_test" time="0.003">
+		</testcase>
+		<testcase name="test_coerce_structure_duplicates" classname="knob_defs_test" time="0.003">
+		</testcase>
+		<testcase name="test_coerce_zero_not_allowed" classname="knob_defs_test" time="0.003">
+		</testcase>
+		<testcase name="test_coerce_structure" classname="knob_defs_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="36" name="plugin_registry_test" package="tests/unit/rules" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="0.037">
+		<testcase name="test_finds_fixture_by_id" classname="plugin_registry_test" time="0.004">
+		</testcase>
+		<testcase name="test_unknown_is_null" classname="plugin_registry_test" time="0.004">
+		</testcase>
+		<testcase name="test_duplicate_id_is_error" classname="plugin_registry_test" time="0.005">
+		</testcase>
+		<testcase name="test_real_global_class_list" classname="plugin_registry_test" time="0.007">
+		</testcase>
+		<testcase name="test_base_is_not_a_plugin" classname="plugin_registry_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="37" name="rule_value_types_test" package="tests/unit/rules" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="0.023">
+		<testcase name="test_defaults" classname="rule_value_types_test" time="0.004">
+		</testcase>
+		<testcase name="test_fields_are_typed" classname="rule_value_types_test" time="0.005">
+		</testcase>
+		<testcase name="test_rule_api_stub_instantiates" classname="rule_value_types_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="38" name="knob_registry_base_test" package="tests/unit/rules" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="0.032">
+		<testcase name="test_defaults_without_overrides" classname="knob_registry_base_test" time="0.004">
+		</testcase>
+		<testcase name="test_level_override_beats_default" classname="knob_registry_base_test" time="0.003">
+		</testcase>
+		<testcase name="test_bad_override_keeps_default" classname="knob_registry_base_test" time="0.003">
+		</testcase>
+		<testcase name="test_unknown_override_is_error" classname="knob_registry_base_test" time="0.004">
+		</testcase>
+		<testcase name="test_unknown_reads_are_neutral" classname="knob_registry_base_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="39" name="plugin_bases_test" package="tests/unit/rules" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.026">
+		<testcase name="test_bases_are_abstract" classname="plugin_bases_test" time="0.004">
+		</testcase>
+		<testcase name="test_fixture_detector_works" classname="plugin_bases_test" time="0.004">
+		</testcase>
+		<testcase name="test_default_tags_empty" classname="plugin_bases_test" time="0.003">
+		</testcase>
+		<testcase name="test_rule_behaviour_defaults" classname="plugin_bases_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="40" name="shape_canonical_test" package="tests/unit/shapes" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="7" failures="0" errors="0" skipped="0" flaky="0" time="0.077">
+		<testcase name="test_i4_key_golden" classname="shape_canonical_test" time="0.006">
+		</testcase>
+		<testcase name="test_key_invariant_under_all_rotations" classname="shape_canonical_test" time="0.024">
+		</testcase>
+		<testcase name="test_key_invariant_under_translation" classname="shape_canonical_test" time="0.007">
+		</testcase>
+		<testcase name="test_screw_mirrors_differ" classname="shape_canonical_test" time="0.004">
+		</testcase>
+		<testcase name="test_flat_mirrors_equal_in_3d" classname="shape_canonical_test" time="0.004">
+		</testcase>
+		<testcase name="test_different_shapes_differ" classname="shape_canonical_test" time="0.007">
+		</testcase>
+		<testcase name="test_empty_is_empty_string" classname="shape_canonical_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="41" name="shape_bank_test" package="tests/unit/shapes" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="0.032">
+		<testcase name="test_empty_bank" classname="shape_bank_test" time="0.004">
+		</testcase>
+		<testcase name="test_lookup_returns_same_instance" classname="shape_bank_test" time="0.004">
+		</testcase>
+		<testcase name="test_unknown_is_null" classname="shape_bank_test" time="0.003">
+		</testcase>
+		<testcase name="test_duplicate_first_wins" classname="shape_bank_test" time="0.003">
+		</testcase>
+		<testcase name="test_ids_in_bank_order" classname="shape_bank_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="42" name="shape_def_test" package="tests/unit/shapes" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="9" failures="0" errors="0" skipped="0" flaky="0" time="0.070">
+		<testcase name="test_new_def_has_empty_defaults" classname="shape_def_test" time="0.004">
+		</testcase>
+		<testcase name="test_accessors_return_stored_values" classname="shape_def_test" time="0.004">
+		</testcase>
+		<testcase name="test_accessors_out_of_range" classname="shape_def_test" time="0.004">
+		</testcase>
+		<testcase name="test_distinct_counts_match_gdd_f4" classname="shape_def_test" time="0.005">
+		</testcase>
+		<testcase name="test_i4_tables" classname="shape_def_test" time="0.004">
+		</testcase>
+		<testcase name="test_vertical_i_spawns_lying_down" classname="shape_def_test" time="0.004">
+		</testcase>
+		<testcase name="test_pivot_kept_in_every_orientation" classname="shape_def_test" time="0.004">
+		</testcase>
+		<testcase name="test_min_corner_matches_offsets" classname="shape_def_test" time="0.005">
+		</testcase>
+		<testcase name="test_distinct_of_is_consistent" classname="shape_def_test" time="0.013">
+		</testcase>
+	</testsuite>
+	<testsuite id="43" name="orientations_table_test" package="tests/unit/shapes" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="9" failures="0" errors="0" skipped="0" flaky="0" time="0.069">
+		<testcase name="test_count_is_24_and_all_distinct" classname="orientations_table_test" time="0.005">
+		</testcase>
+		<testcase name="test_index_0_is_identity" classname="orientations_table_test" time="0.006">
+		</testcase>
+		<testcase name="test_first_bfs_indices_are_generators" classname="orientations_table_test" time="0.005">
+		</testcase>
+		<testcase name="test_turn_from_identity_hits_generators" classname="orientations_table_test" time="0.005">
+		</testcase>
+		<testcase name="test_matrices_are_signed_permutations_with_det_plus_one" classname="orientations_table_test" time="0.006">
+		</testcase>
+		<testcase name="test_four_turns_return_to_start" classname="orientations_table_test" time="0.005">
+		</testcase>
+		<testcase name="test_pos_then_neg_is_identity" classname="orientations_table_test" time="0.005">
+		</testcase>
+		<testcase name="test_apply_matches_matrix_product" classname="orientations_table_test" time="0.004">
+		</testcase>
+		<testcase name="test_turn_is_world_axis_left_multiply" classname="orientations_table_test" time="0.005">
+		</testcase>
+	</testsuite>
+	<testsuite id="44" name="seeds_test" package="tests/unit/rng" timestamp="2026-10-10T08:31:25" hostname="localhost" tests="17" failures="0" errors="0" skipped="0" flaky="0" time="0.114">
+		<testcase name="test_fnv1a_known_vectors_match_reference" classname="seeds_test" time="0.005">
+		</testcase>
+		<testcase name="test_derive_same_inputs_same_seed" classname="seeds_test" time="0.005">
+		</testcase>
+		<testcase name="test_derive_matches_byte_layout_from_adr" classname="seeds_test" time="0.004">
+		</testcase>
+		<testcase name="test_derive_different_streams_differ" classname="seeds_test" time="0.004">
+		</testcase>
+		<testcase name="test_derive_stringname_equals_string" classname="seeds_test" time="0.003">
+		</testcase>
+		<testcase name="test_derive_result_is_32_bit_unsigned" classname="seeds_test" time="0.004">
+		</testcase>
+		<testcase name="test_derive_daily_stream_depends_on_date" classname="seeds_test" time="0.004">
+		</testcase>
+		<testcase name="test_derive_negative_round_seed_is_stable" classname="seeds_test" time="0.004">
+		</testcase>
+		<testcase name="test_engine_rng_goldens_for_seed_12345" classname="seeds_test" time="0.004">
+		</testcase>
+		<testcase name="test_make_rng_same_inputs_same_sequence" classname="seeds_test" time="0.004">
+		</testcase>
+		<testcase name="test_shuffle_is_permutation" classname="seeds_test" time="0.004">
+		</testcase>
+		<testcase name="test_shuffle_fixed_seed_is_deterministic" classname="seeds_test" time="0.004">
+		</testcase>
+		<testcase name="test_shuffle_matches_fisher_yates_from_end_reference" classname="seeds_test" time="0.003">
+		</testcase>
+		<testcase name="test_shuffle_different_bags_differ_somewhere" classname="seeds_test" time="0.003">
+		</testcase>
+		<testcase name="test_bag_k_computed_directly_equals_dealt_in_order" classname="seeds_test" time="0.003">
+		</testcase>
+		<testcase name="test_weighted_pick_respects_zero_weights_and_is_deterministic" classname="seeds_test" time="0.006">
+		</testcase>
+		<testcase name="test_src_core_and_gameplay_do_not_use_global_rng" classname="seeds_test" time="0.010">
+		</testcase>
+	</testsuite>
+</testsuites>

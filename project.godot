@@ -11,27 +11,30 @@ config_version=5
 [application]
 
 config/name="wacky towers"
-run/main_scene="res://prototypes/first_playable/fp_main.tscn"
+run/main_scene="res://src/app/main.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
 
+PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
+GUIDE="*res://addons/guide/guide.gd"
+BeehaveGlobalMetrics="*res://addons/beehave/metrics/beehave_global_metrics.gd"
+BeehaveGlobalDebugger="*res://addons/beehave/debug/global_debugger.gd"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
-MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
-PhantomCameraManager="*uid://duq6jhf6unyis"
-GUIDE="*uid://p2jwrgjcbexr"
-BeehaveGlobalMetrics="*uid://c3ktl6ontsdt7"
-BeehaveGlobalDebugger="*uid://bl3ma400hpvsh"
 
 [display]
 
+window/size/viewport_width=720
+window/size/viewport_height=720
+window/size/window_width_override=1280
+window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/GDQuest_GDScript_formatter/plugin.cfg", "res://addons/TileMapLayer3D/plugin.cfg", "res://addons/beehave/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/godot_ai/plugin.cfg", "res://addons/godot_mcp_toolkit/plugin.cfg", "res://addons/godotsteam/plugin.cfg", "res://addons/guide/plugin.cfg", "res://addons/phantom_camera/plugin.cfg", "res://addons/script-ide/plugin.cfg", "res://addons/xesa/ExposeThemProperties/plugin.cfg")
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/guide/plugin.cfg", "res://addons/phantom_camera/plugin.cfg", "res://addons/godot_ai/plugin.cfg", "res://addons/beehave/plugin.cfg")
 
 [importer_defaults]
 
@@ -122,3 +125,4 @@ wt_restart={
 
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
