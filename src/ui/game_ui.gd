@@ -1110,8 +1110,12 @@ func show_shop(data: Dictionary = {}) -> void:
 
 func show_arcade(data: Dictionary = {}) -> void:
 	var col := _begin("arcade", data)
-	_header(col, "A tower without end", "Clear layers. Chase your best. See how far you grow.")
+	_header(col, "A little arcade adventure", "Toy-Box Trials or endless towers. Pick your next challenge.")
 	var content := _scroll(col)
+	var trials := _card(content)
+	trials.add_child(_label("TOY-BOX TRIALS", 30, INK, true))
+	trials.add_child(_label("Time a tower, turn parcels through gates,\nand build matching shadows. Three games, nine levels.", 18, MUTED, true))
+	trials.add_child(_button("Play Toy-Box Trials  →", &"open_minigames", {}, true, 64))
 	var card := _card(content)
 	card.add_child(_label("ARCADE", 46, INK, true))
 	card.add_child(_label("PERSONAL BEST\n%d" % int(data.get("best", 0)), 28, MUTED, true))

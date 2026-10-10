@@ -1,0 +1,272 @@
+{
+  "id": "shadow_comets_constellation",
+  "mode": "shadow",
+  "name": "Comet's Constellation",
+  "biome": "celestial",
+  "story": "Comet lost the star drawing that guides the sleepy Moon home. Build floating stars from two views and leave the cloud gaps open.",
+  "objective": "Restore three 4x4 constellations so the Moon can find its pillow.",
+  "twist": "A larger floating grid mixes asymmetric shadows, exact cube trays and forbidden cloud gaps.",
+  "rule": "Cubes may float. Match both 4x4 silhouettes; crossed cloud gaps stay empty. Undo is always available.",
+  "controls": "Arrows: move. E/Q: change height. Space: place/remove star cube. U: undo. Match FRONT and SIDE.",
+  "time_limit": 480,
+  "star_times": [
+    330,
+    420
+  ],
+  "grid_size": 4,
+  "ending": "The constellation shines; Comet curls up while the Moon finds its pillow.",
+  "puzzles": [
+    {
+      "id": "star_window",
+      "name": "The star window",
+      "grid_size": 4,
+      "cube_budget": 6,
+      "front": [
+        "#..#",
+        ".##.",
+        ".##.",
+        "...."
+      ],
+      "side": [
+        "#..#",
+        ".##.",
+        "#..#",
+        "...."
+      ],
+      "blocked_cells": [
+        [
+          0,
+          0,
+          3
+        ],
+        [
+          1,
+          1,
+          2
+        ]
+      ],
+      "solution": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          3
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          0
+        ],
+        [
+          2,
+          2,
+          3
+        ]
+      ],
+      "story": "Comet frames the first star window. A wider tray has four heights; Q/E moves between them.",
+      "payoff": "The first star window opens."
+    },
+    {
+      "id": "comet_kite",
+      "name": "A kite for the tail",
+      "grid_size": 4,
+      "cube_budget": 9,
+      "front": [
+        ".##.",
+        "####",
+        ".##.",
+        ".#.."
+      ],
+      "side": [
+        "#..#",
+        ".##.",
+        "#..#",
+        "..#."
+      ],
+      "blocked_cells": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          2,
+          0,
+          0
+        ]
+      ],
+      "solution": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          3
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          2
+        ],
+        [
+          2,
+          1,
+          1
+        ],
+        [
+          3,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          0
+        ],
+        [
+          2,
+          2,
+          3
+        ],
+        [
+          1,
+          3,
+          2
+        ]
+      ],
+      "story": "Comet wants a tail-shaped kite. Its front spreads wide, while its side folds into two narrow rails.",
+      "payoff": "The kite catches Comet's sparkling tail."
+    },
+    {
+      "id": "moon_beacon",
+      "name": "The Moon home beacon",
+      "grid_size": 4,
+      "cube_budget": 10,
+      "front": [
+        "####",
+        "#..#",
+        ".##.",
+        ".##."
+      ],
+      "side": [
+        ".##.",
+        "#..#",
+        ".##.",
+        "#..#"
+      ],
+      "blocked_cells": [
+        [
+          0,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          2
+        ],
+        [
+          0,
+          1,
+          3
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          1,
+          3,
+          3
+        ]
+      ],
+      "solution": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          1
+        ],
+        [
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          3,
+          1,
+          3
+        ],
+        [
+          1,
+          2,
+          1
+        ],
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          1,
+          3,
+          0
+        ],
+        [
+          2,
+          3,
+          3
+        ]
+      ],
+      "story": "The Moon needs one last beacon above the clouds. Keep all five crossed cloud gaps clear.",
+      "payoff": "The Moon follows the beacon home."
+    }
+  ]
+}

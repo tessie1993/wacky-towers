@@ -147,6 +147,7 @@ static func blast_center(cells: Array[Vector3i]) -> Vector3i:
 		var da: float = Vector3(a).distance_squared_to(mean)
 		var db: float = Vector3(b).distance_squared_to(mean)
 		return da < db or (is_equal_approx(da, db) and (a.y < b.y or (a.y == b.y and (a.x < b.x or (a.x == b.x and a.z < b.z)))))
+	)
 	return ordered[0]
 
 func _collect(ctx: HookContext, api: RuleApi) -> void:

@@ -223,6 +223,12 @@ func _on_intent(id: StringName, args: Dictionary) -> void:
 		&"open_arcade":
 			_paused = true
 			_ui.show_arcade({"best": _arcade_best(), "skins": _unlocked_biomes()})
+		&"open_minigames":
+			_paused = true
+			_store.set_playing(false)
+			_input.reset()
+			var error: Error = get_tree().change_scene_to_file("res://minigames/arcade_pack/arcade_hub.tscn")
+			if error != OK: _ui.show_toast("Toy-Box Trials could not be opened: " + error_string(error))
 		&"start_arcade": _start_arcade(StringName(args.get("skin", "meadow")))
 		&"open_tournament":
 			_paused = true

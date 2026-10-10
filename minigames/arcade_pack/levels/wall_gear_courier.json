@@ -1,0 +1,48 @@
+{
+  "id": "wall_gear_courier",
+  "mode": "wall",
+  "name": "Gear Courier",
+  "biome": "clockwork",
+  "story": "Tock's clockwork post office has shutters facing two ways. Turn the gear parcels through front and side delivery slots, then send on the closing chime for a bonus.",
+  "objective": "Deliver six gear parcels to restart the town clock.",
+  "twist": "Front and side shutters alternate. The first shutter in each direction arrives slowly; later shutters gather speed. Send in the final second for a beat bonus.",
+  "rule": "Fit the parcel through alternating front and side gates. Six deliveries win; three bonks close the post office.",
+  "controls": "E/Q: turn in 3D \u00b7 Arrows/WASD: align on current wall \u00b7 Space: send \u00b7 Final-second sends earn a beat bonus",
+  "time_limit": 110.0,
+  "star_times": [
+    65.0,
+    82.0
+  ],
+  "frame_size": 5,
+  "pass_target": 6,
+  "miss_limit": 3,
+  "wall_interval": 9.0,
+  "wall_interval_min": 6.5,
+  "wall_ramp": 0.4,
+  "axis_intro_interval": 13.0,
+  "wall_axes": [
+    "z",
+    "x"
+  ],
+  "hole_slack": 1,
+  "slack_step_every": 4,
+  "shape_pool": [
+    "elbow",
+    "step",
+    "corner",
+    "stair"
+  ],
+  "target_turns_y": 3,
+  "target_turns_x": 3,
+  "random_initial_orientation": true,
+  "rhythm_window": 1.0,
+  "rhythm_bonus": 1,
+  "focus_charges": 0,
+  "focus_seconds": 2.5,
+  "focus_rate": 0.35,
+  "stun_seconds": 0.8,
+  "tight_charge": 3,
+  "opening_hint": "E/Q turns the parcel; arrows align its outline with the gap. Space sends it through.",
+  "win_text": "All parcels delivered. Route complete!",
+  "fail_text": "The gates have closed. Try this route again!"
+}

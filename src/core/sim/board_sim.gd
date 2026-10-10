@@ -1274,7 +1274,7 @@ func _apply_structural() -> void:
 					for cell: Vector3i in request["cells"]:
 						if not _board.in_bounds(cell): continue
 						for hit: int in int(request["hits"]):
-							_board.remove(_board.idx(cell), BoardState.Cause.DAMAGE)
+							_board.remove(_board.index(cell), BoardState.Cause.DAMAGE)
 				&"stack_flip": _board.flip_stack()
 				&"down":
 					var direction: int = request["direction"]
