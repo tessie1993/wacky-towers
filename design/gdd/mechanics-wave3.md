@@ -32,20 +32,20 @@ read with `api.param(name, default)`; defaults below.
 | # | id | Layer | Hooks | One-line rule |
 |---|---|---|---|---|
 | W1 | `magnet_pull` | twist | on_level_start, on_spawn, on_tick | A magnet column tugs the falling piece one cell toward it on a timer. |
-| W2 | `crumble_tiles` | level | on_level_start, on_lock | Cracked floor tiles break after N locks touch them; the column above drops. |
+| W2 | `crumble_tiles` | mechanic | on_level_start, on_lock | Cracked floor tiles break after N locks touch them; the column above drops. |
 | W3 | `chameleon_paint` | twist | on_lock | A locked piece takes the majority colour of the cubes it touches. |
-| W4 | `anvil_drop` | level | on_spawn, on_lock | Every Nth piece is an anvil: on lock it crushes the gaps beneath it. |
+| W4 | `anvil_drop` | mechanic | on_spawn, on_lock | Every Nth piece is an anvil: on lock it crushes the gaps beneath it. |
 | W5 | `jumbled_queue` | twist | on_lock | Every N locks the preview queue is shuffled (telegraphed one lock ahead). |
 | W6 | `mystery_piece` | twist | on_spawn | Every Nth queued piece is a "?" whose shape is revealed only at spawn. |
 | W7 | `pressure_cooker` | twist | on_lock, on_clear | Gravity rises a step each lock without a clear and resets on a clear. |
-| W8 | `star_coins` | level | on_level_start, on_lock, on_clear | Coins float in empty cells; covering one collects it (score + goal counter). |
+| W8 | `star_coins` | mechanic | on_level_start, on_lock, on_clear | Coins float in empty cells; covering one collects it (score + goal counter). |
 | W9 | `echo_drop` | twist | on_lock | Every N locks the last piece's shape is echoed as the next piece. |
 | W10 | `rusty_hinge` | twist | on_spawn, veto | Each piece may rotate only `max_turns` times. |
 | W11 | `storm_bolt` | twist | on_level_start, on_tick | A telegraphed lightning bolt zaps the top cube of a marked column. |
-| W12 | `confetti_fill` | level | on_clear | A multi-layer clear fires confetti that fills up to N covered holes. |
-| W13 | `quicksand` | level | on_level_start, on_lock | Quicksand tiles swallow the bottom cube of their column every N locks. |
+| W12 | `confetti_fill` | mechanic | on_clear | A multi-layer clear fires confetti that fills up to N covered holes. |
+| W13 | `quicksand` | mechanic | on_level_start, on_lock | Quicksand tiles swallow the bottom cube of their column every N locks. |
 | W14 | `fever_rush` | twist | on_clear, on_tick, on_lock | Quick consecutive clears build Fever; at full Fever, scores double and gravity slows. |
-| W15 | `golden_row` | level | on_level_start, on_clear | One layer glows gold; clearing it pays a bonus, then gold moves up. |
+| W15 | `golden_row` | mechanic | on_level_start, on_clear | One layer glows gold; clearing it pays a bonus, then gold moves up. |
 
 **W1 `magnet_pull`** — Params: `magnet_col` ([x, z], default board centre-right `[w−1, d/2]`), `pull_interval_ms` 2500, `pull_warn_ms` 600, `pull_axis` ("x"/"z"/"both", default "x").
 Every interval (first one after the first spawn), if a piece is falling, emit `magnet_warning` `pull_warn_ms` early; at due, move the piece one cell along the chosen axis toward the magnet column via `api.request_move_piece` (blocked moves are ignored). A piece already aligned is not moved. Event `magnet_pull {dir}`.

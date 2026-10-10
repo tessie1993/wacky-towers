@@ -76,7 +76,7 @@ def main(argv: list[str]) -> int:
             catalog["levels"].insert(position, entry)
             known.add(level_id)
             added.append(level_id)
-    CATALOG.write_text(json.dumps(catalog, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    CATALOG.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print("registered", len(added), "levels:", ", ".join(added))
     return 0
 

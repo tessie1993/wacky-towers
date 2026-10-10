@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "echo_drop",
+  "name_key": "RULE_ECHO_DROP",
+  "layer": "twist",
+  "icon": "echo_drop",
+  "behaviour": "echo_drop",
+  "params": {
+    "every": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "star_coins",
+  "name_key": "RULE_STAR_COINS",
+  "layer": "mechanic",
+  "icon": "star_coins",
+  "behaviour": "star_coins",
+  "params": {
+    "coins": {
+      "type": "number"
+    },
+    "min_layer": {
+      "type": "number"
+    },
+    "score": {
+      "type": "number"
+    },
+    "goal_counter": {
+      "type": "string"
+    }
+  },
+  "incompatible_with": []
+}

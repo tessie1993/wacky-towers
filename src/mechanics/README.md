@@ -77,3 +77,25 @@ godot --headless --path . -s -d --remote-debug tcp://127.0.0.1:0 \
 ```
 
 The expected remote-debugger port diagnostic does not determine test success. Require the report to list the discovered/executed test cases with zero failures, rather than relying solely on the process exit code.
+
+## Wave 3
+
+Fifteen behaviours live in `src/mechanics/wave3/` (spec: `design/gdd/mechanics-wave3.md`). `Wave3Cells` holds their shared tile and column helpers. GDD "level" rules use the `mechanic` rule layer. Tests: `tests/unit/mechanics/wave3_mechanics_test.gd`.
+
+| ID | Layer | Runtime effect |
+|---|---|---|
+| `magnet_pull` | twist | Warn, then move the falling piece one cell toward the magnet column; blocked or aligned pulls are skipped. |
+| `crumble_tiles` | mechanic | Floor tiles crack, then break after N touching locks; the column above slides down one cell. |
+| `chameleon_paint` | twist | Recolour a locked piece to the majority colour of the cubes it touches (ties: lowest colour). |
+| `anvil_drop` | mechanic | Every Nth non-injected spawn is flagged `anvil`; on lock it closes up to `max_crush` gap cells beneath each column. |
+| `jumbled_queue` | twist | Warn one lock ahead, then Fisher-Yates shuffle the preview via `api.rng()`. |
+| `mystery_piece` | twist | Every Nth spawn is swapped for a seeded pool shape and announced earlier by `mystery_preview`. |
+| `pressure_cooker` | twist | Each clearless resolution raises a gravity multiplier up to `max_scale`; any clear resets it. |
+| `star_coins` | mechanic | State-only coins; locks collect them for score and a goal counter, and cleared layers shift or collect them. |
+| `echo_drop` | twist | Every Nth lock injects the locked shape at the front of the queue. |
+| `rusty_hinge` | twist | Veto `CMD_ROTATE` after `max_turns`; remaining turns ride in a piece flag so hold keeps them. |
+| `storm_bolt` | twist | Warn on a seeded occupied column, then damage its top cube; an emptied column fizzles. |
+| `confetti_fill` | mechanic | After a multi-layer clear, fill the lowest covered holes with `confetti` blocks. |
+| `quicksand` | mechanic | Every Nth lock the floor cube under each quicksand tile sinks and the column slides down. |
+| `fever_rush` | twist | Quick clears build a combo; Fever slows gravity and pays `bonus x layers` per clear. |
+| `golden_row` | mechanic | Clearing the gold layer pays a bonus and goal counter, then gold moves up (wrapping to `start_layer`). |

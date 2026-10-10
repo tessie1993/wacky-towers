@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "magnet_pull",
+  "name_key": "RULE_MAGNET_PULL",
+  "layer": "twist",
+  "icon": "magnet_pull",
+  "behaviour": "magnet_pull",
+  "params": {
+    "magnet_col": {
+      "type": "structure"
+    },
+    "pull_interval_ms": {
+      "type": "number"
+    },
+    "pull_warn_ms": {
+      "type": "number"
+    },
+    "pull_axis": {
+      "type": "string"
+    }
+  },
+  "incompatible_with": []
+}

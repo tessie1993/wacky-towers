@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "quicksand",
+  "name_key": "RULE_QUICKSAND",
+  "layer": "mechanic",
+  "icon": "quicksand",
+  "behaviour": "quicksand",
+  "params": {
+    "tiles": {
+      "type": "structure"
+    },
+    "sink_every": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}
