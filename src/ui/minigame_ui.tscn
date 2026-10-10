@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b2x5ypodso1ev"]
+
+[ext_resource type="Script" uid="uid://c0re2bnwaorv0" path="res://src/ui/minigame_ui.gd" id="1_ydbvt"]
+
+[node name="MinigameUi" type="Control" unique_id=495799459]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ydbvt")

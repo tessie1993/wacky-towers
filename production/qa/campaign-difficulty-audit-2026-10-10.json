@@ -612,7 +612,7 @@
       "max_supply_with_mirror": 0,
       "target_cells": 0,
       "target_threshold": 0,
-      "fingerprint": "1fb5b17e2b350667d906ae116d8a07b2165b3aa7e3b260fe9a1ae47d37a17e91",
+      "fingerprint": "59e760345b6d24fe9b87acf334c39d0be7d85163373ad0f1a456a591b33ae7a4",
       "metadata_blockers": []
     },
     {
@@ -656,7 +656,7 @@
       "max_supply_with_mirror": 0,
       "target_cells": 0,
       "target_threshold": 0,
-      "fingerprint": "7864cae3c1bf4957092e078ab9b713903689b577915a3d4c3c426967edb93d55",
+      "fingerprint": "8d698d63da5b31e5f0863bb1b4e0cd36d5e01d017884f4982511680a5ab23a37",
       "metadata_blockers": []
     },
     {
@@ -700,7 +700,7 @@
       "max_supply_with_mirror": 0,
       "target_cells": 0,
       "target_threshold": 0,
-      "fingerprint": "5800c14e6c8da704b56d68ac9eace9fff46628711b7dbbb27d7103d33289bd3b",
+      "fingerprint": "a8d5fd87c1ee47569c5c326ed7277385360385df88723056a712c9808cf00b94",
       "metadata_blockers": []
     },
     {
@@ -1605,13 +1605,13 @@
       "biome": "ice",
       "tier": 10,
       "physical_dimensions": [
-        12,
         16,
-        6
+        10,
+        3
       ],
       "declared_down_axis": "-x",
-      "declared_plane_area": 96,
-      "declared_danger_layer": 8,
+      "declared_plane_area": 30,
+      "declared_danger_layer": 12,
       "g0_cells_s": 1.1,
       "g0_campaign_default": 1.125,
       "lock_delay_ms": 500,
@@ -1639,10 +1639,10 @@
       "max_supply_with_mirror": 0,
       "target_cells": 0,
       "target_threshold": 0,
-      "fingerprint": "f8bd48c66f8e374da701681414ef06731c28c7f5918fac50d2d08c081e86515e",
+      "fingerprint": "a165e410263f52d6346e8a0f4c196716103e38dbc0dfc3cba645af4f793b4269",
       "metadata_blockers": [],
-      "empty_board_standard_piece_estimate": 96.0,
-      "eight_second_piece_estimate_s": 768.0
+      "empty_board_standard_piece_estimate": 30.0,
+      "eight_second_piece_estimate_s": 240.0
     },
     {
       "id": "ice_bonus",
@@ -2088,7 +2088,7 @@
       "max_supply_with_mirror": 0,
       "target_cells": 0,
       "target_threshold": 0,
-      "fingerprint": "17ff3e92637f931b2eca46c12a5537df3e72b60088a15c710f3eff1849e2e885",
+      "fingerprint": "cdca13bd065b9c6496f156461711d9158dc869873ece548ccb141659abe5361f",
       "metadata_blockers": []
     },
     {
@@ -3638,7 +3638,7 @@
       "max_supply_with_mirror": 0,
       "target_cells": 0,
       "target_threshold": 0,
-      "fingerprint": "f56b629bb1a758f3f634c1dc4272568ea025064c3897214a27c8efc7b7efd20c",
+      "fingerprint": "4d65c808d8fd09ecd26aeb389b21ca0005ddfb6e4c041930c8a1a7c0c12da612",
       "metadata_blockers": []
     },
     {
@@ -3929,7 +3929,7 @@
       "max_supply_with_mirror": 0,
       "target_cells": 0,
       "target_threshold": 0,
-      "fingerprint": "325ebff7e0c500749de802a28e9d353432c37c9731855bd21c6155afa5ef14d0",
+      "fingerprint": "4281c7260ffb6d3e099ba7379d14e5b0826a38080ce262908d08b781110a05e3",
       "metadata_blockers": []
     },
     {
@@ -4020,10 +4020,10 @@
       "physical_dimensions": [
         4,
         16,
-        4
+        5
       ],
       "declared_down_axis": "-y",
-      "declared_plane_area": 16,
+      "declared_plane_area": 20,
       "declared_danger_layer": 12,
       "g0_cells_s": 1.18,
       "g0_campaign_default": 1.2,
@@ -4033,7 +4033,7 @@
       "goal": {
         "type": "height",
         "height_coverage": 0.6,
-        "h_target": 10
+        "h_target": 8
       },
       "stars": {
         "t2": 165000,
@@ -4050,7 +4050,7 @@
       "max_supply_with_mirror": 0,
       "target_cells": 0,
       "target_threshold": 0,
-      "fingerprint": "30cdc9e1a56539b287adce99b7c1fd77916742d50b62fba04ac18ee97bc56257",
+      "fingerprint": "088d2792a76973f97eb96ba29c844be708c71bf9ba8b864fbf76fa67a8359b85",
       "metadata_blockers": []
     },
     {
@@ -4261,7 +4261,7 @@
       "max_supply_with_mirror": 0,
       "target_cells": 0,
       "target_threshold": 0,
-      "fingerprint": "fdd7bb3eafa41eb767a4595547c4f838394f48c6465632bf73934e44c43358a6",
+      "fingerprint": "39278f46fc4d7e2c5d2a84991ae0f3b43667ead1282f1a5868ad54d4f0ee63ea",
       "metadata_blockers": []
     },
     {
@@ -4356,7 +4356,7 @@
       "max_supply_with_mirror": 28,
       "target_cells": 28,
       "target_threshold": 28,
-      "fingerprint": "340a734f8ed2657531587f7ddbe9b97732dc22f874f3b96c8a1bef223cafcc0c",
+      "fingerprint": "0112fab7fd860911dc248aea0f7ce023d0cb3eb4a852a6e26da9884f472e573a",
       "metadata_blockers": []
     },
     {
@@ -4575,7 +4575,7 @@
       "entry_delay_ms": 200,
       "goal": {
         "type": "shape",
-        "piece_budget": 6,
+        "piece_budget": 8,
         "target_shape": {
           "layers": {
             "0": [
@@ -4585,10 +4585,22 @@
               "++++"
             ],
             "1": [
+              "++++",
+              "++++",
+              "++++",
+              "++++"
+            ],
+            "2": [
+              "....",
               ".++.",
               ".++.",
+              "...."
+            ],
+            "3": [
+              "....",
               ".++.",
-              ".++."
+              ".++.",
+              "...."
             ]
           }
         }
@@ -4603,12 +4615,12 @@
       "new_biome_rule_ids": [
         "fill_shape"
       ],
-      "finite_pieces": 6,
-      "raw_supply_cubes": 24,
-      "max_supply_with_mirror": 24,
-      "target_cells": 24,
-      "target_threshold": 24,
-      "fingerprint": "7d104459e421621f9fbe25f67bac95b90ef339acbcadade3c0e6dfe29d71ce0b",
+      "finite_pieces": 8,
+      "raw_supply_cubes": 40,
+      "max_supply_with_mirror": 40,
+      "target_cells": 40,
+      "target_threshold": 40,
+      "fingerprint": "9324289ea8cdf53bd3d1ffd1881c67f7aa2cbf522bd2c38ff16b8bbac208ad1a",
       "metadata_blockers": []
     },
     {
@@ -5147,7 +5159,7 @@
       "max_supply_with_mirror": 0,
       "target_cells": 0,
       "target_threshold": 0,
-      "fingerprint": "c37f6956781a55c4baecd03f07331d7660fb130bb9545a5a41f04efec97ba594",
+      "fingerprint": "857bef4f78bdcdb4872d43c43d0718f1211d5afe5810bef89cf35cad16287193",
       "metadata_blockers": []
     },
     {

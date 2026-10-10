@@ -44,3 +44,6 @@ const LEVEL_RESULT := &"level_result"
 const RESCUE_WIPED := &"rescue_wiped"
 const KIT_CHANGED := &"kit_changed"
 const TURN_RESTORED := &"turn_restored"
+
+## Original cube record emitted only when ordinary clear or structural damage actually removes it.
+const CUBE_CLEARED := &"cube_cleared"

@@ -100,6 +100,7 @@ static func validate(level: LevelData, catalog: GameCatalog) -> Array[Validation
 					"flag": valid = value is bool
 					"string": valid = value is String and value.length() <= 128
 					"structure": valid = value is Dictionary or value is Array
+					"item_table": valid = _valid_item_table(value, schema)
 				if valid and type == "number":
 					valid = (not schema.has("min") or float(value) >= float(schema.min)) and (not schema.has("max") or float(value) <= float(schema.max))
 				if valid and schema.has("choices"):
@@ -118,3 +119,23 @@ static func validate(level: LevelData, catalog: GameCatalog) -> Array[Validation
 	if level.stars.has("s3") and level.stars.has("s2") and int(level.stars.s3) < int(level.stars.s2):
 		issues.append(ValidationIssue.error(id, "stars", &"star_order", "s3 >= s2 required"))
 	return issues
+
+## Item tables are untrusted simulation data, not resource or script references.
+static func _valid_item_table(value: Variant, schema: Dictionary) -> bool:
+	if not value is Array or value.is_empty() or value.size() > int(schema.get("max_entries", 8)):
+		return false
+	var ids: Array = schema.get("ids", [])
+	var seen: Dictionary = {}
+	var total_weight: float = 0.0
+	for entry: Variant in value:
+		if not entry is Dictionary or entry.size() != 4 or not entry.has_all(["id", "weight", "bias", "debuff"]):
+			return false
+		if not entry.id is String or not ids.has(entry.id) or seen.has(entry.id) or not entry.debuff is bool:
+			return false
+		if not (entry.weight is int or entry.weight is float) or not is_finite(float(entry.weight)) or float(entry.weight) < 0.0 or float(entry.weight) > 1000000000.0:
+			return false
+		if not (entry.bias is int or entry.bias is float) or not is_finite(float(entry.bias)) or float(entry.bias) < -1.0 or float(entry.bias) > 2.0:
+			return false
+		seen[entry.id] = true
+		total_weight += float(entry.weight)
+	return total_weight > 0.0

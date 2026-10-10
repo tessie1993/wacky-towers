@@ -4,6 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 G="$(tools/ci/godot.sh)"
 mkdir -p reports
+python3 tools/setup/install_orchestrator.py
 "$G" --headless --editor --path . --import > reports/import.log 2>&1
 if rg -n 'SCRIPT ERROR|Parse Error|Failed to load script' reports/import.log; then
   exit 1

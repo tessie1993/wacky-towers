@@ -1,0 +1,7496 @@
+{
+	"biomes": [
+		{
+			"extras": 1,
+			"finite_puzzles_won": 1,
+			"id": "meadow",
+			"mains": 10,
+			"smoke_passed": 10
+		},
+		{
+			"extras": 4,
+			"finite_puzzles_won": 1,
+			"id": "candy",
+			"mains": 10,
+			"smoke_passed": 10
+		},
+		{
+			"extras": 1,
+			"finite_puzzles_won": 1,
+			"id": "ice",
+			"mains": 10,
+			"smoke_passed": 10
+		},
+		{
+			"extras": 1,
+			"finite_puzzles_won": 2,
+			"id": "underwater",
+			"mains": 10,
+			"smoke_passed": 10
+		},
+		{
+			"extras": 4,
+			"finite_puzzles_won": 1,
+			"id": "lava",
+			"mains": 10,
+			"smoke_passed": 10
+		},
+		{
+			"extras": 1,
+			"finite_puzzles_won": 2,
+			"id": "forest",
+			"mains": 10,
+			"smoke_passed": 10
+		},
+		{
+			"extras": 4,
+			"finite_puzzles_won": 2,
+			"id": "cave",
+			"mains": 10,
+			"smoke_passed": 10
+		},
+		{
+			"extras": 1,
+			"finite_puzzles_won": 2,
+			"id": "clockwork",
+			"mains": 10,
+			"smoke_passed": 10
+		},
+		{
+			"extras": 0,
+			"finite_puzzles_won": 1,
+			"id": "neon",
+			"mains": 10,
+			"smoke_passed": 10
+		},
+		{
+			"extras": 1,
+			"finite_puzzles_won": 2,
+			"id": "celestial",
+			"mains": 10,
+			"smoke_passed": 10
+		}
+	],
+	"catalog_errors": [],
+	"date": "2026-10-10",
+	"engine": "4.7.2-stable (official)",
+	"failures": [],
+	"levels": [
+		{
+			"active_clear_plane": 16,
+			"biome": "meadow",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "meadow_01",
+			"knob_overrides": {
+				"control.rotation_axes_enabled": [
+					"spin"
+				],
+				"fall.g0": 600,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 2
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				12,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [],
+			"scene": "res://src/levels/meadow/meadow_01/meadow_01.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 1.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "meadow",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "meadow_02",
+			"knob_overrides": {
+				"fall.g0": 600,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 500,
+			"locks": 2,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "mascot_catch"
+				}
+			],
+			"scene": "res://src/levels/meadow/meadow_02/meadow_02.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 2.0
+		},
+		{
+			"active_clear_plane": 32,
+			"biome": "meadow",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "meadow_03",
+			"knob_overrides": {
+				"fall.g0": 700,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 500,
+			"locks": 2,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_lock"
+					],
+					"id": "dandelion_puff"
+				},
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "mascot_catch"
+				}
+			],
+			"scene": "res://src/levels/meadow/meadow_03/meadow_03.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 3.0
+		},
+		{
+			"active_clear_plane": 40,
+			"biome": "meadow",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "meadow_04",
+			"knob_overrides": {
+				"fall.g0": 750,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				14,
+				7
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "mushroom_popup"
+				}
+			],
+			"scene": "res://src/levels/meadow/meadow_04/meadow_04.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 4.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "meadow",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"h_target": 10.0,
+				"type": "height"
+			},
+			"ice_flick_reachable": true,
+			"id": "meadow_05",
+			"knob_overrides": {
+				"fall.g0": 800,
+				"goal.height_coverage": 600,
+				"goal.type": "height"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				16,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "build_race"
+				},
+				{
+					"hooks": [
+						"on_lock",
+						"on_resolve_end"
+					],
+					"id": "wobble"
+				}
+			],
+			"scene": "res://src/levels/meadow/meadow_05/meadow_05.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 5.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "meadow",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"target_shape": {
+					"layers": {
+						"0": [
+							".++..++.",
+							"++++++++",
+							".++++++.",
+							"++++++++",
+							".++..++.",
+							"...++...",
+							".++++...",
+							"...++..."
+						],
+						"1": [
+							"........",
+							"..++++..",
+							"..++++..",
+							"..++++..",
+							"........",
+							"........",
+							"........",
+							"........"
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "meadow_06",
+			"knob_overrides": {
+				"fall.g0": 700,
+				"goal.type": "shape"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				12,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end"
+					],
+					"id": "sprouts"
+				}
+			],
+			"scene": "res://src/levels/meadow/meadow_06/meadow_06.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 6.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "meadow",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "meadow_07",
+			"knob_overrides": {
+				"control.fog_ghost_preview": "faint",
+				"fall.g0": 850,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_command",
+						"on_land"
+					],
+					"id": "fog_ghost"
+				}
+			],
+			"scene": "res://src/levels/meadow/meadow_07/meadow_07.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 7.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "meadow",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"t_ms": 150000.0,
+				"type": "survive"
+			},
+			"ice_flick_reachable": true,
+			"id": "meadow_08",
+			"knob_overrides": {
+				"fall.g0": 900,
+				"fall.ramp_per_min": 150,
+				"goal.top_out": "rescue",
+				"goal.type": "survive",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				12,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_land"
+					],
+					"id": "sticky_landing"
+				}
+			],
+			"scene": "res://src/levels/meadow/meadow_08/meadow_08.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 8.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "meadow",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "meadow_09",
+			"knob_overrides": {
+				"fall.g0": 950,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "topsy_tumble"
+				},
+				{
+					"hooks": [
+						"on_resolve_end",
+						"on_clear"
+					],
+					"id": "hatching_eggs"
+				}
+			],
+			"scene": "res://src/levels/meadow/meadow_09/meadow_09.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 9.0
+		},
+		{
+			"active_clear_plane": 48,
+			"biome": "meadow",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "meadow_10",
+			"knob_overrides": {
+				"fall.g0": 1000,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				16,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "mill_belt"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "topsy_tumble"
+				}
+			],
+			"scene": "res://src/levels/meadow/meadow_10/meadow_10.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 10.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "meadow",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 6.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						]
+					}
+				},
+				"time_limit_ms": 60000.0,
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "meadow_bonus",
+			"knob_overrides": {
+				"fall.g0": 500,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"goal.warnings_max": 0
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				10,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 2000,
+				"locks": 6,
+				"stars": 3,
+				"state_hash": 2655870098,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				}
+			],
+			"scene": "res://src/levels/meadow/meadow_bonus/meadow_bonus.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 11.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_01",
+			"knob_overrides": {
+				"fall.g0": 650,
+				"goal.t_piece_s": 8000,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 2,
+				"spawn.colour_count": 2,
+				"spawn.colour_streak": 600
+			},
+			"legal_spawn": true,
+			"level_ms": 500,
+			"locks": 2,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				12,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "mono_layer"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "mascot_mood"
+				},
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "mascot_catch"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_command"
+					],
+					"id": "angle_gem"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_01/candy_01.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 1.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_02",
+			"knob_overrides": {
+				"fall.g0": 700,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1,
+				"spawn.colour_count": 2,
+				"spawn.colour_streak": 600
+			},
+			"legal_spawn": true,
+			"level_ms": 500,
+			"locks": 2,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "mono_layer"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "gumdrop_hail"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "mascot_mood"
+				},
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "mascot_catch"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_command"
+					],
+					"id": "angle_gem"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_02/candy_02.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 2.0
+		},
+		{
+			"active_clear_plane": 32,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_03",
+			"knob_overrides": {
+				"fall.g0": 750,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1,
+				"spawn.colour_count": 2,
+				"spawn.colour_streak": 600
+			},
+			"legal_spawn": true,
+			"level_ms": 500,
+			"locks": 2,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "mono_layer"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick",
+						"on_land"
+					],
+					"id": "syrup_band"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "gumdrop_hail"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "mascot_mood"
+				},
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "mascot_catch"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_03/candy_03.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 3.0
+		},
+		{
+			"active_clear_plane": 24,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 9,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_04",
+			"knob_overrides": {
+				"clear.collapse": "gummy",
+				"fall.g0": 800,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1,
+				"spawn.colour_count": 2,
+				"spawn.colour_streak": 600
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				13,
+				3
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "mono_layer"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_command",
+						"on_land",
+						"on_lock"
+					],
+					"id": "jelly_piece"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "mascot_mood"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_04/candy_04.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 4.0
+		},
+		{
+			"active_clear_plane": 32,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"h_target": 8.0,
+				"height_coverage": 0.6,
+				"type": "height"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_05",
+			"knob_overrides": {
+				"fall.g0": 850,
+				"goal.height_coverage": 600,
+				"goal.top_out": "trim",
+				"goal.type": "height",
+				"spawn.colour_count": 3,
+				"spawn.colour_streak": 400
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "build_race"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "tier_frosting"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "mascot_mood"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_05/candy_05.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 5.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 3,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"target_shape": {
+					"colours": true,
+					"layers": {
+						"0": [
+							".V.PP.V.",
+							".VP..PV.",
+							".VP..PV.",
+							"VVVVVVVV",
+							"V.VVVV.V",
+							"VPVPPVPV",
+							".VVVVVV.",
+							"..VPPV.."
+						]
+					}
+				},
+				"type": "shape",
+				"win_correct": 38.0
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_06",
+			"knob_overrides": {
+				"control.rotation_axes_enabled": [
+					"spin"
+				],
+				"fall.g0": 850,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.colour_count": 2,
+				"spawn.colour_weights": {
+					"P": 0.3,
+					"V": 0.7
+				}
+			},
+			"legal_spawn": true,
+			"level_ms": 4500,
+			"locks": 8,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				7,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_lock"
+					],
+					"id": "rainbow_piece"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "mascot_mood"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_06/candy_06.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 6.0
+		},
+		{
+			"active_clear_plane": 32,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 6.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_07",
+			"knob_overrides": {
+				"clear.collapse": "cascade",
+				"clear.detector": "colour_connect",
+				"fall.g0": 930,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1,
+				"spawn.colour_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 1150,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "colour_pop"
+				},
+				{
+					"hooks": [
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "pest"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "mascot_mood"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_07/candy_07.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 7.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"T": 150.0,
+				"ramp_per_min": 0.15,
+				"t_ms": 150000.0,
+				"type": "survive"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_08",
+			"knob_overrides": {
+				"clear.collapse": "cascade",
+				"clear.detector": "colour_connect",
+				"fall.g0": 950,
+				"goal.top_out": "rescue",
+				"goal.type": "survive",
+				"goal.warnings_max": 1,
+				"spawn.colour_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 1150,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				12,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "colour_pop"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "speed_bump"
+				},
+				{
+					"hooks": [
+						"on_lock",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "earned_specials"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "mascot_mood"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_08/candy_08.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 8.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 6.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_09",
+			"knob_overrides": {
+				"clear.collapse": "gummy",
+				"clear.detector": "colour_connect",
+				"fall.g0": 1000,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1,
+				"spawn.colour_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 1150,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				10,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "colour_pop"
+				},
+				{
+					"hooks": [
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "goo_spread"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear"
+					],
+					"id": "licorice_lock"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "flip"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "mascot_mood"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_09/candy_09.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 9.0
+		},
+		{
+			"active_clear_plane": 45,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 14,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"h_target": 4.0,
+				"height_coverage": 0.6,
+				"type": "bake_oven"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_10",
+			"knob_overrides": {
+				"fall.g0": 1050,
+				"goal.height_coverage": 600,
+				"goal.top_out": "trim",
+				"goal.type": "bake_oven",
+				"goal.warnings_max": 1,
+				"spawn.colour_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				18,
+				7
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "bake_stage"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "climber_boss"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "gumdrop_hail"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "mascot_mood"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_10/candy_10.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 10.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 2,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"target_shape": {
+					"colours": true,
+					"layers": {
+						"0": [
+							"PPMM",
+							"PPMM",
+							"VVMM",
+							"VVMM"
+						],
+						"1": [
+							"PPPP",
+							"PPPP",
+							"VVMM",
+							"VVMM"
+						]
+					}
+				},
+				"time_limit_ms": 60000.0,
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_bonus",
+			"knob_overrides": {
+				"fall.g0": 550,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.preview_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 3733,
+			"locks": 6,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				6,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 2000,
+				"locks": 6,
+				"stars": 3,
+				"state_hash": 2550769895,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 2,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "mascot_paw"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_bonus/candy_bonus.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 11.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 7.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_h1",
+			"knob_overrides": {
+				"clear.collapse": "gummy",
+				"clear.detector": "colour_connect",
+				"fall.g0": 1000,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1,
+				"spawn.colour_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "colour_pop"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_lock",
+						"on_resolve_end"
+					],
+					"id": "moody_cube"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "mascot_mood"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_h1/candy_h1.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 12.0
+		},
+		{
+			"active_clear_plane": 32,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"content": "frosting",
+				"type": "rescue_all"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_h2",
+			"knob_overrides": {
+				"fall.g0": 1000,
+				"goal.type": "rescue_all",
+				"goal.warnings_max": 1,
+				"spawn.colour_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick",
+						"on_land"
+					],
+					"id": "syrup_band"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "frosting"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "mascot_mood"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_h2/candy_h2.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 13.0
+		},
+		{
+			"active_clear_plane": 45,
+			"biome": "candy",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 14,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"bonks_needed": 4.0,
+				"type": "bonk_boss"
+			},
+			"ice_flick_reachable": true,
+			"id": "candy_h3",
+			"knob_overrides": {
+				"clear.collapse": "cascade",
+				"clear.detector": "colour_connect",
+				"fall.g0": 1050,
+				"goal.type": "bonk_boss",
+				"goal.warnings_max": 1,
+				"spawn.colour_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				18,
+				7
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "colour_pop"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "climber_boss"
+				},
+				{
+					"hooks": [
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "countdown_bomb"
+				}
+			],
+			"scene": "res://src/levels/candy/candy_h3/candy_h3.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 14.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "ice",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 9,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "ice_01",
+			"knob_overrides": {
+				"fall.g0": 720,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				13,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn"
+					],
+					"id": "mascot_hint"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_command"
+					],
+					"id": "angle_gem"
+				}
+			],
+			"scene": "res://src/levels/ice/ice_01/ice_01.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 1.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "ice",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "ice_02",
+			"knob_overrides": {
+				"fall.g0": 750,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_land"
+					],
+					"id": "ice_slide"
+				},
+				{
+					"hooks": [
+						"on_spawn"
+					],
+					"id": "mascot_hint"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_command"
+					],
+					"id": "angle_gem"
+				}
+			],
+			"scene": "res://src/levels/ice/ice_02/ice_02.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 2.0
+		},
+		{
+			"active_clear_plane": 32,
+			"biome": "ice",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "ice_03",
+			"knob_overrides": {
+				"control.flick_per_piece": 1,
+				"control.verb": "curling_flick",
+				"fall.g0": 800,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 5150,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [],
+			"scene": "res://src/levels/ice/ice_03/ice_03.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 3.0
+		},
+		{
+			"active_clear_plane": 35,
+			"biome": "ice",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "ice_04",
+			"knob_overrides": {
+				"fall.g0": 850,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_clear"
+					],
+					"id": "snowball"
+				}
+			],
+			"scene": "res://src/levels/ice/ice_04/ice_04.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 4.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "ice",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"h_target": 9.0,
+				"height_coverage": 0.6,
+				"type": "height"
+			},
+			"ice_flick_reachable": true,
+			"id": "ice_05",
+			"knob_overrides": {
+				"fall.g0": 850,
+				"goal.height_coverage": 600,
+				"goal.top_out": "trim",
+				"goal.type": "height"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				16,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "build_race"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_land"
+					],
+					"id": "ice_slide"
+				}
+			],
+			"scene": "res://src/levels/ice/ice_05/ice_05.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 5.0
+		},
+		{
+			"active_clear_plane": 56,
+			"biome": "ice",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"target_shape": {
+					"layers": {
+						"0": [
+							"...+...",
+							"..+++..",
+							"..+++..",
+							"..+++..",
+							".+++++.",
+							".+++++.",
+							"+++++++",
+							"+++++++"
+						],
+						"1": [
+							".......",
+							".......",
+							".......",
+							"..+++..",
+							".......",
+							"...+...",
+							"...+...",
+							"......."
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "ice_06",
+			"knob_overrides": {
+				"fall.g0": 800,
+				"goal.top_out": "trim",
+				"goal.type": "shape"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				12,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_resolve_end",
+						"on_clear"
+					],
+					"id": "snowball"
+				}
+			],
+			"scene": "res://src/levels/ice/ice_06/ice_06.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 6.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "ice",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "ice_07",
+			"knob_overrides": {
+				"fall.g0": 950,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_land"
+					],
+					"id": "ice_slide"
+				}
+			],
+			"scene": "res://src/levels/ice/ice_07/ice_07.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 7.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "ice",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"T": 140.0,
+				"t_ms": 140000.0,
+				"type": "survive"
+			},
+			"ice_flick_reachable": true,
+			"id": "ice_08",
+			"knob_overrides": {
+				"fall.g0": 1000,
+				"fall.ramp_per_min": 150,
+				"goal.type": "survive"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				12,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock"
+					],
+					"id": "thin_ice"
+				}
+			],
+			"scene": "res://src/levels/ice/ice_08/ice_08.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 8.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "ice",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "ice_09",
+			"knob_overrides": {
+				"fall.g0": 1050,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "flip"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_land"
+					],
+					"id": "ice_slide"
+				}
+			],
+			"scene": "res://src/levels/ice/ice_09/ice_09.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 9.0
+		},
+		{
+			"active_clear_plane": 30,
+			"biome": "ice",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "ice_10",
+			"knob_overrides": {
+				"fall.g0": 1100,
+				"goal.type": "clear_n",
+				"spawn.arrival": "side_travel"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				16,
+				10,
+				3
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "side_travel"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_land"
+					],
+					"id": "ice_slide"
+				}
+			],
+			"scene": "res://src/levels/ice/ice_10/ice_10.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 10.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "ice",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": true,
+				"reset": true,
+				"undo": true,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 6.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "ice_bonus",
+			"knob_overrides": {
+				"fall.g0": 500,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.arrival": "kit_box"
+			},
+			"legal_spawn": true,
+			"level_ms": 750,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				8,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 2100,
+				"locks": 6,
+				"stars": 3,
+				"state_hash": 1456558431,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				},
+				{
+					"hooks": [],
+					"id": "undo_reset"
+				}
+			],
+			"scene": "res://src/levels/ice/ice_bonus/ice_bonus.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 11.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "underwater",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 9,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "underwater_01",
+			"knob_overrides": {
+				"fall.g0": 750,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 2
+			},
+			"legal_spawn": true,
+			"level_ms": 500,
+			"locks": 2,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				13,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn"
+					],
+					"id": "mascot_hint"
+				},
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "mascot_catch"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_command"
+					],
+					"id": "angle_gem"
+				}
+			],
+			"scene": "res://src/levels/underwater/underwater_01/underwater_01.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 1.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "underwater",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "underwater_02",
+			"knob_overrides": {
+				"fall.g0": 800,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 500,
+			"locks": 2,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn"
+					],
+					"id": "mascot_hint"
+				},
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "mascot_catch"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_command"
+					],
+					"id": "angle_gem"
+				}
+			],
+			"scene": "res://src/levels/underwater/underwater_02/underwater_02.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 2.0
+		},
+		{
+			"active_clear_plane": 32,
+			"biome": "underwater",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "underwater_03",
+			"knob_overrides": {
+				"fall.g0": 850,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				}
+			],
+			"scene": "res://src/levels/underwater/underwater_03/underwater_03.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 3.0
+		},
+		{
+			"active_clear_plane": 30,
+			"biome": "underwater",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "underwater_04",
+			"knob_overrides": {
+				"fall.g0": 900,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_command",
+						"on_land"
+					],
+					"id": "bounce_pad"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "mushroom_popup"
+				}
+			],
+			"scene": "res://src/levels/underwater/underwater_04/underwater_04.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 4.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "underwater",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"h_target": 10.0,
+				"height_coverage": 0.6,
+				"type": "height"
+			},
+			"ice_flick_reachable": true,
+			"id": "underwater_05",
+			"knob_overrides": {
+				"fall.g0": 950,
+				"goal.height_coverage": 600,
+				"goal.top_out": "trim",
+				"goal.type": "height"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				16,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "build_race"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				}
+			],
+			"scene": "res://src/levels/underwater/underwater_05/underwater_05.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 5.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "underwater",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": true,
+				"reset": true,
+				"undo": true,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 9.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++++",
+							"++++++",
+							"++..++",
+							"++..++",
+							"++++++",
+							"++++++"
+						],
+						"1": [
+							"+....+",
+							"......",
+							"......",
+							"......",
+							"......",
+							"+....+"
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "underwater_06",
+			"knob_overrides": {
+				"fall.g0": 600,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.arrival": "kit_box"
+			},
+			"legal_spawn": true,
+			"level_ms": 750,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				9,
+				6
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 3250,
+				"locks": 9,
+				"stars": 3,
+				"state_hash": 2617952102,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				},
+				{
+					"hooks": [],
+					"id": "undo_reset"
+				}
+			],
+			"scene": "res://src/levels/underwater/underwater_06/underwater_06.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 6.0
+		},
+		{
+			"active_clear_plane": 45,
+			"biome": "underwater",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "underwater_07",
+			"knob_overrides": {
+				"fall.g0": 1000,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				14,
+				7
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				}
+			],
+			"scene": "res://src/levels/underwater/underwater_07/underwater_07.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 7.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "underwater",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"T": 150.0,
+				"t_ms": 150000.0,
+				"type": "survive"
+			},
+			"ice_flick_reachable": true,
+			"id": "underwater_08",
+			"knob_overrides": {
+				"fall.g0": 1050,
+				"fall.ramp_per_min": 100,
+				"goal.type": "survive"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				12,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "rising_silt"
+				}
+			],
+			"scene": "res://src/levels/underwater/underwater_08/underwater_08.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 8.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "underwater",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "underwater_09",
+			"knob_overrides": {
+				"fall.g0": 1100,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "turntable"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				}
+			],
+			"scene": "res://src/levels/underwater/underwater_09/underwater_09.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 9.0
+		},
+		{
+			"active_clear_plane": 48,
+			"biome": "underwater",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "underwater_10",
+			"knob_overrides": {
+				"fall.g0": 1150,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				16,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "conveyor"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "crab_claw"
+				}
+			],
+			"scene": "res://src/levels/underwater/underwater_10/underwater_10.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 10.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "underwater",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"2": [
+							"....",
+							".++.",
+							".++.",
+							"...."
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "underwater_bonus",
+			"knob_overrides": {
+				"fall.g0": 500,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.preview_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				10,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 2366,
+				"locks": 7,
+				"stars": 3,
+				"state_hash": 330499351,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				}
+			],
+			"scene": "res://src/levels/underwater/underwater_bonus/underwater_bonus.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 11.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_01",
+			"knob_overrides": {
+				"fall.g0": 850,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				12,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [],
+			"scene": "res://src/levels/lava/lava_01/lava_01.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 1.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_02",
+			"knob_overrides": {
+				"fall.g0": 900,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 1150,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_lock"
+					],
+					"id": "ember"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_02/lava_02.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 2.0
+		},
+		{
+			"active_clear_plane": 24,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_03",
+			"knob_overrides": {
+				"fall.g0": 950,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				3
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_resolve_end"
+					],
+					"id": "lava_rise"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_03/lava_03.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 3.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_04",
+			"knob_overrides": {
+				"fall.g0": 1000,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "mushroom_popup"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_command",
+						"on_land"
+					],
+					"id": "bounce_pad"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_04/lava_04.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 4.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"coverage": 0.6,
+				"h_target": 10.0,
+				"type": "height"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_05",
+			"knob_overrides": {
+				"fall.g0": 1000,
+				"goal.top_out": "trim",
+				"goal.type": "height"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				16,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "build_race"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_05/lava_05.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 5.0
+		},
+		{
+			"active_clear_plane": 48,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"target_shape": {
+					"layers": {
+						"0": [
+							"........",
+							"++++++++",
+							"..++++++",
+							"........",
+							"++++++++",
+							"..++++++"
+						],
+						"1": [
+							"........",
+							"..++++++",
+							"..++++++",
+							"........",
+							"..++++++",
+							"..++++++"
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_06",
+			"knob_overrides": {
+				"fall.g0": 1050,
+				"goal.top_out": "trim",
+				"goal.type": "shape"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				12,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_06/lava_06.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 6.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_07",
+			"knob_overrides": {
+				"fall.g0": 1100,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_lock"
+					],
+					"id": "ember"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_07/lava_07.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 7.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"T": 150.0,
+				"t_ms": 150000.0,
+				"type": "survive"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_08",
+			"knob_overrides": {
+				"fall.g0": 1150,
+				"fall.ramp_per_min": 150,
+				"goal.type": "survive"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "quake"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_08/lava_08.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 8.0
+		},
+		{
+			"active_clear_plane": 48,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_09",
+			"knob_overrides": {
+				"fall.g0": 1200,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				16,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "conveyor"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_resolve_end"
+					],
+					"id": "lava_rise"
+				},
+				{
+					"hooks": [
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "lava_rock_spawn"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_09/lava_09.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 9.0
+		},
+		{
+			"active_clear_plane": 49,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_10",
+			"knob_overrides": {
+				"fall.g0": 1250,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				16,
+				7
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "lava_rock_spawn"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "quake"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_10/lava_10.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 10.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"target_shape": {
+					"layers": {
+						"0": [
+							"..++++..",
+							"..++++.."
+						],
+						"1": [
+							"...++...",
+							"...++..."
+						],
+						"2": [
+							"++++++++",
+							"++++++++"
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_bonus",
+			"knob_overrides": {
+				"fall.g0": 700,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.preview_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				10,
+				2
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 2366,
+				"locks": 7,
+				"stars": 3,
+				"state_hash": 2581718073,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_bonus/lava_bonus.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 11.0
+		},
+		{
+			"active_clear_plane": 24,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_h1",
+			"knob_overrides": {
+				"fall.g0": 1300,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				3
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_resolve_end"
+					],
+					"id": "lava_rise"
+				},
+				{
+					"hooks": [
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "lava_rock_spawn"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_h1/lava_h1.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 12.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_h2",
+			"knob_overrides": {
+				"fall.g0": 1300,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "locked_cube"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "quake"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_h2/lava_h2.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 13.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "lava",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 2.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "lava_h3",
+			"knob_overrides": {
+				"fall.g0": 800,
+				"goal.type": "clear_n",
+				"spawn.preview_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 1150,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				10,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_lock"
+					],
+					"id": "ember"
+				}
+			],
+			"scene": "res://src/levels/lava/lava_h3/lava_h3.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 14.0
+		},
+		{
+			"active_clear_plane": 21,
+			"biome": "forest",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"T_level": 180.0,
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "forest_01",
+			"knob_overrides": {
+				"fall.g0": 850,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 2
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				12,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [],
+			"scene": "res://src/levels/forest/forest_01/forest_01.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 1.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "forest",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "forest_02",
+			"knob_overrides": {
+				"fall.g0": 950,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "anchored_shelf"
+				}
+			],
+			"scene": "res://src/levels/forest/forest_02/forest_02.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 2.0
+		},
+		{
+			"active_clear_plane": 24,
+			"biome": "forest",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "forest_03",
+			"knob_overrides": {
+				"fall.g0": 950,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				3
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "mushroom_popup"
+				}
+			],
+			"scene": "res://src/levels/forest/forest_03/forest_03.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 3.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "forest",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "forest_04",
+			"knob_overrides": {
+				"fall.g0": 1000,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				14,
+				7
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "squirrel_heist"
+				}
+			],
+			"scene": "res://src/levels/forest/forest_04/forest_04.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 4.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "forest",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"h_target": 10.0,
+				"height_coverage": 0.6,
+				"type": "height"
+			},
+			"ice_flick_reachable": true,
+			"id": "forest_05",
+			"knob_overrides": {
+				"fall.g0": 1050,
+				"goal.height_coverage": 600,
+				"goal.top_out": "trim",
+				"goal.type": "height"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				16,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "build_race"
+				}
+			],
+			"scene": "res://src/levels/forest/forest_05/forest_05.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 5.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "forest",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 6.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							".++.",
+							".++.",
+							".++.",
+							".++."
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "forest_06",
+			"knob_overrides": {
+				"fall.g0": 600,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.preview_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				10,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 2000,
+				"locks": 6,
+				"stars": 3,
+				"state_hash": 1941973392,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				}
+			],
+			"scene": "res://src/levels/forest/forest_06/forest_06.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 6.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "forest",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "forest_07",
+			"knob_overrides": {
+				"fall.g0": 1150,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_lock"
+					],
+					"id": "dandelion_puff"
+				}
+			],
+			"scene": "res://src/levels/forest/forest_07/forest_07.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 7.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "forest",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "forest_08",
+			"knob_overrides": {
+				"fall.g0": 1200,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				16,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_resolve_end"
+					],
+					"id": "woodpecker_knock"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_lock"
+					],
+					"id": "vines"
+				}
+			],
+			"scene": "res://src/levels/forest/forest_08/forest_08.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 8.0
+		},
+		{
+			"active_clear_plane": 35,
+			"biome": "forest",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "forest_09",
+			"knob_overrides": {
+				"fall.g0": 1250,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "conveyor"
+				},
+				{
+					"hooks": [
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "squirrel_heist"
+				}
+			],
+			"scene": "res://src/levels/forest/forest_09/forest_09.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 9.0
+		},
+		{
+			"active_clear_plane": 48,
+			"biome": "forest",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "forest_10",
+			"knob_overrides": {
+				"fall.g0": 1300,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				16,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "conveyor"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "mushroom_popup"
+				}
+			],
+			"scene": "res://src/levels/forest/forest_10/forest_10.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 10.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "forest",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": true,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 7,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 9.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							"++++",
+							"+..+",
+							"+..+",
+							"++++"
+						],
+						"2": [
+							"....",
+							"+..+",
+							"+..+",
+							"...."
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "forest_bonus",
+			"knob_overrides": {
+				"fall.g0": 600,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.arrival": "kit_box"
+			},
+			"legal_spawn": true,
+			"level_ms": 750,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				11,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 3250,
+				"locks": 9,
+				"stars": 3,
+				"state_hash": 3060865193,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				}
+			],
+			"scene": "res://src/levels/forest/forest_bonus/forest_bonus.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 11.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"T_level": 200.0,
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_01",
+			"knob_overrides": {
+				"fall.g0": 950,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 2
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				12,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [],
+			"scene": "res://src/levels/cave/cave_01/cave_01.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 1.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_02",
+			"knob_overrides": {
+				"fall.g0": 1000,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "rock_obstacle"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_02/cave_02.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 2.0
+		},
+		{
+			"active_clear_plane": 24,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_03",
+			"knob_overrides": {
+				"fall.g0": 1050,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				3
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "conveyor"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_03/cave_03.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 3.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_04",
+			"knob_overrides": {
+				"fall.g0": 1100,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "mushroom_popup"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_04/cave_04.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 4.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"h_target": 10.0,
+				"height_coverage": 0.6,
+				"type": "height"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_05",
+			"knob_overrides": {
+				"fall.g0": 1150,
+				"goal.height_coverage": 600,
+				"goal.top_out": "trim",
+				"goal.type": "height"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				16,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "build_race"
+				},
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "rock_obstacle"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_05/cave_05.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 5.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_06",
+			"knob_overrides": {
+				"fall.g0": 1200,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_lock"
+					],
+					"id": "mirror"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_06/cave_06.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 6.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 3.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							"....",
+							"++++",
+							"++++",
+							"...."
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_07",
+			"knob_overrides": {
+				"fall.g0": 600,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.preview_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				9,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 900,
+				"locks": 3,
+				"stars": 3,
+				"state_hash": 1261240020,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 2,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				},
+				{
+					"hooks": [
+						"on_lock"
+					],
+					"id": "mirror"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_07/cave_07.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 7.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_08",
+			"knob_overrides": {
+				"fall.g0": 1250,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_08/cave_08.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 8.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 6.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_09",
+			"knob_overrides": {
+				"fall.g0": 1300,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_lock"
+					],
+					"id": "mirror"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_09/cave_09.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 9.0
+		},
+		{
+			"active_clear_plane": 48,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_10",
+			"knob_overrides": {
+				"fall.g0": 1350,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				16,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "conveyor"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_resolve_end"
+					],
+					"id": "woodpecker_knock"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_10/cave_10.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 10.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": true,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 6.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_bonus",
+			"knob_overrides": {
+				"fall.g0": 600,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.arrival": "kit_box"
+			},
+			"legal_spawn": true,
+			"level_ms": 750,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				10,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 1333,
+				"locks": 4,
+				"stars": 3,
+				"state_hash": 594012837,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				},
+				{
+					"hooks": [
+						"on_lock"
+					],
+					"id": "mirror"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_bonus/cave_bonus.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 11.0
+		},
+		{
+			"active_clear_plane": 35,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_h1",
+			"knob_overrides": {
+				"fall.g0": 1300,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "conveyor"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_h1/cave_h1.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 12.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_h2",
+			"knob_overrides": {
+				"fall.g0": 1300,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_resolve_end"
+					],
+					"id": "woodpecker_knock"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "mushroom_popup"
+				},
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "rock_obstacle"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_h2/cave_h2.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 13.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "cave",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"critters_needed": 3.0,
+				"type": "dig_rescue"
+			},
+			"ice_flick_reachable": true,
+			"id": "cave_h3",
+			"knob_overrides": {
+				"fall.g0": 1250,
+				"goal.type": "dig_rescue",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				}
+			],
+			"scene": "res://src/levels/cave/cave_h3/cave_h3.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 14.0
+		},
+		{
+			"active_clear_plane": 21,
+			"biome": "clockwork",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"T_level": 180.0,
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "clockwork_01",
+			"knob_overrides": {
+				"fall.g0": 970,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 2
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				12,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [],
+			"scene": "res://src/levels/clockwork/clockwork_01/clockwork_01.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 1.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "clockwork",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "clockwork_02",
+			"knob_overrides": {
+				"fall.g0": 1050,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "turntable"
+				}
+			],
+			"scene": "res://src/levels/clockwork/clockwork_02/clockwork_02.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 2.0
+		},
+		{
+			"active_clear_plane": 32,
+			"biome": "clockwork",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "clockwork_03",
+			"knob_overrides": {
+				"fall.g0": 1100,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "conveyor"
+				}
+			],
+			"scene": "res://src/levels/clockwork/clockwork_03/clockwork_03.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 3.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "clockwork",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "clockwork_04",
+			"knob_overrides": {
+				"fall.g0": 1150,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "piston_punch"
+				}
+			],
+			"scene": "res://src/levels/clockwork/clockwork_04/clockwork_04.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 4.0
+		},
+		{
+			"active_clear_plane": 20,
+			"biome": "clockwork",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"h_target": 8.0,
+				"height_coverage": 0.6,
+				"type": "height"
+			},
+			"ice_flick_reachable": true,
+			"id": "clockwork_05",
+			"knob_overrides": {
+				"fall.g0": 1180,
+				"goal.height_coverage": 600,
+				"goal.top_out": "trim",
+				"goal.type": "height"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				16,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "build_race"
+				}
+			],
+			"scene": "res://src/levels/clockwork/clockwork_05/clockwork_05.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 5.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "clockwork",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 7.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							"....",
+							".++.",
+							".++.",
+							"...."
+						],
+						"2": [
+							"....",
+							".++.",
+							".++.",
+							"...."
+						],
+						"3": [
+							"....",
+							".++.",
+							".++.",
+							"...."
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "clockwork_06",
+			"knob_overrides": {
+				"fall.g0": 600,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.preview_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				10,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 2366,
+				"locks": 7,
+				"stars": 3,
+				"state_hash": 3243678762,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				}
+			],
+			"scene": "res://src/levels/clockwork/clockwork_06/clockwork_06.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 6.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "clockwork",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "clockwork_07",
+			"knob_overrides": {
+				"fall.g0": 1280,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "stopwatch"
+				}
+			],
+			"scene": "res://src/levels/clockwork/clockwork_07/clockwork_07.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 7.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "clockwork",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"keyholes": [
+					{
+						"row": 2.0,
+						"wall": "-x",
+						"y": 1.0
+					},
+					{
+						"row": 2.0,
+						"wall": "+x",
+						"y": 2.0
+					},
+					{
+						"row": 2.0,
+						"wall": "-z",
+						"y": 3.0
+					},
+					{
+						"row": 2.0,
+						"wall": "+z",
+						"y": 1.0
+					}
+				],
+				"keys_needed": 4.0,
+				"type": "wind_keys"
+			},
+			"ice_flick_reachable": true,
+			"id": "clockwork_08",
+			"knob_overrides": {
+				"fall.g0": 1300,
+				"goal.type": "wind_keys",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn"
+					],
+					"id": "key_stamp"
+				}
+			],
+			"scene": "res://src/levels/clockwork/clockwork_08/clockwork_08.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 8.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "clockwork",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "clockwork_09",
+			"knob_overrides": {
+				"fall.g0": 1350,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "turntable"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "flip"
+				}
+			],
+			"scene": "res://src/levels/clockwork/clockwork_09/clockwork_09.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 9.0
+		},
+		{
+			"active_clear_plane": 48,
+			"biome": "clockwork",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "clockwork_10",
+			"knob_overrides": {
+				"fall.g0": 1400,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				16,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "conveyor"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "piston_punch"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "stopwatch"
+				}
+			],
+			"scene": "res://src/levels/clockwork/clockwork_10/clockwork_10.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 10.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "clockwork",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": true,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 7.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							"++++",
+							"+..+",
+							"+..+",
+							"++++"
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "clockwork_bonus",
+			"knob_overrides": {
+				"fall.g0": 600,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.arrival": "kit_box"
+			},
+			"legal_spawn": true,
+			"level_ms": 750,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				10,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 2483,
+				"locks": 7,
+				"stars": 3,
+				"state_hash": 3288590652,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "turntable"
+				}
+			],
+			"scene": "res://src/levels/clockwork/clockwork_bonus/clockwork_bonus.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 11.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "neon",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "neon_01",
+			"knob_overrides": {
+				"fall.g0": 950,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				12,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [],
+			"scene": "res://src/levels/neon/neon_01/neon_01.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 1.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "neon",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "neon_02",
+			"knob_overrides": {
+				"fall.g0": 1000,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "stopwatch"
+				}
+			],
+			"scene": "res://src/levels/neon/neon_02/neon_02.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 2.0
+		},
+		{
+			"active_clear_plane": 32,
+			"biome": "neon",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "neon_03",
+			"knob_overrides": {
+				"fall.g0": 1050,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "conveyor"
+				}
+			],
+			"scene": "res://src/levels/neon/neon_03/neon_03.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 3.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "neon",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "neon_04",
+			"knob_overrides": {
+				"fall.g0": 1100,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_lock"
+					],
+					"id": "mirror"
+				}
+			],
+			"scene": "res://src/levels/neon/neon_04/neon_04.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 4.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "neon",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"h_target": 9.0,
+				"type": "height"
+			},
+			"ice_flick_reachable": true,
+			"id": "neon_05",
+			"knob_overrides": {
+				"fall.g0": 1100,
+				"goal.top_out": "trim",
+				"goal.type": "height",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				16,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "build_race"
+				}
+			],
+			"scene": "res://src/levels/neon/neon_05/neon_05.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 5.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "neon",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 8.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"2": [
+							"....",
+							".++.",
+							".++.",
+							"...."
+						],
+						"3": [
+							"....",
+							".++.",
+							".++.",
+							"...."
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "neon_06",
+			"knob_overrides": {
+				"fall.g0": 900,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				10,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 2733,
+				"locks": 8,
+				"stars": 3,
+				"state_hash": 3626082334,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				}
+			],
+			"scene": "res://src/levels/neon/neon_06/neon_06.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 6.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "neon",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "neon_07",
+			"knob_overrides": {
+				"fall.g0": 1150,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_lock"
+					],
+					"id": "bubble"
+				}
+			],
+			"scene": "res://src/levels/neon/neon_07/neon_07.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 7.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "neon",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"t_ms": 150000.0,
+				"type": "survive"
+			},
+			"ice_flick_reachable": true,
+			"id": "neon_08",
+			"knob_overrides": {
+				"fall.g0": 1200,
+				"goal.top_out": "rescue",
+				"goal.type": "survive",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "stopwatch"
+				}
+			],
+			"scene": "res://src/levels/neon/neon_08/neon_08.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 8.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "neon",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "neon_09",
+			"knob_overrides": {
+				"fall.g0": 1250,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				16,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "turntable"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				}
+			],
+			"scene": "res://src/levels/neon/neon_09/neon_09.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 9.0
+		},
+		{
+			"active_clear_plane": 49,
+			"biome": "neon",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 14,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "neon_10",
+			"knob_overrides": {
+				"fall.g0": 1300,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				18,
+				7
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "conveyor"
+				},
+				{
+					"hooks": [
+						"on_lock"
+					],
+					"id": "mirror"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				}
+			],
+			"scene": "res://src/levels/neon/neon_10/neon_10.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 10.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "celestial",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 9,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"T_level": 200.0,
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "celestial_01",
+			"knob_overrides": {
+				"fall.g0": 1140,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 2
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				13,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn"
+					],
+					"id": "mascot_hint"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_command"
+					],
+					"id": "angle_gem"
+				}
+			],
+			"scene": "res://src/levels/celestial/celestial_01/celestial_01.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 1.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "celestial",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "celestial_02",
+			"knob_overrides": {
+				"fall.g0": 1150,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn"
+					],
+					"id": "mascot_hint"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_command"
+					],
+					"id": "angle_gem"
+				}
+			],
+			"scene": "res://src/levels/celestial/celestial_02/celestial_02.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 2.0
+		},
+		{
+			"active_clear_plane": 32,
+			"biome": "celestial",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "celestial_03",
+			"knob_overrides": {
+				"fall.g0": 1230,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				}
+			],
+			"scene": "res://src/levels/celestial/celestial_03/celestial_03.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 3.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "celestial",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "celestial_04",
+			"knob_overrides": {
+				"fall.g0": 1250,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "mushroom_popup"
+				}
+			],
+			"scene": "res://src/levels/celestial/celestial_04/celestial_04.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 4.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "celestial",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"h_target": 10.0,
+				"height_coverage": 0.6,
+				"type": "height"
+			},
+			"ice_flick_reachable": true,
+			"id": "celestial_05",
+			"knob_overrides": {
+				"fall.g0": 1300,
+				"goal.height_coverage": 600,
+				"goal.top_out": "trim",
+				"goal.type": "height"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				16,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "build_race"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_command",
+						"on_tick",
+						"on_lock"
+					],
+					"id": "balloon"
+				}
+			],
+			"scene": "res://src/levels/celestial/celestial_05/celestial_05.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 5.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "celestial",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 6.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							"++++",
+							".++.",
+							".++.",
+							"...."
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "celestial_06",
+			"knob_overrides": {
+				"fall.g0": 600,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.preview_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				10,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 2000,
+				"locks": 6,
+				"stars": 3,
+				"state_hash": 53200072,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				}
+			],
+			"scene": "res://src/levels/celestial/celestial_06/celestial_06.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 6.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "celestial",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "celestial_07",
+			"knob_overrides": {
+				"fall.g0": 1400,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_command",
+						"on_tick",
+						"on_lock"
+					],
+					"id": "balloon"
+				}
+			],
+			"scene": "res://src/levels/celestial/celestial_07/celestial_07.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 7.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "celestial",
+			"capabilities": {
+				"choose_down": true,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "celestial_08",
+			"knob_overrides": {
+				"control.travel_dirs": [
+					"down",
+					"+x",
+					"-x",
+					"+z",
+					"-z"
+				],
+				"control.verb": "choose_down",
+				"fall.g0": 1300,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 1033,
+			"locks": 4,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				10,
+				6
+			],
+			"result_after_smoke": 2,
+			"rule_hooks": [],
+			"scene": "res://src/levels/celestial/celestial_08/celestial_08.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 8.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "celestial",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "celestial_09",
+			"knob_overrides": {
+				"fall.g0": 1500,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "turntable"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_command",
+						"on_tick",
+						"on_lock"
+					],
+					"id": "balloon"
+				}
+			],
+			"scene": "res://src/levels/celestial/celestial_09/celestial_09.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 9.0
+		},
+		{
+			"active_clear_plane": 49,
+			"biome": "celestial",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "celestial_10",
+			"knob_overrides": {
+				"fall.g0": 1500,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				16,
+				7
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_resolve_end",
+						"on_spawn",
+						"on_tick",
+						"on_land"
+					],
+					"id": "event_card"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "lava_lid"
+				}
+			],
+			"scene": "res://src/levels/celestial/celestial_10/celestial_10.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 10.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "celestial",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": true,
+				"reset": true,
+				"undo": true,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FINITE_PUZZLE_PROVED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 5.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							"....",
+							".++.",
+							".++.",
+							"...."
+						],
+						"2": [
+							"....",
+							".++.",
+							".++.",
+							"...."
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "celestial_bonus",
+			"knob_overrides": {
+				"fall.g0": 600,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.arrival": "kit_box"
+			},
+			"legal_spawn": true,
+			"level_ms": 750,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				10,
+				4
+			],
+			"puzzle": {
+				"fixture": "solver sets a legal sky pose; actual hard-drop, lock, rule writes, kit consumption and goal evaluation are simulated",
+				"level_ms": 1716,
+				"locks": 5,
+				"stars": 3,
+				"state_hash": 782656851,
+				"status": "WIN",
+				"trimmed": 0
+			},
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				},
+				{
+					"hooks": [],
+					"id": "undo_reset"
+				}
+			],
+			"scene": "res://src/levels/celestial/celestial_bonus/celestial_bonus.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 11.0
+		}
+	],
+	"schema": 1,
+	"scope": "Ordered parse, plugin and hook contracts, real scene instantiation, legal first spawn, three actual locks and special-control reachability. Finite shape puzzles additionally replay constructive geometry through BoardSim. This is not a human playtest or a proof of all campaign objectives.",
+	"seed": 1729
+}

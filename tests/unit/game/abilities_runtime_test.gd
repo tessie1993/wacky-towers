@@ -176,3 +176,126 @@ func test_skill_charge_uses_layer_equivalents_and_resets_combo_after_empty_lock(
 	abilities.observe(after_gap)
 	assert_int(abilities.charge).is_equal(530)
 	assert_int(int(abilities.snapshot().combo)).is_equal(1)
+
+func test_calm_composes_with_item_then_expiry_keeps_the_remaining_effect() -> void:
+	var catalog: GameCatalog = _catalog()
+	var item := RuleDef.new(); item.id = &"test_item_slow"; item.layer = &"item_buff"
+	catalog.rule_defs[item.id] = item
+	var level: LevelData = _fixture(catalog, {"fall.gravity_scale": 0.8, "fall.lock_delay_ms": 450})
+	level.rules = [{"id": item.id}]
+	var session: Dictionary = _session(level, catalog)
+	var sim: BoardSim = session.sim
+	var abilities: WtAbilities = session.abilities
+	abilities.charge = WtAbilities.FULL
+	_command(sim, SimEvents.CMD_USE_SKILL)
+	assert_int(sim.knobs().int_value(&"fall.gravity_scale")).is_equal(200)
+	var item_api: RuleApi = sim._rules[0]["api"]
+	var slow: Array[Dictionary] = [{"knob": "fall.gravity_scale", "op": "mul", "value": 0.5}]
+	item_api.request_modifiers(&"potion", slow)
+	sim._collect_api(item_api, true, 2)
+	assert_int(sim.knobs().int_value(&"fall.gravity_scale")).is_equal(100)
+	assert_int(sim.knobs().int_value(&"fall.lock_delay_ms")).is_equal(675)
+	_advance_to(sim, int(abilities.snapshot().active))
+	assert_int(sim.knobs().int_value(&"fall.gravity_scale")).is_equal(400)
+	assert_int(sim.knobs().int_value(&"fall.lock_delay_ms")).is_equal(450)
+	item_api.clear_modifiers(&"potion")
+	sim._collect_api(item_api, true, 2)
+	assert_int(sim.knobs().int_value(&"fall.gravity_scale")).is_equal(800)
+
+func test_preview_peek_cannot_override_mechanic_and_expiry_keeps_permanent_hold() -> void:
+	var catalog: GameCatalog = _catalog()
+	var mechanic := RuleDef.new(); mechanic.id = &"test_hold_mechanic"; mechanic.layer = &"mechanic"
+	mechanic.modifiers = [{"knob": "spawn.hold_enabled", "op": "set", "value": false}]
+	catalog.rule_defs[mechanic.id] = mechanic
+	var level: LevelData = _fixture(catalog); level.rules = [{"id": mechanic.id}]
+	var session: Dictionary = _session(level, catalog)
+	var sim: BoardSim = session.sim
+	var abilities: WtAbilities = session.abilities
+	_command(sim, SimEvents.CMD_USE_ITEM, ["potion_preview_peek"])
+	assert_int(sim.knobs().int_value(&"spawn.preview_count")).is_equal(3)
+	assert_bool(sim.knobs().flag(&"spawn.hold_enabled")).is_false()
+	var mechanic_api: RuleApi = sim._rules[0]["api"]
+	var hold: Array[Dictionary] = [{"knob": "spawn.hold_enabled", "op": "set", "value": true}]
+	mechanic_api.request_modifiers(&"permanent_hold", hold)
+	sim._collect_api(mechanic_api, true, 4)
+	assert_bool(sim.knobs().flag(&"spawn.hold_enabled")).is_true()
+	_advance_to(sim, int(abilities.snapshot().peek))
+	assert_int(sim.knobs().int_value(&"spawn.preview_count")).is_equal(1)
+	assert_bool(sim.knobs().flag(&"spawn.hold_enabled")).is_true()
+
+func test_preview_peek_no_effect_preserves_charge_when_mechanic_and_cap_cover_both() -> void:
+	var catalog: GameCatalog = _catalog()
+	var mechanic := RuleDef.new(); mechanic.id = &"test_hold_mechanic"; mechanic.layer = &"mechanic"
+	mechanic.modifiers = [{"knob": "spawn.hold_enabled", "op": "set", "value": false}]
+	catalog.rule_defs[mechanic.id] = mechanic
+	var level: LevelData = _fixture(catalog, {"spawn.preview_count": 3}); level.rules = [{"id": mechanic.id}]
+	var session: Dictionary = _session(level, catalog)
+	var sim: BoardSim = session.sim
+	var abilities: WtAbilities = session.abilities
+	abilities.charge = 600
+	var events: Array[SimEvent] = _command(sim, SimEvents.CMD_USE_ITEM, ["potion_preview_peek"])
+	assert_int(_event_count(events, &"item_used")).is_equal(0)
+	assert_int(_event_count(events, &"item_no_effect")).is_equal(1)
+	assert_int(int(abilities.snapshot().peek)).is_equal(0)
+	assert_int(abilities.charge).is_equal(600)
+
+func test_trick_charge_counts_success_once_and_ignores_refund_no_effect_and_active_skills() -> void:
+	var catalog: GameCatalog = _catalog()
+	var session: Dictionary = _session(_fixture(catalog), catalog)
+	var sim: BoardSim = session.sim
+	var abilities: WtAbilities = session.abilities
+	abilities.set_charge_perks({"item_charge": 0.1})
+	_command(sim, SimEvents.CMD_USE_ITEM, ["potion_helper_drop"])
+	assert_int(abilities.charge).is_equal(100)
+	var rejected: Array[SimEvent] = [SimEvent.make(1, &"item_refunded"), SimEvent.make(1, &"item_no_effect"), SimEvent.make(1, &"item_armed")]
+	abilities.observe(rejected)
+	assert_int(abilities.charge).is_equal(100)
+	abilities._redraw_locks = 2
+	abilities.observe([SimEvent.make(2, &"item_used"), SimEvent.make(2, SimEvents.LAYERS_CLEARED, {"n_layers": 1}), SimEvent.make(2, &"obstacle_broken")])
+	assert_int(abilities.charge).is_equal(100)
+	abilities._redraw_locks = 0
+	abilities._active_until = 1000
+	abilities.observe([SimEvent.make(3, &"item_used")])
+	assert_int(abilities.charge).is_equal(100)
+	abilities._active_until = 0
+	abilities.observe([SimEvent.make(4, &"item_used")])
+	assert_int(abilities.charge).is_equal(200)
+	abilities._mode = &"tournament"
+	abilities.observe([SimEvent.make(5, &"item_used")])
+	assert_int(abilities.charge).is_equal(200)
+
+
+func test_redraw_preserves_injected_helpers_and_replaces_only_future_stream_pieces() -> void:
+	var catalog: GameCatalog = _catalog()
+	var session: Dictionary = _session(_fixture(catalog), catalog)
+	var sim: BoardSim = session.sim
+	var abilities: WtAbilities = session.abilities
+	abilities._character = &"glim"
+	_command(sim, SimEvents.CMD_USE_ITEM, ["potion_helper_drop"])
+	var before: Dictionary = sim._spawner.snapshot().duplicate(true)
+	var helpers: PackedStringArray = sim._spawner.peek(3)
+	var old_stream: PackedStringArray = sim._spawner.stream_preview_ids(3)
+	var old_hues: PackedInt32Array = sim.preview_hues(3)
+	abilities.charge = WtAbilities.FULL
+	var events: Array[SimEvent] = _command(sim, SimEvents.CMD_USE_SKILL)
+	assert_int(_event_count(events, &"skill_used")).is_equal(1)
+	assert_that(sim._spawner.peek(3)).is_equal(helpers)
+	assert_that(sim.preview_hues(3)).is_equal(old_hues)
+	var stream: PackedStringArray = sim._spawner.stream_preview_ids(3)
+	for index: int in old_stream.size(): assert_str(stream[index]).is_not_equal(old_stream[index])
+	var after: Dictionary = sim._spawner.snapshot()
+	for key: String in ["bag", "bag_index", "queue_info", "generated_count", "random_rng"]:
+		assert_that(after[key]).is_equal(before[key])
+	assert_int(abilities._redraw_locks).is_equal(4)
+	abilities.observe([SimEvent.make(1, SimEvents.PIECE_LOCKED, {"uid": 9999, "injected": true})])
+	assert_int(abilities._redraw_locks).is_equal(4)
+	abilities.observe([SimEvent.make(2, SimEvents.PIECE_LOCKED, {"uid": sim.get_piece_uid(), "injected": false})])
+	assert_int(abilities._redraw_locks).is_equal(3)
+
+
+func test_empty_stream_preview_request_never_returns_an_extra_piece() -> void:
+	var catalog: GameCatalog = _catalog()
+	var session: Dictionary = _session(_fixture(catalog), catalog)
+	var sim: BoardSim = session.sim
+	assert_int(sim._spawner.stream_preview_ids(0).size()).is_equal(0)
+	assert_int(sim._spawner.stream_preview_positions(0).size()).is_equal(0)

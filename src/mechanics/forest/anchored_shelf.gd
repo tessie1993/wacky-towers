@@ -12,8 +12,9 @@ func handle(_hook: StringName, _ctx: HookContext, api: RuleApi) -> void:
 	for raw: Variant in api.param(&"cells", []):
 		if raw is Array and raw.size() == 3:
 			var cell := Vector3i(int(raw[0]), int(raw[1]), int(raw[2]))
-			if api.is_free(cell): api.set_cell(cell, kind)
-			if not cells.has(cell): cells.append(cell)
+			if api.kind_at(cell) == kind or api.is_free(cell):
+				if api.is_free(cell): api.set_cell(cell, kind)
+				if not cells.has(cell): cells.append(cell)
 	for cell: Vector3i in cells:
 		var status: Dictionary = api.record_at(cell).get("status", {}).duplicate(true)
 		status.merge({"fixed": true, "static_geometry": true, "anchored": true, "clear_protected": true, "fills_layer": false, "shelf": true}, true)

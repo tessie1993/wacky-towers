@@ -20,6 +20,8 @@ const MAX_PERK_EDGE_MILLI: int = 150
 const CHARACTER_ABILITIES: Dictionary = {"c1": "cloud", "c2": "lana", "c3": "boulder", "c4": "glim"}
 const MAX_COMMANDS_PER_PLAYER_FRAME: int = 16
 const MAX_COMMANDS_PER_SECOND: int = 180
+const MAX_HOST_ITEM_COMMANDS_PER_FRAME: int = 32
+const ITEM_EFFECTS: Array[StringName] = [&"slow_time", &"bomb", &"helper_drop", &"preview_peek", &"junk_rain", &"fog", &"speed_up", &"spin_lock"]
 const SIMPLE_COMMANDS: Array[StringName] = [&"cmd_soft_drop_on", &"cmd_soft_drop_off", &"cmd_hard_drop", &"cmd_hold", &"cmd_tap", &"cmd_use_skill"]
 
 var hosting: bool = false
@@ -40,6 +42,7 @@ var _rates: Dictionary = {}
 var _tick: int = 0
 var _last_received_tick: int = 0
 var _current_config: Dictionary = {}
+var _host_item_frame_count: int = 0
 
 
 func _ready() -> void:
@@ -124,6 +127,7 @@ func leave() -> void:
 	_current_config.clear()
 	_tick = 0
 	_last_received_tick = 0
+	_host_item_frame_count = 0
 	if was_active and is_inside_tree():
 		lobby_changed.emit(snapshot())
 
@@ -250,6 +254,26 @@ func submit(kind: StringName, args: Array = []) -> void:
 		_request_input.rpc_id(1, PROTOCOL_VERSION, kind, args)
 
 
+## Only the authority can deliver validated item effects or acknowledgements.
+## These ordered commands bypass the player's input quota so an input flood
+## cannot strand a legitimate pending item, while host traffic stays bounded.
+func deliver_item(recipient: int, payload: Dictionary) -> bool:
+	if not is_host() or not in_round or paused or not _players.has(recipient) or _host_item_frame_count >= MAX_HOST_ITEM_COMMANDS_PER_FRAME:
+		return false
+	if not _valid_item_delivery(payload): return false
+	_host_item_frame_count += 1
+	_pending.append({"peer_id":recipient, "kind":"cmd_receive_item", "args":[payload.duplicate(true)]})
+	return true
+
+
+func _valid_item_delivery(payload: Dictionary) -> bool:
+	if not payload.get("token") is String or String(payload.token).is_empty() or String(payload.token).length() > 128:
+		return false
+	if payload.get("ack", false) == true:
+		return payload.size() == 3 and payload.get("ack") is bool and payload.get("applied") is bool
+	return payload.size() == 3 and (payload.get("effect_id") is String or payload.get("effect_id") is StringName) and StringName(payload.effect_id) in ITEM_EFFECTS and payload.get("owner") is int and _players.has(int(payload.owner))
+
+
 ## Host drains inputs and broadcasts one tick; call exactly at the simulation's 60 Hz.
 ## Example: lan.broadcast_tick() from the host's physics process.
 func broadcast_tick() -> void:
@@ -259,6 +283,7 @@ func broadcast_tick() -> void:
 	var commands: Array = _pending.duplicate(true)
 	_pending.clear()
 	_per_frame.clear()
+	_host_item_frame_count = 0
 	_frame.rpc(PROTOCOL_VERSION, _tick, commands)
 
 
@@ -330,6 +355,7 @@ func _round(config: Dictionary) -> void:
 	_pending.clear()
 	_per_frame.clear()
 	_rates.clear()
+	_host_item_frame_count = 0
 	round_started.emit(_current_config.duplicate(true))
 
 
@@ -356,8 +382,11 @@ func _pause(version: int, value: bool) -> void:
 	if version != PROTOCOL_VERSION or paused == value:
 		return
 	paused = value
-	_pending.clear()
+	# Accepted item transactions survive a shared pause. Dropping delivery/ack
+	# here would leave the owner's pending slot permanently waiting for a reply.
+	_pending = _pending.filter(func(command: Dictionary) -> bool: return command.get("kind", "") == "cmd_receive_item")
 	_per_frame.clear()
+	_host_item_frame_count = _pending.size()
 	paused_changed.emit(value)
 
 
@@ -404,7 +433,12 @@ func _valid_command(kind: StringName, args: Array) -> bool:
 	if kind == &"cmd_rotate":
 		return args.size() == 2 and args[0] is int and args[1] is int and int(args[0]) in [0, 1, 2] and int(args[1]) in [-1, 1]
 	if kind == &"cmd_use_item":
-		return args.size() == 1 and (args[0] is String or args[0] is StringName) and String(args[0]).length() <= 64
+		if args.size() != 1: return false
+		if args[0] is int: return int(args[0]) >= 0 and int(args[0]) < 3
+		if args[0] is Dictionary:
+			var payload: Dictionary = args[0]
+			return payload.size() == 1 and payload.get("slot") is int and int(payload.slot) >= 0 and int(payload.slot) < 3
+		return (args[0] is String or args[0] is StringName) and not String(args[0]).is_empty() and String(args[0]).length() <= 64
 	return false
 
 

@@ -16,7 +16,7 @@ Implemented 2026-10-10. The approved requirements remain in ADRs 0005/0013, the 
 
 `LevelLoader.load_level(path,catalog)` bounds JSON reads to 256 KiB by default; `parse_level(raw,catalog)` returns a `LoadResult`. Schema 1, required fields, known shapes/knobs/rules, integers, fixed-point scalar coercion, board/mask/content bounds, target grids, rule budgets and star ordering are validated before returning a level. The structured `goal.type` selects the runtime strategy. Fixed piece sequences, their colour sequence, opening bags and per-bag tags survive parsing. P/V/M targets map to hue ids 1/2/3; rainbow-tagged cubes satisfy each flavour.
 
-Rule definitions preserve parameters, modifiers, vetoes, lifetimes, required/provided tags and incompatibilities. Official data has 36 registered behavior definitions. This is a finite supported subset of the wider atom library; a known behavior id alone does not prove every proposed parameter variation exists.
+Rule definitions preserve parameters, modifiers, vetoes, lifetimes, required/provided tags and incompatibilities. The trusted catalog has 65 behavior definitions, including the optional item system. This is a finite supported subset of the wider atom library; a known behavior id alone does not prove every proposed parameter variation exists. Item tables validate known ids, finite nonnegative weights, standing bias, booleans and duplicate entries before simulation.
 
 ## Authored campaign and coverage
 
@@ -25,20 +25,20 @@ The manifest contains 100 main levels and 18 authored bonuses/remixes, with matc
 | Biome | Authored entries | No recorded gameplay blocker | Blocked |
 |---|---:|---:|---:|
 | Meadow | 11 | 11 | 0 |
-| Candy | 14 | 1 | 13 |
-| Ice | 11 | 9 | 2 |
-| Underwater | 11 | 9 | 2 |
-| Lava | 14 | 6 | 8 |
-| Forest | 11 | 6 | 5 |
-| Cave | 14 | 8 | 6 |
-| Clockwork | 11 | 8 | 3 |
+| Candy | 14 | 14 | 0 |
+| Ice | 11 | 11 | 0 |
+| Underwater | 11 | 11 | 0 |
+| Lava | 14 | 14 | 0 |
+| Forest | 11 | 11 | 0 |
+| Cave | 14 | 14 | 0 |
+| Clockwork | 11 | 11 | 0 |
 | Neon | 10 | 10 | 0 |
-| Celestial | 11 | 5 | 6 |
-| Total | 118 | 73 | 45 |
+| Celestial | 11 | 11 | 0 |
+| Total | 118 | 118 | 0 |
 
-69 of the 100 main levels have no recorded gameplay blocker. These are eligible for playtesting, not certified solvable or tuned. Every level retains its unmodified author source under `metadata.design_spec`. Explicit canonical mappings record semantically equivalent ids/parameter names. Unknown rules, unsupported controls/board geometry and malformed source content remain gameplay blockers. Runtime normalization is a reviewable playable subset, never a claim the omitted behavior was implemented.
+All 100 mains and 18 extras have no recorded missing gameplay atom. Every level retains its unmodified author source under `metadata.design_spec`. Explicit canonical mappings record semantically equivalent ids/parameter names. Approved geometry/star amendments are separate under `metadata.design_amendments` and `assets/data/campaign/design_amendments.json`. This coverage status establishes implemented contracts; it does not establish a complete playthrough or tuned difficulty.
 
-`blocking_gameplay` controls release availability. `unsupported` additionally includes nonblocking source notes such as retained recipes, authored solutions, optional secret props and purely cosmetic mascot behavior. The definitive per-level list is `assets/data/campaign/implementation_coverage.json`. Pure author metadata is preserved even when it does not participate in simulation. The finite-puzzle authoring audit records impossible volume bounds: Cave07 has 12 available cubes for 24 target cells; Cave bonus has 24 for 32; Celestial bonus has 20 for 24. It does not run a placement solver for the remaining puzzles.
+`blocking_gameplay` controls release availability. `unsupported` additionally includes nonblocking source notes such as retained recipes, authored solutions, optional secret props and purely cosmetic mascot behavior. The definitive per-level list is `assets/data/campaign/implementation_coverage.json`. Pure author metadata is preserved even when it does not participate in simulation. Fifteen finite packing puzzles now have constructive exact-cover witnesses and actual BoardSim wins. Cave07's mirror supplies 24 cubes from three four-cube pieces; Cave bonus uses four of its six mirrored kit pieces; Celestial bonus includes the eight-cube Big Cube. Their original budgets are sufficient. Earlier volume-only shortfall claims were incorrect and are superseded by `assets/data/campaign/puzzle_proofs.json`.
 
 The source designs mention additional table-only hard tracks without authored JSON. Those entries are not invented or counted. Star thresholds are source values or explicitly proposed initial estimates; there are no playtest medians. All live biome art-set references use the existing Candy Toy block models; final biome-specific art remains a presentation task.
 
@@ -57,6 +57,7 @@ Rebuild deterministically from the repository root with `python tools/author_cam
 | `active_profile()` / `progress()` | Current index entry or null / deep-copied progress. |
 | `set_playing(bool)` | Gates purchases, profile changes and writes during live play. |
 | `record_result(id,stars,ms,score,hash="")` | `{ok,star_gain,award,replay_award,first_clear,stars,wallet}` on success. |
+| `record_encounter(level_id)` | Persists a deduplicated official level id before actual play, including later failures; no currency. Call before `set_playing(true)`. |
 | `record_arcade(biome,score,layers,ms)` | Per-skin bests; grants no currency. |
 | `record_tournament(won,award)` | Local profile result and supplied authoritative award. |
 | `wallet_balance()`, `biome_stars(id)`, `biome_open(id)`, `level_open(entry)` | Earned-star progression is independent of spending. |
@@ -85,7 +86,7 @@ user://save/slot_0/settings.json
 
 Disk JSON uses `{schema:1,payload:{...},checksum:sha256(canonical_payload)}`. Writes create `.tmp`, flush, verify the checksum, retain the valid main as `.bak`, and rename the temp into place. Invalid main files are retained in two `.corrupt-*` slots. Reads prefer a valid main, then backup, then interrupted temp. Lost indexes rebuild from independently valid progress files without deleting records. A checksum-valid newer envelope is read-only and its unknown payload fields remain available. Legacy raw JSON dictionaries remain readable.
 
-Device preferences include audio/window/vsync/frame cap. Accessibility, character, equipped perks, selected potion and input bindings are per profile. Writes are synchronous menu/result boundary operations; background serialization, debounce workers and a complete migration framework are not implemented. File flush/rename recovery is tested on this filesystem; mobile power-loss durability and storage exhaustion still need device QA.
+Device preferences include audio/window/vsync/frame cap. Accessibility, character, equipped perks, selected potion, encountered campaign levels and input bindings are per profile. `progress().encountered_levels` records actual attempts; Arcade can merge successful legacy level keys to migrate its learned mechanic pool. Writes are synchronous menu/start/result boundary operations; background serialization, debounce workers and a complete migration framework are not implemented. File flush/rename recovery is tested on this filesystem; mobile power-loss durability and storage exhaustion still need device QA.
 
 ## Local mode definitions
 
@@ -106,4 +107,4 @@ Win-time ties share the round win. A single player reaching majority wins; tied 
 
 ## Verification
 
-`tests/unit/meta/content_meta_test.gd` has 12 passing cases covering all118 parses/100 mains, exact goal routing, earned-star gates, four-profile settings, replay awards, purchase/undo, index recovery, checksum backup/future read-only protection, rejected user-data ids, selected tournament pools and explicit potion commit. The affected palette, model-import, biome and meta suites passed27/27. Core integration separately exercises actual first spawns for all118 levels. Parsing, first-spawn legality and volume bounds do not prove an authored solution, story fidelity, device performance or tuned difficulty.
+`tests/unit/meta/content_meta_test.gd` covers all118 parses/100 mains, exact goal routing, earned-star gates, four-profile settings, replay awards, purchase/undo, index recovery, checksum backup/future read-only protection, rejected user-data ids, selected tournament pools, explicit potion commit and encounters without successful results. Candy's focused real-board suite passed15/15. Ordered real-engine verification instantiated all118 GodotAI-authored scenes with their embedded World, checked legal first spawns and completed locks, exercised the special controls and won all15 finite packing puzzles. The per-level record is `production/qa/evidence/full-build/biome-level-verification.json`. These checks establish concrete engine behavior and puzzle feasibility; human success rates, star medians, complete non-puzzle objective playthroughs and perceived fairness remain unmeasured.

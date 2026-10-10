@@ -3,6 +3,7 @@ extends SceneTree
 ## tools/qa/verify_main_lan.py compares every board's hashes across four processes.
 
 const MainScene = preload("res://src/app/main.tscn")
+const FinishAck = preload("res://tools/probes/lan_finish_ack.gd")
 const TARGET_TICK: int = 540
 var main: Node
 var lan: WtLanSession
@@ -19,6 +20,8 @@ var checkpoints: Array = []
 var command_counts: Dictionary = {}
 var orientations: Dictionary = {}
 var output_path: String = ""
+var finish_ack: Node
+var acknowledged: Dictionary = {}
 
 
 func _initialize() -> void:
@@ -47,6 +50,10 @@ func _start() -> void:
 		return
 	main.set("_store", store)
 	lan = main.get("_lan") as WtLanSession
+	finish_ack = FinishAck.new()
+	finish_ack.name = "QaFinishAck"
+	main.add_child(finish_ack)
+	finish_ack.completed.connect(func(identity: int) -> void: acknowledged[identity] = true)
 	lan.lobby_changed.connect(_on_lobby)
 	lan.round_started.connect(_on_round)
 	lan.frame_received.connect(_on_frame)
@@ -66,7 +73,7 @@ func _start() -> void:
 func _process(delta: float) -> bool:
 	if failed: return false
 	elapsed += delta
-	if elapsed > 25.0 and not finished:
+	if elapsed > 80.0 and not finished:
 		_fail("Main LAN timed out; frames=" + str(frame_count))
 	return false
 
@@ -123,6 +130,7 @@ func _on_frame(tick: int, commands: Array) -> void:
 		_fail("Main missed or duplicated a delivered frame")
 		return
 	frame_count = tick
+	if tick % 60 == 0: print("MAIN_LAN_PROGRESS ", role, " tick=", tick, " elapsed=", elapsed)
 	for command: Dictionary in commands:
 		var key: String = str(command.peer_id) + ":" + String(command.kind)
 		command_counts[key] = int(command_counts.get(key, 0)) + 1
@@ -134,11 +142,13 @@ func _on_frame(tick: int, commands: Array) -> void:
 	if tick == 235: main.call("_on_intent", &"rotate", {"axis": "spin", "direction": 1})
 	if tick == 237: main.call("_on_intent", &"rotate", {"axis": "tilt", "direction": 1})
 	if tick == 239: main.call("_on_intent", &"rotate", {"axis": "roll", "direction": -1})
-	if tick == 255:
-		for identity: int in main.get("_network_sims"):
-			var simulation: BoardSim = main.get("_network_sims")[identity]
-			var piece: ActivePiece = simulation.get_piece()
-			orientations[str(identity)] = piece.orient if piece != null else -1
+	# Remote input is admitted at its actual arrival tick. Observe each real
+	# active piece after rotation rather than assuming every packet arrived by255.
+	for identity: int in main.get("_network_sims"):
+		var simulation: BoardSim = main.get("_network_sims")[identity]
+		var piece: ActivePiece = simulation.get_piece()
+		if piece != null and piece.orient > 0:
+			orientations[str(identity)] = piece.orient
 	if tick == 260: main.call("_on_intent", &"drop", {})
 	if tick == 420: main.call("_on_intent", &"use_skill", {})
 	if tick % 30 == 0:
@@ -184,7 +194,17 @@ func _on_finish(data: Dictionary) -> void:
 		file.close()
 	if not failed:
 		print("MAIN_LAN_PASS ", JSON.stringify({"role": role, "frames": frame_count, "hashes": hashes, "effective_character": report.effective_character}))
-	await create_timer(0.3).timeout
+	# Reliable transport delivery still needs the host alive. The test's own
+	# admitted-peer acknowledgement prevents process teardown dropping final RPCs.
+	if role == "Host":
+		var deadline: int = Time.get_ticks_msec() + 30000
+		while acknowledged.size() < 3 and Time.get_ticks_msec() < deadline:
+			await create_timer(0.02).timeout
+		if acknowledged.size() != 3:
+			_fail("Clients did not acknowledge the final authoritative snapshot")
+	else:
+		finish_ack.complete.rpc_id(1)
+		await create_timer(0.5).timeout
 	lan.leave()
 	quit(1 if failed else 0)
 

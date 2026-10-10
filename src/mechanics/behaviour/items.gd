@@ -11,6 +11,7 @@ const TABLE: Array[Dictionary] = [
 	{"id": "speed_up", "weight": 8.0, "bias": 1.0, "debuff": true},
 	{"id": "spin_lock", "weight": 6.0, "bias": 0.5, "debuff": true},
 ]
+var _table: Array[Dictionary] = TABLE.duplicate(true)
 var _enabled: bool = true
 var _slots: Array[Dictionary] = []
 var _tag_uid: int = -1
@@ -34,6 +35,7 @@ func subscribed_hooks() -> Array[StringName]:
 func handle(hook: StringName, ctx: HookContext, api: RuleApi) -> void:
 	if hook == &"on_level_start":
 		_enabled = bool(api.param(&"enabled", true))
+		_table.assign(api.param(&"table", TABLE))
 		_last_tick = api.time_ms()
 		_sync_capacity(api)
 		_slots_event(api)
@@ -55,15 +57,15 @@ static func spawn_roll(rng: RandomNumberGenerator, probability: float, cube_coun
 		return -1
 	return rng.randi_range(0, cube_count - 1)
 
-static func weights(rank: int, players: int, solo: bool = false) -> Array[float]:
+static func weights(rank: int, players: int, solo: bool = false, table: Array[Dictionary] = TABLE) -> Array[float]:
 	var result: Array[float] = []
 	var standing: float = float(clampi(rank, 1, maxi(1, players)) - 1) / float(players - 1) if players >= 2 else 0.0
-	for item: Dictionary in TABLE:
+	for item: Dictionary in table:
 		result.append(0.0 if solo and item.debuff else float(item.weight) * maxf(0.0, 1.0 + float(item.bias) * standing))
 	return result
 
-static func roll(rng: RandomNumberGenerator, rank: int, players: int, solo: bool = false) -> StringName:
-	var chances: Array[float] = weights(rank, players, solo)
+static func roll(rng: RandomNumberGenerator, rank: int, players: int, solo: bool = false, table: Array[Dictionary] = TABLE) -> StringName:
+	var chances: Array[float] = weights(rank, players, solo, table)
 	var total: float = 0.0
 	for chance: float in chances:
 		total += chance
@@ -71,7 +73,7 @@ static func roll(rng: RandomNumberGenerator, rank: int, players: int, solo: bool
 	for index: int in chances.size():
 		draw -= chances[index]
 		if draw < 0.0:
-			return StringName(TABLE[index].id)
+			return StringName(table[index].id)
 	return &"slow_time"
 
 static func is_debuff(id: StringName) -> bool:
@@ -94,22 +96,31 @@ func _spawn(_ctx: HookContext, api: RuleApi) -> void:
 	_tag_index = -1
 	_tag_shape = &""
 	_tag_token = ""
-	api.set_piece_flag(&"item_cube", {})
-	if _bomb_next:
+	var carried: Dictionary = api.piece_flag(&"item_cube", {})
+	var checked: bool = bool(api.piece_flag(&"item_checked", false))
+	if _bomb_next or bool(api.piece_flag(&"bomb", false)):
 		_bomb_uid = api.get_piece_uid()
 		_bomb_next = false
 		api.set_piece_flag(&"bomb", true)
 	if not _enabled:
 		return
 	var cells: Array[Vector3i] = api.piece_cells()
-	_tag_index = spawn_roll(api.rng(), float(api.param(&"p_item", 0.12)), cells.size(), bool(api.piece_flag(&"injected", false)))
-	if _tag_index < 0:
+	var shape: ShapeDef = api.get_piece_shape()
+	if checked:
+		# Holding retains the original one-time roll and cube token, even with a new instance uid.
+		if shape != null and str(carried.get("shape", "")) == str(shape.shape_id):
+			_tag_index = int(carried.get("cube_index", -1))
+			_tag_token = str(carried.get("token", ""))
+	else:
+		_tag_index = spawn_roll(api.rng(), float(api.param(&"p_item", 0.12)), cells.size(), bool(api.piece_flag(&"injected", false)))
+		_tag_token = "%s:%d" % [str(api.item_context().get("owner", 0)), api.get_piece_uid()]
+	api.set_piece_flag(&"item_checked", true)
+	if _tag_index < 0 or _tag_index >= cells.size() or shape == null:
+		api.set_piece_flag(&"item_cube", {})
 		return
 	_tag_uid = api.get_piece_uid()
-	var shape: ShapeDef = api.get_piece_shape()
-	_tag_shape = shape.shape_id if shape != null else &""
-	_tag_token = "%s:%d" % [str(api.item_context().get("owner", 0)), _tag_uid]
-	api.set_piece_flag(&"item_cube", {"uid": _tag_uid, "cube_index": _tag_index, "token": _tag_token})
+	_tag_shape = shape.shape_id
+	api.set_piece_flag(&"item_cube", {"uid": _tag_uid, "cube_index": _tag_index, "token": _tag_token, "shape": _tag_shape})
 	api.emit(&"item_cube_tagged", {"uid": _tag_uid, "cube_index": _tag_index, "cell": cells[_tag_index]})
 
 func _lock(ctx: HookContext, api: RuleApi) -> void:
@@ -138,17 +149,21 @@ func _lock(ctx: HookContext, api: RuleApi) -> void:
 		_bomb_uid = -1
 
 static func blast_center(cells: Array[Vector3i]) -> Vector3i:
+	if cells.is_empty():
+		return Vector3i.ZERO
 	var mean := Vector3.ZERO
 	for cell: Vector3i in cells:
 		mean += Vector3(cell)
 	mean /= cells.size()
-	var ordered: Array[Vector3i] = cells.duplicate()
-	ordered.sort_custom(func(a: Vector3i, b: Vector3i) -> bool:
-		var da: float = Vector3(a).distance_squared_to(mean)
-		var db: float = Vector3(b).distance_squared_to(mean)
-		return da < db or (is_equal_approx(da, db) and (a.y < b.y or (a.y == b.y and (a.x < b.x or (a.x == b.x and a.z < b.z)))))
-	)
-	return ordered[0]
+	var best: Vector3i = cells[0]
+	var distance: float = Vector3(best).distance_squared_to(mean)
+	for cell: Vector3i in cells:
+		var candidate: float = Vector3(cell).distance_squared_to(mean)
+		var canonical: bool = cell.y < best.y or (cell.y == best.y and (cell.x < best.x or (cell.x == best.x and cell.z < best.z)))
+		if candidate < distance or (is_equal_approx(candidate, distance) and canonical):
+			best = cell
+			distance = candidate
+	return best
 
 func _collect(ctx: HookContext, api: RuleApi) -> void:
 	if not _enabled or int(ctx.data.get("cause", BoardState.Cause.CLEAR)) != BoardState.Cause.CLEAR:
@@ -161,14 +176,21 @@ func _collect(ctx: HookContext, api: RuleApi) -> void:
 	if token.is_empty() or _collected.has(token):
 		return
 	_collected[token] = true
+	_award(api, ctx.data.get("cell", Vector3i.ZERO))
+
+func award_trigger(api: RuleApi) -> void:
+	if _enabled:
+		_award(api, Vector3i.ZERO)
+
+func _award(api: RuleApi, cell: Vector3i) -> void:
 	var context: Dictionary = api.item_context()
 	var players: int = maxi(1, int(context.get("players", 1)))
-	var item: StringName = roll(api.rng(), int(context.get("rank", 1)), players, players <= 1 or bool(context.get("solo", false)))
+	var item: StringName = roll(api.rng(), int(context.get("rank", 1)), players, players <= 1 or bool(context.get("solo", false)), _table)
 	_sync_capacity(api)
 	for slot: int in _slots.size():
 		if _slots[slot].is_empty():
 			_slots[slot] = {"id": item, "refunded": false}
-			api.emit(&"item_collected", {"id": item, "slot": slot, "cell": ctx.data.get("cell", Vector3i.ZERO)})
+			api.emit(&"item_collected", {"id": item, "slot": slot, "cell": cell})
 			_slots_event(api)
 			return
 	api.request_score(clampi(int(api.param(&"full_slot_points", 50)), 0, 200))
@@ -198,7 +220,7 @@ func use_slot(slot: int, api: RuleApi) -> void:
 		return
 	var item: StringName = StringName(_slots[slot].get("id", &""))
 	if is_debuff(item):
-		if int(api.item_context().get("players", 1)) <= 1:
+		if int(api.item_context().get("players", 1)) <= 1 or (api.item_context().has("targets") and api.item_context()["targets"].is_empty()):
 			api.emit(&"item_target_unavailable", {"slot": slot, "id": item})
 			return
 		_use_counter += 1

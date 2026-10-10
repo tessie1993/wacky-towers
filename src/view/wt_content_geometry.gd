@@ -49,6 +49,28 @@ static func mesh(kind: int) -> Mesh:
 			surface.set_color(part.color);surface.set_normal((transform.basis*normals[index]).normalized())
 			surface.add_vertex(transform*vertices[index])
 	_cache[kind]=surface.commit();return _cache[kind]
+static func icon(code: int) -> Mesh:
+	var key: int=100+code
+	if _cache.has(key):return _cache[key]
+	var surface:=SurfaceTool.new();surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var parts: Array=[]
+	if code<=9:
+		var segments: Array=[[0,1,2,3,4,5],[1,2],[0,1,6,4,3],[0,1,6,2,3],[5,6,1,2],[0,5,6,2,3],[0,5,6,4,2,3],[0,1,2],[0,1,2,3,4,5,6],[0,1,2,3,5,6]]
+		for segment: int in segments[code]:
+			var position: Vector3=[Vector3(0,.19,0),Vector3(.105,.095,0),Vector3(.105,-.095,0),Vector3(0,-.19,0),Vector3(-.105,-.095,0),Vector3(-.105,.095,0),Vector3.ZERO][segment]
+			parts.append(_box(position,Vector3(.18,.035,.035) if segment in [0,3,6] else Vector3(.035,.15,.035),Color.WHITE))
+	elif code==10:
+		parts=[_box(Vector3.ZERO,Vector3(.025,.4,.04),Color.WHITE),_ball(Vector3(-.09,.08,0),.13,Color.WHITE,Vector3(1,.35,.18)),_ball(Vector3(.09,-.07,0),.13,Color.WHITE,Vector3(1,.35,.18))]
+	elif code==11:
+		parts=[_ring(Vector3(0,.10,0),.075,.105,Color.WHITE,Vector3(PI*.5,0,0)),_box(Vector3(0,-.07,0),Vector3(.24,.22,.035),Color.WHITE)]
+	else:parts=[_box(Vector3.ZERO,Vector3(.04,.4,.035),Color.WHITE),_box(Vector3(0,-.08,0),Vector3(.3,.04,.035),Color.WHITE),_box(Vector3(0,.18,0),Vector3(.19,.04,.035),Color.WHITE)]
+	for part: Dictionary in parts:
+		var arrays: Array=(part.mesh as Mesh).surface_get_arrays(0)
+		var vertices: PackedVector3Array=arrays[Mesh.ARRAY_VERTEX];var normals: PackedVector3Array=arrays[Mesh.ARRAY_NORMAL];var indices: PackedInt32Array=arrays[Mesh.ARRAY_INDEX]
+		for i: int in indices.size():
+			var index: int=indices[i];surface.set_color(Color.WHITE);surface.set_normal((part.transform.basis*normals[index]).normalized());surface.add_vertex(part.transform*vertices[index])
+	_cache[key]=surface.commit();return _cache[key]
+
 static func _eyes(y: float,z: float) -> Array:
 	return [_ball(Vector3(-.13,y,z),.037,Color("#35434B")),_ball(Vector3(.13,y,z),.037,Color("#35434B"))]
 static func _ball(position: Vector3,radius: float,color: Color,scale: Vector3=Vector3.ONE) -> Dictionary:

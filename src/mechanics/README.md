@@ -24,13 +24,13 @@ Rules in this directory are pure, statically typed `RefCounted` plugins. They do
 | IDs | Runtime effect |
 |---|---|
 | `build_race`, `fill_shape` | Select no-clear and trim slots at level start. |
-| `mascot_catch` | Veto a covered-hole lock before board writes, then return the same piece to spawn. Clearing/goal-winning placements are protected. |
+| `mascot_catch` | Veto a covered-hole lock before board writes, then return the same piece to spawn. Clearing/goal-winning placements are protected; `happy_only` requires existing-stack tidiness ≥0.9. |
 | `gust` | Schedule seeded, telegraphed pushes of the active piece. Due gusts without an active piece are dropped. |
 | `mushroom_popup` | Mark a free surface one lock before an object appears. `object_kind` selects the registered content kind; `place_mode = lowest` restricts candidate surfaces. An occupied mark cancels the spawn. |
 | `wobble` | Count unsupported cubes, then rigidly slip the latest surviving piece toward the heavier side; off-island pieces pop off. |
 | `sprouts` | Grow identified living columns on lock intervals. Their IDs move with content, including after their original root clears. `grow_max = 0` is uncapped. |
 | `hatching_eggs` | Age eggs by completed locks, then hop to the lowest reachable neighbouring column with a fixed tie order. |
-| `fog` | Emit deterministic locked-content visibility and clear-triggered reveals. Collision remains unchanged. |
+| `fog` | Fade each locked piece from its own lock time, respect staged clear activation, reveal on clears, and light the ghost neighbourhood (including configured mirror footprints) at every height. Collision remains unchanged. |
 | `fog_ghost` | Mark tagged pieces intangible, then solidify them through the sim's legal-fit helper when tapped/dropped or landed. |
 | `dandelion_puff` | Draw one spawn seam seed, choose the most balanced ground-axis cut, and settle both halves independently. |
 | `topsy_tumble`, `flip` | Queue structural stack inversion; `flip` also supports an axis change and a maximum flip count. |
@@ -48,6 +48,7 @@ Rules in this directory are pure, statically typed `RefCounted` plugins. They do
 | `woodpecker_knock` | Telegraph a fixed highest-first subset of unsupported cubes, then pop them at resolution. |
 | `mirror`, `bubble`, `ember`, `rainbow_piece` | Add mirrored copies; raise/pop tagged pieces; drill below tagged pieces; or stamp wildcard status. |
 | `mascot_hint`, `angle_gem` | Announce a legal suggested placement; or expose and collect a secret through an explicit matching tap. |
+| `items` | Tag one actual piece cube through a dedicated stream, retain it through rotations/hold, collect only on clears, roll the standing-weighted trusted table, and apply all eight buffs/attacks. |
 
 These implementations describe available runtime primitives. They do not imply that every authored boss, stage swap, proposed atom, or presentation asset is complete. The campaign's implementation coverage file records authored requirements that still need their own semantics.
 
@@ -58,6 +59,8 @@ Content writes flush at hook boundaries. Structural mask/axis/slot changes apply
 Simultaneous moves use `move_cells`, including cycles, rather than a sequence of destructive single-cell moves. Dandelion settlement and wobble use a virtual occupancy calculation to determine final destinations before their single buffered move. This preserves correctness while the write facade buffers mutations.
 
 Every behaviour's mutable counters are returned by `snapshot()`. Random choices use `api.rng()` and canonically ordered candidates; a one-candidate choice consumes no random draw. Growth/hatch ages and living-column IDs stored in cube status follow slice, flip, cascade, and conveyor moves.
+
+`items` uses `params.table` loaded from `assets/data/items/starter.json`, with the official table as its pure-runtime fallback. Slots default to two and cap at three. Real clears collect tagged cubes; damage, rescue and displaced removal lose them. A full hand awards fifty score. No-effect uses refund once, then consume. Dynamic modifiers compose at item rank2; effect timers count eligible simulation ticks and pause through warnings/resolution. Bomb damage runs after the initial clear pass; Junk Rain raises one gapped layer by default. Host-generated `CMD_RECEIVE_ITEM` commands carry attacks and acknowledgements; client commands contain only a slot index. The host fixes the living target at send time, and a supplied empty target list keeps the attack held.
 
 ## Verification
 

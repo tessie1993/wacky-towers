@@ -35,6 +35,12 @@ var _wobble: Dictionary = {}
 var _preview_level: bool = false
 var _story_phase: String = ""
 var _pending_results: Dictionary = {}
+var _architecture: WtArchitecture
+var _physics: WtPhysicsChallenge
+var _physics_variant: String = "tower_race"
+var _practice_loadouts: Array[Dictionary] = []
+var _selected_item_slot: int = 0
+var _arcade: WtArcadeDirector
 
 func _ready() -> void:
 	WtPlayerInput.install_actions()
@@ -42,6 +48,10 @@ func _ready() -> void:
 	_catalog = _content.load_catalog()
 	_store = WtProfileStore.new()
 	_modes = WtModes.new(_content)
+	_architecture = WtArchitecture.new()
+	_architecture.name = "Architecture"
+	add_child(_architecture)
+	_architecture.setup(self)
 	_ui = GameUi.new()
 	add_child(_ui)
 	_ui.intent.connect(_on_intent)
@@ -75,6 +85,9 @@ func _physics_process(_delta: float) -> void:
 		if _lan.is_host(): _lan.broadcast_tick()
 		return
 	var events: Array[SimEvent] = _sim.step()
+	if _arcade != null:
+		var changes: Dictionary = _arcade.update(_sim)
+		if changes.has("warning"): _warning = String(changes.warning)
 	_route_events(events)
 	_stage.sync(events)
 	for i: int in _rivals.size():
@@ -91,6 +104,7 @@ func _physics_process(_delta: float) -> void:
 		get_tree().quit()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _physics != null: return
 	if event.is_action_pressed(&"wt_pause"):
 		if _sim != null and not _result_shown:
 			_on_intent(&"resume" if _paused and _ui.current_screen == "pause" else &"pause", {})
@@ -126,6 +140,9 @@ func _exit_tree() -> void:
 	_input.dispose()
 
 func _on_intent(id: StringName, args: Dictionary) -> void:
+	_architecture.dispatch(id, args)
+
+func _execute_intent(id: StringName, args: Dictionary) -> void:
 	match id:
 		&"play", &"continue", &"open_map":
 			if _store.active_profile() == null: _show_profiles()
@@ -152,6 +169,10 @@ func _on_intent(id: StringName, args: Dictionary) -> void:
 			if String(args.get("story_key", "")) != String(_level_id) + "_" + _story_phase: return
 			if _story_phase == "pre" and _sim != null:
 				_story_phase = ""
+				_paused = false
+				_store.set_playing(true)
+				_input.reset()
+				_architecture.lifecycle(&"session_countdown" if _sim.get_phase() == BoardSim.Phase.COUNTDOWN else &"session_begin")
 				_ui.show_hud(_hud_snapshot())
 				_stage.set_board_area(_ui.board_area())
 			elif _story_phase == "post":
@@ -169,6 +190,7 @@ func _on_intent(id: StringName, args: Dictionary) -> void:
 				return
 			if _sim != null and not _result_shown:
 				_paused = false
+				_architecture.lifecycle(&"session_resume")
 				_store.set_playing(true)
 				_input.reset()
 				_ui.show_hud(_hud_snapshot())
@@ -214,6 +236,7 @@ func _on_intent(id: StringName, args: Dictionary) -> void:
 			else: ids.append(item)
 			if not _store.equip_perks(String(_store.get_setting("character", "c1")), ids): _ui.show_toast("Choose up to two owned perks for this character, within the 15% cap.")
 			_show_shop()
+		&"select_item_slot": _selected_item_slot = clampi(int(args.get("slot", 0)), 0, 2)
 		&"select_potion":
 			_store.set_setting("selected_potion", String(args.get("item_id", "")))
 			_show_shop()
@@ -231,24 +254,38 @@ func _on_intent(id: StringName, args: Dictionary) -> void:
 			if error != OK: _ui.show_toast("Toy-Box Trials could not be opened: " + error_string(error))
 		&"start_arcade": _start_arcade(StringName(args.get("skin", "meadow")))
 		&"open_tournament":
+			_clear_session()
 			_paused = true
-			_ui.show_tournament({"profile_name": _profile_name(), "rounds": 3, "players": [{"name": _profile_name()}, {"name": "Pip", "is_bot": true}],
-				"modes": _modes.round_modes(), "items_supported": false})
-		&"host_lan":
-			var error: Error = _lan.host(String(args.get("name", _profile_name())), int(args.get("port", 24680)), int(args.get("rounds", 3)))
-			if error != OK: _ui.show_toast("Could not host this party: " + error_string(error))
-			else: _ui.show_toast("LAN parties currently use Cloud Wizard for every player; skills are once per round.")
-		&"join_lan":
-			var error: Error = _lan.join(String(args.get("address", "127.0.0.1")), String(args.get("name", _profile_name())), int(args.get("port", 24680)))
-			if error != OK: _ui.show_toast("Could not join this party: " + error_string(error))
+			_ui.show_tournament(_party_menu_snapshot())
+		&"open_physics": _show_physics()
+		&"start_physics": _start_physics(String(args.get("variant", _physics_variant)))
+		&"host_lan", &"join_lan":
+			var request: Dictionary = _party_loadout(args)
+			var checked: Dictionary = _lan.validate_loadout(request)
+			if not checked.get("ok", false):
+				_ui.show_toast(String(checked.get("reason", "Choose a valid party loadout.")))
+				return
+			_clear_session()
+			var error: Error
+			if id == &"host_lan":
+				error = _lan.host(String(args.get("name", _profile_name())), int(args.get("port", 24680)), int(args.get("rounds", 3)), request)
+			else:
+				error = _lan.join(String(args.get("address", "127.0.0.1")), String(args.get("name", _profile_name())), int(args.get("port", 24680)), request)
+			if error != OK: _ui.show_toast("Could not open this party: " + error_string(error))
 		&"start_lan": _start_lan_round()
 		&"leave_lan":
 			_lan.leave()
 			_network_state.clear()
-			_ui.show_tournament({"profile_name": _profile_name(), "network_status": "offline"})
+			_architecture.lifecycle(&"party_leave")
+			_clear_session()
+			_ui.show_tournament(_party_menu_snapshot())
 		&"start_tournament":
 			var players: Array = args.get("players", [{"name": _profile_name()}, {"name": "Pip", "is_bot": true}])
-			_modes.start_tournament(players, int(args.get("rounds", 3)), 20261010, args.get("modes", []))
+			if not _prepare_practice_loadouts(players): return
+			var configured: Dictionary = _modes.start_tournament(players, int(args.get("rounds", 3)), 20261010, args.get("modes", []))
+			if not configured.get("ok", false):
+				_ui.show_toast("Choose two to four players and a valid round pool.")
+				return
 			_mode = &"tournament"
 			_start_round()
 		&"move", &"rotate", &"drop", &"soft", &"hold", &"use_skill", &"use_item", &"tap": _play_intent(id, args)
@@ -258,11 +295,14 @@ func _on_intent(id: StringName, args: Dictionary) -> void:
 		&"quit": get_tree().quit()
 
 func _show_title() -> void:
+	_clear_session()
+	_architecture.lifecycle(&"boot")
 	_paused = true
 	_ui.show_title({"has_profile": _store.active_profile() != null, "profile_name": _profile_name(),
 		"stars": _total_stars(), "wallet": _wallet()})
 
 func _show_profiles() -> void:
+	_architecture.lifecycle(&"profile")
 	_paused = true
 	var p: Variant = _store.active_profile()
 	_ui.show_profiles({"profiles": _store.list_profiles(), "active_slot": int(p.get("slot", -1)) if p != null else -1})
@@ -284,6 +324,7 @@ func _show_map() -> void:
 		row["goal"] = ("Design preview · " if row.preview else "") + _goal_text(raw.get("goal", {}))
 		row["twists"] = _rule_labels(raw.get("rules", []))
 		levels.append(row)
+	_architecture.lifecycle(&"map", {"biome": _selected_biome})
 	_ui.show_map({"profile_name": _profile_name(), "stars": _total_stars(), "wallet": _wallet(),
 		"levels": levels, "biomes": _biome_snapshots(), "selected_biome": _selected_biome})
 
@@ -298,6 +339,7 @@ func _show_intro(id: StringName) -> void:
 	var blocked: Array = raw.get("metadata", {}).get("blocking_gameplay", [])
 	var detail: String = "Place blocks, watch the ghost, and turn the view for a clearer angle. Puzzle tools show this level's special controls."
 	if not blocked.is_empty(): detail = "Design preview: " + "; ".join(blocked) + ". This playable subset grants no stars."
+	_architecture.lifecycle(&"intro", {"level_id": id})
 	_ui.show_intro({"level_id": id, "name": _level_name(id), "number": raw.get("tier", 1),
 		"goal": _goal_text(raw.get("goal", {})), "goal_detail": detail,
 		"twists": _rule_labels(raw.get("rules", [])), "star_targets": [_format_ms(int(stars.get("t3", 0))), _format_ms(int(stars.get("t2", 0)))],
@@ -325,18 +367,29 @@ func _start_round() -> void:
 	_mode = &"tournament"
 	var level: LevelData = _modes.next_round_level()
 	if level == null:
+		_result_shown = true
+		_architecture.lifecycle(&"session_end", {"mode": "tournament"})
 		_ui.show_results({"won": true, "level_name": "Tournament complete", "mode": "tournament", "standings": _modes.standings(), "next_available": false})
 		return
+	var source: Dictionary = _round_source(level)
 	_begin_session(level)
-	var snapshot: Dictionary = _modes.tournament_snapshot()
-	var players: Array = snapshot.get("players", [])
-	for i: int in range(1, maxi(players.size(), 2)):
-		_rivals.append(BoardSim.new(level, 20261010, _catalog))
+	var players: Array = _modes.tournament_snapshot().get("players", [])
+	for i: int in range(1, players.size()):
+		var rival_level: LevelData = LevelLoader.parse_level(source, _catalog).level
+		var loadout: Dictionary = _practice_loadouts[i] if i < _practice_loadouts.size() else {"ability_character":"cloud", "effects":{}}
+		_apply_character_loadout(rival_level, StringName(loadout.ability_character), loadout.effects)
+		var rival: BoardSim = BoardSim.new(rival_level, rival_level.seed, _catalog)
+		var abilities: WtAbilities = WtAbilities.new()
+		abilities.setup(rival_level, _catalog, rival.get_api(), StringName(loadout.ability_character), &"tournament")
+		abilities.set_charge_perks(loadout.effects)
+		rival.bind_abilities(abilities)
+		_rivals.append(rival)
 		_bots.append(WtBotPlayer.new())
 
 func _begin_session(level: LevelData) -> void:
 	_clear_session()
 	_level = level
+	if _mode == &"campaign": _store.record_encounter(String(level.id))
 	if bool(_store.get_setting("relaxed_timing", false)):
 		_level.stars = _level.stars.duplicate(true)
 		for key: String in ["t2", "t3"]:
@@ -345,17 +398,23 @@ func _begin_session(level: LevelData) -> void:
 	_sim = BoardSim.new(level, level.seed if level.seed != LevelData.NO_SEED else 20261010, _catalog)
 	_abilities = WtAbilities.new()
 	_abilities.setup(level, _catalog, _sim.get_api(), _ability_character(), (&"tournament" if _mode == &"lan" else _mode))
-	_abilities.set_charge_perks(_perk_effects() if _mode in [&"campaign", &"arcade", &"tournament"] else {})
+	_abilities.set_charge_perks(_session_effects())
 	_sim.bind_abilities(_abilities)
+	if _mode == &"arcade":
+		_arcade = WtArcadeDirector.new()
+		_arcade.setup(_content, _modes, _store.progress(), level.seed)
 	if _mode == &"campaign":
 		for meta: Dictionary in _content.all_levels():
 			if StringName(meta.id) == level.id and ResourceLoader.exists(String(meta.scene)):
 				_official_stage = load(String(meta.scene)).instantiate()
 				add_child(_official_stage)
 				break
-	_stage = WtStage.new()
-	add_child(_stage)
+	_stage = _official_stage.get_node_or_null("World") as WtStage if _official_stage != null else null
+	if _stage == null:
+		_stage = WtStage.new()
+		add_child(_stage)
 	_stage.setup(_sim, level.biome, _settings())
+	_stage.apply_cosmetics(_store.progress().get("cosmetics", {}))
 	_stage.set_story_context({"level_id":level.id,"character":_ability_character(),"keepsakes":_store.progress().get("keepsakes",[]),"mizzle_redeemed":_saved_stars(&"celestial_10")>0})
 	if _stage.has_signal("secret_tapped"): _stage.connect("secret_tapped", _on_secret_tapped)
 	_stage.set_goal(level.goal)
@@ -365,22 +424,31 @@ func _begin_session(level: LevelData) -> void:
 	_store.set_playing(true)
 	_tick_counter = 0
 	_paused = false
+	_architecture.lifecycle(&"session_countdown" if _sim.get_phase() == BoardSim.Phase.COUNTDOWN else &"session_begin", {"mode": _mode, "level_id": level.id})
 	_ui.show_hud(_hud_snapshot())
 	_stage.set_board_area(_ui.board_area())
 	if _mode == &"campaign" and not _smoke:
 		var story: Dictionary = WtStoryData.snapshot(level.id, "pre", _saved_stars(level.id)>0)
 		if not story.get("beats", []).is_empty():
 			_story_phase = "pre"
+			_paused = true
+			_store.set_playing(false)
+			_architecture.lifecycle(&"intro", {"level_id":level.id, "story":"pre"})
 			story["skippable"] = true
 			_ui.show_story(story)
 
 func _clear_session() -> void:
+	_stop_physics()
 	_store.set_playing(false)
 	if _store.has_method("commit_inventory"): _store.call("commit_inventory")
+	if _architecture != null:
+		_architecture.lifecycle(&"save_commit")
+		_architecture.lifecycle(&"session_clear")
 	if _official_stage != null:
 		_official_stage.queue_free()
 		_official_stage = null
 	_pending_item = ""
+	_selected_item_slot = 0
 	_story_phase = ""
 	_pending_results.clear()
 	_warning = ""
@@ -392,6 +460,7 @@ func _clear_session() -> void:
 		_stage = null
 	_sim = null
 	_abilities = null
+	_arcade = null
 	_rivals.clear()
 	_bots.clear()
 	_input.reset()
@@ -415,6 +484,8 @@ func _play_intent(id: StringName, args: Dictionary) -> void:
 		&"hold": cmd = SimCommand.make(SimEvents.CMD_HOLD)
 		&"use_skill": cmd = SimCommand.make(SimEvents.CMD_USE_SKILL)
 		&"use_item":
+			if _mode in [&"tournament", &"lan"]:
+				cmd = SimCommand.make(SimEvents.CMD_USE_ITEM, [{"slot": clampi(int(args.get("slot", _selected_item_slot)), 0, 2)}])
 			var potion: String = String(_store.get_setting("selected_potion", ""))
 			var stock: int = int(_store.progress().get("inventory", {}).get("potions", {}).get(potion, 0))
 			if _mode in [&"campaign", &"arcade"] and _pending_item.is_empty() and stock > 0:
@@ -430,6 +501,7 @@ func _play_intent(id: StringName, args: Dictionary) -> void:
 func _pause() -> void:
 	if _sim == null or _result_shown: return
 	_paused = true
+	_architecture.lifecycle(&"session_pause")
 	_store.set_playing(false)
 	_input.reset()
 	_sim.queue_command(SimCommand.make(SimEvents.CMD_SOFT_DROP_OFF))
@@ -466,6 +538,10 @@ func _puzzle_intent(id: StringName, args: Dictionary) -> void:
 	_ui.show_hud(_hud_snapshot())
 
 func _back() -> void:
+	if _mode == &"physics":
+		if _physics != null: _return_from_physics()
+		else: _show_title()
+		return
 	if _ui.handle_back(): return
 	if _ui.current_screen == "settings" and _sim != null:
 		_ui.show_pause({"level_name": _level_name(_level_id)})
@@ -480,6 +556,7 @@ func _finish_level() -> void:
 	_paused = true
 	var result: LevelResult = _sim.result()
 	if result == null: return
+	_architecture.lifecycle(&"session_end", {"mode": _mode, "won": result.is_won()})
 	var earned: Dictionary = {}
 	var replay: bool = _saved_stars(_level_id) > 0
 	_store.set_playing(false)
@@ -514,6 +591,7 @@ func _check_round() -> void:
 	var round_end: Dictionary = _modes.record_round(results)
 	_result_shown = true
 	_paused = true
+	_architecture.lifecycle(&"session_end", {"mode": "tournament"})
 	_ui.show_results({"won": winner and _sim.result() != null and _sim.result().is_won(), "level_name": "Round complete",
 		"score": _sim.score(), "time": _format_ms(_sim.elapsed_ms()), "stars": 0,
 		"next_available": round_end.get("phase", "") != "finished", "standings": _modes.standings(), "mode": "tournament", "message": String(round_end.get("message", "Fresh boards. Fresh chances."))})
@@ -524,6 +602,8 @@ func _round_result(sim: BoardSim, index: int) -> Dictionary:
 		"progress": sim.goal_state().layers_cleared, "score": sim.score(), "ms": sim.elapsed_ms(), "layers": sim.goal_state().layers_cleared, "active": true}
 
 func _refresh_hud() -> void:
+	if _architecture.snapshot().state == &"countdown" and _sim.get_phase() != BoardSim.Phase.COUNTDOWN:
+		_architecture.lifecycle(&"session_begin", {"mode": _mode})
 	_ui.update_hud(_hud_snapshot())
 	if _story_phase != "":
 		_ui.hide_countdown()
@@ -548,7 +628,7 @@ func _hud_snapshot() -> Dictionary:
 	var next_ids: Array[StringName] = _sim.preview(clampi(_sim.knobs().int_value(&"spawn.preview_count"), 1, PREVIEW_COUNT))
 	return {"level_name": _level_name(_level_id) if _mode == &"campaign" else "Arcade" if _mode == &"arcade" else "Party practice",
 		"goal": _goal_text(goal), "progress": progress, "target": target, "score": _sim.score(), "time": _format_ms(_sim.elapsed_ms()),
-		"next_piece": ", ".join(next_ids), "twists": _rule_labels(_level.rules),
+		"next_piece": ", ".join(next_ids), "twists": _rule_labels(_arcade.snapshot().rules if _arcade != null else _level.rules),
 		"danger": _sim.board().stack_height() >= _sim.board().limit_layer() - 2,
 		"can_tilt": _level.knobs.get(&"control.rotation_axes_enabled", []).has("tilt"),
 		"can_roll": _level.knobs.get(&"control.rotation_axes_enabled", []).has("roll"),
@@ -625,7 +705,8 @@ func _is_unlocked(id: StringName) -> bool:
 	return false
 
 func _ability_character() -> StringName:
-	if _mode == &"lan": return &"cloud"
+	if _mode == &"lan": return StringName(_lan.player_loadout().get("ability_character", "cloud"))
+	if _mode == &"tournament" and not _practice_loadouts.is_empty(): return StringName(_practice_loadouts[0].ability_character)
 	return {"c1": &"cloud", "c2": &"lana", "c3": &"boulder", "c4": &"glim"}.get(String(_store.get_setting("character", "c1")), &"cloud")
 
 func _unlocked_biomes() -> Array[String]:
@@ -711,16 +792,19 @@ func _show_lobby(snapshot: Dictionary) -> void:
 		if candidate.begins_with("192.168.") or candidate.begins_with("10.") or candidate.begins_with("172."):
 			address = candidate
 			break
-	_ui.show_tournament({"rounds": snapshot.get("rounds", 3), "profile_name": _profile_name(),
+	_architecture.lifecycle(&"party_lobby", {"players": snapshot.get("players", []).size()})
+	var data: Dictionary = _party_menu_snapshot()
+	data.merge({"rounds": snapshot.get("rounds", 3), "profile_name": _profile_name(),
 		"network_status": "hosting" if _lan.hosting else "connected" if snapshot.get("connected", false) else "connecting",
-		"network_players": snapshot.get("players", []), "host": _lan.hosting, "address": address + ":" + str(_lan.port)})
+		"network_players": snapshot.get("players", []), "host": _lan.hosting, "address": address + ":" + str(_lan.port)}, true)
+	_ui.show_tournament(data)
 
 func _start_lan_round() -> void:
 	if not _lan.is_host(): return
 	if not _network_state.get("ok", false):
 		var players: Array = []
 		for player: Dictionary in _lan.snapshot().players:
-			players.append({"id": str(player.id), "name": player.name, "character": "c1"})
+			players.append({"id": str(player.id), "name": player.name, "character": player.character})
 		_network_state = _modes.start_tournament(players, _lan.rounds, 20261010)
 	var level: LevelData = _modes.next_round_level()
 	if level == null: return
@@ -729,7 +813,8 @@ func _start_lan_round() -> void:
 	_lan.start_round({"seed": level.seed, "raw_level": source, "tournament": _network_state})
 
 func _on_network_round(config: Dictionary) -> void:
-	var parsed: LoadResult = LevelLoader.parse_level(config.get("raw_level", {}), _catalog)
+	var source: Dictionary = config.get("raw_level", {})
+	var parsed: LoadResult = LevelLoader.parse_level(source, _catalog)
 	if parsed.level == null:
 		_ui.show_toast("The host's round definition could not be loaded.")
 		_lan.leave()
@@ -741,12 +826,18 @@ func _on_network_round(config: Dictionary) -> void:
 	_network_sims[_lan.local_id()] = _sim
 	for player: Dictionary in config.get("players", []):
 		var identity: int = int(player.id)
-		if identity != _lan.local_id():
-			var remote: BoardSim = BoardSim.new(parsed.level, int(config.seed), _catalog)
-			var abilities: WtAbilities = WtAbilities.new()
-			abilities.setup(parsed.level, _catalog, remote.get_api(), &"cloud", &"tournament")
-			remote.bind_abilities(abilities)
-			_network_sims[identity] = remote
+		if identity == _lan.local_id(): continue
+		# Reparse the immutable source: each character's signature and perks are private.
+		var remote_level: LevelData = LevelLoader.parse_level(source, _catalog).level
+		var loadout: Dictionary = _lan.player_loadout(identity)
+		_apply_character_loadout(remote_level, StringName(loadout.ability_character), loadout.effects)
+		var remote: BoardSim = BoardSim.new(remote_level, int(config.seed), _catalog)
+		var abilities: WtAbilities = WtAbilities.new()
+		abilities.setup(remote_level, _catalog, remote.get_api(), StringName(loadout.ability_character), &"tournament")
+		abilities.set_charge_perks(loadout.effects)
+		remote.bind_abilities(abilities)
+		_network_sims[identity] = remote
+	_architecture.lifecycle(&"party_round", {"players": _network_sims.size(), "seed": config.seed})
 
 func _on_network_frame(_tick: int, commands: Array) -> void:
 	if _mode != &"lan" or _network_sims.is_empty(): return
@@ -786,6 +877,7 @@ func _on_network_finished(data: Dictionary) -> void:
 	_result_shown = true
 	_paused = true
 	_store.set_playing(false)
+	_architecture.lifecycle(&"session_end", {"mode":"lan", "aborted":data.get("aborted",false)})
 	_network_state = data.get("tournament", _network_state)
 	var ended: bool = _network_state.get("phase", "") == "finished"
 	var won: bool = _network_state.get("winners", []).has(str(_lan.local_id()))
@@ -799,6 +891,7 @@ func _on_network_finished(data: Dictionary) -> void:
 
 func _on_network_pause(value: bool) -> void:
 	_paused = value
+	_architecture.lifecycle(&"session_pause" if value else &"session_resume")
 	_store.set_playing(not value)
 	_input.reset()
 	if value: _ui.show_pause({"level_name": "LAN party", "mode": "lan"})
@@ -809,7 +902,8 @@ func _on_network_disconnect(reason: String) -> void:
 	_result_shown = true
 	_store.set_playing(false)
 	_ui.show_toast(reason)
-	_ui.show_tournament({"profile_name": _profile_name(), "network_status": "offline"})
+	_architecture.lifecycle(&"party_leave", {"reason":reason})
+	_ui.show_tournament(_party_menu_snapshot())
 
 func _round_source(level: LevelData) -> Dictionary:
 	var board: BoardSpec = level.boards[0]
@@ -862,12 +956,15 @@ func _perk_effects() -> Dictionary:
 	return effects
 
 func _apply_loadout(level: LevelData) -> void:
+	_apply_character_loadout(level, _ability_character(), _session_effects())
+
+func _apply_character_loadout(level: LevelData, character: StringName, effects: Dictionary) -> void:
 	var knobs: Dictionary = level.knobs
 	var lock: int = int(knobs.get(&"fall.lock_delay_ms", _catalog.knob_defs.def(&"fall.lock_delay_ms").get("default", 500)))
 	var gravity: int = int(knobs.get(&"fall.gravity_scale", 1000))
 	var resets: int = int(knobs.get(&"fall.lock_resets_max", 15))
 	var warnings: int = int(knobs.get(&"goal.warnings_max", 1))
-	match _ability_character():
+	match character:
 		&"cloud":
 			lock = lock * 1200 / 1000
 			knobs[&"fall.ramp_per_clear"] = int(knobs.get(&"fall.ramp_per_clear", 50)) * 1150 / 1000
@@ -880,7 +977,6 @@ func _apply_loadout(level: LevelData) -> void:
 		&"glim":
 			lock = lock * 850 / 1000
 			knobs[&"spawn.hold_enabled"] = true
-	var effects: Dictionary = _perk_effects() if _mode in [&"campaign", &"arcade", &"tournament"] else {}
 	lock = lock * roundi(float(effects.get("lock_delay_scale", 1.0)) * 1000) / 1000
 	gravity = gravity * roundi(float(effects.get("gravity_scale", 1.0)) * 1000) / 1000
 	warnings += int(effects.get("warnings_add", 0))
@@ -892,3 +988,97 @@ func _apply_loadout(level: LevelData) -> void:
 	knobs[&"fall.hard_drop_grace_ms"] = int(knobs.get(&"fall.hard_drop_grace_ms", 100)) * roundi(float(effects.get("drop_grace_scale", 1.0)) * 1000) / 1000
 	knobs[&"spawn.preview_count"] = mini(3, int(knobs.get(&"spawn.preview_count", 1)) + int(effects.get("preview_add", 0)))
 	if effects.has("randomizer"): knobs[&"spawn.randomizer"] = StringName(effects.randomizer)
+
+func _session_effects() -> Dictionary:
+	if _mode == &"lan": return _lan.player_loadout().get("effects", {})
+	if _mode == &"tournament" and not _practice_loadouts.is_empty(): return _practice_loadouts[0].effects
+	return _perk_effects() if _mode in [&"campaign", &"arcade"] else {}
+
+func _party_loadout(args: Dictionary = {}) -> Dictionary:
+	var character: String = String(args.get("character", args.get("character_id", _store.get_setting("character", "c1"))))
+	var owned: Array[String] = []
+	var equipped: Array[String] = []
+	var current: Array = _store.get_setting("equipped_perks", [])
+	for row: Dictionary in _store.shop_snapshot():
+		if row.get("kind", "") != "perk" or not row.get("owned", false): continue
+		owned.append(String(row.id))
+		if current.has(String(row.id)) and String(row.get("character", "")) == character: equipped.append(String(row.id))
+	return {"character":character, "perks":args.get("perks", equipped), "owned_perks":owned}
+
+func _party_menu_snapshot() -> Dictionary:
+	var rows: Array[Dictionary] = []
+	for item: Dictionary in _store.shop_snapshot():
+		if item.get("kind", "") != "perk" or not item.get("owned", false): continue
+		var row: Dictionary = item.duplicate(true)
+		row["name"] = row.get("text", row.id)
+		row["equipped"] = _store.get_setting("equipped_perks", []).has(String(row.id))
+		rows.append(row)
+	return {"profile_name": _profile_name(), "rounds":3, "players":[{"name":_profile_name(), "character":_store.get_setting("character","c1")}, {"name":"Pip", "is_bot":true, "character":"c2"}],
+		"character":_store.get_setting("character","c1"), "party_perks":rows, "modes":_modes.round_modes(), "items_supported":false, "network_status":"offline"}
+
+func _prepare_practice_loadouts(players: Array) -> bool:
+	var loadouts: Array[Dictionary] = []
+	for i: int in players.size():
+		if not players[i] is Dictionary: return false
+		var request: Dictionary = _party_loadout(players[i]) if i == 0 else {"character":players[i].get("character_id",players[i].get("character","c1")), "perks":[], "owned_perks":[]}
+		var checked: Dictionary = _lan.validate_loadout(request)
+		if not checked.get("ok",false):
+			_ui.show_toast(String(checked.get("reason","Choose a valid party loadout.")))
+			return false
+		loadouts.append(checked.loadout)
+		players[i]["character"] = checked.loadout.character
+	_practice_loadouts = loadouts
+	return true
+
+func _architecture_context() -> Dictionary:
+	return {"has_profile":_store != null and _store.active_profile() != null, "has_session":_sim != null or _physics != null,
+		"paused":_paused, "result":_result_shown, "mode":String(_mode), "level_id":String(_level_id), "screen":_ui.current_screen if _ui != null else "",
+		"lan_active":_lan != null and _lan.active, "lan_host":_lan != null and _lan.is_host()}
+
+func _show_physics() -> void:
+	if _lan.active: _lan.leave()
+	_clear_session()
+	_mode = &"physics"
+	_paused = true
+	_ui.show()
+	_ui.show_physics({"selected_variant":_physics_variant})
+	_architecture.lifecycle(&"intro", {"mode":"physics"})
+
+func _start_physics(variant: String) -> void:
+	if not WtPhysicsChallenge.VARIANTS.has(variant): return
+	_clear_session()
+	_mode = &"physics"
+	_physics_variant = variant
+	# Jolt owns native movement; dispose GUIDE's navigation as well as play context.
+	_input.dispose()
+	_physics = load("res://src/physics/wt_physics_challenge.tscn").instantiate() as WtPhysicsChallenge
+	_physics.setup({"variant":variant,"settings":_settings(),"seed":917})
+	_physics.return_requested.connect(_return_from_physics)
+	_physics.finished.connect(_on_physics_finished)
+	_ui.hide()
+	_paused = false
+	_result_shown = false
+	_store.set_playing(true)
+	add_child(_physics)
+	_architecture.lifecycle(&"session_begin", {"mode":"physics","variant":variant})
+
+func _on_physics_finished(result: Dictionary) -> void:
+	_result_shown = true
+	_store.set_playing(false)
+	_architecture.lifecycle(&"session_end", {"mode":"physics", "result":result})
+
+func _return_from_physics() -> void:
+	_stop_physics()
+	_store.set_playing(false)
+	_paused = true
+	_result_shown = false
+	_ui.show()
+	_ui.show_physics({"selected_variant":_physics_variant})
+	_architecture.lifecycle(&"intro", {"mode":"physics"})
+
+func _stop_physics() -> void:
+	if _physics == null: return
+	_physics.queue_free()
+	_physics = null
+	_input.setup(get_tree(), _settings())
+	_ui.show()

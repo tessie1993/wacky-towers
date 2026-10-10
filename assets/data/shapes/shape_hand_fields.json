@@ -1,337 +1,337 @@
 {
   "antenna": {
-    "family": "",
-    "hue": 2,
+    "family": "pento_3d",
+    "hue": 5,
     "motif": ""
   },
   "arch": {
-    "family": "",
-    "hue": 5,
-    "motif": ""
-  },
-  "big_cube": {
-    "family": "",
-    "hue": 7,
-    "motif": ""
-  },
-  "big_tripod": {
-    "family": "",
-    "hue": 10,
-    "motif": ""
-  },
-  "big_zigzag": {
-    "family": "",
-    "hue": 4,
-    "motif": ""
-  },
-  "chair": {
-    "family": "",
-    "hue": 9,
-    "motif": ""
-  },
-  "claw_left": {
-    "family": "",
-    "hue": 6,
-    "motif": ""
-  },
-  "claw_right": {
-    "family": "",
-    "hue": 1,
-    "motif": ""
-  },
-  "crank": {
-    "family": "",
+    "family": "hollow",
     "hue": 8,
     "motif": ""
   },
-  "crown": {
-    "family": "",
-    "hue": 4,
-    "motif": ""
-  },
-  "dented_cube": {
-    "family": "",
-    "hue": 9,
-    "motif": ""
-  },
-  "dog_bone": {
-    "family": "",
-    "hue": 10,
-    "motif": ""
-  },
-  "duo": {
-    "family": "",
-    "hue": 9,
-    "motif": ""
-  },
-  "giant_fridge": {
-    "family": "",
+  "big_cube": {
+    "family": "special",
     "hue": 2,
     "motif": ""
   },
-  "giant_mega_cube": {
-    "family": "",
-    "hue": 7,
+  "big_tripod": {
+    "family": "special",
+    "hue": 2,
     "motif": ""
   },
-  "giant_ring": {
-    "family": "",
-    "hue": 9,
-    "motif": ""
-  },
-  "giant_slab": {
-    "family": "",
-    "hue": 5,
-    "motif": ""
-  },
-  "heart": {
-    "family": "",
-    "hue": 3,
-    "motif": ""
-  },
-  "hook_left": {
-    "family": "",
+  "big_zigzag": {
+    "family": "chunky",
     "hue": 6,
     "motif": ""
   },
+  "chair": {
+    "family": "special",
+    "hue": 2,
+    "motif": ""
+  },
+  "claw_left": {
+    "family": "pento_3d",
+    "hue": 5,
+    "motif": ""
+  },
+  "claw_right": {
+    "family": "pento_3d",
+    "hue": 5,
+    "motif": ""
+  },
+  "crank": {
+    "family": "pento_3d",
+    "hue": 5,
+    "motif": ""
+  },
+  "crown": {
+    "family": "party",
+    "hue": 7,
+    "motif": ""
+  },
+  "dented_cube": {
+    "family": "chunky",
+    "hue": 6,
+    "motif": ""
+  },
+  "dog_bone": {
+    "family": "party",
+    "hue": 7,
+    "motif": ""
+  },
+  "duo": {
+    "family": "helper",
+    "hue": 3,
+    "motif": ""
+  },
+  "giant_fridge": {
+    "family": "giant",
+    "hue": 10,
+    "motif": ""
+  },
+  "giant_mega_cube": {
+    "family": "giant",
+    "hue": 10,
+    "motif": ""
+  },
+  "giant_ring": {
+    "family": "giant",
+    "hue": 10,
+    "motif": ""
+  },
+  "giant_slab": {
+    "family": "giant",
+    "hue": 10,
+    "motif": ""
+  },
+  "heart": {
+    "family": "party",
+    "hue": 7,
+    "motif": ""
+  },
+  "hook_left": {
+    "family": "pento_3d",
+    "hue": 5,
+    "motif": ""
+  },
   "hook_right": {
-    "family": "",
-    "hue": 1,
+    "family": "pento_3d",
+    "hue": 5,
     "motif": ""
   },
   "i": {
-    "family": "",
+    "family": "standard",
     "hue": 1,
     "motif": ""
   },
   "jack": {
-    "family": "",
-    "hue": 10,
+    "family": "chunky",
+    "hue": 6,
     "motif": ""
   },
   "kink_left": {
-    "family": "",
-    "hue": 2,
+    "family": "pento_3d",
+    "hue": 5,
     "motif": ""
   },
   "kink_right": {
-    "family": "",
-    "hue": 7,
+    "family": "pento_3d",
+    "hue": 5,
     "motif": ""
   },
   "l": {
-    "family": "",
-    "hue": 4,
+    "family": "standard",
+    "hue": 1,
     "motif": ""
   },
   "loop": {
-    "family": "",
-    "hue": 3,
-    "motif": ""
-  },
-  "mono": {
-    "family": "",
-    "hue": 2,
-    "motif": ""
-  },
-  "mushroom": {
-    "family": "",
-    "hue": 1,
-    "motif": ""
-  },
-  "nook": {
-    "family": "",
-    "hue": 10,
-    "motif": ""
-  },
-  "o": {
-    "family": "",
-    "hue": 2,
-    "motif": ""
-  },
-  "pento_f": {
-    "family": "",
+    "family": "hollow",
     "hue": 8,
     "motif": ""
   },
-  "pento_i": {
-    "family": "",
+  "mono": {
+    "family": "helper",
+    "hue": 3,
+    "motif": ""
+  },
+  "mushroom": {
+    "family": "party",
+    "hue": 7,
+    "motif": ""
+  },
+  "nook": {
+    "family": "pento_3d",
+    "hue": 5,
+    "motif": ""
+  },
+  "o": {
+    "family": "standard",
     "hue": 1,
     "motif": ""
   },
+  "pento_f": {
+    "family": "pento_flat",
+    "hue": 4,
+    "motif": ""
+  },
+  "pento_i": {
+    "family": "pento_flat",
+    "hue": 4,
+    "motif": ""
+  },
   "pento_l": {
-    "family": "",
+    "family": "pento_flat",
     "hue": 4,
     "motif": ""
   },
   "pento_n": {
-    "family": "",
-    "hue": 6,
+    "family": "pento_flat",
+    "hue": 4,
     "motif": ""
   },
   "pento_p": {
-    "family": "",
-    "hue": 8,
+    "family": "pento_flat",
+    "hue": 4,
     "motif": ""
   },
   "pento_t": {
-    "family": "",
-    "hue": 2,
+    "family": "pento_flat",
+    "hue": 4,
     "motif": ""
   },
   "pento_u": {
-    "family": "",
-    "hue": 3,
+    "family": "pento_flat",
+    "hue": 4,
     "motif": ""
   },
   "pento_v": {
-    "family": "",
+    "family": "pento_flat",
     "hue": 4,
     "motif": ""
   },
   "pento_w": {
-    "family": "",
-    "hue": 5,
+    "family": "pento_flat",
+    "hue": 4,
     "motif": ""
   },
   "pento_x": {
-    "family": "",
-    "hue": 6,
+    "family": "pento_flat",
+    "hue": 4,
     "motif": ""
   },
   "pento_y": {
-    "family": "",
-    "hue": 7,
+    "family": "pento_flat",
+    "hue": 4,
     "motif": ""
   },
   "pento_z": {
-    "family": "",
-    "hue": 8,
+    "family": "pento_flat",
+    "hue": 4,
     "motif": ""
   },
   "periscope_left": {
-    "family": "",
-    "hue": 3,
+    "family": "pento_3d",
+    "hue": 5,
     "motif": ""
   },
   "periscope_right": {
-    "family": "",
-    "hue": 8,
+    "family": "pento_3d",
+    "hue": 5,
     "motif": ""
   },
   "plank": {
-    "family": "",
-    "hue": 5,
-    "motif": ""
-  },
-  "pole": {
-    "family": "",
-    "hue": 3,
-    "motif": ""
-  },
-  "ring": {
-    "family": "",
-    "hue": 3,
-    "motif": ""
-  },
-  "rocket": {
-    "family": "",
-    "hue": 9,
-    "motif": ""
-  },
-  "s": {
-    "family": "",
-    "hue": 5,
-    "motif": ""
-  },
-  "screw_left": {
-    "family": "",
-    "hue": 7,
-    "motif": ""
-  },
-  "screw_right": {
-    "family": "",
-    "hue": 8,
-    "motif": ""
-  },
-  "signpost": {
-    "family": "",
-    "hue": 8,
-    "motif": ""
-  },
-  "slab": {
-    "family": "",
-    "hue": 9,
-    "motif": ""
-  },
-  "snake_left": {
-    "family": "",
-    "hue": 3,
-    "motif": ""
-  },
-  "snake_right": {
-    "family": "",
-    "hue": 8,
-    "motif": ""
-  },
-  "staircase": {
-    "family": "",
-    "hue": 10,
-    "motif": ""
-  },
-  "step_block": {
-    "family": "",
-    "hue": 3,
-    "motif": ""
-  },
-  "stool": {
-    "family": "",
-    "hue": 2,
-    "motif": ""
-  },
-  "t": {
-    "family": "",
-    "hue": 3,
-    "motif": ""
-  },
-  "tall_corner": {
-    "family": "",
-    "hue": 4,
-    "motif": ""
-  },
-  "tri_corner": {
-    "family": "",
-    "hue": 10,
-    "motif": ""
-  },
-  "tri_straight": {
-    "family": "",
-    "hue": 1,
-    "motif": ""
-  },
-  "tripod": {
-    "family": "",
+    "family": "chunky",
     "hue": 6,
     "motif": ""
   },
-  "twist_left": {
-    "family": "",
-    "hue": 4,
-    "motif": ""
-  },
-  "twist_right": {
-    "family": "",
+  "pole": {
+    "family": "long_bar",
     "hue": 9,
     "motif": ""
   },
-  "wiggle_left": {
-    "family": "",
+  "ring": {
+    "family": "hollow",
+    "hue": 8,
+    "motif": ""
+  },
+  "rocket": {
+    "family": "party",
+    "hue": 7,
+    "motif": ""
+  },
+  "s": {
+    "family": "standard",
+    "hue": 1,
+    "motif": ""
+  },
+  "screw_left": {
+    "family": "standard",
+    "hue": 1,
+    "motif": ""
+  },
+  "screw_right": {
+    "family": "standard",
+    "hue": 1,
+    "motif": ""
+  },
+  "signpost": {
+    "family": "pento_3d",
+    "hue": 5,
+    "motif": ""
+  },
+  "slab": {
+    "family": "chunky",
+    "hue": 6,
+    "motif": ""
+  },
+  "snake_left": {
+    "family": "party",
+    "hue": 7,
+    "motif": ""
+  },
+  "snake_right": {
+    "family": "party",
+    "hue": 7,
+    "motif": ""
+  },
+  "staircase": {
+    "family": "special",
     "hue": 2,
     "motif": ""
   },
+  "step_block": {
+    "family": "chunky",
+    "hue": 6,
+    "motif": ""
+  },
+  "stool": {
+    "family": "chunky",
+    "hue": 6,
+    "motif": ""
+  },
+  "t": {
+    "family": "standard",
+    "hue": 1,
+    "motif": ""
+  },
+  "tall_corner": {
+    "family": "special",
+    "hue": 2,
+    "motif": ""
+  },
+  "tri_corner": {
+    "family": "helper",
+    "hue": 3,
+    "motif": ""
+  },
+  "tri_straight": {
+    "family": "helper",
+    "hue": 3,
+    "motif": ""
+  },
+  "tripod": {
+    "family": "standard",
+    "hue": 1,
+    "motif": ""
+  },
+  "twist_left": {
+    "family": "special",
+    "hue": 2,
+    "motif": ""
+  },
+  "twist_right": {
+    "family": "special",
+    "hue": 2,
+    "motif": ""
+  },
+  "wiggle_left": {
+    "family": "pento_3d",
+    "hue": 5,
+    "motif": ""
+  },
   "wiggle_right": {
-    "family": "",
-    "hue": 7,
+    "family": "pento_3d",
+    "hue": 5,
     "motif": ""
   }
 }

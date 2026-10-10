@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "source": "design/gdd/piece-set.md#families",
+  "families": {
+    "standard": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "special": [
+      "chair",
+      "big_tripod",
+      "staircase",
+      "twist_left",
+      "twist_right",
+      "big_cube",
+      "tall_corner"
+    ],
+    "helper": [
+      "mono",
+      "duo",
+      "tri_straight",
+      "tri_corner"
+    ],
+    "pento_flat": [
+      "pento_f",
+      "pento_i",
+      "pento_l",
+      "pento_n",
+      "pento_p",
+      "pento_t",
+      "pento_u",
+      "pento_v",
+      "pento_w",
+      "pento_x",
+      "pento_y",
+      "pento_z"
+    ],
+    "pento_3d": [
+      "nook",
+      "antenna",
+      "signpost",
+      "crank",
+      "hook_left",
+      "hook_right",
+      "kink_left",
+      "kink_right",
+      "wiggle_left",
+      "wiggle_right",
+      "periscope_left",
+      "periscope_right",
+      "claw_left",
+      "claw_right"
+    ],
+    "chunky": [
+      "slab",
+      "plank",
+      "step_block",
+      "stool",
+      "dented_cube",
+      "big_zigzag",
+      "jack"
+    ],
+    "hollow": [
+      "ring",
+      "arch",
+      "loop"
+    ],
+    "party": [
+      "heart",
+      "mushroom",
+      "rocket",
+      "dog_bone",
+      "crown",
+      "snake_left",
+      "snake_right"
+    ],
+    "long_bar": [
+      "pole"
+    ],
+    "giant": [
+      "giant_slab",
+      "giant_fridge",
+      "giant_ring",
+      "giant_mega_cube"
+    ]
+  },
+  "hue_ids": {
+    "standard": 1,
+    "special": 2,
+    "helper": 3,
+    "pento_flat": 4,
+    "pento_3d": 5,
+    "chunky": 6,
+    "party": 7,
+    "hollow": 8,
+    "long_bar": 9,
+    "giant": 10
+  }
+}

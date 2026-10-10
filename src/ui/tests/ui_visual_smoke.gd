@@ -27,6 +27,8 @@ func _run() -> void:
 		await _capture(output + "/tools_%d.png" % viewport_size.x)
 		ui.show_hud({"level_name": "Candy Box", "goal": "Fill the toy box", "progress": 2, "target": 4, "score": 280, "time": "0:42", "next_piece": "Tri corner", "held_shape": "Duo", "can_tilt": true, "can_roll": true, "warning": "The next gust comes from the left", "skill_ready": true, "selected_potion": "potion_preview_peek", "potion_count": 2, "capabilities": {"kit": true}})
 		await _capture(output + "/hud_%d.png" % viewport_size.x)
+		ui.show_hud({"level_name":"Party toy box","goal":"Clear layers","progress":2,"target":5,"score":280,"time":"0:42","next_piece":"Tri corner","can_tilt":true,"can_roll":true,"skill_ready":true,"items":{"enabled":true,"slots":[{"id":"slow_time"},{"id":"fog"},{"id":"preview_peek"}],"effects":{"fog":{"remaining_ms":7100,"duration_ms":10000},"slow_time":{"remaining_ms":9100,"duration_ms":10000}}},"selected_item_slot":1,"item_target_available":true})
+		await _capture(output + "/items_%d.png" % viewport_size.x)
 	ui.queue_free()
 	await process_frame
 	print("UI_VISUAL_CAPTURE_PASS: title, physics, lobby, story, tools and HUD at 1280x720 and 720x1280")

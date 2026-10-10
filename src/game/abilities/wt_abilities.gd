@@ -26,6 +26,7 @@ var _double_clear_charge: int = 0
 var _item_charge: int = 0
 var _obstacle_charge: int = 0
 var _redraw_locks: int = 0
+var _redraw_current_uid: int = 0
 var _fit_dirty: bool = true
 
 ## Each skill has its own seeded stream, independent of shape bags and twists.
@@ -55,14 +56,14 @@ func snapshot() -> Dictionary:
 		"time": _time_ms, "gravity": _prior_gravity, "lock": _prior_lock, "preview": _prior_preview,
 		"hold": _prior_hold, "rng": _rng.state if _rng != null else 0, "combo": _combo,
 		"cleared": _lock_cleared, "charge_rate": _charge_rate, "double_charge": _double_clear_charge,
-		"item_charge": _item_charge,"obstacle_charge":_obstacle_charge, "redraw_locks": _redraw_locks, "fit_dirty": _fit_dirty}
+		"item_charge": _item_charge,"obstacle_charge":_obstacle_charge, "redraw_locks": _redraw_locks, "redraw_current_uid": _redraw_current_uid, "fit_dirty": _fit_dirty}
 
 ## Restore the full ability stream and move deadlines with the live simulation clock.
 func restore(data: Dictionary, offset_ms: int = 0) -> void:
 	var fields: Dictionary = {"character":"_character","mode":"_mode","charge":"charge","bomb":"_bomb_armed",
 		"spent":"_spent","gravity":"_prior_gravity","lock":"_prior_lock","preview":"_prior_preview","hold":"_prior_hold",
 		"combo":"_combo","cleared":"_lock_cleared","charge_rate":"_charge_rate","double_charge":"_double_clear_charge",
-		"item_charge":"_item_charge","obstacle_charge":"_obstacle_charge","redraw_locks":"_redraw_locks","fit_dirty":"_fit_dirty"}
+		"item_charge":"_item_charge","obstacle_charge":"_obstacle_charge","redraw_locks":"_redraw_locks","redraw_current_uid":"_redraw_current_uid","fit_dirty":"_fit_dirty"}
 	for key: String in fields:
 		if data.has(key): set(fields[key],data[key])
 	_active_until = int(data.get("active",0))
@@ -78,16 +79,14 @@ func restore(data: Dictionary, offset_ms: int = 0) -> void:
 func step(api: RuleApi, now_ms: int) -> void:
 	_time_ms = now_ms
 	if _active_until > 0 and now_ms >= _active_until:
-		api.request_slot(&"fall.gravity_scale", _prior_gravity)
-		api.request_slot(&"fall.lock_delay_ms", _prior_lock)
+		api.clear_modifiers(&"slow")
 		_active_until = 0
 		api.emit(&"skill_ended", {"character": _character})
 	if _stitch_until > 0 and now_ms >= _stitch_until:
 		_stitch_until = 0
 		api.emit(&"skill_ended", {"character": _character})
 	if _peek_until > 0 and now_ms >= _peek_until:
-		api.request_slot(&"spawn.preview_count", _prior_preview)
-		api.request_slot(&"spawn.hold_enabled", _prior_hold)
+		api.clear_modifiers(&"peek")
 		_peek_until = 0
 		api.emit(&"item_ended", {"id": "potion_preview_peek"})
 	if _mode == &"tournament" and not _spent and now_ms >= int(_tuning.get("once_ready_ms", 3000)): charge = FULL
@@ -106,17 +105,24 @@ func observe(events: Array[SimEvent]) -> void:
 		if event.kind == SimEvents.PIECE_LOCKED:
 			if not _lock_cleared: _combo = 0
 			_lock_cleared = false
-			if _redraw_locks > 0: _redraw_locks -= 1
+			if _redraw_locks > 0 and (int(event.data.get("uid", 0)) == _redraw_current_uid or not bool(event.data.get("injected", false))):
+				_redraw_locks -= 1
+				_redraw_current_uid = 0
 		elif event.kind == SimEvents.LAYERS_CLEARED:
 			if not _lock_cleared: _combo += 1
 			_lock_cleared = true
 			var count: int = int(event.data.get("n_layers", event.data.get("layers", []).size()))
-			if _active_until == 0 and _stitch_until == 0 and _mode != &"tournament":
+			if _can_charge():
 				var gain: int = int(_tuning.get("charge_layer_milli", 125)) * count + int(_tuning.get("charge_combo_milli", 30)) * maxi(0, _combo - 1)
 				charge = mini(FULL, charge + gain * _charge_rate / FULL + (_double_clear_charge if count >= 2 else 0))
 		elif event.kind == SimEvents.TOP_OUT_WARNING: _combo = 0
-		elif event.kind in [&"rock_broken",&"obstacle_broken"] and _mode != &"tournament":
+		elif event.kind == &"item_used" and _can_charge():
+			charge = mini(FULL, charge + _item_charge)
+		elif event.kind in [&"rock_broken",&"obstacle_broken"] and _can_charge():
 			charge = mini(FULL,charge+_obstacle_charge)
+
+func _can_charge() -> bool:
+	return _mode != &"tournament" and _active_until == 0 and _stitch_until == 0 and _redraw_locks == 0
 
 func ready() -> bool:
 	return charge >= FULL and _active_until == 0 and _stitch_until == 0 and _redraw_locks == 0 and not (_mode == &"tournament" and _spent)
@@ -130,8 +136,7 @@ func command(cmd: SimCommand, api: RuleApi) -> void:
 	var used: bool = false
 	match _character:
 		&"cloud", &"cloud_wizard":
-			_slow(api, int(_tuning.get("calm_duration_ms", 8000)), int(_tuning.get("calm_gravity_milli", 250)))
-			used = true
+			used = _slow(api, int(_tuning.get("calm_duration_ms", 8000)), int(_tuning.get("calm_gravity_milli", 250)))
 		&"lana":
 			_stitch_until = _time_ms + int(_tuning.get("stitch_duration_ms", 10000))
 			used = true
@@ -150,13 +155,17 @@ func command(cmd: SimCommand, api: RuleApi) -> void:
 func veto(action: StringName, rank: int) -> bool:
 	return _stitch_until > _time_ms and rank <= 3 and action in [&"stack.shift", &"stack.remove", &"structure.change"]
 
-func _slow(api: RuleApi, duration_ms: int, multiplier: int, lock_multiplier: int = 1500) -> void:
+func _slow(api: RuleApi, duration_ms: int, multiplier: int, lock_multiplier: int = 1500) -> bool:
+	var modifiers: Array[Dictionary] = [
+		{"knob": "fall.gravity_scale", "op": "mul", "value": float(multiplier) / FULL},
+		{"knob": "fall.lock_delay_ms", "op": "mul", "value": float(lock_multiplier) / FULL}]
+	if not api.modifiers_would_change(modifiers): return false
 	if _active_until == 0:
 		_prior_gravity = api.knob_int(&"fall.gravity_scale")
 		_prior_lock = api.knob_int(&"fall.lock_delay_ms")
 	_active_until = _time_ms + duration_ms
-	api.request_slot(&"fall.gravity_scale", _prior_gravity * multiplier / FULL)
-	api.request_slot(&"fall.lock_delay_ms", _prior_lock * lock_multiplier / FULL)
+	api.request_modifiers(&"slow", modifiers)
+	return true
 
 func _smash(api: RuleApi) -> bool:
 	var cells: Array[Vector3i] = api.piece_cells()
@@ -198,21 +207,29 @@ func _smash(api: RuleApi) -> bool:
 	return hit
 
 func _redraw(api: RuleApi) -> bool:
-	if not api.has_method("replace_preview"): return false
+	if not api.has_method("replace_stream_preview"): return false
 	var fixed: Variant = _level.pieces.get("fixed_list", [])
 	if not fixed.is_empty() or not _level.pieces.get("kit",[]).is_empty(): return false
-	var pool: PackedStringArray = _level.pieces.get("shapes", PackedStringArray())
-	if pool.size() <= 1: return false
-	var old: Array = api.call("preview_ids", 3) if api.has_method("preview_ids") else []
+	var pool: PackedStringArray = api.shape_pool()
+	var old: PackedStringArray = api.stream_preview_ids(int(_tuning.get("redraw_pieces", 3)))
+	if pool.size() <= 1:
+		var shape: ShapeDef = api.get_piece_shape()
+		if WtPerfectFit.suggestions(api, shape, 2).is_empty(): return false
+		_redraw_locks = old.size() + 1
+		_redraw_current_uid = api.get_piece_uid()
+		_fit_dirty = true
+		return true
 	var replacements: PackedStringArray = []
-	for i: int in int(_tuning.get("redraw_pieces", 3)):
+	for i: int in old.size():
 		var choices: Array[String] = []
 		for id: String in pool:
 			if i >= old.size() or id != str(old[i]): choices.append(id)
 		if choices.is_empty(): return false
 		replacements.append(choices[_rng.randi_range(0, choices.size() - 1)])
-	api.call("replace_preview", replacements)
+	if replacements.is_empty(): return false
+	api.replace_stream_preview(replacements)
 	_redraw_locks = replacements.size() + 1
+	_redraw_current_uid = api.get_piece_uid()
 	_fit_dirty = true
 	api.emit(&"redraw_preview", {"shapes": replacements})
 	return true
@@ -230,15 +247,15 @@ func _use_potion(cmd: SimCommand, api: RuleApi) -> void:
 			used = true
 		"potion_slow_time":
 			if _active_until == 0:
-				_slow(api, 10000, 500, 1000)
-				used = true
+				used = _slow(api, 10000, 500, 1000)
 		"potion_preview_peek":
 			if _peek_until == 0:
 				_prior_preview = api.knob_int(&"spawn.preview_count")
 				_prior_hold = api.knob_flag(&"spawn.hold_enabled")
-				if _prior_preview < 3 or not _prior_hold:
-					api.request_slot(&"spawn.preview_count", mini(3, _prior_preview + 2))
-					api.request_slot(&"spawn.hold_enabled", true)
+				var modifiers: Array[Dictionary] = [{"knob": "spawn.preview_count", "op": "add", "value": 2},
+					{"knob": "spawn.hold_enabled", "op": "set", "value": true}]
+				if api.modifiers_would_change(modifiers):
+					api.request_modifiers(&"peek", modifiers)
 					_peek_until = _time_ms + 20000
 					used = true
 		"potion_bomb":
@@ -246,7 +263,6 @@ func _use_potion(cmd: SimCommand, api: RuleApi) -> void:
 			api.emit(&"item_armed", {"id": id})
 			return
 	if used:
-		charge = mini(FULL, charge + _item_charge)
 		api.emit(&"item_used", {"id": id})
 	else: api.emit(&"item_no_effect", {"id": id})
 

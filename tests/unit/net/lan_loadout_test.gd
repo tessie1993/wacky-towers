@@ -84,3 +84,38 @@ func test_invalid_public_host_join_loadout_cannot_replace_live_session() -> void
     assert_bool(lan.active).is_true()
     assert_bool(lan.hosting).is_true()
     assert_bool(lan.validate_loadout({"metadata": "x".repeat(LAN.MAX_LOADOUT_BYTES)}).ok).is_false()
+
+func test_item_slots_are_bounded_and_receive_item_is_never_a_client_command() -> void:
+    var lan: WtLanSession = _lan()
+    for slot: int in 3:
+        assert_bool(lan._valid_command(&"cmd_use_item", [{"slot":slot}])).is_true()
+        assert_bool(lan._valid_command(&"cmd_use_item", [slot])).is_true()
+    for args: Array in [[{"slot":3}], [{"slot":-1}], [{"slot":0,"owner":1}], [{"slot":"0"}], [""], [0,1]]:
+        assert_bool(lan._valid_command(&"cmd_use_item", args)).is_false()
+    assert_bool(lan._valid_command(&"cmd_use_item", ["potion_helper_drop"])).is_true()
+    assert_bool(lan._valid_command(&"cmd_receive_item", [{"effect_id":"fog","owner":1,"token":"a"}])).is_false()
+
+func test_host_delivery_is_admitted_bounded_detached_and_survives_pause() -> void:
+    var lan: WtLanSession = _lan()
+    lan.active = true
+    lan.hosting = true
+    lan.in_round = true
+    lan.set("_players", {1:"Cloud",2:"Lana"})
+    var attack: Dictionary = {"effect_id":"fog","owner":1,"token":"fog:1"}
+    assert_bool(lan.deliver_item(2, attack)).is_true()
+    attack.effect_id = "hacked"
+    assert_str(lan.get("_pending")[0].args[0].effect_id).is_equal("fog")
+    assert_bool(lan.deliver_item(99, {"ack":true,"applied":false,"token":"fog:1"})).is_false()
+    assert_bool(lan.deliver_item(2, {"effect_id":"hacked","owner":1,"token":"a"})).is_false()
+    assert_bool(lan.deliver_item(2, {"effect_id":"fog","owner":99,"token":"a"})).is_false()
+    assert_bool(lan.deliver_item(1, {"ack":true,"applied":true,"token":"fog:1"})).is_true()
+    lan._enqueue(1, &"cmd_move", [Vector3i.LEFT])
+    lan._pause(LAN.PROTOCOL_VERSION, true)
+    assert_int(lan.get("_pending").size()).is_equal(2)
+    assert_bool(lan.deliver_item(2, {"effect_id":"fog","owner":1,"token":"b"})).is_false()
+    lan._pause(LAN.PROTOCOL_VERSION, false)
+    lan.hosting = false
+    assert_bool(lan.deliver_item(2, {"effect_id":"fog","owner":1,"token":"b"})).is_false()
+    lan.hosting = true
+    lan.set("_host_item_frame_count", LAN.MAX_HOST_ITEM_COMMANDS_PER_FRAME)
+    assert_bool(lan.deliver_item(2, {"effect_id":"fog","owner":1,"token":"b"})).is_false()

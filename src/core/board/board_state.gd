@@ -717,7 +717,7 @@ func set_height_limit(height: int) -> void:
 	_h_play = clampi(height, 1, _size.y)
 	_log(Op.LAYOUT, 0, 0)
 
-func raise_junk(layers: int, kind: int) -> void:
+func raise_junk(layers: int, kind: int, gap_seed: int = 0) -> void:
 	var count: int = clampi(layers, 0, layer_count())
 	for k: int in range(layer_count() - 1, -1, -1):
 		for i: int in layer_cells(k):
@@ -728,9 +728,15 @@ func raise_junk(layers: int, kind: int) -> void:
 				remove(i, Cause.DISPLACED)
 			elif is_active(index(c)) and get_kind(index(c)) == 0:
 				move(i, index(c))
+	var gap_rng: RandomNumberGenerator = Seeds.make_rng(gap_seed, ["junk"])
 	for k: int in range(_floor_layer, mini(_floor_layer + count, layer_count())):
+		var available: Array[int] = []
 		for i: int in layer_cells(k):
 			if is_active(i) and get_kind(i) == 0:
+				available.append(i)
+		var gap: int = available[gap_rng.randi_range(0, available.size() - 1)] if not available.is_empty() else -1
+		for i: int in layer_cells(k):
+			if i != gap and is_active(i) and get_kind(i) == 0:
 				place(i, kind, 0, 0)
 
 

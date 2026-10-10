@@ -23,6 +23,37 @@
     {
       "id": "neon_06",
       "reason": "New40cell stepped sign proposal replaces repeated24cell Forest picture; eight fixed pieces are constructively packed."
+    },
+    {
+      "id": "ice_10",
+      "board": {
+        "width": 16,
+        "depth": 3,
+        "h_play": 6,
+        "spawn_anchor": {
+          "x": 4,
+          "z": 1
+        }
+      },
+      "reason": "Resolve the source sketch gravity-frame ambiguity using existing ADR-0002/F4 axis contract. Fresh Godot4.7.2 original JSON measured physical12x16x6, danger8,96-cell clearplanes instead of intended12travel and30-cell planes. Physical16x10x3 (C4) restores12playable X layers and30-cell full rectangular YZ planes; the cross-section is10x3 instead of6x5. Pool,4-clear goal,g0,gust,phase2slide and stars remain authored. Full footprint is active; no cross mask.",
+      "before_engine": {
+        "physical_size": [
+          12,
+          16,
+          6
+        ],
+        "danger_limit": 8,
+        "active_clear_plane": 96
+      },
+      "after_engine_expected": {
+        "physical_size": [
+          16,
+          10,
+          3
+        ],
+        "danger_limit": 12,
+        "active_clear_plane": 30
+      }
     }
   ]
 }

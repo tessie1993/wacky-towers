@@ -388,3 +388,78 @@ func test_post_clear_damage_waits_for_structure_and_never_adds_clear_credit() ->
 	assert_int(sim.board().get_kind(sim.board().index(cell))).is_equal(0)
 	assert_int(sim.goal_state().layers_cleared).is_equal(0)
 	assert_int(sim.score()).is_equal(0)
+
+func test_shape_pool_growth_preserves_preview_metadata_and_incomplete_bag() -> void:
+	var spawner := Spawner.new({"shapes": PackedStringArray(["a", "b"])}, 1, 8)
+	var before: Dictionary = spawner.snapshot().duplicate(true)
+	assert_bool(spawner.set_shape_pool(PackedStringArray(["c", "d"]))).is_true()
+	var after: Dictionary = spawner.snapshot().duplicate(true)
+	for field: String in ["queue", "queue_info", "bag", "bag_index", "generated_count", "random_rng"]:
+		assert_that(after[field]).is_equal(before[field])
+	for i: int in 2:
+		assert_bool(spawner.next() in [&"a", &"b"]).is_true()
+		assert_int(spawner.last_bag_info()["id"]).is_equal(0)
+	for i: int in 2:
+		assert_bool(spawner.next() in [&"c", &"d"]).is_true()
+		assert_int(spawner.last_bag_info()["id"]).is_equal(1)
+		assert_int(spawner.last_bag_info()["index"]).is_equal(i)
+	spawner.restore(before)
+	assert_that(spawner.shape_pool()).is_equal(PackedStringArray(["a", "b"]))
+
+func test_simulation_pool_change_waits_for_safe_phase_and_keeps_hues() -> void:
+	var sim := BoardSim.new(_level(4, 4), 8, _catalog())
+	sim.step()
+	var preview: PackedStringArray = sim.get_api().preview_ids(3)
+	var hues: PackedInt32Array = sim.preview_hues(3)
+	assert_bool(sim.set_shape_pool(PackedStringArray(["mono", "duo"]))).is_true()
+	sim.step()
+	assert_that(sim.get_api().shape_pool()).is_equal(PackedStringArray(["mono"]))
+	assert_that(sim.get_api().preview_ids(3)).is_equal(preview)
+	assert_that(sim.preview_hues(3)).is_equal(hues)
+	_command(sim, SimEvents.CMD_HARD_DROP)
+	assert_that(sim.get_api().shape_pool()).is_equal(PackedStringArray(["mono", "duo"]))
+
+func test_removing_axis_flip_waits_for_resolving_then_restores_gravity_and_settles() -> void:
+	var level: LevelData = _level(4, 4)
+	level.rules = [{"id": "flip", "params": {"flip_mode": "axis", "flip_every_ms": 100000}}]
+	level.knobs[&"fall.entry_delay_ms"] = 500
+	var sim := BoardSim.new(level, 8, _catalog())
+	sim.step()
+	_command(sim, SimEvents.CMD_HARD_DROP)
+	sim.board().set_down(BoardState.Down.X_NEG)
+	var c := Vector3i(0, 2, 2)
+	sim.board().place(sim.board().index(c), 1, 1, 89)
+	sim.set_rule_definitions([])
+	sim.step()
+	assert_that(sim.board().down_vector()).is_equal(Vector3i.DOWN)
+	assert_int(sim.board().get_kind(sim.board().index(c))).is_equal(0)
+	assert_int(sim.board().get_record(sim.board().index(Vector3i(0, 0, 2)))["piece_instance_id"]).is_equal(89)
+	assert_bool(sim.get_api().rule_active(&"flip")).is_false()
+
+func test_junk_layer_gap_uses_only_the_issuing_rule_seed() -> void:
+	var a := BoardSim.new(_level(4, 4), 3, _catalog())
+	var b := BoardSim.new(_level(4, 4), 99, _catalog())
+	var arng: int = a._spawner.snapshot()["random_rng"]
+	var brng: int = b._spawner.snapshot()["random_rng"]
+	a.get_api().request_junk_layers(1, 887)
+	b.get_api().request_junk_layers(1, 887)
+	a._collect_api(a.get_api(), true); b._collect_api(b.get_api(), true)
+	a._apply_structural(); b._apply_structural()
+	assert_that(a.board().snapshot()["kind"]).is_equal(b.board().snapshot()["kind"])
+	assert_int(a.board().filled_in_layer(0)).is_equal(15)
+	assert_int(a._spawner.snapshot()["random_rng"]).is_equal(arng)
+	assert_int(b._spawner.snapshot()["random_rng"]).is_equal(brng)
+
+func test_nested_rule_helpers_restore_and_absolute_deadlines_rebase() -> void:
+	var rule := ConveyorRule.new()
+	rule._belt._locks = 7
+	var state: Dictionary = rule.snapshot().duplicate(true)
+	rule._belt._locks = 19
+	rule.restore(state)
+	assert_int(rule.snapshot()["locks"]).is_equal(7)
+	var gust := GustRule.new()
+	gust._due = 3000
+	gust.restore({"due": 1000, "warned": true, "direction": Vector3i.LEFT})
+	gust.rebase_time(600)
+	assert_int(gust.snapshot()["due"]).is_equal(1600)
+	assert_bool(gust.snapshot()["warned"]).is_true()

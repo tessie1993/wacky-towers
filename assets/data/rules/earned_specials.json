@@ -10,10 +10,14 @@
       "type": "number"
     },
     "rocket_at": {
-      "type": "number"
+      "type": "number",
+      "min": 0,
+      "max": 0
     },
     "colour_bomb_at": {
-      "type": "number"
+      "type": "number",
+      "min": 0,
+      "max": 0
     }
   },
   "incompatible_with": []

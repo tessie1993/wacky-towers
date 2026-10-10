@@ -49,6 +49,11 @@ var _key_stamp: Dictionary = {}
 var _key_uid: int = -1
 var _keyholes: Dictionary = {}
 var _content_views: Dictionary = {}
+var _content_cells: Dictionary = {}
+var _hazard_view: MultiMeshInstance3D
+var _hazard_cells: Dictionary = {}
+var _status_views: Dictionary = {}
+var _status_cells: Dictionary = {}
 var _windmill: Node3D
 var _audio: WtAudio
 var _snap: ViewSnap = ViewSnap.new()
@@ -132,7 +137,14 @@ func sync(events: Array[SimEvent]) -> void:
 			&"syrup_glide":
 				_react_toys(&"sparkle")
 			&"fog_visibility":
-				_locked.set_visibility(float(ev.data.get("alpha",int(ev.data.get("alpha_milli",1000))/1000.0)))
+				if ev.data.has("cell_alphas"):
+					_locked.set_cell_visibility(ev.data.get("cell_alphas",[]))
+				else:
+					_locked.set_visibility(float(ev.data.get("alpha",int(ev.data.get("alpha_milli",1000))/1000.0)))
+				_refresh_content_visibility()
+			&"item_fog_visibility":
+				_locked.set_item_hidden(ev.data.get("hidden_cells",[]))
+				_refresh_content_visibility()
 			&"mushroom_warning":
 				_mark_cell("mushroom",ev.data.get("cell",Vector3i.ZERO),Color("#EDAE63"))
 			&"mushroom_popup", &"mushroom_cancelled":
@@ -181,6 +193,7 @@ func sync(events: Array[SimEvent]) -> void:
 				if not _reduced():
 					burst(Vector3(0, _board.h_play() * 0.65, 0), Color("#F8DE87"), 70)
 			_:
+				_hazard_event(ev)
 				var kind: String = str(ev.kind)
 				if _boss!=null and ("warning" in kind or "windup" in kind):_boss.react(&"exclaim",1.0,_reduced())
 				if "wind" in kind or "gust" in kind:
@@ -190,7 +203,10 @@ func sync(events: Array[SimEvent]) -> void:
 	if changed:
 		_locked.refresh()
 		if _fit_view!=null:_fit_view.multimesh.visible_instance_count=0
-	_refresh_content_views()
+	if changed:
+		_refresh_content_views()
+	else:
+		for view: MultiMeshInstance3D in _content_views.values():view.material_override=_locked._mmi.material_override
 	_update_piece()
 	var danger: bool = _board.stack_height() >= _board.h_play() - 2
 	_danger.visible = danger
@@ -317,6 +333,8 @@ func apply_settings(settings: Dictionary) -> void:
 		var ghost_on: bool = ghost_value if ghost_value is bool else str(ghost_value) in ["on", "true", "enabled"]
 		_ghost.visible = ghost_on
 		_landing.visible = ghost_on
+	for status_view: MultiMeshInstance3D in _status_views.values():
+		(status_view.material_override as ShaderMaterial).set_shader_parameter(&"reduced",_reduced())
 	for actor: WtToyActor in [_wizard,_mascot,_boss]:
 		if actor!=null:actor.set_reduced_motion(_reduced())
 	set_process(true)
@@ -493,9 +511,110 @@ func _refresh_content_views() -> void:
 		for i: int in records[kind].size():
 			view.multimesh.set_instance_transform(i,Transform3D(Basis.IDENTITY,BoardGeom.cell_center(records[kind][i],_size)))
 			view.multimesh.set_instance_color(i,Color.WHITE)
+			view.multimesh.set_instance_custom_data(i,Color(0,0,0,_locked.visibility_at(_board.index(records[kind][i]))))
 		view.multimesh.visible_instance_count=records[kind].size()
 	for kind: int in _content_views:
 		if not records.has(kind):(_content_views[kind] as MultiMeshInstance3D).multimesh.visible_instance_count=0
+	_content_cells=records
+	_refresh_status_views()
+
+
+func _refresh_content_visibility() -> void:
+	# Coverage changes do not recreate mesh pools or mutate gameplay timestamps.
+	for kind: int in _content_cells:
+		var view: MultiMeshInstance3D=_content_views[kind]
+		view.material_override=_locked._mmi.material_override
+		var cells: Array=_content_cells[kind]
+		for i: int in cells.size():
+			view.multimesh.set_instance_custom_data(i,Color(0,0,0,_locked.visibility_at(_board.index(cells[i]))))
+
+
+func _refresh_status_views() -> void:
+	var statuses: Dictionary={}
+	for index: int in _size.x*_size.y*_size.z:
+		if _board.get_kind(index)==0:continue
+		var status: Dictionary=_board.get_record(index).get("status",{})
+		var code: int=-1
+		if status.has("hits_left"):code=clampi(int(status.hits_left),0,9)
+		elif _board.get_kind(index)==18 and status.has("counter"):code=clampi(int(status.counter),0,9)
+		elif bool(status.get("vined",false)):code=10
+		elif bool(status.get("locked",false)):code=11
+		elif bool(status.get("fixed",false)) or bool(status.get("anchored",false)):code=12
+		if code<0:continue
+		if not statuses.has(code):statuses[code]=[]
+		statuses[code].append(_board.cell(index))
+	for code: int in statuses:
+		if not _status_views.has(code):
+			var shader:=Shader.new();shader.code="""shader_type spatial;
+render_mode unshaded,cull_disabled;
+uniform bool reduced=false;
+void fragment(){ALBEDO=COLOR.rgb*(reduced?1.0:(.86+.14*sin(TIME*4.0)));}"""
+			var material:=ShaderMaterial.new();material.shader=shader;material.set_shader_parameter(&"reduced",_reduced())
+			var view: MultiMeshInstance3D=_multimesh(WtContentGeometry.icon(code),_size.x*_size.y*_size.z,material)
+			view.name="PooledStatusIcon_%s"%code;_status_views[code]=view
+		var view: MultiMeshInstance3D=_status_views[code]
+		for i: int in statuses[code].size():
+			var toward: Vector3=_camera.basis.z if _camera!=null else Vector3(1,.5,1).normalized()
+			var basis: Basis=_camera.basis if _camera!=null else Basis.IDENTITY
+			view.multimesh.set_instance_transform(i,Transform3D(basis,BoardGeom.cell_center(statuses[code][i],_size)+toward*.55))
+			view.multimesh.set_instance_color(i,Color("#98CBCB") if code==10 else (Color("#DAA4BF") if code==11 else Color("#F1D08A")))
+		view.multimesh.visible_instance_count=statuses[code].size()
+	for code: int in _status_views:
+		if not statuses.has(code):(_status_views[code] as MultiMeshInstance3D).multimesh.visible_instance_count=0
+	_status_cells=statuses
+	_update_status_orientation()
+
+
+func _update_status_orientation() -> void:
+	if _camera==null:return
+	for code: int in _status_cells:
+		var view: MultiMeshInstance3D=_status_views[code]
+		for i: int in _status_cells[code].size():
+			view.multimesh.set_instance_transform(i,Transform3D(_camera.basis,BoardGeom.cell_center(_status_cells[code][i],_size)+_camera.basis.z*.55))
+
+
+func _hazard_event(event: SimEvent) -> void:
+	var kind: String=str(event.kind)
+	var prefix: String=kind.trim_suffix("_warning")
+	if kind.ends_with("_warning"):
+		var cells: Array=event.data.get("cells",[]).duplicate()
+		if event.data.get("cell") is Vector3i:cells.append(event.data.cell)
+		if event.data.has("layer") or event.data.has("height"):
+			var y: int=clampi(int(event.data.get("layer",event.data.get("height",0))),0,_board.h_play()-1)
+			for z: int in _size.z:
+				for x: int in _size.x:cells.append(Vector3i(x,y,z))
+		if event.data.get("column") is Vector2i:
+			var column: Vector2i=event.data.column
+			for y: int in _board.h_play():cells.append(Vector3i(column.x,y,column.y))
+		_hazard_cells[prefix]=cells;_update_hazards();_react_toys(&"exclaim",&"sweat");_audio.cue(&"warning")
+	else:
+		var remove: String={"lava_rise":"lava","lava_cooled":"lava","quake":"quake","geyser_pop":"geyser","heist_cancelled":"heist","squirrel_heist":"heist","claw_cancelled":"claw","crab_claw":"claw","lid_lowered":"lid","lid_lifted":"lid","woodpecker_peck":"woodpecker"}.get(kind,"")
+		if remove!="":_hazard_cells.erase(remove);_update_hazards()
+
+
+func _update_hazards() -> void:
+	if _hazard_view==null:
+		var box:=BoxMesh.new();box.size=Vector3(.92,.018,.92)
+		var shader:=Shader.new();shader.code="""shader_type spatial;
+render_mode unshaded,cull_disabled;
+varying vec3 local;
+void vertex(){local=VERTEX;}
+void fragment(){
+ float rim=step(.36,max(abs(local.x),abs(local.z)));
+ if(rim<.5)discard;
+ float stripes=step(.5,fract((local.x+local.z)*7.0));
+ ALBEDO=mix(vec3(.20,.18,.14),vec3(1.0,.42,.07),stripes);
+}"""
+		var material:=ShaderMaterial.new();material.shader=shader
+		_hazard_view=_multimesh(box,256,material);_hazard_view.name="StripedHazardCellBorders"
+	var count: int=0
+	var seen: Dictionary={}
+	for cells: Array in _hazard_cells.values():
+		for cell: Variant in cells:
+			if not cell is Vector3i or seen.has(cell) or count>=256:continue
+			seen[cell]=true
+			_hazard_view.multimesh.set_instance_transform(count,Transform3D(Basis.IDENTITY,BoardGeom.cell_center(cell,_size)+Vector3.UP*.51));count+=1
+	_hazard_view.multimesh.visible_instance_count=count
 
 
 func _build_guides() -> void:
@@ -571,6 +690,7 @@ func _build_camera() -> void:
 	_camera.far = 150.0
 	add_child(_camera)
 	_update_camera()
+	_refresh_status_views()
 
 
 func _frame_camera() -> void:
@@ -594,6 +714,7 @@ func _update_camera() -> void:
 	var elev: float = deg_to_rad(_elevation)
 	_camera.position = target + Vector3(sin(yaw) * cos(elev), sin(elev), cos(yaw) * cos(elev)) * 35.0
 	_camera.look_at(target, Vector3.UP)
+	_update_status_orientation()
 	var quadrant := Vector2i(-1 if sin(yaw)>=0 else 1,-1 if cos(yaw)>=0 else 1)
 	if quadrant != _guide_quadrant:
 		_build_guides()

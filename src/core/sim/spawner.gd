@@ -31,6 +31,7 @@ var _history: Array[StringName] = []
 var _random_rng: RandomNumberGenerator
 var _weights: PackedInt32Array = PackedInt32Array()
 var _generated_count: int = 0
+var _source_weights: Dictionary = {}
 
 
 ## pieces = {shapes: PackedStringArray, weights: Dictionary (id -> int copies or float weight,
@@ -46,7 +47,8 @@ func _init(pieces: Dictionary, lookahead: int, round_seed: int, settings: Dictio
 	_fixed_tags = pieces.get("fixed_tags", [])
 	_lookahead = maxi(1, lookahead)
 	_shapes = pieces.get("shapes", PackedStringArray())
-	_copies = weights_to_copies(_shapes, pieces.get("weights", {}))
+	_source_weights = pieces.get("weights", {}).duplicate(true)
+	_copies = weights_to_copies(_shapes, _source_weights)
 	for id: String in _shapes:
 		_weights.append(maxi(0, roundi(_weight(pieces.get("weights", {}), id) * 100000)))
 	_opening_set = pieces.get("opening_set", PackedStringArray())
@@ -99,6 +101,24 @@ func peek(n: int) -> PackedStringArray:
 		if _queue[i] != &"":
 			out.append(String(_queue[i]))
 	return out
+
+func stream_preview_ids(n: int) -> PackedStringArray:
+	var ids: PackedStringArray = PackedStringArray()
+	if n <= 0: return ids
+	for index: int in _queue.size():
+		if not bool(_queue_info[index].get("injected", false)) and _queue[index] != &"":
+			ids.append(String(_queue[index]))
+			if ids.size() >= n: break
+	return ids
+
+func stream_preview_positions(n: int) -> PackedInt32Array:
+	var positions: PackedInt32Array = PackedInt32Array()
+	if n <= 0: return positions
+	for index: int in _queue.size():
+		if not bool(_queue_info[index].get("injected", false)) and _queue[index] != &"":
+			positions.append(index)
+			if positions.size() >= n: break
+	return positions
 
 
 ## Number of pieces handed out by next().
@@ -174,6 +194,20 @@ func _positive_shape_count() -> int:
 			count += 1
 	return count
 
+## Preserve the current preview and incomplete bag. New sets affect the next generated bag.
+func set_shape_pool(ids: PackedStringArray) -> bool:
+	if ids.is_empty() or ids.size() > 8 or _fixed_mode or _kit_mode:
+		return false
+	_shapes = ids.duplicate()
+	_copies = weights_to_copies(_shapes, _source_weights)
+	_weights.clear()
+	for id: String in _shapes:
+		_weights.append(maxi(0, roundi(_weight(_source_weights, id) * 100000)))
+	return true
+
+func shape_pool() -> PackedStringArray:
+	return _shapes.duplicate()
+
 ## Adds predetermined pieces ahead of the preview. Example: sp.inject_front(PackedStringArray(["cube"]))
 func inject_front(ids: PackedStringArray, metadata: Array[Dictionary] = []) -> void:
 	for i: int in range(ids.size() - 1, -1, -1):
@@ -188,7 +222,8 @@ func snapshot() -> Dictionary:
 		"opening_left": _opening_left, "open_part": _open_part, "open_buf": _open_buf, "drawn": _drawn, "fixed_index": _fixed_index,
 		"kit": _kit, "queue_info": _queue_info, "last_dealt_info": _last_dealt_info, "bag_size": _bag_size,
 		"mode": _mode, "history": _history, "history_len": _history_len, "history_tries": _history_tries,
-		"random_rng": _random_rng.state, "generated_count": _generated_count}
+		"random_rng": _random_rng.state, "generated_count": _generated_count,
+		"shapes": _shapes, "copies": _copies, "weights": _weights}
 
 func restore(state: Dictionary) -> void:
 	_queue.assign(state["queue"])
@@ -209,6 +244,9 @@ func restore(state: Dictionary) -> void:
 	_history_tries = int(state.get("history_tries", 4))
 	_random_rng.state = state.get("random_rng", _random_rng.state)
 	_generated_count = int(state.get("generated_count", 0))
+	_shapes = state.get("shapes", _shapes).duplicate()
+	_copies = state.get("copies", _copies).duplicate(true)
+	_weights = state.get("weights", _weights).duplicate()
 
 func is_kit() -> bool:
 	return _kit_mode
@@ -233,3 +271,8 @@ func last_bag_info() -> Dictionary:
 func replace_preview(ids: PackedStringArray) -> void:
 	for i: int in mini(ids.size(), _queue.size()):
 		_queue[i] = StringName(ids[i])
+
+func replace_stream_preview(ids: PackedStringArray) -> void:
+	var positions: PackedInt32Array = stream_preview_positions(ids.size())
+	for index: int in positions.size():
+		_queue[positions[index]] = StringName(ids[index])

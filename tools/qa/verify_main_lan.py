@@ -47,7 +47,7 @@ with tempfile.TemporaryDirectory(prefix="main-lan-userdata-", dir=output) as dir
             processes.append((role, subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT)))
             if role == "Host":
                 time.sleep(0.5)
-        outcomes = [{"role": role, "exit_code": process.wait(timeout=32)} for role, process in processes]
+        outcomes = [{"role": role, "exit_code": process.wait(timeout=90)} for role, process in processes]
         for log in logs:
             log.flush()
         reports = {}

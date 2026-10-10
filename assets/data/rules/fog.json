@@ -24,6 +24,9 @@
     "skin": {
       "type": "string"
     },
+    "mirror_axis": {
+      "type": "string"
+    },
     "active_after_clears": {
       "type": "number"
     }

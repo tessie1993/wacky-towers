@@ -1,5 +1,6 @@
 class_name BoardSim extends RefCounted
-## One player's play space, advanced one fixed tick at a time. Pure: no nodes, signals, Time, global RNG (ADR-0001).
+## One player's play space, advanced one fixed tick at a time through detached manual Beehave nodes.
+## No SceneTree processing, signals, wall-clock Time or global RNG affects simulation (ADR-0001).
 ## Covers countdown, spawn, gravity, soft/hard drop, move, rotate, grace, lock delay and the lock write
 ## Includes the ordered lock/clear/structure/goal/top-out sequence (ADR-0011).
 ## Usage: var sim := BoardSim.new(level, seed, catalog); sim.queue_command(cmd); var events := sim.step()
@@ -47,6 +48,7 @@ var _events: Array[SimEvent] = []
 var _board: BoardState
 var _knobs: KnobRegistry
 var _api: RuleApi
+var _ability_api: RuleApi
 var _spawner: Spawner
 var _arrival: ArrivalStyle
 var _goal_plugin: GoalEvaluator
@@ -70,6 +72,9 @@ var _collapse: CollapsePolicy
 var _rules: Array[Dictionary] = []
 var _pending_rule_definitions: Array[Dictionary] = []
 var _rules_update_pending: bool = false
+var _shape_pool_pending: bool = false
+var _down_reset_pending: bool = false
+var _pending_shape_pool: PackedStringArray = PackedStringArray()
 var _slot_ids: Dictionary = {}
 var _runtime_modifiers: Dictionary = {}
 var _item_context: Dictionary = {"players": 1, "rank": 1, "mode": "solo", "owner": 0}
@@ -113,9 +118,13 @@ func _init(level: LevelData, round_seed: int, catalog: GameCatalog) -> void:
 	_api = RuleApi.new(_board, _knobs)
 	_api.configure(catalog, round_seed, &"base")
 	_api.bind_goal(_goal_state, _level.goal)
+	_ability_api = RuleApi.new(_board, _knobs)
+	_ability_api.configure(catalog, round_seed, &"ability")
+	_ability_api.bind_goal(_goal_state, _level.goal)
 	_init_rules()
 	_spawner = Spawner.new(level.pieces, _knobs.int_value(&"spawn.queue_lookahead"), round_seed, _knobs.snapshot())
 	_api.bind_spawner(_spawner)
+	_ability_api.bind_spawner(_spawner)
 	for rule: Dictionary in _rules:
 		(rule["api"] as RuleApi).bind_spawner(_spawner)
 	for rule: Dictionary in level.rules:
@@ -143,8 +152,13 @@ func step() -> Array[SimEvent]:
 	_events.clear()
 	if _api != null:
 		_api.set_time(now_ms())
+		_ability_api.set_time(now_ms())
 	if _rules_update_pending and _board != null:
 		_runtime.execute(self, &"_replace_twists")
+	if _down_reset_pending and _phase == Phase.RESOLVING:
+		_runtime.execute(self, &"_apply_down_reset")
+	if _shape_pool_pending and _phase in [Phase.COUNTDOWN, Phase.WAITING, Phase.RESOLVING, Phase.SELECTING]:
+		_runtime.execute(self, &"_apply_shape_pool")
 	if _board != null and not _started:
 		_started = true
 		for rule: Dictionary in _rules:
@@ -163,6 +177,7 @@ func step() -> Array[SimEvent]:
 	if _board != null:
 		_flush_rule_writes()
 		_collect_api(_api, true)
+		_collect_api(_ability_api, true, 2)
 		_emit_delta()
 	if _abilities != null and _abilities.has_method("observe"):
 		_runtime.execute(_abilities, &"observe", [_events])
@@ -247,6 +262,9 @@ func get_knobs() -> KnobRegistry:
 func get_api() -> RuleApi:
 	return _api
 
+func get_ability_api() -> RuleApi:
+	return _ability_api
+
 func held_shape() -> StringName:
 	return _held_shape
 
@@ -278,6 +296,7 @@ func bind_abilities(controller: RefCounted) -> void:
 func bind_item_context(context: Dictionary) -> void:
 	_item_context.merge(context, true)
 	if _api != null: _api.bind_item_context(_item_context)
+	if _ability_api != null: _ability_api.bind_item_context(_item_context)
 	for rule: Dictionary in _rules:
 		(rule["api"] as RuleApi).bind_item_context(_item_context)
 
@@ -290,6 +309,21 @@ func set_rule_definitions(rules: Array) -> void:
 			_pending_rule_definitions.append(entry.duplicate(true))
 	_rules_update_pending = true
 
+## Changes generated sets at a safe phase boundary while preserving already-generated pieces.
+func set_shape_pool(ids: PackedStringArray) -> bool:
+	if ids.is_empty() or ids.size() > 8 or _spawner == null or _spawner.is_kit(): return false
+	for id: String in ids:
+		if _catalog.shapes.get_shape(StringName(id)) == null: return false
+	_pending_shape_pool = ids.duplicate()
+	_shape_pool_pending = true
+	return true
+
+func _apply_shape_pool() -> void:
+	_shape_pool_pending = false
+	if _spawner.set_shape_pool(_pending_shape_pool):
+		_level.pieces["shapes"] = _pending_shape_pool.duplicate()
+	_pending_shape_pool.clear()
+
 ## Stable deterministic gameplay fingerprint. Example: assert(a.state_hash() == b.state_hash()).
 func state_hash() -> int:
 	var rule_states: Array[Dictionary] = []
@@ -297,7 +331,7 @@ func state_hash() -> int:
 		var behaviour: RuleBehaviour = rule["behaviour"]
 		var api: RuleApi = rule["api"]
 		rule_states.append({"id": rule["id"], "rank": rule["rank"], "start_tick": rule["start_tick"],
-			"start_lock": rule["start_lock"], "state": behaviour.snapshot() if behaviour != null else {}, "api": api.snapshot()})
+			"start_lock": rule["start_lock"], "start_ms": rule.get("start_ms", 0), "state": behaviour.snapshot() if behaviour != null else {}, "api": api.snapshot()})
 	var commands: Array[Dictionary] = []
 	for command: SimCommand in _queue:
 		commands.append({"kind": command.kind, "args": command.args, "tick": command.tick})
@@ -313,8 +347,9 @@ func state_hash() -> int:
 		"score": _score.snapshot() if _score != null else {}, "held": _held_shape, "held_flags": _held_flags, "flags": _piece_flags,
 		"commands": commands, "structure": _structural, "knobs": _knobs.snapshot() if _knobs != null else {},
 		"pending_rules": _pending_rule_definitions, "rules_update_pending": _rules_update_pending,
+		"pending_pool": _pending_shape_pool, "shape_pool_pending": _shape_pool_pending, "down_reset_pending": _down_reset_pending,
 		"runtime_modifiers": _runtime_modifiers, "item_context": _item_context,
-		"base_api": _api.snapshot() if _api != null else {}, "uid": _piece_uid, "next_uid": _next_uid,
+		"base_api": _api.snapshot() if _api != null else {}, "ability_api": _ability_api.snapshot() if _ability_api != null else {}, "uid": _piece_uid, "next_uid": _next_uid,
 		"hold_used": _hold_used, "soft_drop": _soft_drop, "travel_dir": _travel_dir, "resets": _resets_left,
 		"flicks": _flicks_left, "undo_history": _history_hashes(), "turn_checkpoint": _turn_checkpoint.get("hash", 0),
 		"lowest": _lowest_layer, "countdown": _countdown_deadline, "warning_until": _warning_until,
@@ -371,8 +406,8 @@ func _apply_command(cmd: SimCommand) -> void:
 		_run_hook(&"on_command", {"kind": cmd.kind, "args": cmd.args}, true)
 		return
 	if _abilities != null and cmd.kind in [SimEvents.CMD_USE_SKILL, SimEvents.CMD_USE_ITEM] and _phase not in [Phase.COUNTDOWN, Phase.ENDED, Phase.RESOLVING]:
-		_runtime.execute(_abilities, &"command", [cmd, _api])
-		_collect_api(_api, true)
+		_runtime.execute(_abilities, &"command", [cmd, _ability_api])
+		_collect_api(_ability_api, true, 2)
 		return
 	if _piece == null: # COUNTDOWN / WAITING / RESOLVING / ENDED: ignored, the controller buffers
 		return
@@ -480,7 +515,7 @@ func _capture_checkpoint() -> Dictionary:
 		"_countdown_deadline", "_play_start_ms", "_fall_clock_ms", "_lock_deadline", "_grace_deadline", "_entry_deadline",
 		"_resets_left", "_lowest_layer", "_level_ticks", "_started", "_pending_outcome", "_resolve_ms", "_warning_until",
 		"_held_shape", "_hold_used", "_piece_flags", "_last_colour", "_queued_hues", "_held_hue", "_held_flags", "_colour_generated",
-		"_clear_combo_started", "_clear_round_count", "_flicks_left", "_structural", "_pending_rule_definitions", "_rules_update_pending", "_runtime_modifiers"])
+		"_clear_combo_started", "_clear_round_count", "_flicks_left", "_structural", "_pending_rule_definitions", "_rules_update_pending", "_runtime_modifiers", "_pending_shape_pool", "_shape_pool_pending", "_down_reset_pending"])
 	var fields: Dictionary = {}
 	for name: String in names:
 		fields[name] = get(name)
@@ -492,7 +527,7 @@ func _capture_checkpoint() -> Dictionary:
 		rules.append({"api": (rule["api"] as RuleApi).snapshot(), "behaviour": (rule["behaviour"] as RuleBehaviour).snapshot() if rule["behaviour"] != null else {}})
 	var data: Dictionary = {"fields": fields, "board": _board.snapshot(), "spawner": _spawner.snapshot(),
 		"knobs": _knobs.snapshot(), "score": _score.snapshot(), "counters": counters, "rules": rules,
-		"api": _api.snapshot(), "goal": _level.goal, "goal_state": _goal_plugin.snapshot() if _goal_plugin != null else {},
+		"api": _api.snapshot(), "ability_api": _ability_api.snapshot(), "goal": _level.goal, "goal_state": _goal_plugin.snapshot() if _goal_plugin != null else {},
 		"colour_rng": _colour_rng.state, "time": now_ms(), "runtime": _runtime.snapshot(),
 		"abilities": _abilities.call("snapshot") if _abilities != null and _abilities.has_method("snapshot") else {}}
 	if _piece != null:
@@ -520,6 +555,7 @@ func _restore_checkpoint(checkpoint: Dictionary, reset_clock: bool) -> void:
 			set(name, int(get(name)) + offset)
 	_board.restore(state["board"])
 	_spawner.restore(state["spawner"])
+	_level.pieces["shapes"] = _spawner.shape_pool()
 	_knobs.restore(state["knobs"])
 	_score.restore(state["score"])
 	for name: String in state["counters"]:
@@ -534,11 +570,15 @@ func _restore_checkpoint(checkpoint: Dictionary, reset_clock: bool) -> void:
 		var behaviour: RuleBehaviour = _rules[index]["behaviour"]
 		if behaviour != null:
 			behaviour.restore(state["rules"][index]["behaviour"])
+			behaviour.rebase_time(offset)
 	_refresh_slots()
 	if _goal_plugin != null:
 		_goal_plugin.restore(state.get("goal_state", {}))
 	_api.restore(state["api"])
 	_api.bind_goal(_goal_state, _level.goal)
+	_ability_api.restore(state.get("ability_api", {}))
+	_ability_api.bind_goal(_goal_state, _level.goal)
+	_ability_api.set_time(now_ms())
 	_colour_rng.state = state["colour_rng"]
 	_runtime.restore(state.get("runtime", {}))
 	_result = null
@@ -637,8 +677,8 @@ func _run_tick_hooks() -> void:
 	if _board == null:
 		return
 	if _abilities != null and _phase not in [Phase.COUNTDOWN, Phase.ENDED]:
-		_runtime.execute(_abilities, &"step", [_api, now_ms()])
-		_collect_api(_api, false)
+		_runtime.execute(_abilities, &"step", [_ability_api, now_ms()])
+		_collect_api(_ability_api, false, 2)
 	if _phase in [Phase.COUNTDOWN, Phase.RESOLVING, Phase.ENDED] or now_ms() < _warning_until:
 		return
 	var before_origin: Vector3i = _piece.pivot if _piece != null else Vector3i.ZERO
@@ -790,7 +830,8 @@ func _spawn(forced_shape: StringName = &"", forced_hue: int = -1, selected: bool
 	_resets_left = _knobs.int_value(&"fall.lock_resets_max")
 	_lowest_layer = _piece_lowest_layer()
 	_flicks_left = _knobs.int_value(&"control.flick_per_piece")
-	_emit(SimEvents.PIECE_SPAWNED, {"uid": _piece_uid, "shape_id": shape.shape_id, "orient": _piece.orient, "origin": _piece.pivot, "hue_id": _piece.hue_id})
+	_emit(SimEvents.PIECE_SPAWNED, {"uid": _piece_uid, "shape_id": shape.shape_id, "orient": _piece.orient, "origin": _piece.pivot,
+		"hue_id": _piece.hue_id, "injected": bool(_piece_flags.get(&"injected", false))})
 	_set_phase(Phase.FALLING)
 	_run_hook(&"on_spawn", {"uid": _piece_uid, "shape_id": shape.shape_id, "cells": _piece.cells()}, true)
 	_run_hook(&"on_piece_enter", {"cells": _piece.cells()}, true)
@@ -893,7 +934,8 @@ func _lock(cause: StringName) -> void:
 	var cells: Array[Vector3i] = _piece.cells()
 	var holes: int = _count_holes(cells)
 	var context: Dictionary = {"cells": cells, "uid": _piece_uid, "holes_added": holes,
-		"would_clear": _api.would_clear(cells), "would_top_out": _api.would_top_out(cells), "cause": cause}
+		"would_clear": _api.would_clear(cells), "would_top_out": _api.would_top_out(cells), "cause": cause,
+		"injected": bool(_piece_flags.get(&"injected", false))}
 	if _veto(&"piece.lock", context):
 		_collect_api(_api, true)
 		_lock_deadline = now_ms() + _knobs.int_value(&"fall.lock_delay_ms")
@@ -917,8 +959,8 @@ func _lock(cause: StringName) -> void:
 		_runtime.execute(_goal_plugin, &"on_lock", [_piece, _goal_state, _api])
 		_collect_api(_api, true)
 	if _abilities != null and _abilities.has_method("on_lock"):
-		_runtime.execute(_abilities, &"on_lock", [_api, cells])
-		_collect_api(_api, true)
+		_runtime.execute(_abilities, &"on_lock", [_ability_api, cells])
+		_collect_api(_ability_api, true, 2)
 	_run_hook(&"on_lock", context, true)
 	_piece = null
 	_bind_piece(null)
@@ -1021,10 +1063,12 @@ func _sort_rules() -> void:
 func _replace_twists() -> void:
 	_rules_update_pending = false
 	var removed: Array[StringName] = []
+	var removed_flip: bool = false
 	for index: int in range(_rules.size() - 1, -1, -1):
 		if int(_rules[index]["rank"]) != 3:
 			continue
 		var id: StringName = _rules[index]["id"]
+		removed_flip = removed_flip or (_rules[index]["def"] as RuleDef).behaviour in [&"flip", &"topsy_tumble"]
 		removed.append(id)
 		_rules.remove_at(index)
 		if _started: _emit(SimEvents.RULE_ENDED, {"id": id})
@@ -1039,6 +1083,11 @@ func _replace_twists() -> void:
 			_rules.append(rule)
 			added.append(rule)
 	_pending_rule_definitions.clear()
+	var has_flip: bool = false
+	for rule: Dictionary in _rules:
+		if (rule["def"] as RuleDef).behaviour in [&"flip", &"topsy_tumble"]: has_flip = true
+	if has_flip: _down_reset_pending = false
+	elif removed_flip and _board.down_vector() != BoardState.down_vector_of(_level.boards[0].down): _down_reset_pending = true
 	_sort_rules()
 	_rebuild_modifiers()
 	_refresh_slots(false)
@@ -1053,28 +1102,41 @@ func _replace_twists() -> void:
 				_collect_api(api, true, int(rule["rank"]))
 
 
+func _apply_down_reset() -> void:
+	if _abilities != null and _abilities.has_method("veto") and bool(_runtime.execute(_abilities, &"veto", [&"stack.shift", 3])):
+		return
+	_down_reset_pending = false
+	_board.set_down(_level.boards[0].down)
+	_board.settle_cells()
+	_emit(&"gravity_flip", {"mode": "axis", "reset": true})
+
+
 func _modifier_list(candidate: Array[Dictionary] = [], candidate_rule: StringName = &"") -> Array[Dictionary]:
-	var modifiers: Array[Dictionary] = []
+	var groups: Array[Dictionary] = []
+	var candidate_rank: int = 2
 	for rule: Dictionary in _rules:
 		var definition: RuleDef = rule["def"]
+		var own: Array[Dictionary] = []
 		for modifier: Dictionary in definition.modifiers:
 			var m: Dictionary = modifier.duplicate(true)
 			var value: Variant = m.get("value")
 			if value is String and String(value).begins_with("$param."):
 				m["value"] = (rule["api"] as RuleApi).param(StringName(String(value).trim_prefix("$param.")))
-			modifiers.append(m)
-		var dynamic_keys: Array = _runtime_modifiers.keys()
-		dynamic_keys.sort_custom(func(a: Variant, b: Variant) -> bool:
-			var x: Dictionary = _runtime_modifiers[a]
-			var y: Dictionary = _runtime_modifiers[b]
-			return int(x["tick"]) < int(y["tick"]) if x["tick"] != y["tick"] else String(a) < String(b))
-		for key: Variant in dynamic_keys:
-			var dynamic: Dictionary = _runtime_modifiers[key]
-			if dynamic["rule_id"] == rule["id"]:
-				for modifier: Dictionary in dynamic["modifiers"]:
-					modifiers.append(modifier)
-		if rule["id"] == candidate_rule:
-			modifiers.append_array(candidate)
+			own.append(m)
+		groups.append({"rank": rule["rank"], "tick": rule["start_tick"], "id": rule["id"], "modifiers": own})
+		if rule["id"] == candidate_rule: candidate_rank = int(rule["rank"])
+	for key: Variant in _runtime_modifiers:
+		var dynamic: Dictionary = _runtime_modifiers[key]
+		groups.append({"rank": dynamic["rank"], "tick": dynamic["tick"], "id": key, "modifiers": dynamic["modifiers"]})
+	if not candidate.is_empty():
+		groups.append({"rank": candidate_rank, "tick": _tick, "id": String(candidate_rule) + ":~probe", "modifiers": candidate})
+	groups.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		if a["rank"] != b["rank"]: return int(a["rank"]) < int(b["rank"])
+		if a["tick"] != b["tick"]: return int(a["tick"]) < int(b["tick"])
+		return String(a["id"]) < String(b["id"]))
+	var modifiers: Array[Dictionary] = []
+	for group: Dictionary in groups:
+		modifiers.append_array(group["modifiers"])
 	return modifiers
 
 
@@ -1091,6 +1153,7 @@ func _rebuild_modifiers() -> void:
 	for rule: Dictionary in _rules:
 		(rule["api"] as RuleApi).bind_modifier_probe(Callable(self, &"_modifiers_would_change").bind(rule["id"]), ids)
 	_api.bind_modifier_probe(Callable(self, &"_modifiers_would_change").bind(&"base"), ids)
+	_ability_api.bind_modifier_probe(Callable(self, &"_modifiers_would_change").bind(&"ability"), ids)
 	if _spawner != null:
 		_spawner.configure(_knobs.snapshot())
 
@@ -1192,6 +1255,7 @@ func _collect_api(api: RuleApi, flush: bool, rank: int = 4) -> bool:
 			&"travel": _travel_dir = request["direction"]
 			&"queue": _inject_queue(request["ids"])
 			&"replace_preview": _replace_preview(request["ids"])
+			&"replace_stream_preview": _replace_stream_preview(request["ids"])
 			&"piece_flag": _piece_flags[request["flag"]] = request["value"]
 			&"piece_hue":
 				if _piece != null:
@@ -1230,6 +1294,10 @@ func _flush_rule_writes() -> bool:
 func _bind_piece(piece: ActivePiece) -> void:
 	_api.bind_piece(piece)
 	_api.bind_piece_uid(_piece_uid)
+	_ability_api.bind_piece(piece)
+	_ability_api.bind_piece_uid(_piece_uid)
+	_ability_api.bind_piece_flags(_piece_flags)
+	_ability_api.bind_preview_hues(_queued_hues)
 	_api.bind_piece_flags(_piece_flags)
 	_api.bind_preview_hues(_queued_hues)
 	for rule: Dictionary in _rules:
@@ -1251,14 +1319,21 @@ func _expire_rules() -> void:
 		elif lifetime.get("kind") == "locks":
 			expired = _goal_state.locks - int(rule.get("start_lock", 0)) >= int(lifetime.get("value", lifetime.get("locks", 0)))
 		if expired:
+			if definition.behaviour in [&"flip", &"topsy_tumble"] and _board.down_vector() != BoardState.down_vector_of(_level.boards[0].down):
+				_down_reset_pending = true
+			for key: Variant in _runtime_modifiers.keys():
+				if _runtime_modifiers[key]["rule_id"] == rule["id"]: _runtime_modifiers.erase(key)
 			_emit(SimEvents.RULE_ENDED, {"id": rule["id"]})
 			_rules.remove_at(i)
 			changed = true
 	if changed:
 		_rebuild_modifiers()
+		_refresh_slots(false)
 
 
 func _apply_structural() -> void:
+	if _down_reset_pending: _runtime.execute(self, &"_apply_down_reset")
+	if _shape_pool_pending: _runtime.execute(self, &"_apply_shape_pool")
 	var order: Array[StringName] = [&"damage", &"stack_flip", &"down", &"mask", &"floor", &"height", &"junk", &"goal", &"slot", &"settle"]
 	var deferred: Array[Dictionary] = []
 	var settle: bool = false
@@ -1274,7 +1349,11 @@ func _apply_structural() -> void:
 					for cell: Vector3i in request["cells"]:
 						if not _board.in_bounds(cell): continue
 						for hit: int in int(request["hits"]):
-							_board.remove(_board.index(cell), BoardState.Cause.DAMAGE)
+							var index: int = _board.index(cell)
+							var record: Dictionary = _board.get_record(index).duplicate(true)
+							_board.remove(index, BoardState.Cause.DAMAGE)
+							if not record.is_empty() and _board.get_kind(index) == 0:
+								_emit(SimEvents.CUBE_CLEARED, {"cell": cell, "index": index, "record": record, "cause": BoardState.Cause.DAMAGE, "layer": _board.layer_of(index)})
 				&"stack_flip": _board.flip_stack()
 				&"down":
 					var direction: int = request["direction"]
@@ -1286,12 +1365,13 @@ func _apply_structural() -> void:
 					settle = true
 				&"floor": _board.set_floor(int(request["layer"]))
 				&"height": _board.set_height_limit(int(request["height"]))
-				&"junk": _board.raise_junk(int(request["layers"]), _catalog.content.kind_of(&"block"))
+				&"junk": _board.raise_junk(int(request["layers"]), _catalog.content.kind_of(&"block"), int(request.get("seed", 0)))
 				&"goal":
 					_level.goal = request["config"].duplicate(true)
 					_knobs.set_slot(&"goal.type", StringName(_level.goal.get("type", "clear_n")))
 					_refresh_slots()
 					_api.bind_goal(_goal_state, _level.goal)
+					_ability_api.bind_goal(_goal_state, _level.goal)
 					for rule: Dictionary in _rules:
 						(rule["api"] as RuleApi).bind_goal(_goal_state, _level.goal)
 					if _goal_plugin != null:
@@ -1341,6 +1421,7 @@ func _clear_pass(single_round: bool) -> int:
 				continue
 			if _goal_plugin != null:
 				_runtime.execute(_goal_plugin, &"on_clear", [_board.cell(i), _board.get_record(i), _goal_state, _api])
+			_emit(SimEvents.CUBE_CLEARED, {"cell": _board.cell(i), "index": i, "record": _board.get_record(i).duplicate(true), "cause": BoardState.Cause.CLEAR, "layer": _board.layer_of(i)})
 			_board.remove(i, BoardState.Cause.CLEAR)
 			removed += 1
 		if removed == 0:
@@ -1508,6 +1589,13 @@ func _replace_preview(ids: PackedStringArray) -> void:
 	_spawner.replace_preview(ids)
 	for i: int in mini(ids.size(), _queued_hues.size()):
 		_queued_hues[i] = _roll_colour(_catalog.shapes.get_shape(StringName(ids[i])), false)
+
+func _replace_stream_preview(ids: PackedStringArray) -> void:
+	var positions: PackedInt32Array = _spawner.stream_preview_positions(ids.size())
+	_spawner.replace_stream_preview(ids)
+	for index: int in positions.size():
+		if positions[index] < _queued_hues.size():
+			_queued_hues[positions[index]] = _roll_colour(_catalog.shapes.get_shape(StringName(ids[index])), false)
 
 func _timed_out() -> bool:
 	var limit: int = int(_level.goal.get("time_limit_ms", _knobs.int_value(&"goal.time_limit_ms")))

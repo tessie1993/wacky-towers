@@ -30,6 +30,13 @@ func _ready() -> void:
 			if x < 2 and z < 2: continue
 			var hue_id: int = 1+(x+4*z)%10 if OS.get_cmdline_user_args().has("--pattern-probe") else 1+(x+z)%5
 			b.place(b.index(Vector3i(x,0,z)),1,hue_id,99)
+	if OS.get_cmdline_user_args().has("--content-probe"):
+		for i: int in 22:
+			var cell:=Vector3i(i%4,0 if i<16 else 1,(i/4)%4)
+			b.place(b.index(cell),3+i,0,99)
+		b.set_status(b.index(Vector3i(3,0,3)),{"counter":5,"status_id":32})
+		b.set_status(b.index(Vector3i(2,1,0)),{"hits_left":2})
+		b.set_status(b.index(Vector3i(1,0,1)),{"vined":true})
 	_stage = WtStage.new()
 	add_child(_stage)
 	var biome: StringName = &"meadow"
@@ -50,6 +57,15 @@ func _ready() -> void:
 	if OS.get_cmdline_user_args().has("--key-probe"):
 		_stage.set_goal({"type":"wind_keys","keyholes":[{"wall":"+x","y":1,"row":1},{"wall":"+z","y":3,"row":2}]})
 		_stage.sync([SimEvent.make(0,&"key_stamp",{"cell":Vector3i.ZERO,"face":Vector3i.RIGHT}),SimEvent.make(0,&"fit_spots",{"spots":[[Vector3i(0,0,0),Vector3i(1,0,0),Vector3i(1,0,1)],[Vector3i(0,1,3),Vector3i(1,1,3),Vector3i(2,1,3)]]})])
+	if OS.get_cmdline_user_args().has("--hazard-probe"):
+		_stage.sync([SimEvent.make(0,&"quake_warning",{"cells":[Vector3i(0,0,0),Vector3i(1,0,0)]}),SimEvent.make(0,&"claw_warning",{"column":Vector2i(3,1)})])
+	if OS.get_cmdline_user_args().has("--fog-probe"):
+		var alphas: Array=[]
+		for index: int in b.size().x*b.size().y*b.size().z:
+			if b.get_kind(index)==0:continue
+			var cell: Vector3i=b.cell(index)
+			alphas.append({"cell":cell,"alpha":1.0 if cell.x<2 else .1})
+		_stage.sync([SimEvent.make(0,&"fog_visibility",{"cell_alphas":alphas,"lantern_cells":[Vector3i(0,0,0)],"alpha":.1}),SimEvent.make(0,&"item_fog_visibility",{"hidden_cells":[Vector3i(0,0,3)]})])
 	if OS.get_cmdline_user_args().has("--telegraph-probe"):
 		_stage.sync([SimEvent.make(0,&"fog_visibility",{"alpha":.6}),
 			SimEvent.make(0,&"mushroom_warning",{"cell":Vector3i(0,0,0)}),

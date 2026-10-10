@@ -17,6 +17,8 @@ func veto(action: StringName, ctx: HookContext, api: RuleApi) -> bool:
 		return false
 	if int(ctx.data.get("holes_added", 0)) <= 0 or bool(ctx.data.get("would_clear", false)) or bool(ctx.data.get("would_top_out", false)) or api.goal_would_meet(api.piece_cells()):
 		return false
+	if bool(api.param(&"happy_only", false)) and CandyCells.tidy(api) < 0.9:
+		return false
 	if not api.spawn_cells_free():
 		return false
 	_remaining -= 1

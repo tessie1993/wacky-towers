@@ -7,9 +7,13 @@ var _orient: int = -1
 var _target: Vector3i = Vector3i.ZERO
 var _next_tick: int = 0
 var _planned: bool = false
+var _runtime: RuleRuntime = RuleRuntime.new()
 
 ## Moves toward a low, hole-free landing; waits between actions so the opponent is legible.
 func update(sim: BoardSim) -> void:
+	_runtime.execute(self, &"_update", [sim])
+
+func _update(sim: BoardSim) -> void:
 	var piece: ActivePiece = sim.get_piece()
 	if piece == null or sim.get_phase() == BoardSim.Phase.ENDED: return
 	if not _planned or piece.shape != _shape or (sim.get_phase() == BoardSim.Phase.FALLING and piece.pivot.y > _target.y + 2 and sim.get_tick() > _next_tick + THINK_TICKS):

@@ -94,6 +94,12 @@ func bind_spawner(spawner: Spawner) -> void:
 func preview_ids(n: int = 3) -> PackedStringArray:
 	return _spawner.peek(n) if _spawner != null else PackedStringArray()
 
+func shape_pool() -> PackedStringArray:
+	return _spawner.shape_pool() if _spawner != null else PackedStringArray()
+
+func stream_preview_ids(n: int = 3) -> PackedStringArray:
+	return _spawner.stream_preview_ids(n) if _spawner != null else PackedStringArray()
+
 func queued_preview(n: int = 3) -> PackedStringArray:
 	return preview_ids(n)
 
@@ -153,8 +159,8 @@ func preview_hues(n: int = 3) -> PackedInt32Array:
 func request_floor(layer: int) -> void:
 	_requests.append({"op": &"floor", "layer": layer})
 
-func request_junk_layers(n: int) -> void:
-	_requests.append({"op": &"junk", "layers": maxi(0, n)})
+func request_junk_layers(n: int, seed: int = -1) -> void:
+	_requests.append({"op": &"junk", "layers": maxi(0, n), "seed": _rng.randi() if seed < 0 else seed})
 
 func bind_piece_flags(flags: Dictionary) -> void:
 	_piece_flags = flags
@@ -330,6 +336,9 @@ func inject_front(ids: PackedStringArray) -> void:
 func replace_preview(ids: PackedStringArray) -> void:
 	_requests.append({"op": &"replace_preview", "ids": ids})
 
+func replace_stream_preview(ids: PackedStringArray) -> void:
+	_requests.append({"op": &"replace_stream_preview", "ids": ids.duplicate()})
+
 func set_piece_flag(flag: StringName, value: Variant = true) -> void:
 	_piece_flags[flag] = value
 	_requests.append({"op": &"piece_flag", "flag": flag, "value": value})
@@ -462,7 +471,7 @@ func rng_state() -> int:
 
 ## Engine replay snapshot includes pending mutations, not only the rule RNG. Example: api.snapshot().
 func snapshot() -> Dictionary:
-	return {"rng": _rng.state, "writes": _writes, "requests": _requests, "events": _emitted,
+	return {"rng": _rng.state, "params": _params, "writes": _writes, "requests": _requests, "events": _emitted,
 		"piece_flags": _piece_flags, "time_ms": _time}
 
 func restore(state: Dictionary) -> void:

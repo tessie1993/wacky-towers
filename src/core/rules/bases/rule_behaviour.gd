@@ -37,5 +37,21 @@ func restore(state: Dictionary) -> void:
 	for property: Dictionary in get_property_list():
 		var key: String = String(property["name"])
 		var saved: String = key.trim_prefix("_")
+		var value: Variant = get(key)
+		if value is RefCounted and value.has_method("restore"):
+			value.call("restore", state.get(saved, state))
+			continue
+		if saved == "unlocked": saved = "unlocked_this_resolution"
 		if state.has(saved):
 			set(key, state[saved])
+
+## Absolute hook deadlines move with an undo checkpoint; lock/clear counters stay unchanged.
+func rebase_time(offset_ms: int) -> void:
+	var deadlines: PackedStringArray = ["_due", "_until", "_next_ms", "_reveal_until", "_gust_due", "_start"]
+	for property: Dictionary in get_property_list():
+		var key: String = String(property["name"])
+		var value: Variant = get(key)
+		if deadlines.has(key) and value is int and value > 0:
+			set(key, value + offset_ms)
+		elif value is RefCounted and value.has_method("rebase_time"):
+			value.call("rebase_time", offset_ms)

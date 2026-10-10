@@ -166,6 +166,30 @@ func progress() -> Dictionary:
 func set_playing(playing: bool) -> void:
 	_playing = playing
 
+## Persists mechanics met on an actual campaign start, even if the attempt later fails.
+## Call before set_playing(true). Unknown official ids and guests are rejected.
+func record_encounter(level_id: String) -> bool:
+	if not _valid(_active) or _playing:
+		return false
+	var found: bool = false
+	for entry: Dictionary in _resource_json("res://assets/data/campaign/catalog.json").get("levels", []):
+		if String(entry.id) == level_id:
+			found = true
+			break
+	if not found:
+		return false
+	var met: Array = _progress.get("encountered_levels", [])
+	if met.has(level_id):
+		return true
+	var before: Dictionary = _progress.duplicate(true)
+	met.append(level_id)
+	_progress["encountered_levels"] = met
+	if _save_progress() != OK:
+		_progress = before
+		return false
+	changed.emit()
+	return true
+
 ## Best stars never decrease; independent minimum time and maximum score survive rebalances.
 func record_result(id: String, stars: int, ms: int, score: int, hash: String = "") -> Dictionary:
 	_playing = false
@@ -410,7 +434,7 @@ func _save_progress() -> Error:
 	return _write(_path(_active, "progress"), _progress)
 
 func _fresh(profile: Dictionary) -> Dictionary:
-	return {"schema": 1, "profile_id": profile.id, "profile": profile.duplicate(true), "levels": {}, "wallet": {"star_balance": 0, "earned_total": 0, "spent_total": 0, "replays_paid": {}}, "inventory": {"perks": {}, "potions": {}}, "cosmetics": {}, "characters": ["c1"], "arcade": {}, "tournament": {"played": 0, "won": 0}}
+	return {"schema": 1, "profile_id": profile.id, "profile": profile.duplicate(true), "levels": {}, "encountered_levels": [], "wallet": {"star_balance": 0, "earned_total": 0, "spent_total": 0, "replays_paid": {}}, "inventory": {"perks": {}, "potions": {}}, "cosmetics": {}, "characters": ["c1"], "arcade": {}, "tournament": {"played": 0, "won": 0}}
 
 func _total_stars(records: Dictionary) -> int:
 	var total: int = 0

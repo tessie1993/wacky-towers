@@ -9,6 +9,7 @@ const Diorama := preload("res://src/ui/toy_diorama.gd")
 const Glyph := preload("res://src/ui/common/ui_glyph.gd")
 const Format := preload("res://src/ui/common/ui_format.gd")
 const StoryStage := preload("res://src/ui/wordless_story.tscn")
+const MinigameStage := preload("res://src/ui/minigame_ui.tscn")
 const CREAM := Color("fff8e7")
 const INK := Color("243b4d")
 const MUTED := Color("596d77")
@@ -50,6 +51,8 @@ var _control_factor: float = 1.0
 var _requested_control_factor: float = 1.0
 var _is_overlay: bool = false
 var _story_generation: int = 0
+var _minigame_view: Control
+var _round_widgets: Dictionary = {}
 
 func _ready() -> void:
 	layer = 20
@@ -475,6 +478,7 @@ func show_hud(data: Dictionary = {}) -> void:
 	clear_overlay()
 	current_screen = "hud"
 	_hud_data = data.duplicate(true)
+	_fit_controls()
 	_build_hud()
 	update_hud(data)
 
@@ -499,6 +503,7 @@ func _build_hud() -> void:
 	top.offset_left = 18
 	top.offset_right = -18
 	top.offset_top = 16
+	_hud_labels.top = top
 	var col := _vbox(top, 8)
 	var row := _hbox(col, 10)
 	var pause := _play_button("Ⅱ", &"pause", {}, false)
@@ -530,6 +535,7 @@ func _build_hud() -> void:
 	rules_margin.add_child(_hud_labels.rules)
 	_hud_labels.rules_panel = rules_panel
 	col.add_child(rules_panel)
+	_build_item_bar(left_width, right_width)
 	var left := PanelContainer.new()
 	left.name = "MoveControls"
 	left.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -639,6 +645,65 @@ func _build_hud() -> void:
 	if is_instance_valid(_menu): _root.move_child(_menu, -1)
 	if is_instance_valid(_countdown): _root.move_child(_countdown, -1)
 
+func _build_item_bar(left_width: float, right_width: float) -> void:
+	var panel := PanelContainer.new()
+	panel.name = "PartyItems"
+	panel.mouse_filter = Control.MOUSE_FILTER_PASS
+	_hud.add_child(panel)
+	panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	var mirrored := bool(_prefs.get("left_hand", false))
+	panel.offset_left = 18 if _portrait else (right_width if mirrored else left_width) + 28
+	panel.offset_right = -18 if _portrait else -((left_width if mirrored else right_width) + 28)
+	panel.offset_top = _party_bar_top()
+	panel.offset_bottom = panel.offset_top + _party_bar_height()
+	panel.add_theme_stylebox_override("panel", _style(CREAM, 14, INK, 2))
+	var margin := MarginContainer.new()
+	for side in ["left", "right", "top", "bottom"]: margin.add_theme_constant_override("margin_" + side, 6)
+	panel.add_child(margin)
+	var col := _vbox(margin, 4)
+	var row := _hbox(col, 6)
+	var buttons: Array[Button] = []
+	for slot: int in 3:
+		var button := _play_button("%d · Empty" % (slot + 1), &"select_item_slot", {"slot":slot}, false)
+		button.clip_text = true
+		button.add_theme_font_size_override("font_size", roundi(14 * _text_factor))
+		button.custom_minimum_size.y = maxf(76, 56 * _control_factor)
+		button.pressed.connect(func() -> void:
+			_hud_data["selected_item_slot"] = slot
+			update_hud({})
+		)
+		row.add_child(button)
+		buttons.append(button)
+	var use := _play_button("Use →", &"noop", {}, false)
+	use.pressed.disconnect(use.pressed.get_connections()[0].callable)
+	use.pressed.connect(func() -> void: intent.emit(&"use_item", {"slot":int(_hud_data.get("selected_item_slot", 0))}))
+	use.custom_minimum_size.y = maxf(76, 56 * _control_factor)
+	row.add_child(use)
+	var effects := _label("", 14, MUTED, true)
+	effects.autowrap_mode = TextServer.AUTOWRAP_OFF
+	effects.clip_text = true
+	col.add_child(effects)
+	_hud_labels.items_panel = panel
+	_hud_labels.item_buttons = buttons
+	_hud_labels.item_use = use
+	_hud_labels.item_effects = effects
+
+func _party_bar_top() -> float:
+	var top := maxf(150 * _text_factor + 16, 166)
+	var header: Control = _hud_labels.get("top")
+	if is_instance_valid(header) and header.size.y > 0: top = maxf(top, header.get_global_rect().end.y + 10)
+	return top
+
+func _party_bar_height() -> float:
+	return maxf(76, 56 * _control_factor) + 42
+
+func _party_items_enabled() -> bool:
+	var items: Dictionary = _hud_data.get("items", {})
+	return bool(items.get("enabled", false))
+
+func _item_name(id: String) -> String:
+	return {"slow_time":"Slow time", "bomb":"Bomb", "helper_drop":"Helper drop", "preview_peek":"Preview peek", "junk_rain":"Junk rain", "fog":"Fog", "speed_up":"Speed up", "spin_lock":"Spin lock"}.get(id, id.replace("_", " ").capitalize())
+
 func _play_button(text: String, id: StringName, args: Dictionary, repeats: bool) -> Button:
 	var b := _button(text, id, args, false, maxf(56.0, 56.0 * _control_factor))
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
@@ -692,11 +757,17 @@ func board_area() -> Rect2:
 	var viewport_size := get_viewport().get_visible_rect().size
 	if _portrait:
 		var bottom := minf(.71, 1.0 - (_control_height() + 28.0) / viewport_size.y)
-		return Rect2(.02, .22, .96, maxf(.15, bottom - .22))
+		var top := maxf(.22, (_party_bar_top() + _party_bar_height() + 12) / viewport_size.y) if _party_items_enabled() else .22
+		return Rect2(.02, top, .96, maxf(.15, bottom - top))
 	var cell := maxf(56.0, 56.0 * _control_factor)
 	var left := (maxf(maxf(272.0, 220.0 * _text_factor), cell * 3.0 + 40.0) + 28.0) / viewport_size.x
 	var right := (maxf(maxf(248.0, 200.0 * _text_factor), cell * 2.0 + 44.0) + 28.0) / viewport_size.x
+	if bool(_prefs.get("left_hand", false)):
+		var swap := left
+		left = right
+		right = swap
 	var top := maxf(.24, (150.0 * _text_factor + 16.0) / viewport_size.y)
+	if _party_items_enabled(): top = maxf(top, (_party_bar_top() + _party_bar_height() + 12) / viewport_size.y)
 	return Rect2(left, top, maxf(.20, 1.0 - left - right), maxf(.20, .89 - top))
 
 func _control_height() -> float:
@@ -714,6 +785,10 @@ func _fit_controls() -> void:
 	var room := height - (150.0 * _text_factor + 48.0)
 	var fit := maxf(1.0, (room - 120.0 - (_text_factor - 1.0) * 110.0) / 280.0)
 	_control_factor = minf(_requested_control_factor, fit)
+	if _portrait and _party_items_enabled():
+		var board_top := _party_bar_top() + _party_bar_height() + 12
+		var max_cell := (height - board_top - 200 - 28 - 120 - (_text_factor - 1) * 110) / 5
+		_control_factor = minf(_control_factor, maxf(1, max_cell / 56))
 
 ## Back inside a local form or confirmation is handled before the controller pops.
 func handle_back() -> bool:
@@ -735,6 +810,7 @@ func handle_back() -> bool:
 func update_hud(data: Dictionary) -> void:
 	_hud_data.merge(data, true)
 	if _hud_labels.is_empty(): return
+	_update_item_bar()
 	var capabilities: Dictionary = _hud_data.get("capabilities", {})
 	_hud_labels.tools.visible = bool(capabilities.get("kit", false)) or bool(capabilities.get("choose_down", false)) or bool(capabilities.get("ice_flick", false)) or bool(capabilities.get("undo", false)) or bool(capabilities.get("reset", false))
 	_hud_labels.tools.text = "Kit" if bool(capabilities.get("kit", false)) else ("Direction" if bool(capabilities.get("choose_down", false)) or bool(capabilities.get("ice_flick", false)) else "Puzzle")
@@ -768,6 +844,41 @@ func update_hud(data: Dictionary) -> void:
 	else: _hud_labels.rules.add_theme_color_override("font_color", MUTED)
 	_hud_labels.rules_panel.visible = not _hud_labels.rules.text.strip_edges().is_empty()
 	if int(_hud_data.get("round", 0)) > 0: _hud_labels.level.text += "  ·  Round %s" % str(_hud_data.round)
+
+func _update_item_bar() -> void:
+	var enabled := _party_items_enabled()
+	_hud_labels.items_panel.visible = enabled
+	if not enabled: return
+	_hud_labels.items_panel.offset_top = _party_bar_top()
+	_hud_labels.items_panel.offset_bottom = _party_bar_top() + _party_bar_height()
+	var items: Dictionary = _hud_data.get("items", {})
+	var slots: Array = items.get("slots", [])
+	var count := clampi(slots.size(), 2, 3)
+	var selected := clampi(int(_hud_data.get("selected_item_slot", 0)), 0, count - 1)
+	_hud_data["selected_item_slot"] = selected
+	for slot: int in 3:
+		var button: Button = _hud_labels.item_buttons[slot]
+		button.visible = slot < count
+		var item: Dictionary = slots[slot] if slot < slots.size() and slots[slot] is Dictionary else {}
+		var id := str(item.get("id", ""))
+		button.text = "%d · %s" % [slot + 1, "Empty" if id.is_empty() else _item_name(id).replace(" ", "\n")]
+		if bool(item.get("pending", false)): button.text = "%d · Waiting" % (slot + 1)
+		button.tooltip_text = "Empty item slot" if id.is_empty() else _item_name(id) + (" · refunded" if bool(item.get("refunded", false)) else "")
+		button.add_theme_stylebox_override("normal", _style(MINT if slot == selected else CREAM, 12, INK, 2))
+	var item: Dictionary = slots[selected] if selected < slots.size() and slots[selected] is Dictionary else {}
+	var id := str(item.get("id", ""))
+	var target_missing := id in ["junk_rain", "fog", "speed_up", "spin_lock"] and not bool(_hud_data.get("item_target_available", false))
+	_hud_labels.item_use.disabled = id.is_empty() or bool(item.get("pending", false)) or target_missing
+	_hud_labels.item_use.text = "Waiting" if bool(item.get("pending", false)) else "Use →"
+	_hud_labels.item_use.tooltip_text = "No active rival to receive this item" if target_missing else ("Waiting for the host" if bool(item.get("pending", false)) else "Use " + _item_name(id))
+	var timers: Array[String] = []
+	var effects: Dictionary = items.get("effects", {})
+	for effect: Variant in effects:
+		var state: Dictionary = effects[effect]
+		timers.append("%s %ds" % [_item_name(str(effect)), ceili(float(state.get("remaining_ms", 0)) / 1000)])
+	_hud_labels.item_effects.text = "  ·  ".join(timers)
+	_hud_labels.item_effects.tooltip_text = _hud_labels.item_effects.text
+	_hud_labels.item_effects.visible = not timers.is_empty()
 
 func show_countdown(value: String) -> void:
 	if not is_instance_valid(_countdown):
@@ -1136,6 +1247,9 @@ func show_tournament(data: Dictionary = {}) -> void:
 	var col := _begin("tournament", data)
 	_header(col, "A little friendly rivalry", "One device per player · same local network.")
 	var content := _scroll(col)
+	var mode_list: Array = data.get("round_cards",data.get("modes",["clear_race","build_race","shape_race","survival"]))
+	var mode_ids: Array[String] = []
+	var toggles: Array[CheckButton] = []
 	var network := _card(content)
 	network.add_child(_label("PLAY WITH FRIENDS", 24))
 	var status := str(data.get("network_status", "offline"))
@@ -1145,6 +1259,13 @@ func show_tournament(data: Dictionary = {}) -> void:
 	var character_names: Array[String] = ["Cloud Wizard", "Lana", "Boulder", "Glim"]
 	for character_name: String in character_names: character_picker.add_item(character_name)
 	character_picker.select(maxi(0, character_ids.find(str(data.get("character", _prefs.get("character", "c1"))))))
+	var party_selection: Dictionary = (data.get("party_perk_selection", {}) as Dictionary).duplicate(true)
+	for character_id: String in character_ids:
+		if not party_selection.has(character_id): party_selection[character_id] = []
+	for item: Variant in data.get("party_perks", []):
+		if not data.has("party_perk_selection") and item is Dictionary and item.get("owned", true) and item.get("equipped", false) and party_selection.has(str(item.get("character", ""))):
+			var selected: Array = party_selection[str(item.character)]
+			if str(item.id) not in selected: selected.append(str(item.id))
 	if status != "offline":
 		network.add_child(character_picker)
 		character_picker.hide()
@@ -1165,6 +1286,41 @@ func show_tournament(data: Dictionary = {}) -> void:
 		network.add_child(_label("Your party character", 18))
 		network.add_child(character_picker)
 		network.add_child(_label("All four friends are available for party play. Owned perks match your chosen character.", 16, MUTED))
+		var perk_controls: Array[Dictionary] = []
+		if data.has("party_perks"):
+			network.add_child(_label("Your owned party perks · choose up to two", 18))
+			var empty := _label("No owned perks for this friend yet.", 16, MUTED)
+			network.add_child(empty)
+			for item: Variant in data.get("party_perks", []):
+				if not item is Dictionary or not item.get("owned", true) or not party_selection.has(str(item.get("character", ""))): continue
+				var id := str(item.id)
+				var owner := str(item.character)
+				var toggle := CheckButton.new()
+				toggle.text = "%s  ·  %d%% edge" % [str(item.get("name", item.get("text", id.replace("_", " ").capitalize()))), roundi(float(item.get("edge", 0.0)) * 100)]
+				toggle.custom_minimum_size.y = 52
+				toggle.button_pressed = (party_selection[owner] as Array).has(id)
+				toggle.toggled.connect(func(on: bool) -> void:
+					var chosen: Array = party_selection[owner]
+					if on:
+						if chosen.size() >= 2:
+							toggle.set_pressed_no_signal(false)
+							show_toast("Choose up to two perks for this friend.")
+							return
+						if id not in chosen: chosen.append(id)
+					else: chosen.erase(id)
+					_snapshot["party_perk_selection"] = party_selection.duplicate(true)
+				)
+				network.add_child(toggle)
+				perk_controls.append({"control":toggle,"character":owner})
+			var refresh := func() -> void:
+				var found: bool = false
+				for entry: Dictionary in perk_controls:
+					entry.control.visible = entry.character == character_ids[character_picker.selected]
+					found = found or entry.control.visible
+				empty.visible = not found
+			refresh.call()
+			character_picker.item_selected.connect(func(_index: int) -> void: refresh.call())
+		character_picker.item_selected.connect(func(index: int) -> void: _snapshot["character"] = character_ids[index])
 		var name := LineEdit.new()
 		name.text = str(data.get("profile_name", "Clover"))
 		name.max_length = 12
@@ -1189,7 +1345,15 @@ func show_tournament(data: Dictionary = {}) -> void:
 		var row := _hbox(network)
 		var host := _button("Host party", &"noop", {}, true, 56)
 		host.pressed.disconnect(host.pressed.get_connections()[0].callable)
-		host.pressed.connect(func() -> void: intent.emit(&"host_lan", {"name": name.text.strip_edges(), "port": int(port.value), "rounds": rounds.get_selected_id(), "character":character_ids[character_picker.selected]}))
+		host.pressed.connect(func() -> void:
+			var args: Dictionary = {"name": name.text.strip_edges(), "port": int(port.value), "rounds": rounds.get_selected_id(), "character":character_ids[character_picker.selected]}
+			if data.has("party_perks"): args["perks"] = (party_selection[character_ids[character_picker.selected]] as Array).duplicate()
+			args["modes"] = _party_mode_selection(mode_ids,toggles)
+			if args.modes.is_empty():
+				show_toast("Pick at least one toy box for the party.")
+				return
+			intent.emit(&"host_lan", args)
+		)
 		row.add_child(host)
 		var join := _button("Join party", &"noop", {}, false, 56)
 		join.pressed.disconnect(join.pressed.get_connections()[0].callable)
@@ -1198,9 +1362,33 @@ func show_tournament(data: Dictionary = {}) -> void:
 				show_toast("Enter your friend's host IP first.")
 				address.grab_focus()
 				return
-			intent.emit(&"join_lan", {"name": name.text.strip_edges(), "address": address.text.strip_edges(), "port": int(port.value), "character":character_ids[character_picker.selected]})
+			var args: Dictionary = {"name": name.text.strip_edges(), "address": address.text.strip_edges(), "port": int(port.value), "character":character_ids[character_picker.selected]}
+			if data.has("party_perks"): args["perks"] = (party_selection[character_ids[character_picker.selected]] as Array).duplicate()
+			intent.emit(&"join_lan", args)
 		)
 		row.add_child(join)
+	var pool := _card(content)
+	pool.add_child(_label("WHAT GOES IN THE TOY BOX?",24))
+	pool.add_child(_label("Choose the versus rounds and minigames your party can draw.",16,MUTED))
+	var selected_modes: Array = data.get("selected_modes",[])
+	var category := ""
+	for entry: Variant in mode_list:
+		var id := str(entry.get("id",entry.get("mode",""))) if entry is Dictionary else str(entry)
+		var name := str(entry.get("name",id.replace("_"," ").capitalize())) if entry is Dictionary else id.replace("_"," ").capitalize()
+		var current_category := str(entry.get("category","Versus")) if entry is Dictionary else ("Minigames" if id.begins_with("mg") else "Versus")
+		if current_category != category:
+			pool.add_child(_label(current_category.capitalize(),22))
+			category = current_category
+		var toggle := CheckButton.new()
+		toggle.text = name
+		toggle.tooltip_text = str(entry.get("rule",name)) if entry is Dictionary else name
+		toggle.button_pressed = selected_modes.is_empty() or id in selected_modes
+		toggle.disabled = status != "offline"
+		toggle.custom_minimum_size.y = 56
+		pool.add_child(toggle)
+		mode_ids.append(id)
+		toggles.append(toggle)
+		toggle.toggled.connect(func(_on: bool)->void: _snapshot["selected_modes"] = _party_mode_selection(mode_ids,toggles))
 	if status == "offline":
 		var practice := _card(content)
 		practice.add_child(_label("PRACTISE WITH TOY FRIENDS", 22))
@@ -1219,29 +1407,121 @@ func show_tournament(data: Dictionary = {}) -> void:
 		items.visible = bool(data.get("items_supported", false))
 		items.custom_minimum_size.y = 52
 		practice.add_child(items)
-		var mode_list: Array = data.get("modes", ["clear_race", "survive", "score_attack"])
-		var toggles: Array[CheckButton] = []
-		for mode in mode_list:
-			var toggle := CheckButton.new()
-			toggle.text = str(mode).replace("_", " ").capitalize()
-			toggle.button_pressed = true
-			toggle.custom_minimum_size.y = 48
-			practice.add_child(toggle)
-			toggles.append(toggle)
 		var start := _button("Start practice  →", &"noop", {}, false, 60)
 		start.pressed.disconnect(start.pressed.get_connections()[0].callable)
 		start.pressed.connect(func() -> void:
-			var modes: Array = []
-			for i in toggles.size():
-				if toggles[i].button_pressed: modes.append(mode_list[i])
+			var modes: Array = _party_mode_selection(mode_ids,toggles)
 			if modes.is_empty():
 				show_toast("Pick at least one party mode.")
 				return
 			var players: Array = [{"name": str(data.get("profile_name", "You")), "is_bot": false, "character_id": character_ids[character_picker.selected]}]
+			if data.has("party_perks"): players[0]["perks"] = (party_selection[character_ids[character_picker.selected]] as Array).duplicate()
 			for i in range(1, count.get_selected_id()): players.append({"name": ["Pip", "Miller", "Clover"][i - 1], "is_bot": true, "character_id": "c%d" % (i + 1)})
 			intent.emit(&"start_tournament", {"rounds": rounds.get_selected_id(), "players": players, "items": items.button_pressed, "modes": modes})
 		)
 		practice.add_child(start)
+	_finish()
+
+func _party_mode_selection(ids: Array[String],toggles: Array[CheckButton]) -> Array[String]:
+	var selected: Array[String] = []
+	for index: int in mini(ids.size(),toggles.size()):
+		if toggles[index].button_pressed: selected.append(ids[index])
+	return selected
+
+func show_minigame(data: Dictionary = {}) -> void:
+	var col := _begin("minigame", data)
+	_minigame_view = MinigameStage.instantiate()
+	_minigame_view.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_minigame_view.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_minigame_view.set_prefs(_prefs)
+	_minigame_view.set_snapshot(data)
+	_minigame_view.intent.connect(func(id: StringName, args: Dictionary) -> void: intent.emit(id,args))
+	col.add_child(_minigame_view)
+
+func update_minigame(data: Dictionary) -> void:
+	_snapshot = data.duplicate(true)
+	if current_screen == "minigame" and is_instance_valid(_minigame_view): _minigame_view.set_snapshot(data)
+
+func show_round_card(data: Dictionary = {}) -> void:
+	var col := _begin("round_card", data)
+	_round_widgets = {}
+	_header(col, "What's in the next toy box?", "Round %d" % int(data.get("round_index",1)), false)
+	var content := _scroll(col)
+	var card := _card(content, CREAM)
+	var icon := TextureRect.new()
+	icon.name = "RoundIcon"
+	icon.custom_minimum_size = Vector2(140,140)
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	card.add_child(icon)
+	_round_widgets.icon = icon
+	var landmark: SubViewportContainer = preload("res://src/ui/minigame_ui.gd").make_art_preview(str((data.get("template",{}) as Dictionary).get("id","mg01")),Vector2i(220,160))
+	card.add_child(landmark)
+	_round_widgets.landmark = landmark
+	_round_widgets.name = _label("",40,INK,true)
+	card.add_child(_round_widgets.name)
+	_round_widgets.rule = _label("",24,INK,true)
+	card.add_child(_round_widgets.rule)
+	_round_widgets.phase = _label("",22,MUTED,true)
+	card.add_child(_round_widgets.phase)
+	var reroll := _button("Another toy box?  ↻", &"noop",{},false,60)
+	reroll.pressed.disconnect(reroll.pressed.get_connections()[0].callable)
+	reroll.pressed.connect(func() -> void: intent.emit(&"reroll",{"player_id":str(_snapshot.get("local_player_id",""))}))
+	card.add_child(reroll)
+	_round_widgets.reroll = reroll
+	var ready := _button("Ready  ✓", &"round_ready",{},true,60)
+	card.add_child(ready)
+	_round_widgets.ready = ready
+	_round_widgets.standings = _vbox(content)
+	update_round_card(data)
+	_finish()
+
+func update_round_card(data: Dictionary) -> void:
+	_snapshot = data.duplicate(true)
+	if current_screen != "round_card" or _round_widgets.is_empty(): return
+	var template: Dictionary = data.get("template",{})
+	_round_widgets.name.text = str(template.get("name","Opening the toy box…"))
+	_round_widgets.rule.text = str(template.get("rule",""))
+	var phase := str(data.get("phase","roulette"))
+	var seconds := ceili(maxi(0,int(data.get("remaining_ms",0)))/1000.0)
+	_round_widgets.phase.text = {"roulette":"Picking a surprise…", "round_show":"A new little challenge", "reroll":"One last chance to swap · %ds"%seconds, "locked":"The toy box is ready", "countdown":"%d"%seconds}.get(phase,"Get ready")
+	var local_id := str(data.get("local_player_id",""))
+	var eligible: Array = data.get("reroll_eligible",[])
+	_round_widgets.reroll.visible = phase in ["reroll","round_show"] and bool(data.get("can_reroll", eligible.has(local_id)))
+	_round_widgets.reroll.disabled = seconds <= 0 or bool(data.get("reroll_used",false))
+	_round_widgets.ready.visible = phase in ["locked","round_show"]
+	_round_widgets.ready.disabled = bool(data.get("ready",false))
+	_round_widgets.ready.text = "Ready ✓ · waiting for friends" if bool(data.get("ready",false)) else "Ready  ✓"
+	_round_widgets.icon.texture = _minigame_icon(str(template.get("id","")))
+	_round_widgets.icon.visible = _round_widgets.icon.texture != null
+	_round_widgets.landmark.visible = _round_widgets.icon.texture == null
+	var rows: VBoxContainer = _round_widgets.standings
+	for child: Node in rows.get_children():
+		rows.remove_child(child)
+		child.queue_free()
+	for player: Dictionary in data.get("standings",[]): rows.add_child(_label("%s   ·   %d wins"%[str(player.get("name",player.get("id","Friend"))),int(player.get("wins",0))],18,INK,true))
+
+func _minigame_icon(id: String) -> Texture2D:
+	var path := "res://assets/art/minigames/%s.png" % id
+	return load(path) if id.begins_with("mg") and ResourceLoader.exists(path) else null
+
+func show_round_results(data: Dictionary = {}) -> void:
+	var col := _begin("round_results",data)
+	_header(col,"A round of applause!" if not bool(data.get("tournament_done",false)) else "Our toy-box champion",str(data.get("round_name","")),false)
+	var content := _scroll(col)
+	var card := _card(content,MINT)
+	for player: Dictionary in data.get("standings",[]):
+		card.add_child(_label("%s   ·   %d wins"%[str(player.get("name",player.get("id","Friend"))),int(player.get("wins",0))],26,INK,true))
+	for award: Dictionary in data.get("awards",[]): card.add_child(_label("%s · %s"%[str(award.get("name","Little triumph")),str(award.get("player_name",""))],20,INK,true))
+	for result: Dictionary in data.get("results",[]):
+		card.add_child(_label("%s   %s"%[str(result.get("name",result.get("id","Friend"))),str(result.get("standing_value",result.get("score",0)))],20))
+	var history: Array = data.get("history",[])
+	if not history.is_empty():
+		content.add_child(_label("Our little tournament",24))
+		for index: int in history.size():
+			var row: Dictionary = history[index]
+			content.add_child(_label("%d · %s · %s"%[index+1,str(row.get("name",row.get("mode","Round"))).replace("_"," ").capitalize(),", ".join(PackedStringArray(row.get("winner_names",row.get("winners",[]))))],18))
+	card.add_child(_button("Back to the party" if bool(data.get("tournament_done",false)) else "Next toy box  →",&"to_party" if bool(data.get("tournament_done",false)) else &"next_round",{},true,60))
 	_finish()
 
 func show_physics(data: Dictionary = {}) -> void:
@@ -1286,6 +1566,9 @@ func _restore_screen(screen: String, data: Dictionary) -> void:
 		"arcade": show_arcade(data)
 		"tournament": show_tournament(data)
 		"physics": show_physics(data)
+		"minigame": show_minigame(data)
+		"round_card": show_round_card(data)
+		"round_results": show_round_results(data)
 		"tools": show_tools(data)
 		"story": show_story(data)
 		"confirm": _restore_screen(str(data.get("return_screen", "title")), data.get("return_data", {}))

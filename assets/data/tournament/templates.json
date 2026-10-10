@@ -1,0 +1,1963 @@
+{
+  "schema": 1,
+  "source": [
+    "design/gdd/mode-minigame-randomizer.md",
+    "design/gdd/tournament-minigames.md",
+    "docs/design/additional-party-minigames.md"
+  ],
+  "templates": [
+    {
+      "id": "clear_race",
+      "mode": "clear_race",
+      "category": "versus",
+      "tags": [
+        "versus"
+      ],
+      "name": "Clear Race",
+      "card_name": "Clear Race",
+      "name_key": "MODE_CLEAR_RACE",
+      "rule": "Be first to clear two layers.",
+      "rule_key": "ROUND_CLEAR_RACE_RULE",
+      "icon": "clear_race",
+      "duration_ms": 240000,
+      "weight": 1.0,
+      "standing_metric": "race_progress",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "item"
+      ],
+      "item_whitelist": [
+        "slow_time",
+        "bomb",
+        "helper_drop",
+        "preview_peek",
+        "junk_rain",
+        "fog",
+        "speed_up",
+        "spin_lock"
+      ],
+      "items_enabled": true,
+      "item_trigger": "clear",
+      "skill_support": true,
+      "perk_support": true,
+      "twist_limit": 2,
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "layer",
+        "collapse": "slice",
+        "top_out_check": "lose",
+        "goal_evaluator": "clear_n"
+      },
+      "level": {
+        "schema": 1,
+        "id": "versus_clear_race",
+        "biome": "meadow",
+        "tier": 1,
+        "name": "MODE_CLEAR_RACE",
+        "board": {
+          "width": 6,
+          "depth": 6,
+          "h_play": 10
+        },
+        "pieces": {
+          "shapes": [
+            "i",
+            "o",
+            "t",
+            "l",
+            "s",
+            "tripod",
+            "screw_left",
+            "screw_right"
+          ]
+        },
+        "knobs": {
+          "fall.g0": 1.0,
+          "goal.top_out": "lose",
+          "goal.warnings_max": 0
+        },
+        "goal": {
+          "type": "clear_n",
+          "n": 2
+        },
+        "rules": [],
+        "stars": {}
+      },
+      "params": {},
+      "always_available": true,
+      "source": "design/gdd/mode-minigame-randomizer.md#core-rules"
+    },
+    {
+      "id": "build_race",
+      "mode": "build_race",
+      "category": "versus",
+      "tags": [
+        "versus"
+      ],
+      "name": "Build Race",
+      "card_name": "Build Race",
+      "name_key": "MODE_BUILD_RACE",
+      "rule": "Build to the line while clears are off.",
+      "rule_key": "ROUND_BUILD_RACE_RULE",
+      "icon": "build_race",
+      "duration_ms": 240000,
+      "weight": 1.0,
+      "standing_metric": "race_progress",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "item"
+      ],
+      "item_whitelist": [
+        "slow_time",
+        "bomb",
+        "helper_drop",
+        "preview_peek",
+        "junk_rain",
+        "fog",
+        "speed_up",
+        "spin_lock"
+      ],
+      "items_enabled": true,
+      "item_trigger": "clear",
+      "skill_support": true,
+      "perk_support": true,
+      "twist_limit": 2,
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 12
+      },
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "none",
+        "collapse": "slice",
+        "top_out_check": "trim",
+        "goal_evaluator": "height"
+      },
+      "level": {
+        "schema": 1,
+        "id": "versus_build_race",
+        "biome": "meadow",
+        "tier": 1,
+        "name": "MODE_BUILD_RACE",
+        "board": {
+          "width": 6,
+          "depth": 6,
+          "h_play": 12
+        },
+        "pieces": {
+          "shapes": [
+            "i",
+            "o",
+            "t",
+            "l",
+            "s",
+            "tripod",
+            "screw_left",
+            "screw_right"
+          ]
+        },
+        "knobs": {
+          "fall.g0": 1.0,
+          "goal.top_out": "trim",
+          "goal.warnings_max": 0,
+          "clear.detector": "none"
+        },
+        "goal": {
+          "type": "height",
+          "h_target": 10
+        },
+        "rules": [
+          {
+            "id": "build_race",
+            "params": {
+              "topout_rule": "trim"
+            }
+          }
+        ],
+        "stars": {}
+      },
+      "params": {},
+      "always_available": true,
+      "source": "design/gdd/mode-minigame-randomizer.md#core-rules"
+    },
+    {
+      "id": "shape_race",
+      "mode": "shape_race",
+      "category": "versus",
+      "tags": [
+        "versus"
+      ],
+      "name": "Shape Race",
+      "card_name": "Shape Race",
+      "name_key": "MODE_SHAPE_RACE",
+      "rule": "Fill the same two-layer target before your rivals.",
+      "rule_key": "ROUND_SHAPE_RACE_RULE",
+      "icon": "shape_race",
+      "duration_ms": 240000,
+      "weight": 1.0,
+      "standing_metric": "race_progress",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "item"
+      ],
+      "item_whitelist": [
+        "slow_time",
+        "bomb",
+        "helper_drop",
+        "preview_peek",
+        "junk_rain",
+        "fog",
+        "speed_up",
+        "spin_lock"
+      ],
+      "items_enabled": true,
+      "item_trigger": "clear",
+      "skill_support": true,
+      "perk_support": true,
+      "twist_limit": 2,
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 8
+      },
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "none",
+        "collapse": "slice",
+        "top_out_check": "trim",
+        "goal_evaluator": "shape"
+      },
+      "level": {
+        "schema": 1,
+        "id": "versus_shape_race",
+        "biome": "meadow",
+        "tier": 1,
+        "name": "MODE_SHAPE_RACE",
+        "board": {
+          "width": 6,
+          "depth": 6,
+          "h_play": 8
+        },
+        "pieces": {
+          "shapes": [
+            "i",
+            "o",
+            "t",
+            "l",
+            "s",
+            "tripod",
+            "screw_left",
+            "screw_right"
+          ]
+        },
+        "knobs": {
+          "fall.g0": 1.0,
+          "goal.top_out": "trim",
+          "goal.warnings_max": 0,
+          "clear.detector": "none"
+        },
+        "goal": {
+          "type": "shape",
+          "target_shape": {
+            "layers": {
+              "0": [
+                "++++++",
+                "++++++",
+                "++++++",
+                "++++++",
+                "++++++",
+                "++++++"
+              ],
+              "1": [
+                "++++++",
+                "++++++",
+                "++++++",
+                "++++++",
+                "++++++",
+                "++++++"
+              ]
+            }
+          }
+        },
+        "rules": [
+          {
+            "id": "fill_shape",
+            "params": {
+              "topout_rule": "trim"
+            }
+          }
+        ],
+        "stars": {}
+      },
+      "params": {},
+      "always_available": true,
+      "source": "design/gdd/mode-minigame-randomizer.md#core-rules"
+    },
+    {
+      "id": "survival",
+      "mode": "survival",
+      "category": "versus",
+      "tags": [
+        "versus"
+      ],
+      "name": "Survival",
+      "card_name": "Survival",
+      "name_key": "MODE_SURVIVAL",
+      "rule": "Keep building; the last player standing wins.",
+      "rule_key": "ROUND_SURVIVAL_RULE",
+      "icon": "survival",
+      "duration_ms": 240000,
+      "weight": 1.0,
+      "standing_metric": "alive_time",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "item"
+      ],
+      "item_whitelist": [
+        "slow_time",
+        "bomb",
+        "helper_drop",
+        "preview_peek",
+        "junk_rain",
+        "fog",
+        "speed_up",
+        "spin_lock"
+      ],
+      "items_enabled": true,
+      "item_trigger": "clear",
+      "skill_support": true,
+      "perk_support": true,
+      "twist_limit": 2,
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "layer",
+        "collapse": "slice",
+        "top_out_check": "lose",
+        "goal_evaluator": "last_standing"
+      },
+      "level": {
+        "schema": 1,
+        "id": "versus_survival",
+        "biome": "meadow",
+        "tier": 1,
+        "name": "MODE_SURVIVAL",
+        "board": {
+          "width": 6,
+          "depth": 6,
+          "h_play": 10
+        },
+        "pieces": {
+          "shapes": [
+            "i",
+            "o",
+            "t",
+            "l",
+            "s",
+            "tripod",
+            "screw_left",
+            "screw_right"
+          ]
+        },
+        "knobs": {
+          "fall.g0": 1.0,
+          "goal.top_out": "lose",
+          "goal.warnings_max": 0,
+          "fall.ramp_per_min": 0.15,
+          "fall.g_max": 6.0
+        },
+        "goal": {
+          "type": "endless"
+        },
+        "rules": [],
+        "stars": {}
+      },
+      "params": {},
+      "always_available": true,
+      "source": "design/gdd/mode-minigame-randomizer.md#core-rules"
+    },
+    {
+      "id": "mg01",
+      "minigame_id": "MG1",
+      "mode": "mg01",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Hole in the Wall",
+      "card_name": "Wall Fit",
+      "name_key": "MG_01_NAME",
+      "rule": "Rotate your block so its silhouette fits the approaching hole.",
+      "rule_key": "MG_01_RULE",
+      "icon": "mg01",
+      "duration_ms": 90000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "frame",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 4
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "rotate",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "wall_start_ms": 6000,
+        "wall_min_ms": 3000,
+        "hole_slack_start": 2,
+        "hole_slack_end": 0,
+        "tight_charge": 3,
+        "tight_advance_ms": 1000,
+        "stun_ms": 1000
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg02",
+      "minigame_id": "MG2",
+      "mode": "mg02",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Copycat",
+      "card_name": "Copy Cat",
+      "name_key": "MG_02_NAME",
+      "rule": "Remember the model, then rebuild it with the same blocks.",
+      "rule_key": "MG_02_RULE",
+      "icon": "mg02",
+      "duration_ms": 150000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "none",
+        "collapse": "slice",
+        "top_out_check": "trim",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 4
+      },
+      "piece_pool": [
+        "duo",
+        "tri_straight",
+        "tri_corner",
+        "i",
+        "o",
+        "tripod"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "move",
+        "rotate",
+        "hard_drop",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "show_ms": 5000,
+        "show_min_ms": 2000,
+        "smudge_ms": 1500,
+        "model_pieces_min": 2,
+        "model_pieces_max": 4,
+        "model_cubes_min": 6,
+        "model_cubes_max": 14,
+        "speed_bonus": 50,
+        "speed_window_ms": 30000
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg03",
+      "minigame_id": "MG3",
+      "mode": "mg03",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Colour Rush",
+      "card_name": "Colour Rush",
+      "name_key": "MG_03_NAME",
+      "rule": "Pop matching flavours; chains send grey garbage to rivals.",
+      "rule_key": "MG_03_RULE",
+      "icon": "mg03",
+      "duration_ms": 90000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "colour_connect",
+        "collapse": "cascade",
+        "top_out_check": "trim",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 12
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "move",
+        "rotate",
+        "hard_drop",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "colour_count": 4,
+        "grey_chain_min": 2,
+        "grey_warn_locks": 1
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg04",
+      "minigame_id": "MG4",
+      "mode": "mg04",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Perfect Stack",
+      "card_name": "Perfect Stack",
+      "name_key": "MG_04_NAME",
+      "rule": "Release each sliding block and keep every cube supported.",
+      "rule_key": "MG_04_RULE",
+      "icon": "mg04",
+      "duration_ms": 60000,
+      "weight": 1.0,
+      "standing_metric": "height",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "steal"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "slide_in",
+        "clear_detector": "none",
+        "collapse": "stack_trim",
+        "top_out_check": "trim",
+        "goal_evaluator": "height_timer"
+      },
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 24
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "release",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "slide_gates": "alternate",
+        "slide_start_speed": 2.0,
+        "slide_end_speed": 4.0,
+        "perfect_charge": 3,
+        "slab_width": 4,
+        "slab_depth": 4,
+        "shield_hits": 1
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg05",
+      "minigame_id": "MG5",
+      "mode": "mg05",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Crane Tower",
+      "card_name": "Crane Tower",
+      "name_key": "MG_05_NAME",
+      "rule": "Release swinging blocks and hold your tower above the line.",
+      "rule_key": "MG_05_RULE",
+      "icon": "mg05",
+      "duration_ms": 120000,
+      "weight": 1.0,
+      "standing_metric": "race_progress",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "physics",
+        "spawn_entry": "crane",
+        "clear_detector": "none",
+        "collapse": "physics",
+        "top_out_check": "drops",
+        "goal_evaluator": "height_race"
+      },
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 16
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "rotate",
+        "release",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "swing_period_ms": 2400,
+        "height_target": 8,
+        "hold_above_ms": 3000,
+        "drops_allowed": 3,
+        "height_ribbon": 2,
+        "gust_speed_scale": 1.3,
+        "gust_ms": 8000
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg06",
+      "minigame_id": "MG6",
+      "mode": "mg06",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Mascot Bridge Race",
+      "card_name": "Bridge Race",
+      "name_key": "MG_06_NAME",
+      "rule": "Build a walkway that takes your mascot to the far flag.",
+      "rule_key": "MG_06_RULE",
+      "icon": "mg06",
+      "duration_ms": 150000,
+      "weight": 1.0,
+      "standing_metric": "race_progress",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "none",
+        "collapse": "slice",
+        "top_out_check": "trim",
+        "goal_evaluator": "path"
+      },
+      "board": {
+        "width": 8,
+        "depth": 3,
+        "h_play": 8
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "move",
+        "rotate",
+        "hard_drop",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1500,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "gap_cells": 6,
+        "step_height_max": 1,
+        "bird_charge_ms": 25000,
+        "bird_protect_mascot": true
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg07",
+      "minigame_id": "MG7",
+      "mode": "mg07",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Box Packers",
+      "card_name": "Box Packers",
+      "name_key": "MG_07_NAME",
+      "rule": "Fill every cell in your box and send awkward blocks.",
+      "rule_key": "MG_07_RULE",
+      "icon": "mg07",
+      "duration_ms": 120000,
+      "weight": 1.0,
+      "standing_metric": "race_progress",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "none",
+        "collapse": "slice",
+        "top_out_check": "trim",
+        "goal_evaluator": "fill_race"
+      },
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 3
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "move",
+        "rotate",
+        "hard_drop",
+        "hold",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "box_cells": 48,
+        "hold_enabled": true,
+        "awkward_pool": [
+          "ring",
+          "arch",
+          "loop",
+          "heart",
+          "mushroom",
+          "rocket",
+          "dog_bone",
+          "crown",
+          "snake_left",
+          "snake_right"
+        ],
+        "queue_front": true
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg08",
+      "minigame_id": "MG8",
+      "mode": "mg08",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Gift Exchange",
+      "card_name": "Gift Exchange",
+      "name_key": "MG_08_NAME",
+      "rule": "Clear four layers while choosing blocks to gift your rivals.",
+      "rule_key": "MG_08_RULE",
+      "icon": "mg08",
+      "duration_ms": 150000,
+      "weight": 1.0,
+      "standing_metric": "race_progress",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "layer",
+        "collapse": "slice",
+        "top_out_check": "lose",
+        "goal_evaluator": "clear_race"
+      },
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 10
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "move",
+        "rotate",
+        "hard_drop",
+        "gift_choose",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "clear_target": 4,
+        "gift_offer_count": 2,
+        "gift_delay_pieces": 1,
+        "gift_cap": 2,
+        "gift_pool": [
+          "ring",
+          "arch",
+          "loop",
+          "heart",
+          "mushroom",
+          "rocket",
+          "dog_bone",
+          "crown",
+          "snake_left",
+          "snake_right",
+          "nook",
+          "antenna",
+          "signpost",
+          "crank",
+          "hook_left",
+          "hook_right",
+          "kink_left",
+          "kink_right",
+          "wiggle_left",
+          "wiggle_right",
+          "periscope_left",
+          "periscope_right",
+          "claw_left",
+          "claw_right",
+          "giant_slab"
+        ],
+        "tap_to_pick": true
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg09",
+      "minigame_id": "MG9",
+      "mode": "mg09",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Speed Sort",
+      "card_name": "Speed Sort",
+      "name_key": "MG_09_NAME",
+      "rule": "Swipe each block into its matching colour bin.",
+      "rule_key": "MG_09_RULE",
+      "icon": "mg09",
+      "duration_ms": 60000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "shared",
+        "steal"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "chute",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 3,
+        "depth": 1,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "sort"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "colour_count": 3,
+        "golden_every_ms": 10000,
+        "golden_steal_points": 3,
+        "jam_ms": 1000,
+        "speed_ramp": true
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg10",
+      "minigame_id": "MG10",
+      "mode": "mg10",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Shadow Duel",
+      "card_name": "Shadow Duel",
+      "name_key": "MG_10_NAME",
+      "rule": "Build a stack that matches both silhouettes exactly.",
+      "rule_key": "MG_10_RULE",
+      "icon": "mg10",
+      "duration_ms": 150000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "none",
+        "collapse": "slice",
+        "top_out_check": "trim",
+        "goal_evaluator": "puzzle_race"
+      },
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 4
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "move",
+        "rotate",
+        "hard_drop",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "puzzles_target": 3,
+        "front_axis": "z",
+        "side_axis": "x",
+        "flicker_ms": 3000
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg11",
+      "minigame_id": "MG11",
+      "mode": "mg11",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Memory Tower",
+      "card_name": "Memory Tower",
+      "name_key": "MG_11_NAME",
+      "rule": "Build from memory as your locked blocks fade from view.",
+      "rule_key": "MG_11_RULE",
+      "icon": "mg11",
+      "duration_ms": 120000,
+      "weight": 1.0,
+      "standing_metric": "height",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "item"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "none",
+        "collapse": "slice",
+        "top_out_check": "trim",
+        "goal_evaluator": "height_timer"
+      },
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 6
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": true,
+      "item_whitelist": [
+        "fog",
+        "speed_up",
+        "spin_lock",
+        "slow_time",
+        "preview_peek"
+      ],
+      "item_trigger": "height_ribbon",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "move",
+        "rotate",
+        "hard_drop",
+        "use_item"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "visible_ms": 2000,
+        "height_ribbon": 1
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg12",
+      "minigame_id": "MG12",
+      "mode": "mg12",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Spin Cycle",
+      "card_name": "Spin Cycle",
+      "name_key": "MG_12_NAME",
+      "rule": "Clear layers while your tower turns every three locks.",
+      "rule_key": "MG_12_RULE",
+      "icon": "mg12",
+      "duration_ms": 120000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send",
+        "item"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "layer",
+        "collapse": "slice",
+        "top_out_check": "lose",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 10
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": true,
+      "item_whitelist": [
+        "slow_time",
+        "bomb",
+        "helper_drop",
+        "preview_peek",
+        "junk_rain",
+        "fog",
+        "speed_up",
+        "spin_lock"
+      ],
+      "item_trigger": "clear",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "move",
+        "rotate",
+        "hard_drop",
+        "send",
+        "use_item"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "turn_locks": 3,
+        "turn_degrees": 90,
+        "extra_spin_min_layers": 2
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg13",
+      "minigame_id": "MG13",
+      "mode": "mg13",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Floor Is Lava",
+      "card_name": "Lava Floor",
+      "name_key": "MG_13_NAME",
+      "rule": "Keep a half-full safe layer above the rising lava.",
+      "rule_key": "MG_13_RULE",
+      "icon": "mg13",
+      "duration_ms": 150000,
+      "weight": 1.0,
+      "standing_metric": "alive_time",
+      "standing_tiebreak": "height",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "none",
+        "collapse": "slice",
+        "top_out_check": "lose",
+        "goal_evaluator": "last_standing"
+      },
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 24
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "move",
+        "rotate",
+        "hard_drop",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "lava_start_ms": 12000,
+        "lava_min_ms": 7000,
+        "lava_step_ms": 500,
+        "lava_cover": 0.5,
+        "unsafe_loss_ms": 2000,
+        "pump_charge": 4,
+        "pump_advance_ms": 4000
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg14",
+      "minigame_id": "MG14",
+      "mode": "mg14",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Hot Block",
+      "card_name": "Hot Block",
+      "name_key": "MG_14_NAME",
+      "rule": "Clear the smoking block to pass it before its fuse expires.",
+      "rule_key": "MG_14_RULE",
+      "icon": "mg14",
+      "duration_ms": 150000,
+      "weight": 1.0,
+      "standing_metric": "race_progress",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "shared"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "top",
+        "clear_detector": "layer",
+        "collapse": "slice",
+        "top_out_check": "lose",
+        "goal_evaluator": "clear_race"
+      },
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 12
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "move",
+        "rotate",
+        "hard_drop"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "clear_target": 5,
+        "hot_shape": "big_cube",
+        "fuse_ms": 20000,
+        "blast_junk": 2,
+        "hot_instances": 1
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg15",
+      "minigame_id": "MG15",
+      "mode": "mg15",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Catch Tower",
+      "card_name": "Catch Tower",
+      "name_key": "MG_15_NAME",
+      "rule": "Slide the tray under the falling blocks to grow your tower.",
+      "rule_key": "MG_15_RULE",
+      "icon": "mg15",
+      "duration_ms": 75000,
+      "weight": 1.0,
+      "standing_metric": "height",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "sky_lanes",
+        "clear_detector": "none",
+        "collapse": "stack_trim",
+        "top_out_check": "trim",
+        "goal_evaluator": "height_timer"
+      },
+      "board": {
+        "width": 7,
+        "depth": 7,
+        "h_play": 24
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "tray_move",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "tray_width": 3,
+        "tray_depth": 3,
+        "sky_width": 7,
+        "sky_depth": 7,
+        "gravity_scale": 3.0,
+        "shadow_ms": 1000,
+        "slippery_charge": 5,
+        "slippery_ms": 6000,
+        "slippery_step": 2
+      },
+      "always_available": true,
+      "source": "design/gdd/tournament-minigames.md"
+    },
+    {
+      "id": "mg16",
+      "minigame_id": "MG16",
+      "mode": "mg16",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Rhythm Blocks",
+      "card_name": "Rhythm Blocks",
+      "name_key": "MG_16_NAME",
+      "rule": "Hit the matching lane as each seeded block reaches the beat.",
+      "rule_key": "MG_16_RULE",
+      "icon": "mg16",
+      "duration_ms": 60000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "rhythm",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 4,
+        "depth": 1,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_rhythm_hit",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "bpm": 120,
+        "hit_window_ms": 180,
+        "lane_count": 4,
+        "offbeat_charge": 8,
+        "offbeat_ms": 5000
+      },
+      "always_available": true,
+      "source": "docs/design/additional-party-minigames.md"
+    },
+    {
+      "id": "mg17",
+      "minigame_id": "MG17",
+      "mode": "mg17",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Magnet Maze",
+      "card_name": "Magnet Maze",
+      "name_key": "MG_17_NAME",
+      "rule": "Move and reverse polarity to pull every block into a dock.",
+      "rule_key": "MG_17_RULE",
+      "icon": "mg17",
+      "duration_ms": 90000,
+      "weight": 1.0,
+      "standing_metric": "race_progress",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "magnet",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "dock_race"
+      },
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_magnet_move",
+        "mg_polarity",
+        "mg_reset",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "maze_width": 4,
+        "maze_depth": 4,
+        "reversal_ms": 5000,
+        "connected_path": true
+      },
+      "always_available": true,
+      "source": "docs/design/additional-party-minigames.md"
+    },
+    {
+      "id": "mg18",
+      "minigame_id": "MG18",
+      "mode": "mg18",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Balloon Volley",
+      "card_name": "Balloon Volley",
+      "name_key": "MG_18_NAME",
+      "rule": "Return the block in its flight window to score against rivals.",
+      "rule_key": "MG_18_RULE",
+      "icon": "mg18",
+      "duration_ms": 75000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "volley",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 1,
+        "depth": 1,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_volley",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "return_window_ms": 400,
+        "flight_ms": 2400
+      },
+      "always_available": true,
+      "source": "docs/design/additional-party-minigames.md"
+    },
+    {
+      "id": "mg19",
+      "minigame_id": "MG19",
+      "mode": "mg19",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Gem Grab",
+      "card_name": "Gem Grab",
+      "name_key": "MG_19_NAME",
+      "rule": "Collect gems on the block island and deposit your bag.",
+      "rule_key": "MG_19_RULE",
+      "icon": "mg19",
+      "duration_ms": 90000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send",
+        "shared"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "island",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 7,
+        "depth": 7,
+        "h_play": 2
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_move",
+        "mg_deposit",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "gem_count": 6,
+        "bag_capacity": 5,
+        "golden_every_ms": 10000,
+        "sticky_ms": 5000
+      },
+      "always_available": true,
+      "source": "docs/design/additional-party-minigames.md"
+    },
+    {
+      "id": "mg20",
+      "minigame_id": "MG20",
+      "mode": "mg20",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Paint Dash",
+      "card_name": "Paint Dash",
+      "name_key": "MG_20_NAME",
+      "rule": "Walk the block island and paint the exposed stencil faces.",
+      "rule_key": "MG_20_RULE",
+      "icon": "mg20",
+      "duration_ms": 90000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "paint",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 7,
+        "depth": 7,
+        "h_play": 3
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_move",
+        "mg_paint",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "stencil_faces": 12,
+        "wet_faces": 2,
+        "wet_ms": 5000
+      },
+      "always_available": true,
+      "source": "docs/design/additional-party-minigames.md"
+    },
+    {
+      "id": "mg21",
+      "minigame_id": "MG21",
+      "mode": "mg21",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Balance Budget",
+      "card_name": "Balance Budget",
+      "name_key": "MG_21_NAME",
+      "rule": "Choose and place blocks so both pans balance to earn a rack.",
+      "rule_key": "MG_21_RULE",
+      "icon": "mg21",
+      "duration_ms": 90000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "balance",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 8
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_choose",
+        "mg_pan",
+        "mg_release",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "offer_count": 3,
+        "rack_limit": 8,
+        "weight_surprise": 2,
+        "balanced_goal": 3
+      },
+      "always_available": true,
+      "source": "docs/design/additional-party-minigames.md"
+    }
+  ]
+}

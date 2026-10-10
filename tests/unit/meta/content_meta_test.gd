@@ -145,3 +145,36 @@ func test_structured_goal_selects_the_matching_strategy_slot() -> void:
 	for id: String in ["meadow_01", "meadow_05", "meadow_06", "meadow_bonus"]:
 		var level: LevelData = content.level(id)
 		assert_str(str(level.knobs[&"goal.type"])).is_equal(str(level.goal.type))
+
+func test_failed_attempt_encounters_persist_without_currency_or_duplicate_entries() -> void:
+	var io := MemorySaveIO.new()
+	var store := WtProfileStore.new(io)
+	assert_bool(store.record_encounter("candy_09")).is_false()
+	store.create("Mia")
+	assert_bool(store.record_encounter("unknown_script")).is_false()
+	assert_bool(store.record_encounter("candy_09")).is_true()
+	assert_bool(store.record_encounter("candy_09")).is_true()
+	store.set_playing(true)
+	assert_bool(store.record_encounter("candy_10")).is_false()
+	var reload := WtProfileStore.new(io)
+	assert_array(reload.progress().encountered_levels).contains_exactly(["candy_09"])
+	assert_dict(reload.progress().levels).is_empty()
+	assert_int(reload.wallet_balance()).is_equal(0)
+	reload.create("Ari")
+	assert_array(reload.progress().encountered_levels).is_empty()
+
+func test_user_item_tables_reject_unknown_negative_duplicate_and_zero_weight() -> void:
+	var content := WtContent.new()
+	content.load_catalog()
+	var source: Dictionary = content.raw_level("meadow_01")
+	var row: Dictionary = {"id":"bomb","weight":1.0,"bias":0.5,"debuff":false}
+	source.rules = [{"id":"items","params":{"table":[row]}}]
+	assert_bool(LevelLoader.parse_level(source,content.catalog).ok()).is_true()
+	for invalid: Array in [
+		[{"id":"execute_script","weight":1,"bias":0,"debuff":false}],
+		[{"id":"bomb","weight":-1,"bias":0,"debuff":false}],
+		[row,row],
+		[{"id":"bomb","weight":0,"bias":0,"debuff":false}]
+	]:
+		source.rules[0].params.table = invalid
+		assert_bool(LevelLoader.parse_level(source,content.catalog).ok()).is_false()

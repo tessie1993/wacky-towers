@@ -162,6 +162,11 @@ for biome in biomes:
     if r['id'] in supported:rs.append(r)
     else:unsupported.append('rule:'+r['id'])
    data['rules']=rs
+   # Lanterns light the same reflected landing footprint as the level's mirror.
+   mirror=next((r for r in rs if r['id']=='mirror'),None)
+   if mirror:
+    for rule in rs:
+     if rule['id']=='fog' and 'lantern_radius' in rule.get('params',{}):rule['params']['mirror_axis']=mirror.get('params',{}).get('mirror_axis','x')
    g=data.setdefault('goal',{'type':'clear_n','n':3})
    gt=g.get('type','clear_n');gt={'clear':'clear_n','fill_shape':'shape'}.get(gt,gt);g['type']=gt
    if gt=='clear_n':g['n']=int(g.get('n',g.get('N',3)));g.pop('N',None)

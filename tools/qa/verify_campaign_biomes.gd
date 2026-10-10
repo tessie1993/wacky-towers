@@ -20,7 +20,7 @@ func _run()->void:
 			if int(entry.tier)<=10:main_rows.append(row)
 			else:bonus_rows.append(row)
 			if not row.failures.is_empty():report.failures.append({"id":row.id,"failures":row.failures})
-			report.biomes.append({"id":biome,"mains":main_rows.size(),"extras":bonus_rows.size(),"smoke_passed":main_rows.filter(func(r:Dictionary)->bool:return r.smoke_status=="PASS").size(),"finite_puzzles_won":(main_rows+bonus_rows).filter(func(r:Dictionary)->bool:return r.get("puzzle",{}).get("status","")=="WIN").size()})
+		report.biomes.append({"id":biome,"mains":main_rows.size(),"extras":bonus_rows.size(),"smoke_passed":main_rows.filter(func(r:Dictionary)->bool:return r.smoke_status=="PASS").size(),"finite_puzzles_won":(main_rows+bonus_rows).filter(func(r:Dictionary)->bool:return r.get("puzzle",{}).get("status","")=="WIN").size()})
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://production/qa/evidence/full-build"))
 	var file:=FileAccess.open(OUTPUT,FileAccess.WRITE);file.store_string(JSON.stringify(report,"\t"));file.close()
 	print("CAMPAIGN_REPORT levels=",report.levels.size()," failures=",report.failures.size()," path=",OUTPUT)
@@ -75,10 +75,20 @@ func _verify(entry: Dictionary)->Dictionary:
 			if sim.get_phase()==BoardSim.Phase.SELECTING and not sim.kit_choices().is_empty():sim.queue_command(SimCommand.make(SimEvents.CMD_PICK_SHAPE,[sim.kit_choices()[0].shape_id]))
 			sim.step()
 		if sim.get_piece()==null:break
-		sim.queue_command(SimCommand.make(SimEvents.CMD_HARD_DROP));sim.step()
-		if flick_expected and sim.capabilities().ice_flick:
-			row.ice_flick_reachable=true
-			sim.queue_command(SimCommand.make(SimEvents.CMD_FLICK,[Vector3i(0,0,1)]));sim.step()
+		if flick_expected:
+			sim.queue_command(SimCommand.make(SimEvents.CMD_SOFT_DROP_ON))
+			for tick: int in 1800:
+				sim.step()
+				if sim.capabilities().ice_flick or sim.get_piece()==null:break
+			sim.queue_command(SimCommand.make(SimEvents.CMD_SOFT_DROP_OFF))
+			if sim.capabilities().ice_flick:
+				var before: int=sim.capabilities().flicks_left
+				var direction:=Vector3i(0,0,1)
+				if sim.board().cast(sim.get_piece().cells(),direction)==0:direction=Vector3i(0,0,-1)
+				sim.queue_command(SimCommand.make(SimEvents.CMD_FLICK,[direction]));sim.step()
+				row.ice_flick_reachable=row.ice_flick_reachable or sim.capabilities().flicks_left<before
+		else:
+			sim.queue_command(SimCommand.make(SimEvents.CMD_HARD_DROP));sim.step()
 		sim.queue_command(SimCommand.make(SimEvents.CMD_HARD_DROP));sim.step()
 		for tick: int in 240:
 			if sim.get_phase() not in [BoardSim.Phase.GRACE,BoardSim.Phase.RESTING,BoardSim.Phase.RESOLVING]:break

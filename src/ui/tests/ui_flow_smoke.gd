@@ -45,6 +45,16 @@ func _run():
     assert(seen[-1].id==&"use_skill")
     press(ui,"Potion 2")
     assert(seen[-1].id==&"use_item")
+    ui.show_hud({"items":{"enabled":true,"slots":[{"id":"slow_time"},{"id":"fog"}],"effects":{"fog":{"remaining_ms":7100,"duration_ms":10000}}},"item_target_available":true})
+    press(ui,"2 · Fog")
+    assert(seen[-1].id==&"select_item_slot" and seen[-1].args.slot==1)
+    press(ui,"Use →")
+    assert(seen[-1].id==&"use_item" and seen[-1].args.slot==1)
+    assert(ui._hud_labels.item_effects.text=="Fog 8s")
+    ui.update_hud({"item_target_available":false})
+    assert(ui._hud_labels.item_use.disabled)
+    ui.update_hud({"item_target_available":true,"items":{"enabled":true,"slots":[{"id":"slow_time"},{"id":"fog","pending":true}],"effects":{}}})
+    assert(ui._hud_labels.item_use.disabled and ui._hud_labels.item_use.text=="Waiting")
     ui.show_hud({"capabilities":{"kit":true,"undo":true,"reset":true,"choose_down":true,"ice_flick":true,"flicks_left":1}})
     press(ui,"Kit")
     assert(seen[-1].id==&"open_tools")
@@ -82,6 +92,11 @@ func _run():
     assert(seen[-1].id==&"host_lan" and seen[-1].args.port==24680 and seen[-1].args.character=="c4")
     press(ui,"Start practice  →")
     assert(seen[-1].id==&"start_tournament" and seen[-1].args.players.size()==2 and seen[-1].args.players[0].character_id=="c4")
+    ui.show_tournament({"profile_name":"Clover","character":"c4","party_perks":[{"id":"long_look","name":"Long Look","character":"c4","edge":.05,"owned":true},{"id":"breeze_brake","name":"Breeze Brake","character":"c1","edge":.06,"owned":true,"equipped":true}]})
+    for toggle in ui._root.find_children("*","CheckButton",true,false):
+      if toggle.text=="Long Look  ·  5% edge": toggle.button_pressed=true
+    press(ui,"Host party")
+    assert(seen[-1].args.character=="c4" and seen[-1].args.perks==["long_look"])
     ui.show_physics()
     for picker in ui._root.find_children("*","OptionButton",true,false):
       if picker.get_item_text(0)=="Tower Race":

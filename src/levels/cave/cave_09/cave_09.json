@@ -32,7 +32,8 @@
         "invisible_alpha": 0.12,
         "reveal_ms": 700,
         "lantern_radius": 1,
-        "skin": "lantern_circle"
+        "skin": "lantern_circle",
+        "mirror_axis": "z"
       }
     }
   ],

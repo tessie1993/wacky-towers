@@ -19,10 +19,15 @@
       "type": "number"
     },
     "claw_grab": {
-      "type": "number"
+      "type": "number",
+      "min": 0,
+      "max": 1
     },
     "counter": {
-      "type": "string"
+      "type": "string",
+      "choices": [
+        "clear"
+      ]
     }
   },
   "incompatible_with": []

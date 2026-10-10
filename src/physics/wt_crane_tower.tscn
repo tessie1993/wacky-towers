@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://hlcg4a0xdvlv"]
+
+[ext_resource type="Script" uid="uid://dvlc4tt2xt0ug" path="res://src/physics/wt_crane_tower.gd" id="1_vkmra"]
+
+[node name="CraneTower" type="Node3D" unique_id=1950686790]
+script = ExtResource("1_vkmra")

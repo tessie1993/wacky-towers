@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b1ehb8xcq62ar"
 path.s3tc="res://.godot/imported/LargeIcon.png-dacb62bf38ca3e946d0654eaffe6558b.s3tc.ctex"
+path.etc2="res://.godot/imported/LargeIcon.png-dacb62bf38ca3e946d0654eaffe6558b.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://addons/TileMapLayer3D/assets/icons/LargeIcon.png"
-dest_files=["res://.godot/imported/LargeIcon.png-dacb62bf38ca3e946d0654eaffe6558b.s3tc.ctex"]
+dest_files=["res://.godot/imported/LargeIcon.png-dacb62bf38ca3e946d0654eaffe6558b.s3tc.ctex", "res://.godot/imported/LargeIcon.png-dacb62bf38ca3e946d0654eaffe6558b.etc2.ctex"]
 
 [params]
 

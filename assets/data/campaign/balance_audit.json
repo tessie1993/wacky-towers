@@ -739,8 +739,8 @@
       "id": "ice_10",
       "biome": "ice",
       "tier": 10,
-      "area": 72,
-      "height": 12,
+      "area": 48,
+      "height": 6,
       "goal": "clear_n",
       "target": 4,
       "g0": 1.1,
@@ -750,7 +750,7 @@
         "gust",
         "ice_slide"
       ],
-      "fingerprint": "4c5191a9024c99aa07be15d9e343b883f37021f538f91f7f126c823c0a86f103",
+      "fingerprint": "7691250422040d0edc250e43fbd8be4fef0a027761cd1f46127b36ec3fde7088",
       "stars": {
         "t2": 270000,
         "t3": 190000
@@ -1692,7 +1692,7 @@
         "mirror",
         "fog"
       ],
-      "fingerprint": "2b3306d482348d112fd30a8f63fe8cb31ac7c11ed2f5d4b823bdf919df8ac2e5",
+      "fingerprint": "8954077d2ac0f618cc65de6749869bc79ce3480c05ada4165f9e090394b60134",
       "stars": {
         "t2": 295000,
         "t3": 205000

@@ -22,6 +22,9 @@ var _occlusion: int = 0
 var _focus: Vector3 = Vector3.ZERO
 var _eye: Vector3 = Vector3(1,1,1)
 var _visibility: float = 1.0
+var _cell_visibility: Dictionary = {}
+var _item_hidden: Dictionary = {}
+var _cell_default: float = 1.0
 var _stickers: int = 0
 var _custom_content: bool = false
 
@@ -131,7 +134,50 @@ func set_stickers(code: int) -> void:
 
 func set_visibility(alpha: float) -> void:
 	_visibility = clampf(alpha,0.0,1.0)
+	_cell_visibility.clear()
+	_cell_default = 1.0
+	_refresh_visibility_data()
 	_update_presentation_material()
+
+
+## Authoritative Cave fade/lantern coverage by cell; each newly locked piece stays bright.
+func set_cell_visibility(records: Array, default_alpha: float = 1.0) -> void:
+	_visibility = 1.0
+	_cell_default = clampf(default_alpha,0.0,1.0)
+	_cell_visibility.clear()
+	for record: Variant in records:
+		if record is Dictionary and record.get("cell") is Vector3i and _board.in_bounds(record.cell):
+			var index: int = _board.index(record.cell)
+			if index >= 0:
+				_cell_visibility[index] = clampf(float(record.get("alpha",1.0)),0.0,1.0)
+	_refresh_visibility_data()
+	_update_presentation_material()
+
+
+## The fog item is an independent mask and may coexist with biome fog.
+func set_item_hidden(cells: Array) -> void:
+	_item_hidden.clear()
+	for cell: Variant in cells:
+		if cell is Vector3i and _board.in_bounds(cell):
+			var index: int = _board.index(cell)
+			if index >= 0:
+				_item_hidden[index] = true
+	_refresh_visibility_data()
+	_update_presentation_material()
+
+
+func visibility_at(index: int) -> float:
+	var alpha: float = float(_cell_visibility.get(index,_cell_default))
+	return minf(alpha,.1) if _item_hidden.has(index) else alpha
+
+
+func _refresh_visibility_data() -> void:
+	if _mm == null:
+		return
+	for slot: int in _slots.filled():
+		var custom: Color = _mm.get_instance_custom_data(slot)
+		custom.a = visibility_at(_slots.cell_at(slot))
+		_mm.set_instance_custom_data(slot,custom)
 
 
 ## Fades or cuts foreground cubes above the ghost; changes only rendered coverage.
@@ -145,7 +191,7 @@ func set_occlusion(mode: String, focus: Vector3, eye: Vector3) -> void:
 func _update_presentation_material() -> void:
 	if _mmi == null:
 		return
-	if not _patterns and _occlusion == 0 and _visibility >= .999 and _stickers==0:
+	if not _patterns and _occlusion == 0 and _visibility >= .999 and _stickers==0 and _cell_visibility.is_empty() and _item_hidden.is_empty():
 		_mmi.material_override = _plain_material
 		return
 	if _pattern_material == null:
@@ -154,6 +200,7 @@ func _update_presentation_material() -> void:
 varying vec3 lp;
 varying vec3 ln;
 varying float motif;
+varying float cell_alpha;
 varying vec3 center;
 uniform int stickers=0;
 uniform bool patterns=false;
@@ -162,9 +209,9 @@ uniform int occlusion=0;
 uniform vec3 focus=vec3(0.0);
 uniform vec3 eye=vec3(1.0);
 uniform float visibility=1.0;
-void vertex(){lp=VERTEX;ln=NORMAL;motif=INSTANCE_CUSTOM.r;center=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;}
+void vertex(){lp=VERTEX;ln=NORMAL;motif=INSTANCE_CUSTOM.r;cell_alpha=INSTANCE_CUSTOM.a;center=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;}
 void fragment(){
- if(fract(sin(dot(floor(FRAGCOORD.xy),vec2(12.9898,78.233)))*43758.5453)>visibility)discard;
+ if(fract(sin(dot(floor(FRAGCOORD.xy),vec2(12.9898,78.233)))*43758.5453)>visibility*cell_alpha)discard;
  vec2 toward=normalize(eye.xz-focus.xz);
  if(occlusion>0&&center.y>focus.y+.4&&dot(center.xz-focus.xz,toward)>.3){
   if(occlusion==2)discard;
@@ -231,4 +278,4 @@ func _write(slot: int, cell: int) -> void:
 	var pos: Vector3 = BoardGeom.cell_center(_board.cell(cell), _board.size())
 	_mm.set_instance_transform(slot, Transform3D(Basis.from_scale(Vector3.ONE * (.001 if _custom_content and _board.get_kind(cell)>=3 else _scale)), pos))
 	_mm.set_instance_color(slot, _palette.color(_board.get_color(cell)))
-	_mm.set_instance_custom_data(slot, Color(float(_palette.pattern_code(_board.get_color(cell)))/16.0, 0, 0, 1.0))
+	_mm.set_instance_custom_data(slot, Color(float(_palette.pattern_code(_board.get_color(cell)))/16.0, 0, 0, visibility_at(cell)))
