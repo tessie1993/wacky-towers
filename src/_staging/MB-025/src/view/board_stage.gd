@@ -24,7 +24,7 @@ var _t: float = 0.0
 
 
 func _ready() -> void:
-	set_process(false)
+	set_process(_danger_on and not reduced_motion) # build()/set_danger() may have run before entering the tree
 
 
 func _process(delta: float) -> void:

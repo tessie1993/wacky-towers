@@ -19,3 +19,7 @@ Run `res://src/dev/board_view_demo.tscn` (ortho camera, default yaw). On screen:
 - PieceView GLB cube shrink only applies when the GLB has exactly cube_count MeshInstance3Ds; otherwise overlap stays. Fallback cubes use offsets(0) + source_pivot.
 - Ghost shadow default (no shadow_cells) shades the floor (y=0); the demo passes landing-column cells instead.
 - Greyscale check of dash/grid not run (nothing run).
+
+## Review
+- board_stage.gd: _ready() no longer forces set_process(false) (it clobbered a set_danger(true) made before the node entered the tree); it now derives from _danger_on/reduced_motion.
+- Rest checked OK vs live/staged APIs (BoardState.Op/take_delta/active_cell_count, SlotMap, ShapeBank.ids/get_shape, ActivePiece, ArtSet/BoardGeom/PaletteTable.color, CameraMath), MultiMesh order (format, use_colors, custom data, mesh, then instance_count), next_pass cull_front+grow outline, inline shaders valid for 4.7.
