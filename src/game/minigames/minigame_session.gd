@@ -99,7 +99,8 @@ func _advance() -> void:
 			charge_send(StringName(state.get("ghost_effect", "pump")))
 			_ghost_send_at = now_ms() + int(params.get("ghost_send_ms", 15000))
 	else:
-		var board_events: Array[SimEvent] = sim.step() if sim != null else []
+		var board_events: Array[SimEvent] = []
+		if sim != null: board_events = sim.step()
 		for event: SimEvent in board_events:
 			var data: Dictionary = event.data.duplicate(true)
 			data["player_id"] = player_id
