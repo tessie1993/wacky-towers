@@ -31,22 +31,28 @@ var countdown_n: int = 0
 
 
 ## Builds a snapshot from the live sim. Example: var snap := HudSnapshot.from_sim(sim, level).
+@warning_ignore("integer_division")
 static func from_sim(sim: BoardSim, level: LevelData) -> HudSnapshot:
-	var s := HudSnapshot.new()
-	var goal_type := StringName(level.goal.get("type", ""))
+	var s: HudSnapshot = HudSnapshot.new()
+	var goal_type: StringName = StringName(level.goal.get("type", ""))
 	s.goal_icon = GOAL_ICONS.get(goal_type, DEFAULT_GOAL_ICON)
 	s.goal_target = int(level.goal.get("n", level.goal.get("target", 0)))
 	s.star2_ms = int(level.stars.get("t2", 0))
 	s.star3_ms = int(level.stars.get("t3", 0))
 	for r in level.rules:
 		s.rule_icons.append(StringName(r.get("id", "")))
-	var progress: GoalState = sim.goal_progress()
-	s.goal_done = progress.layers_cleared
-	s.warnings_left = progress.warnings_left
-	s.level_ms = progress.level_ms
-	var now := sim.now_ms()
-	for shape_id in sim.preview(NEXT_SHAPES_COUNT):
-		s.next_shapes.append(String(shape_id))
+	# Dynamic calls: BoardSim does not expose goal_progress()/preview() yet (parse-safe until CH-064).
+	if sim.has_method("goal_progress"):
+		var progress: GoalState = sim.call("goal_progress")
+		if progress != null:
+			s.goal_done = progress.layers_cleared
+			s.warnings_left = progress.warnings_left
+			s.level_ms = progress.level_ms
+	var now: int = sim.now_ms()
+	if sim.has_method("preview"):
+		var ids: Array = sim.call("preview", NEXT_SHAPES_COUNT)
+		for shape_id: Variant in ids:
+			s.next_shapes.append(String(shape_id))
 	match sim.get_phase():
 		BoardSim.Phase.COUNTDOWN:
 			s.state = State.COUNTDOWN
@@ -63,4 +69,6 @@ static func _is_danger(sim: BoardSim) -> bool:
 	if not sim.has_method("board"):
 		return false
 	var b: BoardState = sim.call("board")
+	if b == null:
+		return false
 	return b.stack_height() >= b.limit_layer() - DANGER_MARGIN_LAYERS

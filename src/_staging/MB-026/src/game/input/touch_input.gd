@@ -54,8 +54,8 @@ var _enabled_axes: Array[StringName] = InputAxes.ALL.duplicate()
 
 ## Radius in px for a scale: scaled base radius, never under half the 56 dp minimum diameter.
 ## Usage: TouchInput.radius_px(0.75, 0.75, 2.0, 1.0) returns 30.0 (1 dp = 1 px)
-static func radius_px(scale: float, lo: float, hi: float, dp_to_px: float) -> float:
-	var s: float = clampf(scale, lo, hi)
+static func radius_px(scale_factor: float, lo: float, hi: float, dp_to_px: float) -> float:
+	var s: float = clampf(scale_factor, lo, hi)
 	return maxf(BASE_RADIUS_DP * s, MIN_DIAMETER_DP * 0.5) * dp_to_px
 
 
@@ -64,8 +64,11 @@ static func is_landscape(viewport_size: Vector2) -> bool:
 	return viewport_size.x >= viewport_size.y
 
 
-func _ready() -> void:
+func _init() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS  # virtual buttons only work under pause this way (ADR-0012 V6)
+
+
+func _ready() -> void:
 	_layouts = _load_layouts()
 	for entry: Array in SLOTS:
 		var b := GUIDEVirtualButton.new()

@@ -2,16 +2,16 @@ extends RefCounted
 ## Shared UI builders. Touch targets >= MIN_TOUCH px, text through tr() keys with English defaults.
 ## Preload by path: const Kit := preload("res://src/ui/common/ui_kit.gd")
 
-const MIN_TOUCH := 88
+const MIN_TOUCH: int = 88
 
 ## Translate `key`; fall back to `default_text` while no translation exists.
 static func t(key: String, default_text: String) -> String:
-	var s := str(TranslationServer.translate(key))
+	var s: String = str(TranslationServer.translate(key))
 	return default_text if s == "" or s == key else s
 
 
-static func button(key: String, default_text: String, min_size := Vector2(MIN_TOUCH, MIN_TOUCH), gold := false) -> Button:
-	var b := Button.new()
+static func button(key: String, default_text: String, min_size: Vector2 = Vector2(MIN_TOUCH, MIN_TOUCH), gold: bool = false) -> Button:
+	var b: Button = Button.new()
 	b.text = t(key, default_text)
 	b.custom_minimum_size = min_size
 	if gold:
@@ -19,8 +19,8 @@ static func button(key: String, default_text: String, min_size := Vector2(MIN_TO
 	return b
 
 
-static func label(key: String, default_text: String, variation: StringName = &"", align := HORIZONTAL_ALIGNMENT_CENTER) -> Label:
-	var l := Label.new()
+static func label(key: String, default_text: String, variation: StringName = &"", align: HorizontalAlignment = HORIZONTAL_ALIGNMENT_CENTER) -> Label:
+	var l: Label = Label.new()
 	l.text = t(key, default_text)
 	l.horizontal_alignment = align
 	if variation != &"":
@@ -29,7 +29,7 @@ static func label(key: String, default_text: String, variation: StringName = &""
 
 
 static func backdrop(root: Control, color: Color) -> ColorRect:
-	var r := ColorRect.new()
+	var r: ColorRect = ColorRect.new()
 	r.color = color
 	root.add_child(r)
 	r.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -37,17 +37,17 @@ static func backdrop(root: Control, color: Color) -> ColorRect:
 
 
 ## Centred column on `root`; inside a rounded panel when `panel` is true.
-static func column(root: Control, panel := true, min_width := 460) -> VBoxContainer:
-	var center := CenterContainer.new()
+static func column(root: Control, panel: bool = true, min_width: int = 460) -> VBoxContainer:
+	var center: CenterContainer = CenterContainer.new()
 	root.add_child(center)
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var col := VBoxContainer.new()
+	var col: VBoxContainer = VBoxContainer.new()
 	col.add_theme_constant_override("separation", 16)
 	col.custom_minimum_size.x = min_width
 	if panel:
-		var p := PanelContainer.new()
-		var m := MarginContainer.new()
-		for side in ["left", "right", "top", "bottom"]:
+		var p: PanelContainer = PanelContainer.new()
+		var m: MarginContainer = MarginContainer.new()
+		for side: String in ["left", "right", "top", "bottom"]:
 			m.add_theme_constant_override("margin_" + side, 32)
 		center.add_child(p)
 		p.add_child(m)
@@ -61,11 +61,12 @@ static func column(root: Control, panel := true, min_width := 460) -> VBoxContai
 static func click_through(n: Node) -> void:
 	if n is Control and not n is BaseButton:
 		(n as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
-	for c in n.get_children():
+	for c: Node in n.get_children():
 		click_through(c)
 
 
 ## "m:ss" from seconds.
+@warning_ignore("integer_division")
 static func clock(seconds: float) -> String:
-	var s := int(maxf(seconds, 0.0))
+	var s: int = int(maxf(seconds, 0.0))
 	return "%d:%02d" % [s / 60, s % 60]

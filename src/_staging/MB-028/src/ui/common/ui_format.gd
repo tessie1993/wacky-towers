@@ -1,11 +1,12 @@
 class_name UiFormat extends RefCounted
 ## The one place UI numbers become text (ADR-0016 §9). Screens never concatenate digits.
 
-const FILLED_STAR := "★"
-const EMPTY_STAR := "☆"
+const FILLED_STAR: String = "★"
+const EMPTY_STAR: String = "☆"
 
 
 ## "m:ss" from sim milliseconds (negative -> 0:00). Example: time_ms(65000) == "1:05".
+@warning_ignore("integer_division")
 static func time_ms(ms: int) -> String:
 	var s: int = maxi(ms, 0) / 1000
 	return "%d:%02d" % [s / 60, s % 60]

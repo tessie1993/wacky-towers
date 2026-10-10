@@ -13,3 +13,7 @@ Editor check (script eval, meadow board):
 - T at pivot (3,5,1) against the -z wall: `Movement.try_rotate(p, board, Orientations.Axis.Y, 1, {})` -> OK, kicked, offset (0,0,1).
 - `try_translate` +x repeatedly on a 4-wide board: last call BLOCKED / out_of_bounds, pivot unchanged.
 - `{"enabled_axes": [1]}` with Axis.X -> DISABLED.
+
+## Review (gdscript-specialist, 2026-10-10)
+- Verdict: ready, no fixes. Live BoardState/ActivePiece/Orientations signatures match every call; pure (no Node/RNG/Time). Candidate counts (10/14/12) verified by reading.
+- Dependency note: BoardState (MB-011) and ActivePiece (MB-010) are already live.

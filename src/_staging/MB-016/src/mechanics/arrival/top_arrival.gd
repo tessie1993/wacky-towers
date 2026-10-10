@@ -6,6 +6,7 @@ const PLUGIN_ID := &"top"
 
 ## Plan for `shape`: centred on the footprint, top touching the ceiling, blocked if the cells are not free.
 ## Even sizes round toward -x/-z. Masked-board tie rule (G7) is a later chunk. Usage: `style.plan_arrival(shape, board, api)`.
+@warning_ignore("integer_division")
 func plan_arrival(shape: ShapeDef, _board: BoardState, api: RuleApi) -> ArrivalPlan:
 	var plan: ArrivalPlan = ArrivalPlan.new()
 	var o: int = shape.spawn_orient

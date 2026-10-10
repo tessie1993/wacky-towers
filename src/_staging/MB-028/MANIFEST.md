@@ -17,3 +17,13 @@ Notes:
 - Not added: TabButton/ProfileCard/ToggleRow variations (ui-theme open question), fonts, colourblind variants. Base font sizes follow ui-theme.md pt table (14 body); prototype screens will look smaller than before.
 - HudSnapshot.from_sim needs BoardSim.goal_progress() -> GoalState (not in board_sim.gd yet) and preview(n) (CH-064); danger check needs a BoardSim.board() -> BoardState accessor, else stays PLAY. Score is 0 until a score source exists. COUNTDOWN_MS mirrors knob goal.countdown_ms.
 - ProfileStore uses ADR-0013 folder name `slot_<n>` (ticket said `profile_<n>`). create() also makes the new profile active (profile-select.md). stars/furthest read optional keys from slot progress.json.
+
+## Review
+- hud_snapshot.gd: goal_progress()/preview() were static calls on BoardSim that does not have them (parse error); now guarded has_method + call(); null-guard on board(); typed locals.
+- theme_scaler.gd: `duplicate() as Theme`, typed loop vars and consts.
+- ui_format.gd, ui_kit.gd: integer_division warning ignores; explicit types on params, locals and loop vars (no `:=` on params).
+- profile_store.gd: write errors now checked and rolled back (create/rename/delete/switch_to; _save_index returns Error); JSON read via _read_json (empty text guard, Dictionary check); last_used type-checked (JSON numbers are float).
+- meadow.tres: added `base_type` for all variations so the overlay resolves them standalone.
+- Checked, no change: both .tres parse-valid by inspection (no ext_resources, all SubResource ids defined); lint_ui_strings.gd has @tool + EditorScript + _run(); strings.csv OK.
+- Collision note: ui_kit.gd has no class_name (preload by path), same as src/ui/_staging/theme/ui_kit.gd, which is deleted on move; no duplicate class_names.
+- Dependencies: HudSnapshot needs BoardSim.goal_progress()/preview(n)/board() (CH-064) to give real data; ProfileStore atomic disk SaveIO is Phase 5.

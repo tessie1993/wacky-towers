@@ -21,3 +21,9 @@ Paths relative to MB-026/ mirror final res:// paths. Depends on MB-015 (InputAxe
 - Scale limits are exports plus configure() args until knobs control.button_scale_* exist. The 8 dp gap is not enforced; at 200% buttons may overlap, needs a device pass.
 - Gestures preset only keeps the buttons; GestureZone (drag/flick zones) is a separate ticket. Touch remap (button_action) not included.
 - Tilt L/R = PADDLE1/2, Roll = X/Y per MB-015 play.tres (V5 verified indices).
+
+## Review
+- touch_input.gd: process_mode = ALWAYS moved to `_init()` (set before children/entering tree); `radius_px` param renamed scale -> scale_factor (shadowed CanvasLayer.scale).
+- Verified against addons/guide: `GUIDEVirtualButton._release()` and `_finger_positions: Dictionary` exist (private, no public release API in the addon); `draw_debug`, `button_radius`, `button_index`, `GUIDEVirtualJoyBase.InputMode.MOUSE_AND_TOUCH` exist. PADDLE1-4/X/Y/shoulder indices match MB-015 play.tres. Hidden buttons are released before DISABLED, so no stuck presses.
+- gestures.gd uses InputAxes (MB-015 dependency, integrate first); touch_layouts.json parses and covers all 16 slots in buttons/one_hand.
+- Unresolved: live tests/unit/game/gestures_test.gd still expects &"horizontal"/&"vertical"; update on integration.

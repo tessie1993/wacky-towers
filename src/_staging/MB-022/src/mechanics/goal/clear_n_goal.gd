@@ -9,7 +9,7 @@ var _n: int = 1
 ## Reads goal["n"] (whole number >= 1; anything else is left to validate()). Usage: `ev.configure({"n": 4})`.
 func configure(goal: Dictionary) -> void:
 	var n: Variant = JsonNum.whole_int(goal.get("n"))
-	_n = n if n != null and n >= 1 else 1
+	_n = int(n) if n != null and int(n) >= 1 else 1
 
 
 ## WON when state.layers_cleared >= n, else RUNNING. Usage: `ev.evaluate(state, api)`.

@@ -65,7 +65,7 @@ func _ready() -> void:
 	ROT_ROLL_RIGHT.just_triggered.connect(try_rotate.bind(InputAxes.ROLL, 1))
 	SOFT_DROP.just_triggered.connect(_set_soft.bind(true))
 	SOFT_DROP.completed.connect(_set_soft.bind(false))
-	HARD_DROP.just_triggered.connect(_emit_if_enabled.bind(hard_drop))
+	HARD_DROP.just_triggered.connect(_emit_gameplay.bind(hard_drop))
 	VIEW_L.just_triggered.connect(_emit_view.bind(-1))
 	VIEW_R.just_triggered.connect(_emit_view.bind(1))
 	PAUSE.just_triggered.connect(_emit_if_enabled.bind(pause_pressed))
@@ -106,7 +106,7 @@ func set_enabled_axes(axes: Array[StringName]) -> void:
 
 ## Emits [signal rotate_piece] unless disabled or the axis is not allowed.
 func try_rotate(axis: StringName, dir: int) -> void:
-	if _enabled and axis in enabled_axes:
+	if _gameplay_allowed() and axis in enabled_axes:
 		rotate_piece.emit(axis, dir)
 
 
@@ -120,13 +120,13 @@ static func snap_dir(v: Vector2) -> Vector2i:
 
 
 func _process(delta: float) -> void:
-	var dir: Vector2i = snap_dir(MOVE.value_axis_2d) if _enabled else Vector2i.ZERO
+	var dir: Vector2i = snap_dir(MOVE.value_axis_2d) if _gameplay_allowed() else Vector2i.ZERO
 	for i in _repeat.update(dir, delta):
 		move.emit(dir)
 
 
 func _set_soft(active: bool) -> void:
-	if active and not _enabled:
+	if active and not _gameplay_allowed():
 		return
 	if _soft_active != active:
 		_soft_active = active
@@ -134,10 +134,22 @@ func _set_soft(active: bool) -> void:
 
 
 func _emit_view(dir: int) -> void:
-	if _enabled:
+	if _gameplay_allowed():
 		view_rotate.emit(dir)
 
 
+func _emit_gameplay(sig: Signal) -> void:
+	if _gameplay_allowed():
+		sig.emit()
+
+
+## Pause / restart still pass while the tree is paused (play_paused context intents).
 func _emit_if_enabled(sig: Signal) -> void:
 	if _enabled:
 		sig.emit()
+
+
+## Gameplay intents are ignored while disabled or while the tree is paused (ADR-0012 §7.5).
+## GUIDE runs in PROCESS_MODE_ALWAYS, so its actions keep firing under pause.
+func _gameplay_allowed() -> bool:
+	return _enabled and not (is_inside_tree() and get_tree().paused)

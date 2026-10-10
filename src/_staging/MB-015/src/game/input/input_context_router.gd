@@ -37,6 +37,17 @@ func set_screen(ctx: Ctx) -> void:
 	reassert()
 
 
+## Swaps the GUIDE remapping config safely: disable every router context, set the
+## config, then re-enable the current one (GUIDE caches mappings per enabled context).
+func apply_remapping_config(config: GUIDERemappingConfig) -> void:
+	for c: int in Ctx.values():
+		var ctx: GUIDEMappingContext = _context_for(c as Ctx)
+		if ctx:
+			GUIDE.disable_mapping_context(ctx)
+	GUIDE.set_remapping_config(config)
+	reassert()
+
+
 ## Returns the current screen.
 func current() -> Ctx:
 	return _current

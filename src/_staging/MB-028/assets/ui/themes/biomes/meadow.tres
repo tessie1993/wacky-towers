@@ -236,6 +236,13 @@ content_margin_top = 10.0
 content_margin_bottom = 10.0
 
 [resource]
+PlateFrame/base_type = &"PanelContainer"
+PanelSheet/base_type = &"PanelContainer"
+DialogPanel/base_type = &"PanelContainer"
+ToastPanel/base_type = &"PanelContainer"
+PrimaryButton/base_type = &"Button"
+IconButton/base_type = &"Button"
+InPlayButton/base_type = &"Button"
 PlateFrame/styles/panel = SubResource("m_plate")
 PanelSheet/styles/panel = SubResource("m_sheet")
 DialogPanel/styles/panel = SubResource("m_dialog")

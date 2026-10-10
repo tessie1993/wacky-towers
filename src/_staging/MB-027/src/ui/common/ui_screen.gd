@@ -12,12 +12,9 @@ signal intent(id: StringName, args: Dictionary)
 @export var back_rule: StringName = &"pop"
 
 
-## Called when the screen becomes the active top. [param is_resume] is true when uncovered by a pop.
+## Called when the screen becomes the active top. Focus is not grabbed here: AppFlow grabs [method default_focus] only in keyboard/gamepad mode (ADR-0016 §6). [param is_resume] is true when uncovered by a pop.
 func enter(is_resume: bool) -> void:
 	show()
-	var target: Control = default_focus()
-	if target != null:
-		target.grab_focus()
 
 
 ## Called when the screen leaves the stack.
