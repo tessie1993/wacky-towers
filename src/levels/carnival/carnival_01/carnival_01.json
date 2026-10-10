@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "carnival_01",
+  "biome": "carnival",
+  "tier": 1,
+  "name": "LVL_CARNIVAL_01_TITLE",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"],
+    "opening_set": ["o", "i"],
+    "opening_count": 2
+  },
+  "knobs": {
+    "fall.g0": 1.2,
+    "goal.warnings_max": 2,
+    "goal.top_out": "rescue"
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    { "id": "mascot_hint", "params": {} },
+    { "id": "angle_gem", "params": { "skin": "duck_prize" } },
+    { "id": "golden_row", "params": { "start_layer": 1, "bonus": 200, "goal_counter": "gold" } },
+    { "id": "balloon", "params": { "balloon_per_bag": 1, "balloon_g_mult": 0.6, "balloon_drift_ms": 3000 } }
+  ],
+  "stars": {
+    "t2": 170000,
+    "t3": 120000
+  },
+  "music": "carnival_01_tbd",
+  "story": {
+    "title_key": "LVL_CARNIVAL_01_TITLE",
+    "premise_key": "LVL_CARNIVAL_01_PREMISE",
+    "mascot_role": "helper",
+    "icon": "balloon"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/carnival.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1, "id": "carnival_01", "biome": "carnival", "tier": 1, "name": "LVL_CARNIVAL_01_TITLE",
+      "board": { "width": 5, "depth": 5, "h_play": 10 },
+      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r"], "opening_set": ["o","i"], "opening_count": 2 },
+      "knobs": { "fall.g0": 1.20, "goal.warnings_max": 2, "goal.top_out": "rescue" },
+      "goal": { "type": "clear_n", "N": 3 },
+      "rules": [
+        { "id": "mascot_hint", "params": {} },
+        { "id": "angle_gem", "params": { "skin": "duck_prize" } },
+        { "id": "golden_row", "params": { "start_layer": 1, "bonus": 200, "goal_counter": "gold" } },
+        { "id": "balloon", "params": { "balloon_per_bag": 1, "balloon_g_mult": 0.6, "balloon_drift_ms": 3000 } }
+      ],
+      "stars": { "t2": 170000, "t3": 120000 },
+      "music": "carnival_01_tbd",
+      "story": { "title_key": "LVL_CARNIVAL_01_TITLE", "premise_key": "LVL_CARNIVAL_01_PREMISE", "mascot_role": "helper", "icon": "balloon" }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "golden_row is a wave-3 rule (design/gdd/mechanics-wave3.md W15), skinned as the Tumble Fair event 'Prize Row'. Gold is a score bonus only: no counter goal type exists.",
+      "balloon is the Celestial Zero-G Puff callback, skinned as a stall balloon; g_mult raised to 0.6 (Celestial 0.5) because tier 1 runs at the biome's base speed."
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}
