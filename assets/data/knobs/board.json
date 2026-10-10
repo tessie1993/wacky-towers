@@ -1,0 +1,85 @@
+{
+  "knobs": [
+    {
+      "id": "board.max_cells",
+      "type": "count",
+      "default": 8192,
+      "min": 1,
+      "max": 65536,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "docs/architecture/adr-0002-board-data-model.md#6"
+    },
+    {
+      "id": "board.max_errors",
+      "type": "count",
+      "default": 50,
+      "min": 1,
+      "max": 65536,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "docs/architecture/adr-0002-board-data-model.md#6"
+    },
+    {
+      "id": "board.max_height",
+      "type": "count",
+      "default": 32,
+      "min": 1,
+      "max": 64,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "docs/architecture/adr-0002-board-data-model.md#6"
+    },
+    {
+      "id": "board.max_side",
+      "type": "count",
+      "default": 24,
+      "min": 1,
+      "max": 64,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "docs/architecture/adr-0002-board-data-model.md#6"
+    },
+    {
+      "id": "board.min_active_per_layer",
+      "type": "count",
+      "default": 12,
+      "min": 1,
+      "max": 65536,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/board-grid.md#safe-ranges-for-per-level-overrides"
+    },
+    {
+      "id": "board.min_height",
+      "type": "count",
+      "default": 7,
+      "min": 1,
+      "max": 64,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "docs/architecture/adr-0002-board-data-model.md#6"
+    },
+    {
+      "id": "board.min_side",
+      "type": "count",
+      "default": 4,
+      "min": 1,
+      "max": 64,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/board-grid.md#safe-ranges-for-per-level-overrides"
+    },
+    {
+      "id": "board.spawn_clearance",
+      "type": "count",
+      "default": 4,
+      "min": 1,
+      "max": 64,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/board-grid.md#f4-height-limit-and-spawn-clearance",
+      "note": "Default C; the level loader sets C = L_max later."
+    }
+  ]
+}
