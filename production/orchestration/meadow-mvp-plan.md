@@ -28,3 +28,12 @@ Wait for EDITOR_FREE, take lock → move staged parts, scan, logs_read, fix → 
 - The Miller: **secretly lonely** — pranks because nobody invites him; small redemption at the end of Meadow.
 - Accessibility in MVP: camera-control types + control-scheme customisation, colourblind shapes/patterns, button remap + size, reduced motion, separate volume sliders (+ haptics).
 - Defaults pending: Pip/Miller via generate_3d; user logs into BlenderKit; Android first.
+
+## Phase 1 output paths (user, 2026-10-10)
+All new design docs go under `design/gdd/`:
+- `design/gdd/ux/` (screens, HUD, settings, interaction patterns)
+- `design/gdd/audio/` (audio direction, music sourcing, SFX cue list)
+- `design/gdd/narrative/` (characters, Meadow story, contradictions C1–C12, emote bubbles, skit scripts)
+- `design/gdd/meadow-candidate-atoms.md` (wobble, puff, sprout, fog ghost, eggs, ants, Pip's catch)
+- `design/gdd/meadow-asset-list.md` (every Meadow model, source, licence)
+- Exception: `design/accessibility-requirements.md` stays at that path, because the gate checks and `/architecture-review` look for it there.

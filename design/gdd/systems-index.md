@@ -23,44 +23,44 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 
 | # | System Name | Category | Priority | Status | Design Doc | Depends On |
 |---|-------------|----------|----------|--------|------------|------------|
-| 1 | Board / Grid | Core | MVP | Designed | design/gdd/board-grid.md | — |
-| 2 | Piece Set (inferred) | Core | MVP | Designed | design/gdd/piece-set.md | — |
+| 1 | Board / Grid | Core | MVP | Needs Revision | design/gdd/board-grid.md | — |
+| 2 | Piece Set (inferred) | Core | MVP | Needs Revision | design/gdd/piece-set.md | — |
 | 3 | Touch Controls | Core | MVP | Designed | design/gdd/touch-controls.md | — |
 | 4 | Camera & Rotate-View | Core | MVP | Designed | design/gdd/camera-rotate-view.md | Board / Grid |
 | 5 | Piece Spawner & Queue (inferred) | Gameplay | MVP | Designed | design/gdd/piece-spawner-queue.md | Piece Set |
-| 6 | Movement & Rotation | Gameplay | MVP | Designed | design/gdd/movement-rotation.md | Board / Grid, Piece Set, Touch Controls, Camera & Rotate-View |
-| 7 | Fall, Drop & Lock (inferred) | Gameplay | MVP | Designed | design/gdd/fall-drop-lock.md | Board / Grid, Movement & Rotation |
+| 6 | Movement & Rotation | Gameplay | MVP | Needs Revision | design/gdd/movement-rotation.md | Board / Grid, Piece Set, Touch Controls, Camera & Rotate-View |
+| 7 | Fall, Drop & Lock (inferred) | Gameplay | MVP | Needs Revision | design/gdd/fall-drop-lock.md | Board / Grid, Movement & Rotation |
 | 8 | Layer Clearing | Gameplay | MVP | Designed | design/gdd/layer-clearing.md | Board / Grid, Fall, Drop & Lock |
-| 9 | Level Goals & Fail States | Gameplay | MVP | Designed | design/gdd/level-goals-fail-states.md | Board / Grid, Layer Clearing |
-| 10 | Rule-Twist Framework | Gameplay | MVP | Designed | design/gdd/rule-twist-framework.md | Board / Grid, Piece Spawner & Queue, Movement & Rotation, Fall, Drop & Lock, Layer Clearing |
-| 11 | Level-Specific Mechanics | Gameplay | MVP | Designed | design/gdd/level-specific-mechanics.md | Rule-Twist Framework |
+| 9 | Level Goals & Fail States | Gameplay | MVP | Needs Revision | design/gdd/level-goals-fail-states.md | Board / Grid, Layer Clearing |
+| 10 | Rule-Twist Framework | Gameplay | MVP | Needs Revision | design/gdd/rule-twist-framework.md | Board / Grid, Piece Spawner & Queue, Movement & Rotation, Fall, Drop & Lock, Layer Clearing |
+| 11 | Level-Specific Mechanics | Gameplay | MVP | Needs Revision | design/gdd/level-specific-mechanics.md | Rule-Twist Framework |
 | 12 | Twist Library | Gameplay | MVP | Designed | design/gdd/twist-library.md | Rule-Twist Framework |
-| 13 | Level Data & Definition (inferred) | Gameplay | MVP | Designed | design/gdd/level-data-definition.md | Level Goals & Fail States, Rule-Twist Framework, Level-Specific Mechanics, Twist Library |
-| 14 | HUD (inferred) | UI | MVP | Designed | design/gdd/hud.md | Piece Spawner & Queue, Level Goals & Fail States |
-| 15 | Obstacles | Gameplay | Vertical Slice | Designed | design/gdd/obstacles.md | Board / Grid, Rule-Twist Framework |
+| 13 | Level Data & Definition (inferred) | Gameplay | MVP | Needs Revision | design/gdd/level-data-definition.md | Level Goals & Fail States, Rule-Twist Framework, Level-Specific Mechanics, Twist Library |
+| 14 | HUD (inferred) | UI | MVP | Needs Revision | design/gdd/hud.md | Piece Spawner & Queue, Level Goals & Fail States |
+| 15 | Obstacles | Gameplay | Vertical Slice | Needs Revision | design/gdd/obstacles.md | Board / Grid, Rule-Twist Framework |
 | 16 | Obstacle Clearing | Gameplay | Vertical Slice | Designed | design/gdd/obstacle-clearing.md | Layer Clearing, Obstacles |
-| 17 | Scoring & Stars | Progression | Vertical Slice | Designed | design/gdd/scoring-stars.md | Layer Clearing, Level Goals & Fail States |
-| 18 | Buffs & Debuffs | Gameplay | Vertical Slice | Designed | design/gdd/buffs-debuffs.md | Rule-Twist Framework |
-| 19 | Items | Gameplay | Vertical Slice | Designed | design/gdd/items.md | Buffs & Debuffs |
+| 17 | Scoring & Stars | Progression | Vertical Slice | Needs Revision | design/gdd/scoring-stars.md | Layer Clearing, Level Goals & Fail States |
+| 18 | Buffs & Debuffs | Gameplay | Vertical Slice | Needs Revision | design/gdd/buffs-debuffs.md | Rule-Twist Framework |
+| 19 | Items | Gameplay | Vertical Slice | Needs Revision | design/gdd/items.md | Buffs & Debuffs |
 | 20 | Arcade Mode | Gameplay | Vertical Slice | Designed | design/gdd/arcade-mode.md | Level Goals & Fail States, Scoring & Stars, Twist Library |
-| 21 | Campaign Structure | Progression | Vertical Slice | Designed | design/gdd/campaign-structure.md | Level Data & Definition, Scoring & Stars |
-| 22 | Mode / Minigame Randomizer | Gameplay | Vertical Slice | Designed | design/gdd/mode-minigame-randomizer.md | Level Goals & Fail States, Level Data & Definition |
+| 21 | Campaign Structure | Progression | Vertical Slice | Needs Revision | design/gdd/campaign-structure.md | Level Data & Definition, Scoring & Stars |
+| 22 | Mode / Minigame Randomizer | Gameplay | Vertical Slice | Needs Revision | design/gdd/mode-minigame-randomizer.md | Level Goals & Fail States, Level Data & Definition |
 | 23 | Tournament Flow | Gameplay | Vertical Slice | Designed | design/gdd/tournament-flow.md | Scoring & Stars, Mode / Minigame Randomizer, Items |
-| 24 | Local Multiplayer Setup (inferred) | Core | Vertical Slice | Designed | design/gdd/local-multiplayer-setup.md | Touch Controls, Camera & Rotate-View |
-| 25 | Save & Profile (inferred) | Persistence | Vertical Slice | Designed | design/gdd/save-profile.md | Campaign Structure, Scoring & Stars |
+| 24 | Local Multiplayer Setup (inferred) | Core | Vertical Slice | Needs Revision | design/gdd/local-multiplayer-setup.md | Touch Controls, Camera & Rotate-View |
+| 25 | Save & Profile (inferred) | Persistence | Vertical Slice | Needs Revision | design/gdd/save-profile.md | Campaign Structure, Scoring & Stars |
 | 26 | Menus & Level Select (inferred) | UI | Vertical Slice | Designed | design/gdd/menus-level-select.md | Campaign Structure, Save & Profile |
-| 27 | Game Feel & VFX (inferred) | UI | Vertical Slice | Designed | design/gdd/game-feel-vfx.md | Layer Clearing, Buffs & Debuffs, Items |
-| 28 | Physics Mode | Gameplay | Alpha | Designed | design/gdd/physics-mode.md | Board / Grid, Piece Set, Fall, Drop & Lock, Rule-Twist Framework |
+| 27 | Game Feel & VFX (inferred) | UI | Vertical Slice | Needs Revision | design/gdd/game-feel-vfx.md | Layer Clearing, Buffs & Debuffs, Items |
+| 28 | Physics Mode | Gameplay | Alpha | Needs Revision | design/gdd/physics-mode.md | Board / Grid, Piece Set, Fall, Drop & Lock, Rule-Twist Framework |
 | 29 | Block Status Effects (inferred) | Gameplay | Alpha | Designed | design/gdd/block-status-effects.md | Board / Grid, Rule-Twist Framework |
 | 30 | Skills | Gameplay | Alpha | Not Started | — | Rule-Twist Framework, Buffs & Debuffs |
 | 31 | Characters & Perks | Progression | Alpha | Not Started | — | Skills, Buffs & Debuffs |
 | 32 | Points System | Economy | Alpha | Not Started | — | Scoring & Stars, Tournament Flow |
 | 33 | Shop | Economy | Alpha | Not Started | — | Points System, Characters & Perks, Buffs & Debuffs |
-| 34 | Tournament Minigames | Gameplay | Alpha | Designed | design/gdd/tournament-minigames.md (ideas: design/gdd/mechanics-catalog.md) | Board / Grid, Piece Set, Level Goals & Fail States, Mode / Minigame Randomizer |
+| 34 | Tournament Minigames | Gameplay | Alpha | Needs Revision | design/gdd/tournament-minigames.md (ideas: design/gdd/mechanics-catalog.md) | Board / Grid, Piece Set, Level Goals & Fail States, Mode / Minigame Randomizer |
 | 35 | Mascot Reactions (inferred) | UI | Alpha | Not Started | — | Characters & Perks, Level Goals & Fail States |
 | 36 | Audio (inferred) | Audio | Alpha | Not Started | — | Layer Clearing, Items, Campaign Structure |
 | 37 | Onboarding & Accessibility (inferred) | Meta | Alpha | Not Started | — | Touch Controls, HUD, Campaign Structure |
-| 38 | Mechanics Module (box of tricks: atoms, recipes, daily generator) | Gameplay | Vertical Slice | Designed | design/gdd/mechanics-module.md (folder: design/mechanics/README.md) | Rule-Twist Framework, Level Data & Definition, Level-Specific Mechanics, Twist Library, Tournament Minigames |
+| 38 | Mechanics Module (box of tricks: atoms, recipes, daily generator) | Gameplay | Vertical Slice | Needs Revision | design/gdd/mechanics-module.md (folder: design/mechanics/README.md) | Rule-Twist Framework, Level Data & Definition, Level-Specific Mechanics, Twist Library, Tournament Minigames |
 
 ---
 
