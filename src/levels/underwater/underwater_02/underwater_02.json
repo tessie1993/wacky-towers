@@ -1,0 +1,168 @@
+{
+  "schema": 1,
+  "id": "underwater_02",
+  "biome": "underwater",
+  "tier": 2,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "######",
+          "####.#",
+          "######",
+          "#.####",
+          "####.#",
+          "######"
+        ],
+        "1": [
+          "######",
+          "###..#",
+          "####.#",
+          "#..##.",
+          "##.#..",
+          "######"
+        ]
+      }
+    }
+  },
+  "pieces": {
+    "opening_set": [
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "opening_count": 3,
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.8
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "mascot_hint"
+    },
+    {
+      "id": "mascot_catch",
+      "params": {
+        "mascot_catches": 1
+      }
+    },
+    {
+      "id": "angle_gem",
+      "params": {
+        "cell": [
+          3,
+          -1,
+          3
+        ],
+        "view_snap": 210
+      }
+    }
+  ],
+  "stars": {
+    "t2": 150000,
+    "t3": 105000
+  },
+  "music": "underwater_02",
+  "name": "LVL_UNDERWATER_02_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_02",
+      "biome": "underwater",
+      "tier": 2,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "starting_contents": {
+          "layers": {
+            "0": [
+              "######",
+              "####.#",
+              "######",
+              "#.####",
+              "####.#",
+              "######"
+            ],
+            "1": [
+              "######",
+              "###..#",
+              "####.#",
+              "#..##.",
+              "##.#..",
+              "######"
+            ]
+          }
+        }
+      },
+      "pieces": {
+        "opening_set": [
+          "tripod",
+          "screw_l",
+          "screw_r"
+        ],
+        "opening_count": 3
+      },
+      "knobs": {
+        "fall.g0": 0.8
+      },
+      "goal": {
+        "type": "clear",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "mascot_hint"
+        },
+        {
+          "id": "mascot_catch",
+          "params": {
+            "mascot_catches": 1
+          }
+        },
+        {
+          "id": "angle_gem",
+          "params": {
+            "cell": [
+              3,
+              -1,
+              3
+            ],
+            "view_snap": 210
+          }
+        }
+      ],
+      "stars": {
+        "t2": 150000,
+        "t3": 105000
+      },
+      "music": "underwater_02"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

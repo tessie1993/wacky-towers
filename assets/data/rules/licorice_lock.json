@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "id": "licorice_lock",
+  "name_key": "RULE_LICORICE_LOCK",
+  "layer": "content",
+  "icon": "licorice_lock",
+  "behaviour": "licorice_lock",
+  "params": {},
+  "incompatible_with": []
+}

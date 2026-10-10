@@ -1,0 +1,188 @@
+{
+  "schema": 1,
+  "id": "candy_08",
+  "biome": "candy",
+  "tier": 8,
+  "name": "LVL_CANDY_08_TITLE",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 8,
+    "down_axis": "-y"
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.95,
+    "clear.detector": "colour_connect",
+    "clear.collapse": "cascade",
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1,
+    "spawn.colour_count": 3
+  },
+  "goal": {
+    "type": "survive",
+    "T": 150,
+    "ramp_per_min": 0.15,
+    "t_ms": 150000
+  },
+  "rules": [
+    {
+      "id": "colour_pop",
+      "params": {
+        "pop_min": 6,
+        "layer_clear_too": true
+      }
+    },
+    {
+      "id": "speed_bump",
+      "params": {
+        "bump_trigger": "mood",
+        "notch_every_s": 10,
+        "notch_max": 3,
+        "notch_pct": 10,
+        "warn_ms": 1000
+      }
+    },
+    {
+      "id": "earned_specials",
+      "params": {
+        "bomb_at": 7,
+        "rocket_at": 0,
+        "colour_bomb_at": 0
+      }
+    },
+    {
+      "id": "mascot_mood",
+      "params": {
+        "prank": "rush"
+      }
+    }
+  ],
+  "stars": {
+    "s2": 2,
+    "s3": 4
+  },
+  "music": "mus_candy_08",
+  "story": {
+    "title_key": "LVL_CANDY_08_TITLE",
+    "premise_key": "LVL_CANDY_08_PREMISE",
+    "mascot_role": "mood_swing",
+    "icon": "sugar_rush"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/candy.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "candy_08",
+      "biome": "candy",
+      "tier": 8,
+      "name": "LVL_CANDY_08_TITLE",
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 8,
+        "down_axis": "-y"
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.95,
+        "clear.detector": "colour_connect",
+        "clear.collapse": "cascade",
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1,
+        "spawn.colour_count": 3
+      },
+      "goal": {
+        "type": "survive",
+        "T": 150,
+        "ramp_per_min": 0.15
+      },
+      "rules": [
+        {
+          "id": "colour_pop",
+          "params": {
+            "pop_min": 6,
+            "layer_clear_too": true
+          }
+        },
+        {
+          "id": "speed_bump*",
+          "params": {
+            "bump_trigger": "mood",
+            "notch_every_s": 10,
+            "notch_max": 3,
+            "notch_pct": 10,
+            "warn_ms": 1000
+          }
+        },
+        {
+          "id": "earned_specials",
+          "params": {
+            "bomb_at": 7,
+            "rocket_at": 0,
+            "colour_bomb_at": 0
+          }
+        },
+        {
+          "id": "mascot_mood",
+          "params": {
+            "prank": "rush"
+          }
+        }
+      ],
+      "stars": {
+        "s2": 2,
+        "s3": 4
+      },
+      "music": "mus_candy_08",
+      "story": {
+        "title_key": "LVL_CANDY_08_TITLE",
+        "premise_key": "LVL_CANDY_08_PREMISE",
+        "mascot_role": "mood_swing",
+        "icon": "sugar_rush"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "speed_bump*",
+        "runtime": "speed_bump",
+        "params": {
+          "bump_trigger": "mood",
+          "notch_every_s": 10,
+          "notch_max": 3,
+          "notch_pct": 10,
+          "warn_ms": 1000
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

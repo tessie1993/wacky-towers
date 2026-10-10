@@ -20,3 +20,22 @@ func veto(_action: StringName, _ctx: HookContext, _api: RuleApi) -> bool:
 ## Compatibility tags (ADR-0004 atoms). Usage: `rule.tags().is_empty()`.
 func tags() -> PackedStringArray:
 	return PackedStringArray()
+
+
+## Extra checks this plugin needs on a level (e.g. "conveyor needs an unmasked board"). Default: none.
+## Usage: override and return `ValidationIssue.error(...)` entries.
+func validate(_level: LevelData, _catalog: GameCatalog) -> Array[ValidationIssue]:
+	return []
+
+
+## All mutable behaviour state for replay hashes. Usage: return {"counter": _counter}.
+func snapshot() -> Dictionary:
+	return {}
+
+## Restore mutable counters for optional turn-level undo. Plugins may override aliases.
+func restore(state: Dictionary) -> void:
+	for property: Dictionary in get_property_list():
+		var key: String = String(property["name"])
+		var saved: String = key.trim_prefix("_")
+		if state.has(saved):
+			set(key, state[saved])

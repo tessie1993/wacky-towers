@@ -1,0 +1,198 @@
+{
+  "schema": 1,
+  "id": "candy_07",
+  "biome": "candy",
+  "tier": 7,
+  "name": "LVL_CANDY_07_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "mask": [
+      ".####.",
+      "######",
+      "######",
+      "######",
+      "######",
+      ".####."
+    ],
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "......",
+          ".p....",
+          "......",
+          "....p.",
+          "......",
+          "......"
+        ]
+      }
+    }
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.93,
+    "clear.detector": "colour_connect",
+    "clear.collapse": "cascade",
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1,
+    "spawn.colour_count": 3
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 6
+  },
+  "rules": [
+    {
+      "id": "colour_pop",
+      "params": {
+        "pop_min": 6,
+        "pop_min_pieces": 2,
+        "layer_clear_too": true
+      }
+    },
+    {
+      "id": "pest",
+      "params": {
+        "skin": "gummy_worm",
+        "ant_every_locks": 1,
+        "late_spawn_s": 60,
+        "rim_escape": true
+      }
+    },
+    {
+      "id": "mascot_mood",
+      "params": {
+        "prank": "tickle_worm"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 330000,
+    "t3": 235000,
+    "three_star_zero_metrics": [
+      "worms_escaped"
+    ]
+  },
+  "music": "mus_candy_07",
+  "story": {
+    "title_key": "LVL_CANDY_07_TITLE",
+    "premise_key": "LVL_CANDY_07_PREMISE",
+    "mascot_role": "mood_swing",
+    "icon": "gummy_worm"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/candy.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "candy_07",
+      "biome": "candy",
+      "tier": 7,
+      "name": "LVL_CANDY_07_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "mask": [
+          ".####.",
+          "######",
+          "######",
+          "######",
+          "######",
+          ".####."
+        ],
+        "starting_contents": {
+          "layers": {
+            "0": [
+              "......",
+              ".w....",
+              "......",
+              "....w.",
+              "......",
+              "......"
+            ]
+          }
+        }
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.93,
+        "clear.detector": "colour_connect",
+        "clear.collapse": "cascade",
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1,
+        "spawn.colour_count": 3
+      },
+      "goal": {
+        "type": "clear",
+        "N": 6
+      },
+      "rules": [
+        {
+          "id": "colour_pop",
+          "params": {
+            "pop_min": 6,
+            "pop_min_pieces": 2,
+            "layer_clear_too": true
+          }
+        },
+        {
+          "id": "pest",
+          "params": {
+            "skin": "gummy_worm",
+            "ant_every_locks": 1,
+            "late_spawn_s": 60,
+            "rim_escape": true
+          }
+        },
+        {
+          "id": "mascot_mood",
+          "params": {
+            "prank": "tickle_worm"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 330000,
+        "t3": 235000
+      },
+      "music": "mus_candy_07",
+      "story": {
+        "title_key": "LVL_CANDY_07_TITLE",
+        "premise_key": "LVL_CANDY_07_PREMISE",
+        "mascot_role": "mood_swing",
+        "icon": "gummy_worm"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://ck068jawj2uju"]
+
+[ext_resource type="PackedScene" path="res://src/levels/_template/level_stage_base.tscn" id="1"]
+[ext_resource type="Script" uid="uid://bget2chj4yyf3" path="res://src/view/wt_stage.gd" id="2_aiqph"]
+
+[node name="celestial_07" unique_id=1005256269 instance=ExtResource("1")]
+level_json = "res://src/levels/celestial/celestial_07/celestial_07.json"
+biome = &"celestial"
+
+[node name="MascotSpot" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 2)
+
+[node name="World" type="Node3D" parent="." index="2" unique_id=1583972793]
+script = ExtResource("2_aiqph")
+
+[node name="StoryOrigin" type="Marker3D" parent="World" index="0" unique_id=1531886709]

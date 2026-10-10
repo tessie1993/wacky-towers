@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "id": "clockwork_06",
+  "biome": "clockwork",
+  "tier": 6,
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 6
+  },
+  "pieces": {
+    "fixed_list": [
+      "l",
+      "t",
+      "t",
+      "i",
+      "o",
+      "o",
+      "o"
+    ],
+    "shapes": [
+      "l",
+      "t",
+      "i",
+      "o"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.6,
+    "spawn.preview_count": 3,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "shape",
+    "piece_budget": 7,
+    "target_shape": {
+      "layers": {
+        "0": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ],
+        "1": [
+          "....",
+          ".++.",
+          ".++.",
+          "...."
+        ],
+        "2": [
+          "....",
+          ".++.",
+          ".++.",
+          "...."
+        ],
+        "3": [
+          "....",
+          ".++.",
+          ".++.",
+          "...."
+        ]
+      }
+    }
+  },
+  "stars": {
+    "t2": 80000,
+    "t3": 55000
+  },
+  "music": "clockwork_06_tbd",
+  "name": "LVL_CLOCKWORK_06_TITLE",
+  "seed": null,
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {
+        "topout_rule": "trim"
+      }
+    }
+  ],
+  "metadata": {
+    "source": "design/levels/clockwork.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "clockwork_06",
+      "biome": "clockwork",
+      "tier": 6,
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 6
+      },
+      "pieces": {
+        "fixed_list": [
+          "l",
+          "t",
+          "t",
+          "i",
+          "o",
+          "o",
+          "o"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.6,
+        "spawn.preview_count": 3,
+        "goal.top_out": "out_of_pieces",
+        "skill.redraw": "off"
+      },
+      "goal": {
+        "type": "shape",
+        "piece_budget": 7,
+        "target_shape": {
+          "layers": {
+            "0": [
+              "####",
+              "####",
+              "####",
+              "####"
+            ],
+            "1": [
+              "....",
+              ".##.",
+              ".##.",
+              "...."
+            ],
+            "2": [
+              "....",
+              ".##.",
+              ".##.",
+              "...."
+            ],
+            "3": [
+              "....",
+              ".##.",
+              ".##.",
+              "...."
+            ]
+          }
+        }
+      },
+      "stars": {
+        "t2": 80000,
+        "t3": 55000
+      },
+      "solution": "see level notes",
+      "music": "clockwork_06_tbd"
+    },
+    "unsupported": [
+      "authoring:redraw_disabled_fixed_or_kit",
+      "field:solution"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "authoring:redraw_disabled_fixed_or_kit",
+      "field:solution"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

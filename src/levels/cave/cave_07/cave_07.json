@@ -1,0 +1,223 @@
+{
+  "schema": 1,
+  "id": "cave_07",
+  "biome": "cave",
+  "tier": 7,
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 6
+  },
+  "pieces": {
+    "fixed_list": [
+      "l",
+      "l",
+      "o"
+    ],
+    "shapes": [
+      "l",
+      "o"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.6,
+    "spawn.preview_count": 3,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "shape",
+    "piece_budget": 3,
+    "target_shape": {
+      "layers": {
+        "0": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ],
+        "1": [
+          "....",
+          "++++",
+          "++++",
+          "...."
+        ]
+      }
+    }
+  },
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {
+        "topout_rule": "trim"
+      }
+    },
+    {
+      "id": "mirror",
+      "params": {
+        "mirror_axis": "x"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 60000,
+    "t3": 40000
+  },
+  "music": "cave_07_tbd",
+  "name": "LVL_CAVE_07_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/cave.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "cave_07",
+      "biome": "cave",
+      "tier": 7,
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 6
+      },
+      "pieces": {
+        "fixed_list": [
+          "l",
+          "l",
+          "o"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.6,
+        "spawn.preview_count": 3,
+        "goal.top_out": "out_of_pieces"
+      },
+      "goal": {
+        "type": "shape",
+        "piece_budget": 3,
+        "target_shape": {
+          "layers": {
+            "0": [
+              "####",
+              "####",
+              "####",
+              "####"
+            ],
+            "1": [
+              "....",
+              "####",
+              "####",
+              "...."
+            ]
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "pond_mirror",
+          "params": {
+            "mirror_axis": "x"
+          }
+        }
+      ],
+      "solution": [
+        {
+          "shape": "l",
+          "cells": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              2
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "shape": "l",
+          "cells": [
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              2
+            ],
+            [
+              1,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              3
+            ]
+          ]
+        },
+        {
+          "shape": "o",
+          "cells": [
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              0,
+              1,
+              2
+            ],
+            [
+              1,
+              1,
+              2
+            ]
+          ]
+        }
+      ],
+      "stars": {
+        "t2": 60000,
+        "t3": 40000
+      },
+      "music": "cave_07_tbd"
+    },
+    "unsupported": [
+      "field:solution"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:solution"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "pond_mirror",
+        "runtime": "mirror",
+        "params": {
+          "mirror_axis": "x"
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

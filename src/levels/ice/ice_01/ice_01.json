@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "id": "ice_01",
+  "biome": "ice",
+  "tier": 1,
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 9
+  },
+  "knobs": {
+    "fall.g0": 0.72,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "mascot_hint",
+      "params": {}
+    },
+    {
+      "id": "angle_gem",
+      "params": {
+        "where": "under_island"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 170000,
+    "t3": 120000
+  },
+  "music": "ice_01",
+  "story": {
+    "title_key": "level.ice_01.title",
+    "premise_key": "level.ice_01.premise",
+    "mascot_role": "helper",
+    "icon": "egg"
+  },
+  "name": "LVL_ICE_01_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/ice.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "ice_01",
+      "biome": "ice",
+      "tier": 1,
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 9
+      },
+      "knobs": {
+        "fall.g0": 0.72,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "mascot_hint",
+          "params": {}
+        },
+        {
+          "id": "angle_gem",
+          "params": {
+            "where": "under_island"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "music": "ice_01",
+      "story": {
+        "title_key": "level.ice_01.title",
+        "premise_key": "level.ice_01.premise",
+        "mascot_role": "helper",
+        "icon": "egg"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

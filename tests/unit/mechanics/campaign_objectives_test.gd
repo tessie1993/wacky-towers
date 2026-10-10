@@ -1,0 +1,75 @@
+extends GdUnitTestSuite
+const F := preload("res://tests/unit/mechanics/mechanics_fixture.gd")
+
+func test_boss_bonks_are_distinct_from_cleared_layers() -> void:
+	var goal := BonkBossGoal.new()
+	goal.configure({"bonks_needed":3})
+	var state := GoalState.new()
+	state.layers_cleared = 20
+	assert_int(goal.evaluate(state,null)).is_equal(GoalEvaluator.RUNNING)
+	state.metrics["bonks"] = 2
+	assert_int(goal.progress(state).done).is_equal(2)
+	state.metrics["bonks"] = 3
+	assert_int(goal.evaluate(state,null)).is_equal(GoalEvaluator.WON)
+
+func test_rescue_waits_for_last_frosting_tile_not_peel_count() -> void:
+	var board := F.board()
+	var api := F.api(board)
+	var kind: int = api.kind_of(&"frosting")
+	var triple: int = api.kind_of(&"frosting_three")
+	F.write(board,[Vector3i.ZERO],1,kind)
+	F.write(board,[Vector3i(1,0,0)],2,triple)
+	var goal := RescueAllGoal.new()
+	var state := GoalState.new()
+	goal.configure({})
+	goal.begin(state,api)
+	assert_int(goal.progress(state).target).is_equal(2)
+	board.set_status(board.index(Vector3i.ZERO),{"peels_left":1})
+	assert_int(goal.evaluate(state,api)).is_equal(GoalEvaluator.RUNNING)
+	assert_int(goal.progress(state).done).is_equal(0)
+	board.remove(board.index(Vector3i.ZERO),BoardState.Cause.DAMAGE)
+	assert_int(goal.evaluate(state,api)).is_equal(GoalEvaluator.RUNNING)
+	assert_int(goal.progress(state).done).is_equal(1)
+	board.remove(board.index(Vector3i(1,0,0)),BoardState.Cause.DAMAGE)
+	assert_int(goal.evaluate(state,api)).is_equal(GoalEvaluator.WON)
+
+func test_empty_rescue_board_is_not_automatic_reward() -> void:
+	var goal := RescueAllGoal.new()
+	var api := F.api(F.board())
+	goal.configure({})
+	goal.begin(GoalState.new(),api)
+	assert_int(goal.evaluate(GoalState.new(),api)).is_equal(GoalEvaluator.RUNNING)
+
+func test_dig_only_counts_moles_not_regular_blocks() -> void:
+	var goal := DigRescueGoal.new()
+	goal.configure({"critters_needed":2})
+	var state := GoalState.new()
+	var api := F.api(F.board())
+	goal.on_clear(Vector3i.ZERO,{"kind":api.kind_of(&"block")},state,api)
+	assert_int(goal.progress(state).done).is_equal(0)
+	goal.on_clear(Vector3i.ZERO,{"kind":api.kind_of(&"mole")},state,api)
+	assert_int(goal.evaluate(state,api)).is_equal(GoalEvaluator.RUNNING)
+	goal.on_clear(Vector3i(1,0,0),{"kind":api.kind_of(&"mole")},state,api)
+	assert_int(goal.evaluate(state,api)).is_equal(GoalEvaluator.WON)
+
+func test_wall_key_requires_cell_face_and_never_double_counts() -> void:
+	var board := F.board()
+	var api := F.api(board)
+	var state := GoalState.new()
+	var goal := WindKeysGoal.new()
+	goal.configure({"keys_needed":1,"keyholes":[{"wall":"-x","row":2,"y":1}]})
+	var shape := ShapeDef.build(&"mono",[Vector3i.ZERO])
+	var piece := ActivePiece.new(shape,Vector3i(0,1,2),0)
+	api.bind_piece(piece)
+	api.bind_piece_flags({&"key_stamp":{"cell":Vector3i.ZERO,"face":Vector3i.RIGHT}})
+	goal.on_lock(piece,state,api)
+	assert_int(goal.evaluate(state,api)).is_equal(GoalEvaluator.RUNNING)
+	api.bind_piece_flags({&"key_stamp":{"cell":Vector3i.ZERO,"face":Vector3i.LEFT}})
+	goal.on_lock(piece,state,api)
+	goal.on_lock(piece,state,api)
+	assert_int(goal.progress(state).done).is_equal(1)
+	assert_int(goal.evaluate(state,api)).is_equal(GoalEvaluator.WON)
+	var restored := WindKeysGoal.new()
+	restored.configure({"keys_needed":1,"keyholes":[{"wall":"-x","row":2,"y":1}]})
+	restored.restore(goal.snapshot())
+	assert_array(restored.progress(state).wound).has_size(1)

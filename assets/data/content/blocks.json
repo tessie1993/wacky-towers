@@ -1,8 +1,244 @@
-{ "types": [
-  { "id": "block",    "kind_id": 1, "glyph": "",  "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" },
-  { "id": "starter",  "kind_id": 2, "glyph": "#", "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" },
-  { "id": "mushroom", "kind_id": 3, "glyph": "m", "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" },
-  { "id": "sprout",   "kind_id": 4, "glyph": "s", "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" },
-  { "id": "egg",      "kind_id": 5, "glyph": "e", "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" },
-  { "id": "chick",    "kind_id": 6, "glyph": "c", "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" }
-] }
+{
+  "types": [
+    {
+      "id": "block",
+      "kind_id": 1,
+      "glyph": "",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "starter",
+      "kind_id": 2,
+      "glyph": "#",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "mushroom",
+      "kind_id": 3,
+      "glyph": "m",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "sprout",
+      "kind_id": 4,
+      "glyph": "^",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "egg",
+      "kind_id": 5,
+      "glyph": "e",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "chick",
+      "kind_id": 6,
+      "glyph": "c",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "bounce_pad",
+      "kind_id": 7,
+      "glyph": "b",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "snowball",
+      "kind_id": 8,
+      "glyph": "n",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "goo",
+      "kind_id": 9,
+      "glyph": "g",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "pest",
+      "kind_id": 10,
+      "glyph": "p",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "gumdrop",
+      "kind_id": 11,
+      "glyph": "u",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "frosting",
+      "kind_id": 12,
+      "glyph": "2",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "frosting_three",
+      "kind_id": 13,
+      "glyph": "3",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "sponge",
+      "kind_id": 14,
+      "glyph": "s",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "licorice",
+      "kind_id": 15,
+      "glyph": "l",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "moody",
+      "kind_id": 16,
+      "glyph": "y",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "candy_bomb",
+      "kind_id": 17,
+      "glyph": "a",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "countdown_bomb",
+      "kind_id": 18,
+      "glyph": "q",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "climber_boss",
+      "kind_id": 19,
+      "glyph": "B",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "icing_dollop",
+      "kind_id": 20,
+      "glyph": "D",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "rock",
+      "kind_id": 21,
+      "glyph": "R",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": false,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "mole",
+      "kind_id": 22,
+      "glyph": "o",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "locked_cube",
+      "kind_id": 23,
+      "glyph": "k",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": true,
+      "hue": 0,
+      "mesh": ""
+    },
+    {
+      "id": "shelf",
+      "kind_id": 24,
+      "glyph": "H",
+      "slot": "cell",
+      "solid": true,
+      "fills_layer": false,
+      "hue": 0,
+      "mesh": ""
+    }
+  ]
+}

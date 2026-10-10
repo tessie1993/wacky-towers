@@ -1,0 +1,212 @@
+{
+  "schema": 1,
+  "id": "candy_03",
+  "biome": "candy",
+  "tier": 3,
+  "name": "LVL_CANDY_03_TITLE",
+  "board": {
+    "width": 8,
+    "depth": 4,
+    "h_play": 10,
+    "down_axis": "-y"
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.75,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1,
+    "spawn.colour_count": 2,
+    "spawn.colour_streak": 0.6
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "mono_layer",
+      "params": {
+        "mono_extra_layers": 1
+      }
+    },
+    {
+      "id": "syrup_band",
+      "params": {
+        "band_rows": [
+          1,
+          2
+        ],
+        "syrup_slow": 0.5,
+        "syrup_dir": "+x",
+        "syrup_glide": 2
+      }
+    },
+    {
+      "id": "gumdrop_hail",
+      "params": {
+        "object": "gumdrop",
+        "sticky": true,
+        "spawn_every_locks": 8,
+        "objects_max": 3
+      }
+    },
+    {
+      "id": "mascot_mood",
+      "params": {
+        "prank": "hop_nudge"
+      }
+    },
+    {
+      "id": "mascot_catch",
+      "params": {
+        "catches": 1,
+        "happy_only": true
+      }
+    }
+  ],
+  "stars": {
+    "t2": 335000,
+    "t3": 235000
+  },
+  "music": "mus_candy_03",
+  "story": {
+    "title_key": "LVL_CANDY_03_TITLE",
+    "premise_key": "LVL_CANDY_03_PREMISE",
+    "mascot_role": "mood_swing",
+    "icon": "lollipop"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/candy.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "candy_03",
+      "biome": "candy",
+      "tier": 3,
+      "name": "LVL_CANDY_03_TITLE",
+      "board": {
+        "width": 8,
+        "depth": 4,
+        "h_play": 10,
+        "down_axis": "-y"
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.75,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1,
+        "spawn.colour_count": 2,
+        "spawn.colour_streak": 0.6
+      },
+      "goal": {
+        "type": "clear",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "mono_layer",
+          "params": {
+            "mono_extra_layers": 1
+          }
+        },
+        {
+          "id": "syrup_band*",
+          "params": {
+            "band_rows": [
+              1,
+              2
+            ],
+            "syrup_slow": 0.5,
+            "syrup_dir": "+x",
+            "syrup_glide": 2
+          }
+        },
+        {
+          "id": "mushroom_popup",
+          "params": {
+            "object": "gumdrop",
+            "sticky": true,
+            "spawn_every_locks": 8,
+            "objects_max": 3
+          }
+        },
+        {
+          "id": "mascot_mood",
+          "params": {
+            "prank": "hop_nudge"
+          }
+        },
+        {
+          "id": "mascot_catch",
+          "params": {
+            "catches": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 335000,
+        "t3": 235000
+      },
+      "music": "mus_candy_03",
+      "story": {
+        "title_key": "LVL_CANDY_03_TITLE",
+        "premise_key": "LVL_CANDY_03_PREMISE",
+        "mascot_role": "mood_swing",
+        "icon": "lollipop"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "syrup_band*",
+        "runtime": "syrup_band",
+        "params": {
+          "band_rows": [
+            1,
+            2
+          ],
+          "syrup_slow": 0.5,
+          "syrup_dir": "+x",
+          "syrup_glide": 2
+        }
+      },
+      {
+        "source": "mushroom_popup",
+        "runtime": "gumdrop_hail",
+        "params": {
+          "object": "gumdrop",
+          "sticky": true,
+          "spawn_every_locks": 8,
+          "objects_max": 3
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

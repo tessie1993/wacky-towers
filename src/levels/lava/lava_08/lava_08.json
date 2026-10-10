@@ -1,0 +1,129 @@
+{
+  "schema": 1,
+  "id": "lava_08",
+  "biome": "lava",
+  "tier": 8,
+  "name": "level.lava_08.name",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "duo",
+      "tri_corner"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.15,
+    "fall.ramp_per_min": 0.15
+  },
+  "goal": {
+    "type": "survive",
+    "T": 150,
+    "t_ms": 150000
+  },
+  "rules": [
+    {
+      "id": "quake",
+      "params": {
+        "quake_every_s": 30,
+        "first_s": 25,
+        "quake_warn_ms": 2000,
+        "quake_max_cubes": 6
+      }
+    }
+  ],
+  "stars": {
+    "s2": 1,
+    "s3": 2
+  },
+  "music": "lava_08",
+  "story": {
+    "mascot_role": "watcher",
+    "icon": "eruption",
+    "clue": "rosetta"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/lava.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "lava_08",
+      "biome": "lava",
+      "tier": 8,
+      "name": "level.lava_08.name",
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "duo",
+          "tri_corner"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.15,
+        "fall.ramp_per_min": 0.15
+      },
+      "goal": {
+        "type": "survive",
+        "T": 150
+      },
+      "rules": [
+        {
+          "id": "EV12",
+          "params": {
+            "quake_every_s": 30,
+            "first_s": 25,
+            "quake_warn_ms": 2000,
+            "quake_max_cubes": 6
+          }
+        }
+      ],
+      "stars": {
+        "s2": 1,
+        "s3": 2
+      },
+      "music": "lava_08",
+      "story": {
+        "mascot_role": "watcher",
+        "icon": "eruption",
+        "clue": "rosetta"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "EV12",
+        "runtime": "quake",
+        "params": {
+          "quake_every_s": 30,
+          "first_s": 25,
+          "quake_warn_ms": 2000,
+          "quake_max_cubes": 6
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "id": "lava_05",
+  "biome": "lava",
+  "tier": 5,
+  "name": "level.lava_05.name",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "big_cube"
+    ],
+    "weights": {
+      "big_cube": 0.5
+    }
+  },
+  "knobs": {
+    "fall.g0": 1.0,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "height",
+    "coverage": 0.6,
+    "h_target": 10
+  },
+  "rules": [
+    {
+      "id": "build_race",
+      "params": {}
+    }
+  ],
+  "stars": {
+    "t2": 240000,
+    "t3": 170000
+  },
+  "music": "lava_05",
+  "story": {
+    "mascot_role": "watcher",
+    "icon": "tower"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/lava.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "lava_05",
+      "biome": "lava",
+      "tier": 5,
+      "name": "level.lava_05.name",
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "big_cube"
+        ],
+        "weights": {
+          "big_cube": 0.5
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.0,
+        "goal.top_out": "trim"
+      },
+      "goal": {
+        "type": "height",
+        "H_target": 10,
+        "coverage": 0.6
+      },
+      "rules": [
+        {
+          "id": "PL02",
+          "params": {}
+        }
+      ],
+      "recipe": [
+        {
+          "slot": "goal",
+          "atom": "GO02"
+        },
+        {
+          "slot": "clear",
+          "atom": "CL14"
+        },
+        {
+          "slot": "fail",
+          "atom": "FT02"
+        }
+      ],
+      "stars": {
+        "t2": 240000,
+        "t3": 170000
+      },
+      "music": "lava_05",
+      "story": {
+        "mascot_role": "watcher",
+        "icon": "tower"
+      }
+    },
+    "unsupported": [
+      "field:recipe"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:recipe"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "PL02",
+        "runtime": "build_race",
+        "params": {}
+      }
+    ],
+    "design_amendments": []
+  }
+}

@@ -1,0 +1,2613 @@
+{
+  "schema": 1,
+  "levels": [
+    {
+      "id": "meadow_01",
+      "biome": "meadow",
+      "tier": 1,
+      "area": 16,
+      "height": 8,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 0.6,
+      "default_g0": 0.6,
+      "rule_ids": [],
+      "fingerprint": "397cac37854e55a685868d71d7519f2f4b008f2bb244dd36ed2d0e62ad164079",
+      "stars": {
+        "t2": 145000,
+        "t3": 105000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "meadow_02",
+      "biome": "meadow",
+      "tier": 2,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.6,
+      "default_g0": 0.645,
+      "rule_ids": [
+        "mascot_catch"
+      ],
+      "fingerprint": "76f8fd4f8add2925cd75ad3ea4a6883e09064925e4081b915a52b971a0f72c67",
+      "stars": {
+        "t2": 130000,
+        "t3": 90000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "meadow_03",
+      "biome": "meadow",
+      "tier": 3,
+      "area": 32,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 5,
+      "g0": 0.7,
+      "default_g0": 0.69,
+      "rule_ids": [
+        "gust",
+        "dandelion_puff",
+        "mascot_catch"
+      ],
+      "fingerprint": "112a04b7110c37ef186aaded12e0efa8e880ef132e45454b1f4d68df58bbeb36",
+      "stars": {
+        "t2": 365000,
+        "t3": 255000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "meadow_04",
+      "biome": "meadow",
+      "tier": 4,
+      "area": 40,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.75,
+      "default_g0": 0.735,
+      "rule_ids": [
+        "mushroom_popup"
+      ],
+      "fingerprint": "32b467c24681a833eeb669c520cdf4008cad095617e4652bb533dea75ad65738",
+      "stars": {
+        "t2": 270000,
+        "t3": 190000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "meadow_05",
+      "biome": "meadow",
+      "tier": 5,
+      "area": 25,
+      "height": 12,
+      "goal": "height",
+      "target": 10,
+      "g0": 0.8,
+      "default_g0": 0.78,
+      "rule_ids": [
+        "build_race",
+        "wobble"
+      ],
+      "fingerprint": "354425261177292b1549a0e44615f2605091306b030b3b29bc8efd268dcf7520",
+      "stars": {
+        "t2": 240000,
+        "t3": 170000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "meadow_06",
+      "biome": "meadow",
+      "tier": 6,
+      "area": 64,
+      "height": 8,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.7,
+      "default_g0": 0.825,
+      "rule_ids": [
+        "fill_shape",
+        "sprouts"
+      ],
+      "fingerprint": "a7735aeab4a1f859d7a4f86299094fe529142561e597cb9a3861cd8fd48398d8",
+      "stars": {
+        "t2": 155000,
+        "t3": 110000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "meadow_07",
+      "biome": "meadow",
+      "tier": 7,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 0.85,
+      "default_g0": 0.87,
+      "rule_ids": [
+        "fog",
+        "fog_ghost"
+      ],
+      "fingerprint": "577d3627e2751b327b38d323335853e0c7f442f6fbed52458d86ac4dd0526ece",
+      "stars": {
+        "t2": 195000,
+        "t3": 140000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "meadow_08",
+      "biome": "meadow",
+      "tier": 8,
+      "area": 25,
+      "height": 8,
+      "goal": "survive",
+      "target": 150000,
+      "g0": 0.9,
+      "default_g0": 0.915,
+      "rule_ids": [
+        "sticky_landing"
+      ],
+      "fingerprint": "15304a3349e501170eaa0d3daa57133b577ca0e6f280d154dfd64ac5b23601cb",
+      "stars": {
+        "s2": 1,
+        "s3": 2
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "meadow_09",
+      "biome": "meadow",
+      "tier": 9,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 0.95,
+      "default_g0": 0.96,
+      "rule_ids": [
+        "topsy_tumble",
+        "hatching_eggs"
+      ],
+      "fingerprint": "00685282a90e8b5fa3731fb723d06a087d2544c9acc708a7aac764d6fde834ad",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "meadow_10",
+      "biome": "meadow",
+      "tier": 10,
+      "area": 48,
+      "height": 12,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.0,
+      "default_g0": 1.005,
+      "rule_ids": [
+        "mill_belt",
+        "gust",
+        "topsy_tumble"
+      ],
+      "fingerprint": "f70c1771639a9ebb3ffff245e606fbd6014bd2e58ba45735e3c4fa72d4e3ff1a",
+      "stars": {
+        "t2": 315000,
+        "t3": 225000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "meadow_bonus",
+      "biome": "meadow",
+      "tier": 11,
+      "area": 16,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.5,
+      "default_g0": 1.05,
+      "rule_ids": [
+        "fill_shape"
+      ],
+      "fingerprint": "fc270688ae1e98e865c5073fe33c630457a1ff6921d4cf51153c06689c8a467b",
+      "stars": {
+        "t2": 45000,
+        "t3": 30000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "candy_01",
+      "biome": "candy",
+      "tier": 1,
+      "area": 16,
+      "height": 8,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 0.65,
+      "default_g0": 0.66,
+      "rule_ids": [
+        "mono_layer",
+        "mascot_mood",
+        "mascot_catch",
+        "angle_gem"
+      ],
+      "fingerprint": "b27b09cd1553ce1dce73a35a9346145894be0680b6211d8c11c62aadb6959259",
+      "stars": {
+        "t2": 145000,
+        "t3": 105000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "candy_02",
+      "biome": "candy",
+      "tier": 2,
+      "area": 25,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.7,
+      "default_g0": 0.705,
+      "rule_ids": [
+        "mono_layer",
+        "gumdrop_hail",
+        "mascot_mood",
+        "mascot_catch",
+        "angle_gem"
+      ],
+      "fingerprint": "aaa89311e8fc260f06047fefd635cf78f72238bb5202d639985aa83adc2ed644",
+      "stars": {
+        "t2": 125000,
+        "t3": 90000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "candy_03",
+      "biome": "candy",
+      "tier": 3,
+      "area": 32,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 0.75,
+      "default_g0": 0.75,
+      "rule_ids": [
+        "mono_layer",
+        "syrup_band",
+        "gumdrop_hail",
+        "mascot_mood",
+        "mascot_catch"
+      ],
+      "fingerprint": "995cf5851ba2ee0929d2d845c34d271b1c0288e517c053842745bac435025e3b",
+      "stars": {
+        "t2": 335000,
+        "t3": 235000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "candy_04",
+      "biome": "candy",
+      "tier": 4,
+      "area": 24,
+      "height": 9,
+      "goal": "clear_n",
+      "target": 5,
+      "g0": 0.8,
+      "default_g0": 0.795,
+      "rule_ids": [
+        "mono_layer",
+        "jelly_piece",
+        "mascot_mood"
+      ],
+      "fingerprint": "2bdb4c0f001d5b6eb66e6dc34e8a06960c29ecf8a5f6a9cc73875acb31d95f6f",
+      "stars": {
+        "t2": 265000,
+        "t3": 185000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "candy_05",
+      "biome": "candy",
+      "tier": 5,
+      "area": 32,
+      "height": 10,
+      "goal": "height",
+      "target": 8,
+      "g0": 0.85,
+      "default_g0": 0.84,
+      "rule_ids": [
+        "build_race",
+        "tier_frosting",
+        "mascot_mood"
+      ],
+      "fingerprint": "bf49ad7cce907a71a1c61855059fa9d1de2c4d277e76b2a3ecba63ab42648a2d",
+      "stars": {
+        "s2": 3,
+        "s3": 4,
+        "metric": "frosted_tiers"
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "candy_06",
+      "biome": "candy",
+      "tier": 6,
+      "area": 64,
+      "height": 3,
+      "goal": "shape",
+      "target": 38,
+      "g0": 0.85,
+      "default_g0": 0.885,
+      "rule_ids": [
+        "fill_shape",
+        "rainbow_piece",
+        "mascot_mood"
+      ],
+      "fingerprint": "552f4476794eeb856d926d358c6bc0ed11a42bf2c4c9701bce979ec21ff88cec",
+      "stars": {
+        "t2": 160000,
+        "t3": 115000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "candy_07",
+      "biome": "candy",
+      "tier": 7,
+      "area": 32,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 6,
+      "g0": 0.93,
+      "default_g0": 0.93,
+      "rule_ids": [
+        "colour_pop",
+        "pest",
+        "mascot_mood"
+      ],
+      "fingerprint": "fffac5a0e6ef6292a0dd13dd35da0b166ab6e9a4e84c9da23b5497266496a29b",
+      "stars": {
+        "t2": 330000,
+        "t3": 235000,
+        "three_star_zero_metrics": [
+          "worms_escaped"
+        ]
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "candy_08",
+      "biome": "candy",
+      "tier": 8,
+      "area": 25,
+      "height": 8,
+      "goal": "survive",
+      "target": 150000,
+      "g0": 0.95,
+      "default_g0": 0.975,
+      "rule_ids": [
+        "colour_pop",
+        "speed_bump",
+        "earned_specials",
+        "mascot_mood"
+      ],
+      "fingerprint": "52acb5c23fa04422951a8d38f42c0f00365953429cfdcd5dc347c82048e0f868",
+      "stars": {
+        "s2": 2,
+        "s3": 4
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "candy_09",
+      "biome": "candy",
+      "tier": 9,
+      "area": 36,
+      "height": 6,
+      "goal": "clear_n",
+      "target": 6,
+      "g0": 1.0,
+      "default_g0": 1.02,
+      "rule_ids": [
+        "colour_pop",
+        "goo_spread",
+        "licorice_lock",
+        "flip",
+        "mascot_mood"
+      ],
+      "fingerprint": "c44845fb3ca7fdbce90859f50f161fad1eff0f7d391093d1152f4897f3889539",
+      "stars": {
+        "t2": 380000,
+        "t3": 270000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "candy_10",
+      "biome": "candy",
+      "tier": 10,
+      "area": 45,
+      "height": 14,
+      "goal": "bake_oven",
+      "target": 4,
+      "g0": 1.05,
+      "default_g0": 1.065,
+      "rule_ids": [
+        "bake_stage",
+        "climber_boss",
+        "gumdrop_hail",
+        "mascot_mood"
+      ],
+      "fingerprint": "12c43b3306b58e113245cbe6e72ed7fa40e107cdbec2732b8d548783d8116681",
+      "stars": {
+        "t2": 340000,
+        "t3": 240000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "candy_bonus",
+      "biome": "candy",
+      "tier": 11,
+      "area": 16,
+      "height": 2,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.55,
+      "default_g0": 1.11,
+      "rule_ids": [
+        "fill_shape",
+        "mascot_paw"
+      ],
+      "fingerprint": "25bc1306eeea61b46735eef0d859687420800b91c20653c8ed7daa8df848f89f",
+      "stars": {
+        "t2": 45000,
+        "t3": 30000,
+        "three_star_zero_metrics": [
+          "paw_eaten"
+        ]
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "candy_h1",
+      "biome": "candy",
+      "tier": 12,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 7,
+      "g0": 1.0,
+      "default_g0": 1.155,
+      "rule_ids": [
+        "colour_pop",
+        "moody_cube",
+        "mascot_mood"
+      ],
+      "fingerprint": "58f47b9853acdb0e3a2e710246de1b60bf580011415303593be2b7d8741ae632",
+      "stars": {
+        "t2": 330000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "candy_h2",
+      "biome": "candy",
+      "tier": 13,
+      "area": 32,
+      "height": 10,
+      "goal": "rescue_all",
+      "target": 0,
+      "g0": 1.0,
+      "default_g0": 1.2,
+      "rule_ids": [
+        "syrup_band",
+        "frosting",
+        "mascot_mood"
+      ],
+      "fingerprint": "c02b6c84130d231b76be237ac189059286a32018202f882d06335e92ca632cae",
+      "stars": {
+        "t2": 350000,
+        "t3": 245000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "candy_h3",
+      "biome": "candy",
+      "tier": 14,
+      "area": 45,
+      "height": 14,
+      "goal": "bonk_boss",
+      "target": 0,
+      "g0": 1.05,
+      "default_g0": 1.245,
+      "rule_ids": [
+        "colour_pop",
+        "climber_boss",
+        "countdown_bomb"
+      ],
+      "fingerprint": "7cb7c530d88eee792f1dd92dc9e4f0ec785eea503988ff7c3e94482eb493d65f",
+      "stars": {
+        "t2": 280000,
+        "t3": 200000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "ice_01",
+      "biome": "ice",
+      "tier": 1,
+      "area": 25,
+      "height": 9,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.72,
+      "default_g0": 0.72,
+      "rule_ids": [
+        "mascot_hint",
+        "angle_gem"
+      ],
+      "fingerprint": "1bd1d2377cc6a7eaf27df9dd05f1c287ac2dae392b281c9458377356a3c68d86",
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "ice_02",
+      "biome": "ice",
+      "tier": 2,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.75,
+      "default_g0": 0.765,
+      "rule_ids": [
+        "ice_slide",
+        "mascot_hint",
+        "angle_gem"
+      ],
+      "fingerprint": "1be8dfbf36b97b1df9692ce6036f4b69802d78bc5bb0cc2aaeb661ad78fa63b6",
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "ice_03",
+      "biome": "ice",
+      "tier": 3,
+      "area": 32,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 5,
+      "g0": 0.8,
+      "default_g0": 0.81,
+      "rule_ids": [],
+      "fingerprint": "a6a42de1ca4994bbfd75fef152055ed14149d4d6aa2fc6fafc68dd9da3a3055f",
+      "stars": {
+        "t2": 365000,
+        "t3": 255000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "ice_04",
+      "biome": "ice",
+      "tier": 4,
+      "area": 35,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.85,
+      "default_g0": 0.855,
+      "rule_ids": [
+        "snowball"
+      ],
+      "fingerprint": "414ab37b1b98ae6f99bf61cbefde0c010031b187cbe06d8d1fe2b6fa4d56c863",
+      "stars": {
+        "t2": 240000,
+        "t3": 170000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "ice_05",
+      "biome": "ice",
+      "tier": 5,
+      "area": 25,
+      "height": 12,
+      "goal": "height",
+      "target": 9,
+      "g0": 0.85,
+      "default_g0": 0.9,
+      "rule_ids": [
+        "build_race",
+        "ice_slide"
+      ],
+      "fingerprint": "28a22529707d892a4780cc73bd52e1ab693e241ef7d6caaa57c24a10f4a06e6e",
+      "stars": {
+        "t2": 215000,
+        "t3": 155000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "ice_06",
+      "biome": "ice",
+      "tier": 6,
+      "area": 56,
+      "height": 8,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.8,
+      "default_g0": 0.945,
+      "rule_ids": [
+        "fill_shape",
+        "snowball"
+      ],
+      "fingerprint": "3b8f2243412443583940bb4bb146cea966791c27d71c91b440b15519426d7705",
+      "stars": {
+        "t2": 120000,
+        "t3": 85000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "ice_07",
+      "biome": "ice",
+      "tier": 7,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 0.95,
+      "default_g0": 0.99,
+      "rule_ids": [
+        "fog",
+        "ice_slide"
+      ],
+      "fingerprint": "9b6b48ec452e84befa069546254c7d9c45965efb0fe8aca03a09d374ecf606d9",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "ice_08",
+      "biome": "ice",
+      "tier": 8,
+      "area": 36,
+      "height": 8,
+      "goal": "survive",
+      "target": 140000,
+      "g0": 1.0,
+      "default_g0": 1.035,
+      "rule_ids": [
+        "thin_ice"
+      ],
+      "fingerprint": "6719c0ab6dbe94cc452c32c38d0a82cb20d37896da47e83cc6a97efc04eaf3df",
+      "stars": {
+        "s2": 1,
+        "s3": 2
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "ice_09",
+      "biome": "ice",
+      "tier": 9,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.05,
+      "default_g0": 1.08,
+      "rule_ids": [
+        "flip",
+        "ice_slide"
+      ],
+      "fingerprint": "82913a4e9707bb0ba69782430a4224056302c82963897e0f026c20a9741ecb0b",
+      "stars": {
+        "t2": 270000,
+        "t3": 190000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "ice_10",
+      "biome": "ice",
+      "tier": 10,
+      "area": 72,
+      "height": 12,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.1,
+      "default_g0": 1.125,
+      "rule_ids": [
+        "side_travel",
+        "gust",
+        "ice_slide"
+      ],
+      "fingerprint": "4c5191a9024c99aa07be15d9e343b883f37021f538f91f7f126c823c0a86f103",
+      "stars": {
+        "t2": 270000,
+        "t3": 190000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "ice_bonus",
+      "biome": "ice",
+      "tier": 11,
+      "area": 16,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.5,
+      "default_g0": 1.17,
+      "rule_ids": [
+        "fill_shape",
+        "undo_reset"
+      ],
+      "fingerprint": "c795fa378ffb32860893723aaf72032c78cfc9779882427c32394bb5eda5975f",
+      "stars": {
+        "t2": 120000,
+        "t3": 80000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "underwater_01",
+      "biome": "underwater",
+      "tier": 1,
+      "area": 25,
+      "height": 9,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.75,
+      "default_g0": 0.78,
+      "rule_ids": [
+        "mascot_hint",
+        "mascot_catch",
+        "angle_gem"
+      ],
+      "fingerprint": "d93e1dd2d29696443b22310e030dd185909d60f9b37b973302e70aa072491b38",
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "underwater_02",
+      "biome": "underwater",
+      "tier": 2,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.8,
+      "default_g0": 0.825,
+      "rule_ids": [
+        "mascot_hint",
+        "mascot_catch",
+        "angle_gem"
+      ],
+      "fingerprint": "09625b68fa4ebfe99514c727537631d416e4d20e7cade16fa269e8bbac59703c",
+      "stars": {
+        "t2": 150000,
+        "t3": 105000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "underwater_03",
+      "biome": "underwater",
+      "tier": 3,
+      "area": 32,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 0.85,
+      "default_g0": 0.87,
+      "rule_ids": [
+        "gust"
+      ],
+      "fingerprint": "3796ee8ca76ca3fea82429a28be0a0afd573aa7f20a8a513307dbe82f096dbbd",
+      "stars": {
+        "t2": 290000,
+        "t3": 205000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "underwater_04",
+      "biome": "underwater",
+      "tier": 4,
+      "area": 30,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 0.9,
+      "default_g0": 0.915,
+      "rule_ids": [
+        "bounce_pad",
+        "mushroom_popup"
+      ],
+      "fingerprint": "8991f41ec6235e45eb5cce435324ba3fcfd01356a504e67f3bef8af9247a967f",
+      "stars": {
+        "t2": 270000,
+        "t3": 190000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "underwater_05",
+      "biome": "underwater",
+      "tier": 5,
+      "area": 25,
+      "height": 12,
+      "goal": "height",
+      "target": 10,
+      "g0": 0.95,
+      "default_g0": 0.96,
+      "rule_ids": [
+        "build_race",
+        "gust"
+      ],
+      "fingerprint": "207cd45e6727313a702bb15b232f46fc21715a366512dbb22dc0953298718ab8",
+      "stars": {
+        "t2": 265000,
+        "t3": 185000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "underwater_06",
+      "biome": "underwater",
+      "tier": 6,
+      "area": 36,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.6,
+      "default_g0": 1.005,
+      "rule_ids": [
+        "fill_shape",
+        "undo_reset"
+      ],
+      "fingerprint": "8d591d4cb0274c869b4f5a7f2ec98dd8ba454e4b69bfdbf56c631162db2b9e33",
+      "stars": {
+        "t2": 210000,
+        "t3": 135000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "underwater_07",
+      "biome": "underwater",
+      "tier": 7,
+      "area": 45,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.0,
+      "default_g0": 1.05,
+      "rule_ids": [
+        "fog"
+      ],
+      "fingerprint": "b6edddd4e8c3694a797068ca16157d0689ba433eccd5fd93c4e650a925fa699e",
+      "stars": {
+        "t2": 305000,
+        "t3": 215000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "underwater_08",
+      "biome": "underwater",
+      "tier": 8,
+      "area": 25,
+      "height": 8,
+      "goal": "survive",
+      "target": 150000,
+      "g0": 1.05,
+      "default_g0": 1.095,
+      "rule_ids": [
+        "rising_silt"
+      ],
+      "fingerprint": "184aa073f408d1ec49379abfdd2d6f714c7fd969ae0e931ccb3e50236199386e",
+      "stars": {
+        "s2": 1,
+        "s3": 2
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "underwater_09",
+      "biome": "underwater",
+      "tier": 9,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.1,
+      "default_g0": 1.14,
+      "rule_ids": [
+        "turntable",
+        "gust"
+      ],
+      "fingerprint": "828b32b67a3921501bb51b659d94132c095df635c6ad4fed2da561151a61e05e",
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "underwater_10",
+      "biome": "underwater",
+      "tier": 10,
+      "area": 48,
+      "height": 12,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.15,
+      "default_g0": 1.185,
+      "rule_ids": [
+        "conveyor",
+        "gust",
+        "crab_claw"
+      ],
+      "fingerprint": "b05e2cd2f98003ad848457eba755145915ff974afaae392dcefba48f00418764",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "underwater_bonus",
+      "biome": "underwater",
+      "tier": 11,
+      "area": 16,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.5,
+      "default_g0": 1.23,
+      "rule_ids": [
+        "fill_shape"
+      ],
+      "fingerprint": "1c662d9f0759e07e87b685bb361996746e43f5404a4cc7f69966a80be99464e3",
+      "stars": {
+        "t2": 75000,
+        "t3": 50000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "lava_01",
+      "biome": "lava",
+      "tier": 1,
+      "area": 25,
+      "height": 8,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.85,
+      "default_g0": 0.84,
+      "rule_ids": [],
+      "fingerprint": "17fde855a3fadcb48468b3a6ca00cc53a8446ae7a890c2450b9e756bd3ffd948",
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "lava_02",
+      "biome": "lava",
+      "tier": 2,
+      "area": 25,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.9,
+      "default_g0": 0.885,
+      "rule_ids": [
+        "ember"
+      ],
+      "fingerprint": "cd62a5d4d929c32a063b798c83285185c4f6e162d2d7450ac3e690cfc3b7189d",
+      "stars": {
+        "t2": 150000,
+        "t3": 105000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "lava_03",
+      "biome": "lava",
+      "tier": 3,
+      "area": 24,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 0.95,
+      "default_g0": 0.93,
+      "rule_ids": [
+        "lava_rise"
+      ],
+      "fingerprint": "a47ba80aa6218b337e5ecdf38dbd9829aba05dcb27a9fa980ff8cdddcf9b8df8",
+      "stars": {
+        "t2": 215000,
+        "t3": 155000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "lava_04",
+      "biome": "lava",
+      "tier": 4,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.0,
+      "default_g0": 0.975,
+      "rule_ids": [
+        "mushroom_popup",
+        "bounce_pad"
+      ],
+      "fingerprint": "f661b51598e1a47673c28fb86cd1ad321273c8871db1762fb1333712af95cf8f",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "lava_05",
+      "biome": "lava",
+      "tier": 5,
+      "area": 25,
+      "height": 12,
+      "goal": "height",
+      "target": 10,
+      "g0": 1.0,
+      "default_g0": 1.02,
+      "rule_ids": [
+        "build_race"
+      ],
+      "fingerprint": "f9093ceafd8cc826ef5125970867be4e5935ea1d66b32fe63253569ed3250f59",
+      "stars": {
+        "t2": 240000,
+        "t3": 170000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "lava_06",
+      "biome": "lava",
+      "tier": 6,
+      "area": 48,
+      "height": 8,
+      "goal": "shape",
+      "target": 0,
+      "g0": 1.05,
+      "default_g0": 1.065,
+      "rule_ids": [
+        "fill_shape"
+      ],
+      "fingerprint": "c8116d039de036ba2b54d739a1e51264b7223781cedcdfa9b94baeab59a9bf2c",
+      "stars": {
+        "t2": 160000,
+        "t3": 115000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "lava_07",
+      "biome": "lava",
+      "tier": 7,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.1,
+      "default_g0": 1.11,
+      "rule_ids": [
+        "fog",
+        "ember"
+      ],
+      "fingerprint": "bdee80f9dd72ad6ba67a8f5c8453164dd2c92ef7fa417226d07d346471fcd12c",
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "lava_08",
+      "biome": "lava",
+      "tier": 8,
+      "area": 25,
+      "height": 10,
+      "goal": "survive",
+      "target": 150000,
+      "g0": 1.15,
+      "default_g0": 1.155,
+      "rule_ids": [
+        "quake"
+      ],
+      "fingerprint": "7656e262320c8a7d2a2e3695ba93cedb1ce91560a955a290dee0ead28a74123b",
+      "stars": {
+        "s2": 1,
+        "s3": 2
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "lava_09",
+      "biome": "lava",
+      "tier": 9,
+      "area": 48,
+      "height": 12,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.2,
+      "default_g0": 1.2,
+      "rule_ids": [
+        "conveyor",
+        "lava_rise",
+        "lava_rock_spawn"
+      ],
+      "fingerprint": "44fe11be0024a8b74cef34d0501fa6a3df3a94444a081ecc17249a1b7890353d",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "lava_10",
+      "biome": "lava",
+      "tier": 10,
+      "area": 49,
+      "height": 12,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.25,
+      "default_g0": 1.245,
+      "rule_ids": [
+        "lava_rock_spawn",
+        "quake",
+        "fog"
+      ],
+      "fingerprint": "8f978c0658968ad49d0342899b4ccb577c8ff8aa95a61ff2dee8230a0d36b5f4",
+      "stars": {
+        "t2": 335000,
+        "t3": 235000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "lava_bonus",
+      "biome": "lava",
+      "tier": 11,
+      "area": 16,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.7,
+      "default_g0": 1.29,
+      "rule_ids": [
+        "fill_shape"
+      ],
+      "fingerprint": "ca4decbf4bf3b6225c037cd0346fe0a08f70157213d01b535f170d98f16707f1",
+      "stars": {
+        "t2": 100000,
+        "t3": 60000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "lava_h1",
+      "biome": "lava",
+      "tier": 12,
+      "area": 24,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 5,
+      "g0": 1.3,
+      "default_g0": 1.335,
+      "rule_ids": [
+        "lava_rise",
+        "lava_rock_spawn"
+      ],
+      "fingerprint": "c2479f6abd7a7f4b8a95fac3dbfa41f72ebc849ab38a3ffff7350b4f6c2ca245",
+      "stars": {
+        "t2": 270000,
+        "t3": 190000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "lava_h2",
+      "biome": "lava",
+      "tier": 13,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.3,
+      "default_g0": 1.38,
+      "rule_ids": [
+        "locked_cube",
+        "quake"
+      ],
+      "fingerprint": "e4ec623a00886c507604a3106795ebc509e4d00dcce6da773c5f92bcc86e4178",
+      "stars": {
+        "t2": 295000,
+        "t3": 205000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "lava_h3",
+      "biome": "lava",
+      "tier": 14,
+      "area": 16,
+      "height": 6,
+      "goal": "clear_n",
+      "target": 2,
+      "g0": 0.8,
+      "default_g0": 1.425,
+      "rule_ids": [
+        "ember"
+      ],
+      "fingerprint": "93ff894fb84d55c7c5c9521a783e57f94e5c265b83ab471fe2ba1dbb793369d7",
+      "stars": {
+        "t2": 130000,
+        "t3": 85000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "forest_01",
+      "biome": "forest",
+      "tier": 1,
+      "area": 21,
+      "height": 8,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.85,
+      "default_g0": 0.9,
+      "rule_ids": [],
+      "fingerprint": "7ee60a35406e6fec3568f228097ed2ca1d7c98a07d3e0910d86fd4bbdfbbe2fb",
+      "stars": {
+        "t2": 145000,
+        "t3": 100000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "forest_02",
+      "biome": "forest",
+      "tier": 2,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.95,
+      "default_g0": 0.945,
+      "rule_ids": [
+        "anchored_shelf"
+      ],
+      "fingerprint": "deae333186277215cf7b2d8be926f7bc570a2b681abc13f1c4d089b3666a3499",
+      "stars": {
+        "t2": 160000,
+        "t3": 115000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "forest_03",
+      "biome": "forest",
+      "tier": 3,
+      "area": 24,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 5,
+      "g0": 0.95,
+      "default_g0": 0.99,
+      "rule_ids": [
+        "mushroom_popup"
+      ],
+      "fingerprint": "4cd452f98810c94e7d00a1ec6fb2e7b2b114bbbc6cc88b6fd2acd080788c2e24",
+      "stars": {
+        "t2": 270000,
+        "t3": 190000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "forest_04",
+      "biome": "forest",
+      "tier": 4,
+      "area": 25,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.0,
+      "default_g0": 1.035,
+      "rule_ids": [
+        "squirrel_heist"
+      ],
+      "fingerprint": "e768a58720d8c9c05d0cc250f7361404df6fd7081fe32a9db678ef03024d7208",
+      "stars": {
+        "t2": 225000,
+        "t3": 160000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "forest_05",
+      "biome": "forest",
+      "tier": 5,
+      "area": 16,
+      "height": 12,
+      "goal": "height",
+      "target": 10,
+      "g0": 1.05,
+      "default_g0": 1.08,
+      "rule_ids": [
+        "build_race"
+      ],
+      "fingerprint": "1623e227e0fc0e345f2d5c95d5db109553a7dfa397948bc714aa5b803ac15c83",
+      "stars": {
+        "t2": 165000,
+        "t3": 115000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "forest_06",
+      "biome": "forest",
+      "tier": 6,
+      "area": 16,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.6,
+      "default_g0": 1.125,
+      "rule_ids": [
+        "fill_shape"
+      ],
+      "fingerprint": "cf190f1af55508e288413ce0ded12ea4dbdb1c44ff02355d8cb6aca7c501a84e",
+      "stars": {
+        "t2": 75000,
+        "t3": 50000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "forest_07",
+      "biome": "forest",
+      "tier": 7,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.15,
+      "default_g0": 1.17,
+      "rule_ids": [
+        "gust",
+        "dandelion_puff"
+      ],
+      "fingerprint": "388eb20ada9625cf9b1af70d0762c8d4f470f7eb9c7441457b1bd82f00a54f60",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "forest_08",
+      "biome": "forest",
+      "tier": 8,
+      "area": 16,
+      "height": 12,
+      "goal": "clear_n",
+      "target": 5,
+      "g0": 1.2,
+      "default_g0": 1.215,
+      "rule_ids": [
+        "woodpecker_knock",
+        "vines"
+      ],
+      "fingerprint": "9c70be1088e27d43a9d15f3ef54ca299f3b8dcbedd3d14c6de3c62457b053a65",
+      "stars": {
+        "t2": 180000,
+        "t3": 130000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "forest_09",
+      "biome": "forest",
+      "tier": 9,
+      "area": 35,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.25,
+      "default_g0": 1.26,
+      "rule_ids": [
+        "conveyor",
+        "squirrel_heist"
+      ],
+      "fingerprint": "bb3c84465608a51a3699ad2b51328f92826e2a97b6616392c8a4952b549b429a",
+      "stars": {
+        "t2": 315000,
+        "t3": 225000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "forest_10",
+      "biome": "forest",
+      "tier": 10,
+      "area": 48,
+      "height": 12,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.3,
+      "default_g0": 1.305,
+      "rule_ids": [
+        "conveyor",
+        "gust",
+        "mushroom_popup"
+      ],
+      "fingerprint": "6db43f8cbdc40e80a8a24d1629431ff83bd4c9b5ec6ca55c11b9ea50240e87ea",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "forest_bonus",
+      "biome": "forest",
+      "tier": 11,
+      "area": 16,
+      "height": 7,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.6,
+      "default_g0": 1.35,
+      "rule_ids": [
+        "fill_shape"
+      ],
+      "fingerprint": "6857e846f3ec94d44a5f505c114db844a07120243e88a212943f01140b1acbeb",
+      "stars": {
+        "t2": 130000,
+        "t3": 90000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "cave_01",
+      "biome": "cave",
+      "tier": 1,
+      "area": 25,
+      "height": 8,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.95,
+      "default_g0": 0.96,
+      "rule_ids": [],
+      "fingerprint": "948c87360e32c3ea7414303d4a61524aed70c4265d2878646e3b2535778404bd",
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "cave_02",
+      "biome": "cave",
+      "tier": 2,
+      "area": 25,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.0,
+      "default_g0": 1.005,
+      "rule_ids": [
+        "rock_obstacle"
+      ],
+      "fingerprint": "d5dc7b82413adb367c9d5319482c2e269bad30086375567e4707a0a4a0bd7ab0",
+      "stars": {
+        "t2": 155000,
+        "t3": 110000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "cave_03",
+      "biome": "cave",
+      "tier": 3,
+      "area": 24,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.05,
+      "default_g0": 1.05,
+      "rule_ids": [
+        "conveyor"
+      ],
+      "fingerprint": "cb87025e9dbb8554a0be69bdf8a0237a1fd684d67687624978959d08e174d668",
+      "stars": {
+        "t2": 220000,
+        "t3": 155000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "cave_04",
+      "biome": "cave",
+      "tier": 4,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.1,
+      "default_g0": 1.095,
+      "rule_ids": [
+        "gust",
+        "mushroom_popup"
+      ],
+      "fingerprint": "1b6a1f52d390287501db336cf37a04b12d2f574693fcdadd09be284913eddcbf",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "cave_05",
+      "biome": "cave",
+      "tier": 5,
+      "area": 25,
+      "height": 12,
+      "goal": "height",
+      "target": 10,
+      "g0": 1.15,
+      "default_g0": 1.14,
+      "rule_ids": [
+        "build_race",
+        "rock_obstacle"
+      ],
+      "fingerprint": "6eab857774e4777b707236d7e1a98f1ae562e48bd9297fcce49b7de619c00b4d",
+      "stars": {
+        "t2": 230000,
+        "t3": 160000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "cave_06",
+      "biome": "cave",
+      "tier": 6,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.2,
+      "default_g0": 1.185,
+      "rule_ids": [
+        "mirror"
+      ],
+      "fingerprint": "74c7075e7472ffb065a7ce8fabb1c1f88e5cd3a715d40b5c33fc68a0a110e4f2",
+      "stars": {
+        "t2": 195000,
+        "t3": 140000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "cave_07",
+      "biome": "cave",
+      "tier": 7,
+      "area": 16,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.6,
+      "default_g0": 1.23,
+      "rule_ids": [
+        "fill_shape",
+        "mirror"
+      ],
+      "fingerprint": "22a1635d234aa3cb55537a4955ae64a30f4e3d5dee8f8d265533b2a4c5363ed9",
+      "stars": {
+        "t2": 60000,
+        "t3": 40000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "cave_08",
+      "biome": "cave",
+      "tier": 8,
+      "area": 25,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.25,
+      "default_g0": 1.275,
+      "rule_ids": [
+        "fog"
+      ],
+      "fingerprint": "c98821f7a70633e67050f9f7bb60e3481f55f2e003c289f8074609683939b78e",
+      "stars": {
+        "t2": 225000,
+        "t3": 160000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "cave_09",
+      "biome": "cave",
+      "tier": 9,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 6,
+      "g0": 1.3,
+      "default_g0": 1.32,
+      "rule_ids": [
+        "mirror",
+        "fog"
+      ],
+      "fingerprint": "2b3306d482348d112fd30a8f63fe8cb31ac7c11ed2f5d4b823bdf919df8ac2e5",
+      "stars": {
+        "t2": 295000,
+        "t3": 205000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "cave_10",
+      "biome": "cave",
+      "tier": 10,
+      "area": 48,
+      "height": 12,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.35,
+      "default_g0": 1.365,
+      "rule_ids": [
+        "conveyor",
+        "woodpecker_knock",
+        "fog"
+      ],
+      "fingerprint": "57ccc02fcd01783546fc6eb410c324e29f9954504d16eab677971f9de3e55858",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "cave_bonus",
+      "biome": "cave",
+      "tier": 11,
+      "area": 16,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.6,
+      "default_g0": 1.41,
+      "rule_ids": [
+        "fill_shape",
+        "mirror"
+      ],
+      "fingerprint": "45d4bd0af4222357ff62ccf9a337871dd6363fffa8e3684fecb2cace707fe0be",
+      "stars": {
+        "t2": 70000,
+        "t3": 45000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "cave_h1",
+      "biome": "cave",
+      "tier": 12,
+      "area": 35,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 5,
+      "g0": 1.3,
+      "default_g0": 1.455,
+      "rule_ids": [
+        "conveyor",
+        "gust"
+      ],
+      "fingerprint": "29cac6e9d5af42dad455a8eac8e39267d29cc5e10b6c754605fc5b0d5ff68ffd",
+      "stars": {
+        "t2": 395000,
+        "t3": 280000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "cave_h2",
+      "biome": "cave",
+      "tier": 13,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.3,
+      "default_g0": 1.5,
+      "rule_ids": [
+        "woodpecker_knock",
+        "mushroom_popup",
+        "rock_obstacle"
+      ],
+      "fingerprint": "c0e730c2fb3a5d43a3a41be90e429fb989f721199acfa8082b9cb64dc945980d",
+      "stars": {
+        "t2": 300000,
+        "t3": 210000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "cave_h3",
+      "biome": "cave",
+      "tier": 14,
+      "area": 36,
+      "height": 10,
+      "goal": "dig_rescue",
+      "target": 0,
+      "g0": 1.25,
+      "default_g0": 1.545,
+      "rule_ids": [
+        "fog"
+      ],
+      "fingerprint": "ba1c6263df398be084f6750680bf8677a4909134873be1af8839d0b009bb2f0d",
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "clockwork_01",
+      "biome": "clockwork",
+      "tier": 1,
+      "area": 21,
+      "height": 8,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.97,
+      "default_g0": 1.02,
+      "rule_ids": [],
+      "fingerprint": "73554a5012f1126b3474aff590e5be86f35023f9c7da7a2351ca8beb3ab48c36",
+      "stars": {
+        "t2": 145000,
+        "t3": 100000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "clockwork_02",
+      "biome": "clockwork",
+      "tier": 2,
+      "area": 25,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.05,
+      "default_g0": 1.065,
+      "rule_ids": [
+        "turntable"
+      ],
+      "fingerprint": "8205cdfa381238733d76fd27b5d1b1acb261cb603947d8640476ee5140465711",
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "clockwork_03",
+      "biome": "clockwork",
+      "tier": 3,
+      "area": 32,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.1,
+      "default_g0": 1.11,
+      "rule_ids": [
+        "conveyor"
+      ],
+      "fingerprint": "62ff2efe4e5f3724b360cdb2b2b60996b9b7f02d0d663ef2168d193d7b5d53cf",
+      "stars": {
+        "t2": 290000,
+        "t3": 205000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "clockwork_04",
+      "biome": "clockwork",
+      "tier": 4,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.15,
+      "default_g0": 1.155,
+      "rule_ids": [
+        "piston_punch"
+      ],
+      "fingerprint": "3285a908574edb54cbba77d3264d8f3331ec5222468dfd4dbca450c3db8195e2",
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "clockwork_05",
+      "biome": "clockwork",
+      "tier": 5,
+      "area": 20,
+      "height": 12,
+      "goal": "height",
+      "target": 8,
+      "g0": 1.18,
+      "default_g0": 1.2,
+      "rule_ids": [
+        "build_race"
+      ],
+      "fingerprint": "831ebdf1c4ee53c076f1f87d4529e7bf7cc7c0ef520e343eaa7706594ae4470c",
+      "stars": {
+        "t2": 165000,
+        "t3": 115000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "clockwork_06",
+      "biome": "clockwork",
+      "tier": 6,
+      "area": 16,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.6,
+      "default_g0": 1.245,
+      "rule_ids": [
+        "fill_shape"
+      ],
+      "fingerprint": "490b2ac41bfb192f7ffbda7524c5bde585246112f6fcefedd45448eb738801a7",
+      "stars": {
+        "t2": 80000,
+        "t3": 55000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "clockwork_07",
+      "biome": "clockwork",
+      "tier": 7,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.28,
+      "default_g0": 1.29,
+      "rule_ids": [
+        "stopwatch"
+      ],
+      "fingerprint": "028b62c205a22a78481da40dd2bddc8017f1e9cf0be76a329ca9eda84a755493",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "clockwork_08",
+      "biome": "clockwork",
+      "tier": 8,
+      "area": 25,
+      "height": 10,
+      "goal": "wind_keys",
+      "target": 0,
+      "g0": 1.3,
+      "default_g0": 1.335,
+      "rule_ids": [
+        "key_stamp"
+      ],
+      "fingerprint": "5b4dd36f62cd1c0aaee45ba7afe8d823665ad13509cd5713f157f3c7bbd80d05",
+      "stars": {
+        "t2": 200000,
+        "t3": 140000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "clockwork_09",
+      "biome": "clockwork",
+      "tier": 9,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.35,
+      "default_g0": 1.38,
+      "rule_ids": [
+        "turntable",
+        "flip"
+      ],
+      "fingerprint": "f2d20de6306cbc6080eeb00c53ba5d9a1218e14b06455c01718c54139ef8196b",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "clockwork_10",
+      "biome": "clockwork",
+      "tier": 10,
+      "area": 48,
+      "height": 12,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.4,
+      "default_g0": 1.425,
+      "rule_ids": [
+        "conveyor",
+        "piston_punch",
+        "stopwatch"
+      ],
+      "fingerprint": "0b00f01cfb757cf1b76c0427bcdd0cd3d23dc71fbc6286b012e75fbb2281beac",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "clockwork_bonus",
+      "biome": "clockwork",
+      "tier": 11,
+      "area": 16,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.6,
+      "default_g0": 1.47,
+      "rule_ids": [
+        "fill_shape",
+        "turntable"
+      ],
+      "fingerprint": "f1604d95ab7d89cbe1948a25eb236cb3c5791729cec78605b70004c3e5c8ca75",
+      "stars": {
+        "t2": 110000,
+        "t3": 75000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "neon_01",
+      "biome": "neon",
+      "tier": 1,
+      "area": 16,
+      "height": 8,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 0.95,
+      "default_g0": 1.08,
+      "rule_ids": [],
+      "fingerprint": "1552248a46625f5333bbb04aba0a911d86e1171dd9a1384188f70d2582d17c76",
+      "stars": {
+        "t2": 145000,
+        "t3": 105000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "neon_02",
+      "biome": "neon",
+      "tier": 2,
+      "area": 25,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.0,
+      "default_g0": 1.125,
+      "rule_ids": [
+        "stopwatch"
+      ],
+      "fingerprint": "852f6abd24271d3f3e1e5d112792e9f7fcb08fd23c8c5ba2902034cd3d01bcaf",
+      "stars": {
+        "t2": 260000,
+        "t3": 185000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "neon_03",
+      "biome": "neon",
+      "tier": 3,
+      "area": 32,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.05,
+      "default_g0": 1.17,
+      "rule_ids": [
+        "conveyor"
+      ],
+      "fingerprint": "9a1a6d318bfe6d99bb4ddffd8370ad74a0f5b63db2d280f9dc8d6a0241ac6e18",
+      "stars": {
+        "t2": 310000,
+        "t3": 220000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "neon_04",
+      "biome": "neon",
+      "tier": 4,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.1,
+      "default_g0": 1.215,
+      "rule_ids": [
+        "mirror"
+      ],
+      "fingerprint": "9c13248698d836b558420039e1df49b3c23d70f3d6494cadee867c429e4921ec",
+      "stars": {
+        "t2": 340000,
+        "t3": 240000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "neon_05",
+      "biome": "neon",
+      "tier": 5,
+      "area": 25,
+      "height": 12,
+      "goal": "height",
+      "target": 9,
+      "g0": 1.1,
+      "default_g0": 1.26,
+      "rule_ids": [
+        "build_race"
+      ],
+      "fingerprint": "8212bc1cf4ddd001067b74a8e67872be84d338aa4cd6614df4345dad43a7f03d",
+      "stars": {
+        "t2": 260000,
+        "t3": 185000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "neon_06",
+      "biome": "neon",
+      "tier": 6,
+      "area": 16,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.9,
+      "default_g0": 1.305,
+      "rule_ids": [
+        "fill_shape"
+      ],
+      "fingerprint": "9edf90e48cc73307b08604f80fa899d301606b53ae02f3b41e9b82dd5b64f084",
+      "stars": {
+        "t2": 80000,
+        "t3": 55000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "neon_07",
+      "biome": "neon",
+      "tier": 7,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 5,
+      "g0": 1.15,
+      "default_g0": 1.35,
+      "rule_ids": [
+        "bubble"
+      ],
+      "fingerprint": "fcddcdb59d2fbba61a892a7a3203185ddaf46482423b9513230d3dae45ea1054",
+      "stars": {
+        "t2": 360000,
+        "t3": 255000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "neon_08",
+      "biome": "neon",
+      "tier": 8,
+      "area": 25,
+      "height": 10,
+      "goal": "survive",
+      "target": 150000,
+      "g0": 1.2,
+      "default_g0": 1.395,
+      "rule_ids": [
+        "stopwatch"
+      ],
+      "fingerprint": "39da3c0a102ed75ba9b474ccd8d63d355fa96f872d7c3ba57ba71c820f8d5270",
+      "stars": {
+        "s2": 1,
+        "s3": 2
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "neon_09",
+      "biome": "neon",
+      "tier": 9,
+      "area": 36,
+      "height": 12,
+      "goal": "clear_n",
+      "target": 5,
+      "g0": 1.25,
+      "default_g0": 1.44,
+      "rule_ids": [
+        "turntable",
+        "gust"
+      ],
+      "fingerprint": "b77686016bdc788216e4da4dac3716a4011cef64876a7f8a33403de89b39f235",
+      "stars": {
+        "t2": 410000,
+        "t3": 290000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "neon_10",
+      "biome": "neon",
+      "tier": 10,
+      "area": 49,
+      "height": 14,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.3,
+      "default_g0": 1.485,
+      "rule_ids": [
+        "conveyor",
+        "mirror",
+        "gust"
+      ],
+      "fingerprint": "8466453e8e66e62f367679ab0b8529781f3e917de946892bb348bfd9fd3974ec",
+      "stars": {
+        "t2": 390000,
+        "t3": 275000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "celestial_01",
+      "biome": "celestial",
+      "tier": 1,
+      "area": 25,
+      "height": 9,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.14,
+      "default_g0": 1.14,
+      "rule_ids": [
+        "mascot_hint",
+        "angle_gem"
+      ],
+      "fingerprint": "14ab6603bf1b4f0eabb16c9ba0b36e19869fe91320fb0c8de9a8b0beb61d98ef",
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "celestial_02",
+      "biome": "celestial",
+      "tier": 2,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.15,
+      "default_g0": 1.185,
+      "rule_ids": [
+        "mascot_hint",
+        "angle_gem"
+      ],
+      "fingerprint": "5877d73e34e11ba897e6480a3a450cc69f50d31073d078465f0af4fbe42c6307",
+      "stars": {
+        "t2": 150000,
+        "t3": 105000
+      },
+      "board_geometry": true
+    },
+    {
+      "id": "celestial_03",
+      "biome": "celestial",
+      "tier": 3,
+      "area": 32,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 5,
+      "g0": 1.23,
+      "default_g0": 1.23,
+      "rule_ids": [
+        "gust"
+      ],
+      "fingerprint": "2dff0b796e1bafc7faceec66260371b381f818a8de5900742e62145120910e26",
+      "stars": {
+        "t2": 365000,
+        "t3": 255000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "celestial_04",
+      "biome": "celestial",
+      "tier": 4,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.25,
+      "default_g0": 1.275,
+      "rule_ids": [
+        "mushroom_popup"
+      ],
+      "fingerprint": "2f86b57228fdaaa6313250b3991f6822546bcf655f29c199dcea0d825d082f66",
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "celestial_05",
+      "biome": "celestial",
+      "tier": 5,
+      "area": 25,
+      "height": 12,
+      "goal": "height",
+      "target": 10,
+      "g0": 1.3,
+      "default_g0": 1.32,
+      "rule_ids": [
+        "build_race",
+        "balloon"
+      ],
+      "fingerprint": "14d76db64a0868c21428a4463cc11e22be18addfd0fc013adbc50029bbb1e30e",
+      "stars": {
+        "t2": 240000,
+        "t3": 170000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "celestial_06",
+      "biome": "celestial",
+      "tier": 6,
+      "area": 16,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.6,
+      "default_g0": 1.365,
+      "rule_ids": [
+        "fill_shape"
+      ],
+      "fingerprint": "c667c714e9acf6a7da796aa0231eb268fcbd6539df2c41a0bcd62031dd85c369",
+      "stars": {
+        "t2": 75000,
+        "t3": 50000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "celestial_07",
+      "biome": "celestial",
+      "tier": 7,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.4,
+      "default_g0": 1.41,
+      "rule_ids": [
+        "fog",
+        "balloon"
+      ],
+      "fingerprint": "4af95408b54ba553a2faa512d9e5aedc65c14b81555e50a63913722fe941fb3a",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "celestial_08",
+      "biome": "celestial",
+      "tier": 8,
+      "area": 36,
+      "height": 6,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.3,
+      "default_g0": 1.455,
+      "rule_ids": [],
+      "fingerprint": "b29857becbbcd18a460b481b52d5d1b68f6b723cba960edc9ae062d035959761",
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "celestial_09",
+      "biome": "celestial",
+      "tier": 9,
+      "area": 36,
+      "height": 10,
+      "goal": "clear_n",
+      "target": 4,
+      "g0": 1.5,
+      "default_g0": 1.5,
+      "rule_ids": [
+        "turntable",
+        "balloon"
+      ],
+      "fingerprint": "94e1f67efb1a070487474d0caf6c63496051e979b6ff35b1298ced1b03d19b35",
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "celestial_10",
+      "biome": "celestial",
+      "tier": 10,
+      "area": 49,
+      "height": 12,
+      "goal": "clear_n",
+      "target": 3,
+      "g0": 1.5,
+      "default_g0": 1.545,
+      "rule_ids": [
+        "event_card",
+        "lava_lid"
+      ],
+      "fingerprint": "5f2e2ab391ea424b7190f127a8427036c0f7caed9ed86ab3862c4a71c260e41c",
+      "stars": {
+        "t2": 335000,
+        "t3": 235000
+      },
+      "board_geometry": false
+    },
+    {
+      "id": "celestial_bonus",
+      "biome": "celestial",
+      "tier": 11,
+      "area": 16,
+      "height": 6,
+      "goal": "shape",
+      "target": 0,
+      "g0": 0.6,
+      "default_g0": 1.59,
+      "rule_ids": [
+        "fill_shape",
+        "undo_reset"
+      ],
+      "fingerprint": "471afed6ec093014c276539913b8c7cb64bf278619766ef5072636e60f028461",
+      "stars": {
+        "t2": 90000,
+        "t3": 60000
+      },
+      "board_geometry": false
+    }
+  ],
+  "biomes": [
+    {
+      "biome": "meadow",
+      "mains": 10,
+      "goals": {
+        "clear_n": 7,
+        "height": 1,
+        "shape": 1,
+        "survive": 1
+      },
+      "board_footprints": 8,
+      "distinct_rules": 14,
+      "g0_min": 0.6,
+      "g0_max": 1.0,
+      "geometry_levels": 5
+    },
+    {
+      "biome": "candy",
+      "mains": 10,
+      "goals": {
+        "clear_n": 6,
+        "height": 1,
+        "shape": 1,
+        "survive": 1,
+        "bake_oven": 1
+      },
+      "board_footprints": 8,
+      "distinct_rules": 20,
+      "g0_min": 0.65,
+      "g0_max": 1.05,
+      "geometry_levels": 5
+    },
+    {
+      "biome": "ice",
+      "mains": 10,
+      "goals": {
+        "clear_n": 7,
+        "height": 1,
+        "shape": 1,
+        "survive": 1
+      },
+      "board_footprints": 8,
+      "distinct_rules": 11,
+      "g0_min": 0.72,
+      "g0_max": 1.1,
+      "geometry_levels": 4
+    },
+    {
+      "biome": "underwater",
+      "mains": 10,
+      "goals": {
+        "clear_n": 7,
+        "height": 1,
+        "shape": 1,
+        "survive": 1
+      },
+      "board_footprints": 9,
+      "distinct_rules": 14,
+      "g0_min": 0.6,
+      "g0_max": 1.15,
+      "geometry_levels": 3
+    },
+    {
+      "biome": "lava",
+      "mains": 10,
+      "goals": {
+        "clear_n": 7,
+        "height": 1,
+        "shape": 1,
+        "survive": 1
+      },
+      "board_footprints": 8,
+      "distinct_rules": 10,
+      "g0_min": 0.85,
+      "g0_max": 1.25,
+      "geometry_levels": 1
+    },
+    {
+      "biome": "forest",
+      "mains": 10,
+      "goals": {
+        "clear_n": 8,
+        "height": 1,
+        "shape": 1
+      },
+      "board_footprints": 8,
+      "distinct_rules": 10,
+      "g0_min": 0.6,
+      "g0_max": 1.3,
+      "geometry_levels": 3
+    },
+    {
+      "biome": "cave",
+      "mains": 10,
+      "goals": {
+        "clear_n": 8,
+        "height": 1,
+        "shape": 1
+      },
+      "board_footprints": 7,
+      "distinct_rules": 9,
+      "g0_min": 0.6,
+      "g0_max": 1.35,
+      "geometry_levels": 2
+    },
+    {
+      "biome": "clockwork",
+      "mains": 10,
+      "goals": {
+        "clear_n": 7,
+        "height": 1,
+        "shape": 1,
+        "wind_keys": 1
+      },
+      "board_footprints": 7,
+      "distinct_rules": 8,
+      "g0_min": 0.6,
+      "g0_max": 1.4,
+      "geometry_levels": 1
+    },
+    {
+      "biome": "neon",
+      "mains": 10,
+      "goals": {
+        "clear_n": 7,
+        "height": 1,
+        "shape": 1,
+        "survive": 1
+      },
+      "board_footprints": 8,
+      "distinct_rules": 8,
+      "g0_min": 0.9,
+      "g0_max": 1.3,
+      "geometry_levels": 0
+    },
+    {
+      "biome": "celestial",
+      "mains": 10,
+      "goals": {
+        "clear_n": 8,
+        "height": 1,
+        "shape": 1
+      },
+      "board_footprints": 7,
+      "distinct_rules": 11,
+      "g0_min": 0.6,
+      "g0_max": 1.5,
+      "geometry_levels": 1
+    }
+  ],
+  "strict_unique": 118,
+  "structural_families": 118,
+  "exact_duplicates": [],
+  "callback_families": [],
+  "survive_time_star_errors": [],
+  "scope": "Data and design targets only. First-attempt stars, completion medians, camera readability and perceived fairness require human playtest and are NOT ASSESSED."
+}

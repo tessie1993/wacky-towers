@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "id": "crab_claw",
+  "name_key": "RULE_CRAB_CLAW",
+  "layer": "twist",
+  "icon": "crab_claw",
+  "behaviour": "crab_claw",
+  "params": {
+    "claw_start_layers": {
+      "type": "number"
+    },
+    "claw_every_ms": {
+      "type": "number"
+    },
+    "claw_jitter_ms": {
+      "type": "number"
+    },
+    "claw_warn_ms": {
+      "type": "number"
+    },
+    "claw_grab": {
+      "type": "number"
+    },
+    "counter": {
+      "type": "string"
+    }
+  },
+  "incompatible_with": []
+}

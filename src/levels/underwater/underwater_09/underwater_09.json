@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "id": "underwater_09",
+  "biome": "underwater",
+  "tier": 9,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "turntable",
+      "params": {
+        "turn_warn_locks": 1,
+        "turn_locks": 5,
+        "clockwise": true
+      }
+    },
+    {
+      "id": "gust",
+      "params": {
+        "wind_dir": "+x",
+        "wind_interval_ms": 8000,
+        "wind_jitter_ms": 2000,
+        "wind_warn_ms": 1000
+      }
+    }
+  ],
+  "stars": {
+    "t2": 245000,
+    "t3": 175000
+  },
+  "music": "underwater_09",
+  "name": "LVL_UNDERWATER_09_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_09",
+      "biome": "underwater",
+      "tier": 9,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.1
+      },
+      "goal": {
+        "type": "clear",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "turntable",
+          "params": {
+            "turn_every_locks": 5,
+            "turn_dir": "cw",
+            "turn_warn_locks": 1
+          }
+        },
+        {
+          "id": "gust",
+          "params": {
+            "wind_dir": "+x",
+            "wind_interval_ms": 8000,
+            "wind_jitter_ms": 2000,
+            "wind_warn_ms": 1000
+          }
+        }
+      ],
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
+      "music": "underwater_09"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

@@ -63,12 +63,13 @@
     {
       "id": "board.min_side",
       "type": "count",
-      "default": 4,
+      "default": 2,
       "min": 1,
       "max": 64,
       "allows_zero": false,
       "rule_adjustable": false,
-      "source": "design/gdd/board-grid.md#safe-ranges-for-per-level-overrides"
+      "source": "design/gdd/board-grid.md#safe-ranges-for-per-level-overrides",
+      "note": "Authored lane and puzzle boards use depth 2 or 3; remains bounded at load."
     },
     {
       "id": "board.spawn_clearance",

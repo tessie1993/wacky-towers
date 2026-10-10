@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "speed_bump",
+  "name_key": "RULE_SPEED_BUMP",
+  "layer": "twist",
+  "icon": "speed_bump",
+  "behaviour": "speed_bump",
+  "params": {
+    "bump_trigger": {
+      "type": "string"
+    },
+    "notch_every_s": {
+      "type": "number"
+    },
+    "notch_max": {
+      "type": "number"
+    },
+    "notch_pct": {
+      "type": "number"
+    },
+    "warn_ms": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

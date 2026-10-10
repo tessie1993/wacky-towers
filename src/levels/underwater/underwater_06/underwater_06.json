@@ -1,0 +1,154 @@
+{
+  "schema": 1,
+  "id": "underwater_06",
+  "biome": "underwater",
+  "tier": 6,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 6
+  },
+  "pieces": {
+    "kit": [
+      "tripod",
+      "tripod",
+      "tripod",
+      "tripod",
+      "s",
+      "s",
+      "s",
+      "s",
+      "o"
+    ],
+    "shapes": [
+      "tripod",
+      "s",
+      "o"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.6,
+    "spawn.arrival": "kit_box",
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "shape",
+    "target_shape": {
+      "layers": {
+        "0": [
+          "++++++",
+          "++++++",
+          "++..++",
+          "++..++",
+          "++++++",
+          "++++++"
+        ],
+        "1": [
+          "+....+",
+          "......",
+          "......",
+          "......",
+          "......",
+          "+....+"
+        ]
+      }
+    },
+    "piece_budget": 9
+  },
+  "rules": [
+    {
+      "id": "fill_shape"
+    },
+    {
+      "id": "undo_reset"
+    }
+  ],
+  "stars": {
+    "t2": 210000,
+    "t3": 135000
+  },
+  "music": "underwater_06",
+  "story": {
+    "mascot_role": "watcher"
+  },
+  "name": "LVL_UNDERWATER_06_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_06",
+      "biome": "underwater",
+      "tier": 6,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 6
+      },
+      "pieces": {
+        "kit": [
+          "tripod",
+          "tripod",
+          "tripod",
+          "tripod",
+          "S",
+          "S",
+          "S",
+          "S",
+          "O"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.6,
+        "spawn.arrival": "kit_box",
+        "goal.top_out": "out_of_pieces"
+      },
+      "goal": {
+        "type": "shape",
+        "target_shape": {
+          "layers": {
+            "0": [
+              "++++++",
+              "++++++",
+              "++..++",
+              "++..++",
+              "++++++",
+              "++++++"
+            ],
+            "1": [
+              "+....+",
+              "......",
+              "......",
+              "......",
+              "......",
+              "+....+"
+            ]
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "fill_shape"
+        },
+        {
+          "id": "undo_reset"
+        }
+      ],
+      "stars": {
+        "t2": 210000,
+        "t3": 135000
+      },
+      "music": "underwater_06",
+      "story": {
+        "mascot_role": "watcher"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

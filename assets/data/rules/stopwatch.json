@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "id": "stopwatch",
+  "name_key": "RULE_STOPWATCH",
+  "layer": "twist",
+  "icon": "stopwatch",
+  "behaviour": "stopwatch",
+  "params": {
+    "stop_every_ms": {
+      "type": "number"
+    },
+    "stop_jitter_ms": {
+      "type": "number"
+    },
+    "stop_warn_ms": {
+      "type": "number"
+    },
+    "stop_ms": {
+      "type": "number"
+    },
+    "catchup_scale": {
+      "type": "number"
+    },
+    "catchup_ms": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

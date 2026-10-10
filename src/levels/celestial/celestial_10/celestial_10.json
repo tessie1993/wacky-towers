@@ -1,0 +1,297 @@
+{
+  "schema": 1,
+  "id": "celestial_10",
+  "biome": "celestial",
+  "tier": 10,
+  "board": {
+    "width": 7,
+    "depth": 7,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "chair"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.5,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "event_card",
+      "params": {
+        "event_card_locks": 6,
+        "no_repeat": true,
+        "pool": [
+          {
+            "card": "miller_lever",
+            "event": "gust"
+          },
+          {
+            "card": "sniffles_horn",
+            "event": "gust"
+          },
+          {
+            "card": "oak_chimes",
+            "event": "gust"
+          },
+          {
+            "card": "meringue_bag",
+            "event": "drop"
+          },
+          {
+            "card": "crab_bottle",
+            "event": "drop"
+          },
+          {
+            "card": "cuckoo_stopper",
+            "event": "drop"
+          },
+          {
+            "card": "smolder_bathbomb",
+            "event": "slide"
+          },
+          {
+            "card": "geode_lanterns",
+            "event": "slide"
+          },
+          {
+            "card": "mirrorball_mixtape",
+            "event": "slide"
+          }
+        ],
+        "gust": {
+          "wind_strength": 1,
+          "wind_warn_ms": 1000
+        },
+        "drop": {
+          "skin": "star_rock"
+        },
+        "slide": {
+          "slide_cells": 1
+        }
+      }
+    },
+    {
+      "id": "lava_lid",
+      "params": {
+        "mode": "lid",
+        "lid_first_s": 90,
+        "lid_every_s": 40,
+        "lid_max": 2,
+        "lid_warn_ms": 3000,
+        "lid_push_per_clear": 1
+      }
+    }
+  ],
+  "stars": {
+    "t2": 335000,
+    "t3": 235000
+  },
+  "music": "celestial_10_tbd",
+  "story": {
+    "mascot_role": "boss",
+    "icon": "moon"
+  },
+  "name": "LVL_CELESTIAL_10_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/celestial.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "celestial_10",
+      "biome": "celestial",
+      "tier": 10,
+      "board": {
+        "width": 7,
+        "depth": 7,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "tripod",
+          "screw_l",
+          "screw_r",
+          "chair"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.5,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "event_card*",
+          "params": {
+            "event_card_locks": 6,
+            "no_repeat": true,
+            "pool": [
+              {
+                "card": "miller_lever",
+                "event": "gust"
+              },
+              {
+                "card": "sniffles_horn",
+                "event": "gust"
+              },
+              {
+                "card": "oak_chimes",
+                "event": "gust"
+              },
+              {
+                "card": "meringue_bag",
+                "event": "drop"
+              },
+              {
+                "card": "crab_bottle",
+                "event": "drop"
+              },
+              {
+                "card": "cuckoo_stopper",
+                "event": "drop"
+              },
+              {
+                "card": "smolder_bathbomb",
+                "event": "slide"
+              },
+              {
+                "card": "geode_lanterns",
+                "event": "slide"
+              },
+              {
+                "card": "mirrorball_mixtape",
+                "event": "slide"
+              }
+            ],
+            "gust": {
+              "wind_strength": 1,
+              "wind_warn_ms": 1000
+            },
+            "drop": {
+              "skin": "star_rock"
+            },
+            "slide": {
+              "slide_cells": 1
+            }
+          }
+        },
+        {
+          "id": "lava_lid*",
+          "params": {
+            "mode": "lid",
+            "lid_first_s": 90,
+            "lid_every_s": 40,
+            "lid_max": 2,
+            "lid_warn_ms": 3000,
+            "lid_push_per_clear": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 335000,
+        "t3": 235000
+      },
+      "music": "celestial_10_tbd",
+      "story": {
+        "mascot_role": "boss",
+        "icon": "moon"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "event_card*",
+        "runtime": "event_card",
+        "params": {
+          "event_card_locks": 6,
+          "no_repeat": true,
+          "pool": [
+            {
+              "card": "miller_lever",
+              "event": "gust"
+            },
+            {
+              "card": "sniffles_horn",
+              "event": "gust"
+            },
+            {
+              "card": "oak_chimes",
+              "event": "gust"
+            },
+            {
+              "card": "meringue_bag",
+              "event": "drop"
+            },
+            {
+              "card": "crab_bottle",
+              "event": "drop"
+            },
+            {
+              "card": "cuckoo_stopper",
+              "event": "drop"
+            },
+            {
+              "card": "smolder_bathbomb",
+              "event": "slide"
+            },
+            {
+              "card": "geode_lanterns",
+              "event": "slide"
+            },
+            {
+              "card": "mirrorball_mixtape",
+              "event": "slide"
+            }
+          ],
+          "gust": {
+            "wind_strength": 1,
+            "wind_warn_ms": 1000
+          },
+          "drop": {
+            "skin": "star_rock"
+          },
+          "slide": {
+            "slide_cells": 1
+          }
+        }
+      },
+      {
+        "source": "lava_lid*",
+        "runtime": "lava_lid",
+        "params": {
+          "mode": "lid",
+          "lid_first_s": 90,
+          "lid_every_s": 40,
+          "lid_max": 2,
+          "lid_warn_ms": 3000,
+          "lid_push_per_clear": 1
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

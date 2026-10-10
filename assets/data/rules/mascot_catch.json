@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "mascot_catch",
+  "name_key": "RULE_MASCOT_CATCH",
+  "layer": "mascot",
+  "icon": "mascot_catch",
+  "behaviour": "mascot_catch",
+  "params": {
+    "catches": {
+      "type": "number"
+    },
+    "happy_only": {
+      "type": "flag"
+    },
+    "mascot_catches": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cpvtvajk2w6xx"]
+
+[ext_resource type="Script" uid="uid://ske76qc8giw" path="res://src/game/atom_lab.gd" id="1_wbdqp"]
+
+[node name="AtomLab" type="Node3D" unique_id=1756563351]
+script = ExtResource("1_wbdqp")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1753747938]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1221573843]
+
+[node name="Overlay" type="CanvasLayer" parent="." unique_id=1692073405]
+
+[node name="Hint" type="Label" parent="Overlay" unique_id=1801874631]

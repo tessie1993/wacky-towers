@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "dandelion_puff",
+  "name_key": "RULE_DANDELION_PUFF",
+  "layer": "content",
+  "icon": "dandelion_puff",
+  "behaviour": "dandelion_puff",
+  "params": {
+    "per_bag": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "syrup_band",
+  "name_key": "RULE_SYRUP_BAND",
+  "layer": "twist",
+  "icon": "syrup_band",
+  "behaviour": "syrup_band",
+  "params": {
+    "band_rows": {
+      "type": "structure"
+    },
+    "syrup_slow": {
+      "type": "number"
+    },
+    "syrup_dir": {
+      "type": "string"
+    },
+    "syrup_glide": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

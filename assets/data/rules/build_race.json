@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "build_race",
+  "name_key": "RULE_BUILD_RACE",
+  "layer": "mechanic",
+  "icon": "build_race",
+  "behaviour": "build_race",
+  "params": {
+    "top_out": {
+      "type": "string"
+    },
+    "topout_rule": {
+      "type": "string"
+    }
+  },
+  "incompatible_with": []
+}

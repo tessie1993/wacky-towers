@@ -1,0 +1,16 @@
+{
+  "version": "v2.5.stable",
+  "godot": "4.7.x",
+  "source": "https://github.com/CraterCrash/godot-orchestrator/releases/tag/v2.5.stable",
+  "asset": "godot-orchestrator-v2.5-stable-plugin.zip",
+  "sha256": "3e4bab7811b89002627495973e1aa0fdf502bb8cec718a2693cce354d203efd7",
+  "license": "Apache-2.0",
+  "android_architectures": [
+    "arm32",
+    "arm64"
+  ],
+  "windows_architectures": [
+    "x86_64"
+  ],
+  "web_native_extensions": true
+}

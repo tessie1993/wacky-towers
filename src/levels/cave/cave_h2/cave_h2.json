@@ -1,0 +1,201 @@
+{
+  "schema": 1,
+  "id": "cave_h2",
+  "biome": "cave",
+  "tier": 13,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "spawn_anchor": [
+      2,
+      2
+    ],
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "......",
+          ".R....",
+          "......",
+          "......",
+          "....R.",
+          "......"
+        ],
+        "1": [
+          "......",
+          ".R....",
+          "......",
+          "......",
+          "....R.",
+          "......"
+        ],
+        "2": [
+          "......",
+          ".R....",
+          "......",
+          "......",
+          "....R.",
+          "......"
+        ]
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 1.3,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "woodpecker_knock",
+      "params": {
+        "knock_interval_ms": 15000,
+        "knock_jitter_ms": 3000,
+        "knock_warn_ms": 1500,
+        "knock_pop_max": 3,
+        "skin": "geode_stomp"
+      }
+    },
+    {
+      "id": "mushroom_popup",
+      "params": {
+        "spawn_every_locks": 7,
+        "objects_max": 3,
+        "skin": "pebble"
+      }
+    },
+    {
+      "id": "rock_obstacle",
+      "params": {
+        "cells": [
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            2,
+            1
+          ],
+          [
+            4,
+            0,
+            4
+          ],
+          [
+            4,
+            1,
+            4
+          ],
+          [
+            4,
+            2,
+            4
+          ]
+        ]
+      }
+    }
+  ],
+  "stars": {
+    "t2": 300000,
+    "t3": 210000
+  },
+  "music": "cave_h2_tbd",
+  "name": "LVL_CAVE_H2_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/cave.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "cave_h2",
+      "biome": "cave",
+      "tier": 13,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "rock": {
+          "columns": [
+            {
+              "x": 1,
+              "z": 1,
+              "y_from": 0,
+              "y_to": 2
+            },
+            {
+              "x": 4,
+              "z": 4,
+              "y_from": 0,
+              "y_to": 2
+            }
+          ]
+        },
+        "spawn_anchor": {
+          "x": 2,
+          "z": 2
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.3,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "woodpecker_knock",
+          "params": {
+            "knock_interval_ms": 15000,
+            "knock_jitter_ms": 3000,
+            "knock_warn_ms": 1500,
+            "knock_pop_max": 3,
+            "skin": "geode_stomp"
+          }
+        },
+        {
+          "id": "mushroom_popup",
+          "params": {
+            "spawn_every_locks": 7,
+            "objects_max": 3,
+            "skin": "pebble"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 300000,
+        "t3": 210000
+      },
+      "music": "cave_h2_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

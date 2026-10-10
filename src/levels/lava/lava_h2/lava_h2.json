@@ -1,0 +1,150 @@
+{
+  "schema": 1,
+  "id": "lava_h2",
+  "biome": "lava",
+  "tier": 13,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "##k##.",
+          "######",
+          ".#####",
+          "###k##",
+          "#####.",
+          "###.##"
+        ],
+        "1": [
+          ".#####",
+          "##k###",
+          "######",
+          "##.##k",
+          "k#####",
+          "##..##"
+        ]
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 1.3
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "locked_cube",
+      "params": {}
+    },
+    {
+      "id": "quake",
+      "params": {
+        "quake_every_s": 40,
+        "quake_max_cubes": 4
+      }
+    }
+  ],
+  "stars": {
+    "t2": 295000,
+    "t3": 205000
+  },
+  "music": "lava_h2",
+  "name": "LVL_LAVA_H2_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/lava.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "lava_h2",
+      "biome": "lava",
+      "tier": 13,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "starting_contents": {
+          "layers": {
+            "0": [
+              "##k##.",
+              "######",
+              ".#####",
+              "###k##",
+              "#####.",
+              "###.##"
+            ],
+            "1": [
+              ".#####",
+              "##k###",
+              "######",
+              "##.##k",
+              "k#####",
+              "##..##"
+            ]
+          }
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.3
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "SP30",
+          "params": {}
+        },
+        {
+          "id": "EV12",
+          "params": {
+            "quake_every_s": 40,
+            "quake_max_cubes": 4
+          }
+        }
+      ],
+      "stars": {
+        "t2": 295000,
+        "t3": 205000
+      },
+      "music": "lava_h2"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "SP30",
+        "runtime": "locked_cube",
+        "params": {}
+      },
+      {
+        "source": "EV12",
+        "runtime": "quake",
+        "params": {
+          "quake_every_s": 40,
+          "quake_max_cubes": 4
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

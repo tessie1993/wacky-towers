@@ -1,0 +1,158 @@
+{
+  "schema": 1,
+  "id": "underwater_10",
+  "biome": "underwater",
+  "tier": 10,
+  "board": {
+    "width": 8,
+    "depth": 6,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "duo"
+    ],
+    "weights": {
+      "duo": 0.5
+    }
+  },
+  "knobs": {
+    "fall.g0": 1.15
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "conveyor",
+      "params": {
+        "conveyor_every": 3,
+        "conveyor_dir": "+x",
+        "conveyor_wrap": true
+      }
+    },
+    {
+      "id": "gust",
+      "params": {
+        "wind_dir": "+z",
+        "wind_interval_ms": 8000,
+        "wind_jitter_ms": 2000,
+        "wind_warn_ms": 1000
+      }
+    },
+    {
+      "id": "crab_claw",
+      "params": {
+        "claw_start_layers": 2,
+        "claw_every_ms": 20000,
+        "claw_jitter_ms": 4000,
+        "claw_warn_ms": 2000,
+        "claw_grab": 1,
+        "counter": "clear"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "underwater_10",
+  "story": {
+    "mascot_role": "watcher",
+    "boss": "admiral_crab"
+  },
+  "name": "LVL_UNDERWATER_10_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_10",
+      "biome": "underwater",
+      "tier": 10,
+      "board": {
+        "width": 8,
+        "depth": 6,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "I",
+          "O",
+          "T",
+          "L",
+          "S",
+          "tripod",
+          "screw_l",
+          "screw_r",
+          "duo"
+        ],
+        "weights": {
+          "duo": 0.5
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.15
+      },
+      "goal": {
+        "type": "clear",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "conveyor",
+          "params": {
+            "conveyor_every": 3,
+            "conveyor_dir": "+x",
+            "conveyor_wrap": true
+          }
+        },
+        {
+          "id": "gust",
+          "params": {
+            "wind_dir": "+z",
+            "wind_interval_ms": 8000,
+            "wind_jitter_ms": 2000,
+            "wind_warn_ms": 1000
+          }
+        },
+        {
+          "id": "crab_claw",
+          "params": {
+            "claw_start_layers": 2,
+            "claw_every_ms": 20000,
+            "claw_jitter_ms": 4000,
+            "claw_warn_ms": 2000,
+            "claw_grab": 1,
+            "counter": "clear"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "music": "underwater_10",
+      "story": {
+        "mascot_role": "watcher",
+        "boss": "admiral_crab"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

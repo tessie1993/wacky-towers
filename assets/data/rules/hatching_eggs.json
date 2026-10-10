@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "hatching_eggs",
+  "name_key": "RULE_HATCHING_EGGS",
+  "layer": "content",
+  "icon": "hatching_eggs",
+  "behaviour": "hatching_eggs",
+  "params": {
+    "hatch_locks": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "quake",
+  "name_key": "RULE_QUAKE",
+  "layer": "twist",
+  "icon": "quake",
+  "behaviour": "quake",
+  "params": {
+    "quake_every_s": {
+      "type": "number"
+    },
+    "quake_max_cubes": {
+      "type": "number"
+    },
+    "first_s": {
+      "type": "number"
+    },
+    "quake_warn_ms": {
+      "type": "number"
+    },
+    "active_after_clears": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

@@ -1,0 +1,65 @@
+{
+  "id": "forest",
+  "index": 6,
+  "art_set": "candy_toy",
+  "palette": "meadow",
+  "side_island": false,
+  "default_music": "mus_forest_default",
+  "levels": [
+    {
+      "id": "forest_01",
+      "json": "res://src/levels/forest/forest_01/forest_01.json",
+      "scene": "res://src/levels/forest/forest_01/forest_01.tscn"
+    },
+    {
+      "id": "forest_02",
+      "json": "res://src/levels/forest/forest_02/forest_02.json",
+      "scene": "res://src/levels/forest/forest_02/forest_02.tscn"
+    },
+    {
+      "id": "forest_03",
+      "json": "res://src/levels/forest/forest_03/forest_03.json",
+      "scene": "res://src/levels/forest/forest_03/forest_03.tscn"
+    },
+    {
+      "id": "forest_04",
+      "json": "res://src/levels/forest/forest_04/forest_04.json",
+      "scene": "res://src/levels/forest/forest_04/forest_04.tscn"
+    },
+    {
+      "id": "forest_05",
+      "json": "res://src/levels/forest/forest_05/forest_05.json",
+      "scene": "res://src/levels/forest/forest_05/forest_05.tscn"
+    },
+    {
+      "id": "forest_06",
+      "json": "res://src/levels/forest/forest_06/forest_06.json",
+      "scene": "res://src/levels/forest/forest_06/forest_06.tscn"
+    },
+    {
+      "id": "forest_07",
+      "json": "res://src/levels/forest/forest_07/forest_07.json",
+      "scene": "res://src/levels/forest/forest_07/forest_07.tscn"
+    },
+    {
+      "id": "forest_08",
+      "json": "res://src/levels/forest/forest_08/forest_08.json",
+      "scene": "res://src/levels/forest/forest_08/forest_08.tscn"
+    },
+    {
+      "id": "forest_09",
+      "json": "res://src/levels/forest/forest_09/forest_09.json",
+      "scene": "res://src/levels/forest/forest_09/forest_09.tscn"
+    },
+    {
+      "id": "forest_10",
+      "json": "res://src/levels/forest/forest_10/forest_10.json",
+      "scene": "res://src/levels/forest/forest_10/forest_10.tscn"
+    },
+    {
+      "id": "forest_bonus",
+      "json": "res://src/levels/forest/forest_bonus/forest_bonus.json",
+      "scene": "res://src/levels/forest/forest_bonus/forest_bonus.tscn"
+    }
+  ]
+}

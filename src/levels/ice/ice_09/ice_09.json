@@ -1,0 +1,148 @@
+{
+  "schema": 1,
+  "id": "ice_09",
+  "biome": "ice",
+  "tier": 9,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "######",
+          "#.####",
+          "######",
+          "####.#",
+          "##.###",
+          "######"
+        ],
+        "1": [
+          "##.###",
+          "######",
+          "#.####",
+          "######",
+          "####.#",
+          "######"
+        ]
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 1.05
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "flip",
+      "params": {
+        "flip_every_layers": 2,
+        "flip_every_ms": 70000,
+        "flip_warn_ms": 2000,
+        "flip_max": 2,
+        "flip_mode": "stack"
+      }
+    },
+    {
+      "id": "ice_slide",
+      "params": {
+        "slide_dir": "+z",
+        "slide_cells": 1
+      }
+    }
+  ],
+  "stars": {
+    "t2": 270000,
+    "t3": 190000
+  },
+  "music": "ice_09",
+  "name": "LVL_ICE_09_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/ice.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "ice_09",
+      "biome": "ice",
+      "tier": 9,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "starting_contents": {
+          "layers": {
+            "0": [
+              "######",
+              "#.####",
+              "######",
+              "####.#",
+              "##.###",
+              "######"
+            ],
+            "1": [
+              "##.###",
+              "######",
+              "#.####",
+              "######",
+              "####.#",
+              "######"
+            ]
+          }
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.05
+      },
+      "goal": {
+        "type": "clear",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "flip",
+          "params": {
+            "flip_every_layers": 2,
+            "flip_every_ms": 70000,
+            "flip_warn_ms": 2000,
+            "flip_max": 2,
+            "flip_mode": "stack"
+          }
+        },
+        {
+          "id": "ice_slide",
+          "params": {
+            "slide_dir": "+z",
+            "slide_cells": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 270000,
+        "t3": 190000
+      },
+      "music": "ice_09"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

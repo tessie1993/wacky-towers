@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "id": "neon_08",
+  "biome": "neon",
+  "tier": 8,
+  "name": "LVL_NEON_08_TITLE",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "fixed_list": []
+  },
+  "knobs": {
+    "fall.g0": 1.2,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "survive",
+    "t_ms": 150000
+  },
+  "rules": [
+    {
+      "id": "stopwatch",
+      "params": {}
+    }
+  ],
+  "stars": {
+    "s2": 1,
+    "s3": 2
+  },
+  "story": {
+    "title_key": "LVL_NEON_08_TITLE",
+    "premise_key": "LVL_NEON_08_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "star"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/neon.md",
+    "status": "Proposed",
+    "design_spec": {
+      "schema": 1,
+      "id": "neon_08",
+      "biome": "neon",
+      "tier": 8,
+      "name": "LVL_NEON_08_TITLE",
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ],
+        "fixed_list": []
+      },
+      "knobs": {
+        "fall.g0": 1.2,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "survive",
+        "t_ms": 150000
+      },
+      "rules": [
+        {
+          "id": "stopwatch",
+          "params": {}
+        }
+      ],
+      "stars": {
+        "t2": 240000,
+        "t3": 170000
+      },
+      "story": {
+        "title_key": "LVL_NEON_08_TITLE",
+        "premise_key": "LVL_NEON_08_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "star"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": [
+      {
+        "id": "neon_08",
+        "stars": {
+          "s2": 1,
+          "s3": 2
+        },
+        "reason": "Survive150s must rate clears per Scoring F4; time stars granted automatic clean3stars."
+      }
+    ]
+  }
+}

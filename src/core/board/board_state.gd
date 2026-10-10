@@ -38,6 +38,7 @@ var _piece: PackedInt32Array = PackedInt32Array()
 var _types: ContentTypes
 var _spec_down: int
 var _size: Vector3i
+var _spawn_anchor: Vector2i
 var _h_play: int
 var _active_count: int = 0
 var _layer_order: PackedInt32Array = PackedInt32Array()
@@ -49,6 +50,7 @@ var _delta: PackedInt32Array = PackedInt32Array()
 var _touched: Dictionary = {} # cell index -> true; written since the last take_delta()
 var _status: Dictionary = {} # cell index -> {status_id, counter, rule_id}; moves with the block (ADR-0002 §2)
 var _overlay: Dictionary = {} # cell index -> {type_id, data}; stays with the cell
+var _floor_layer: int = 0
 
 
 ## Allocates the board from a validated spec: expands the mask over every layer and writes starting contents.
@@ -58,6 +60,7 @@ func _init(spec: BoardSpec, types: ContentTypes) -> void:
 	_spec_down = spec.down
 	_size = spec.size
 	_h_play = spec.h_play
+	_spawn_anchor = spec.spawn_anchor
 	var n: int = _size.x * _size.y * _size.z
 	_flags.resize(n)
 	_kind.resize(n)
@@ -81,6 +84,15 @@ func _init(spec: BoardSpec, types: ContentTypes) -> void:
 		if types.fills_layer(kind):
 			f |= F_FILLS_LAYER
 		_flags[i] = f
+		var status: Dictionary = entry.get("status", {})
+		if not status.is_empty():
+			_status[i] = status.duplicate(true)
+			_flags[i] |= F_HAS_STATUS
+			if status.has("fills_layer"):
+				_flags[i] = (_flags[i] | F_FILLS_LAYER) if status["fills_layer"] else (_flags[i] & ~F_FILLS_LAYER)
+			if status.get("static_geometry", false) and (_flags[i] & F_ACTIVE):
+				_flags[i] &= ~F_ACTIVE
+				_active_count -= 1
 	_rebuild_layout()
 
 
@@ -305,15 +317,28 @@ func place(i: int, kind: int, hue: int, piece_uid: int) -> void:
 		push_error("BoardState.place: cell %d inactive or kind %d not placeable" % [i, kind])
 		return
 	if (_flags[i] & F_OCCUPIED) != 0:
+		if not can_remove(i, Cause.DISPLACED):
+			return
 		remove(i, Cause.DISPLACED)
 	_put(i, layer_of(i), kind, hue, piece_uid, _content_flags(kind))
 	_log(Op.SET, i, 0)
 
 
 ## Clears CELL-slot content at i; no-op on an empty cell. Usage: b.remove(i, BoardState.Cause.CLEAR)
-func remove(i: int, cause: int) -> void:
-	if (_flags[i] & F_OCCUPIED) == 0:
+func remove(i: int, cause: int, force: bool = false) -> void:
+	if i < 0 or i >= _kind.size():
 		return
+	var can_force: bool = force and not bool(_status.get(i, {}).get("fixed", false)) and not bool(_status.get(i, {}).get("locked", false))
+	if (_flags[i] & F_OCCUPIED) == 0 or (not can_remove(i, cause) and not can_force):
+		return
+	if cause == Cause.DAMAGE:
+		var status: Dictionary = _status.get(i, {})
+		var health_key: String = "hits_left" if status.has("hits_left") else "hp"
+		if int(status.get(health_key, 1)) > 1:
+			status = status.duplicate(true)
+			status[health_key] = int(status[health_key]) - 1
+			set_status(i, status)
+			return
 	_take(i, layer_of(i))
 	if _status.erase(i): # status belongs to the block
 		_flags[i] &= ~F_HAS_STATUS
@@ -330,12 +355,19 @@ func set_status(i: int, rec: Dictionary) -> void:
 			return
 		_status.erase(i)
 		_flags[i] &= ~F_HAS_STATUS
+		_update_fill_status(i, {})
 		_log(Op.STATUS, i, 0)
 		return
 	if (_flags[i] & F_OCCUPIED) == 0:
 		return
-	_status[i] = rec
+	_status[i] = rec.duplicate(true)
 	_flags[i] |= F_HAS_STATUS
+	_update_fill_status(i, rec)
+	if rec.get("static_geometry", false) and (_flags[i] & F_ACTIVE):
+		_flags[i] &= ~F_ACTIVE
+		_active_count -= 1
+		_rebuild_layout()
+		_log(Op.LAYOUT, 0, 0)
 	_log(Op.STATUS, i, int(rec.get("status_id", 0)))
 
 
@@ -363,7 +395,7 @@ func get_record(i: int) -> Dictionary:
 		return {}
 	# ponytail: no per-piece table yet (shape_id/owner/tags defaults); add pieces[uid] when owners/tags land (ADR-0009)
 	return {"shape_id": &"", "piece_instance_id": _piece[i], "owner": 0, "tags": PackedStringArray(),
-		"status": _status.get(i, {})}
+		"kind": _kind[i], "color": _color[i], "status": _status.get(i, {})}
 
 
 ## Changes gravity and rebuilds the layer ordering and counters. Setup / Resolving only.
@@ -402,10 +434,12 @@ func set_active(x: int, z: int, on: bool) -> void:
 
 ## Moves CELL content from one cell to another (displacing whatever is at the target). No-op if from is empty
 ## or to is inactive. Usage: b.move(from_i, to_i)
-func move(from: int, to: int) -> void:
-	if from == to or (_flags[from] & F_OCCUPIED) == 0 or not is_active(to):
+func move(from: int, to: int, force: bool = false) -> void:
+	if from == to or (_flags[from] & F_OCCUPIED) == 0 or not is_active(to) or not can_move(from, force):
 		return
 	if (_flags[to] & F_OCCUPIED) != 0:
+		if not can_remove(to, Cause.DISPLACED):
+			return
 		remove(to, Cause.DISPLACED)
 	_relocate(from, layer_of(from), to, layer_of(to))
 	_log(Op.MOVE, from, to)
@@ -441,10 +475,26 @@ func shift_layers(cleared: PackedInt32Array) -> void:
 		for j: int in src.size():
 			if (_flags[src[j]] & F_OCCUPIED) == 0:
 				continue
+			if not can_move(src[j]):
+				continue
+			var chamber_bottom: int = -1
+			for below_layer: int in k:
+				var below_cell: int = layer_cells(below_layer)[j]
+				if get_kind(below_cell) != 0 and not can_move(below_cell):
+					chamber_bottom = below_layer
+			var distance: int = 0
+			for clear_layer: int in range(chamber_bottom + 1, k):
+				if is_cleared[clear_layer]:
+					distance += 1
+			if distance == 0:
+				continue
+			dst = layer_cells(k - distance)
 			if not is_active(dst[j]):
 				remove(src[j], Cause.MASKED)
 				continue
-			_relocate(src[j], k, dst[j], k - below)
+			if get_kind(dst[j]) != 0:
+				continue
+			_relocate(src[j], k, dst[j], k - distance)
 			_log(Op.MOVE, src[j], dst[j])
 
 
@@ -463,7 +513,7 @@ func _put(i: int, k: int, kind: int, hue: int, piece_uid: int, content_flags: in
 	_color[i] = hue
 	_piece[i] = piece_uid
 	_flags[i] = (_flags[i] & ~_CONTENT_BITS) | content_flags
-	if content_flags & F_FILLS_LAYER:
+	if content_flags & F_FILLS_LAYER and _flags[i] & F_ACTIVE:
 		_layer_filled[k] += 1
 	if content_flags & F_SOLID:
 		_layer_solid[k] += 1
@@ -472,7 +522,7 @@ func _put(i: int, k: int, kind: int, hue: int, piece_uid: int, content_flags: in
 ## Raw clear of occupied cell i in layer k, keeping layer counters in step.
 func _take(i: int, k: int) -> void:
 	var f: int = _flags[i]
-	if f & F_FILLS_LAYER:
+	if f & F_FILLS_LAYER and f & F_ACTIVE:
 		_layer_filled[k] -= 1
 	if f & F_SOLID:
 		_layer_solid[k] -= 1
@@ -502,3 +552,188 @@ func _log(op: int, a: int, b: int) -> void:
 	_touched[a] = true
 	if op == Op.MOVE:
 		_touched[b] = true
+
+
+## True when the cell currently contributes to a full layer. Example: b.fills_layer_at(c).
+func fills_layer_at(c: Vector3i) -> bool:
+	return in_bounds(c) and (_flags[index(c)] & F_FILLS_LAYER) != 0
+
+## Overlay record, independent of the block. Example: b.get_overlay(b.index(c)).
+func get_overlay(i: int) -> Dictionary:
+	return _overlay.get(i, {})
+
+## Simultaneous content relocation, preserving block status and allowing cycles. Example: b.move_batch(old, new).
+func move_batch(src: Array[Vector3i], dst: Array[Vector3i], force: bool = false) -> void:
+	if src.size() != dst.size():
+		return
+	var records: Array[Dictionary] = []
+	for c: Vector3i in src:
+		if not in_bounds(c):
+			records.append({})
+			continue
+		var i: int = index(c)
+		if not can_move(i, force):
+			return
+		records.append({"kind": _kind[i], "color": _color[i], "piece": _piece[i], "status": _status.get(i, {}).duplicate(true)})
+	for c: Vector3i in dst:
+		if in_bounds(c) and get_kind(index(c)) != 0 and not src.has(c) and not can_remove(index(c), Cause.DISPLACED):
+			return
+	for c: Vector3i in src:
+		if in_bounds(c):
+			remove(index(c), Cause.DISPLACED, force)
+	for n: int in dst.size():
+		var rec: Dictionary = records[n]
+		var c: Vector3i = dst[n]
+		if rec.is_empty() or rec["kind"] == 0 or not in_bounds(c) or not is_active(index(c)):
+			continue
+		place(index(c), rec["kind"], rec["color"], rec["piece"])
+		set_status(index(c), rec["status"])
+
+## Silent rescue removal followed by slice shift; returns cubes removed. Example: b.wipe_bottom(3).
+func wipe_bottom(k: int) -> int:
+	k = clampi(k, 0, layer_count())
+	var removed: int = 0
+	for layer: int in k:
+		for i: int in layer_cells(layer):
+			if get_kind(i) != 0:
+				removed += 1
+			remove(i, Cause.RESCUE)
+			set_overlay(i, {})
+	var layers: PackedInt32Array = PackedInt32Array()
+	for layer: int in k:
+		layers.append(layer)
+	shift_layers(layers)
+	return removed
+
+## Inverts each occupied column through its stack height then removes empty layers (EV03). Example: b.flip_stack().
+func flip_stack() -> void:
+	var height: int = stack_height()
+	if height < 0:
+		return
+	var src: Array[Vector3i] = []
+	var dst: Array[Vector3i] = []
+	for k: int in range(height + 1):
+		var from_layer: PackedInt32Array = layer_cells(k)
+		var to_layer: PackedInt32Array = layer_cells(height - k)
+		for j: int in from_layer.size():
+			if get_kind(from_layer[j]) != 0:
+				src.append(cell(from_layer[j]))
+				dst.append(cell(to_layer[j]))
+	move_batch(src, dst)
+	var empty: PackedInt32Array = PackedInt32Array()
+	for k: int in range(height + 1):
+		if _layer_solid[k] == 0:
+			empty.append(k)
+	shift_layers(empty)
+
+## Gravity settlement of individual blocks, bottom first. Example: b.settle_cells().
+func settle_cells() -> void:
+	var down: Vector3i = down_vector()
+	for k: int in layer_count():
+		for i: int in layer_cells(k):
+			if get_kind(i) == 0 or not can_move(i):
+				continue
+			var c: Vector3i = cell(i)
+			var distance: int = 0
+			while is_free(c + down * (distance + 1)):
+				distance += 1
+			if distance > 0:
+				move(i, index(c + down * distance))
+
+## Stable board contents for replay diagnostics. Example: var hash_data := b.snapshot().
+func snapshot() -> Dictionary:
+	return {"kind": _kind, "color": _color, "piece": _piece, "flags": _flags,
+		"status": _status, "overlay": _overlay, "down": _spec_down, "floor": _floor_layer, "h_play": _h_play}
+
+func restore(state: Dictionary) -> void:
+	_kind = state["kind"].duplicate()
+	_color = state["color"].duplicate()
+	_piece = state["piece"].duplicate()
+	_flags = state["flags"].duplicate()
+	_status = state["status"].duplicate(true)
+	_overlay = state["overlay"].duplicate(true)
+	_spec_down = state["down"]
+	_floor_layer = int(state.get("floor", 0))
+	_h_play = int(state.get("h_play", _h_play))
+	_active_count = 0
+	for flags: int in _flags:
+		if flags & F_ACTIVE:
+			_active_count += 1
+	_rebuild_layout()
+	_delta.clear()
+	_touched.clear()
+	_log(Op.LAYOUT, 0, 0)
+	for i: int in _kind.size():
+		_log(Op.SET, i, 0)
+
+func can_move(i: int, force: bool = false) -> bool:
+	var status: Dictionary = _status.get(i, {})
+	return not bool(status.get("fixed", false)) and not bool(status.get("locked", false)) and (force or not bool(status.get("anchored", false)))
+
+func can_remove(i: int, cause: int) -> bool:
+	var status: Dictionary = _status.get(i, {})
+	if cause == Cause.MASKED:
+		return true
+	if bool(status.get("fixed", false)):
+		return false
+	if bool(status.get("anchored", false)) and cause != Cause.DAMAGE:
+		return false
+	if bool(status.get("locked", false)) and cause == Cause.DISPLACED:
+		return false
+	if cause == Cause.CLEAR and (bool(status.get("clear_protected", false)) or bool(status.get("locked", false))):
+		return false
+	if bool(status.get("vined", false)) and cause == Cause.TRIM:
+		return false
+	return true
+
+func _update_fill_status(i: int, status: Dictionary) -> void:
+	if get_kind(i) == 0:
+		return
+	var previous: bool = bool(_flags[i] & F_FILLS_LAYER)
+	var fills: bool = bool(status.get("fills_layer", _types.fills_layer(_kind[i])))
+	if previous == fills:
+		return
+	_flags[i] = (_flags[i] | F_FILLS_LAYER) if fills else (_flags[i] & ~F_FILLS_LAYER)
+	if _flags[i] & F_ACTIVE:
+		_layer_filled[layer_of(i)] += 1 if fills else -1
+
+## Structural floor loss is silent and never shifts the surviving stack.
+func set_floor(layer: int) -> void:
+	var target: int = clampi(layer, _floor_layer, layer_count() - 1)
+	for k: int in range(_floor_layer, target):
+		for i: int in layer_cells(k):
+			remove(i, Cause.MASKED)
+			if _flags[i] & F_ACTIVE:
+				_flags[i] &= ~F_ACTIVE
+				_active_count -= 1
+	_floor_layer = target
+	_rebuild_layout()
+	_log(Op.LAYOUT, 0, 0)
+
+func floor_layer() -> int:
+	return _floor_layer
+
+func set_height_limit(height: int) -> void:
+	_h_play = clampi(height, 1, _size.y)
+	_log(Op.LAYOUT, 0, 0)
+
+func raise_junk(layers: int, kind: int) -> void:
+	var count: int = clampi(layers, 0, layer_count())
+	for k: int in range(layer_count() - 1, -1, -1):
+		for i: int in layer_cells(k):
+			if get_kind(i) == 0 or not can_move(i):
+				continue
+			var c: Vector3i = cell(i) - down_vector() * count
+			if not in_bounds(c):
+				remove(i, Cause.DISPLACED)
+			elif is_active(index(c)) and get_kind(index(c)) == 0:
+				move(i, index(c))
+	for k: int in range(_floor_layer, mini(_floor_layer + count, layer_count())):
+		for i: int in layer_cells(k):
+			if is_active(i) and get_kind(i) == 0:
+				place(i, kind, 0, 0)
+
+
+## Authored footprint spawn anchor. Example: b.spawn_anchor().x.
+func spawn_anchor() -> Vector2i:
+	return _spawn_anchor

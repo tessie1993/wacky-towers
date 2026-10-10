@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "date": "2026-10-10",
+  "changes": [
+    {
+      "id": "clockwork_05",
+      "board": {
+        "depth": 5
+      },
+      "goal": {
+        "H_target": 8
+      },
+      "reason": "User requested every level to differ in gameplay. Forest05 and Clockwork05 had identical geometry, objective, pool and rules. A 4x5 tower shaft at height8 preserves the intended no-fail breather and nominal coverage work96 while changing the packing problem."
+    },
+    {
+      "id": "neon_08",
+      "stars": {
+        "s2": 1,
+        "s3": 2
+      },
+      "reason": "Survive150s must rate clears per Scoring F4; time stars granted automatic clean3stars."
+    },
+    {
+      "id": "neon_06",
+      "reason": "New40cell stepped sign proposal replaces repeated24cell Forest picture; eight fixed pieces are constructively packed."
+    }
+  ]
+}

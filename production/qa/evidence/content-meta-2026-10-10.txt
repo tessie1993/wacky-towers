@@ -1,0 +1,33 @@
+  res://tests/unit/assets/block_set_import_test.gd > test_block_sets_each_set_has_a_cube_file PASSED 5ms
+  res://tests/unit/assets/block_set_import_test.gd > test_block_glbs_every_file_loads_as_scene PASSED 3ms
+  res://tests/unit/assets/block_set_import_test.gd > test_block_meshes_have_no_vertex_colours PASSED 8ms
+  res://tests/unit/assets/block_set_import_test.gd > test_block_cubes_stay_inside_their_grid_cell PASSED 7ms
+  res://tests/unit/assets/block_set_import_test.gd > test_block_pieces_child_count_matches_shape_bank PASSED 8ms
+  res://tests/unit/assets/block_set_import_test.gd > test_cube_res_for_every_cube_glb PASSED 4ms
+  res://tests/unit/assets/block_set_import_test.gd > test_cube_res_matches_glb PASSED 3ms
+  res://tests/unit/assets/block_set_import_test.gd > test_block_import_flags PASSED 10ms
+Statistics: 8 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 101ms
+  res://tests/unit/view/palette_table_test.gd > test_parses_hex PASSED 5ms
+  res://tests/unit/view/palette_table_test.gd > test_unknown_hue_falls_back PASSED 3ms
+  res://tests/unit/view/palette_table_test.gd > test_bad_hex_errors PASSED 3ms
+  res://tests/unit/view/palette_table_test.gd > test_real_candy_palette PASSED 4ms
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 26ms
+  res://tests/unit/levels/biome_files_test.gd > test_meadow_biome_parses PASSED 4ms
+  res://tests/unit/levels/biome_files_test.gd > test_level_json_exists PASSED 5ms
+  res://tests/unit/levels/biome_files_test.gd > test_art_set_dir_exists PASSED 4ms
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 23ms
+  res://tests/unit/meta/content_meta_test.gd > test_all_official_levels_validate_and_main_path_has_one_hundred PASSED 430ms
+  res://tests/unit/meta/content_meta_test.gd > test_next_biome_requires_finale_and_fifteen_earned_stars PASSED 4ms
+  res://tests/unit/meta/content_meta_test.gd > test_profiles_keep_best_stars_and_replay_pays_once PASSED 5ms
+  res://tests/unit/meta/content_meta_test.gd > test_four_profiles_and_settings_are_isolated PASSED 5ms
+  res://tests/unit/meta/content_meta_test.gd > test_buying_debits_wallet_without_lowering_earned_stars PASSED 4ms
+  res://tests/unit/meta/content_meta_test.gd > test_tournament_majorities_sudden_death_and_award_decay PASSED 3ms
+  res://tests/unit/meta/content_meta_test.gd > test_profile_rename_delete_and_lost_index_recovery_keep_other_progress PASSED 5ms
+  res://tests/unit/meta/content_meta_test.gd > test_disk_backup_checksum_and_newer_schema_are_recoverable PASSED 5ms
+  res://tests/unit/meta/content_meta_test.gd > test_shared_level_unknown_goal_rule_and_schema_are_refused PASSED 35ms
+  res://tests/unit/meta/content_meta_test.gd > test_inventory_consumption_persists_only_after_explicit_commit PASSED 5ms
+  res://tests/unit/meta/content_meta_test.gd > test_tournament_uses_selected_supported_round_pool PASSED 37ms
+  res://tests/unit/meta/content_meta_test.gd > test_structured_goal_selects_the_matching_strategy_slot PASSED 38ms
+Statistics: 12 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 613ms
+Overall Summary: 27 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+Exit code: 0

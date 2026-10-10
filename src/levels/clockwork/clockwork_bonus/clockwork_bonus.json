@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "id": "clockwork_bonus",
+  "biome": "clockwork",
+  "tier": 11,
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 6
+  },
+  "pieces": {
+    "kit": [
+      "i",
+      "i",
+      "i",
+      "o",
+      "o",
+      "l",
+      "l"
+    ],
+    "shapes": [
+      "i",
+      "o",
+      "l"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.6,
+    "spawn.arrival": "kit_box",
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "shape",
+    "piece_budget": 7,
+    "target_shape": {
+      "layers": {
+        "0": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ],
+        "1": [
+          "++++",
+          "+..+",
+          "+..+",
+          "++++"
+        ]
+      }
+    }
+  },
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {
+        "topout_rule": "trim"
+      }
+    },
+    {
+      "id": "turntable",
+      "params": {
+        "turn_warn_locks": 1,
+        "turn_locks": 2,
+        "clockwise": true
+      }
+    }
+  ],
+  "stars": {
+    "t2": 110000,
+    "t3": 75000
+  },
+  "music": "clockwork_bonus_tbd",
+  "name": "LVL_CLOCKWORK_BONUS_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/clockwork.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "clockwork_bonus",
+      "biome": "clockwork",
+      "tier": 11,
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 6
+      },
+      "pieces": {
+        "kit": [
+          "i",
+          "i",
+          "i",
+          "o",
+          "o",
+          "l",
+          "l"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.6,
+        "spawn.arrival": "kit_box",
+        "goal.top_out": "out_of_pieces",
+        "skill.redraw": "off"
+      },
+      "goal": {
+        "type": "shape",
+        "piece_budget": 7,
+        "target_shape": {
+          "layers": {
+            "0": [
+              "####",
+              "####",
+              "####",
+              "####"
+            ],
+            "1": [
+              "####",
+              "#..#",
+              "#..#",
+              "####"
+            ]
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "turntable",
+          "params": {
+            "turn_every_locks": 2,
+            "turn_dir": "cw",
+            "turn_warn_locks": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 110000,
+        "t3": 75000
+      },
+      "solution": "see level notes",
+      "music": "clockwork_bonus_tbd"
+    },
+    "unsupported": [
+      "authoring:redraw_disabled_fixed_or_kit",
+      "field:solution"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "authoring:redraw_disabled_fixed_or_kit",
+      "field:solution"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

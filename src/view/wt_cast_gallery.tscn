@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dpv31q3r4toon"]
+
+[ext_resource type="Script" uid="uid://qnja3odtmuia" path="res://src/view/wt_cast_gallery.gd" id="1_mi1hc"]
+
+[node name="ToyCastGallery" type="Node3D" unique_id=1056615800]
+script = ExtResource("1_mi1hc")

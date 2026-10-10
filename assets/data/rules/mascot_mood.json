@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "mascot_mood",
+  "name_key": "RULE_MASCOT_MOOD",
+  "layer": "mascot",
+  "icon": "mascot_mood",
+  "behaviour": "mascot_mood",
+  "params": {
+    "prank": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "smudge_cap": {
+      "type": "number"
+    },
+    "happy_lick_every_locks": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

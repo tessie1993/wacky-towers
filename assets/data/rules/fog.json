@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "id": "fog",
+  "name_key": "RULE_FOG",
+  "layer": "twist",
+  "icon": "fog",
+  "behaviour": "fog",
+  "params": {
+    "visible_ms": {
+      "type": "number"
+    },
+    "fade_ms": {
+      "type": "number"
+    },
+    "invisible_alpha": {
+      "type": "number"
+    },
+    "reveal_ms": {
+      "type": "number"
+    },
+    "lantern_radius": {
+      "type": "number"
+    },
+    "skin": {
+      "type": "string"
+    },
+    "active_after_clears": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

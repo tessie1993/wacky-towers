@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "woodpecker_knock",
+  "name_key": "RULE_WOODPECKER_KNOCK",
+  "layer": "twist",
+  "icon": "woodpecker_knock",
+  "behaviour": "woodpecker_knock",
+  "params": {
+    "knock_interval_ms": {
+      "type": "number"
+    },
+    "knock_jitter_ms": {
+      "type": "number"
+    },
+    "knock_warn_ms": {
+      "type": "number"
+    },
+    "knock_pop_max": {
+      "type": "number"
+    },
+    "skin": {
+      "type": "string"
+    }
+  },
+  "incompatible_with": []
+}

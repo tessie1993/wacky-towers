@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "id": "mushroom_popup",
+  "name_key": "RULE_MUSHROOM_POPUP",
+  "layer": "twist",
+  "icon": "mushroom_popup",
+  "behaviour": "mushroom_popup",
+  "params": {
+    "spawn_every_locks": {
+      "type": "number"
+    },
+    "objects_max": {
+      "type": "number"
+    },
+    "skin": {
+      "type": "string"
+    },
+    "place_mode": {
+      "type": "string"
+    },
+    "object_id": {
+      "type": "string"
+    },
+    "object_kind": {
+      "type": "string"
+    },
+    "hard_hits": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

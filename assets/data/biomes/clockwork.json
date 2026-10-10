@@ -1,0 +1,65 @@
+{
+  "id": "clockwork",
+  "index": 8,
+  "art_set": "candy_toy",
+  "palette": "meadow",
+  "side_island": false,
+  "default_music": "mus_clockwork_default",
+  "levels": [
+    {
+      "id": "clockwork_01",
+      "json": "res://src/levels/clockwork/clockwork_01/clockwork_01.json",
+      "scene": "res://src/levels/clockwork/clockwork_01/clockwork_01.tscn"
+    },
+    {
+      "id": "clockwork_02",
+      "json": "res://src/levels/clockwork/clockwork_02/clockwork_02.json",
+      "scene": "res://src/levels/clockwork/clockwork_02/clockwork_02.tscn"
+    },
+    {
+      "id": "clockwork_03",
+      "json": "res://src/levels/clockwork/clockwork_03/clockwork_03.json",
+      "scene": "res://src/levels/clockwork/clockwork_03/clockwork_03.tscn"
+    },
+    {
+      "id": "clockwork_04",
+      "json": "res://src/levels/clockwork/clockwork_04/clockwork_04.json",
+      "scene": "res://src/levels/clockwork/clockwork_04/clockwork_04.tscn"
+    },
+    {
+      "id": "clockwork_05",
+      "json": "res://src/levels/clockwork/clockwork_05/clockwork_05.json",
+      "scene": "res://src/levels/clockwork/clockwork_05/clockwork_05.tscn"
+    },
+    {
+      "id": "clockwork_06",
+      "json": "res://src/levels/clockwork/clockwork_06/clockwork_06.json",
+      "scene": "res://src/levels/clockwork/clockwork_06/clockwork_06.tscn"
+    },
+    {
+      "id": "clockwork_07",
+      "json": "res://src/levels/clockwork/clockwork_07/clockwork_07.json",
+      "scene": "res://src/levels/clockwork/clockwork_07/clockwork_07.tscn"
+    },
+    {
+      "id": "clockwork_08",
+      "json": "res://src/levels/clockwork/clockwork_08/clockwork_08.json",
+      "scene": "res://src/levels/clockwork/clockwork_08/clockwork_08.tscn"
+    },
+    {
+      "id": "clockwork_09",
+      "json": "res://src/levels/clockwork/clockwork_09/clockwork_09.json",
+      "scene": "res://src/levels/clockwork/clockwork_09/clockwork_09.tscn"
+    },
+    {
+      "id": "clockwork_10",
+      "json": "res://src/levels/clockwork/clockwork_10/clockwork_10.json",
+      "scene": "res://src/levels/clockwork/clockwork_10/clockwork_10.tscn"
+    },
+    {
+      "id": "clockwork_bonus",
+      "json": "res://src/levels/clockwork/clockwork_bonus/clockwork_bonus.json",
+      "scene": "res://src/levels/clockwork/clockwork_bonus/clockwork_bonus.tscn"
+    }
+  ]
+}

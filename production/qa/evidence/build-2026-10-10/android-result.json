@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "artifact": "/workspace/scratch/704a41285bd5/wacky-towers/builds/android/WackyTowers-debug.apk",
+  "bytes": 63115971,
+  "sha256": "0b623952ee97eb3a81f538625524915b19ffe7090ebc282f0304aa48de38387c",
+  "package": "org.wackytowers.game",
+  "minimum_api": 24,
+  "target_api": 36,
+  "native_architectures": [
+    "arm64-v8a",
+    "x86_64"
+  ],
+  "internet_permission": true,
+  "build_tools": "35.0.1",
+  "signature_v2": true,
+  "signature_v3": true,
+  "native_library_page_alignment": 16384,
+  "device_runtime_verified": false,
+  "checks": {
+    "signing": 0,
+    "alignment": 0,
+    "manifest": 0,
+    "manifest_xml": 0
+  }
+}

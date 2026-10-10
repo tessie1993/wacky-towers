@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cewjm7gyv7vim"]
+
+[ext_resource type="PackedScene" path="res://src/levels/_template/level_stage_base.tscn" id="1"]
+[ext_resource type="Script" uid="uid://bget2chj4yyf3" path="res://src/view/wt_stage.gd" id="2_sng11"]
+
+[node name="lava_05" unique_id=1970604593 instance=ExtResource("1")]
+level_json = "res://src/levels/lava/lava_05/lava_05.json"
+biome = &"lava"
+
+[node name="MascotSpot" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 2)
+
+[node name="World" type="Node3D" parent="." index="2" unique_id=2033484325]
+script = ExtResource("2_sng11")
+
+[node name="StoryOrigin" type="Marker3D" parent="World" index="0" unique_id=1693844346]

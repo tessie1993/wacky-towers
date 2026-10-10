@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "id": "ice_07",
+  "biome": "ice",
+  "tier": 7,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 0.95
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "fog",
+      "params": {
+        "visible_ms": 3000,
+        "fade_ms": 1200,
+        "invisible_alpha": 0.12,
+        "reveal_ms": 700
+      }
+    },
+    {
+      "id": "ice_slide",
+      "params": {
+        "slide_dir": "+z",
+        "slide_cells": 1
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "ice_07",
+  "name": "LVL_ICE_07_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/ice.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "ice_07",
+      "biome": "ice",
+      "tier": 7,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 0.95
+      },
+      "goal": {
+        "type": "clear",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "fog",
+          "params": {
+            "visible_ms": 3000,
+            "fade_ms": 1200,
+            "invisible_alpha": 0.12,
+            "reveal_ms": 700
+          }
+        },
+        {
+          "id": "ice_slide",
+          "params": {
+            "slide_dir": "+z",
+            "slide_cells": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "music": "ice_07"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

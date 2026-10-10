@@ -1,0 +1,60 @@
+{
+  "id": "neon",
+  "index": 9,
+  "art_set": "candy_toy",
+  "palette": "meadow",
+  "side_island": false,
+  "default_music": "mus_neon_default",
+  "levels": [
+    {
+      "id": "neon_01",
+      "json": "res://src/levels/neon/neon_01/neon_01.json",
+      "scene": "res://src/levels/neon/neon_01/neon_01.tscn"
+    },
+    {
+      "id": "neon_02",
+      "json": "res://src/levels/neon/neon_02/neon_02.json",
+      "scene": "res://src/levels/neon/neon_02/neon_02.tscn"
+    },
+    {
+      "id": "neon_03",
+      "json": "res://src/levels/neon/neon_03/neon_03.json",
+      "scene": "res://src/levels/neon/neon_03/neon_03.tscn"
+    },
+    {
+      "id": "neon_04",
+      "json": "res://src/levels/neon/neon_04/neon_04.json",
+      "scene": "res://src/levels/neon/neon_04/neon_04.tscn"
+    },
+    {
+      "id": "neon_05",
+      "json": "res://src/levels/neon/neon_05/neon_05.json",
+      "scene": "res://src/levels/neon/neon_05/neon_05.tscn"
+    },
+    {
+      "id": "neon_06",
+      "json": "res://src/levels/neon/neon_06/neon_06.json",
+      "scene": "res://src/levels/neon/neon_06/neon_06.tscn"
+    },
+    {
+      "id": "neon_07",
+      "json": "res://src/levels/neon/neon_07/neon_07.json",
+      "scene": "res://src/levels/neon/neon_07/neon_07.tscn"
+    },
+    {
+      "id": "neon_08",
+      "json": "res://src/levels/neon/neon_08/neon_08.json",
+      "scene": "res://src/levels/neon/neon_08/neon_08.tscn"
+    },
+    {
+      "id": "neon_09",
+      "json": "res://src/levels/neon/neon_09/neon_09.json",
+      "scene": "res://src/levels/neon/neon_09/neon_09.tscn"
+    },
+    {
+      "id": "neon_10",
+      "json": "res://src/levels/neon/neon_10/neon_10.json",
+      "scene": "res://src/levels/neon/neon_10/neon_10.tscn"
+    }
+  ]
+}
