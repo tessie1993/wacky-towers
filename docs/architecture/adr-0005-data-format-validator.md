@@ -2,9 +2,7 @@
 
 ## Status
 
-Proposed
-
-> Who may move this to `Accepted`: the user, or `technical-director` on the user's explicit confirmation.
+Accepted (2026-10-10, accepted by user)
 
 ## Date
 
@@ -87,9 +85,8 @@ Official levels use the same loader and validator as player levels, so the untru
   "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_left","screw_right"], "weights": {} },
   "knobs": { "fall.g0": 1.0, "fall.lock_delay_ms": 500, "clear.collapse": "slice",
              "spawn.arrival": "top", "goal.top_out": "trim" },
-  "goal": { "type": "shape", "target_layers": [["..##..", "..."]] },
-  "mechanic": { "id": "fill_target_shape", "params": {} },
-  "twists": [ { "id": "wind", "params": { "every_ms": 3000 } } ],
+  "goal": { "type": "shape", "target_shape": { "layers": { "0": ["..++..", "..."] } } },
+  "rules": [ { "id": "fill_shape", "params": {} }, { "id": "gust", "params": { "every_ms": 3000 } } ],
   "stars": { "t3": 180000, "t2": 240000 },
   "seed": null,
   "recipe": [ {"slot": "arrival", "atom": "side_travel"}, {"slot": "clear", "atom": "colour_connect"} ],
@@ -98,6 +95,7 @@ Official levels use the same loader and validator as player levels, so the untru
 }
 ```
 
+- **Implementation-plan forms (2026-10-10)**: one `rules` list replaces `mechanic` + `twists` (each rule's `layer` comes from its definition; F3 counts by layer, ADR-0004); `goal.type` is written in `goal` and copied into the `goal.type` slot knob; `goal.target_shape` and `board.starting_contents` are ASCII layers (ADR-0002 §6); `stars` is `{t2, t3}` in ms or `{s2, s3}` in layers cleared.
 - **Several boards** (islands, lanes, tracks): `layout.kind` names a `LayoutKind` plugin (ADR-0004) and `boards` replaces `board` with a list, each entry a full board section plus `id`, `transform` (position/yaw in the diorama) and optional `links` (which board a piece or content passes to, e.g. a lane edge leading to the next lane). One-board levels keep the short `board` form. Layout-specific checks live in the `LayoutKind` plugin's `validate()`.
 - **`recipe`** (optional): the list of mechanic atoms (`design/gdd/mechanics-module.md`) the level is built from, by slot. It is authoring metadata for the editor panel and the daily "box of tricks" generator: the loader expands it into slot knobs and rule entries, and explicit `knobs`/`twists`/`mechanic` win over it. The validator checks the expanded result, including atom compatibility tags (ADR-0004).
 - **`story`** (optional): the level's story card: `title_key`, `premise_key` (the one-line premise, a translation key), `mascot_role` (`helper` | `prankster` | `mood_swing` | `watcher`, mechanics module WO06–WO09; an enum, not text) and `icon`. `stars` is `{t3, t2}` in milliseconds (3-star and 2-star times).

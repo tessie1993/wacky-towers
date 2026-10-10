@@ -2,9 +2,7 @@
 
 ## Status
 
-Proposed
-
-> Who may move this to `Accepted`: the user, or `technical-director` on the user's explicit confirmation.
+Accepted (2026-10-10, accepted by user)
 
 ## Date
 
@@ -75,7 +73,7 @@ The game's promise is variety on constant blocks: wind, gravity flips (all 6 dir
 | `CollapsePolicy` | slot `clear.collapse` | slice (default), cascade, none |
 | `ArrivalStyle` | slot `spawn.arrival` | top (default), side_then_fall, side_travel |
 | `GoalEvaluator` | slot `goal.type` | clear_n, height, shape, survive, timed |
-| `TopOutPolicy` | slot `goal.top_out` | warnings (default), trim, lose |
+| `TopOutPolicy` | slot `goal.top_out` | rescue (default; GDD enum), trim, lose |
 | `BoardKind` | slot `board.kind` | grid (default), physics (Alpha) |
 | `LayoutKind` | `layout.kind` (level data, fixed at start) | single (default), islands, lanes, track; places and links the boards of ADR-0002 section 7 |
 | `PieceRouter` | slot `spawn.router` | which board/lane the next piece enters: active (default), player_choice, round_robin, track_follow |
@@ -92,6 +90,7 @@ The game's promise is variety on constant blocks: wind, gravity flips (all 6 dir
 - **Shared-board atoms are parked**: minigames are always competitive (one board per player). Nothing here prevents adding them later.
 - A rule that only changes numbers or forbids actions needs **no code** — modifiers and vetoes are data.
 - Levels (ADR-0005) reference rules by `rule_id` with parameter values; the validator checks them against the schema.
+- **F3 budget counts by layer**: only rules with `layer` `twist` (≤ 2) and `mechanic` (≤ 1) count. Special pieces, living blocks and mascot atoms use layers `content` and `mascot` and do not count (needed by the approved Meadow mixes).
 
 ### 3. Knob registry
 

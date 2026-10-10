@@ -2,10 +2,7 @@
 
 ## Status
 
-Proposed
-
-> **Who may move this to `Accepted`: the user, or `technical-director` on the
-> user's explicit confirmation. No other agent, and no skill on its own.**
+Accepted (2026-10-10, accepted by user)
 
 ## Date
 

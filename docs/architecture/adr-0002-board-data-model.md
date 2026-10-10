@@ -2,9 +2,7 @@
 
 ## Status
 
-Proposed
-
-> Who may move this to `Accepted`: the user, or `technical-director` on the user's explicit confirmation.
+Accepted (2026-10-10, accepted by user)
 
 ## Date
 
@@ -200,7 +198,7 @@ Checks, in order. It stops at `limits.max_errors` (default 50), so a hostile fil
 3. **Design ranges** (warn in debug builds and the editor panel, never reject): H_play 6–12, footprint per Board GDD safe ranges, and the readability check of Board F5 / Camera F2. The camera's own validator rejects anything below 20 px.
 4. **Mask:** exactly D rows of W chars, only `#` and `.`; A ≥ 12 active cells per layer on the start down axis; at least one active cell.
 5. **down_axis** is one of `-y +y -x +x -z +z`.
-6. **starting_contents:** each cell is in bounds and active; the type id is in the content table; there is no second CELL content in the same cell and no second overlay; hue ids are in the palette range; status ids are known.
+6. **starting_contents:** authored as ASCII layers `{"layers": {"<y>": [D rows of W chars]}}`; the glyph legend comes from each content type's `glyph` in the content table (`.` = empty, unknown glyph = error naming the cell); parsed into the cell list `[{cell, kind}]` held by `BoardSpec` (implementation plan §5). Each cell is in bounds and active; the type id is in the content table; there is no second CELL content in the same cell and no second overlay; hue ids are in the palette range; status ids are known.
 7. **spawn_anchor** is in bounds and active.
 
 Every error names the field and cell, for example `board.starting_contents[3]: cell (9,0,2) out of bounds (W=8)`. The game never builds a board from a spec with errors, as Board GDD AC 17 requires. The same validator runs in unit tests, debug builds and the planned editor panel.
