@@ -29,7 +29,7 @@ func set_allowed(mask: int) -> void:
 ## Moves to the next allowed snap in dir (+1/-1, wraps). False if there is none other than k.
 func step(dir: int) -> bool:
 	var s: int = 1 if dir >= 0 else -1
-	for i in range(1, CameraMath.STEPS):
+	for i: int in range(1, CameraMath.STEPS):
 		var cand: int = posmod(k + s * i, CameraMath.STEPS)
 		if _is_allowed(cand):
 			k = cand
@@ -49,7 +49,7 @@ func snap_to_corner(c: int) -> bool:
 func nearest_allowed(yaw_deg_in: float) -> int:
 	var best: int = k
 	var best_d: float = INF
-	for i in range(CameraMath.STEPS):
+	for i: int in range(CameraMath.STEPS):
 		if not _is_allowed(i):
 			continue
 		var d: float = absf(angle_difference(deg_to_rad(yaw_deg_in), deg_to_rad(CameraMath.yaw_degrees(i, _base_deg, _step_deg))))
@@ -72,7 +72,7 @@ func yaw_deg() -> float:
 ## {Vector2i screen_dir: Vector3i world_dir} for the 4 screen directions at the settled snap.
 func direction_map() -> Dictionary:
 	var m: Dictionary = {}
-	for sd in _SCREEN_DIRS:
+	for sd: Vector2i in _SCREEN_DIRS:
 		m[sd] = CameraMath.screen_dir_to_world(k, sd, _base_deg, _step_deg)
 	return m
 
@@ -98,7 +98,7 @@ func rotation_for(screen_axis: StringName, dir: int) -> Vector2i:
 
 
 func _is_allowed(i: int) -> bool:
-	return (_allowed >> i) & 1 == 1
+	return ((_allowed >> i) & 1) == 1
 
 
 static func _axis_of(v: Vector3i) -> int:

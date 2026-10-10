@@ -41,9 +41,9 @@ Same-file chains run as ONE agent in order: `input` 153 -> 154 -> 155 | `movemen
 | CH-170 | MB-027 | AppFlow node: screens, Back, pause request, level open | CH-168, CH-169, CH-155 (router); MB-014 deferred (Android smoke test moved to the end, desktop first) | ready |
 | CH-171 | MB-028 | ThemeScaler, UiFormat and the string-key lint | CH-168; GDD ux/ui-theme (Designed) | staged |
 | CH-172 | MB-029 | ProfileStore (4 slots, in memory) + MemorySaveIO | none; ADR-0013 is the spec | staged |
-| CH-173 | MB-034 | Title screen + Quit dialog | CH-168, CH-169, CH-171, CH-172; GDD ux/title | ready |
-| CH-174 | MB-034 | Profile select screen (list + delete confirm) | CH-168, CH-171, CH-172; GDD ux/profile-select | ready |
-| CH-175 | MB-034 | Profile create/rename panel | CH-174 | ready |
+| CH-173 | MB-034 | Title screen + Quit dialog | CH-168, CH-169, CH-171, CH-172; GDD ux/title | staged |
+| CH-174 | MB-034 | Profile select screen (list + delete confirm) | CH-168, CH-171, CH-172; GDD ux/profile-select | staged |
+| CH-175 | MB-034 | Profile create/rename panel | CH-174 | staged |
 | CH-176 | MB-035 | Island map screen (cloud wizard over 10 islands) | CH-168, CH-171; GDD ux/island-map; data `assets/data/campaign/meadow_map.json` | ready |
 | CH-177 | MB-035 | Level intro card + countdown overlay | CH-168, CH-165, CH-171; GDD ux/level-intro-countdown | ready |
 | CH-178 | MB-039 | Pause overlay (+ confirm dialogs) | CH-168, CH-165, CH-170; GDD ux/pause | ready |

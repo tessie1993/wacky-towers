@@ -72,7 +72,7 @@ func _ready() -> void:
 	_bin = UiGlyph.button(&"bin", "UI_PROFILE_DELETE", BUTTON_SIDE)
 	_bin.pressed.connect(func() -> void: intent.emit(UiIntents.DELETE_PROFILE, {"slot": _slot}))
 	_box.add_child(_bin)
-	_ring = UiGlyph.new(&"ring", Color("C0392B"))
+	_ring = UiGlyph.new() # blank glyph; the arc is drawn by _draw_progress
 	_ring.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_bin.add_child(_ring)
 	_ring.draw.connect(_draw_progress)

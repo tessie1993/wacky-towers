@@ -33,6 +33,7 @@ static func available_sets() -> PackedStringArray:
 	return out
 
 
+## The set id this ArtSet was built with. Usage: art.set_id()
 func set_id() -> StringName:
 	return _set_id
 
