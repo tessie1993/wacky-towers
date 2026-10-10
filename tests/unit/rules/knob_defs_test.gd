@@ -128,3 +128,31 @@ func test_coerce_structure_duplicates() -> void:
 	assert_int(((out as Dictionary)["b"] as Array).size()).is_equal(1)
 	assert_that(defs.coerce(&"x.shape", [1])).is_null()
 	assert_str(defs.last_error()).contains("must be an object")
+
+
+func test_coerce_zero_not_allowed() -> void:
+	var table: Dictionary = {"knobs": [
+		{"id": "a.n", "type": "count", "default": 1.0, "min": 0.0, "max": 5.0, "allows_zero": false}]}
+	var defs: KnobDefs = KnobDefs.from_tables([table])
+	assert_that(defs.coerce(&"a.n", 0)).is_null()
+	assert_str(defs.last_error()).contains("zero not allowed")
+	assert_that(defs.coerce(&"a.n", 3)).is_equal(3)
+
+
+
+
+func test_coerce_structure() -> void:
+	var table: Dictionary = {"knobs": [
+		{"id": "a.d", "type": "structure", "default": {"x": 1}},
+		{"id": "a.l", "type": "structure", "default": [1]}]}
+	var defs: KnobDefs = KnobDefs.from_tables([table])
+	var src: Dictionary = {"y": [2]}
+	var got: Variant = defs.coerce(&"a.d", src)
+	assert_dict(got as Dictionary).is_equal({"y": [2]})
+	(got as Dictionary)["y"].append(3)
+	assert_array(src["y"]).has_size(1)
+	assert_that(defs.coerce(&"a.d", [1])).is_null()
+	assert_str(defs.last_error()).contains("must be an object")
+	assert_that(defs.coerce(&"a.l", {})).is_null()
+	assert_str(defs.last_error()).contains("must be an array")
+	assert_array(defs.coerce(&"a.l", [5, 6]) as Array).has_size(2)

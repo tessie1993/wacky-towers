@@ -39,6 +39,8 @@ var palette: PackedColorArray = PackedColorArray()
 var limits: BoardLimits
 ```
 
+`core/model/` also holds `SimCommand`, `SimEvent` (CH-032), `ValidationIssue` and `GoalState` (CH-037) — gap decisions 4–5.
+
 Layering note for the coder: `core/model` may name `KnobDefs`, `RuleDef`, `PluginRegistry` (the plan's single whitelisted model -> rules reference). Nothing else from `rules/`.
 
 ## Tests to write first (`model_containers_test.gd`)

@@ -65,6 +65,18 @@ ControlVerb, LayoutKind and `validate()` on every base (blocked on plan gaps 4�
 | CH-035 | SIM-001 | BoardSim skeleton: clock, phases, queue, pipeline | CH-032, CH-034 | K | done |
 | CH-036 | SIM-001 | Replay | CH-035 | L | done |
 
+## Status — batch 4b (from main: gap decisions + remaining RUL-001 bases)
+
+Merged from main (PR #11), renumbered CH-037..041 → CH-148..152 because this branch's README-batch4.md already uses CH-037..147. Lead to reconcile the overlaps noted.
+
+| ID | Story | Title | Depends | Group | Status |
+|----|-------|-------|---------|-------|--------|
+| CH-148 | DAT-002/SIM-004 | core/model: ValidationIssue + GoalState (+ confirm SimCommand/SimEvent in model) — overlaps CH-078, CH-043 | CH-032 | M | todo |
+| CH-149 | DAT-001 | JsonNum.whole_int extraction (refactor, gap 2) — superseded by CH-037 (applied on this branch) | CH-003, CH-008, CH-011, CH-013 | M | superseded |
+| CH-150 | RUL-001 | validate() on the four existing bases | CH-021, CH-034, CH-148 | N | todo |
+| CH-151 | RUL-001 | Bases: GoalEvaluator + TopOutPolicy — overlaps CH-043 | CH-021, CH-034, CH-148 | N | todo |
+| CH-152 | RUL-001 | Bases: ControlVerb + LayoutKind | CH-021, CH-032, CH-034, CH-148 | N | todo |
+
 ## Plan gaps / deviations (for the architecture lead)
 
 Accepted by the coordinator 2026-10-10: 1–3. All nine decided by the architecture lead 2026-10-10 (below); none open.

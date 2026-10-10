@@ -30,8 +30,7 @@ func tags() -> PackedStringArray: return PackedStringArray()
 func tags() -> PackedStringArray: return PackedStringArray()
 ```
 
-**Not in this ticket** (blocked on the layering decision in README "Plan gaps" 4–5): `GoalEvaluator`, `TopOutPolicy`,
-`ControlVerb`, `LayoutKind`, and the `validate(level, catalog)` method on every base.
+**Not in this ticket:** `validate(level, catalog) -> Array[ValidationIssue]` on these four bases is CH-039; `GoalEvaluator`, `TopOutPolicy` are CH-040; `ControlVerb`, `LayoutKind` are CH-041 (gap decisions 4–5: `ValidationIssue`, `SimCommand`, `SimEvent`, `GoalState` live in `src/core/model/`).
 
 ## Fixture `tests/unit/rules/fixtures/test_only_detector.gd`
 
