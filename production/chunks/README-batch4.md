@@ -47,8 +47,8 @@ Models: H = Haiku, S = Sonnet. RND = block-rendering-plan id folded in.
 | CH-049 | DAT-002 | LevelLoader minimal + LoadResult (float weights → copies, G3) | CH-034, CH-037, CH-084 | W3 | S | staged |
 | CH-052 | RUL-001 | RuleApi read subset | CH-031, CH-034 | W3 | H | done |
 | CH-083 | BRD-001 | Meadow content types in blocks.json (mushroom, sprout, egg, chick) | none | W3 | H | done |
-| CH-087 | SCO-001 | StarRater (time stars, survive stars, F1/F4 fallback, trim = warning) | CH-043 | W3 | S | todo |
-| CH-088 | SCO-001 | ScoreKeeper (clear F2, combo/drop/place F3) | none | W3 | S | todo |
+| CH-087 | SCO-001 | StarRater (time stars, survive stars, F1/F4 fallback, trim = warning) | CH-043 | W3 | S | staged |
+| CH-088 | SCO-001 | ScoreKeeper (clear F2, combo/drop/place F3) | none | W3 | S | staged |
 | CH-050 | BRD-003 | BoardState writes + delta (+ CH-054 same agent) | CH-031 | W4 | S | done |
 | CH-054 | BRD-003 | BoardState.shift_layers (with CH-050) | CH-050 | W4 | S | done |
 | CH-051 | SIM-003 | Movement translate / drop / resting, 3D (+ CH-053 same agent) | CH-031, CH-048 | W4 | S | staged |
@@ -69,7 +69,7 @@ Models: H = Haiku, S = Sonnet. RND = block-rendering-plan id folded in.
 | CH-066 | SIM-004 | BoardSim rotate / hard drop / grace / lock delay / lock write (board_sim #3) | CH-064, CH-053, CH-050 | W6 | S | todo |
 | CH-082 | VEW-002 | Clear flash: dying MultiMesh + `spatial_block_clear.gdshader` (RND-07) | CH-056 | W6 | S | todo |
 | CH-067 | GP-2 | **Piece part** (integrator) | CH-066, CH-065, CH-057 | W7 | S | todo |
-| CH-068 | SIM-005/006 | BoardSim per-lock resolve + warning phase + end + stars + score (board_sim #4) | CH-066, CH-060, CH-061, CH-087, CH-088 | W7 | S | todo |
+| CH-068 | SIM-005/006 | BoardSim per-lock resolve + warning phase + end + stars + score (board_sim #4) | CH-066, CH-060, CH-061, CH-087, CH-088 | W7 | S | staged |
 | CH-069 | MDW-001 | meadow_01 level scene (inherits template, kit island 4×4) | CH-065, CH-085, CH-086, CH-039 | W7 | S | todo |
 | CH-070 | APP-001 | Main boot (`run/main_scene`) | CH-055, CH-065, CH-039 | W7 | S | todo |
 | CH-071 | GP-3 | **Drop/lock/clear part** + headless meadow_01 win test | CH-068, CH-067 | W8 | S | todo |
