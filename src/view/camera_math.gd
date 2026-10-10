@@ -46,3 +46,16 @@ static func view_axes(k: int, base_deg: int, step_deg: int) -> Dictionary:
 		"tilt": screen_dir_to_world(k, Vector2i(1, 0), base_deg, step_deg),
 		"roll": screen_dir_to_world(k, Vector2i(0, -1), base_deg, step_deg),
 	}
+
+
+## Orthographic Camera3D.size (vertical extent, KEEP_HEIGHT) that fits the whole board at all 12 yaws (Camera GDD F2).
+## board_size = (W, board_height, D); aspect = board screen area width / height (must be > 0); margin in cells.
+## Usage: ortho_size(Vector3i(6, 14, 6), 30.0, 1.69, 0.5) -> 16.87
+static func ortho_size(board_size: Vector3i, elevation_deg: float, aspect: float, margin: float) -> float:
+	var ws: float = 0.0
+	for k in range(STEPS):
+		var yaw: float = deg_to_rad(yaw_degrees(k, DEFAULT_BASE_DEG, DEFAULT_STEP_DEG))
+		ws = maxf(ws, board_size.x * absf(cos(yaw)) + board_size.z * absf(sin(yaw)))
+	var elev: float = deg_to_rad(elevation_deg)
+	var hs: float = ws * sin(elev) + board_size.y * cos(elev)
+	return maxf(hs + margin, (ws + margin) / aspect)

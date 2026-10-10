@@ -23,6 +23,8 @@ func get_phase() -> Phase
 static func ms_at(tick: int) -> int        ## same formula, for tests and deadlines
 ```
 
+`SimCommand` / `SimEvent` live in `src/core/model/` (gap decision 5); `SimEvents` in `src/core/sim/`. `BoardSim` may import all of `core/*`.
+
 ## Behaviour
 
 - `_init`: store the three inputs; `_tick = 0`; `_phase = Phase.COUNTDOWN`. Do **not** read boards/knobs yet.

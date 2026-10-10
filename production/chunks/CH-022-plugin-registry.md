@@ -25,6 +25,8 @@ func errors() -> PackedStringArray
 **Kind = the base's class name** (`&"ClearDetector"`, `&"RuleBehaviour"`, …). No hardcoded kind list: a new base file in
 `BASES_DIR` is a new kind (the plan's "registry needs no change to add them").
 
+Kinds added later (CH-040, CH-041: `GoalEvaluator`, `TopOutPolicy`, `ControlVerb`, `LayoutKind`) are discovered automatically because they live in `BASES_DIR`; do not list kinds anywhere.
+
 ## Behaviour
 
 - Index the list by `class` -> entry (`{class, base, path, …}` as `get_global_class_list()` returns).

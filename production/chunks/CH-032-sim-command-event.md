@@ -4,7 +4,9 @@
 **Goal:** the plain data that goes into and out of the sim (ADR-0001 "Commands in, events out").
 **Depends:** none
 **Parallel-safe with:** CH-026 … CH-031, CH-033, CH-034
-**Files (new):** `src/core/sim/sim_command.gd`, `src/core/sim/sim_event.gd`, `src/core/sim/sim_events.gd`, `tests/unit/sim/sim_types_test.gd`
+**Files (new):** `src/core/model/sim_command.gd`, `src/core/model/sim_event.gd`, `src/core/sim/sim_events.gd`, `tests/unit/sim/sim_types_test.gd`
+
+> Gap decision 5 (2026-10-10): `SimCommand` and `SimEvent` are plain value types in `src/core/model/` so `core/rules` and plugins can use them; `SimEvents` (vocabulary) stays in `core/sim`. If you already wrote them under `src/core/sim/`, move them (keep the `.uid` files with them).
 
 ## API
 

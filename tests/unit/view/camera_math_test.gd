@@ -57,3 +57,21 @@ func test_view_axes() -> void:
 	a = CameraMath.view_axes(3, B, S)
 	assert_vector(a["tilt"]).is_equal(Vector3i(0, 0, -1))
 	assert_vector(a["roll"]).is_equal(Vector3i(-1, 0, 0))
+
+
+func test_ortho_default_board_landscape() -> void:
+	assert_float(CameraMath.ortho_size(Vector3i(6, 14, 6), 30.0, 1139.0 / 673.0, 0.5)).is_equal_approx(16.87, 0.01)
+
+
+func test_ortho_width_binding() -> void:
+	assert_float(CameraMath.ortho_size(Vector3i(6, 14, 6), 30.0, 0.5, 0.5)).is_equal_approx(17.97, 0.01)
+
+
+func test_ortho_8x8x16() -> void:
+	assert_float(CameraMath.ortho_size(Vector3i(8, 16, 8), 30.0, 1.692, 0.5)).is_equal_approx(20.01, 0.01)
+
+
+func test_ortho_widest_yaw_is_corner() -> void:
+	var board: Vector3i = Vector3i(6, 14, 6)
+	assert_float(CameraMath.ortho_size(board, 0.0, 1.0, 0.0)).is_equal_approx(14.0, 0.01)
+	assert_float(CameraMath.ortho_size(board, 0.0, 0.1, 0.0)).is_equal_approx(84.85, 0.01)

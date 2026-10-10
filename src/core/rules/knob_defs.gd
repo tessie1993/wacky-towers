@@ -15,6 +15,7 @@ const _MAX_WHOLE := 9007199254740992.0 # 2^53: largest range where floats are ex
 
 var _errors: PackedStringArray = PackedStringArray()
 var _defs: Dictionary = {} # StringName -> Dictionary
+var _last_error: String = ""
 
 
 ## Builds definitions from parsed tables ({"knobs": [entry, ...]}); problems go to errors().
@@ -56,6 +57,64 @@ func def(id: StringName) -> Dictionary:
 	if not _defs.has(id):
 		return {}
 	return (_defs[id] as Dictionary).duplicate(true)
+
+
+## Converts a raw JSON value into the knob's typed value, or null with last_error() set (ADR-0004 §3).
+## Usage: var v: Variant = defs.coerce(&"fall.g0", 0.6) # -> 600
+func coerce(id: StringName, raw: Variant) -> Variant:
+	if not _defs.has(id):
+		return _reject("unknown knob '%s'" % id)
+	var d: Dictionary = _defs[id]
+	var label: String = "knob '%s'" % id
+	var type: StringName = d["type"]
+	match type:
+		T_SCALAR:
+			if not _is_number(raw):
+				return _reject("%s: must be a number" % label)
+			return _check_range(label, d, roundi((raw as float) * FIXED_POINT_SCALE), raw, true)
+		T_COUNT:
+			var w: Variant = _whole_int(raw)
+			if w == null:
+				return _reject("%s: must be a whole number" % label)
+			return _check_range(label, d, w as int, raw, false)
+		T_FLAG:
+			if typeof(raw) != TYPE_BOOL:
+				return _reject("%s: must be true or false" % label)
+		T_CHOICE, T_SLOT:
+			if raw is String and (d["choices"] as Array).has(StringName(raw as String)):
+				_last_error = ""
+				return StringName(raw as String)
+			return _reject("%s: '%s' is not one of %s" % [label, str(raw), str(d["choices"])])
+		T_STRUCTURE:
+			if typeof(raw) != typeof(d["default"]):
+				return _reject("%s: must be an %s" % [label, "object" if d["default"] is Dictionary else "array"])
+			_last_error = ""
+			return (raw as Variant).duplicate(true)
+	_last_error = ""
+	return raw
+
+
+## Message from the last coerce() call; "" after a successful one.
+func last_error() -> String:
+	return _last_error
+
+
+func _reject(message: String) -> Variant:
+	_last_error = message
+	return null
+
+
+func _check_range(label: String, d: Dictionary, value: int, raw: Variant, scalar: bool) -> Variant:
+	var lo: int = d["min"]
+	var hi: int = d["max"]
+	if value < lo or value > hi:
+		var lo_s: String = str(lo / float(FIXED_POINT_SCALE)) if scalar else str(lo)
+		var hi_s: String = str(hi / float(FIXED_POINT_SCALE)) if scalar else str(hi)
+		return _reject("%s: %s outside %s..%s" % [label, str(raw), lo_s, hi_s])
+	if value == 0 and d["allows_zero"] == false:
+		return _reject("%s: zero not allowed" % label)
+	_last_error = ""
+	return value
 
 
 # ponytail: third copy of the 5-line whole-number rule (BoardSpec, JsonReader, here); extract one core helper if a fourth appears.
