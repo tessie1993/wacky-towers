@@ -36,7 +36,7 @@ All gameplay data is JSON — levels (official and player-made), rule definition
 
 | Field | Value |
 |-------|-------|
-| **Depends On** | ADR-0003 (shape ids), ADR-0004 (knob and rule schemas the validator checks) |
+| **Depends On** | ADR-0003 (shape ids), ADR-0004 (owner of the knob, rule and plugin schemas the validator checks). *Amended 2026-10-10: one-way edge; ADR-0004 no longer depends on this ADR (cycle broken).* |
 | **Enables** | Level authoring, campaign, arcade, level sharing, editor panel |
 | **Blocks** | Level loading story; meadow levels as files |
 | **Ordering Note** | Loader + validator before meadow_01 is authored as a file |

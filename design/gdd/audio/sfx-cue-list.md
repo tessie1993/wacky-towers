@@ -1,8 +1,8 @@
 # SFX Cue List — Core Loop, UI, Meadow
 
-> **Status**: Draft (sound-designer, 2026-10-10), awaiting audio-director review
+> **Status**: Draft (sound-designer, 2026-10-10). Audio-director pass 2026-10-10: cue count fixed, Roll / camera settle / profile select added, proposed-atom gaps listed (§7)
 > **Author**: Tessa + sound-designer
-> **Governed by**: `design/gdd/audio/audio-direction.md` (audio-director; buses Master, Music, SFX, UI, Ambience). Where this list and that file disagree, that file wins and this list is updated.
+> **Governed by**: `design/gdd/audio/audio-direction.md` (audio-director; buses Master, Music, SFX, UI, Ambience). Where this list and that file disagree, that file wins and this list is updated. The machine form is `assets/data/audio/cues.json` (ADR-0015 §3); a unit test keeps the two in step.
 > **Sources**: `design/levels/meadow.md`, `design/gdd/game-feel-vfx.md`, `design/gdd/fall-drop-lock.md`, `design/gdd/layer-clearing.md`, `design/gdd/movement-rotation.md`, `design/gdd/level-goals-fail-states.md`, `design/gdd/hud.md`, `design/gdd/menus-level-select.md`
 > **Library**: `Sound FX Starter Pack Vol. 1/` (repo root, royalty-free; licence PDF in the folder)
 
@@ -11,7 +11,9 @@
 ## 1. Conventions
 
 - **Style**: cute toybox, soft. Wood, felt, rubber, bells, plucks. No gore, no guns, no horror textures; the Horror, Hollywood (except two wood/reward files) and Sci-Fi folders are deliberately unused.
-- **Cue id**: `SFX_<AREA>_<THING>`. Areas: `PIECE`, `ROT`, `DROP`, `CLEAR`, `GOAL`, `UI`, `EV` (level event), `SP` (special piece), `PL` (physics/landing twist), `FT` (fail type), `BOSS`, `PIP`, `MASCOT`, `DUCK`, `AMB`. The GDDs' event names (`piece_moved`, `lock_thunk`, …) are the triggers.
+- **Cue id**: `SFX_<AREA>_<THING>`. Areas: `PIECE`, `ROT`, `CAM` (camera), `DROP`, `CLEAR`, `GOAL`, `UI`, `EV` (level event), `SP` (special piece), `PL` (physics/landing twist), `FT` (fail type), `BOSS`, `PIP`, `MASCOT`, `DUCK`, `AMB`. The GDDs' event names (`piece_moved`, `lock_thunk`, …) are the triggers.
+- **Cue count** (every `SFX_` row in the tables below; `cues.json` must hold exactly these ids): ADR-0015 was written against **76** rows (core loop 30, UI 10, Meadow 32, ambience 4). This pass adds 3 (`SFX_ROT_ROLL`, `SFX_CAM_SETTLE`, `SFX_UI_PROFILE_SELECT`), so the list now has **79**: core loop 32, UI 11, Meadow 32, ambience 4. Update this line whenever a row is added or removed.
+- **Rotation names**: player-facing **Turn / Flip / Roll** = code axes **spin / tilt / roll** (decision 2026-10-10). Each axis has its own cue, 3 st apart, so the three are told apart by ear.
 - **File paths** are relative to the repo root (Godot: `res://` + the same path). "GAP — need …" means no usable file; "temp:" gives a stand-in until the GAP is filled.
 - **Spatial**: all cues are 2D (non-positional `AudioStreamPlayer`): a phone with a fixed board gains nothing from attenuation. No min/max distance or rolloff.
 - **Variations / pitch**: "±N st" = random pitch of N semitones each play (Godot `AudioStreamRandomizer.random_pitch` is a scale: ±1 st ≈ 1.06, ±2 st ≈ 1.12). "+N st" = fixed offset. Variants play as random-no-repeat.
@@ -27,8 +29,10 @@
 | SFX_PIECE_SPAWN | `spawn()` succeeds | SFX | GAP — need soft "plip" raindrop/felt pop (the block drizzle), 3 variants | ±1 st | -16 | P2 / 1 | — | Plays every piece, so it must be very quiet and short (< 150 ms) |
 | SFX_PIECE_MOVE | `piece_moved` | SFX | `Sound FX Starter Pack Vol. 1/UI & Menus/Hover Over.wav` | ±2 st | -14 | P1 / 2 | tick (optional) | Soft click; same frame as the move |
 | SFX_ROT_TURN | `piece_rotated`, spin axis | SFX | `Sound FX Starter Pack Vol. 1/Medieval/Weapon Whoosh.wav` | +5 st, ±1 st | -12 | P1 / 2 | tick (optional) | Trim to 120 ms to match the turn |
-| SFX_ROT_FLIP | `piece_rotated`, tilt or roll axis | SFX | `Sound FX Starter Pack Vol. 1/Medieval/Weapon Whoosh.wav` | +2 st, ±1 st | -12 | P1 / 2 | tick (optional) | Lower than Turn so the axes are told apart by ear; a dedicated "tumble" whoosh would be better |
-| SFX_ROT_KICK | `piece_kicked` | SFX | the Turn/Flip cue + `Sound FX Starter Pack Vol. 1/Retro/Slide.wav` | Slide +4 st | -16 (Slide layer) | P1 / 1 | tick | Short scrape layered on the rotation whoosh |
+| SFX_ROT_FLIP | `piece_rotated`, tilt axis (player-facing "Flip") | SFX | `Sound FX Starter Pack Vol. 1/Medieval/Weapon Whoosh.wav` | +2 st, ±1 st | -12 | P1 / 2 | tick (optional) | 3 st under Turn so the axes are told apart by ear; a dedicated "tumble" whoosh would be better |
+| SFX_ROT_ROLL | `piece_rotated`, roll axis (player-facing "Roll"; taught in meadow_02) | SFX | GAP — need a soft wooden "tumble/rumble" whoosh distinct from Turn and Flip. temp: `Sound FX Starter Pack Vol. 1/Medieval/Weapon Whoosh.wav` | temp -1 st, ±1 st | -12 | P1 / 2 | tick (optional) | 3 st under Flip. Three axes on one temp file is the weakest point of the rotation family: if testers mix Flip and Roll up, source Roll first |
+| SFX_ROT_KICK | `piece_kicked` | SFX | the axis's rotation cue (Turn, Flip or Roll) + `Sound FX Starter Pack Vol. 1/Retro/Slide.wav` | Slide +4 st | -16 (Slide layer) | P1 / 1 | tick | Short scrape layered on the rotation whoosh |
+| SFX_CAM_SETTLE | camera free-orbit released and the view settles on the nearest of the 12 × 30° snaps; also a corner-view shortcut arriving | SFX | GAP — need a soft wooden detent "tock" (a toy turntable clicking into place). temp: `Sound FX Starter Pack Vol. 1/Community Requests/Abacus.wav` (one bead) | temp -7 st, ±1 st | -20 | P4 / 1, cooldown 150 ms | tick (optional, same setting as move ticks) | Plays once on settle, never per step while dragging (no tick spam). Under the soft-drop tick in pitch so the two never read as the same thing. Emitted by the camera rig as a cue id (see §8 question 7) |
 | SFX_PIECE_BLOCKED | `move_blocked`, `rotate_blocked` | SFX | `Sound FX Starter Pack Vol. 1/Retro/Path Blocked.wav` | ±1 st | -10 | P1 / 1, cooldown 80 ms | buzz | Dull bonk; a `Disabled` rotation plays nothing |
 | SFX_DROP_SOFT_TICK | `soft_drop_tick`, per cell | SFX | `Sound FX Starter Pack Vol. 1/Community Requests/Abacus.wav` | slice one bead click; ±2 st | -20 | P2 / 2, cooldown 50 ms | — | FDL: "no sound loop, a soft tick per cell at most" |
 | SFX_DROP_HARD | `hard_drop_whoosh` | SFX | `Sound FX Starter Pack Vol. 1/Medieval/Weapon Whoosh.wav` | -3 st, ±1 st | -10 | P2 / 1 | — | ≤ 100 ms, matching the streaks; haptic comes on the lock |
@@ -69,6 +73,7 @@
 | SFX_UI_LOCKED | tap on a locked island or node | UI | `Sound FX Starter Pack Vol. 1/UI & Menus/Error.wav` | — | -12 | P2 / 1, cooldown 300 ms | buzz | Gentle "nope", not an alarm |
 | SFX_UI_UNLOCK | island or node unlocks | UI | `Sound FX Starter Pack Vol. 1/Jingles & Stingers/Area Discovered.wav` | — | -8 | P2 / 1 | success | "A chime on unlocks" (Menus V/A) |
 | SFX_UI_PAUSE | pause menu opens | UI | `Sound FX Starter Pack Vol. 1/UI & Menus/Inventory.wav` | — | -12 | P2 / 1 | — | Gameplay SFX pause with the game |
+| SFX_UI_PROFILE_SELECT | a profile card is chosen on the profile-select screen (4 profiles in the MVP) | UI | `Sound FX Starter Pack Vol. 1/Jingles & Stingers/Welcome.wav` | — | -10 | P2 / 1, cooldown 300 ms | light | Short "welcome back"; audition length, trim to under 1 s. Create/rename/delete use SFX_UI_TAP; delete confirm uses SFX_UI_BACK |
 
 ## 4. Meadow events, special pieces and characters
 
@@ -90,7 +95,7 @@
 | SFX_SP_FOG_GHOST_SOLID | ghost tapped solid | SFX | `Sound FX Starter Pack Vol. 1/Magic/Magic Seal.wav` | ±1 st | -10 | P3 / 1 | light | |
 | SFX_PL_STICKY_SPLAT | sticky lock on first touch (08) | SFX | GAP — need gummy wet splat, 3 variants. temp: `Sound FX Starter Pack Vol. 1/Magic/Water Attack.wav` | temp +5 st, ±1 st | -8 | P2 / 1 | medium | Replaces SFX_PIECE_LAND + SFX_PIECE_LOCK on sticky levels |
 | SFX_EV_FLIP_WARN | Topsy Tumble 2 s warning starts | SFX | `Sound FX Starter Pack Vol. 1/Steampunk/Mechanism Loop.wav` | 2 s, pitch ramps 0 → +4 st | -12 | P3 / 1 | double (at start) | The Miller's lever ratchet; 09, 10 |
-| SFX_EV_FLIP | the hill turns over (next Resolving) | SFX | `Sound FX Starter Pack Vol. 1/Medieval/Weapon Whoosh.wav` | -7 st | -6 | P3 / 1 | — | A dedicated big tumble swoosh would be better |
+| SFX_EV_FLIP | the stack flips over (next Resolving; the island stays put) | SFX | `Sound FX Starter Pack Vol. 1/Medieval/Weapon Whoosh.wav` | -7 st | -6 | P3 / 1 | — | A dedicated big tumble swoosh would be better |
 | SFX_EV_FLIP_WHUMP | stack settles against the new floor | SFX | GAP — need soft cushion "whump". temp: `Sound FX Starter Pack Vol. 1/Community Requests/Hammer Fall.wav` | temp low-pass ~1 kHz | -10 | P2 / 1 | strong | "Lands on its head with a whump" |
 | SFX_SP_EGG_HATCH | egg hatches after 6 locks | SFX | GAP — need eggshell crack + tiny peep, 2 variants | ±1 st | -10 | P3 / 2 | light | No library file fits |
 | SFX_SP_CHICK_HOP | chick hops to a neighbour cell | SFX | `Sound FX Starter Pack Vol. 1/Retro/Jump.wav` | +7 st, ±1 st | -12 | P3 / 2 | — | |
@@ -127,11 +132,39 @@ Ambience crossfades over 1 s on level load and stops on the result screen. Pond 
 - **Masking**: the gust (SFX_EV_GUST), fog cues and the wind ambience share the same broadband band; keep the wind ambience at least 12 dB under the gust cue in 03 and 10.
 - **Shared files**: Weapon Whoosh (Turn, Flip, hard drop, Topsy Tumble) and Air Attack (gust, fog reveal, temps) carry several cues at different pitches. Fine for the prototype; replace with dedicated sounds if playtesters can't tell them apart.
 
-## 7. Open questions
+## 7. Gaps: the 42 proposed atoms (no cues yet)
 
-1. **Turn vs Flip**: is "Turn" the spin axis and "Flip" the tilt/roll axes (as assumed here), or does Flip mean something else?
-2. **Voices**: do Pip, the chicks and the Miller make tiny critter sounds (squeak, peep, grumble), or does meadow §9's "never voices" rule out even those?
+The 42 atoms going into the library with status **Proposed** (puzzle set and party set) are **not used by any Meadow MVP level** (`design/levels/meadow.md`), so none needs a cue row now and none is counted above. Each gets its rows when a level or mode adopts it. Most can reuse an existing family; the table records which, and what is genuinely new. Ids are the proposal ids; the four clashing party ids (BL17, GO27, EV20, WO12) are being renumbered, so those are named here by title.
+
+| Atom (proposal id) | Reuse first | New sound needed when adopted |
+|---|---|---|
+| Canopy shelf BL17, Carved cavern BL18 | land / lock family | — (board shape only) |
+| Wrap board BL19 | move tick | soft "whoosh-through" when a piece crosses the seam |
+| Kit box AR13 | SFX_UI_TAP, SFX_UI_NODE_SELECT | box-lid "pick" |
+| Twist a layer CV17 | Turn whoosh | stone-grind layer rotation |
+| Curling flick CV18 | SFX_PL_WOBBLE_SLIP | ice slide loop + bumper knock |
+| Choose your down CV19 | SFX_ROT_* | direction-pick chime per wall |
+| Pond mirror PL10 | SFX_EV_POND_SPLASH, lock | mirrored "twin" shimmer; trim splash |
+| Wall clear CL15, Looks full CL16, Close the gap CO09 | SFX_CLEAR_* | wall-slab clear variant; sideways slide scrape |
+| Sunbeds GO27, Layer cake GO28, Wind the clock GO29 | goal ticks, SFX_GOAL_* | target-filled chime; key wind-up ratchet (GO29) |
+| Undo & reset FT12 | SFX_UI_BACK | rewind "zip" (must not read as a fail) |
+| Stuck cue FT13, Pip's peek WO12 | SFX_MASCOT_EMOTE_POP | Pip shrug / point (non-verbal) |
+| Ladybird piece SP38 | Flip / Roll whooshes | face-recolour "tick" on lock |
+| Bubble cube SP39, Ember drill SP40 | pop family | bubble rise + pop; ember sizzle / drill |
+| Pistons EV20 (puzzle) | SFX_EV_MILL_BELT | piston wind-up telegraph; jam steam puff |
+| Party send items IN22–IN33 (Dizzy Cam, Crown Bounty, Piñata, Termite Gift, Underdog Tailwind, Revenge Meter, Slipstream, Piece Dealer, Monster on the Table, Truce Pact, Skill Clash, Skill Echo) | item collected / used, SFX_GOAL_DANGER | one **send** and one **received** stinger per item family; crown / bounty chime; skill-clash fizzle. Versus item stingers are already an audio-direction gap (Comeback Energy) |
+| Final Frenzy SC12, Handicap Footprint BL17 (party) | — | Frenzy siren + music bump: the music bump must be a **duck/filter or jingle**, not a layer (no stems) |
+| Sprinkle Shower, Spotlight Duel, Gift Rain, Skill Surge (party events), Boss Raid (party goal) | jingle player, SFX_UI_UNLOCK | one table-event announce stinger each; gift-open pop; boss hit / counter-attack |
+| Skill Rule WO12 (party), Skill Swap WO13 | SFX_UI_TOGGLE | gong for the swap |
+
+Rule for every future atom cue: it joins an existing family where it can (wood, pop, whoosh, chime), keeps the 700 Hz–4 kHz energy rule, and its telegraph differs from every other telegraph in the same level by timbre.
+
+## 8. Open questions
+
+1. ~~**Turn vs Flip**~~: **closed 2026-10-10**. Turn / Flip / Roll = spin / tilt / roll, one cue each (SFX_ROT_TURN, SFX_ROT_FLIP, SFX_ROT_ROLL).
+2. **Voices**: do Pip, the chicks and the Miller make tiny critter sounds (squeak, peep, grumble), or does meadow §9's "never voices" rule out even those? (Audio-direction §1 allows instrument or wordless mouth-sound emotes; default: yes, wordless critter sounds.)
 3. **Combo (CO01)**: what is a combo step: consecutive locks that each clear, or something else?
 4. **Spawn sound**: wanted on every piece (quiet), or silent?
-5. **Win/lose/countdown jingles**: SFX bus or Music bus? (Audio-director.)
-6. **Library location**: keep using files in place at `res://Sound FX Starter Pack Vol. 1/`, or copy the chosen ones into `assets/audio/sfx/` and rename them?
+5. **Win/lose/countdown jingles**: audio-director answer (default): the countdown and `SFX_GOAL_WIN` / `SFX_GOAL_LOSE` stay short SFX-bus stings on the result frame; the longer results **jingles** are Music-bus entries in the music catalogue, played by `MusicDeck.play_jingle` after the track fades (ADR-0015 §5). Until the user supplies jingles, the SFX stings carry the moment alone. Trim `Success.wav` / `Fail.wav` if they clash with a jingle.
+6. **Library location**: keep using files in place at `res://Sound FX Starter Pack Vol. 1/`, or copy the chosen ones into `assets/audio/sfx/` and rename them? (ADR-0015 §8: a data edit plus `git mv` either way.)
+7. **Who emits SFX_CAM_SETTLE**: ADR-0015 §1 says nothing in `view` plays a sound, and only UI and `mechanics` helpers emit cue ids. The camera rig (ADR-0014) needs the same `feedback_requested(cue_id)` signal, connected by `AppFlow` or `PlaySession`. Flagged to ADR-0014 / ADR-0015 owners.

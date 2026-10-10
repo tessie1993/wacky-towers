@@ -36,8 +36,8 @@ All rule changes (twists, level mechanics, items, buffs, perks, status effects, 
 
 | Field | Value |
 |-------|-------|
-| **Depends On** | ADR-0001 (tick, events), ADR-0002 (board write API), ADR-0005 (JSON data, validator), ADR-0006 (rule RNG streams) |
-| **Enables** | Twist Library, Level-Specific Mechanics, Obstacles, Status Effects, Items, Buffs, Perks, Skills, Physics Mode, campaign variety |
+| **Depends On** | ADR-0001 (tick, events), ADR-0002 (board write API), ADR-0006 (rule RNG streams). *Amended 2026-10-10 (architecture review): ADR-0005 removed. This ADR owns the knob, rule and plugin schemas; `RuleRuntime` consumes data ADR-0005 has already validated — an interface, not a dependency.* |
+| **Enables** | ADR-0005 (validator checks levels against these schemas), Twist Library, Level-Specific Mechanics, Obstacles, Status Effects, Items, Buffs, Perks, Skills, Physics Mode, campaign variety |
 | **Blocks** | Every twist/mechanic story (meadow_03 onward) |
 | **Ordering Note** | The knob registry is needed from the first playable (meadow_01 reads base knobs through it); hooks and slots follow |
 

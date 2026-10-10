@@ -1,20 +1,20 @@
 # Level-Specific Mechanics
 
-> **Status**: In Design
+> **Status**: Designed
 > **Author**: Tessa + agents
-> **Last Updated**: 2026-10-09
-> **Last Verified**: 2026-10-09
+> **Last Updated**: 2026-10-10
+> **Last Verified**: 2026-10-10
 > **Implements Pillar**: Variation Over Depth; The Block Is the Constant; Readable Chaos
 
 ## Summary
 
 A level-specific mechanic is the one rule that makes a level *that* level: it deliberately breaks a general rule ("full layers don't clear here", "the floor moves") and always wins over twists, items and perks. Each level has at most one. The MVP ships four, all in the grass / meadow biome: **No-Clear Build Race**, **Fill the Target Shape**, **Sticky Landing** and **Conveyor Floor**.
 
-> **Quick reference** — Layer: `Feature` · Priority: `MVP` · Key deps: `Rule-Twist Framework`
+> **Quick reference** — Layer: `Feature` · Priority: `MVP` · Key deps: `Rule-Twist Framework` · ADRs: 0002 (boards), 0004 (knobs, slots, rules), 0011 (rules in the sim, beehave staging only)
 
 ## Overview
 
-Biome twists (Twist Library) are reusable modifiers that can appear in many levels. A **level-specific mechanic** is different: it is the level's central idea, often a contradiction of the general rules, and it sits at the top of the Rule-Twist Framework's priority order (layer 4) so nothing else can switch it off. This GDD defines what a level mechanic must declare and the four MVP mechanics. **No-Clear Build Race** turns clearing off and asks the player to build a tower to a target height. **Fill the Target Shape** turns clearing off and asks the player to fill a marked set of cells. **Sticky Landing** makes pieces lock the moment they touch anything. **Conveyor Floor** moves the whole stack one cell along a loop after every lock. Each is built only from the framework's parameters, hooks and API, so new mechanics later are data and small behaviours. All four are designed for the MVP grass / meadow biome but are biome-neutral. This serves *Variation Over Depth* (each level feels different), *The Block Is the Constant* (every mechanic is about placing the same blocks) and *Readable Chaos* (one mechanic per level, always announced). All values are starting defaults.
+Biome twists (Twist Library) are reusable modifiers that can appear in many levels. A **level-specific mechanic** is different: it is the level's central idea, often a contradiction of the general rules, and it sits at the top of the Rule-Twist Framework's priority order (layer 4) so nothing else can switch it off. This GDD defines what a level mechanic must declare and the four MVP mechanics. **No-Clear Build Race** turns clearing off and asks the player to build a tower to a target height. **Fill the Target Shape** turns clearing off and asks the player to fill a marked set of cells. **Sticky Landing** makes pieces lock the moment they touch anything. **Conveyor Floor** moves the whole stack one cell along a loop after every lock. Each is built only from the framework's parameters, hooks and API, so new mechanics later are data and small behaviours. Anything a mechanic does to the board runs inside the board simulation as a rule; characters such as the Miller only act it out (staging). All four are designed for the MVP grass / meadow biome but are biome-neutral. This serves *Variation Over Depth* (each level feels different), *The Block Is the Constant* (every mechanic is about placing the same blocks) and *Readable Chaos* (one mechanic per level, always announced). All values are starting defaults.
 
 ## Detailed Design
 
@@ -25,24 +25,26 @@ Biome twists (Twist Library) are reusable modifiers that can appear in many leve
 2. A level has **at most one** mechanic (framework F3). A level with none plays the base rules plus its twists.
 3. The mechanic is shown on the Intro goal card next to the goal and stays in the HUD rule strip for the whole level.
 4. Because it is layer 4, a mechanic's `set` operations and vetoes beat every twist, item, buff and perk. An item or twist that would undo it has no effect (framework edge case).
+4a. **Where a mechanic runs** (ADR-0011 §1). A mechanic is a rule JSON (`assets/data/rules/<rule_id>.json`, ADR-0004 §2) whose number changes are knob modifiers (data) and whose board changes are a `RuleBehaviour` or a slot plugin inside `BoardSim.step()`, acting only through `RuleApi` on the sim clock. **Anything that changes the board, the piece, the queue, the goal or the score is never a beehave tree, a presenter or a level script.** Beehave `StagingTree`s (in the level `.tscn` or the mechanic's default presenter) are staging only: they read sim events and animate. Every change the player must see coming is announced by a sim event that carries its window (`in_ms`, `at_ms`).
+4b. Knob and slot names in this GDD are the ADR-0004 ids (`clear.enabled`, `clear.detector`, `clear.collapse`, `spawn.arrival`, `spawn.router`, `goal.type`, `goal.top_out`, `fall.*`, `board.kind`, `layout.kind`). Scalars are stored as integer milli-units (0.7 → 700).
 
-**M1. No-Clear Build Race**
-5. Contradicts: full layers clear. Sets `clear_enabled = false` (Layer Clearing). Expects the **Height** goal (Level Goals).
-6. **No rescue wipe** (user decision 2026-10-09). The mechanic sets `topout_rule` to its `topout_rule` parameter, default `trim` (Level Goals rule 10b): cubes over the limit pop off, no warning is used, and the level is never lost to a top-out; over-building only costs time. A level may set the parameter to `rescue`; the wipe then uses Layer Clearing's routine with the `rescue` flag, which `clear_enabled = false` does not block.
-7. Parameters: `H_target` (default `H_play − 2`), `height_coverage` (default 0.5), `topout_rule` (default `trim`). In versus, the first to the target height wins (Level Goals default).
+**M1. No-Clear Build Race** (rule `build_race`)
+5. Contradicts: full layers clear. Sets `clear.enabled = false` (Layer Clearing). Expects the **Height** goal (`goal.type = height`).
+6. **No rescue wipe** (user decision 2026-10-09). The mechanic sets `goal.top_out` to its `top_out` parameter, default `trim` (Level Goals rule 10b): cubes over the limit pop off, no warning is used, and the level is never lost to a top-out; over-building only costs time. A level may set the parameter to `rescue`; the wipe then uses Layer Clearing's routine with the `rescue` flag, which `clear.enabled = false` does not block.
+7. Parameters: `H_target` (default `H_play − 2`), `height_coverage` (default 0.5), `top_out` (default `trim`). In versus, the first to the target height wins (Level Goals default).
 
-**M2. Fill the Target Shape**
-8. Contradicts: full layers clear; any placement is as good as another. Sets `clear_enabled = false`. Expects the **Shape** goal with a set of target cells `M`.
-9. Target cells are drawn as marked outlines on the board; they fill in as blocks cover them. Blocks outside `M` are allowed.
-10. Parameters: `M` (from Level Data `goal.target_shape`), `stick_when_filled` (default false; if a level turns clearing back on, true keeps a covered target cell counted), `topout_rule` (default `trim`, as M1 rule 6, so a top-out never wipes the picture).
+**M2. Fill the Target Shape** (rule `fill_shape`)
+8. Contradicts: full layers clear; any placement is as good as another. Sets `clear.enabled = false`. Expects the **Shape** goal (`goal.type = shape`) with a set of target cells `M`.
+9. Target cells are drawn as marked outlines on the board; a target cell is **covered** when it holds solid `fills_layer` content (blocks, and objects such as sprouts or mushrooms). Content outside `M` is allowed.
+10. Parameters: `M` (from Level Data `goal.target_shape`), `stick_when_filled` (default false; if a level turns clearing back on, true keeps a covered target cell counted), `top_out` (default `trim`, as M1 rule 6, so a top-out never wipes the picture).
 
-**M3. Sticky Landing**
-11. Contradicts: a landed piece can still be adjusted. Sets `lock_delay_ms = 0` and `hard_drop_grace_ms = 0` (Fall, Drop & Lock): a piece locks on the frame it first rests.
-12. To stay fair it also multiplies `gravity_scale` by `sticky_gravity_scale` (default 0.7), giving more time to aim in the air. The landing ghost is the player's main tool.
+**M3. Sticky Landing** (rule `sticky_landing`, data only: no behaviour)
+11. Contradicts: a landed piece can still be adjusted. Sets `fall.lock_delay_ms = 0` and `fall.hard_drop_grace_ms = 0` (Fall, Drop & Lock): a piece locks on the sim tick it first rests.
+12. To stay fair it also multiplies `fall.gravity_scale` by `sticky_gravity_scale` (default 0.7, stored 700), giving more time to aim in the air. The landing ghost is the player's main tool.
 13. Any goal type may be used (default Clear).
 
-**M4. Conveyor Floor**
-14. Contradicts: locked blocks never move. After every `conveyor_every` locks (default 1), at `on_resolve_end`, **every content on the board** moves one cell along the conveyor direction `d` (a world ground axis, fixed per level), as one rigid shift.
+**M4. Conveyor Floor** (rule `mill_belt` in ADR-0011; Meadow skin: Mill Belt EV05)
+14. Contradicts: locked blocks never move. After every `conveyor_every` locks (default 1), at `on_resolve_end` (S4b, last, because the mechanic has the highest rank), the conveyor's `RuleBehaviour` moves **every content on the board** one cell along the conveyor direction `d` (a world ground axis, fixed per level) as one rigid shift through `RuleApi.move_cells`. On the lock before a shift the sim emits `belt_windup`; on the shift, `belt_shift {dir, wrapped}`. The Miller's lever and the rolling belt are staging driven by these events. If the shift completes a layer, it clears in the S4c pass (ADR-0011 §3).
 15. Contents pushed past the footprint edge **wrap around** to the opposite edge (`conveyor_wrap = true`), so every layer keeps its cell count and layer clearing still works. With `conveyor_wrap = false`, contents pushed off the edge fall off the island and are removed (not counted as cleared); such levels should use the Height or Survive goal, since layers then rarely fill.
 16. The shift happens after the clear check, so a layer completed by a lock clears before it moves. The next piece spawns after the shift. The ghost of the next piece already accounts for the moved stack.
 17. Conveyor levels require an unmasked rectangular board (validation).
@@ -57,13 +59,13 @@ A mechanic is Active for the whole level (framework states). M4 also has a per-l
 | System | Direction | What flows |
 |---|---|---|
 | Rule-Twist Framework | Mechanic → | Layer-4 rule: parameter sets, hooks (`on_resolve_end` for M4), vetoes |
-| Layer Clearing | Mechanic → | `clear_enabled = false` (M1, M2); M4 runs after the clear check |
+| Layer Clearing | Mechanic → | `clear.enabled = false` (M1, M2); M4 runs after the clear check; S4c clears what M4 completes |
 | Fall, Drop & Lock | Mechanic → | Lock delay, grace and gravity (M3); lock count (M4) |
 | Board / Grid | Mechanic → | Rigid shift of all contents (M4); target cells (M2) |
 | Level Goals & Fail States | ↔ | Expected goal types; rescue still works under M1 |
 | Level Data & Definition | → Mechanic | Which mechanic a level uses and its parameters |
 | Twist Library | ↔ | Twists combine with a mechanic; the mechanic wins conflicts |
-| HUD, Game Feel & VFX, Audio | Mechanic → | Icon, target cells, conveyor arrows and events |
+| Staging (ADR-0011), HUD, Game Feel & VFX, Audio | Mechanic → | Sim events (`belt_windup`, `belt_shift`, `target_cell_filled`, `height_reached`, `sticky_lock`); icon, target cells, conveyor arrows. Staging never writes back |
 
 ## Formulas
 
@@ -135,23 +137,24 @@ The sticky_aim_time formula is defined as:
 
 - **If a level declares a mechanic and a twist that set the same parameter differently**: the mechanic wins; validation warns.
 - **If an item would re-enable clearing in M1 or M2**: no effect (framework).
-- **If M1's or M2's stack goes over the limit**: with the default `trim`, cubes at or above the limit pop off and play continues; with `topout_rule = rescue`, the bottom-wipe rescue runs even though clearing is off.
+- **If M1's or M2's stack goes over the limit**: with the default `trim`, cubes at or above the limit pop off and play continues; with `goal.top_out = rescue`, the bottom-wipe rescue runs even though clearing is off.
 - **If M1's `H_target ≥ H_play`**: validation fails (Level Goals).
 - **If M2's target cells include inactive cells or cells above the limit**: validation fails.
-- **If M2 is played with `clear_enabled` turned on by the level** (a variant): cleared target cells count as empty unless `stick_when_filled` is true.
+- **If M2 is played with `clear.enabled` turned on by the level** (a variant): cleared target cells count as empty unless `stick_when_filled` is true.
 - **If M3's hard drop is used**: the piece locks at once, since grace is 0; there is no commit step.
 - **If M3's piece rests during a rotation kick**: it locks immediately after the kick.
 - **If M4 shifts an object or obstacle**: it moves like any content.
 - **If M4 shifts while a status effect is running on a block**: the effect moves with the block.
 - **If M4 has no wrap and contents fall off**: they are removed with a visible fall; they do not count as cleared and do not trigger `on_clear`.
 - **If M4 runs on a masked board**: validation fails (rule 17).
-- **If M4 is combined with the Gravity Flip twist**: the shift is along a ground axis, which stays horizontal after a flip; the flip happens first in Resolving, then the shift.
+- **If M4 is combined with the Gravity Flip twist**: the flip (S4a) happens first in Resolving, then the shift (S4b). In the default stack mode the stack turns over in place and the down axis never changes, so the shift axis is unaffected (Twist Library T3).
+- **If a level scene has no staging tree for M4**: the mechanic plays the same; only the Miller/belt animation is missing (ADR-0011 §8).
 - **If M4's shift would overlap a falling piece**: impossible; the shift happens in Resolving before the next spawn.
 - **If a twist is vetoed by the mechanic** (e.g. a twist wants to clear layers in M1): the twist's action has no effect for this level; validation warns.
 
 ## Dependencies
 
-**Upstream:** Rule-Twist Framework (Hard: layer-4 rules, hooks, vetoes); Board / Grid (Hard: content shift, target cells); Layer Clearing (Hard: `clear_enabled`, rescue routine); Fall, Drop & Lock (Hard: lock delay, grace, gravity, lock count); Level Goals & Fail States (Hard: Height and Shape goals).
+**Upstream:** Rule-Twist Framework (Hard: layer-4 rules, hooks, vetoes); Board / Grid (Hard: content shift, target cells); Layer Clearing (Hard: `clear.enabled`, rescue routine); Fall, Drop & Lock (Hard: lock delay, grace, gravity, lock count); Level Goals & Fail States (Hard: Height and Shape goals).
 
 **Downstream:**
 
@@ -168,7 +171,7 @@ The sticky_aim_time formula is defined as:
 |---|---|---|---|---|
 | H_target (M1) | 2 to `H_play − 1` | `H_play − 2` | data file (level) | Build race length (F2) |
 | M (M2) | set of cells | per level | data file (level) | Shape and length (F3) |
-| topout_rule (M1, M2) | trim / rescue | trim | data file (level) | Over-limit cubes pop off vs. bottom-wipe rescue (Level Goals 10a–10b) |
+| top_out (M1, M2; sets `goal.top_out`) | trim / rescue | trim | data file (level) | Over-limit cubes pop off vs. bottom-wipe rescue (Level Goals 10a–10b) |
 | stick_when_filled (M2) | true / false | false | data file | Whether covered targets stay counted with clearing on |
 | sticky_gravity_scale (M3) | 0.4–1.0 | 0.7 | data file | Aim time (F4) |
 | conveyor_every (M4) | 1–5 locks | 1 | data file | How often the floor moves |
@@ -197,7 +200,7 @@ Mechanic icon and two-word name on the Intro card and in the HUD rule strip; M2 
 | Referenced | What this GDD uses from it |
 |---|---|
 | `design/gdd/rule-twist-framework.md` Core Rules 1–17; F3 | Layer-4 rules, hooks, vetoes, one mechanic per level |
-| `design/gdd/layer-clearing.md` Core Rules 2, 5–8 | `clear_enabled`, rescue flag, clear before the shift |
+| `design/gdd/layer-clearing.md` Core Rules 2, 5–8 | `clear.enabled`, rescue flag, clear before the shift |
 | `design/gdd/fall-drop-lock.md` Core Rules 7–13; F1 | Lock delay, grace, gravity scale |
 | `design/gdd/level-goals-fail-states.md` Core Rules 3, 5, 8; F2 | Height and Shape goals, rescue, coverage |
 | `design/gdd/board-grid.md` F1; Core Rules 4, 6 | Active cells, masks, contents |
@@ -209,10 +212,11 @@ Mechanic icon and two-word name on the Intro card and in the HUD rule strip; M2 
 **[U]** unit, **[I]** integration, **[M]** manual or device.
 
 1. [U] **GIVEN** a level with two mechanics, **THEN** validation fails.
-2. [U] **GIVEN** M1, **WHEN** a layer becomes full, **THEN** it does not clear; **WHEN** the stack goes over the limit, **THEN** the cubes over the limit are trimmed, no warning is used and the level continues; **GIVEN** M1 with `topout_rule = rescue`, **THEN** the rescue wipe runs instead.
-3. [U] **GIVEN** M1 and an item that sets `clear_enabled = true`, **THEN** clearing stays off.
+2. [U] **GIVEN** M1, **WHEN** a layer becomes full, **THEN** it does not clear; **WHEN** the stack goes over the limit, **THEN** the cubes over the limit are trimmed, no warning is used and the level continues; **GIVEN** M1 with `goal.top_out = rescue`, **THEN** the rescue wipe runs instead.
+3. [U] **GIVEN** M1 and an item that sets `clear.enabled = true`, **THEN** clearing stays off.
 4. [U] **GIVEN** M2 with 60 target cells, **WHEN** the 60th is covered, **THEN** the level is won; blocks outside M do not affect progress.
-5. [U] **GIVEN** M3, **WHEN** a piece first rests, **THEN** it locks in the same frame; a hard drop locks at once with no grace.
+5. [U] **GIVEN** M3, **WHEN** a piece first rests, **THEN** it locks on the same sim tick; a hard drop locks at once with no grace.
+5a. [U] **GIVEN** any MVP mechanic, a seed and a command log, **THEN** two replays, and a replay with no staging host, give identical sim events and `state_hash()` (ADR-0011 §9).
 6. [U] F4: d = 10, g = 1, scale 0.7 → aim time ≈ 14.3 s.
 7. [U] F1: M4 with `d = +x`, wrap on, 8 × 8: a block at x = 7 → x = 0; x = 3 → x = 4; 8 shifts return every block to its start.
 8. [U] **GIVEN** M4, **WHEN** a lock completes a layer, **THEN** the layer clears first and the shift follows in the same Resolving; the next piece spawns after the shift.
@@ -240,7 +244,7 @@ Mechanic icon and two-word name on the Intro card and in the HUD rule strip; M2 
 
 ### Slots and the one-mechanic cap
 
-A1. M5–M8 are **clear-rule options**: they set the `clear_detector` and `collapse` strategy slots. M9–M11 are **arrival options**: they set the `spawn_entry` slot, and M9 and M11 also set the down axis. Each one is still a layer-4 level mechanic (rule 1), so it is announced on the Intro card and wins conflicts.
+A1. M5–M8 are **clear-rule options**: they set the `clear.detector` and `clear.collapse` strategy slots (ADR-0004 §4; new detector ids such as `colour_connect`, `colour_bridge`, `row` are `ClearDetector` plugins). M9–M10 are **arrival options**: they set the `spawn.arrival` slot (`side_travel`, `side_then_fall`), and M9 also sets the board's down axis. M11 is a **layout option**: two linked boards (`layout.kind`, `spawn.router`). Each one is still a layer-4 level mechanic (rule 1), so it is announced on the Intro card and wins conflicts.
 
 A2. **Pairing exception (proposed)**: at tier ≥ `pair_min_tier` (default 8), a level may combine **one** clear-rule option with **one** arrival option, and the pair counts as the level's single mechanic. No other pairing is allowed. This needs the framework F3 cap to read "one mechanic, or one clear option + one arrival option". See the Open Questions below.
 
@@ -250,7 +254,7 @@ A4. **Colour pool.** Levels using M5–M7 limit the piece pool to `colour_count`
 
 ### M5. Colour Pop
 
-5a. Contradicts: only full layers clear. Sets `clear_detector = colour_connect` and `collapse = cascade` (Layer Clearing cascade). The default goal is Clear, counted in pops.
+5a. Contradicts: only full layers clear. Sets `clear.detector = colour_connect` and `clear.collapse = cascade` (Layer Clearing cascade). The default goal is Clear, counted in pops.
 
 5b. After each lock, the board finds **colour groups**: maximal sets of face-connected cubes with the same `colour_key`. A group **pops** (all its cubes are removed) when it has ≥ `pop_min` cubes (default 6) **and** its cubes come from ≥ `pop_min_pieces` different `piece_instance_id`s (default 2). The second condition stops a single big piece (Chunky 8, Giant 9–27) from popping on its own.
 
@@ -262,7 +266,7 @@ A4. **Colour pool.** Levels using M5–M7 limit the piece pool to `colour_count`
 
 ### M6. Colour Bridge
 
-6a. Contradicts: only full layers clear. Sets `clear_detector = colour_bridge` and `collapse = cascade`. The goal is Clear, counted in bridges (`bridges_target`, default 3).
+6a. Contradicts: only full layers clear. Sets `clear.detector = colour_bridge` and `clear.collapse = cascade`. The goal is Clear, counted in bridges (`bridges_target`, default 3).
 
 6b. Two **posts** stand on opposite edges of the footprint. Each is a pillar obstacle (Obstacles: immune, never moves) `post_height` cells tall (default 3), painted with one `colour_key` `c`.
 
@@ -274,7 +278,7 @@ A4. **Colour pool.** Levels using M5–M7 limit the piece pool to `colour_count`
 
 7a. Keeps the normal layer clear. It adds this: when a cleared layer's filled cells all share one `colour_key` (A3: any cell with no key breaks it), it is a **Mono Clear**.
 
-7b. A Mono Clear also removes the next `mono_extra_layers` layers above it (default 1, counting only layers with content). It then collapses with the level's `collapse` setting (default slice) and scores the Mono bonus (economy notes below).
+7b. A Mono Clear also removes the next `mono_extra_layers` layers above it (default 1, counting only layers with content). It then collapses with the level's `clear.collapse` setting (default slice) and scores the Mono bonus (economy notes below).
 
 7c. **Telegraph**: a layer that is ≥ 50% filled and still all one key shows a thin ring in that colour.
 
@@ -282,9 +286,9 @@ A4. **Colour pool.** Levels using M5–M7 limit the piece pool to `colour_count`
 
 ### M8. Row Clear
 
-8a. Contradicts: only full layers clear. Sets `clear_detector = row`. In any layer, a **row** is a full straight line of active cells along x or along z. Every full row clears; rows along both axes that cross can clear in the same lock.
+8a. Contradicts: only full layers clear. Sets `clear.detector = row`. In any layer, a **row** is a full straight line of active cells along x or along z. Every full row clears; rows along both axes that cross can clear in the same lock.
 
-8b. **Collapse (column slice)**: for each column (x, z), the contents above it drop by the number of cells removed from that column below them. Holes stay holes, matching the base slice rule (no cascade unless the level sets `collapse = cascade`).
+8b. **Collapse (column slice)**: for each column (x, z), the contents above it drop by the number of cells removed from that column below them. Holes stay holes, matching the base slice rule (no cascade unless the level sets `clear.collapse = cascade`).
 
 8c. A full layer is a special case: all of its rows clear together. Scoring counts it as a layer clear (economy notes below).
 
@@ -292,7 +296,7 @@ A4. **Colour pool.** Levels using M5–M7 limit the piece pool to `colour_count`
 
 ### M9. Sideways Gravity
 
-9a. Contradicts: pieces fall down. Sets `spawn_entry = side`. The board's down axis becomes `travel_dir`, a ground axis set per level (default −x), using the Board / Grid down-axis re-indexing that Gravity Flip already uses. Pieces spawn at the opposite wall and fall along `travel_dir`. The far wall is the floor.
+9a. Contradicts: pieces fall down. Sets `spawn.arrival = side_travel`. The board's down axis (`board.down_axis`, fixed at level start) becomes `travel_dir`, a ground axis set per level (default −x), using the Board / Grid down-axis re-indexing (the same one Gravity Flip uses in its `axis` mode). Pieces spawn at the opposite wall and fall along `travel_dir`. The far wall is the floor.
 
 9b. Everything follows the new axis: "layers" are planes perpendicular to `travel_dir`, height and `H_play` are measured along it, and soft and hard drop push along it. The player's move controls use the two axes perpendicular to `travel_dir`: up and down on screen, plus one ground axis.
 
@@ -304,7 +308,7 @@ A4. **Colour pool.** Levels using M5–M7 limit the piece pool to `colour_count`
 
 ### M10. Slide-In
 
-10a. Contradicts: the player positions the piece freely before it falls. Sets `spawn_entry = slide_in`.
+10a. Contradicts: the player positions the piece freely before it falls. Sets `spawn.arrival = side_then_fall`.
 
 10b. The piece spawns just outside an edge **gate** at spawn height and glides across the board along `travel_dir` (a ground axis) at `slide_speed` (default 2 cells/s). Gravity is paused while it glides.
 
@@ -314,23 +318,23 @@ A4. **Colour pool.** Levels using M5–M7 limit the piece pool to `colour_count`
 
 10e. The gate side is set by `slide_gates`: `one` (default), `alternate`, or `random`. With `random`, the next gate is shown in the preview as an arrow.
 
-10f. The ghost shows the landing spot as if released now, and updates every frame.
+10f. The ghost shows the landing spot as if released now, and updates every sim tick.
 
 ### M11. Two-Way Meet
 
-11a. Contradicts: one floor, one fall direction. Sets `spawn_entry = side_alternating`.
+11a. Contradicts: one floor, one fall direction. **Re-specified as two linked boards** (architecture review 2026-10-10: ADR-0002 allows one down axis per `BoardState`). Sets `layout.kind = meet` (a new `LayoutKind` plugin, ADR-0004 §1; level JSON uses the `boards` list, ADR-0005) and `spawn.router` per `meet_pattern`.
 
-11b. A solid glass **seam** at the centre plane splits the footprint into a left half and a right half. The seam never clears and nothing passes through it.
+11b. The level has two boards, `left` (`down_axis +x`) and `right` (`down_axis −x`), placed back to back in the diorama so that their floors meet at a solid glass **seam**. The seam is presentation of the two floors: it never clears and nothing passes through it, because no board links to the other.
 
-11c. Each half has its own down axis pointing **toward the seam**. Pieces enter from the left wall (falling +x) and the right wall (falling −x) according to `meet_pattern`: `alternate` (default) or `random`, with an arrow per queued piece in the preview. The seam is the floor of both halves.
+11c. Each board's floor is its seam-side wall. Pieces enter the left board from its outer wall (falling +x) or the right board from its outer wall (falling −x), as chosen by the router: `meet_pattern = alternate` (default) → `spawn.router = round_robin`; `random` → `spawn.router = seeded_random` (new router plugin, draws from the level's spawner stream). The preview shows an arrow per queued piece.
 
-11d. Each half is its own clear space. "Layers" are planes parallel to the seam within one half, and they clear on their own with the half's slice collapse. Height and `H_play` are per half. The level's `topout_rule` triggers when **either** half goes over its limit.
+11d. Each board is its own clear space with its own layers (planes parallel to the seam), slice collapse, height and `H_play`. Every shape in the pool must fit each board (Piece Set rule 8), which replaces the old "piece longer than a half" check. The level's `goal.top_out` applies to whichever board goes over its limit; the level is lost if either board's top-out loses.
 
-11e. **Pair Clear**: when a half clears a plane at depth k, and the other half cleared its plane at the same depth k on the previous lock, the player scores the Pair bonus.
+11e. **Pair Clear**: when one board clears a plane at depth k, and the other board cleared its plane at the same depth k on the previous lock, the player scores the Pair bonus. The `meet` layout plugin scores it, because it is the one place that sees both boards' clear events (see Open Questions).
 
 11f. Camera snaps are limited to views with the seam vertical on screen, using 9c's rule with the x axis. Landscape is preferred.
 
-11g. Default board: 2 halves of 5 deep each, with a 5 × 5 face. Tiers ≥ 7 only (Readable Chaos).
+11g. Default boards: 2 boards of 5 deep (along x) each, with a 5 × 5 face. Tiers ≥ 7 only (Readable Chaos).
 
 ### Formulas (M5–M11)
 
@@ -374,13 +378,14 @@ A4. **Colour pool.** Levels using M5–M7 limit the piece pool to `colour_count`
 - **M6, a post would be buried**: posts are pillars, so they are always reachable from the sides. A bridge can touch any face of a post.
 - **M7, a layer of one key with an item cube or a status block**: the item cube keeps its family key, so it counts. A status shell does not change the key.
 - **M8, a lock completes rows along x and z that cross**: the shared cell is removed once and counts in both rows' scores.
-- **M8, the column-slice collapse leaves a now-full row**: it does **not** clear in the same Resolving (slice, no chain) unless `collapse = cascade`.
+- **M8, the column-slice collapse leaves a now-full row**: it does **not** clear in the same Resolving (slice, no chain) unless `clear.collapse = cascade`.
 - **M9, the view rotates to a forbidden snap**: the rotate-view button skips it.
 - **M9 and M11, a Bomb item**: the 3 × 3 × 3 is in world axes and is not affected by the down axis.
-- **M10, the player releases over a cell column that is already over the limit**: the piece falls and locks, and `topout_rule` applies normally.
+- **M10, the player releases over a cell column that is already over the limit**: the piece falls and locks, and `goal.top_out` applies normally.
 - **M10, a piece is pushed during the glide by Wind** (perpendicular axis only, 9e-style validation): the push is applied. A push along `travel_dir` is ignored.
-- **M11, a piece would land touching both halves**: impossible, because the seam is solid. A piece wider than a half's depth is excluded from the pool (validation: pool extent along x ≤ the half depth).
-- **M11, one half tops out while the other is empty**: `topout_rule` applies (for trim levels, the over-limit cubes in that half pop off).
+- **M11, a piece would land touching both boards**: impossible; they are separate boards with no link. A shape that does not fit a board fails validation (Piece Set rule 8).
+- **M11, one board tops out while the other is empty**: `goal.top_out` applies to that board (for trim levels, its over-limit cubes pop off).
+- **Any arrival or layout option and staging**: arrows, gates and the seam are view/staging; which wall a piece enters is decided by the sim router and announced in the queue, so replays agree.
 - **Any option combined with an incompatible twist**: validation fails (9e).
 
 ### Tuning knobs (M5–M11)
@@ -416,8 +421,8 @@ A4. **Colour pool.** Levels using M5–M7 limit the piece pool to `colour_count`
 20. [U] M8: a full x-row in a layer clears only its cells; the columns above drop by the removed count; crossing rows remove the shared cell once.
 21. [U] M9: with `travel_dir = −x`, a piece spawned at the +x wall lands against the −x wall or the content in front of it; a full plane perpendicular to x clears.
 22. [U] M10: a piece that is not released auto-releases at the last column; a released piece then falls with base gravity.
-23. [U] M11: pieces alternate left and right; a piece never crosses the seam; a plane clears in one half without changing the other.
-24. [U] Validation: M9 with Gravity Flip fails; M5 with `colour_count = 1` fails; M11 with a piece longer than the half depth in the pool fails.
+23. [U] M11: the level loads as two boards with down axes +x and −x; pieces alternate between them with `round_robin`; a plane clears on one board without changing the other; a Pair Clear scores once.
+24. [U] Validation: M9 with Gravity Flip fails; M5 with `colour_count = 1` fails; M11 with a shape that does not fit a board fails.
 25. [M] For each option, ≥ 80% of playtesters can say what it does after the first two pieces (rule 14 applied to M5–M11).
 
 ### Open questions (M5–M11)
@@ -425,3 +430,5 @@ A4. **Colour pool.** Levels using M5–M7 limit the piece pool to `colour_count`
 - **Framework cap**: accept the pairing exception (A2), or keep strictly one mechanic per level? (Owner: Rule-Twist Framework.)
 - **Goal units**: should Clear goals for M5, M6 and M8 count cubes cleared (one comparable bar) rather than pops, bridges or rows (F6)?
 - **Two-Way Meet on portrait phones**: playable, or landscape-only?
+- **Pair Clear across boards**: ADR-0004 has one `RuleRuntime` per board, so a rule cannot see the other board. Default here: the `meet` `LayoutKind` plugin scores it. Confirm with the ADR-0002/0004 owner.
+- **Pairing cap (A2) vs ADR-0004 F3** (mechanic ≤ 1 by layer): alternatively, arrival options could be plain level slot values in `knobs` (no F3 cost) instead of layer-4 rules. Owner: Rule-Twist Framework.
