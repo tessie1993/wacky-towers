@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "id": "meadow_03",
+  "biome": "meadow",
+  "tier": 3,
+  "name": "LVL_MEADOW_03_TITLE",
+  "board": { "width": 8, "depth": 4, "h_play": 10, "down_axis": "-y" },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"],
+    "tags": { "dandelion_puff": { "per_bag": 1 } }
+  },
+  "knobs": { "fall.g0": 0.7, "goal.top_out": "rescue", "goal.warnings_max": 1 },
+  "goal": { "type": "clear_n", "n": 5 },
+  "rules": [
+    { "id": "gust", "params": { "wind_dir": "+x", "wind_mode": "fixed", "wind_interval_ms": 8000, "wind_jitter_ms": 2000, "wind_strength": 1, "wind_warn_ms": 1000 } },
+    { "id": "dandelion_puff", "params": {} },
+    { "id": "mascot_catch", "params": { "catches": 1 } }
+  ],
+  "stars": { "t2": 365000, "t3": 255000 },
+  "story": { "title_key": "LVL_MEADOW_03_TITLE", "premise_key": "LVL_MEADOW_03_PREMISE", "mascot_role": "helper", "icon": "dandelion" }
+}

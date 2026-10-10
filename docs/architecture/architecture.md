@@ -105,7 +105,7 @@ Each recipe touches only the files listed. If a recipe ever needs a core edit, s
 | **Island or board shape** (ring, plus, lane strip) | Data only: the board `mask`, size and down axis in the level | level JSON |
 | **Content type** (obstacle, object, overlay, status) | A content JSON entry (`slot`, `solid`, `fills_layer`, mesh, look kind). Behaviour, if any, is a `RuleBehaviour` | `assets/data/content/*.json` (+ rule) |
 | **Status look** | Reuse a look kind in data. A new kind is one shader branch | `assets/data/content/statuses.json` (+ shader) |
-| **Level** | A level JSON file. CI validates it | `assets/data/levels/<biome>/<id>.json` |
+| **Level** | Official: a level scene inheriting the base level scene (diorama, board anchor, mascot spots) that points at its level JSON; player/daily: the JSON only, on the generic scene. CI validates both (implementation plan §2.2) | `scenes/levels/<biome>/<id>.tscn`, `assets/data/levels/<biome>/<id>.json` |
 | **Biome / diorama dressing** | A biome JSON naming its dressing scene, props and default palette | `assets/data/biomes/<biome>.json`, scene |
 | **Block set** (art) | Export GLBs with the naming convention. Tests check them against the shape bank | `assets/models/blocks/<set>/` |
 | **Shape** | Model it, export it, then rerun `extract_shape_bank.gd` and fill in the hand fields | GLBs, `shape_bank.tres` |

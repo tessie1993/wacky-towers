@@ -1,24 +1,27 @@
 extends GdUnitTestSuite
-## Tests for RuleDef (CH-033).
+## Tests for RuleDef (CH-033, ADR-0004).
 
 
 func test_defaults() -> void:
-	var d: RuleDef = RuleDef.new()
-	assert_str(String(d.id)).is_empty()
-	assert_str(String(d.layer)).is_empty()
-	assert_str(String(d.behaviour)).is_empty()
-	assert_int(d.params.size()).is_equal(0)
-	assert_int(d.modifiers.size()).is_equal(0)
-	assert_int(d.vetoes.size()).is_equal(0)
-	assert_int(d.lifetime.size()).is_equal(0)
-	assert_int(d.incompatible_with.size()).is_equal(0)
-	assert_int(d.tags_requires.size()).is_equal(0)
-	assert_int(d.tags_provides.size()).is_equal(0)
+	var r: RuleDef = RuleDef.new()
+	assert_str(String(r.id)).is_empty()
+	assert_str(String(r.behaviour)).is_empty()
+	assert_array(r.modifiers).is_empty()
+	assert_array(r.vetoes).is_empty()
+	assert_dict(r.params).is_empty()
+	assert_dict(r.lifetime).is_empty()
+	assert_int(r.incompatible_with.size()).is_equal(0)
+	assert_int(r.tags_requires.size()).is_equal(0)
+	assert_int(r.tags_provides.size()).is_equal(0)
 
 
 func test_budget_layers() -> void:
-	var cases: Dictionary = {&"twist": true, &"mechanic": true, &"content": false, &"mascot": false}
-	for layer: StringName in cases:
-		var d: RuleDef = RuleDef.new()
-		d.layer = layer
-		assert_bool(d.counts_toward_budget()).is_equal(cases[layer])
+	var r: RuleDef = RuleDef.new()
+	r.layer = &"twist"
+	assert_bool(r.counts_toward_budget()).is_true()
+	r.layer = &"mechanic"
+	assert_bool(r.counts_toward_budget()).is_true()
+	r.layer = &"content"
+	assert_bool(r.counts_toward_budget()).is_false()
+	r.layer = &"mascot"
+	assert_bool(r.counts_toward_budget()).is_false()

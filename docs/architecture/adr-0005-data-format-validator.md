@@ -70,6 +70,7 @@ All gameplay data is JSON — levels (official and player-made), rule definition
 | Palette (art docs' colours as data) | JSON | `res://assets/data/palette.json` | internal |
 | Official levels | JSON | `res://assets/data/levels/<biome>/<id>.json` | internal, but loaded through the untrusted path |
 | Player levels | JSON | `user://levels/<id>.json`, imported/shared files | untrusted |
+| Official level scenes (2026-10-10) | `.tscn` inheriting `src/app/level_scene.tscn`; presentation only (diorama, board anchor, mascot spots, camera default, skits) plus `level_json` path; never rule values | `res://scenes/levels/<biome>/<id>.tscn`, named by `biomes/<biome>.json` | internal; player levels never name a scene and play on `generic_level.tscn` |
 
 Official levels use the same loader and validator as player levels, so the untrusted path is exercised by every campaign test. Internal-only fields (a minigame's `scene` path, a rule's `behaviour` id) are accepted **only** from `res://` data; a level can only name `rule_id`s, `shape_id`s and knob ids that already exist.
 

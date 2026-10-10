@@ -64,7 +64,7 @@ func test_layers_cells_and_order() -> void:
 	var expected: Array = [[Vector3i(0, 0, 1), "#"], [Vector3i(0, 1, 0), "#"], [Vector3i(2, 1, 1), "m"]]
 	for i: int in expected.size():
 		assert_that((cells[i] as Dictionary)["cell"]).is_equal(expected[i][0])
-		assert_str((cells[i] as Dictionary)["glyph"]).is_equal(expected[i][1])
+		assert_str((cells[i] as Dictionary)["glyph"] as String).is_equal(expected[i][1])
 
 
 func test_layers_empty_dict_is_ok() -> void:
@@ -77,7 +77,7 @@ func test_layers_bad_keys() -> void:
 	var keys: Array[String] = ["2", "-1", "01", "a", "1.0", "99999"]
 	var layers: Dictionary = {}
 	for k: String in keys:
-		layers[k] = []
+		layers[k] = ["...", "..."]
 	var r: Dictionary = AsciiGrid.parse_layers({"layers": layers}, LAYER_SIZE, LAYER_LEGAL, LAYER_FIELD)
 	var errors: PackedStringArray = r["errors"]
 	assert_int(errors.size()).is_equal(6)

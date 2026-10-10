@@ -16,8 +16,8 @@ FND-001 (RNG, `Seeds`) is done.
 | CH-004 | BRD-001 | BoardState stub: Down enum + token/vector helpers | none | A | done |
 | CH-005 | BRD-001 | AsciiGrid.parse_mask | none | A | done |
 | CH-006 | BRD-001 | AsciiGrid.parse_layers | CH-005 | B | done |
-| CH-007 | BRD-001 | BoardSpec + BoardSpecResult: parse part 1 | CH-002, CH-003, CH-004, CH-005 | B | todo |
-| CH-008 | BRD-001 | BoardSpec.parse part 2: contents + anchor | CH-006, CH-007 | C | todo |
+| CH-007 | BRD-001 | BoardSpec + BoardSpecResult: parse part 1 | CH-002, CH-003, CH-004, CH-005 | B | done |
+| CH-008 | BRD-001 | BoardSpec.parse part 2: contents + anchor | CH-006, CH-007 | C | done |
 | CH-009 | BRD-001 | BoardSpec fuzz test | CH-008 | D | todo |
 
 Group A = 5 tickets in parallel; B = 2 in parallel; then C, then D. No two tickets in
@@ -38,12 +38,12 @@ Next: Wave 2 (SHP-002 rest, BRD-002, SIM-001).
 | CH-023 | VEW-004 | CameraMath: yaw, screen-to-world, tilt/roll | none | E | done |
 | CH-011 | DAT-001 | JsonReader.read_dir | CH-010 | F | done |
 | CH-013 | DAT-001 | KnobDefs.coerce + last_error | CH-012 | F | done |
-| CH-021 | RUL-001 | Abstract bases: RuleBehaviour, ClearDetector, CollapsePolicy, ArrivalStyle | CH-019, CH-020, CH-004 | F | todo |
+| CH-021 | RUL-001 | Abstract bases: RuleBehaviour, ClearDetector, CollapsePolicy, ArrivalStyle | CH-019, CH-020, CH-004 | F | done |
 | CH-024 | VEW-004 | CameraMath.ortho_size | CH-023 | F | done |
-| CH-014 | DAT-001 | KnobRegistry: base values | CH-013 | G | todo |
-| CH-022 | RUL-001 | PluginRegistry | CH-021 | G | todo |
-| CH-025 | VEW-004 | CameraRig: 12 snaps, framing, tween + screenshots | CH-024 | G | todo |
-| CH-018 | DAT-001 | knob_files_test | CH-011, CH-013, CH-015, CH-016, CH-017 | H | todo |
+| CH-014 | DAT-001 | KnobRegistry: base values | CH-013 | G | done |
+| CH-022 | RUL-001 | PluginRegistry | CH-021 | G | done |
+| CH-025 | VEW-004 | CameraRig: 12 snaps, framing, tween + screenshots | CH-024 | G | done |
+| CH-018 | DAT-001 | knob_files_test | CH-011, CH-013, CH-015, CH-016, CH-017 | H | in-progress (knob data fixed, rerun) |
 
 Batch-2 groups run E -> F -> G -> H and share no files with batch 1, so group E can start
 alongside batch-1 groups B–D. Not yet ticketed: RUL-001 bases GoalEvaluator, TopOutPolicy,
@@ -55,25 +55,27 @@ ControlVerb, LayoutKind and `validate()` on every base (blocked on plan gaps 4�
 |----|-------|-------|---------|-------|--------|
 | CH-026 | SHP-002 | ShapeDef.canonical_key | CH-001, CH-020 | I | done |
 | CH-028 | SHP-002 | ShapeBank: lookup + ids | CH-020 | I | done |
-| CH-029 | BRD-002 | BoardState storage: arrays, index, mask, contents | CH-003, CH-004, CH-007 | I | todo |
+| CH-029 | BRD-002 | BoardState storage: arrays, index, mask, contents | CH-003, CH-004, CH-007 | I | done |
 | CH-032 | SIM-001 | SimCommand, SimEvent, SimEvents vocabulary | none | I | done |
 | CH-033 | RUL-002 | RuleDef container | none | I | done |
-| CH-027 | SHP-002 | ShapeDef.build: orientation tables, distinct, spawn | CH-026 | J | todo |
-| CH-030 | BRD-002 | BoardState layers: ordering + counters, 6 axes | CH-029 | J | todo |
-| CH-034 | DAT-002 | LevelData + GameCatalog containers | CH-002, CH-003, CH-007, CH-012, CH-022, CH-028, CH-033 | J | todo |
-| CH-031 | BRD-002 | BoardState queries: is_free, can_place, cast, stack, over_limit | CH-030 | K | todo |
-| CH-035 | SIM-001 | BoardSim skeleton: clock, phases, queue, pipeline | CH-032, CH-034 | K | todo |
-| CH-036 | SIM-001 | Replay | CH-035 | L | todo |
+| CH-027 | SHP-002 | ShapeDef.build: orientation tables, distinct, spawn | CH-026 | J | done |
+| CH-030 | BRD-002 | BoardState layers: ordering + counters, 6 axes | CH-029 | J | done |
+| CH-034 | DAT-002 | LevelData + GameCatalog containers | CH-002, CH-003, CH-007, CH-012, CH-022, CH-028, CH-033 | J | done |
+| CH-031 | BRD-002 | BoardState queries: is_free, can_place, cast, stack, over_limit | CH-030 | K | done |
+| CH-035 | SIM-001 | BoardSim skeleton: clock, phases, queue, pipeline | CH-032, CH-034 | K | done |
+| CH-036 | SIM-001 | Replay | CH-035 | L | done |
 
-## Status — batch 4 (gap decisions + remaining RUL-001 bases)
+## Status — batch 4b (from main: gap decisions + remaining RUL-001 bases)
+
+Merged from main (PR #11), renumbered CH-037..041 → CH-148..152 because this branch's README-batch4.md already uses CH-037..147. Lead to reconcile the overlaps noted.
 
 | ID | Story | Title | Depends | Group | Status |
 |----|-------|-------|---------|-------|--------|
-| CH-037 | DAT-002/SIM-004 | core/model: ValidationIssue + GoalState (+ confirm SimCommand/SimEvent in model) | CH-032 | M | todo |
-| CH-038 | DAT-001 | JsonNum.whole_int extraction (refactor, gap 2) | CH-003, CH-008, CH-011, CH-013 | M | todo |
-| CH-039 | RUL-001 | validate() on the four existing bases | CH-021, CH-034, CH-037 | N | todo |
-| CH-040 | RUL-001 | Bases: GoalEvaluator + TopOutPolicy | CH-021, CH-034, CH-037 | N | todo |
-| CH-041 | RUL-001 | Bases: ControlVerb + LayoutKind | CH-021, CH-032, CH-034, CH-037 | N | todo |
+| CH-148 | DAT-002/SIM-004 | core/model: ValidationIssue + GoalState (+ confirm SimCommand/SimEvent in model) — overlaps CH-078, CH-043 | CH-032 | M | todo |
+| CH-149 | DAT-001 | JsonNum.whole_int extraction (refactor, gap 2) — superseded by CH-037 (applied on this branch) | CH-003, CH-008, CH-011, CH-013 | M | superseded |
+| CH-150 | RUL-001 | validate() on the four existing bases | CH-021, CH-034, CH-148 | N | todo |
+| CH-151 | RUL-001 | Bases: GoalEvaluator + TopOutPolicy — overlaps CH-043 | CH-021, CH-034, CH-148 | N | todo |
+| CH-152 | RUL-001 | Bases: ControlVerb + LayoutKind | CH-021, CH-032, CH-034, CH-148 | N | todo |
 
 ## Plan gaps / deviations (for the architecture lead)
 
@@ -133,7 +135,6 @@ Run, Done when, Out of scope.
 - **View/app tickets** (scenes, `.tscn`, MultiMesh, camera, HUD, Main) end with **Verify in editor**: run the scene and save
   a screenshot to `production/qa/evidence/<ticket-id>.png` (Godot AI MCP if you have it; else `--write-movie` for a few frames,
   or a small `-s` script that grabs `get_viewport().get_texture().get_image()`). Headless runs cannot render: use the windowed exe.
-- **No `PackedVector3iArray` in Godot 4.7**: use `Array[Vector3i]`. Nested typed arrays are not allowed either (`Array` of `Array[Vector3i]`).
 - Write the listed tests first, run them red, then implement until green.
 
 ## Run
@@ -147,7 +148,7 @@ New `class_name` files need the global class cache refreshed once:
 Then run the system's tests (from the repo root):
 
 ```
-"D:/TESSA/Godot_v4.7.2-stable_win64.exe (2)/Godot_v4.7.2-stable_win64_console.exe" --headless --path . -s -d res://addons/gdUnit4/bin/GdUnitCmdTool.gd -a res://tests/unit/<system> --ignoreHeadlessMode
+"D:/TESSA/Godot_v4.7.2-stable_win64.exe (2)/Godot_v4.7.2-stable_win64_console.exe" --headless --path . -s -d --remote-debug tcp://127.0.0.1:0 res://addons/gdUnit4/bin/GdUnitCmdTool.gd -a res://tests/unit/<system> --ignoreHeadlessMode
 ```
 
 `<system>` is `shapes`, `board_grid`, `data`, `rules`, `view`, `sim` or `model`. Also run `rng` once before

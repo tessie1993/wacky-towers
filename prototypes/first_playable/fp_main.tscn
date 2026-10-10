@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dhmg1g15l2u5t"]
+
+[ext_resource type="Script" uid="uid://cluiv1mjrim7u" path="res://prototypes/first_playable/fp_main.gd" id="1_acmwj"]
+[ext_resource type="PackedScene" uid="uid://nv5n3oocfltt" path="res://prototypes/first_playable/fp_platform.tscn" id="2_pmqm7"]
+
+[node name="FpMain" type="Node3D" unique_id=1305162249]
+script = ExtResource("1_acmwj")
+
+[node name="Platform" parent="." unique_id=1763164270 instance=ExtResource("2_pmqm7")]

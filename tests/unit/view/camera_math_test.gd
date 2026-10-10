@@ -59,19 +59,27 @@ func test_view_axes() -> void:
 	assert_vector(a["roll"]).is_equal(Vector3i(-1, 0, 0))
 
 
+const TOL: float = 0.01
+const ELEV: float = 30.0
+const MARGIN: float = 0.5
+
+
 func test_ortho_default_board_landscape() -> void:
-	assert_float(CameraMath.ortho_size(Vector3i(6, 14, 6), 30.0, 1139.0 / 673.0, 0.5)).is_equal_approx(16.87, 0.01)
+	var size: float = CameraMath.ortho_size(Vector3i(6, 14, 6), ELEV, 1139.0 / 673.0, MARGIN)
+	assert_float(size).is_equal_approx(16.87, TOL)
 
 
 func test_ortho_width_binding() -> void:
-	assert_float(CameraMath.ortho_size(Vector3i(6, 14, 6), 30.0, 0.5, 0.5)).is_equal_approx(17.97, 0.01)
+	var size: float = CameraMath.ortho_size(Vector3i(6, 14, 6), ELEV, 0.5, MARGIN)
+	assert_float(size).is_equal_approx(17.97, TOL)
 
 
 func test_ortho_8x8x16() -> void:
-	assert_float(CameraMath.ortho_size(Vector3i(8, 16, 8), 30.0, 1.692, 0.5)).is_equal_approx(20.01, 0.01)
+	var size: float = CameraMath.ortho_size(Vector3i(8, 16, 8), ELEV, 1.692, MARGIN)
+	assert_float(size).is_equal_approx(20.01, TOL)
 
 
 func test_ortho_widest_yaw_is_corner() -> void:
 	var board: Vector3i = Vector3i(6, 14, 6)
-	assert_float(CameraMath.ortho_size(board, 0.0, 1.0, 0.0)).is_equal_approx(14.0, 0.01)
-	assert_float(CameraMath.ortho_size(board, 0.0, 0.1, 0.0)).is_equal_approx(84.85, 0.01)
+	assert_float(CameraMath.ortho_size(board, 0.0, 1.0, 0.0)).is_equal_approx(14.0, TOL)
+	assert_float(CameraMath.ortho_size(board, 0.0, 0.1, 0.0)).is_equal_approx(84.85, TOL)

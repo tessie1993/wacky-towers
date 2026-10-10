@@ -11,11 +11,10 @@ const T_STRUCTURE := &"structure"
 const T_SLOT := &"slot"
 const ENTRY_KEYS: Array[String] = ["id", "type", "default", "min", "max", "allows_zero", "rule_adjustable", "choices", "source", "note"]
 const _TYPES: Array[StringName] = [T_SCALAR, T_COUNT, T_FLAG, T_CHOICE, T_STRUCTURE, T_SLOT]
-const _MAX_WHOLE := 9007199254740992.0 # 2^53: largest range where floats are exact integers
 
 var _errors: PackedStringArray = PackedStringArray()
-var _defs: Dictionary = {} # StringName -> Dictionary
 var _last_error: String = ""
+var _defs: Dictionary = {} # StringName -> Dictionary
 
 
 ## Builds definitions from parsed tables ({"knobs": [entry, ...]}); problems go to errors().
@@ -59,72 +58,55 @@ func def(id: StringName) -> Dictionary:
 	return (_defs[id] as Dictionary).duplicate(true)
 
 
-## Converts a raw JSON value into the knob's typed value, or null with last_error() set (ADR-0004 §3).
-## Usage: var v: Variant = defs.coerce(&"fall.g0", 0.6) # -> 600
+## Converts a raw JSON value to the knob's typed value (scalar -> milli-int, choice -> StringName).
+## Returns null and sets last_error() when rejected. Usage: var v: Variant = defs.coerce(&"fall.g0", 0.6)
 func coerce(id: StringName, raw: Variant) -> Variant:
 	if not _defs.has(id):
 		return _reject("unknown knob '%s'" % id)
 	var d: Dictionary = _defs[id]
 	var label: String = "knob '%s'" % id
-	var type: StringName = d["type"]
-	match type:
+	var out: Variant = null
+	match d["type"]:
 		T_SCALAR:
 			if not _is_number(raw):
 				return _reject("%s: must be a number" % label)
-			return _check_range(label, d, roundi((raw as float) * FIXED_POINT_SCALE), raw, true)
+			var scaled: float = (raw as float) * FIXED_POINT_SCALE
+			if scaled < float(d["min"]) or scaled > float(d["max"]):
+				return _reject("%s: %s outside %s..%s" % [label, str(raw), String.num(d["min"] / float(FIXED_POINT_SCALE)), String.num(d["max"] / float(FIXED_POINT_SCALE))])
+			out = roundi(scaled)
+			if d["allows_zero"] == false and out == 0:
+				return _reject("%s: zero not allowed" % label)
 		T_COUNT:
-			var w: Variant = _whole_int(raw)
-			if w == null:
+			out = JsonNum.whole_int(raw)
+			if out == null:
 				return _reject("%s: must be a whole number" % label)
-			return _check_range(label, d, w as int, raw, false)
+			if (out as int) < (d["min"] as int) or (out as int) > (d["max"] as int):
+				return _reject("%s: %s outside %s..%s" % [label, str(raw), str(d["min"]), str(d["max"])])
+			if d["allows_zero"] == false and out == 0:
+				return _reject("%s: zero not allowed" % label)
 		T_FLAG:
 			if typeof(raw) != TYPE_BOOL:
 				return _reject("%s: must be true or false" % label)
+			out = raw
 		T_CHOICE, T_SLOT:
-			if raw is String and (d["choices"] as Array).has(StringName(raw as String)):
-				_last_error = ""
-				return StringName(raw as String)
-			return _reject("%s: '%s' is not one of %s" % [label, str(raw), str(d["choices"])])
+			if not (raw is String) or not (d["choices"] as Array).has(StringName(raw as String)):
+				return _reject("%s: '%s' is not one of %s" % [label, str(raw), str(d["choices"])])
+			out = StringName(raw as String)
 		T_STRUCTURE:
 			if typeof(raw) != typeof(d["default"]):
 				return _reject("%s: must be an %s" % [label, "object" if d["default"] is Dictionary else "array"])
-			_last_error = ""
-			return (raw as Variant).duplicate(true)
+			out = (raw as Variant).duplicate(true)
 	_last_error = ""
-	return raw
+	return out
 
 
-## Message from the last coerce() call; "" after a successful one.
+## Message from the last coerce() call; "" after a success. Usage: if defs.coerce(id, v) == null: push_error(defs.last_error())
 func last_error() -> String:
 	return _last_error
 
 
 func _reject(message: String) -> Variant:
 	_last_error = message
-	return null
-
-
-func _check_range(label: String, d: Dictionary, value: int, raw: Variant, scalar: bool) -> Variant:
-	var lo: int = d["min"]
-	var hi: int = d["max"]
-	if value < lo or value > hi:
-		var lo_s: String = str(lo / float(FIXED_POINT_SCALE)) if scalar else str(lo)
-		var hi_s: String = str(hi / float(FIXED_POINT_SCALE)) if scalar else str(hi)
-		return _reject("%s: %s outside %s..%s" % [label, str(raw), lo_s, hi_s])
-	if value == 0 and d["allows_zero"] == false:
-		return _reject("%s: zero not allowed" % label)
-	_last_error = ""
-	return value
-
-
-# ponytail: third copy of the 5-line whole-number rule (BoardSpec, JsonReader, here); extract one core helper if a fourth appears.
-static func _whole_int(v: Variant) -> Variant:
-	if typeof(v) == TYPE_INT:
-		return v
-	if typeof(v) == TYPE_FLOAT:
-		var f: float = v
-		if is_finite(f) and f == floorf(f) and absf(f) <= _MAX_WHOLE:
-			return int(f)
 	return null
 
 
@@ -201,7 +183,7 @@ func _fill_numeric(d: Dictionary, e: Dictionary, type: StringName) -> String:
 		if not _is_number(v):
 			return "%s must be a finite number" % key
 		if type == T_COUNT:
-			var w: Variant = _whole_int(v)
+			var w: Variant = JsonNum.whole_int(v)
 			if w == null:
 				return "%s must be a whole number" % key
 			vals.append(w as int)

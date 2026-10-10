@@ -1,12 +1,12 @@
 class_name RuleDef extends RefCounted
-## One rule definition from assets/data/rules/<id>.json (ADR-0004). Plain data.
-## Usage: var d := RuleDef.new(); d.layer = &"twist"; d.counts_toward_budget()
+## One rule definition from assets/data/rules/<id>.json (ADR-0004). Plain data; parsing lives elsewhere.
 
 const LAYER_TWIST: StringName = &"twist"        # ADR-0004 F3 budget layer
 const LAYER_MECHANIC: StringName = &"mechanic"  # ADR-0004 F3 budget layer
 
+## Rule id.
 var id: StringName = &""
-## twist | mechanic | content | mascot
+## twist | mechanic | content | mascot (ADR-0004 F3 budget counts twist/mechanic).
 var layer: StringName = &""
 var icon: String = ""
 var name_key: String = ""
@@ -22,6 +22,6 @@ var tags_requires: PackedStringArray = PackedStringArray()
 var tags_provides: PackedStringArray = PackedStringArray()
 
 
-## True when the layer is twist or mechanic (counts toward the ADR-0004 F3 budget).
+## True when the layer is twist or mechanic.
 func counts_toward_budget() -> bool:
 	return layer == LAYER_TWIST or layer == LAYER_MECHANIC

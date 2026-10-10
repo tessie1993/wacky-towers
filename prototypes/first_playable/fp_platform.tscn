@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://nv5n3oocfltt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y6g64"]
+albedo_color = Color(0.5254902, 0.81960785, 0.43529412, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_ncbb5"]
+material = SubResource("StandardMaterial3D_y6g64")
+size = Vector3(10, 0.3, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2su0s"]
+albedo_color = Color(0.6117647, 0.41960785, 0.27058825, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_iifok"]
+material = SubResource("StandardMaterial3D_2su0s")
+size = Vector3(9.7, 1, 9.7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_idedq"]
+albedo_color = Color(0.49411765, 0.32156864, 0.21176471, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wmkmf"]
+material = SubResource("StandardMaterial3D_idedq")
+size = Vector3(8.8, 0.6, 8.8)
+
+[node name="FpPlatform" type="Node3D" unique_id=1763164270]
+
+[node name="GrassTop" type="MeshInstance3D" parent="." unique_id=776840766]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+mesh = SubResource("BoxMesh_ncbb5")
+
+[node name="Soil" type="MeshInstance3D" parent="." unique_id=493635406]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8, 0)
+mesh = SubResource("BoxMesh_iifok")
+
+[node name="SoilBottom" type="MeshInstance3D" parent="." unique_id=1812823493]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.6, 0)
+mesh = SubResource("BoxMesh_wmkmf")

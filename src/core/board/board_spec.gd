@@ -1,168 +1,174 @@
 class_name BoardSpec extends RefCounted
 ## A validated board description; BoardState is only ever built from one (ADR-0002 §6).
+## Types, hard limits, down axis, mask, spawn anchor (default or explicit), starting contents.
+## Usage: var r := BoardSpec.parse(level["board"], limits, types); if r.errors.is_empty(): use(r.spec)
 
 const KEYS_REQUIRED: Array[String] = ["width", "depth", "h_play"]
 const KEYS_OPTIONAL: Array[String] = ["down_axis", "mask", "spawn_anchor", "starting_contents"]
-const DEFAULT_DOWN_TOKEN: String = "-y"          # ADR-0002 §1 default
-const MAX_SAFE_INT: int = 2147483647             # whole-number guard before int()
-const _OPTIONAL_TYPES: Dictionary = {
-	"down_axis": [TYPE_STRING, "string"],
-	"mask": [TYPE_ARRAY, "array"],
-	"spawn_anchor": [TYPE_ARRAY, "array"],
-	"starting_contents": [TYPE_DICTIONARY, "object"],
-}
+const DEFAULT_DOWN_TOKEN := "-y"  # ADR-0002 §1 default
 
-var size: Vector3i = Vector3i.ZERO   ## (W, h_play + limits.spawn_clearance, D)
-var h_play: int = 0
-var down: int = BoardState.Down.Y_NEG
-var mask: PackedByteArray = PackedByteArray()   ## W*D footprint, index x + W*z, 1 = active
-var spawn_anchor: Vector2i = Vector2i.ZERO      ## (x, z)
-var contents: Array[Dictionary] = []            ## [{cell: Vector3i, kind: int}] (filled in CH-008)
+var size: Vector3i  ## (W, h_play + limits.spawn_clearance, D)
+var h_play: int
+var down: int  ## BoardState.Down
+var mask: PackedByteArray  ## W*D footprint, index x + W*z, 1 = active
+var spawn_anchor: Vector2i  ## (x, z)
+var contents: Array[Dictionary] = []  ## [{cell: Vector3i, kind: int}] (from starting_contents, parse_layers order)
 
 
-## Validates an untrusted board dictionary; spec is set only if errors is empty.
-## Usage: var r: BoardSpecResult = BoardSpec.parse(d, limits, types, "board")
-@warning_ignore("unused_parameter")
+## Validates an untrusted board dictionary; result.spec is null whenever result.errors is not empty.
+## Usage: BoardSpec.parse({"width": 6, "depth": 6, "h_play": 10}, BoardLimits.new(), types)
 static func parse(data: Dictionary, limits: BoardLimits, types: ContentTypes, field_prefix: String = "board") -> BoardSpecResult:
 	var result: BoardSpecResult = BoardSpecResult.new()
-	var errors: PackedStringArray = result.errors
-	var dims: Dictionary = _check_keys(data, limits, field_prefix, errors)
-	if not errors.is_empty():
+	var e: PackedStringArray = result.errors
+	_check_keys(data, limits, field_prefix, e)
+	if not e.is_empty():
 		return result
-	var w: int = dims["width"]
-	var d: int = dims["depth"]
-	var hp: int = dims["h_play"]
-	_check_limits(w, d, hp, limits, field_prefix, errors)
-	if not errors.is_empty():
+	var w: int = JsonNum.whole_int(data["width"])
+	var d: int = JsonNum.whole_int(data["depth"])
+	var hp: int = JsonNum.whole_int(data["h_play"])
+	_check_limits(w, d, hp, limits, field_prefix, e)
+	if not e.is_empty():
 		return result
-	var spec: BoardSpec = BoardSpec.new()
-	spec.size = Vector3i(w, hp + limits.spawn_clearance, d)
-	spec.h_play = hp
-	spec.down = _check_down(data, limits, field_prefix, errors)
-	spec.mask = _check_mask(data, spec, limits, field_prefix, errors)
+	var h: int = hp + limits.spawn_clearance
+	var down_axis: int = _check_down(data, limits, field_prefix, e)
+	var m: PackedByteArray = _check_mask(data, w, d, h, down_axis, limits, field_prefix, e)
+	var anchor: Vector2i = Vector2i((w - 1) / 2, (d - 1) / 2)
 	if not data.has("spawn_anchor"):
-		spec.spawn_anchor = _default_anchor(spec, limits, field_prefix, errors)
-	if errors.is_empty():
+		_check_default_anchor(m, w, anchor, limits, field_prefix, e)
+	var found: Array[Dictionary] = []
+	if e.is_empty() and data.has("spawn_anchor"):
+		anchor = _check_anchor(data["spawn_anchor"], m, w, d, anchor, limits, field_prefix, e)
+	if e.is_empty() and data.has("starting_contents"):
+		found = _check_contents(data["starting_contents"], m, Vector3i(w, hp, d), limits, types, field_prefix, e)
+	if e.is_empty():
+		var spec: BoardSpec = BoardSpec.new()
+		spec.size = Vector3i(w, h, d)
+		spec.h_play = hp
+		spec.down = down_axis
+		spec.mask = m
+		spec.spawn_anchor = anchor
+		spec.contents = found
 		result.spec = spec
 	return result
 
 
-## int, or null if v is not a whole number (bool -> null).
-static func _whole_int(v: Variant) -> Variant:
-	if typeof(v) == TYPE_INT:
-		return v
-	if typeof(v) == TYPE_FLOAT:
-		var f: float = v
-		if is_finite(f) and f == floorf(f) and absf(f) <= MAX_SAFE_INT:
-			return int(f)
-	return null
-
-
-## No-op once errors.size() >= limits.max_errors.
+## Appends msg unless the error cap is reached.
 static func _add(errors: PackedStringArray, limits: BoardLimits, msg: String) -> void:
 	if errors.size() < limits.max_errors:
 		errors.append(msg)
 
 
-static func _check_keys(data: Dictionary, limits: BoardLimits, p: String, errors: PackedStringArray) -> Dictionary:
-	var dims: Dictionary = {}
-	for k: Variant in data.keys():
-		var key: String = str(k)
-		if not (key in KEYS_REQUIRED or key in KEYS_OPTIONAL):
-			_add(errors, limits, "%s.%s: unknown key" % [p, key])
-	for key: String in KEYS_REQUIRED:
-		if not data.has(key):
-			_add(errors, limits, "%s.%s: required" % [p, key])
-			continue
-		var n: Variant = _whole_int(data[key])
-		if n == null:
-			_add(errors, limits, "%s.%s: must be a whole number" % [p, key])
-		else:
-			dims[key] = n
-	for key: String in KEYS_OPTIONAL:
-		if data.has(key) and typeof(data[key]) != _OPTIONAL_TYPES[key][0]:
-			_add(errors, limits, "%s.%s: must be a %s" % [p, key, _OPTIONAL_TYPES[key][1]])
-	return dims
+static func _check_keys(data: Dictionary, limits: BoardLimits, p: String, e: PackedStringArray) -> void:
+	for key: Variant in data:
+		var k: String = str(key)
+		if not (k in KEYS_REQUIRED or k in KEYS_OPTIONAL):
+			_add(e, limits, "%s.%s: unknown key" % [p, k])
+	for k: String in KEYS_REQUIRED:
+		if not data.has(k):
+			_add(e, limits, "%s.%s: required" % [p, k])
+		elif JsonNum.whole_int(data[k]) == null:
+			_add(e, limits, "%s.%s: must be a whole number" % [p, k])
+	var optional_types: Dictionary = {"down_axis": [TYPE_STRING, "string"], "mask": [TYPE_ARRAY, "array"],
+			"spawn_anchor": [TYPE_ARRAY, "array"], "starting_contents": [TYPE_DICTIONARY, "object"]}
+	for k: String in optional_types:
+		if data.has(k) and typeof(data[k]) != optional_types[k][0]:
+			_add(e, limits, "%s.%s: must be a %s" % [p, k, optional_types[k][1]])
 
 
-static func _check_limits(w: int, d: int, hp: int, limits: BoardLimits, p: String, errors: PackedStringArray) -> void:
-	var before: int = errors.size()
+static func _check_limits(w: int, d: int, hp: int, limits: BoardLimits, p: String, e: PackedStringArray) -> void:
+	var side_ok: bool = true
 	for pair: Array in [["width", w], ["depth", d]]:
 		var v: int = pair[1]
 		if v < limits.min_side or v > limits.max_side:
-			_add(errors, limits, "%s.%s: %d outside %d..%d" % [p, pair[0], v, limits.min_side, limits.max_side])
+			side_ok = false
+			_add(e, limits, "%s.%s: %d outside %d..%d" % [p, pair[0], v, limits.min_side, limits.max_side])
 	var h: int = hp + limits.spawn_clearance
-	if hp < 1 or h < limits.min_height or h > limits.max_height:
-		_add(errors, limits, "%s.h_play: board height %d outside %d..%d" % [p, h, limits.min_height, limits.max_height])
-	if errors.size() == before and w * d * h > limits.max_cells:
-		_add(errors, limits, "%s: %d cells over the limit %d" % [p, w * d * h, limits.max_cells])
+	var height_ok: bool = hp >= 1 and h >= limits.min_height and h <= limits.max_height
+	if not height_ok:
+		_add(e, limits, "%s.h_play: board height %d outside %d..%d" % [p, h, limits.min_height, limits.max_height])
+	if side_ok and height_ok and w * d * h > limits.max_cells:
+		_add(e, limits, "%s: %d cells over the limit %d" % [p, w * d * h, limits.max_cells])
 
 
-static func _check_down(data: Dictionary, limits: BoardLimits, p: String, errors: PackedStringArray) -> int:
-	var tok: String = data.get("down_axis", DEFAULT_DOWN_TOKEN)
-	var down_axis: int = BoardState.down_from_token(tok)
-	if down_axis == -1:
-		_add(errors, limits, "%s.down_axis: '%s' is not one of -x +x -y +y -z +z" % [p, tok])
-		return BoardState.Down.Y_NEG
-	return down_axis
+static func _check_down(data: Dictionary, limits: BoardLimits, p: String, e: PackedStringArray) -> int:
+	var token: String = data.get("down_axis", DEFAULT_DOWN_TOKEN)
+	var axis: int = BoardState.down_from_token(token)
+	if axis == -1:
+		_add(e, limits, "%s.down_axis: '%s' is not one of -x +x -y +y -z +z" % [p, token])
+	return axis
 
 
-static func _check_mask(data: Dictionary, spec: BoardSpec, limits: BoardLimits, p: String, errors: PackedStringArray) -> PackedByteArray:
-	var w: int = spec.size.x
-	var d: int = spec.size.z
-	var grid: PackedByteArray = PackedByteArray()
-	if data.has("mask"):
+static func _check_mask(data: Dictionary, w: int, d: int, h: int, axis: int, limits: BoardLimits, p: String, e: PackedStringArray) -> PackedByteArray:
+	var m: PackedByteArray = PackedByteArray()
+	if not data.has("mask"):
+		m.resize(w * d)
+		m.fill(1)
+	else:
 		var parsed: Dictionary = AsciiGrid.parse_mask(data["mask"], w, d, p + ".mask")
-		for e: String in parsed["errors"]:
-			_add(errors, limits, e)
-		grid = parsed["mask"]
-		if grid.is_empty():
-			return grid
-	else:
-		grid.resize(w * d)
-		grid.fill(1)
-	var active: int = 0
-	for b: int in grid:
-		active += b
+		for msg: String in parsed["errors"]:
+			_add(e, limits, msg)
+		m = parsed["mask"]
+		if m.is_empty():
+			return m
+	var active: int = m.count(1)
 	if active == 0:
-		_add(errors, limits, "%s.mask: no active cell" % p)
-		return grid
-	var bad: String = _first_thin_layer(grid, spec, limits.min_active_per_layer)
-	if bad != "":
-		_add(errors, limits, "%s.mask: %s" % [p, bad])
-	return grid
+		_add(e, limits, "%s.mask: no active cell" % p)
+	elif axis != -1:
+		_check_layers(m, w, d, h, axis, limits, p, e)
+	return m
 
 
-## Message for the first layer on the down axis with too few active cells, or "".
-static func _first_thin_layer(grid: PackedByteArray, spec: BoardSpec, min_active: int) -> String:
-	var w: int = spec.size.x
-	var h: int = spec.size.y
-	var d: int = spec.size.z
-	var axis: String = "y"
-	var counts: PackedInt32Array = PackedInt32Array()
-	if spec.down == BoardState.Down.X_NEG or spec.down == BoardState.Down.X_POS:
-		axis = "x"
-		counts.resize(w)
-	elif spec.down == BoardState.Down.Z_NEG or spec.down == BoardState.Down.Z_POS:
-		axis = "z"
-		counts.resize(d)
+static func _check_layers(m: PackedByteArray, w: int, d: int, h: int, axis: int, limits: BoardLimits, p: String, e: PackedStringArray) -> void:
+	var need: int = limits.min_active_per_layer
+	var name: String = BoardState.DOWN_TOKENS[axis][1]
+	var count: int = m.count(1)
+	if name == "y":
+		if count < need:
+			_add(e, limits, "%s.mask: layer at y=* has %d active cells, needs >= %d" % [p, count, need])
+		return
+	var layers: int = w if name == "x" else d
+	for k: int in layers:
+		var n: int = 0
+		for j: int in (d if name == "x" else w):
+			n += m[k + w * j] if name == "x" else m[j + w * k]
+		n *= h
+		if n < need:
+			_add(e, limits, "%s.mask: layer at %s=%d has %d active cells, needs >= %d" % [p, name, k, n, need])
+			return
+
+
+static func _check_default_anchor(m: PackedByteArray, w: int, anchor: Vector2i, limits: BoardLimits, p: String, e: PackedStringArray) -> void:
+	if m.is_empty() or m.count(1) == 0:
+		return
+	if m[anchor.x + w * anchor.y] == 0:
+		_add(e, limits, "%s.spawn_anchor: default centre (%d,%d) is masked; set spawn_anchor" % [p, anchor.x, anchor.y])
+
+
+## Validates an explicit spawn_anchor [x, z]; returns it as Vector2i, or fallback after reporting an error.
+static func _check_anchor(raw: Variant, m: PackedByteArray, w: int, d: int, fallback: Vector2i, limits: BoardLimits, p: String, e: PackedStringArray) -> Vector2i:
+	var a: Array = raw
+	var x: Variant = JsonNum.whole_int(a[0]) if a.size() == 2 else null
+	var z: Variant = JsonNum.whole_int(a[1]) if a.size() == 2 else null
+	if x == null or z == null:
+		_add(e, limits, "%s.spawn_anchor: must be [x, z] whole numbers" % p)
+	elif x < 0 or x >= w or z < 0 or z >= d:
+		_add(e, limits, "%s.spawn_anchor: (%d,%d) out of bounds (W=%d, D=%d)" % [p, x, z, w, d])
+	elif m[x + w * z] == 0:
+		_add(e, limits, "%s.spawn_anchor: (%d,%d) is masked" % [p, x, z])
 	else:
-		counts.resize(1)
-	for z: int in d:
-		for x: int in w:
-			if grid[x + w * z] == 0:
-				continue
-			var idx: int = x if axis == "x" else (z if axis == "z" else 0)
-			counts[idx] += 1 if axis == "y" else h
-	for k: int in counts.size():
-		if counts[k] < min_active:
-			return "layer at %s=%s has %d active cells, needs >= %d" % [axis, "*" if axis == "y" else str(k), counts[k], min_active]
-	return ""
+		return Vector2i(x, z)
+	return fallback
 
 
-static func _default_anchor(spec: BoardSpec, limits: BoardLimits, p: String, errors: PackedStringArray) -> Vector2i:
-	var w: int = spec.size.x
-	var a: Vector2i = Vector2i((w - 1) >> 1, (spec.size.z - 1) >> 1)  # floor halves, lower cell on ties
-	if not spec.mask.is_empty() and spec.mask[a.x + w * a.y] == 0:
-		_add(errors, limits, "%s.spawn_anchor: default centre (%d,%d) is masked; set spawn_anchor" % [p, a.x, a.y])
-	return a
+## Parses starting_contents through the glyph legend; returns [{cell, kind}] and reports masked footprint cells.
+static func _check_contents(section: Dictionary, m: PackedByteArray, size: Vector3i, limits: BoardLimits, types: ContentTypes, p: String, e: PackedStringArray) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	var parsed: Dictionary = AsciiGrid.parse_layers(section, size, types.glyphs(), p + ".starting_contents")
+	for msg: String in parsed["errors"]:
+		_add(e, limits, msg)
+	for entry: Dictionary in parsed["cells"]:
+		var cell: Vector3i = entry["cell"]
+		if m[cell.x + size.x * cell.z] == 0:
+			_add(e, limits, "%s.starting_contents: cell (%d,%d,%d) is masked" % [p, cell.x, cell.y, cell.z])
+		out.append({"cell": cell, "kind": types.kind_of_glyph(entry["glyph"])})
+	return out

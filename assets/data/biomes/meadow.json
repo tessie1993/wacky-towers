@@ -1,0 +1,3 @@
+{ "id": "meadow", "art_set": "candy_toy", "palette": "candy_toy",
+  "levels": [ { "id": "meadow_01", "scene": "res://src/levels/meadow/meadow_01/meadow_01.tscn",
+                "json": "res://src/levels/meadow/meadow_01/meadow_01.json" } ] }

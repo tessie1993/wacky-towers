@@ -8,7 +8,6 @@
       "max": 600,
       "allows_zero": true,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -20,7 +19,6 @@
       "max": 4.0,
       "allows_zero": false,
       "rule_adjustable": true,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -32,7 +30,6 @@
       "max": 10.0,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -44,7 +41,6 @@
       "max": 4.0,
       "allows_zero": true,
       "rule_adjustable": true,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -56,7 +52,6 @@
       "max": 400,
       "allows_zero": true,
       "rule_adjustable": true,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -68,7 +63,6 @@
       "max": 1500,
       "allows_zero": true,
       "rule_adjustable": true,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -80,7 +74,6 @@
       "max": 30,
       "allows_zero": true,
       "rule_adjustable": true,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -92,7 +85,6 @@
       "max": 0.5,
       "allows_zero": true,
       "rule_adjustable": true,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -104,7 +96,6 @@
       "max": 0.5,
       "allows_zero": true,
       "rule_adjustable": true,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -114,7 +105,6 @@
       "default": false,
       "allows_zero": true,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -126,7 +116,6 @@
       "max": 40.0,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -136,7 +125,6 @@
       "default": false,
       "allows_zero": true,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -148,7 +136,6 @@
       "max": 60.0,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     },
@@ -160,7 +147,6 @@
       "max": 60.0,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
       "note": ""
     }

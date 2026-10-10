@@ -69,10 +69,10 @@ static func apply(o: int, v: Vector3i) -> Vector3i
 static func matrix(o: int) -> Array[Vector3i]                   # 3 rows; tests only
 
 class_name ShapeDef extends Resource                           # fields exactly as ADR-0003
-func offsets(o: int) -> PackedVector3iArray
+func offsets(o: int) -> Array[Vector3i]
 func bbox(o: int) -> Vector3i
 func min_corner(o: int) -> Vector3i
-static func canonical_key(offsets: PackedVector3iArray) -> String
+static func canonical_key(offsets: Array[Vector3i]) -> String
 
 class_name ShapeBank extends Resource
 @export var shapes: Array[ShapeDef]
@@ -208,7 +208,7 @@ func request_slot(slot_id: StringName, plugin_id: StringName) -> void
 # piece
 func try_translate(dir: Vector3i) -> bool
 func set_travel_dir(dir: Vector3i) -> void
-func replace_piece(cells_groups: Array[PackedVector3iArray]) -> void    # split piece (SP28)
+func replace_piece(cells_groups: Array[Array]) -> void    # split piece (SP28)
 func return_piece_to_spawn() -> void                                    # mascot catch (WO11)
 func inject_front(shape_id: StringName, tags: PackedStringArray) -> void
 func emit(kind: StringName, data: Dictionary) -> void                   # view/audio-only event
@@ -379,7 +379,8 @@ ui/menus/level_select.tscn + level_select.gd    biome → levels, stars, locks
 ```gdscript
 class_name Main extends Node               # main.tscn; boot: loads GameCatalog + ProfileStore, owns AppFlow
 class_name AppFlow extends Node            # swaps the current screen: level select ⇄ level scene
-func open_level(level_path: String) -> void
+func open_level(scene_path: String) -> void              # official level scene (res:// from biome JSON)
+func open_level_data(level: LevelData) -> void           # player/daily level on scenes/levels/generic_level.tscn
 func open_level_select(biome: StringName) -> void
 class_name LevelScene extends Node3D       # level_scene.tscn; assembles one play session
 func start(level: LevelData, catalog: GameCatalog, round_seed: int) -> void
@@ -403,7 +404,8 @@ assets/data/
   content/ statuses.json       fog fade, ghost (look kinds; ADR-0007 §7)
   rules/  <rule_id>.json       spin_only, sticky_landing, build_race, fill_shape, gust, mushroom_popup, fog,
                                topsy_tumble, mill_belt, wobble, sprouts, hatching_eggs, dandelion_puff, fog_ghost, mascot_catch
-  biomes/ meadow.json          {art_set, level order, dressing scene path, music key}
+  biomes/ meadow.json          {art_set, levels: [{id, scene}], default dressing scene (generic levels), music key}
+scenes/levels/                 base-inheriting level scenes: generic_level.tscn, meadow/meadow_01.tscn … meadow_10.tscn
   levels/meadow/ meadow_01.json … meadow_10.json
   shapes/ shape_bank.tres      (generated, ADR-0003)
 assets/i18n/strings.csv        keys only in data; English column first
@@ -424,24 +426,35 @@ assets/i18n/strings.csv        keys only in data; English column first
 
 What would normally be autoloads is owned by `Main` and **injected**: `GameCatalog` (immutable after boot), `ProfileStore`, and `AppFlow`. This keeps every class unit-testable with fakes (coding standard: dependency injection over singletons) and avoids hidden order-of-boot bugs. An event bus is not needed: there is one `LevelScene` at a time and it wires its children directly.
 
-### 2.2 Scene tree
+### 2.2 Scene tree: one scene per level (user direction 2026-10-10)
+
+**Decision.** Every official level is its own scene that **inherits** the base level scene and **points at its level JSON**. The scene owns the *place*: island/diorama, props, mascot spots, board anchor, camera framing overrides, intro/payoff skit animation. The JSON owns the *rules*: board, pieces, knobs, goal, rules, stars. A scene never holds a rule value, so the sim, validator, `level_hash`, replays and tests stay data-driven, and player-made levels (JSON only) play on a generic scene with no code path of their own.
 
 ```
-Main (Node, app/main.gd)                            main.tscn, the project's run/main_scene
-└─ AppFlow (Node)                                   swaps exactly one child screen
-   └─ LevelScene (Node3D, app/level_scene.gd)       level_scene.tscn, instanced per attempt
-      ├─ WorldEnvironment, DirectionalLight3D       lighting rig (art direction owns values)
-      ├─ BoardController (Node)                     owns BoardSim; _physics_process: ≤ max_catch_up_ticks steps
-      ├─ Diorama (Node3D)                           biome dressing scene from biomes/meadow.json
-      │  └─ BoardView (Node3D)                      one per board; MultiMeshInstance3D child
-      │     └─ PieceView (Node3D)                   falling piece + ghost (GLB instances)
-      ├─ CameraRig (Node3D)
-      │  └─ Camera3D                                orthographic, current
-      └─ UI (CanvasLayer)
-         ├─ Hud (Control)                           ui/hud/hud.tscn
-         ├─ TouchInput (Control)                    input/touch_input.gd (button layout)
-         └─ ResultPanel (Control, hidden)
+src/app/level_scene.tscn  (base; script LevelScene)          scenes/levels/meadow/meadow_01.tscn (inherits base)
+LevelScene (Node3D, app/level_scene.gd)                       LevelScene  level_json = "res://assets/data/levels/meadow/meadow_01.json"
+├─ WorldEnvironment, DirectionalLight3D   default lighting    ├─ (inherited nodes, values overridable)
+├─ BoardController (Node)                 owns BoardSim       ├─ Diorama  ← seed-plot island, props, rubber duck
+├─ Diorama (Node3D)                       empty in base       │   ├─ BoardAnchor (Marker3D)  where board (0,0,0) sits
+│  └─ BoardAnchor (Marker3D)              board origin        │   └─ MascotSpots (Node3D) → Marker3D "pip_idle", "pip_cheer"…
+│     └─ BoardView (Node3D) ×n            MultiMesh           └─ Skits (AnimationPlayer)  "intro", "payoff" (optional)
+│        └─ PieceView (Node3D)            piece + ghost
+├─ MascotSpots (Node3D)                   empty in base       scenes/levels/generic_level.tscn (inherits base)
+├─ CameraRig (Node3D) → Camera3D          orthographic         ← biome default diorama from biomes/<biome>.json; used for
+└─ UI (CanvasLayer): Hud, TouchInput, ResultPanel                 player levels, daily levels and any level without a scene
+Main (Node) → AppFlow (Node) → one LevelScene at a time
 ```
+
+`LevelScene` exports (set per level scene in the inspector; presentation only):
+
+```gdscript
+@export_file("*.json") var level_json: String          # official levels only; empty on generic_level.tscn
+@export var camera_yaw_index: int = 0                   # Camera rule 3: per-level default snap
+@export var camera_elevation_override_deg: float = 0.0  # 0 = knob default
+@export var skit_player: AnimationPlayer                # null = no skit
+```
+
+Rules: (1) the base scene owns all wiring; inherited scenes only add/override **visual** nodes and these exports, never scripts on the core nodes. (2) `BoardAnchor` is the only placement contract; multi-board levels add one anchor per board id (`BoardAnchor_<id>`), falling back to the level JSON `transform`. (3) Mascot spots are `Marker3D`s found by name, so a mascot story needs no scene code. (4) A test (`tests/unit/levels/level_scenes_test.gd`) instantiates every scene under `res://scenes/levels/`, checks it inherits the base, that `level_json` exists, validates, and that its `id` matches the scene file name and the biome list.
 
 **Wiring** (call down, signal up; all done in `LevelScene.start()`):
 1. `BoardController.setup(BoardSim.new(level, round_seed, catalog))`.
@@ -457,8 +470,8 @@ Main (Node, app/main.gd)                            main.tscn, the project's run
 ### 2.3 How a level loads
 
 1. **Boot** (`Main._ready`): `CatalogLoader.load_catalog()` reads `knobs/`, `content/`, `rules/`, `palette.json`, `atom_tags.json`, loads `shape_bank.tres`, and builds `PluginRegistry` from `ProjectSettings.get_global_class_list()`. Any catalog error is fatal in debug and shown as an error screen in release.
-2. **Level select** reads `biomes/meadow.json` for the order (`levels: ["meadow_01", …]`) and `ProfileStore` for stars and unlocks.
-3. **Open**: `LevelLoader.load_level("res://assets/data/levels/meadow/meadow_01.json", catalog)`:
+2. **Level select** reads `biomes/meadow.json` for the order and scene of each level (`levels: [{"id": "meadow_01", "scene": "res://scenes/levels/meadow/meadow_01.tscn"}, …]`; internal `res://` data, so it may name scenes, ADR-0005) and `ProfileStore` for stars and unlocks.
+3. **Open**: `AppFlow.open_level(scene_path)` instantiates the level scene (`load()` on a `res://` path from internal data only); `LevelScene._ready` reads its `level_json` and calls `LevelLoader.load_level(level_json, catalog)`. A player/daily level is opened with `AppFlow.open_level_data(level: LevelData)`, which instantiates `generic_level.tscn`, dresses it from the biome JSON and skips the file read. The loader steps:
    1. `JsonReader.read_file` (size cap `data.max_level_bytes`), `JSON.parse_string`, top-level must be a Dictionary.
    2. `LevelMigrations.upgrade` (schema 1 only today).
    3. Field-by-field parse into `LevelData`; unknown keys are errors; numbers through `whole_int`; `knobs` values through `KnobDefs.coerce` (fixed point once, here).
@@ -511,7 +524,8 @@ Each recipe lists exactly what to add. If one ever needs a core edit, stop: that
 | **Board kind** (physics, Alpha) | `src/gameplay/board_kinds/<id>/…` extends `BoardKind` (base written with the first board-kind story) | `board.kind` choices | parity test on the shared command/event contract |
 | **Layout** (islands, lanes) | `src/gameplay/slots/layout/<id>.gd` extends `LayoutKind` | level `layout.kind` + `boards[]` | layout validate test |
 | **Content type** (new obstacle) | none, unless it behaves (then a `RuleBehaviour`) | entry in `content/blocks.json` with a unique `kind_id` and `glyph` | content table test checks uniqueness |
-| **Level** | none | `levels/<biome>/<id>.json` + id in `biomes/<biome>.json` | `level_files_test.gd` validates every file automatically |
+| **Level** (official) | `scenes/levels/<biome>/<id>.tscn` inheriting `src/app/level_scene.tscn` (Scene → New Inherited Scene), dressing + `BoardAnchor` + mascot spots, `level_json` set | `levels/<biome>/<id>.json` + `{id, scene}` in `biomes/<biome>.json` | `level_files_test.gd` + `level_scenes_test.gd` pick both up automatically |
+| **Level** (player / daily) | none | the level JSON only; plays on `generic_level.tscn` | validator at import |
 | **Knob** | none | entry in the owning `knobs/<system>.json` | knob table test (generic) |
 | **Hook point** | the owning system calls `runtime.run_hook(&"on_x", ctx)` (this *is* a core edit to the owning system, by design; list it in ADR-0004) | — | — |
 
@@ -720,15 +734,15 @@ Every story: tests first in the named folder (gdUnit4, `[system]_[feature]_test.
 - AC: goal progress, next pieces (shape name/icon placeholder; PreviewBaker deferred), warnings left, level clock, pause; result shows stars, retry, next; screenshots portrait + landscape.
 - Deps: VEW-001.
 
-**APP-001 Main, AppFlow, LevelScene; meadow_01 end to end**
-- Files: `src/app/main.gd`, `main.tscn` (set as `run/main_scene`), `app_flow.gd`, `level_scene.gd`, `level_scene.tscn`, `profile_store.gd`.
+**APP-001 Main, AppFlow, base LevelScene, first level scene; meadow_01 end to end**
+- Files: `src/app/main.gd`, `main.tscn` (set as `run/main_scene`), `app_flow.gd`, `level_scene.gd`, `level_scene.tscn` (base, §2.2), `profile_store.gd`, `scenes/levels/generic_level.tscn`, `scenes/levels/meadow/meadow_01.tscn` (inherits base; placeholder island + `BoardAnchor` + one mascot spot), `tests/unit/levels/level_scenes_test.gd`.
 - Tests: `tests/integration/level_flow/level_scene_boot_test.gd` (scene loads meadow_01, runs N physics frames headless without errors, no orphans), `tests/unit/app/profile_store_test.gd`.
 - AC: boot → meadow_01 directly (level select comes in MDW-011); win/lose/retry loop; **Android debug APK installs and plays meadow_01**; screenshots in `production/qa/evidence/meadow_01_*.png`; verification of open items: JSON packed and listable in APK, `get_global_class_list()` finds plugins in the export, RNG goldens on device (record results in ADR-0004/0005/0006).
 - Deps: everything above.
 
 ### Wave 8 (Meadow content; MDW stories are mostly parallel with each other)
 
-Each MDW story = the plugin(s) + rule JSON + level JSON + plugin tests + one headless level-flow smoke (`tests/integration/level_flow/meadow_XX_smoke_test.gd`: loads, plays a scripted log for N seconds, no errors) + screenshot evidence.
+Each MDW story = its level scene `scenes/levels/meadow/meadow_XX.tscn` (inherits the base; placeholder island, `BoardAnchor`, mascot spots; real dressing comes from art) + the plugin(s) + rule JSON + level JSON + plugin tests + one headless level-flow smoke (`tests/integration/level_flow/meadow_XX_smoke_test.gd`: loads, plays a scripted log for N seconds, no errors) + screenshot evidence.
 
 | ID | Title | New code | Data | Deps |
 |---|---|---|---|---|
@@ -745,7 +759,7 @@ Each MDW story = the plugin(s) + rule JSON + level JSON + plugin tests + one hea
 | MDW-009 | Topsy-Turvy: gravity flip | `twists/topsy_tumble.gd` (every K layers or T ms, warning event, `request_down_axis` applied at next Resolving; stack settles by cascade-to-new-floor step); camera unaffected (±y) | `rules/topsy_tumble.json`, `meadow_09.json` | SIM-006 |
 | MDW-009b | Hatching eggs | `mechanics/hatching_egg.gd` (after N locks becomes chick cube, hops to lowest free neighbour along current down; bonus event if cleared first) | content egg/chick, `rules/hatching_eggs.json` | MDW-009 |
 | MDW-010 | Meadow Mill: Mill Belt + boss composition | `mechanics/mill_belt.gd` (every N locks shift all CELL content +x with wrap via `move_cells`, at `on_resolve_end`; `validate()` rejects masks) | `rules/mill_belt.json`, `meadow_10.json` (belt + gust +z + flip with `flip_every_layers` 2 / `flip_every_ms` 180000) | MDW-003, MDW-009 |
-| MDW-011 | Level select + progress | `ui/menus/level_select.tscn/.gd`; `AppFlow` boots to it | `biomes/meadow.json` order, unlock = previous level won | APP-001 |
+| MDW-011 | Level select + progress | `ui/menus/level_select.tscn/.gd`; `AppFlow` boots to it, opens level scenes by path | `biomes/meadow.json` `{id, scene}` order, unlock = previous level won | APP-001 |
 | MDW-012 | Meadow pass: all 10 on device | none (fixes only) | star times check | all MDW |
 
 **Parallel groups summary**
@@ -839,4 +853,5 @@ Critical path: FND-001 → SIM-001 → SIM-002 → (SIM-003, RUL-002) → SIM-00
 | ADRs | All nine accepted by the user | — |
 | Wobble (05 Tall Tower) | Sway = current overhang count; filling under an overhang lowers it; sway resets to 0 after a slip. Heavier side chosen by the dev team (MDW-005 row) | MDW-005 |
 | Fog ghost (07), untapped | Sinks through locked cubes and fills the deepest hole in its column | MDW-007b |
+| Level scenes | Each official level is its own scene inheriting the base level scene and pointing at its level JSON (§2.2); rules stay in JSON; player/daily levels use `generic_level.tscn` | APP-001, MDW-* |
 | Fog ghost landing preview | Set per level and difficulty: easy levels show a faint preview, harder ones none. Knob `controls.fog_ghost_preview` (`faint` / `none`), rule-adjustable | MDW-007b |
