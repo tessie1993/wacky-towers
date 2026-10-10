@@ -1,252 +1,460 @@
-# Meadow Biome — First Playable (levels 1–10)
+# Meadow Biome: Pip's Picnic (levels 01–10, bonus, hard track)
 
-> **Status**: Draft (Phase 2, user answers 2026-10-09)
+> **Status**: Approved design (user, 2026-10-10). Replaces the 2026-10-09 draft.
 > **Author**: Tessa + level-designer
-> **Last Updated**: 2026-10-09
+> **Last Updated**: 2026-10-10
 > **Implements Pillar**: Variation Over Depth; The Block Is the Constant; Readable Chaos
-> **Field definitions**: `design/gdd/level-data-definition.md` (schema), owning GDDs for defaults
+> **Sources**: `production/levels/meadow/layout.md` (sketch draft), `production/levels/campaign/biome-stories.md` (story), `production/levels/campaign/biome-bible.md` §2.1, `design/gdd/mechanics-module.md` (atoms), `docs/architecture/adr-0005-data-format-validator.md` (level JSON).
+> **Field definitions**: `design/gdd/level-data-definition.md`; defaults from the owning GDDs.
 
-**Every number in this file is a tunable default** — a starting point for the prototype and playtests, not a rule. Change any of them freely; the validator only enforces the safe ranges in the owning GDDs.
-
-## Theme and intent
-
-A sunny floating meadow island: grass tiles, wooden signs, mushrooms, dew, a mossy mill belt. Ten levels, **one new idea each**, and level 10 stacks them, plus one star-unlocked **bonus puzzle**. The blocks never change; what changes is the **goal** (Clear, Height, Shape, Survive), the **board** (seven footprints), the **starting contents** (pre-built puzzles) and one twist or mechanic. The campaign-wide arc and track rules are in `design/gdd/campaign-structure.md` ("Campaign shape").
-
-**The wacky test** (user decision, round 3; applies to every level in every biome). A level passes only if it has all four:
-1. **A surprising rule change**: the world misbehaves in a way you can see within two pieces.
-2. **Something silly**: a piece, prop or critter with personality.
-3. **A funny failure**: losing, trimming or a twist going wrong looks fun, never harsh.
-4. **A big visual moment**: at least one screen-wide beat (the double clear, the flip, the boss reveal).
-
-Humour mix: wholesome slapstick, dry and absurd, cheeky chaos. **Meadow mascot**: a small local critter (species and name TBD with narrative-director and art-director; working name "the meadow critter") sits on the island edge and reacts to clears, gusts, trims and wins. **Twists are biome events**: in the meadow, Wind is the *Dandelion Gust*, Spawned Objects the *Mushroom Pop-up*, Invisible Blocks the *Morning Fog*, Gravity Flip the *Topsy Tumble*. The rules are the Twist Library's; only the name, dressing and mascot reaction are the meadow's.
-
-**Common defaults** (unless a level says otherwise): weighted bag, `queue_lookahead` 3, `preview_count` 1, no hold, `collapse_mode` slice, `ramp_per_clear` 0.05, `topout_rule` rescue, `warnings_max` 1, `countdown_ms` 3 000, rotation axes all (spin, tilt, roll), `t_piece` 8 s. Speeds are hand-set per level (user decision Q1) and match campaign F2 (`0.6 + 0.045 × (tier − 1)`) within ±0.05.
-
-**ASCII grids** (masks, starting contents, target shapes): one string per row, row 0 = `z = 0`, character 0 = `x = 0`. Mask: `#` active, `.` off. Starting layers: `#` starter block, `m` mushroom, `.` empty. Target layers: `#` target cell, `.` not a target.
-
-## Summary table
-
-| # | id | Name | New idea | Goal | Board (W×D, H_play / mask) | Pieces · opening | g0 | Twist(s) | Mechanic | Top-out | Est. length | ★★ / ★★★ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | meadow_01 | First Sprout | Drop and spin | Clear 4 | 4×4, 8 | 5 flat · first 2 from {O, I} | 0.6 | — | — | rescue, 2 warnings | ~3 min | 145 s / 105 s |
-| 2 | meadow_02 | Tilt & Roll | Tilt/roll, 3D pieces | Clear 3 | 6×6, 10 + 2 starter layers with 3D pockets | 8 Standard · first 3 from {Tripod, Screw-L, Screw-R} | 0.6 | — | — | rescue, 1 | ~2.5 min | 130 s / 90 s |
-| 3 | meadow_03 | Breezy Hill | Wind | Clear 5 | 8×4 lane, 10 | 8 Standard | 0.7 | Wind (+x, every 8 s) | — | rescue, 1 | ~7 min | 365 s / 255 s |
-| 4 | meadow_04 | Mushroom Ring | Spawned objects | Clear 3 | 7×7 ring (centre 3×3 off, A = 40), 10, `spawn_anchor` (3, 5) | 8 Standard | 0.75 | Spawned Objects (every 5 locks) | — | rescue, 1 | ~5.3 min | 270 s / 190 s |
-| 5 | meadow_05 | Tall Tower | Build up, not clear | Height 10, coverage 0.6 | 5×5, 12 | 8 Standard + Big Cube (w 0.5) | 0.8 | — | Build Race | **trim** | ~4.7 min | 240 s / 170 s |
-| 6 | meadow_06 | Flower Bed | Fill a picture | Shape: 2-layer flower, 50 cells | 8×8, 8 | I, O, T, L, S, Tripod + Duo, Tri-Corner | 0.7 | — | Target Shape | **trim** | ~3 min | 155 s / 110 s |
-| 7 | meadow_07 | Hide & Seek | Memory | Clear 4 | 6×6, 10 + 2 starter layers (fade too) | 8 Standard | 0.85 | Invisible Blocks (visible 5 s) | — | rescue, 1 | ~4 min | 195 s / 140 s |
-| 8 | meadow_08 | Dewdrop | Instant lock + Survive | Survive 2:30, `ramp_per_min` 0.15 | 5×5, 8 | 8 Standard | 0.9 (× 0.7 sticky) | — | Sticky Landing | rescue, 1 | 2.5 min | 1 / 2 layers |
-| 9 | meadow_09 | Topsy-Turvy | Down becomes up | Clear 4 | 6×6, 10 | 8 Standard | 0.95 | Gravity Flip (2 layers or 40 s) | — | rescue, 1 | ~6.4 min | 325 s / 230 s |
-| 10 | meadow_10 | Meadow Mill | Finale stack + boss | Clear 3 | 8×6 (A = 48), 12 | 7 Standard (no S) + Chair | 1.0 | Wind (+z) + Spawned Objects | Conveyor (+x, every 2 locks, wrap) | rescue, 1 | ~6.2 min | 315 s / 225 s |
-| B | meadow_bonus | Picnic Puzzle | Fixed piece list | Shape: 4×4×2 basket | 4×4, 6 | `fixed_list`: I, O, Big Cube, I, O, Big Cube | 0.5 | — | Target Shape | trim; out of pieces = lost | ~1 min | 60 s / 40 s |
-
-Star times use Scoring & Stars F1 (0.85 / 0.6 of the estimate) except levels 2 and 7, whose estimates are hand-set because starting contents make F1 overestimate. Retuned from the Phase 1 draft by the length math (kept by the user): level 3 Clear 3 → 5, level 7 Clear 3 → 4, level 5 on 5×5. Retuned by the systems-designer's math: level 8 on 5×5, H_play 8 (the 8×8 plus gave a survive pressure of only 0.42, so no tension); level 10 at A = 48 (about 125 s per clear). Levels 1, 2, 6 and 8 are short on purpose (tutorials and breathers); the validator's length warning is expected there.
-
-## Pacing chart (intensity across the biome)
-
-```
-intensity
- high |                                                   #
-      |                                    #        #     #
-      |                #            #      #   #    #     #
-  mid |         #      #     #      #      #   #    #     #
-      |    #    #      #     #   #  #      #   #    #     #
-  low | #  #    #      #     #   #  #      #   #    #     #
-      +-01-02---03-----04----05--06-07-----08--09---10---
-        learn   twist  twist build pic mem  sprint flip FINALE
-```
-
-Rhythm: two teaching levels → two twist levels on unusual boards → a **break from clearing** (05 tower, 06 picture: no fail, lower pressure) → memory → a short sprint → the hardest twist → the finale. Each spike is followed by a lower or different kind of challenge, never two pressure peaks in a row before the finale.
+**Every number, name and beat in this file is a tunable default**, a starting point for the prototype and playtests. The validator enforces only the safe ranges in the owning GDDs.
 
 ---
 
-## Level specs
+## 1. Level name and theme
 
-### meadow_01 — First Sprout
-- **Teaches**: drop, move, spin, hard drop, a layer clear. Spin only (`rotation_axes_enabled: [spin]`).
-- **Board**: 4 × 4, H_play 8 (12 drawn). Cubes are large (~36 px) so the first touch is easy.
-- **Pieces**: I, O, T, L, S. `opening_set: [O, I]`, `opening_count: 2`: the first two pieces fill half a layer cleanly.
-- **Goal**: Clear 4 (`T_level` 180 → F1 N = 4). `warnings_max` 2: the first scares are free.
-- **Critical path**: about 4–6 pieces per clear; four clears ≈ 21 pieces.
-- **Leading elements**: the landing ghost and a soft grass glow on the emptiest cells.
-- **Stars**: ★★ 145 s, ★★★ 105 s with no warning used.
-- **Audio**: meadow theme, gentle layer; first clear plays a bigger chime than usual (one time only).
+**Pip's Picnic.** Pip the harvest mouse wants a picnic on the hilltop with all the meadow friends. Blocks fall as a soft **block drizzle** from a sunny sky. The Miller, a flour-dusted badger who likes his mill quiet and his gusts loud, rigs the mill to blow gusts, pop mushrooms, fog the grass and flip the hill. In the finale the last clear bonks him off his roof into a flour cloud; he stomps off vowing a rematch. Keepsake: a tiny windmill on the wizard's hat.
 
-### meadow_02 — Tilt & Roll
-- **Teaches**: tilt and roll, and that 3D pieces exist. Axes: spin, tilt, roll.
-- **Board**: 6 × 6, H_play 10, with two starter layers (blocks drawn as meadow stone, `shape_id: starter`). Three pockets each fit exactly one 3D piece: Tripod (A), and the two screws (B, C, mirror images). A flat piece cannot fill a pocket exactly (the four cells are not in one plane).
+**Quirk: "Gentle weather."** Each level adds at most one visible disturbance (plus at most one special piece), and plain layer clears are home base. The Meadow is the most classic biome (about 85% classic play), but strangeness **zig-zags** level to level rather than rising in a straight line.
 
-```
-layer 0          layer 1
-######           ######
-#.###.           #..#..      A: top L at (1,1)(2,1)(1,2), hole below the corner (1,1)
-######           #.##.#      B: top L at (4,1)(5,1)(4,2), hole below the end (5,1)
-######           ###.##      C: top L at (3,4)(4,4)(3,3), hole below the end (4,4)
-####.#           ###..#
-######           ######
-```
+### Biome rules (decisions)
 
-- **Pieces**: 8 Standard. `opening_set: [Tripod, Screw-Left, Screw-Right]`, `opening_count: 3`. The opening is a bag of the three (Spawner rule 5a), so each comes exactly once in a random order and the player has to read which pocket the current piece fits.
-- **Goal**: Clear 3. Filling all three pockets clears layers 0 and 1 together (a double, a big moment); one free clear follows.
-- **Stars**: hand estimate ~150 s → ★★ 130 s, ★★★ 90 s.
-- **Validator**: each pocket must be exactly fillable by its named shape (authoring check, Open Questions).
+| Rule | Default |
+|---|---|
+| Islands | One per level, shaped by the story (seed plot, burrow, hillside lane, pond ring, hilltop, garden bed, foggy hollow, dewy lawn, tree island, mill yard) |
+| Stage | Busy diorama or clean stage per level, as the story needs; calm puzzle levels are quiet, chaos levels busy |
+| Intro skit | A 3-second wordless mini-scene in which Pip shows the problem, played during the Countdown (no play time lost) |
+| Payoff skit | A short skit on every win in which the tiny story resolves |
+| Mascot | **Pip** (Meadow only). Tiers 1–3: helper (points at a good cell + **Pip's catch**, below). Tier 4 on: watcher (reactions only). Pip never pranks here |
+| The Miller | Visible on the hill from 03 on, causing every disturbance; boss in 10 |
+| Physics | Only 05 Tall Tower (wobble) |
+| Rubber duck | Hidden under the island in 01 and 02 (SE05, visible from one low snap angle; tap to collect; no stars attached) |
+| Events as Meadow events | Wind = Dandelion Gust, Spawned Objects = Mushroom Pop-up, Invisible Blocks = Morning Fog, Gravity Flip = Topsy Tumble, Conveyor = Mill Belt |
+| Prototype priority | **02, 05, 09, 10** (★PROTO) |
 
-### meadow_03 — Breezy Hill
-- **Teaches**: Wind. Telegraph first (arrow + bending grass), then the gust.
-- **Board**: 8 wide (x) × 4 deep (z), H_play 10. A long lane: the wind blows along it (`wind_dir: +x`) toward the x = 7 wall.
-- **Twist**: Wind, `wind_interval_ms` 8 000 (slower than the 6 000 default), jitter 2 000, strength 1, fixed.
-- **Goal**: Clear 5 (P_eff ≈ 10.7; t_est ≈ 427 s).
-- **Play idea**: the downwind wall is a brace: build from the x = 7 end and let gusts push pieces home. Fighting the wind upwind is the slow route.
-- **Stars**: ★★ 365 s, ★★★ 255 s.
-- **Audio**: wind layer joins the meadow theme; whoosh on gusts.
+**Pip's catch (WO11, tiers 1–3).** Once per level (`mascot_catches` 1), when a piece locks so that it leaves at least one **new covered hole** (an empty active cell directly below one of its cubes) **and** clears nothing, the lock is undone before Resolving: Pip leaps and catches the piece (about 300 ms), and it returns to the spawn position in its current orientation with the gravity clock reset. Not on a lock that meets the goal, not during a warning. Catches do not affect stars. Tiers 4+ and the hard track: 0.
 
-### meadow_04 — Mushroom Ring
-- **Teaches**: Spawned Objects (a sparkle one lock ahead, then a mushroom pops up).
-- **Board**: 7 × 7 with the centre 3 × 3 off (a 2-wide ring, A = 40), H_play 10. The centre is a pond. `spawn_anchor: (3, 5)` on the front band because the footprint centre is inactive.
+**Common defaults** (unless a level says otherwise): weighted bag, `queue_lookahead` 3, `preview_count` 1, no hold, `collapse_mode` slice, `ramp_per_clear` 0.05, `topout_rule` rescue, `warnings_max` 1, `countdown_ms` 3 000, all rotation axes, `t_piece` 8 s. Speeds are hand-set and match campaign F2 (`0.6 + 0.045 × (tier − 1)`) within ±0.05. Special pieces "1 per bag" means one piece in each bag carries the tag (a Standard shape, chosen by the bag's seed).
 
-```
-#######
-#######
-##...##
-##...##
-##...##
-#######
-#######
-```
+**Budget (mechanics module F1).** At most 2 atoms new to the player and 4 non-default atoms per level. "New" counts only non-default atoms; a level mechanic bundle (M1 = GO02 + CL14 + FT02, M2 = GO03 + CL14) counts as one idea. Slot defaults: BL01, AR01, CV01, CL01, CO01, GO01, FT01.
 
-- **Twist**: Spawned Objects, `spawn_every_locks` 5, `objects_max` 4.
-- **Goal**: Clear 3 (P_eff ≈ 13.3; t_est ≈ 320 s).
-- **Play idea**: mushrooms fill cells for free; a ring is hard to close, so a mushroom in the right corner is a gift. Corners of the ring are the tricky cells.
-- **Stars**: ★★ 270 s, ★★★ 190 s.
+**Grids**: one string per row, row 0 = `z = 0` (back), character 0 = `x = 0` (left). Mask `#` active, `.` off; starting layers `#` starter block, `.` empty; targets `+` / `#` target cell. Side views are a slice at one `z` row seen from the front; `=====` is the danger line at `H_play`, `S` the spawn zone, `:` skips empty rows.
 
-### meadow_05 — Tall Tower
-- **Teaches**: a build race. Clearing is off; build up to the sign.
-- **Board**: 5 × 5, H_play 12 (16 drawn). Skinny, tall, dramatic.
-- **Pieces**: 8 Standard plus Big Cube at weight 0.5 (bag of 17: two of each Standard, one Big Cube). Big Cube is the fun "free 2 layers" piece. c ≈ 4.24.
-- **Mechanic**: No-Clear Build Race, `H_target` 10, `height_coverage` 0.6, `topout_rule` trim. No twist (user decision Q6).
-- **Top-out (trim)**: any cube at or above layer 12 pops off the island with a bonk; no warning is used, the level never fails. Over-building only costs time.
-- **Est.**: F2 → 10 × 0.6 × 25 / 4.24 ≈ 35 pieces ≈ 283 s.
-- **Stars**: ★★ 240 s; ★★★ 170 s **and no cube trimmed**.
-- **Leading elements**: a wooden sign and ribbon at layer 10; the counting layer glows when it reaches coverage.
+## 2. Estimated play time and summary
 
-### meadow_06 — Flower Bed
-- **Teaches**: Fill the Target Shape. Clearing off.
-- **Board**: 8 × 8, H_play 8 (12 drawn). First big footprint, but low and calm.
-- **Pieces**: I, O, T, L, S, Tripod, Duo, Tri-Corner (8 shapes, c ≈ 3.6). Helpers let the player finish petals cleanly.
-- **Mechanic**: Fill the Target Shape, `topout_rule` trim. Target (50 cells): a flower lying on the grass, with its centre raised one layer.
+| # | id | Name | Story beat | New idea (atoms) | Pip | Stage | Goal | Board | Pieces | g0 | Top-out | Length | ★★ / ★★★ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 01 | meadow_01 | First Sprout | Plant Pip's seed | drizzle, spin only (CV02) | helper | clean, calm | Clear 4 | 4×4, H8 | 5 flat; first 2 from {O, I} | 0.6 | rescue, 2 | ~3 min | 145 / 105 s |
+| 02 ★ | meadow_02 | Tilt & Roll | Beds in the burrow | tilt/roll, pockets (BL05) | helper | clean, calm | Clear 3 | 6×6, H10 + 2 starter layers | 8 Std; first 3 a bag of {Tripod, Screws} | 0.6 | rescue, 1 | ~2.5 min | 130 / 90 s |
+| 03 | meadow_03 | Breezy Hill | Seeds on the wind | Gust (EV01), puff pieces (SP28) | helper | busy | Clear 5 | 8×4 lane, H10 | 8 Std | 0.7 | rescue, 1 | ~7 min | 365 / 255 s |
+| 04 | meadow_04 | Mushroom Ring | Pond party crashers | ring (BL02), Pop-up (EV04 + SP19) | watcher | busy | Clear 3 | 7×7 ring, H10 | 8 Std | 0.75 | rescue, 1 | ~5.3 min | 270 / 190 s |
+| 05 ★ | meadow_05 | Tall Tower | Spy on the mill | build race (M1), wobble (PL03) | watcher | clean, tense | Height 10 (cov. 0.6) | 5×5, H12 | 8 Std + Big Cube (w 0.5) | 0.8 | trim | ~4.7 min | 240 / 170 s* |
+| 06 | meadow_06 | Flower Bed | Picnic bouquet | fill shape (M2), sprouts (SP22) | watcher | clean, calm | Shape 50 | 8×8, H8 | I O T L S Tripod Duo Tri-Corner | 0.7 | trim | ~3 min | 155 / 110 s* |
+| 07 | meadow_07 | Hide & Seek | Morning fog | Fog (EV02), fog ghost (SP26) | watcher | busy, hushed | Clear 4 | 6×6, H10 + 2 starter layers | 8 Std | 0.85 | rescue, 1 | ~4 min | 195 / 140 s |
+| 08 | meadow_08 | Dewdrop | Stuck in the dew | Survive (GO04), sticky (PL01) | watcher | clean, tense | Survive 150 s | 5×5, H8 | 8 Std | 0.9 (× 0.7) | rescue, 1 | 2.5 min | 1 / 2 layers |
+| 09 ★ | meadow_09 | Topsy-Turvy | The hill flips | Flip (EV03), eggs (SP21) | watcher | busy | Clear 4 | 6×6, H10 | 8 Std | 0.95 | rescue, 1 | ~6.4 min | 325 / 230 s |
+| 10 ★ | meadow_10 | Meadow Mill | Boss: the Miller | Mill Belt (EV05), 2-phase boss | boss | busiest | Clear 3 | 8×6, H12 | I O T L Tripod Screws Chair | 1.0 | rescue, 1 | ~6.2 min | 315 / 225 s |
+| B | meadow_bonus | Picnic Puzzle | Pack before the ants | fixed list (AR09), budget (FT07) | watcher | clean, hurried | Shape 32 in 60 s | 4×4, H6 | fixed: I O BigCube I O BigCube | 0.5 | out of pieces / 60 s | ≤ 1 min | 45 / 30 s* |
+| H1 | meadow_h1 | Seed Sprouts | The sprout went to seed | sprouts (SP22) + gust | watcher | busy | Clear 5 | 6×6, H10 | 8 Std | 0.9 | rescue, 1 | ~7 min | 410 / 290 s |
+| H2 | meadow_h2 | Picnic Ants | Ants raid the stack | ants (SP31) + mushrooms | watcher | busy | Clear 4 | 6×6, H10 | 8 Std | 0.9 | rescue, 1 | ~6 min | 325 / 230 s |
+| H3 | meadow_h3 | Two Fields | Two patches, one drizzle | islands (BL07) | watcher | clean, tense | Clear 3 per field | 2 × 4×4, H8 | 8 Std | 0.85 | rescue, 1 shared | ~4 min | 220 / 155 s |
 
-```
-layer 0 (38)     layer 1 (12)
-.##..##.         ........
-########         ..####..
-.######.         ..####..
-########         ..####..
-.##..##.         ........
-...##...         ........
-.####...         ........
-...##...         ........
+★ = prototype priority. \* ★★★ also requires no cube trimmed (Scoring & Stars). Star times use Scoring & Stars F1 except 02 and 07 (hand-set, because starter layers make F1 overestimate) and B (hand-set against its 60 s clock). Length notes: 01, 02, 06, 08 and B are short on purpose; the validator's length warning is expected.
+
+**Hard track (decision).** `meadow_bonus` is tier 11 (unlocks at 20 meadow stars). The remixes are **tiers 12–14** (`meadow_h1`–`h3`); all three open when `meadow_10` is finished. Neither the bonus nor the remixes count toward the next biome's star gate. Stars still pay points as usual.
+
+## 3. Layout overview
+
+```text
+01 seed plot   02 burrow     03 hillside lane   04 pond ring   05 hilltop
+####           ######        ########           #######        #####
+####           ######        ########           #######        #####
+####           ######        ########           ##...##        #####
+####           ######        ########           ##...##        #####
+               ######                           ##...##        #####
+               ######                           #######
+                                                #######
+06 garden bed  07 foggy hollow  08 dewy lawn  09 tree island  10 mill yard (belt →)
+########       ######           #####         ######          ########
+########       ######           #####         ######          ########
+########       ######           #####         ######          ########
+########       ######           #####         ######          ########
+########       ######           #####         ######          ########
+########       ######                         ######          ########
+########
+########
 ```
 
-- **Est.**: F3 → 50 / (3.6 × 0.6) ≈ 23 pieces ≈ 184 s. A breather after the tower.
-- **Stars**: ★★ 155 s; ★★★ 110 s and no cube trimmed.
-- **Leading elements**: flower outlines on the grass; covered cells bloom.
+## 4. Critical path and optional paths
 
-### meadow_07 — Hide & Seek
-- **Teaches**: Invisible Blocks: remember the stack; clears reveal it.
-- **Board**: 6 × 6, H_play 10, with two starter layers that fade like everything else. Starter blocks are visible through Intro and Countdown, then their `visible_ms` timer starts at the first spawn.
+- **Critical path**: 01 → 10 in order (linear inside a biome). Finishing 10 completes the Meadow; the next biome opens with 15 of 30 stars.
+- **Optional**: ★★★ times on every level; the rubber duck in 01–02; the bonus Picnic Puzzle (20 stars); hard-track remixes H1–H3 (after 10).
 
-```
-layer 0          layer 1
-##.###           ##.#..
-######           .#####
-#####.           ##.##.
-.#####           .###..
-######           ######
-###.##           ##..##
-```
+## 5. Pacing chart
 
-- **Twist**: Invisible Blocks, `visible_ms` 5 000 (gentler than 4 000), fade 1 000, alpha 0.1, reveal 600.
-- **Goal**: Clear 4. The two starter layers need ~15 cubes, so the first clears come fast and give reveals early; the last two are on memory.
-- **Stars**: hand estimate ~230 s → ★★ 195 s, ★★★ 140 s.
-
-### meadow_08 — Dewdrop
-- **Teaches**: Sticky Landing (locks on touch) and the Survive goal (user decision Q3).
-- **Board**: 5 × 5, H_play 8 (12 drawn). Small and low, so a few sticky mistakes really matter (systems-designer retune; the earlier 8 × 8 plus had no tension).
-- **Mechanic**: Sticky Landing, `sticky_gravity_scale` 0.7 → effective speed 0.63 rising to about 0.9 by the end (`ramp_per_min` 0.15).
-- **Goal**: Survive 150 s. Short and tense on purpose.
-- **Stars** (Scoring F4, P_eff ≈ 8.3 → expected ≈ 2.25 layers): ★★ 1 layer cleared, ★★★ 2 layers and no warning used.
-
-### meadow_09 — Topsy-Turvy
-- **Teaches**: Gravity Flip.
-- **Board**: 6 × 6, H_play 10. Small enough that the flipped stack stays readable.
-- **Twist**: Gravity Flip, `flip_every_layers` 2, `flip_every_ms` 40 000, warn 2 000.
-- **Goal**: Clear 4 (P_eff 12; t_est ≈ 384 s).
-- **Play idea**: a flat, tidy stack survives a flip; a spiky one becomes a mess at the new top.
-- **Stars**: ★★ 325 s, ★★★ 230 s.
-
-### meadow_10 — Meadow Mill
-- **Teaches**: nothing new: the finale stacks two twists and a mechanic, on the widest, tallest board of the biome.
-- **Board**: 8 wide (x, along the belt) × 6 deep (z), H_play 12 (16 drawn), A = 48 (≈ 125 s per clear). A rectangle rather than the suggested 8 × 8 plus mask, because Conveyor requires an unmasked rectangular board (Level-Specific Mechanics rule 17); same A, same pacing.
-- **Finale boss**: the mill's owner, a cheeky character (working name "the Miller"; design with narrative-director and art-director) who runs the show. Its sails blow the Dandelion Gusts, it cranks the belt, and it tosses mushrooms onto the stack. Same rules as the twists, given a face: it winds up before each event (the telegraph), cheers your trims and sulks on each clear. On the win it gets bonked off the mill by the final clear (the big visual moment).
-- **Pieces**: I, O, T, L, Tripod, Screw-Left, Screw-Right, Chair (c ≈ 4.1).
-- **Mechanic**: Conveyor Floor, `conveyor_dir` +x, `conveyor_every` 2, wrap on.
-- **Twists**: Wind, `wind_dir` +z (across the belt, so the two motions never cancel), interval 8 000; Spawned Objects, every 6 locks, max 4.
-- **Goal**: Clear 3 (P_eff ≈ 15.5; t_est ≈ 372 s).
-- **Play idea**: drop where the gap *will be* after the belt moves; mushrooms ride the belt too.
-- **Stars**: ★★ 315 s, ★★★ 225 s.
-- **Audio**: full meadow theme with the mill rhythm; the win plays the biome-complete sting.
-
-### meadow_bonus — Picnic Puzzle (bonus, unlocked at 20 meadow stars)
-- **Teaches**: puzzle levels: a fixed piece list, every piece counts. Off the main path (hard track), retry-heavy on purpose, retry is free.
-- **Board**: 4 × 4, H_play 6. The target is a picnic basket: the whole 4 × 4 footprint, 2 layers (32 cells).
-
-```
-layer 0 and layer 1 (both)
-####
-####
-####
-####
+```text
+strangeness (how far from classic)
+ high |                    #           #   #
+      |                 #  #     #  #  #   #
+  mid |        #  #     #  #  #  #  #  #   #
+      |     #  #  #     #  #  #  #  #  #   #
+  low |  #  #  #  #     #  #  #  #  #  #   #
+      +-01-02-03-04----05-06-07-08-09-10--B
+        learn  twist   no-fail  mem sprint flip FINALE
 ```
 
-- **Pieces**: `fixed_list: [I, O, Big Cube, I, O, Big Cube]` (32 cubes: exactly the basket). Preview 3, so the player can plan ahead.
-- **Mechanic**: Fill the Target Shape. One wrong placement leaves a hole no later piece fits: **out of pieces = lost** (Level Goals rule 10c).
-- **Known solution**: both Big Cubes fill rows z 0–1 (two 2 × 2 × 2 blocks); both I pieces lie along row z 2 (one on each layer); both O pieces stand upright in row z 3. Dealt in list order, each placement is supported.
-- **Wacky**: the critter is sitting in the basket and has to dodge every drop; a failed basket tips over and the picnic spills.
-- **Stars**: ★★ 60 s, ★★★ 40 s and no cube trimmed.
+Zig-zag, not a ramp: two teaching levels → two twist levels → a no-clear break (05 tower, 06 picture; no fail) → memory → a short sprint → the flip → the two-phase finale. Short and long levels alternate (campaign rule 12); no two pressure peaks in a row before the finale.
 
 ---
 
-## Wacky test per level
+## 6. Level specs (encounter lists, sketches, beats)
 
-| Level | Surprising rule | Silly thing | Funny failure | Big visual moment |
-|---|---|---|---|---|
-| 01 First Sprout | — (tutorial; the first clear is the surprise) | The sprout grows a leaf on each clear | The critter covers its eyes on a warning | The first clear's oversized chime and confetti |
-| 02 Tilt & Roll | The board starts half-built with holes | Pockets shaped like the 3D pieces "wink" | A wrong piece gets a "nope" wobble from the critter | Double clear when all three pockets fill |
-| 03 Breezy Hill | Dandelion Gusts push your piece | Seeds stick to the critter's face | A gust shoves a piece into the wrong spot; the critter shrugs | A big gust sweeps the whole lane |
-| 04 Mushroom Ring | Mushrooms pop up on the stack | Mushrooms with faces squeak when cleared | A mushroom blocks the perfect gap and grins | The pond in the ring sparkles on each clear |
-| 05 Tall Tower | Clearing is off; build up | Big Cube "thunks" in like a treat | Trimmed cubes bounce off the island like popcorn | The tower reaching the sign: fireworks |
-| 06 Flower Bed | Fill a picture, not layers | Flowers bloom as cells fill | Trimmed petals float away | The whole flower blooms on the win |
-| 07 Hide & Seek | Your stack vanishes in fog | The critter plays peek-a-boo in the fog | A piece lands on an "empty" spot that wasn't | Fog bursts away on each clear |
-| 08 Dewdrop | Pieces lock on touch | Dewdrops splat on every lock | A sticky piece stuck at a silly angle | The final seconds: the dew sparkles |
-| 09 Topsy-Turvy | Down becomes up | The critter hangs upside down | The stack lands on its head with a "whump" | The whole stack tumbling to the new floor |
-| 10 Meadow Mill | Belt + gusts + mushrooms, with a boss | The Miller's antics | The Miller cheers your trims and warnings | The Miller bonked off the mill on the win |
-| Bonus | A fixed list: every piece counts | Critter sits in the basket | The basket tips and the picnic spills | The basket lid closes with a bow |
+### 01 First Sprout
 
-## Narrative and environment beats
+**Story card.** Pip found a seed and needs a tidy plot to plant it. Every clear grows a leaf; four leaves make a sprout. · **Pip: helper** (points at the emptiest cell; one catch).
+**Stage**: clean, calm; a bare plot of soil. **Intro skit**: Pip digs a hole, drops in the seed, pats it, looks up at the drizzle and waits. **Payoff skit**: the sprout shoots up into a sunflower taller than Pip; Pip hangs the picnic basket on it.
 
-No story decisions here (narrative-director owns them). Environment only: the island gets busier level by level — a sprout (01), stones (02), windmill-less hill (03), mushroom ring around a pond (04), a tall wooden tower sign (05), a flower garden (06), fog patches (07), dew on the grass (08), an upside-down tree (09), and the mill with its belt turning (10).
+```text
+Recipe: BL01 (4×4, H8) · AR01 · CV02 spin only · GO01 (4) · FT01 (2 warnings) · CL01 + CO01 · SE05 duck · WO11 catch
+One sentence: "Fill a whole layer and it clears."
+```
+**Encounters**: none (pure classic). Pieces I, O, T, L, S; `opening_set` [O, I], count 2. `T_level` 180.
 
-## Music and audio cues
+```text
+top-down 4×4      side (z = 1)
+####              11 . S S .   spawn zone
+#S##               8 ========  danger line
+####               :
+####               0 . . . .   the seed plot
+```
+**How it plays**: (1) an O drifts down slowly; Pip points at a corner. (2) The first layer clears in about 4 pieces: the plot sinks, a leaf pops, a big chime. (3) L, T and S arrive; spin is the only rotation. (4) The 4th clear grows the stalk and a flower opens.
+**Wacky test**: surprising, the first clear; silly, a leaf per clear; funny failure, Pip covers its eyes on a warning; big moment, the stalk shooting up.
 
-One meadow theme, layered: base (01–02) → + wind layer (03) → + plucks for mushrooms (04) → a percussive build layer for 05–06 (no danger music, since trim cannot lose) → softer, sparser mix for 07 (memory) → faster tempo for 08 (Survive) → full mix for 09–10. Danger stinger only where `topout_rule` is rescue.
+---
 
-## Open questions
+### 02 Tilt & Roll ★PROTO
 
-- **Pocket check (meadow_02)**: the validator should confirm each pocket is exactly fillable by its named shape. Until then, check by hand in the prototype.
-- **Short levels**: 01, 02, 06 and 08 are under 5 minutes; confirm in the playtest that this pacing feels good, or lengthen them.
-- **Trim feel**: is popping cubes off the island readable as "too high" rather than as a bug? Prototype with level 05.
-- **Starter block look**: meadow stone vs. a greyed candy block — art-director.
+**Story card.** Pip's stone burrow has three oddly shaped bedroom holes. Fit the three funny pieces so every friend gets a bed. · **Pip: helper** (points at the pocket the current piece fits; one catch).
+**Stage**: clean, calm; the burrow in cut-away. **Intro skit**: three sleepy friends in nightcaps stare at the holes; one lies in a hole and sticks out at both ends. **Payoff skit**: each friend flops into a perfect bed and snores; Pip tiptoes out and blows out a candle.
+
+```text
+Recipe: BL05 (6×6, H10, 2 starter layers) · AR01 · CV01 (spin, tilt, roll) · GO01 (3) · FT01 (1) · CL01 + CO01 · SE05 duck · WO11 catch
+One sentence: "Turn the piece to fit its bed."
+```
+**Encounters**: three pockets, each exactly fillable by one 3D piece: A Tripod (top L at (1,1)(2,1)(1,2), hole below the corner), B and C the two screws (mirror images; holes below an end). Flat pieces cannot fill a pocket exactly. Pieces 8 Standard; `opening_set` [Tripod, Screw-Left, Screw-Right], count 3 (a bag: each once, random order).
+
+```text
+layer 0     layer 1     side (z = 1)
+######      ######      10 ==============
+#.###.      #..#..       :
+######      #.##.#       1  # . . # . .   pockets A (x1–2), B (x4–5)
+######      ###.##       0  # . # # # .   holes go 2 deep
+####.#      ###..#
+######      ######
+```
+**How it plays**: (1) a Tripod spawns; Pip points at bed A; tilt so three arms sit on top. (2) A screw fits only one of the two remaining beds; rolling it shows the mirror trick. (3) The third bed fills and both starter layers clear together (a double). (4) One free clear on the open board.
+**Wacky test**: surprising, the board starts half built; silly, nightcaps on the pocket edges, filled beds snore; funny failure, a "nope" wobble from Pip; big moment, the double clear.
+
+---
+
+### 03 Breezy Hill
+
+**Story card.** Dandelion gusts from the Miller's sails blow Pip's seeds along the hill. Build with the wind, not against it. · **Pip: helper** (one catch; seeds stick to its face).
+**Stage**: busy; a grassy slope, dandelions, the mill turning at the top. **Intro skit**: a gust blows the seeds out of Pip's paws and Pip tumbles after them. **Payoff skit**: the wind dies, the seeds land in neat rows down the lane, and Pip plants the last one with a flourish.
+
+```text
+Recipe: BL01 (8 wide × 4 deep, H10) · AR01 · CV01 · GO01 (5) · FT01 (1) · CL01 + CO01 · EV01 Dandelion Gust · SP28 dandelion puff · WO11 catch
+One sentence: "Gusts push your piece downhill."
+```
+**Encounters**: Gust +x toward the x = 7 wall, every 8 s ± 2 s, 1 cell, 1 s warning (grass bends, arrow). **Dandelion puff** (SP28): 1 piece per bag; on landing it splits into its two halves (seeded cut), which fall separately like a scattering seed head.
+
+```text
+top-down 8×4 (gust →)   side (z = 1)
+########                13 . . . S S . . .   spawn zone
+###S####  → → →         10 ================  danger line
+########                 :
+########                 0 . . . . . . . . |  wall at x = 7 = the brace
+```
+**How it plays**: (1) first pieces fall calm; the grass starts to bend (telegraph). (2) The first gust shoves the piece one cell right. (3) The player learns to build from the downhill wall so gusts push pieces home; a puff splits and its halves tumble into gaps. (4) Five clears, each blowing seeds toward the mill.
+**Wacky test**: surprising, your piece moves on its own; silly, seeds on Pip's whiskers; funny failure, a gust shoves a piece wrong and Pip shrugs; big moment, a long gust streaming petals down the lane.
+
+---
+
+### 04 Mushroom Ring
+
+**Story card.** Cheeky mushrooms keep popping up around the pond. They fill a cell for free, if you plan for them. · **Pip: watcher** (bounces on mushrooms in the backdrop).
+**Stage**: busy; the pond, lily pads, frogs watching. **Intro skit**: Pip lays a picnic cloth by the pond; a mushroom pops up under it and launches the cloth into the water. **Payoff skit**: the mushrooms line up and bow; Pip bounces across their heads to fetch the cloth.
+
+```text
+Recipe: BL02 (7×7 ring, centre 3×3 off, A = 40, H10, spawn_anchor (3,5)) · AR01 · CV01 · GO01 (3) · FT01 (1) · CL01 + CO01 · EV04 Mushroom Pop-up + SP19
+One sentence: "Mushrooms pop up and fill a cell for you."
+```
+**Encounters**: a mushroom every 5 locks (max 4) on a free top-surface cell, marked by a sparkle one lock ahead; it clears with its layer.
+
+```text
+mask 7×7     side (z = 3, through the pond)
+#######      13 . . . . . . .   (spawn on the front band)
+#######      10 ==============
+##...##       :
+##...##       1 # m . . . # .   m = mushroom
+##...##       0 # # . . . # #   pond gap
+###S###
+#######
+```
+**How it plays**: (1) pieces go around the 2-wide band. (2) After the 5th lock, a sparkle, then a mushroom pops up with a squeak. (3) The player leaves a 1-cell gap where the sparkle is. (4) The third ring closes; the pond splashes.
+**Wacky test**: surprising, things grow on your stack; silly, squeaking mushrooms with faces; funny failure, a mushroom blocks the perfect gap and grins; big moment, the pond splash on each clear.
+
+---
+
+### 05 Tall Tower ★PROTO
+
+**Story card.** Pip wants a lookout to spy on the mill. Stack to the wooden sign; nothing clears, too high pops off, and the tower sways. · **Pip: watcher** (climbs as the tower grows).
+**Stage**: clean, tense; a bare hilltop and a lot of sky. **Intro skit**: Pip jumps to see over the grass toward the mill, can't, and draws a tower in the dirt. **Payoff skit**: Pip climbs to the top, raises a spyglass and spots the Miller cranking a giant fan; Pip's ears go flat.
+
+```text
+Recipe: BL01 (5×5, H12) · AR01 · CV01 · GO02 (H 10, coverage 0.6) + FT02 trim + CL14 [M1 build race] · PL03 wobble
+One sentence: "Build up to the sign; nothing clears."
+```
+**Encounters**: **Wobble** (PL03, the Meadow's one physics level): each overhang cube (a cube with an empty cell directly below) adds sway; at `wobble_max` 6 the most recently placed piece slips one cell toward the heavier side (and pops off if that puts it over the danger line). Trim: cubes at or above layer 12 pop off; the level never fails. Pieces 8 Standard + Big Cube (w 0.5).
+
+```text
+top-down 5×5   side (z = 2)
+#####          15 . . S . .   spawn zone
+#####          12 ===========  danger line (trim)
+##S##           9 - - - - -   sign: layer 9 must be ≥ 60% full (15 of 25)
+#####           :
+#####           0 . . . . .
+```
+**How it plays**: (1) the floor fills; a full layer glows and stays. (2) The height meter climbs; the sign sways. (3) A Big Cube adds two layers at once; overhangs make the lookout creak and lean. (4) Layer 9 reaches 15 cubes; Pip scrambles up.
+**Wacky test**: surprising, full layers stay; silly, the Big Cube "thunk"; funny failure, cubes bounce off like popcorn and the Miller laughs; big moment, the spyglass and fireworks.
+
+---
+
+### 06 Flower Bed
+
+**Story card.** Pip's bouquet for the picnic: plant the flower picture. Two seeds are already planted and grow on their own. · **Pip: watcher** (waters each petal as it blooms).
+**Stage**: clean, calm; a garden bed and a watering can. **Intro skit**: Pip looks at an empty vase, then at the bare bed, and draws a flower outline in the soil. **Payoff skit**: the flower blooms; Pip tries to pick it and the whole bed comes up as one giant bouquet.
+
+```text
+Recipe: BL01 (8×8, H8) · AR01 · CV01 · GO03 (50 cells) + FT02 trim + CL14 [M2 fill shape] · SP22 growing sprouts
+One sentence: "Cover the flower outline."
+```
+**Encounters**: **Growing sprouts** (SP22): two sprout cubes start at (3,0,2) and (4,0,2); every 4 locks each grows one cube up, at most 1 (`grow_max` 1), filling a layer-1 target cell for free; a cube on top stops it. Pieces I, O, T, L, S, Tripod, Duo, Tri-Corner.
+
+```text
+layer 0 (38)   layer 1 (12)   side (z = 2)
+.++..++.       ........        8 ================  danger line (trim)
+++++++++       ..++++..        :
+.++++++.       ..++++..        1 . . + + + + . .   raised centre (sprouts grow here)
+++++++++       ..++++..        0 . + + + + + + .   petals on the grass
+.++..++.       ........
+...++...       ........
+.++++...       ........
+...++...       ........
+```
+**How it plays**: (1) outlines glow; the first piece blooms 4 petals. (2) Duo and Tri-Corner fit the petal tips. (3) The sprouts pop up into the raised centre; the player builds the rest of its base. (4) The last stem cell fills and the flower opens.
+**Wacky test**: surprising, painting, not clearing; silly, petals sprout per cell; funny failure, trimmed petals float off and Pip chases them; big moment, the whole flower blooming.
+
+---
+
+### 07 Hide & Seek
+
+**Story card.** Morning fog from the mill swallows the stack. Pip plays peek-a-boo with it; clears blow the fog away for a moment, and fog ghosts slip right through. · **Pip: watcher** (pops out of the fog on clears).
+**Stage**: busy but hushed; fog banks, an owl half asleep. **Intro skit**: Pip sets the basket on the stack, turns, and the fog swallows it; Pip pats the air. **Payoff skit**: the last clear blows the fog away; the basket was on Pip's head all along.
+
+```text
+Recipe: BL05 (6×6, H10, 2 starter layers) · AR01 · CV01 · GO01 (4) · FT01 (1) · CL01 + CO01 · EV02 Morning Fog · SP26 fog ghost
+One sentence: "Your stack fades; remember it."
+```
+**Encounters**: Fog: visible 5 s, fade 1 s, alpha 0.1, reveal 0.6 s on each clear; starter blocks are visible through Intro and Countdown, then their timer starts at the first spawn. **Fog ghost** (SP26): 1 piece per bag passes through locked cubes until tapped solid; it locks where it is (nearest free cell up if blocked).
+
+```text
+layer 0     layer 1     side (z = 0)
+##.###      ##.#..      10 ==============
+######      .#####       :
+#####.      ##.##.       1  # # . # . .   fades after 5 s
+.#####      .###..       0  # # . # # #
+######      ######
+###.##      ##..##
+```
+**How it plays**: (1) Countdown: memorise the holes. (2) The fog rolls in; the landing ghost still shows where a piece lands. (3) The starter layers clear fast (about 15 cubes); a fog ghost slips down through the stack into a remembered hole. (4) The last two clears on memory.
+**Wacky test**: surprising, the stack vanishes; silly, Pip's ears sticking out of the fog; funny failure, a piece lands "on nothing" that was something; big moment, the fog blown off in one puff.
+
+---
+
+### 08 Dewdrop
+
+**Story card.** Sticky dew glues every piece the moment it touches, and Pip too. Hold on for 2:30 until the sun dries the grass. · **Pip: watcher** (stuck to a dewdrop, wriggling).
+**Stage**: clean, tense; glittering grass, a low sun. **Intro skit**: Pip steps onto the grass and is glued in place; its feet stretch like taffy and snap back. **Payoff skit**: the dew evaporates in a sparkle and Pip pops free so hard it somersaults into the basket.
+
+```text
+Recipe: BL01 (5×5, H8) · AR01 · CV01 · GO04 (150 s, ramp_per_min 0.15) · FT01 (1) · CL01 + CO01 · PL01 Sticky Landing
+One sentence: "Pieces stick the moment they land."
+```
+**Encounters**: Sticky Landing: lock on first touch, fall speed × 0.7 (effective 0.63 rising to about 0.9). Stars by layers cleared (Scoring F4): ★★ 1, ★★★ 2 with no warning.
+
+```text
+top-down 5×5   side (z = 2)
+#####          11 . . S . .   spawn zone
+#####           8 ===========  danger line (only 8 layers)
+##S##           :
+#####           0 . . . . .   dew on the grass
+#####
+```
+**How it plays**: (1) the first piece sticks instantly with a splat; the landing ghost is the only aim tool. (2) Slower falls give aim time in the air. (3) Speed creeps up each minute; a clear buys room. (4) The sun dial fills; Pip pops free.
+**Wacky test**: surprising, no sliding after landing; silly, dew splats; funny failure, a piece glued at a silly angle; big moment, the dew evaporating at 2:30.
+
+---
+
+### 09 Topsy-Turvy ★PROTO
+
+**Story card.** The Miller flips the whole hill. Pip hangs from a tree that now grows downward, and the flip shook the eggs out of its nests. · **Pip: watcher** (dangles from a root).
+**Stage**: busy; a tree with nests, the Miller at his lever. **Intro skit**: the Miller yanks a lever; the hill turns over and Pip is left hanging from a root. **Payoff skit**: the hill flips back; Pip drops onto the grass, the chicks drop onto Pip, and they sit in a dizzy pile.
+
+```text
+Recipe: BL01 (6×6, H10) · AR01 · CV01 · GO01 (4) · FT01 (1) · CL01 + CO01 · EV03 Topsy Tumble · SP21 hatching eggs
+One sentence: "Down becomes up."
+```
+**Encounters**: Flip every 2 layers or 40 s, 2 s warning (arrows and a countdown ring), applied at the next Resolving; the stack settles against the new floor. **Hatching eggs** (SP21): two eggs start at (1,0,1) and (4,0,4); each hatches after 6 locks into a chick cube that hops to the lowest free neighbour cell; clearing an egg before it hatches gives a bonus.
+
+```text
+top-down 6×6   side (z = 2), before → after a flip
+######         13 . . S . . .     # # . # # #   (old floor is now the top)
+######         10 ============    :
+##S###          :                 ============
+######          1 # . # # . #     . . S . . .   (spawn at the old floor)
+######          0 # # . # # #
+######
+```
+**How it plays**: (1) normal stacking; the Miller cranks his lever on the hill. (2) After 2 clears or 40 s, the warning, then the flip. (3) Keep the top flat, because a spiky top becomes a messy floor; chicks hop into gaps after a flip. (4) The 4th clear; the hill flips back.
+**Wacky test**: surprising, gravity flips; silly, everything upside down; funny failure, the stack lands on its head with a "whump"; big moment, the stack tumbling to the new floor.
+
+---
+
+### 10 Meadow Mill (boss: the Miller) ★PROTO
+
+**Story card.** The Miller wants a quiet mill and loud gusts. Phase 1: he cranks the belt and blows his sails. Phase 2: with two sails knocked off, he hauls the big lever and flips the hill. The last clear, on the upside-down hill, bonks him into a flour cloud. · **Boss**: the Miller; Pip cheers from the blanket (watcher).
+**Stage**: busiest; the mill yard with sails, flour sacks, the belt and the Miller on the roof. **Intro skit**: Pip spreads the blanket; the Miller slams a shutter, cranks his sails and the belt rolls the blanket away. **Payoff skit**: the Miller sails off the roof into flour, climbs out white from ears to tail, shakes a fist and stomps off; the hill rights itself and the picnic starts. Keepsake: a tiny windmill.
+
+```text
+Recipe: BL01 (8 wide × 6 deep, H12) · AR01 · CV01 · GO01 (3 = 3 sails) · FT01 (1) · CL01 + CO01 · EV05 Mill Belt [mechanic] · EV01 Dandelion Gust · EV03 Topsy Tumble
+One sentence: "The belt moves your stack; then the hill flips."
+```
+**Encounters**:
+- **Mill Belt** (Conveyor): +x, every 2 locks, wrap on (the board is a rectangle because Conveyor forbids masks).
+- **Gust**: +z (across the belt), every 8 s ± 2 s.
+- **Phase switch (decision)**: the flip uses its own trigger, `flip_every_layers` 2 with `flip_every_ms` 180 000, so it fires once, right after the 2nd clear, and never again before the 3rd. Gusts keep blowing in phase 2. This needs no new atom; EV13 Halftime swap was considered and not used, because it adds a rule for one effect. Revisit if playtests find phase 2 too busy (then EV13 swaps the gust out).
+- The Miller is the face of the rules: every event is his wind-up (belt lever, sail spin, giant lever). He cheers when you use a warning and sulks on each clear.
+
+```text
+top-down 8×6 (belt → along x, gust ↓ along +z)   side (z = 3)
+→ → → → → → → →                                  15 . . . S S . . .   spawn zone
+########                                         12 ================  danger line
+########   ↓                                      :
+###S####                                          1 # # . . # # . #
+########                                          0 # # # . # # # #   → shift +x, wrap
+########
+########
+phase 2: the danger line and spawn move to the old floor (as in 09)
+```
+**How it plays**: (1) after the 2nd lock the whole stack slides right and wraps. (2) The first gust blows across the belt. (3) Phase 1: drop where the gap *will be*; each clear knocks a sail off. (4) Phase 2: the giant lever, the flip, the belt keeps turning. (5) The third clear bonks the Miller off the roof.
+**Wacky test**: surprising, the floor moves, then the hill turns over; silly, the Miller's wind-ups and giant lever; funny failure, he dances on the roof when you use a warning; big moment, the flip and the flour-cloud bonk.
+
+---
+
+### B Picnic Puzzle (bonus, tier 11, 20 meadow stars)
+
+**Story card.** A line of ants is marching toward the picnic. Pack the basket before they arrive in 60 s. Six pieces, no spares. · **Pip: watcher** (dodges drops, shoos ants).
+**Stage**: clean, hurried; a picnic cloth with an ant trail creeping toward it. **Intro skit**: an ant scout spots the food, whistles, and a long line of ants turns toward the cloth. **Payoff skit**: the lid snaps shut as the ants arrive; they bonk into the basket one after another while Pip sits on the lid, smug.
+
+```text
+Recipe: BL01 (4×4, H6) · AR09 fixed list [I, O, Big Cube, I, O, Big Cube] · CV01 · GO03 (32 cells: full 4×4 × 2 layers) + CL14 · FT07 out of pieces · time limit 60 s (extra fail)
+One sentence: "Six pieces, 60 seconds: fill the basket."
+```
+**Encounters**: preview 3; the ant line on the cloth is the visible clock. Known solution: Big Cubes fill rows z 0–1; the I pieces lie along z 2 (one per layer); the O pieces stand upright in z 3; dealt in list order, every placement is supported. Stars: ★★ 45 s; ★★★ 30 s and no cube trimmed.
+
+```text
+targets (both layers)   side (z = 2)
+++++                     9 . S S .   spawn zone
+++++                     6 ========  danger line
+++++                     :
+++++                     1 + + + +   I on layer 1
+                         0 + + + +   I on layer 0
+```
+**How it plays**: (1) read the preview (I, O, Big Cube) and plan. (2) Soft/hard drop to beat the clock. (3) The first Big Cube fills a corner block; the second I lies on the first. (4) The last Big Cube closes the lid; a misplaced piece or the clock means the ants carry the basket off; retry is instant.
+**Wacky test**: surprising, every piece known but the clock ticks; silly, ants in a neat line with tiny forks; funny failure, the ants march off with the basket over their heads; big moment, the lid slamming in their faces.
+
+---
+
+## 7. Hard-track remixes (tiers 12–14; open after 10)
+
+### H1 Seed Sprouts
+
+**Story card.** Pip's sunflower went to seed; sprouts shoot up all over the plot. Cap them or clear them before they poke through the danger line. · **Pip: watcher** (tries to weed them, gets flicked).
+**Stage**: busy, the 01 plot overgrown. **Intro skit**: the sunflower sneezes seeds and sprouts shoot up around Pip's feet. **Payoff skit**: Pip plants one seed in a pot and puts a lid on it.
+
+```text
+Recipe: BL05 (6×6, H10, 4 sprouts on the floor) · AR01 · CV01 · GO01 (5) · FT01 (1) · CL01 + CO01 · SP22 (grow_locks 3, no grow_max) · EV01 gust callback (every 10 s)
+```
+```text
+top-down (^ = sprout)   side (z = 1)
+######                  10 ============
+#^##^#                   3 . ^ . . ^ .   +1 cube every 3 locks
+######                   :
+######                   0 # ^ # # ^ #
+#^##^#
+######
+```
+
+### H2 Picnic Ants
+
+**Story card.** The ants found the picnic stack. Each munches a cube every lock; a clear next to an ant sends it packing. · **Pip: watcher** (swats with a napkin, misses).
+**Stage**: busy, a picnic cloth crawling with ants. **Intro skit**: an ant bites the bottom sandwich and the stack leans. **Payoff skit**: the colony marches off carrying one crumb; Pip waves the napkin.
+
+```text
+Recipe: BL05 (6×6, H10, 2 starter layers with 3 ants) · AR01 · CV01 · GO01 (4) · FT01 (1) · CL01 + CO01 · SP31 ants · EV04 + SP19 mushroom callback (every 6 locks)
+```
+```text
+layer 1 (a = ant)   side (z = 2)
+######              10 ============
+#a####               1 # # . # a #   ants leave holes as they eat
+###.##               0 # # # # # #
+####a#
+#a####
+######
+```
+
+### H3 Two Fields
+
+**Story card.** Two vegetable patches, one block drizzle. Each piece goes to the patch you pick; clear 3 layers in each before either overflows. · **Pip: watcher** (runs between the patches with a watering can).
+**Stage**: clean, tense; two small islands joined by a plank. **Intro skit**: Pip waters one patch while the drizzle starts on the other, and skids back and forth across the plank. **Payoff skit**: both patches grow a giant carrot; Pip pulls one, then the other, and is flattened by it.
+
+```text
+Recipe: BL07 (2 islands, 4×4 each, H8; tap a field to send the piece) · AR01 · CV01 · GO01 (3 per field) · FT01 (1, shared) · CL01 + CO01
+```
+```text
+field A    field B      side
+####       ####         8 =====      =====
+####  ==   ####           :            :
+####       ####         0 . . . .    . . . .
+####       ####
+```
+
+---
+
+## 8. Narrative beats
+
+Wordless (biome-stories tone rules): intro and payoff skits per level, Pip's reactions, and the Miller in the backdrop from 03. Arc: Pip plants (01), beds the friends (02), fights the wind (03), the mushrooms (04), spots the Miller from the lookout (05, the reveal), makes the bouquet (06), loses the basket in the fog (07), gets stuck in the dew (08), is flipped by the Miller (09), and beats him at his mill (10). The bonus and remixes are after-party gags.
+
+## 9. Music and audio cues
+
+One meadow theme, layered: base (01–02) → + wind layer (03) → + plucks for mushrooms (04) → a light build layer for 05–06 (no danger music, since trim cannot lose) → a sparse, hushed mix for 07 → faster tempo for 08 → full mix for 09. Finale: the mill rhythm in phase 1, a key change and a drum hit on the flip, a short sting on each sail. The bonus has a ticking ant march. Danger stinger only where `topout_rule` is rescue. Skits use short stingers, never voices.
+
+## 10. Open questions
+
+- **Wobble, puff, sprout, ghost, eggs, ants, catch**: Candidate atoms (mechanics module); their full rules move into the owning GDDs before build. The values above are the Meadow's defaults.
+- **Pocket check (02)**: the validator should confirm each pocket is exactly fillable by its named shape.
+- **Fog ghost tap**: the tap gesture needs a place in Touch Controls.
+- **Phase 2 busyness (10)**: if the flip plus gusts is too much, use EV13 to swap the gusts out.
+- **Starting-contents format** (cell list vs. ASCII) is with the architecture lead.
 - **Star times** are formula estimates; replace with playtest medians.
-- **meadow_10 board**: the systems-designer suggested an 8 × 8 plus mask (A = 48), but Conveyor forbids masks (Level-Specific Mechanics rule 17). I used an 8 × 6 rectangle with the same A. If the plus shape matters, Conveyor would need a wrap-within-active-run rule (a Level-Specific Mechanics change).
-- **Mascot and boss**: species, names and personalities belong to narrative-director and art-director; the working names here are placeholders.
-- **Bonus unlock**: 20 meadow stars is a starting value (Campaign Structure `bonus_star_gate`).

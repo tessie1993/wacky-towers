@@ -119,7 +119,7 @@ Target MDA aesthetics: **Discovery** (new atom combinations), **Challenge** (eac
 |---|---|---|---|---|---|---|
 | PL01 | Sticky landing | Locks on first touch (M3) | — | fall daily | S | D (level-specific-mechanics) |
 | PL02 | Overhang trim | Unsupported cubes snap off (catalog P1) | Stack | floor daily | S | C |
-| PL03 | Wobble | Overhangs build sway; past the limit the top piece slips (catalog P2) | Tower Bloxx | floor | M | C |
+| PL03 | Wobble | Meadow 05 "Tall Tower". Overhangs build sway; past the limit the top piece slips (catalog P2) | Tower Bloxx | floor | M | C |
 | PL04 | Laser line | No cube may rest above the line | Tricky Towers puzzle | floor daily | S | C |
 | PL05 | Same-colour touch | A piece must touch its own colour (the first piece is free) | Dominoes | col absurd daily | S | C |
 | PL06 | Crosswise | Each layer's long axis turns 90° from the one below | Jenga | floor absurd | S | C |
@@ -309,14 +309,14 @@ All of these are competitive. Every incoming effect is telegraphed for `attack_w
 | SP18 | Hot Block | The shared hot potato | — | vs | M | D (MG14) |
 | SP19 | Mushroom | The meadow spawned object | — | daily | S | D (T4) |
 | SP20 | Moody cube | Living block. Its face shows a mood. Grumpy (not touching its own colour) means it does not count toward clears; a same-colour neighbour makes it happy and it counts again | living blocks | col | M | C |
-| SP21 | Hatching egg | Living block. Hatches after `hatch_locks` into a chick cube that hops to the lowest free neighbour cell; clearing the egg first gives a bonus | living blocks | grid | M | C |
-| SP22 | Growing sprout | Meadow remix "Seed Sprouts". Living block. Grows one cube upward every `grow_locks` until capped by a cube above it | living blocks | grid floor | S | C |
+| SP21 | Hatching egg | Meadow 09 "Topsy-Turvy". Living block. Hatches after `hatch_locks` into a chick cube that hops to the lowest free neighbour cell; clearing the egg first gives a bonus | living blocks | grid | M | C |
+| SP22 | Growing sprout | Meadow 06 "Flower Bed" (`grow_max` 1) and remix "Seed Sprouts". Living block. Grows one cube upward every `grow_locks` until capped by a cube above it | living blocks | grid floor | S | C |
 | SP23 | Sleepy piece | Living block. Falls at half speed. After landing it naps and does not count toward clears until a clear happens next to it | living blocks | fall | S | C |
 | SP24 | Magnet block | A falling piece within `magnet_range` cells is pulled one cell toward the magnet each fall step | board tricks | fall | S | C |
 | SP25 | Jelly piece | On landing, the piece squishes: one cube may slump into an empty cell directly below it | special pieces | fall floor | M | C |
-| SP26 | Ghost piece | Passes through locked cubes until you tap to solidify it; it locks where it is (if blocked, nearest free up) | special pieces | fall | M | C |
+| SP26 | Ghost piece | Meadow 07 "fog ghost". Passes through locked cubes until you tap to solidify it; it locks where it is (if blocked, nearest free up) | special pieces | fall | M | C |
 | SP27 | Rainbow piece | Its cubes count as any colour for colour clears | special pieces | col | S | C |
-| SP28 | Split piece | On landing, it splits into its two halves (seeded cut), which fall separately | special pieces | fall | M | C |
+| SP28 | Split piece | Meadow 03 "dandelion puff". On landing, it splits into its two halves (seeded cut), which fall separately | special pieces | fall | M | C |
 | SP29 | Frosting | Multi-layer blocker cell: each clear next to it peels one layer (1–3) | Candy frosting | clr | S | C |
 | SP30 | Lock | Locked cube: it cannot clear or move until a clear next to it unlocks it | Candy locks | clr | S | C |
 | SP31 | Pest | Meadow remix "Picnic Ants". Each lock, it moves to a neighbouring cube and eats it; cleared by a pop next to it | Candy spreading pests | grid | M | C |
@@ -355,6 +355,7 @@ None of these ever affects stars or tournament results (fun-only, like weather o
 | WO08 | Mascot: mood swing | The mascot flips between helper and prankster, driven by WO01 | world research | — | M | C |
 | WO09 | Mascot: watcher | The mascot only reacts (cheers, gasps); no gameplay effect | world research | daily | S | C |
 | WO10 | Mascot pick | Each player picks a mascot with one small, capped passive (for example, a longer preview). WO06–WO09 are the AI mascot behaviours | Variable player powers, Mario Party characters | vs | M | C |
+| WO11 | Mascot catch | Up to `mascot_catches` times per level (default 1), a lock that would leave a new covered hole and clears nothing is undone: the mascot catches the piece and it returns to the spawn in its current orientation. Meadow tiers 1–3 (Pip); rules in `design/levels/meadow.md` | Meadow design (user decision 2026-10-10) | fall | S | C |
 
 ### 3. Recipes
 

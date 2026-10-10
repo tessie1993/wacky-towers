@@ -90,16 +90,17 @@ Official levels use the same loader and validator as player levels, so the untru
   "goal": { "type": "shape", "target_layers": [["..##..", "..."]] },
   "mechanic": { "id": "fill_target_shape", "params": {} },
   "twists": [ { "id": "wind", "params": { "every_ms": 3000 } } ],
-  "stars": { "times_ms": [180000, 240000, 300000] },
+  "stars": { "t3": 180000, "t2": 240000 },
   "seed": null,
   "recipe": [ {"slot": "arrival", "atom": "side_travel"}, {"slot": "clear", "atom": "colour_connect"} ],
-  "story": { "title_key": "LVL_MEADOW_06_TITLE", "text_key": "LVL_MEADOW_06_STORY", "icon": "flower" }
+  "story": { "title_key": "LVL_MEADOW_06_TITLE", "premise_key": "LVL_MEADOW_06_PREMISE",
+             "mascot_role": "watcher", "icon": "flower" }
 }
 ```
 
 - **Several boards** (islands, lanes, tracks): `layout.kind` names a `LayoutKind` plugin (ADR-0004) and `boards` replaces `board` with a list, each entry a full board section plus `id`, `transform` (position/yaw in the diorama) and optional `links` (which board a piece or content passes to, e.g. a lane edge leading to the next lane). One-board levels keep the short `board` form. Layout-specific checks live in the `LayoutKind` plugin's `validate()`.
 - **`recipe`** (optional): the list of mechanic atoms (`design/gdd/mechanics-module.md`) the level is built from, by slot. It is authoring metadata for the editor panel and the daily "box of tricks" generator: the loader expands it into slot knobs and rule entries, and explicit `knobs`/`twists`/`mechanic` win over it. The validator checks the expanded result, including atom compatibility tags (ADR-0004).
-- **`story`** (optional): an intro card (title, text, icon).
+- **`story`** (optional): the level's story card: `title_key`, `premise_key` (the one-line premise, a translation key), `mascot_role` (`helper` | `prankster` | `mood_swing` | `watcher`, mechanics module WO06–WO09; an enum, not text) and `icon`. `stars` is `{t3, t2}` in milliseconds (3-star and 2-star times).
 - **Text is translation keys.** Every player-visible text field (`name`, `story.*`, goal text, rule names) holds a translation key (`LVL_MEADOW_06_TITLE`), resolved with `tr()` in the UI, never shown raw. Player-made levels may instead carry literal text in a `text` sub-field (no translation); the UI shows it as plain text, escaped.
 - **Daily box of tricks**: a generator picks a compatible atom set and parameters from `round_seed` (ADR-0006 stream `["daily", date]`) and produces a `LevelData` through the same `recipe` path, then runs the same validator; an invalid mix is re-rolled up to `daily.max_rerolls` (knob).
 - `knobs` is a flat map of knob id → value: the level's base overrides (any knob in `assets/data/knobs/*.json`, rule-adjustable or not, within its range). Named sections (`board`, `pieces`, `goal`) hold structured data that is not a single knob.

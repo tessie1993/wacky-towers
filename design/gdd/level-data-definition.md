@@ -21,7 +21,7 @@ With 100 campaign levels plus arcade and tournament rounds, levels must be conte
 ### Core Rules
 
 **The level file**
-1. Each level is one data record with an `id` (e.g. `meadow_03`), a display name, a `biome`, a `tier` (1–10; 11 = the biome's bonus level, Campaign Structure rule 17) and the sections in rule 3. The storage format (engine resources, JSON, etc.) is an implementation choice → becomes an ADR after `/setup-engine`.
+1. Each level is one data record with an `id` (e.g. `meadow_03`), a display name, a `biome`, a `tier` (1–10; 11 = the biome's bonus level; 12+ = hard-track remixes; Campaign Structure rule 17) and the sections in rule 3. The storage format (engine resources, JSON, etc.) is an implementation choice → becomes an ADR after `/setup-engine`.
 2. **Every field is optional except `id`, `biome` and `tier`.** An omitted field takes the default from the GDD that owns it (rule 3). Level values replace those defaults as the level's base; they are not framework rules and have no priority.
 3. Sections and owners:
 
@@ -93,7 +93,7 @@ stars:    t2, t3 | s2, s3
 | 7 | meadow_07 | Hide & Seek | 6×6, 10 + 2 starter layers | 8 Standard | all | Clear 4 | — | Invisible Blocks | 0.85 |
 | 8 | meadow_08 | Dewdrop | 5×5, 8 | 8 Standard | all | Survive 150 s | Sticky Landing | — | 0.9 |
 | 9 | meadow_09 | Topsy-Turvy | 6×6, 10 | 8 Standard | all | Clear 4 | — | Gravity Flip | 0.95 |
-| 10 | meadow_10 | Meadow Mill | 8×6 (A = 48), 12 | 7 Standard (no S) + Chair | all | Clear 3 | Conveyor Floor | Wind, Spawned Objects | 1.0 |
+| 10 | meadow_10 | Meadow Mill | 8×6 (A = 48), 12 | 7 Standard (no S) + Chair | all | Clear 3 | Conveyor Floor | Wind, Gravity Flip (phase 2) | 1.0 |
 | B | meadow_bonus | Picnic Puzzle | 4×4, 6 | `fixed_list` of 6 (I, O, Big Cube ×2 each) | all | Shape (4×4×2 box) | Fill the Target Shape | — | 0.5 |
 
 9. Level 10 is the systems index's risk test: two twists and a mechanic stacked. Level 1 has no twist so the first playtest measures the controls alone. Speeds are hand-set per level and agree with Campaign Structure F2 (`0.6 + 0.045 × (tier − 1)`) within ±0.05; a level's own `g0` always wins.
