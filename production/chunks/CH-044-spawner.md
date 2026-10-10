@@ -1,6 +1,7 @@
 # CH-044 Spawner: weighted bag + opening set + lookahead
 
 **Story:** SIM-002 · **Model:** Sonnet · **Wave:** W2 · **Mode:** direct
+**Status:** staged (MB-012)
 **Goal:** the deterministic piece sequence for a round (Spawner GDD bag randomizer; meadow_01 opening {o, i}).
 **Depends:** CH-028 (ShapeBank ids only, for the test) · **Parallel-safe with:** W2
 **Files:** new `src/core/sim/spawner.gd`, `tests/unit/sim/spawner_test.gd`.

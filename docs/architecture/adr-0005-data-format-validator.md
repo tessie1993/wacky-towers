@@ -68,9 +68,9 @@ All gameplay data is JSON — levels (official and player-made), rule definition
 | Biomes (diorama dressing scenes, palettes of props) | JSON | `res://assets/data/biomes/<biome>.json` | internal |
 | Board limits, net and view tunables | JSON knobs | `res://assets/data/knobs/board.json`, `net.json`, `view.json` | internal |
 | Palette (art docs' colours as data) | JSON | `res://assets/data/palette.json` | internal |
-| Official levels | JSON | `res://assets/data/levels/<biome>/<id>.json` | internal, but loaded through the untrusted path |
+| Official levels | JSON | `res://src/levels/<biome>/<id>/<id>.json` (one folder per level, amendment 2026-10-10) | internal, but loaded through the untrusted path |
 | Player levels | JSON | `user://levels/<id>.json`, imported/shared files | untrusted |
-| Official level scenes (2026-10-10) | `.tscn` inheriting `src/app/level_scene.tscn`; presentation only (diorama, board anchor, mascot spots, camera default, skits) plus `level_json` path; never rule values | `res://scenes/levels/<biome>/<id>.tscn`, named by `biomes/<biome>.json` | internal; player levels never name a scene and play on `generic_level.tscn` |
+| Official level scenes (2026-10-10) | `.tscn` inheriting `src/levels/_template/level_stage_base.tscn` (root `LevelStage`); presentation only (diorama, board anchor, mascot spots, camera default, skits) plus `level_json` path; never rule values | `res://src/levels/<biome>/<id>/<id>.tscn` (same folder as its JSON), named by `biomes/<biome>.json` | internal; player levels never name a scene and play on `src/levels/_generic/generic_level.tscn` |
 
 Official levels use the same loader and validator as player levels, so the untrusted path is exercised by every campaign test. Internal-only fields (a minigame's `scene` path, a rule's `behaviour` id) are accepted **only** from `res://` data; a level can only name `rule_id`s, `shape_id`s and knob ids that already exist.
 
@@ -122,7 +122,7 @@ Official levels use the same loader and validator as player levels, so the untru
 
 ### Where validation runs
 
-1. **Test suite** (CI gate): `tests/unit/data/level_files_test.gd` validates every file under `res://assets/data/levels/`.
+1. **Test suite** (CI gate): `tests/unit/data/level_files_test.gd` validates every `res://src/levels/**/<id>.json`.
 2. **Debug builds**: every level at load; errors stop the load, warnings print.
 3. **All builds, player levels**: every player/shared level at load and at import; errors refuse the level with a readable message.
 4. **Editor panel** (planned, built when authoring needs it): an `EditorPlugin` dock under `addons/wt_level_tools/` that calls the same validator on the open/selected level file and lists issues. No validator logic in the plugin.
@@ -207,3 +207,8 @@ None — new. `design/levels/meadow.md` levels are transcribed into JSON files w
 | `design/gdd/level-data-definition.md` | Level Data | Rule 7: seed per attempt or pinned | `seed` field (ADR-0006) |
 | `design/gdd/level-data-definition.md` | Level Data | States Draft → Valid → Locked | `level_hash` identity |
 | `design/gdd/rule-twist-framework.md` | Rule-Twist | F3 budget, icons, param ranges | Validator checks via rule JSON schema |
+
+## Amendment (2026-10-10)
+
+Status unchanged (Accepted). Cross-doc fixes from `production/session-state/conflicts-open.md`:
+- **One official level path**: `res://src/levels/<biome>/<id>/<id>.json` + `<id>.tscn` in the same folder (matches ADR-0011/0017 and the modular layout). `assets/data/levels/` and `scenes/levels/` are retired. CI validates `src/levels/**/<id>.json`.

@@ -1,9 +1,9 @@
 # Level Goals & Fail States
 
-> **Status**: In Design
+> **Status**: Designed
 > **Author**: Tessa + agents
-> **Last Updated**: 2026-10-09
-> **Last Verified**: 2026-10-09
+> **Last Updated**: 2026-10-10
+> **Last Verified**: 2026-10-10 (against ADR-0001, ADR-0004, ADR-0009, ADR-0010, ADR-0011)
 > **Implements Pillar**: The Block Is the Constant; Readable Chaos; Comeback Energy
 
 ## Summary
@@ -26,10 +26,10 @@ Level Goals & Fail States turns the board's reports into a result. It reads the 
 3. **Height H.** The tower's **height** is the number of layers from the floor up to the highest layer that is at least `height_coverage` full (default 50% of its active cells; Formulas F2). The goal is met when height ≥ `H_target`. `H_target` must be below the height limit (default `H_play − 2`). Height levels usually set `clear_enabled = false` (Layer Clearing).
 4. **Survive T.** The goal is met when the level clock reaches `T` without a loss. The level usually ramps gravity (Fall, Drop & Lock).
 5. **Shape.** The level marks a set of target cells `M` (`goal.target_shape`, per-layer ASCII grids; Level Data rule 4a). The goal is met when every cell in `M` holds content with `fills_layer = true`. Blocks outside `M` are allowed. Shape levels usually set `clear_enabled = false`; if clearing is on, a cleared target cell becomes unfilled again.
-6. The goal is checked at **step 5 of the per-lock sequence** (Fall, Drop & Lock rule 15: after the clear routine and `on_resolve_end`, before the top-out check) and, for Survive, every frame. This GDD does not define its own order; it supplies steps 5–8.
+6. The goal is checked at **S5 of the per-lock sequence** (Fall, Drop & Lock rule 15: after the S3 clear, S4a, S4b `on_resolve_end` and the S4c post-hook clear, before the top-out check) and, for Survive, on **every sim tick** in the Playing phase (60 Hz, ADR-0001), against `level_ms`. This GDD does not define its own order; it supplies S5–S7.
 
 **Fail states**
-7. A **top-out** happens when `over_limit()` is true at step 6 of the per-lock sequence (after all clears), or when the Spawner reports spawn blocked. `on_top_out` hooks run, then the level's `topout_rule` (rule 10a) applies.
+7. A **top-out** happens when `over_limit()` is true at S6 of the per-lock sequence (after all clears, S3 and S4c), or when the Spawner reports spawn blocked. `on_top_out` hooks run, then the level's `topout_rule` (rule 10a) applies.
 8. **Warnings (`rescue`).** Each level gives `warnings_max` warnings (default 1; level 0–3; perks, items and difficulty may add). On a top-out with a warning left, a **rescue** runs: Layer Clearing's `wipe_bottom(k)` removes the bottom `k` layers (Formulas F3) as a **silent wipe** (no hooks, effects or chains; slices shift down), the stack ends at least `rescue_margin` layers below the limit, and one warning is used. Rescue wipes do not count toward `layers_cleared`, the ramp or the score. Then play continues with the next spawn.
 9. On a top-out with **no warning left**, the level is **lost**.
 10. If a goal is met and a top-out happens in the same resolve, the **win counts** (the goal is checked first).
@@ -41,15 +41,15 @@ Level Goals & Fail States turns the board's reports into a result. It reads the 
 10c. **Lose.** The first top-out loses the level (or puts the player **out** in versus). `warnings_max` and `rescue_margin` are inert. It behaves like `rescue` with `warnings_max = 0` and exists so modes can say so plainly.
 10b. **Trim** (default for No-Clear Build Race and Fill the Target Shape; user decision 2026-10-09: build races have no rescue wipe). After a resolve with `over_limit()` true, every content at or above `H_play` is removed with a visible pop-off-the-island effect. Trimmed cubes are not cleared: no `layers_cleared`, no score, no `on_clear`. No warning is used and the level is **never lost to a top-out**; the cost is time (and the ★★★ condition, Scoring & Stars). The goal is checked before the trim (rule 10), so a lock that reaches the target and pokes over the limit wins. Because the spawn zone is empty after a trim, spawn blocked can only come from content a trim cannot remove (see Edge Cases).
 10c. **Out of pieces** (puzzle levels with a `fixed_list`, Spawner rule 5b): if the last listed piece has resolved and the goal is not met, the level is lost. No warning is used; retry is free.
-11. A level may add **extra fail conditions** from Level Data (for example a time limit, or "an object reached the edge"). Each is checked after every resolve; time limits every frame. Extra fail conditions do not use warnings unless the level says so.
+11. A level may add **extra fail conditions** from Level Data (for example a time limit, or "an object reached the edge"). Each is checked after every resolve; time limits on every sim tick against `level_ms`. Extra fail conditions do not use warnings unless the level says so.
 
 **Level flow and clock**
-12. A level runs **Intro → Countdown → Playing → (Warning) → Result**. The countdown (`countdown_ms`, default 3 000) shows the goal and the first piece; the first spawn happens when it ends.
-13. The **level clock** runs only while Playing (not during countdown, pause, warnings or the result). It is the time used by Scoring & Stars and by Survive goals.
-14. On a result the board freezes (Board / Grid Frozen), input stops (Touch Controls Disabled) and the result, the clock, layers cleared, warnings used and pieces placed go to Scoring & Stars, Campaign Structure and Tournament Flow.
+12. A level runs **Intro → Countdown → Playing → (Warning) → Result**. Ownership is split (ADR-0010 §1): the sim owns `COUNTDOWN → PLAYING ⇄ WARNING → WON / LOST / OUT`; the node-side `PlaySession` owns Intro, Paused (with the 600 ms resume beat) and Results, and does not step the sim during them. The countdown (`goal.countdown_ms`, default 3 000) shows the goal and the first piece; the first spawn happens on the tick it ends. A pause during Countdown restarts the countdown on resume. The Warning phase lasts `t_warning_ms`; the rescue wipe happens on entry.
+13. The **level clock** is sim time: `level_ms = (playing_ticks × 1000) / SIM_HZ`, counting only ticks in Playing (not Countdown, Warning, pause or the result). Nothing outside the sim measures level time. It is the time used by Scoring & Stars, Survive goals and time limits.
+14. On a result the sim emits one `level_result` event (`outcome`, `level_ms`, `layers_cleared`, `warnings_used`, `pieces_placed`), then ignores every command and spawns nothing (board Frozen, input Disabled). `PlaySession` turns it into a `LevelResult` that fans out to Scoring & Stars, Campaign Structure, Tournament Flow and the results screen (ADR-0010).
 
 **Versus**
-15. In versus, each player's board has its own goal and fail state. The mode decides the round. Default: the first player to meet the goal wins; a player who loses (top-out with no warning left) is **out**, and if only one player is left, they win. Ties in the same frame go to the player with more layers cleared, then the higher stack-free margin.
+15. In versus, each player's board has its own goal and fail state. The mode decides the round. Default: the first player to meet the goal wins; a player who loses (top-out with no warning left) is **out**, and if only one player is left, they win. Each phone simulates its own board (ADR-0009), so "at the same time" is judged by the **round clock** (sim ms since the round start), never by frames: the lower round clock wins, and the host breaks an exact tie by message arrival (Local Multiplayer Setup rule 5, ADR-0009 §5).
 
 ### States and Transitions
 
@@ -170,8 +170,8 @@ The goal_progress formula is defined as:
 - **If a Survive level's timer ends during a resolve**: the result waits until the resolve ends, then the win counts unless a top-out with no warning happened in that resolve.
 - **If the app is paused or backgrounded**: the clock stops.
 - **If the player quits**: counted as a loss for that attempt, with no rescue.
-- **If two players meet the goal in the same frame** (versus): more layers cleared wins, then the lower stack; a full tie is a shared win (Tournament Flow may break it).
-- **If every player is out in the same frame** (versus): the one with more layers cleared wins; then the lower stack.
+- **If two players meet the goal close together** (versus): the lower round clock (sim ms) wins; an exact sim-ms tie goes to the message that reached the host first (ADR-0009 §5).
+- **If every remaining player goes out at the same round clock** (versus): the one with more layers cleared wins; then the lower stack; then a shared result (Tournament Flow may break it).
 - **If a twist adds an extra fail condition that triggers during a warning**: it is checked after the warning ends.
 
 ## Dependencies
@@ -212,6 +212,7 @@ Board / Grid already lists this system; Layer Clearing and Fall, Drop & Lock nam
 | warnings_max | 0–3 | 1 | data file (level, perk, item) | Forgiveness |
 | rescue_margin | 0–4 | 2 | data file | Room after a rescue (F3) |
 | countdown_ms | 0–5 000 | 3 000 | data file | Start pacing |
+| t_warning_ms | 500–3 000 | 1 500 | data file | Length of the Warning state (rescue wipe window; target ≤ 1.5 s, Game Feel). Sim phase per ADR-0010 |
 | time_limit | none or seconds | none | data file (level) | Optional extra fail condition |
 
 `warnings_max = 0` makes `rescue_margin` inert.
@@ -282,11 +283,12 @@ The player should always know what they're aiming for and how close they are, an
 **Versus**
 17. [I] **GIVEN** two players, **WHEN** player A meets the goal first, **THEN** A wins the round.
 18. [I] **GIVEN** player B tops out with no warnings, **THEN** B is out, A keeps playing, and A wins if alone.
-19. [U] **GIVEN** both meet the goal in the same frame, **THEN** more layers cleared wins, then the lower stack, then a shared win.
+19. [U] **GIVEN** goal-reached messages at round clocks 92 300 and 92 450 ms, **THEN** the first wins regardless of arrival order; **GIVEN** equal round clocks, **THEN** the earlier arrival at the host wins.
+19a. [U] **GIVEN** a Survive level with T = 180 s, **THEN** the win is detected on the first Playing tick where `level_ms ≥ 180 000` (tick 10 800 of Playing), whatever the frame rate.
 
 **Presentation**
 20. [U] F4: N = 3, 2 cleared → 0.67; height 5 of 10 → 0.5.
-21. [I] **GIVEN** any resolve, **THEN** the HUD progress updates in the same frame.
+21. [I] **GIVEN** any resolve, **THEN** the HUD progress updates in the frame that receives that tick's events.
 22. [M] **GIVEN** the reference phone, **THEN** the goal card is readable in under 2 s with no text beyond a number, and the warning sequence takes ≤ 1.5 s.
 23. [M] **GIVEN** a playtest of 5 default levels, **THEN** the median level length is 5–12 minutes and the median time between clears is inside each level type's t_beat band (validates `t_piece`, η and N).
 

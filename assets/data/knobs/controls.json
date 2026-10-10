@@ -87,6 +87,15 @@
       "note": ""
     },
     {
+      "id": "control.kick_off_axis",
+      "type": "flag",
+      "default": true,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/movement-rotation.md#tuning-knobs",
+      "note": "Flip/Roll also try kicks along the rotation axis (G_out, F2)"
+    },
+    {
       "id": "control.kick_order",
       "type": "choice",
       "default": "centre",

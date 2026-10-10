@@ -111,7 +111,7 @@ Rotation is three pairs, each a left/right (+1/-1) action. Axis ids are view-rel
 
 - **Migration (rename, not rewrite):** `&"horizontal"` becomes `&"spin"` and `&"vertical"` becomes `&"tilt"`; `rot_roll_*` `.tres` actions and their bindings are added; `GameInput.enabled_axes` defaults to `[&"spin", &"tilt", &"roll"]` and is set by `BoardController` from the level's enabled axes. A disabled axis emits nothing (matches today's `try_rotate`, and matches the sim's `Disabled` result for the rare case a command still reaches it). The existing `game_input_test.gd` is updated for the new ids.
 - **Names (user, 2026-10-10):** player-facing names are Turn / Flip / Roll, mapping to code ids `spin` / `tilt` / `roll`. Names are UI text keys; ids never change with the wording.
-- **Default bindings, proposed:** keyboard Q/E = spin, R/F = tilt (already), roll on a free pair (proposed `1`/`3` or `Shift+Q/E` is rejected by ACC-16, so a single-key pair is needed); gamepad shoulders = spin, triggers = tilt (already), roll on X/Y (`JOY_BUTTON_X`/`JOY_BUTTON_Y`). Final keys are confirmed in the first-playable pass, since the user's decision is "three pairs", not specific keys.
+- **Default bindings, proposed:** keyboard Q/E = spin, R/F = tilt (already), roll on a free pair (proposed `1`/`3` or `Shift+Q/E` is rejected by ACC-16, so a single-key pair is needed); gamepad shoulders = spin (Turn), triggers = tilt (already), roll on X/Y (`JOY_BUTTON_X`/`JOY_BUTTON_Y`); **View ◀/▶ = right stick X** (`JOY_AXIS_RIGHT_X`, deflection threshold → one snap step, held = repeat; amendment 2026-10-10 — shoulders are never View). Final keys are confirmed in the first-playable pass, since the user's decision is "three pairs", not specific keys.
 - **Touch, buttons:** two more `GUIDEVirtualButton`s in the rotate cluster, on free joypad indices (Verification 5; `JOY_BUTTON_MISC1` and the touchpad index are candidates). **Touch, gestures:** `Gestures.classify` keeps flick = spin (horizontal) or tilt (vertical); roll uses the two roll arcs (touch-controls Scheme B). No new gesture class is needed.
 
 ### 4. Touch presets, gestures and one-handed layout
@@ -281,3 +281,8 @@ Existing code is kept and extended, not rewritten:
 - ADR-0013 (settings storage), ADR-0014 (view-relative axes, safe area, `view_rotate`), ADR-0016 (menu focus and navigation), ADR-0017 (level-maker enabled axes)
 - `design/gdd/touch-controls.md`, `design/gdd/movement-rotation.md`, `design/accessibility-requirements.md`
 - `src/game/input/` (`game_input.gd`, `touch_input.gd`, `repeat_timer.gd`, `gestures.gd`, `actions/`, `contexts/`), `tests/unit/game_input/`
+
+## Amendment (2026-10-10)
+
+Status unchanged (Accepted). Cross-doc fixes from `production/session-state/conflicts-open.md`:
+- Gamepad View ◀/▶ = right stick X; shoulders stay Turn (spin). Never View on shoulders.

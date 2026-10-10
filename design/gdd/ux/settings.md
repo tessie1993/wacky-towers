@@ -56,7 +56,7 @@ Player-facing names are **Turn / Flip / Roll**; code ids `spin` / `tilt` / `roll
 | Pause | `pause` | Esc / P | Start | ❚❚ |
 | Restart | `restart` | Backspace (confirm) | n/a (Pause only) | Pause only |
 
-Flagged: ADR-0014 §3 puts View steps on the gamepad shoulders, which ADR-0012 gives to Turn. This spec keeps shoulders = Turn and proposes the right stick for View; `interaction-patterns.md` P8 still lists the old `rot_h/rot_v` ids and no Roll.
+Resolved (ADR-0012/0014 amendment 2026-10-10): shoulders = Turn, gamepad View = right stick X. Still open: `interaction-patterns.md` P8 still lists the old `rot_h/rot_v` ids and no Roll.
 
 ## Layout editor (customisation)
 

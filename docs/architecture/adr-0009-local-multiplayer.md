@@ -153,7 +153,7 @@ Envelope: `type u8 | seq u16 | body`, little-endian, written with `PackedByteArr
 
 - During the lobby and between rounds, each client sends `clock_pings` pings. It keeps the one with the lowest round-trip time and estimates `offset = host_t − (t_send + rtt/2)` using `Time.get_ticks_msec()` (a monotonic clock).
 - The host sends `round_start` with `start_at_host_ms = now + countdown_ms + start_margin_ms`. Each phone starts its sim at that moment on its own clock and shows the 3-2-1 countdown up to it. The expected error is under 30 ms on a LAN.
-- **The round clock is sim time** (`now_ms() = (tick × 1000) / SIM_HZ`, ADR-0001), not wall-clock time. Pauses and frame hitches therefore do not count. The host decides goal ties by the lower `sim_ms`, then by arrival order (GDD rule 5).
+- **The round clock is sim time** (`now_ms() = (tick × 1000) / SIM_HZ`, ADR-0001), not wall-clock time. Pauses and frame hitches therefore do not count. The player whose sim reached the goal at the earlier tick wins. **An exact tie (same tick) is a split win**: no tie-break, and in tournaments both players get the round points (amendment 2026-10-10, user decision). Host message arrival order is used only to order events for display, never to decide a win.
 
 ### 6. Latency handling
 
@@ -360,6 +360,7 @@ New system; nothing to migrate. Order:
 - [ ] Two phones on the same `round_seed` deal identical 100-piece sequences (GDD acceptance 2).
 - [ ] An attack is applied on the target within 300 ms at 150 ms simulated one-way delay.
 - [ ] Goal tie at 92.30 s vs 92.45 s sim time → the first wins, regardless of arrival order.
+- [ ] Both reach the goal on the same tick → split win; in a tournament both get the round points, whatever the arrival order.
 - [ ] A phone silent for 5 s is out; it rejoins with its token into the same seat with its wins and plays the next round.
 - [ ] Measured traffic is ≤ 2 KB/s per phone in versus rounds.
 - [ ] Every message type round-trips through its codec; a message from a higher `proto_ver` is refused at the handshake.
@@ -389,3 +390,8 @@ New system; nothing to migrate. Order:
 
 - ADR-0001 (logic/visual split + tick), ADR-0004 (rule-twist runtime), ADR-0005 (data format), ADR-0006 (RNG/seeds); overview in `docs/architecture/architecture.md`.
 - `design/gdd/local-multiplayer-setup.md`, `tournament-flow.md`, `mode-minigame-randomizer.md`, `items.md`, `buffs-debuffs.md`, `piece-spawner-queue.md`, `rule-twist-framework.md`.
+
+## Amendment (2026-10-10)
+
+Status unchanged (Accepted). Cross-doc fixes from `production/session-state/conflicts-open.md`:
+- **Versus ties (user decision).** Earlier sim tick at the goal wins; an exact same-tick tie is a split win, and in tournaments both players get the round points. Host arrival order only orders events, never decides a win (§5).

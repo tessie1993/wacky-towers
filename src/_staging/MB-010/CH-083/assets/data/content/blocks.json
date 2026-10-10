@@ -1,0 +1,8 @@
+{ "types": [
+  { "id": "block",    "kind_id": 1, "glyph": "",  "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" },
+  { "id": "starter",  "kind_id": 2, "glyph": "#", "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" },
+  { "id": "mushroom", "kind_id": 3, "glyph": "m", "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" },
+  { "id": "sprout",   "kind_id": 4, "glyph": "s", "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" },
+  { "id": "egg",      "kind_id": 5, "glyph": "e", "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" },
+  { "id": "chick",    "kind_id": 6, "glyph": "c", "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" }
+] }

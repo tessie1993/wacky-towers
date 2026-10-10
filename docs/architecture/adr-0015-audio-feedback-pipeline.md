@@ -77,6 +77,7 @@ The audio direction and the cue list define 5 buses, a -16 LUFS target, voice li
 | UI screens | `src/ui/` | emit `feedback_requested(cue_id: StringName)` signals only; `AppFlow` connects them to `AudioDirector`. A generic tap needs nothing: `AudioDirector` hooks `BaseButton.pressed` through `SceneTree.node_added` and plays `SFX_UI_TAP` |
 
 - Nothing in `core`, `data`, `mechanics` or `view` plays a sound. `mechanics` helper scenes that need a sound emit a cue id the same way UI does.
+- **Exception — view-state presentation cues (amendment 2026-10-10).** A view node may *emit a cue id* (never play it) for a cue triggered purely by view state, e.g. `BoardCameraRig` emits `feedback_requested(&"SFX_CAM_SETTLE")` when a settle tween ends (ADR-0014). `AppFlow`/`PlaySession` connects it to `AudioDirector` as for UI. Such cues never come from sim state, never feed the sim, and are muted by nothing but the normal bus volumes.
 - `AudioDirector` is not an autoload (same reasoning as ADR-0010 Alternative 5). Tests construct it with injected backends.
 
 ### 2. Buses
@@ -93,7 +94,7 @@ Master    0 dB   HardLimiter (ceiling -1.0 dB)
 
 - Effects are toggled with `AudioServer.set_bus_effect_enabled()` and tuned by writing the effect's properties; effects are never added or removed at runtime.
 - Bus indices are looked up once at boot by name (`&"Music"` etc.) and cached. A missing bus is a boot error in debug and a logged warning in release.
-- Sliders are 0–100 % from settings, mapped with `linear_to_db(value / 100.0)`; 0 % mutes the bus. Ambience follows the Music slider (audio-direction open question 2 keeps the default). Master has no slider.
+- Sliders are 0–100 % from settings, mapped with `linear_to_db(value / 100.0)`; 0 % mutes the bus. Ambience has **no slider of its own; its volume follows the SFX slider** (amendment 2026-10-10, user decision; the Ambience bus keeps its own -12 dB trim and effects). Master has no slider.
 - If verification item 1 fails, the sidechain compressors are removed from the layout and `MusicDeck.duck(db, attack_ms, release_ms)` runs a tree tween on the bus volume instead. The cue data marks which cues duck (`ducks_music_db`), so both paths read the same data.
 
 ### 3. Cue registry (data keyed by cue id)
@@ -334,9 +335,15 @@ No audio code exists yet. Changes to other docs (not made by this ADR):
 - [ ] [I] headless `tests/integration/audio/`: boot → meadow_01 → win plays lock, clear and win cues on the right buses, with the dummy audio driver.
 - [ ] [M] Reference phone: 4-layer clear audible over the track at 50 % volume; 10-minute session at -16 LUFS ±2, no clipping (meter capture in `production/qa/evidence/`).
 - [ ] [M] Android: haptics on and off; PC: rumble on an XInput pad, off by setting.
-- [ ] [M] Pause applies the low-pass and resumes cleanly; danger filter in a rescue level and never in 05, 06, B; Music slider at 0 silences music, jingles and ambience but not SFX/UI.
+- [ ] [M] Pause applies the low-pass and resumes cleanly; danger filter in a rescue level and never in 05, 06, B; Music slider at 0 silences music and jingles but not SFX/UI/ambience; SFX slider at 0 silences SFX and ambience.
 
 ## Related
 - ADR-0001 (events out, presentation listens), ADR-0005 (level `music` field), ADR-0006 (sim RNG untouched), ADR-0009 (two boards share pools), ADR-0010 (pause, backgrounding, load cover), ADR-0012 (device id for rumble), ADR-0013 (settings persistence)
 - `design/gdd/audio/audio-direction.md`, `design/gdd/audio/sfx-cue-list.md`, `design/gdd/audio/music-sourcing.md`, `design/gdd/game-feel-vfx.md`, `design/gdd/touch-controls.md`
 - `docs/engine-reference/godot/modules/audio.md`
+
+## Amendment (2026-10-10)
+
+Status unchanged (Accepted). Cross-doc fixes from `production/session-state/conflicts-open.md`:
+- **View-state cue exception** (§1): view nodes may emit cue ids for cues triggered by view state only (e.g. `SFX_CAM_SETTLE`), never from sim state.
+- **Ambience volume** follows the SFX slider (no own slider), §2.

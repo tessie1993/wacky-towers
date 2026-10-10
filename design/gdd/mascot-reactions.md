@@ -68,7 +68,7 @@ Triggers are `SimEvent` kinds as they arrive in the `StagingHost` batch (ADR-001
 | 10 | `clear` | `cells_cleared`, 1 layer | hop | `heart` | R4 | `clear_cd_ms` 4000 |
 | 11 | `recovered` | `phase_changed` WARNING → PLAYING | wipes brow | `sweat` | R4 | `recover_cd_ms` 8000 |
 | 12 | `gust_hit` | `gust {moved: true}` | ears flat, huff | `angry` | R4 | `gust_cd_ms` 6000 |
-| 13 | `bad_drop` | `piece_locked` with `holes_added` > 0 (see Dependencies, open question 1) | small flinch | `sweat` | R4 | `bad_drop_cd_ms` 10000 |
+| 13 | `bad_drop` | `piece_locked` with `holes_added` > 0 (Fall, Drop & Lock rule 14) | small flinch | `sweat` | R4 | `bad_drop_cd_ms` 10000 |
 | 14 | `streak` | clean streak reaches `streak_n` locks (F4) | sways, humming | `note` | R5 | `streak_cd_ms` 15000 |
 | 15 | `idle` | no `piece_locked` for `idle_ms` (12000) of play time | idle fidget (variant pool) | none | R5 | `idle_ms` |
 
@@ -187,7 +187,7 @@ streak = streak + 1        on piece_locked with holes_added == 0
 streak = 0                 on piece_locked with holes_added > 0, on level start, on retry
 fire row 14 when streak > 0 and streak mod streak_n == 0 (and not on cooldown)
 ```
-Default `streak_n` 5. This is a staging-side count of events, like the boss-phase count in ADR-0011 §5. It is cosmetic and is never in the sim. If `holes_added` is not available (open question 1), rows 13 and 14 are disabled, not guessed.
+Default `streak_n` 5. This is a staging-side count of events, like the boss-phase count in ADR-0011 §5. It is cosmetic and is never in the sim. `holes_added` comes from the sim's `piece_locked` event (Fall, Drop & Lock rule 14); staging never computes it.
 
 ### F5. Reaction length
 
@@ -231,7 +231,7 @@ Example: a cheer clip of 420 ms is cut to 300 ms of motion and then eases to idl
 | `meadow-candidate-atoms.md` WO11 | ← | `mascot_catch {from_cells, to_cells, hold_ms}`, `mascot_catch_spent {cells}`, `catch_ms` default 300 |
 | Level Goals & Fail States | ← | `phase_changed` (WARNING in and out), `level_result` (WON/LOST). That GDD already lists Mascot Reactions downstream |
 | Layer Clearing | ← | `cells_cleared` with the layer count |
-| Fall, Drop & Lock | ← | `piece_locked`. **Needs** `holes_added` (int) in its data for rows 13–14 (open question 1) |
+| Fall, Drop & Lock | ← | `piece_locked {cells, cause, holes_added}` (rule 14) for rows 3, 13–15. That GDD lists this system downstream |
 | Twist Library (EV01, EV03) | ← | `gust_warn`, `gust {moved}`, `flip_applied` |
 | Game Feel & VFX | ↔ | Same event timing. The reaction tiers mirror its priority idea, and mascot motion obeys its reduced-motion rule 7. That GDD lists this system downstream |
 | Audio (ADR-0015, `sfx-cue-list.md`) | → | `SFX_MASCOT_EMOTE_POP`, `SFX_PIP_CATCH`, `SFX_PIP_CATCH_RETURN` through `EmitCue` |
@@ -289,9 +289,9 @@ Experiential (playtest, Meadow 01–05, 5+ testers):
 
 ## Open Questions
 
-1. **`holes_added` in `piece_locked`**: rows 13 (bad drop) and 14 (streak) need the number of new covered holes a lock made. WO11 already computes this through `RuleApi.new_covered_holes`. The question is whether Fall, Drop & Lock should add it to the `piece_locked` event data (owner: that GDD and ADR-0001's event list). Until it does, rows 13–14 stay disabled. Staging must not compute holes from `SimReadout` itself, because that would put game logic in the view.
+1. ~~**`holes_added` in `piece_locked`**~~ Resolved 2026-10-10: Fall, Drop & Lock rule 14 now carries `holes_added` in `piece_locked`. ADR-0001's event list should name the field (technical-director).
 2. **Pip's `dots` emote**: `emote-bubbles.md` lists `dots` for Pip, but `characters.md` leaves it out of his subset. This doc follows `characters.md` (no `dots`) until the narrative-director decides.
 3. **300 ms vs 1 s**: the brief's "≤ 300 ms" is read here as the pose motion. The bubble keeps the 1 s hold from `emote-bubbles.md`. Confirm this reading.
 4. **Mascots for the other 9 biomes** (and whether the Miller-style rival per biome uses this arbiter): narrative-director and world-builder.
 5. **Critter voices** (`sfx-cue-list.md` OQ 2): if approved, add a voice cue per row with its own cooldown.
-6. **Systems index**: row #35 still says "Not Started" with no doc link, and its category is UI where its design order says Presentation. The index owner needs to update it (outside this brief).
+6. ~~**Systems index**~~ Resolved 2026-10-10: row #35 now links this doc (category UI, Presentation layer).

@@ -105,11 +105,12 @@ Free orbit + snap is the base scheme (user decision 2026-10-10). The ways of tur
 
 | Control | Turns the view by | Notes |
 |---|---|---|
-| **Free orbit** (always on) | Board drag (touch, mouse drag, gamepad right stick). `YawPivot` follows the drag freely at `orbit_px_per_step` (40–160, default 80) px per 30°. `k` stays unchanged while dragging. On release `k` = the nearest allowed snap, `view_changed` fires and the settle tween runs over `settle_ms` (knob, default 150) | Under sideways gravity, release settles to the nearest *allowed* snap |
-| **Snap step** | View ◀/▶ actions (touch button, keys, gamepad shoulders; mapped in ADR-0012), hold-repeat with Touch F3 timings | One allowed snap per press |
+| **Free orbit** (always on) | Board drag (touch, mouse drag). `YawPivot` follows the drag freely at `orbit_px_per_step` (40–160, default 80) px per 30°. `k` stays unchanged while dragging. On release `k` = the nearest allowed snap, `view_changed` fires and the settle tween runs over `settle_ms` (knob, default 150) | Under sideways gravity, release settles to the nearest *allowed* snap |
+| **Snap step** | View ◀/▶ actions (touch button, keys, **gamepad right stick X**; mapped in ADR-0012), hold-repeat with Touch F3 timings | One allowed snap per press (stick: one per deflection past the threshold, held = repeat). Shoulders stay Turn (ADR-0012); amendment 2026-10-10 |
 | **Corner shortcuts** | Four actions, one per corner view (k = 0, 3, 6, 9) | A jump to a corner that is not allowed under sideways gravity goes to the nearest allowed snap |
 | **Auto** (optional setting, ACC-21) | At most one automatic turn per piece: (a) to the nearest allowed snap when gravity changes; (b) when every ghost cube is occluded from the current snap, to the nearest snap from which some ghost cube is visible | Never during a drag. The visibility test reuses ADR-0007's `OcclusionAid` DDA and runs only when the ghost changes. Ties go clockwise. No turn if no snap shows the ghost |
 
+- **Settle cue (amendment 2026-10-10)**: when a settle tween (or reduced-motion cut) ends, the rig emits `feedback_requested(&"SFX_CAM_SETTLE")`, a view-state presentation cue allowed by the ADR-0015 §1 exception. It is never derived from sim state and never feeds the sim.
 - The free drag must start outside the touch control zones. Board-area ownership comes from Touch Controls (TR-touch-controls-003, ADR-0012).
 
 - **Invert** (ACC-22) flips the sign of button steps and of drag direction.
@@ -328,3 +329,10 @@ No camera code exists yet beyond the first-playable prototype. Changes to existi
 - ADR-0001 (depends on: commands only; `view_snap` addition), ADR-0004 (knobs), ADR-0007 (occlusion consumes the camera forward vector; outline width from ortho size), ADR-0009 (one rig per board, landscape lock), ADR-0010 (rotate pause, `SceneTree.paused`), ADR-0012 (input reads `view_changed`), ADR-0013 (camera and motion settings), ADR-0016 (screens apply insets and P/L presets; HUD board rect)
 - `design/gdd/camera-rotate-view.md`, `design/accessibility-requirements.md` §3, §5, §8, `design/gdd/ux/interaction-patterns.md` P7, `design/gdd/board-grid.md` F5
 - `addons/phantom_camera/` (0.11.0.3)
+
+## Amendment (2026-10-10)
+
+Status unchanged (Accepted). Cross-doc fixes from `production/session-state/conflicts-open.md`:
+- Gamepad View = right stick X (snap steps); shoulders stay Turn (ADR-0012). Free orbit is touch/mouse drag.
+- The rig emits `SFX_CAM_SETTLE` as a view-state cue (ADR-0015 exception).
+- Knobs now in data: `view.settle_ms` (150) and `view.yaw_offset_deg` = 45 in `assets/data/knobs/view.json`.

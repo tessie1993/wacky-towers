@@ -107,7 +107,7 @@ ADR-0016 lists the base variations: `PlateFrame`, `PanelSheet`, `PrimaryButton`,
 
 - **The squash never delays the action.** Menu buttons fire on release, in-play buttons on press (P2), whatever the animation is doing.
 - **The squash scales a visual child (the button face), never the Control itself**, so the hit area never shrinks while pressed. This also keeps the 56 dp floor true during the animation.
-- This replaces the "squash 80 ms" in `interaction-patterns.md` P2 and the "squash 80 ms" example in ADR-0016 §8 (flagged; both should read 150–250 ms).
+- This replaces the "squash 80 ms" in `interaction-patterns.md` P2 and the "squash 80 ms" example in ADR-0016 §8 (resolved 2026-10-10: both now read 150–250 ms).
 
 ## 5. Fonts (free, rounded)
 

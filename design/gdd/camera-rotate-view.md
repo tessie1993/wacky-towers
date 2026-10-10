@@ -1,14 +1,14 @@
 # Camera & Rotate-View
 
-> **Status**: In Design
+> **Status**: Designed
 > **Author**: Tessa + agents
-> **Last Updated**: 2026-10-09
-> **Last Verified**: 2026-10-09
+> **Last Updated**: 2026-10-10
+> **Last Verified**: 2026-10-10 (against ADR-0007, ADR-0010, ADR-0012, ADR-0014)
 > **Implements Pillar**: Readable Chaos; The Block Is the Constant
 
 ## Summary
 
-The Camera shows the board as an orthographic toy diorama from a fixed angle, with the whole board always in frame at one zoom. The player can turn the view in 12 steps of 30° (the four classic corner views are every third step), and the camera tells Touch Controls which world direction "screen-left" means after every turn. Each level picks an occlusion aid — fade blocks in front of the piece (default), a layer cutaway, or ghost only — so the falling piece, its ghost and the height line are never hidden.
+The Camera shows the board as an orthographic toy diorama from a fixed angle, with the whole board always in frame at one zoom. The player can drag the view freely around the board, and on release it settles to the nearest of 12 steps of 30° (the four classic corner views are every third step, with one-press shortcuts); buttons step one snap at a time. The camera tells Touch Controls which world direction "screen-left" means after every turn. Each level picks an occlusion aid — fade blocks in front of the piece (default), a layer cutaway, or ghost only — so the falling piece, its ghost and the height line are never hidden.
 
 > **Quick reference** — Layer: `Foundation` · Priority: `MVP` · Key deps: `Board / Grid`
 
@@ -27,13 +27,13 @@ The Camera shows the board as a toy diorama from a fixed, angled, **orthographic
 
 **Framing**
 4. One orthographic size per level **and per screen orientation**, computed at load (and again on an orientation change, rule 5a) so the whole board — footprint plus all `board_height` layers, including the spawn zone — fits inside the board's screen area for the current orientation (landscape and portrait each have their own board rectangle from the HUD layout; Board / Grid F5) at **every** one of the 12 yaws. Corner views are the widest; framing for them fits all angles. No zoom change happens when the view turns.
-5a. **Portrait and landscape.** Both orientations are supported. If the phone is turned during a level, the game **pauses**, re-lays out the screen (board rectangle, controls), recomputes the framing, and waits for the player to tap Resume. The yaw step `k` is kept. Turning the phone in menus just re-lays out.
+5a. **Portrait and landscape.** Both orientations are supported. If the phone is turned during a level, the game **pauses** (`ScreenLayout` → `AppFlow.request_pause(&"rotate")`, ADR-0014 §5), re-lays out the screen (board rectangle, controls), recomputes the framing, and waits for the player to tap Resume. The yaw step `k` is kept. Turning the phone in menus just re-lays out.
 5. The board is centred in its screen area; HUD plates and thumb zones never overlap it (art bible §7, Touch Controls rule 4).
 
 **Rotate-view**
 6. `rotate_view(+1)` / `rotate_view(−1)` turn the yaw one 30° step clockwise / anticlockwise. The turn animates over `turn_anim_ms`; logically it is instant, so input mapping switches at once.
 7. Holding the rotate-view button repeats steps using Touch Controls F3 timings. A half-turn (6 steps = 1 press + 5 repeats) takes about 600 ms of holding (240 + 4 × 90 ms).
-8. Optional board-drag orbit (Touch Controls, off by default) moves the yaw continuously while dragging and snaps to the nearest of the 12 steps on release.
+8. **Free orbit + snap (always on; user decision 2026-10-10, ADR-0014 §3).** A board drag (touch drag that starts outside the control zones, mouse drag; on gamepad the right stick steps snaps instead, ADR-0012/0014) turns the view freely at `orbit_px_per_step` px per 30° (player sensitivity setting). **While dragging, the logical snap `k` and the direction map do not change**: moves and rotations still use the snap the drag started from. On release, `k` becomes the nearest **allowed** snap (rule 9a), the direction map switches at once (`view_changed`), and the view settles to it over `settle_ms`. **Corner shortcuts:** four actions jump straight to k = 0, 3, 6, 9 (or the nearest allowed snap under sideways gravity). **Invert** flips the sign of steps and drags. **Auto** (optional setting, ACC-21) may make at most one automatic turn per piece (gravity change, or a fully hidden ghost), never during a drag.
 9. Turning never moves the piece or the board; only the view changes.
 9a. **Sideways gravity.** When the board's down axis is a ground axis (±x or ±z; e.g. Level-Specific Mechanics M9, or a gravity twist), only the **side-on snaps** are allowed, so the piece falls across the screen rather than toward or away from the player. A snap is side-on when the angle between the camera's horizontal view direction and the down axis is at least `side_on_min_deg` (default 45°, inclusive) from both parallel directions. With the default yaws this allows 8 of the 12 snaps (all four corner views included) and skips the 4 that look almost along the fall. `rotate_view` skips the disallowed snaps. If the current snap becomes disallowed when gravity changes, the camera turns to the nearest allowed snap (a normal animated turn). Up/down gravity (±y) allows all 12.
 
@@ -56,9 +56,9 @@ The Camera shows the board as a toy diorama from a fixed, angled, **orthographic
 | State | Meaning | Enters when | Leaves when |
 |---|---|---|---|
 | **Framing** | Computes the orthographic size and default pose from the board | Level loads (board Setup) | Done → Idle |
-| **Idle** | Still at one of the 12 yaws | Framing done; turn finished | `rotate_view` → Turning; drag-orbit → Orbiting |
-| **Turning** | Animating one or more 30° steps; mapping already switched | `rotate_view` | Animation ends → Idle |
-| **Orbiting** | Optional drag-orbit in progress | Board drag with orbit on | Release → Turning (snap to nearest step) |
+| **Idle** | Still at one of the 12 yaws | Framing done; turn or settle finished | `rotate_view` / corner shortcut → Turning; board drag → Orbiting |
+| **Turning** | Animating to a target snap (step, shortcut or settle); mapping already switched | `rotate_view`, corner shortcut, orbit release | Animation ends → Idle; board drag → Orbiting |
+| **Orbiting** | Free drag in progress; `k` and the map unchanged | Board drag | Release → `k` = nearest allowed snap, map switches → Turning (settle over `settle_ms`) |
 | **Frozen** | Pose fixed; rotate-view and orbit input ignored (pause, results, cutscene) | Mode ends or pause | Resume → Idle; next level → Framing |
 
 ### Interactions with Other Systems
@@ -66,7 +66,7 @@ The Camera shows the board as a toy diorama from a fixed, angled, **orthographic
 | System | Direction | What flows |
 |---|---|---|
 | Board / Grid | → Camera | Footprint size, mask, `board_height`, height-limit layer, cell contents (for occlusion) |
-| Touch Controls | ↔ | `rotate_view(±1)`, drag-orbit; camera returns current yaw and the screen-to-world direction map |
+| Touch Controls / Input (ADR-0012) | ↔ | `rotate_view(±1)`, corner shortcuts, orbit drag and release; camera returns the settled snap `k` and the screen-to-world direction map (`view_changed`), which also resolves Turn/Flip/Roll to world axes |
 | Movement & Rotation, Fall/Drop/Lock | → Camera | Falling piece and ghost positions (for occlusion) |
 | Level Data & Definition | → Camera | Occlusion mode, optional default yaw/elevation |
 | HUD | ↔ | Board screen rectangle; HUD stays outside it |
@@ -87,7 +87,7 @@ The view_yaw formula is defined as:
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
 | k | int | 0–11 | calculated | Current view step |
-| yaw_offset | float | 0–29° | data file | Offset of step 0; default 45° (mod 30 = 15°) so corner views are k = 0, 3, 6, 9 |
+| yaw_offset | float | 0–359° | data file | Yaw of step 0; default 45° so corner views are k = 0, 3, 6, 9 (only `yaw_offset mod 30` = 15° keeps corners on the grid; `view.yaw_offset_deg` stores 45) |
 | yaw | float | 0–359° | calculated | Camera yaw around the board centre |
 
 **Output Range:** 12 values, 30° apart. **Example:** k = 4 → 45 + 120 = 165°.
@@ -138,11 +138,17 @@ For each screen direction `s` in {left, right, up, down}: `world(s) = argmin ove
 | fade_ms | 60–150 | 100 | data file | Fade in/out time |
 | max_faded_blocks | 20–64 | 40 | data file | Above this many faded blocks in one frame, Fade falls back to Cutaway for that frame |
 | side_on_min_deg | 30–60 | 45 | data file | Under sideways gravity, how far from the fall direction a snap's view must be to be allowed (rule 9a) |
+| settle_ms | 0–300 | 150 | data file (knob) | Settle tween after an orbit release (reduced motion: 0) |
+| orbit_px_per_step | 40–160 | 80 | player setting (sensitivity) | Drag distance per 30° of free orbit |
 
 ## Edge Cases
 
 - **If rotate-view is pressed during a turn animation**: the step is applied at once from the current *logical* step (k ± 1), so pressing the opposite direction reverses the turn; the animation continues to the new target (no queueing lag, no skipped steps).
 - **If a drag is in progress in Touch Controls when the view turns**: Touch Controls ends the drag (its edge case); the camera does not wait.
+- **If the player moves or rotates the piece mid-orbit**: the command uses the map of the snap the drag started from; the map switches only on release.
+- **If an orbit is released under sideways gravity near a disallowed snap**: it settles to the nearest allowed snap.
+- **If a step button is pressed mid-orbit**: the drag ends as a release (settle to nearest allowed), then the step applies from that `k`.
+- **If reduced motion is on during an orbit**: the drag still follows the finger (the player drives it); the release is an instant cut to the snap.
 - **If the board is masked to a non-square shape**: framing uses the footprint's bounding box (W × D), so it still fits at every yaw.
 - **If a level's board would make the cube edge smaller than 20 px**: the level fails validation (Board / Grid F5); the camera never zooms out past it.
 - **If a twist flips the board's down axis**: the camera does not flip; the board's "top" is now at the bottom of the screen and the spawn zone moves with it (Board / Grid edge case). Framing already includes the full height, so nothing moves.
@@ -186,7 +192,8 @@ Turning should feel like spinning a lazy Susan under a toy diorama: quick (150 m
 
 - Rotate-view button (56 pt, Touch Controls), with hold-to-repeat.
 - View indicator: 12-tick compass showing the current step.
-- Settings: reduced motion (instant turns), board-drag orbit on/off (Touch Controls).
+- Four corner-view shortcuts (buttons/keys/gamepad, mapped in ADR-0012).
+- Settings: reduced motion (`system`/`on`/`off`, follows the OS by default), invert, orbit sensitivity, Auto on/off (ADR-0013 persists them). Free orbit itself is always on.
 
 ## Cross-References
 
@@ -219,7 +226,8 @@ Turning should feel like spinning a lazy Susan under a toy diorama: quick (150 m
 11. [I] **GIVEN** a turn (150 ms default), **WHEN** it completes, **THEN** the state returns to Idle and piece and board positions are unchanged.
 12. [I] **GIVEN** a turn in progress, **WHEN** rotate is pressed again (either direction), **THEN** k updates at once from the logical step and the animation retargets with no queue and no skipped step.
 13. [M] **GIVEN** the rotate-view button held, **WHEN** held 600 ms (±50 ms), **THEN** 6 steps have occurred.
-14. [I] **GIVEN** board-orbit on, **WHEN** a drag is released, **THEN** yaw snaps to the nearest of the 12 steps; **GIVEN** orbit off (default), **THEN** board drags do not turn the view.
+14. [I] **GIVEN** a free board drag, **WHILE** dragging, **THEN** the view follows the drag, `k` and the direction map are unchanged and no `view_changed` / `view_snap` fires; **WHEN** released, **THEN** `k` becomes the nearest allowed snap, `view_changed` fires exactly once in the release frame, and the view settles within `settle_ms` (instantly under reduced motion).
+14a. [I] **GIVEN** each corner shortcut, **THEN** `k` becomes 0, 3, 6 or 9 (or the nearest allowed snap under sideways gravity) and the map switches in the same frame.
 15. [I] **GIVEN** a turn in progress, **WHEN** pause opens, **THEN** the turn completes instantly before the menu shows; while Frozen, rotate input is ignored.
 16. [U] **GIVEN** a down-axis flip, **WHEN** it occurs, **THEN** camera yaw, elevation and size are unchanged.
 
@@ -250,4 +258,5 @@ Turning should feel like spinning a lazy Susan under a toy diorama: quick (150 m
 - **Elevation**: is 30° (2:1 dimetric) right for an 8 × 8 × 12 stack, or does a steeper look help see inside? Prototype 30° vs 35–40°.
 - **Fade threshold**: is 40 faded blocks the right fallback point to Cutaway?
 - **Local multiplayer**: one shared camera or one per board on a split screen (Local Multiplayer Setup).
+- **Free orbit + snap (2026-10-10), open to playtest**: `orbit_px_per_step` 80 and `settle_ms` 150 are starting defaults.
 - **Designer defaults of 2026-10-09, open to playtest**: side-on snaps only under sideways gravity (rule 9a, `side_on_min_deg` 45°); pause-and-re-layout on a phone turn (rule 5a); faded outlines (rule 12).

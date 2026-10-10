@@ -43,7 +43,7 @@ Biome twists (Twist Library) are reusable modifiers that can appear in many leve
 12. To stay fair it also multiplies `fall.gravity_scale` by `sticky_gravity_scale` (default 0.7, stored 700), giving more time to aim in the air. The landing ghost is the player's main tool.
 13. Any goal type may be used (default Clear).
 
-**M4. Conveyor Floor** (rule `mill_belt` in ADR-0011; Meadow skin: Mill Belt EV05)
+**M4. Conveyor Floor** (rule `conveyor` in ADR-0011; Meadow skin: Mill Belt EV05)
 14. Contradicts: locked blocks never move. After every `conveyor_every` locks (default 1), at `on_resolve_end` (S4b, last, because the mechanic has the highest rank), the conveyor's `RuleBehaviour` moves **every content on the board** one cell along the conveyor direction `d` (a world ground axis, fixed per level) as one rigid shift through `RuleApi.move_cells`. On the lock before a shift the sim emits `belt_windup`; on the shift, `belt_shift {dir, wrapped}`. The Miller's lever and the rolling belt are staging driven by these events. If the shift completes a layer, it clears in the S4c pass (ADR-0011 §3).
 15. Contents pushed past the footprint edge **wrap around** to the opposite edge (`conveyor_wrap = true`), so every layer keeps its cell count and layer clearing still works. With `conveyor_wrap = false`, contents pushed off the edge fall off the island and are removed (not counted as cleared); such levels should use the Height or Survive goal, since layers then rarely fill.
 16. The shift happens after the clear check, so a layer completed by a lock clears before it moves. The next piece spawns after the shift. The ghost of the next piece already accounts for the moved stack.
@@ -330,7 +330,7 @@ A4. **Colour pool.** Levels using M5–M7 limit the piece pool to `colour_count`
 
 11d. Each board is its own clear space with its own layers (planes parallel to the seam), slice collapse, height and `H_play`. Every shape in the pool must fit each board (Piece Set rule 8), which replaces the old "piece longer than a half" check. The level's `goal.top_out` applies to whichever board goes over its limit; the level is lost if either board's top-out loses.
 
-11e. **Pair Clear**: when one board clears a plane at depth k, and the other board cleared its plane at the same depth k on the previous lock, the player scores the Pair bonus. The `meet` layout plugin scores it, because it is the one place that sees both boards' clear events (see Open Questions).
+11e. **Pair Clear**: when one board clears a plane at depth k, and the other board cleared its plane at the same depth k on the previous lock, the player scores the Pair bonus. It is a cross-board rule (`pair_clear`) run by the match-level `MatchCoordinator`, which sees both boards' clear events while each board keeps its own RuleRuntime (ADR-0004 §10).
 
 11f. Camera snaps are limited to views with the seam vertical on screen, using 9c's rule with the x axis. Landscape is preferred.
 
@@ -430,5 +430,5 @@ A4. **Colour pool.** Levels using M5–M7 limit the piece pool to `colour_count`
 - **Framework cap**: accept the pairing exception (A2), or keep strictly one mechanic per level? (Owner: Rule-Twist Framework.)
 - **Goal units**: should Clear goals for M5, M6 and M8 count cubes cleared (one comparable bar) rather than pops, bridges or rows (F6)?
 - **Two-Way Meet on portrait phones**: playable, or landscape-only?
-- **Pair Clear across boards**: ADR-0004 has one `RuleRuntime` per board, so a rule cannot see the other board. Default here: the `meet` `LayoutKind` plugin scores it. Confirm with the ADR-0002/0004 owner.
+- **Pair Clear across boards**: ADR-0004 has one `RuleRuntime` per board, so a rule cannot see the other board. Resolved 2026-10-10: a match-level `MatchCoordinator` runs it as a cross-board rule (ADR-0004 §10).
 - **Pairing cap (A2) vs ADR-0004 F3** (mechanic ≤ 1 by layer): alternatively, arrival options could be plain level slot values in `knobs` (no F3 cost) instead of layer-4 rules. Owner: Rule-Twist Framework.

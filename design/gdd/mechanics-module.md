@@ -57,6 +57,7 @@ Target MDA aesthetics: **Discovery** (new atom combinations), **Challenge** (eac
 | `cam` | The rule reads the camera snap. The snap reaches the sim only as the recorded `view_snap` command (ADR-0014 §6), so replays stay deterministic. Proposed |
 | `face` | Needs tilt and roll (the 3rd rotation pair, Flip / Roll, taught in meadow_02). Proposed |
 | `tourney` | Tournament rounds only; off in quick versus, which allows sidegrades only (decision sheet). Used for edges (BL20, IN26, EV22) and team-up events (GO30, IN31). Proposed |
+| `stack` | The rule moves or removes locked cubes or changes the stack's structure (belts, ants, stack flip, rider junk). Lana's Stitch vetoes these writes (Skills rule 14, framework rule 11a). Proposed |
 
 **Runtime alignment (ADR-0004, ADR-0011).** Every atom that changes the board, the piece, the queue, goals or score is a slot plugin or a `RuleBehaviour` inside `BoardSim` and writes only through `RuleApi`. Player intent (verbs, undo, a camera snap) arrives as a `SimCommand`; a rule never queues one. Beehave trees are **staging only**: they read `SimEvent`s and drive animation, and removing them never changes an event or `state_hash()`. A rule's layer sets its rank and its F3 cost: `mascot` 1 and `content` 2 do not count toward the twist/mechanic budget; `twist` 3 (≤ 2) and `mechanic` 4 (≤ 1) do (ADR-0011 §2, `rule_layers.json`). Tags are the `requires` / `provides` vocabulary of `assets/data/atom_tags.json` (ADR-0004 §2), and the four new tags above must be added there before a Proposed atom using them is built.
 

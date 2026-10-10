@@ -54,7 +54,7 @@ Master  ── HardLimiter (ceiling -1.0 dB)
 | Music | level tracks, title/map track, results jingles, skit stingers | -6 dB | **Music** |
 | SFX | board, events, Pip and the Miller reactions | 0 dB | **SFX** |
 | UI | buttons, menus, star stamps | -3 dB | **UI** |
-| Ambience | A1 bed, A3 one-shots | -12 dB | follows **Music** slider (MVP; no fourth slider) |
+| Ambience | A1 bed, A3 one-shots | -12 dB | follows **SFX** slider (user decision 2026-10-10; no fourth slider; ADR-0015 §2) |
 
 **Ducking and filter defaults** (these are the *only* adaptive music treatment, see §6)
 - **Clears and locks duck music**: sidechain compressor on Music and Ambience keyed from SFX. Defaults: threshold -18 dB, ratio 3:1, attack 10 ms, release 300 ms (about -3 to -4 dB on a clear). **Verify** the `AudioEffectCompressor.sidechain` cost on the reference phone (ADR-0015 verification 1); fall back to a scripted tween duck driven by each cue's `ducks_music_db`.

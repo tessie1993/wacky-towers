@@ -8,13 +8,13 @@
 
 ## Summary
 
-Every playable character has one big skill: a game-changing move, much stronger than an item, behind one button. How often you may use it depends on the **mode**: in the campaign and Arcade a **charge meter** fills as you clear layers; in quick versus and tournament rounds you get it **once per round**; some rounds or levels switch it off or make it a **consumable**. A skill is a bundle of Rule-Twist Framework rules at the `item_buff` layer, so it can never switch off a level's mechanic or twist.
+Every playable character has one big skill: a game-changing move, much stronger than an item, behind one button. How often you may use it depends on the **mode**: in the campaign and Arcade a **charge meter** fills as you clear layers; in quick versus and tournament rounds you get it **once per round**; some rounds or levels switch it off or make it a **consumable**. A skill is a bundle of Rule-Twist Framework rules at the `item_buff` layer, so it can never switch off a level's mechanic; the one deliberate exception is Lana's Stitch, whose stack-pin veto ties with twists (framework rule 11a) and still loses to the level mechanic.
 
 > **Quick reference** — Layer: `Feature` · Priority: `Alpha` · Key deps: `Rule-Twist Framework, Buffs & Debuffs, Characters & Perks`
 
 ## Overview
 
-A skill is the character's "ultimate": four skills, one per playable character (Characters & Perks slots C1–C4), each with a different mechanical identity: **tempo** (C1, the cloud wizard), **demolition** (C2), **building** (C3) and **queue tricks** (C4). Each skill has a **self effect** that works everywhere, including the solo campaign, and an optional **versus rider** that hits an opponent (the leader, as Items rule 8) only when there is someone to hit. Skills are data (a skill JSON naming framework rules and their parameters), reuse the eight Buffs & Debuffs effects wherever they can, and add a small `RuleBehaviour` only where they must (Perfect Fill, Pick & Mix). The **use rule** is not fixed per skill: the skill's data carries a per-context table with defaults (charge / once / consumable / off), and a level or a tournament recipe may override it through the Skill Rule atom (WO12). The skill-hook atoms Skill Clash (IN32), Skill Echo (IN33), Skill Surge (EV23) and Skill Swap (WO13) plug into the states and the charge formula defined here. This serves *Comeback Energy* (rank-scaled charge and leader-targeted riders), *Readable Chaos* (one button, one skill at a time, every effect badged) and *Variation Over Depth* (four very different big moves on the same blocks). Star times are balanced with no skill use, so a skill only ever makes a star easier, never required. All values are starting defaults.
+A skill is the character's "ultimate": four skills, one per playable character (Characters & Perks slots C1–C4), each with a different mechanical identity: **tempo** (C1, the cloud wizard, Calm Skies), **protect** (C2, Lana the alpaca knitter, Stitch), **remove** (C3, Boulder the pygmy hippo, Smash) and **plan** (C4, Glim the bat architect, Redraw), the story bible's protect / remove / plan triad (`production/narrative/campaign-story/brief.md` §5). Each skill has a **self effect** that works everywhere, including the solo campaign, and an optional **versus rider** that hits an opponent (the leader, as Items rule 8) only when there is someone to hit. Skills are data (a skill JSON naming framework rules and their parameters), reuse the eight Buffs & Debuffs effects wherever they can, and add a small `RuleBehaviour` only where they must (Stitch, Smash, Redraw). The **use rule** is not fixed per skill: the skill's data carries a per-context table with defaults (charge / once / consumable / off), and a level or a tournament recipe may override it through the Skill Rule atom (WO14, renumbered from party WO12). The skill-hook atoms Skill Clash (IN32), Skill Echo (IN33), Skill Surge (EV23) and Skill Swap (WO13) plug into the states and the charge formula defined here. This serves *Comeback Energy* (rank-scaled charge and leader-targeted riders), *Readable Chaos* (one button, one skill at a time, every effect badged) and *Variation Over Depth* (four very different big moves on the same blocks). Star times are balanced with no skill use, so a skill only ever makes a star easier, never required. All values are starting defaults.
 
 ## Detailed Design
 
@@ -44,14 +44,14 @@ A skill is the character's "ultimate": four skills, one per playable character (
 | Campaign level (solo) | `charge` | 1 (solo) | Level Data may set `once` or `off` (for example a boss or a tutorial) |
 | Arcade (solo) | `charge` | 1 | Endless run, so the meter refills |
 | Quick versus round | `once` | — | Sidegrades only (Characters & Perks); skills are balanced against each other (F3) |
-| Tournament round, burst or standard length (< `charge_min_round_s`) | `once` | — | WO12 recipe override allowed |
-| Tournament round, showpiece length (≥ `charge_min_round_s`) | `charge` | on | WO12 override allowed |
+| Tournament round, burst or standard length (< `charge_min_round_s`) | `once` | — | WO14 recipe override allowed |
+| Tournament round, showpiece length (≥ `charge_min_round_s`) | `charge` | on | WO14 override allowed |
 | Tournament sudden death | `off` | — | Pure clear race, like its "no twists" rule |
 | Minigame scene with no `BoardSim` | `off` | — | Unless the minigame data declares skill support |
 | Level-maker test play | the level's own context | — | |
 
    `consumable` is no context's default; a level, a recipe or a later shop item may select it.
-8. **Resolution order**: level / recipe `skill_rule` (WO12) > the skill's own per-context entry > the table in rule 7. The resolved rule is fixed at level / round start and shown as the button's state.
+8. **Resolution order**: level / recipe `skill_rule` (WO14) > the skill's own per-context entry > the table in rule 7. The resolved rule is fixed at level / round start and shown as the button's state.
 
 **Using a skill**
 9. Pressing the ready button activates the self effect and, if there is a target, sends the rider. During the user's Resolving the use is queued to the end of Resolving (as Items rule 7).
@@ -64,14 +64,14 @@ A skill is the character's "ultimate": four skills, one per playable character (
 
 | Skill | Character | Self effect | Versus rider |
 |---|---|---|---|
-| **Calm Skies** | C1 (tempo) | 8 s: `gravity_scale × 0.25` and `lock_delay_ms × 1.5` | Speed Up on the target for 8 s |
-| **Mega Bomb** | C2 (demolition) | The falling (or next) piece becomes a Bomb with `bomb_radius 2` (5 × 5 × 5) and `bomb_rock_damage 3` | Junk Rain, 1 layer, on the target |
-| **Perfect Fill** | C3 (building) | At the user's next `on_resolve_end` (S4b), fills every empty fillable cell of up to `fill_layers` (2) layers whose fill share ≥ `fill_threshold` (0.6), fullest first; the S4c clear then removes them | Fog on the target for 5 s |
-| **Pick & Mix** | C4 (queue tricks) | For the next `pick_pieces` (3) spawns, the preview offers 3 shapes: the stream's next shape plus 2 drawn from the level's shape pool by the skill's stream; the player taps one while the previous piece falls; no tap = the stream's shape | Spin Lock on the target for 6 s |
+| **Calm Skies** | C1 cloud wizard (tempo) | 8 s: `gravity_scale × 0.25` and `lock_delay_ms × 1.5` | Speed Up on the target for 8 s |
+| **Stitch** | C2 Lana (protect) | `stitch_s` (10 s): the user's stack is pinned. Rule writes that would **move or remove locked cubes** (veto `stack.shift`, `stack.remove`) are vetoed, and queued structure changes (`request_down_axis`, `request_mask`) wait until Stitch ends (rule 14) | none (`clash_eligible` false); its versus value is the incoming riders it blocks |
+| **Smash** | C3 Boulder (remove) | One hit: removes the **chunk** under the falling piece's ghost, a `smash_size` × `smash_size` (3 × 3) footprint, `smash_depth` (3) layers deep from the footprint's top cube (F4) | Junk Rain, 1 layer, on the target |
+| **Redraw** | C4 Glim (plan) | The next `redraw_pieces` (3) queued shapes are re-rolled, and for the falling piece and each redrawn piece the board marks up to `fit_marks` (2) **perfect-fit spots** (F5) | Fog on the target for 5 s |
 
-14. **Perfect Fill**: filled cubes are ordinary cubes owned by the user with the "builder" sticker; cells that are masked, pillars, rocks, crates or other content are not fillable and do not count toward the share. Writes go through `RuleApi.set_cell` in S4b, so S4c runs the clear once (ADR-0011 §3). If no layer reaches the threshold: no effect (rule 10).
-15. **Pick & Mix**: the stream index advances once per spawn as normal (the stream's shape is consumed whether or not it is picked), so the Spawner sequence is unchanged for later pieces. Injected pieces (Helpers, junk) are not offered as choices and do not use up a pick.
-16. **Mega Bomb** follows Buffs & Debuffs rule 6 and F2 (radius 2 is the top of `bomb_radius`'s range); a second Bomb (item) on the same piece refreshes, it does not add a second blast.
+14. **Stitch** (veto rank, framework rule 11a): its two vetoes carry `veto_rank_bonus 1`, so they act at rank 3. A veto wins ties (framework rule 11), so Stitch blocks twists (3), content (2) and incoming riders and items (2), and **loses to the level mechanic** (4). It never blocks the user's own play: locks, Layer Clearing's clears and collapse, and the top-out outcome (`goal.top_out`, Level Goals) all run as normal, because they are base-game steps, not rule writes. Wind and drift that push the **falling piece** are not stack writes and still act. A queued `request_down_axis` (stack flip EV03) or `request_mask` is held and applied at the first S4a after Stitch expires. Every blocked write emits `rule_blocked {rule_id: stitch}` so the HUD shows the yarn pin. **No effect** (rule 10): Stitch is hidden for a level (rule 13) when the level has no rule tagged `stack` (atom tag, `atom_tags.json`) and there is no rival who could send a rider; otherwise a use always counts, even if nothing tries to shift the stack during it.
+15. **Smash**: the target column `c` is the centre column of the falling piece's landing ghost (its footprint's bounding-box centre, rounded toward the spawn origin); while Smash is Ready the board outlines the chunk under the ghost, so the player aims by moving the piece, and nothing takes control of the piece away. Removal goes through `RuleApi.clear` on the user's next tick end (framework rule 14), with the Bomb damage table of Buffs & Debuffs rule 6: player cubes and junk are removed, rocks take `smash_rock_damage` (1), pillars, masked cells and inactive cells are immune. Removed cubes are **not a layer clear**: no score, no combo, no skill or perk charge, no clear-count goal progress. Because the chunk starts at the footprint's top cube, nothing solid is left floating inside the footprint. A press during Resolving or Waiting is **ignored**, not queued (Smash needs a ghost to aim with). If the chunk holds nothing removable: no effect, not spent (rule 10).
+16. **Redraw**: each of the next `redraw_pieces` stream shapes is replaced by a draw from the level's shape pool with the skill's own stream (framework rule 13), excluding the shape it replaces; the Spawner's stream index advances once per spawn as normal, so the sequence after the redrawn pieces is unchanged. Injected pieces (Helpers, junk) are not redrawn and do not use up a redraw. With a one-shape pool the re-roll part does nothing, and the marks still count as an effect. Perfect-fit marks are a pure query (`new_covered_holes`, `would_clear`, never RNG) run by the Redraw `RuleBehaviour` at the piece's spawn and again after any board write while it falls, and emitted as `fit_spots {cells}`; the view only draws them (ADR-0011 §4, §6). Redraw stays Active until the last redrawn piece locks.
 
 **Skill-hook atoms (only when the level or recipe includes them)**
 17. **Skill Echo (IN33)**, `charge` only: being hit by a rival's rider adds `echo_charge` to your meter (F1 term).
@@ -99,11 +99,13 @@ Skill rules themselves follow the framework states (Pending → Active ⇄ Suspe
 | System | Direction | What flows |
 |---|---|---|
 | Rule-Twist Framework | Skill → | Layer-2 rules, hooks (`on_lock`, `on_resolve_end`, `on_spawn`), own RNG streams |
-| Buffs & Debuffs | Skill → | Reused effects: Slow-style gravity, Bomb, Speed Up, Junk Rain, Fog, Spin Lock |
+| Buffs & Debuffs | Skill → | Reused effects: Slow-style gravity (Calm Skies), the Bomb damage table (Smash), Speed Up, Junk Rain, Fog (riders) |
 | Characters & Perks | ↔ | Which skill a player has; perks that change `skill.charge_rate` and charge terms |
 | Layer Clearing, Obstacle Clearing | → Skill | Clears (charge, F1) |
-| Piece Spawner & Queue | ↔ | Pick & Mix choices on `on_spawn`; stream index unchanged |
-| Level Data, Tournament recipes (WO12), Mode / Minigame Randomizer | → Skill | `skill_rule` overrides; round length |
+| Piece Spawner & Queue | ↔ | Redraw re-rolls on `on_spawn`; stream index unchanged |
+| Board / Grid, Fall, Drop & Lock | ↔ | Smash chunk removal at tick end; ghost position for aim; Stitch vetoes on stack writes and held S4a changes |
+| Twist Library, Level-Specific Mechanics | ↔ | Rules that write locked cubes carry the `stack` tag (Stitch); Stitch ties twists, loses to mechanics |
+| Level Data, Tournament recipes (WO14), Mode / Minigame Randomizer | → Skill | `skill_rule` overrides; round length |
 | Level Goals & Fail States, Items | → Skill | Standing rank (F1 `m_rank`, rider targeting) |
 | Local Multiplayer (ADR-0009) | ↔ | Riders as attacks; clash timing by host receive time |
 | Save & Profile (ADR-0013) | ↔ | Skill tokens (`consumable`) |
@@ -158,24 +160,63 @@ The skill_parity formula is defined as:
 **Variables:**
 | Symbol | Type | Range | Source | Description |
 |---|---|---|---|---|
-| V_c | float | > 0 | measured | Layers cleared (own) + layers forced on the target (rider) in the 30 s after a use, minus the same without the use |
+| V_c | float | > 0 | measured | Layers cleared (own) + layers forced on the target (rider) + layers of incoming junk or shifts blocked (Stitch) in the 30 s after a use, minus the same without the use |
 | V̄ | float | > 0 | calculated | Mean over the four skills |
 | parity_tolerance | float | 0.1–0.3 | data file | Default 0.2 |
 | dev_c | float | ≥ 0 | calculated | Relative deviation |
 
 **Output Range:** `dev_c ≥ 0`, unbounded above; `V̄ > 0` by construction (a skill with `V_c ≤ 0` fails review before this check). **Example:** V = 2.4, 2.0, 2.2, 1.8 → V̄ = 2.1; dev = 0.14, 0.05, 0.05, 0.14 → all pass at 0.2.
 
+### F4. Smash chunk
+
+The smash_chunk formula is defined as:
+
+`F = { (x, z) : |x − c_x| ≤ h, |z − c_z| ≤ h } ∩ active columns`, `h = (smash_size − 1) / 2`; `y_top = max height of a solid cell over F` (along the down axis); `chunk = F × [y_top − smash_depth + 1, y_top]`; `removed = |{cells in chunk holding a player cube or junk}|`
+
+**Variables:**
+| Symbol | Type | Range | Source | Description |
+|---|---|---|---|---|
+| c_x, c_z | int | board columns | calculated (ghost) | Target column (rule 15) |
+| smash_size | int | 1, 3, 5 (odd) | data file | Footprint side; default 3 |
+| h | int | 0–2 | calculated | Half side |
+| smash_depth | int | 1–4 | data file | Layers removed; default 3 |
+| y_top | int | 0 to board_height − 1, or none | calculated | Top solid cell in the footprint; none = empty footprint |
+| removed | int | 0 to smash_size² × smash_depth (27 at defaults, 100 at 5 / 4) | calculated | Cubes removed; rocks are damaged, not counted |
+
+**Output Range:** 0 to 27 cubes at defaults; clipped by board edges and the mask. `removed = 0` and no rock hit (or `y_top` none) is "no effect" (rule 10), so no use is wasted on an empty target. **Example:** ghost centred on column (4, 5), footprint 3 × 3, the tallest cube in it at y = 7 → chunk y 5–7; it holds 19 player cubes and 1 rock → 19 removed, the rock takes 1 damage.
+
+### F5. Perfect-fit marks (Redraw)
+
+The perfect_fit formula is defined as:
+
+`cand = { (o, x, z) : orientation o of the piece, drop target valid }`; `fit = { p ∈ cand : new_covered_holes(p) = 0 }`; rank by `(would_clear(p) desc, support(p) desc, depth(p) desc, canonical order)`; mark the top `fit_marks`
+
+**Variables:**
+| Symbol | Type | Range | Source | Description |
+|---|---|---|---|---|
+| o | int | 1–24 | Piece Set | Distinct orientations of the shape |
+| would_clear(p) | int | 0–4 | `RuleApi` query | Layers the placement would complete |
+| support(p) | int | 0–n_cubes | calculated | Cubes whose down-neighbour is solid, floor or the piece itself |
+| depth(p) | int | ≥ 0 | calculated | How low the piece's lowest cube lands |
+| fit_marks | int | 0–3 | data file | Marks shown; default 2 |
+
+**Output Range:** 0 to `fit_marks` marks; 0 when no hole-free placement exists (then the HUD shows no marks, and the re-roll still counts as the effect). Cost: at most 24 × columns drop sweeps per evaluation, about 2 400 on a 10 × 10 board, run only at spawn and after a board write, inside ADR-0004's 0.5 ms budget per frame (spread over ticks if needed; profile). **Example:** an L piece over a stack with one 3-cell gap in an otherwise full layer: the placement that fills the gap has `would_clear 1`, no holes → mark 1; the next best flat placement with full support → mark 2.
+
 ## Edge Cases
 
 - **If the button is pressed while the player's skill is Active**: nothing happens (disabled, rule 4).
 - **If a skill is used during Resolving**: queued to the end of Resolving (Queued state).
-- **If a skill's self effect loses to a twist or mechanic** (Calm Skies under Sticky Landing's set; Perfect Fill with clearing vetoed by a level mechanic): "no effect" pop, not spent (rule 10).
-- **If Perfect Fill finds no layer at ≥ 0.6**: no effect, not spent.
-- **If Perfect Fill's filled layer is a deferred layer** (Obstacle Clearing): it clears when the deferral allows; the fill stays.
-- **If Mega Bomb is used with no falling piece** (Waiting): it tags the next piece (as Bomb).
-- **If Mega Bomb and an item Bomb are on one piece**: one blast at the larger radius and higher rock damage, whichever came first (the Bomb behaviour keeps the max of its tag params; an explicit exception to "newest wins", so an item can never shrink a Mega Bomb).
-- **If Pick & Mix is active and an injected piece comes next**: the injected piece spawns as is and no pick is used.
-- **If Pick & Mix's pick window ends without a tap**: the stream's shape spawns.
+- **If a skill's self effect loses to a twist or mechanic** (Calm Skies under Sticky Landing's set; Smash where a level mechanic vetoes removal): "no effect" pop, not spent (rule 10).
+- **If a level mechanic shifts the stack during Stitch** (a mechanic-layer conveyor): the mechanic wins (rank 4 > 3); the shift happens and Stitch keeps running.
+- **If a stack flip is queued during Stitch**: it is held and applies at the first S4a after Stitch ends; the flip telegraph shows "held" with the yarn pin.
+- **If the stack tops out during Stitch**: the top-out outcome runs as normal (`rescue`, `trim` or `lose`); Stitch only blocks rule writes.
+- **If Smash is pressed with the ghost over an empty footprint**: no effect, not spent (F4).
+- **If Smash's chunk includes cubes another rule protects** (frozen or shelled status): Buffs & Debuffs' Bomb table decides, as for a Bomb blast.
+- **If Smash removes the cubes under the resting piece**: the piece loses support, its lock timer clears and it falls (Fall, Drop & Lock rule 12).
+- **If Smash empties cells a clear-count goal needed**: not a clear, so goal progress is unchanged.
+- **If Redraw is active and an injected piece comes next**: the injected piece spawns as is and no redraw is used.
+- **If no hole-free placement exists for a redrawn piece**: no marks for it; the re-roll still applied.
+- **If the board changes while a marked piece falls** (a twist write): marks are re-evaluated on that tick; a mark that is no longer valid disappears.
 - **If the rider's target is out or in Resolving**: out → rider skipped, self effect still applies; Resolving → queued on the target (ADR-0009).
 - **If a player tops out with the skill Queued**: the use is dropped and not spent (the player is out anyway).
 - **If the level ends while a skill is Active**: the rules expire with the level; nothing carries over.
@@ -189,11 +230,11 @@ The skill_parity formula is defined as:
 
 ## Dependencies
 
-**Upstream:** Rule-Twist Framework (Hard), Buffs & Debuffs (Hard: reused effects), Characters & Perks (Hard: which skill), Layer Clearing (Hard: charge), Piece Spawner & Queue (Hard: Pick & Mix), Level Goals & Fail States and Items (Hard: standing, targeting), Level Data & Definition (Hard: `skill_rule`), Local Multiplayer (Hard in versus: riders, clash timing), Save & Profile (Soft: tokens).
+**Upstream:** Rule-Twist Framework (Hard), Buffs & Debuffs (Hard: reused effects), Characters & Perks (Hard: which skill), Layer Clearing (Hard: charge), Piece Spawner & Queue (Hard: Redraw), Board / Grid and Fall, Drop & Lock (Hard: Smash chunk, ghost aim, Stitch vetoes), Level Goals & Fail States and Items (Hard: standing, targeting), Level Data & Definition (Hard: `skill_rule`), Local Multiplayer (Hard in versus: riders, clash timing), Save & Profile (Soft: tokens).
 
-**Downstream:** Tournament Flow and Tournament Minigames (Hard: per-round `skill_rule`, WO12, IN32, IN33, EV23, WO13), HUD, Game Feel & VFX, Audio (Soft), Shop (Soft, later: skill tokens).
+**Downstream:** Tournament Flow and Tournament Minigames (Hard: per-round `skill_rule`, WO14, IN32, IN33, EV23, WO13), HUD, Game Feel & VFX, Audio (Soft), Shop (Soft, later: skill tokens).
 
-Bidirectional notes needed in: Rule-Twist Framework, Buffs & Debuffs, Items, Level Data, Tournament Flow (see Open Questions; not edited in this pass).
+Bidirectional notes are in place (2026-10-10) in Rule-Twist Framework, Buffs & Debuffs, Items, Level Data, Tournament Flow and HUD.
 
 ## Tuning Knobs
 
@@ -206,9 +247,10 @@ Bidirectional notes needed in: Rule-Twist Framework, Buffs & Debuffs, Items, Lev
 | once_ready_delay_s | 0–30 | 15 | Stops an opening-second skill in `once` rounds |
 | charge_min_round_s | 120–300 | 180 | Round length from which tournaments use `charge` |
 | calm_skies_gravity / lock / duration | 0.1–0.5 / 1.2–2.0 / 5–12 s | 0.25 / 1.5 / 8 s | C1 strength |
-| mega_bomb_radius / rock_damage | 1–2 / 2–3 | 2 / 3 | C2 strength |
-| fill_layers / fill_threshold | 1–3 / 0.4–0.8 | 2 / 0.6 | C3 strength |
-| pick_pieces / pick_options | 1–5 / 2–4 | 3 / 3 | C4 strength |
+| stitch_s | 5–15 s | 10 | C2 Lana strength (protection window) |
+| stitch veto_rank_bonus | 0–1 | 1 | 1 = ties and beats twists; 0 = blocks only content and riders |
+| smash_size / smash_depth / smash_rock_damage | 1, 3, 5 / 1–4 / 1–3 | 3 / 3 / 1 | C3 Boulder strength (F4) |
+| redraw_pieces / fit_marks | 1–5 / 0–3 | 3 / 2 | C4 Glim strength (F5) |
 | rider durations (Speed Up, Fog, Spin Lock) | 3–15 s | 8 / 5 / 6 s | Versus sting |
 | echo_charge | 0.2–0.5 | 0.34 | IN33 |
 | clash_ms / clash_refund | 400–1 500 / 0–1 | 800 / 0.5 | IN32 |
@@ -219,7 +261,7 @@ Bidirectional notes needed in: Rule-Twist Framework, Buffs & Debuffs, Items, Lev
 
 - Skill button: a larger circle than the item slots, character portrait inside, meter as a filling ring (`charge`), a single star pip (`once`), a token count (`consumable`); Ready pulses gently (static with reduced motion).
 - Activation: a 400 ms character "pose" pop on the user's board edge with the skill's icon (cyan chevron frame, art bible §4); riders use the magenta streak like debuff items.
-- Per skill: Calm Skies — soft clouds drift over the stack; Mega Bomb — bigger fuse sticker, chunkier puff; Perfect Fill — bricks pop in one by one (≤ 300 ms total) then the clear; Pick & Mix — three shape cards fan out from the preview plate.
+- Per skill (motif VFX per `production/narrative/campaign-story/visual-direction.md`, 0.4–0.8 s, never over the falling piece or ghost): Calm Skies — soft clouds drift over the stack; Stitch — wool stitches pin the stack edges, buff cyan rim while active, a yarn pin pops at each blocked write; Smash — dust donut and bonk ring at the chunk, removed cubes pop in their own colours; Redraw — chalk lines redraw the preview cards, perfect-fit spots shown as chalk outlines (shape-coded, not colour only).
 - Audio events: `skill_ready`, `skill_used`, `skill_no_effect`, `skill_clash`, `skill_surge`, `skill_swap`.
 
 ## Game Feel
@@ -228,7 +270,7 @@ A skill should feel like the character's big moment: rare enough to look forward
 
 ## UI Requirements
 
-Skill button in the HUD (same thumb as the item strip, Touch Controls), Pick & Mix choice cards on the preview plate, button-state legend on the pause screen. 📌 **UX Flag — Skills**: include the skill button and Pick & Mix cards in `/ux-design hud`.
+Skill button in the HUD (same thumb as the item strip, Touch Controls), Smash chunk outline under the ghost while Ready, Redraw fit marks on the board, Stitch pin badge and remaining-time ring, button-state legend on the pause screen. No skill needs input beyond `use_skill`. 📌 **UX Flag — Skills**: covered in `design/gdd/ux/hud.md`.
 
 ## Cross-References
 
@@ -236,7 +278,8 @@ Skill button in the HUD (same thumb as the item strip, Touch Controls), Pick & M
 |---|---|
 | `design/gdd/rule-twist-framework.md` Core Rules 5–13, F1, F2 | Layer-2 rules, clamps, priority, RNG streams |
 | `docs/architecture/adr-0004-rule-twist-runtime.md` §2, §5, §7 | Rule JSON, `requires` tags, hooks, `RuleApi` |
-| `docs/architecture/adr-0011-mechanic-level-event-runtime.md` §2, §3 | `item_buff` rank 2 for skills; S4b / S4c for Perfect Fill |
+| `docs/architecture/adr-0011-mechanic-level-event-runtime.md` §2, §3 | `item_buff` rank 2 for skills; S4a held changes for Stitch; pure queries for Redraw |
+| `production/narrative/campaign-story/brief.md` §5 | Lana / Boulder / Glim and their skill hooks |
 | `docs/architecture/adr-0009-local-multiplayer.md` | Riders as attacks, host timing |
 | `docs/architecture/adr-0012-input-pipeline.md` | `use_skill` |
 | `docs/architecture/adr-0013-save-profile-settings.md` | `inventory.skills` (tokens) |
@@ -244,7 +287,7 @@ Skill button in the HUD (same thumb as the item strip, Touch Controls), Pick & M
 | `design/gdd/items.md` Core Rules 7–10 | Targeting, queued use, refund-once |
 | `design/gdd/scoring-stars.md` Core Rule 6, F1 | Combo count; star times assume no skill |
 | `design/gdd/characters-perks.md` | Character slots C1–C4, charge perks |
-| scratchpad `atoms-party.md` (WO12, IN32, IN33, EV23, WO13) | Skill-hook atoms |
+| scratchpad `atoms-party.md` (WO14, IN32, IN33, EV23, WO13) | Skill-hook atoms |
 
 ## Acceptance Criteria
 
@@ -254,9 +297,9 @@ Skill button in the HUD (same thumb as the item strip, Touch Controls), Pick & M
 4. [U] **GIVEN** `once` with `once_ready_delay_s = 15`, **THEN** the button is Ready at 15 s of play and Spent after one use.
 5. [U] **GIVEN** a skill whose self effect has no effect, **THEN** the meter / use / token is kept and `skill_no_effect` fires.
 6. [U] **GIVEN** solo play, **THEN** no rider is sent and the self effect applies.
-7. [U] **GIVEN** Perfect Fill with layers at 0.75, 0.65 and 0.5 full, **THEN** the first two are filled and cleared in S4c, the third is untouched.
-8. [U] **GIVEN** Pick & Mix with fixed seeds, **THEN** the spawn sequence after the 3 picks equals the sequence without the skill.
-9. [U] **GIVEN** Mega Bomb, **THEN** the blast covers 125 cells (clipped to the board), rocks take 3 damage, pillars are immune.
+7. [U] **GIVEN** Stitch active and a twist that moves locked cubes, **THEN** the write is vetoed and `rule_blocked {stitch}` fires; **GIVEN** a mechanic-layer shift, **THEN** it applies; **GIVEN** a queued stack flip, **THEN** it applies at the first S4a after Stitch ends; **GIVEN** an incoming Junk Rain, **THEN** no junk is added.
+8. [U] **GIVEN** Redraw with fixed seeds, **THEN** the 3 redrawn shapes differ from the ones they replace and the spawn sequence after them equals the sequence without the skill; **GIVEN** a fixed board, **THEN** `fit_spots` lists the F5 example's placements, and no mark has `new_covered_holes > 0`.
+9. [U] F4: the ghost over (4, 5) with the tallest cube at y = 7 removes the y 5–7 chunk (19 cubes), damages the rock by 1, gives no score or charge, and leaves pillars; an empty footprint is "no effect".
 10. [U] **GIVEN** IN32 and two rider skills targeting each other 500 ms apart (host time), **THEN** both fizzle; `charge` users have `q = 0.5`; a `once` user gets the use back once.
 11. [U] **GIVEN** EV23, **THEN** each player gets one free use for 6 s and their meter / once-use is unchanged.
 12. [U] **GIVEN** WO13, **THEN** skills move one seat, meters stay, Active rules finish.
@@ -265,9 +308,10 @@ Skill button in the HUD (same thumb as the item strip, Touch Controls), Pick & M
 
 ## Open Questions
 
-- **New rule-adjustable knob**: `skill.charge_rate` must be added to the framework's closed list (Core Rule 4) with owner Skills — needs a Rule-Twist Framework edit (not done here).
-- **Pick & Mix input**: three tap cards on the preview plate work on touch; gamepad / keyboard mapping (cycle + confirm) needs ADR-0012 / UX input.
+- ~~**New rule-adjustable knob**~~ Resolved 2026-10-10: `skill.charge_rate` is in the framework list (Core Rule 4); its knob JSON entry is added with the Skills build.
+- **Stitch veto rank**: `veto_rank_bonus` is new to the framework (rule 11a) and not yet in ADR-0004's rule schema (technical-director).
+- **Smash aim**: aiming with the ghost keeps one button; playtest whether players want a separate tap-to-aim on touch.
 - **Skill tokens**: are they ever sold or earned (Shop / Points), or is `consumable` only for special levels? Monetisation is undecided; no default context uses it.
 - **Campaign 3★ ease**: star times assume no skill; if 1–2 uses per level make 3★ trivial, lower `k_layer` (F2) or set `once` on short levels.
 - **Skill upgrades / mastery**: none in this design (one fixed skill per character). Revisit with Characters & Perks mastery.
-- **Systems index**: Skills needs an entry in `design/gdd/systems-index.md` (not edited in this pass).
+- ~~**Systems index**~~ Resolved 2026-10-10 (row #30).

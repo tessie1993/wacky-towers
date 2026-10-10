@@ -71,7 +71,7 @@ Merged from main (PR #11), renumbered CH-037..041 → CH-148..152 because this b
 
 | ID | Story | Title | Depends | Group | Status |
 |----|-------|-------|---------|-------|--------|
-| CH-148 | DAT-002/SIM-004 | core/model: ValidationIssue + GoalState (+ confirm SimCommand/SimEvent in model) — overlaps CH-078, CH-043 | CH-032 | M | todo |
+| CH-148 | DAT-002/SIM-004 | core/model: ValidationIssue + GoalState (+ confirm SimCommand/SimEvent in model) — overlaps CH-078, CH-043 | CH-032 | M | staged |
 | CH-149 | DAT-001 | JsonNum.whole_int extraction (refactor, gap 2) — superseded by CH-037 (applied on this branch) | CH-003, CH-008, CH-011, CH-013 | M | superseded |
 | CH-150 | RUL-001 | validate() on the four existing bases | CH-021, CH-034, CH-148 | N | todo |
 | CH-151 | RUL-001 | Bases: GoalEvaluator + TopOutPolicy — overlaps CH-043 | CH-021, CH-034, CH-148 | N | todo |

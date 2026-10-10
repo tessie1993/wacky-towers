@@ -28,23 +28,23 @@ Models: H = Haiku, S = Sonnet. RND = block-rendering-plan id folded in.
 | CH-039 | DAT-004 | meadow_01 JSON into its level folder + biomes/meadow.json | none | W1 | H | done |
 | CH-040 | INP-001 | Desktop key table — **superseded** by the PLG GUIDE mapping context (no ticket file) | — | — | — | superseded |
 | CH-042 | INP-001 | Gestures: tap / hold / drag / flick classifier | none | W1 | S | done |
-| CH-078 | SIM-001 | Move SimCommand + SimEvent to core/model (plan gap 5) | none | W1 | H | todo |
+| CH-078 | SIM-001 | Move SimCommand + SimEvent to core/model (plan gap 5) | none | W1 | H | staged |
 | CH-079 | VEW-002 | Cube mesh `.res` + import contract test (RND-01) | none | W1 | S | done |
 | CH-080 | VEW-002 | SlotMap (pure, RND-04) | none | W1 | S | done |
 | CH-034 | DAT-002 | LevelData + GameCatalog (existing ticket) | CH-022, CH-028, CH-033 | W2 | H | in-progress |
 | CH-041 | VEW-003 | ArtSet + BoardGeom (RND-03; cube scale fixes 1.03 overlap) | CH-038, CH-079 | W2 | S | todo |
 | CH-043 | RUL-001 | GoalState + GoalEvaluator + TopOutPolicy bases | CH-078 | W2 | S | todo |
-| CH-044 | SIM-002 | Spawner: weighted bag + opening set + lookahead | CH-028 | W2 | S | todo |
+| CH-044 | SIM-002 | Spawner: weighted bag + opening set + lookahead | CH-028 | W2 | S | staged |
 | CH-045 | INP-001 | GuideIntents: GUIDE actions → intent signals (desktop keys) | PLG GUIDE ticket | W3 | S | todo |
 | CH-046 | INP-002 | TouchInput Scheme A (all axes, hidden when disabled) | CH-042 | W2 | S | todo |
 | CH-081 | VEW-002 | BlockViewMath (pure, RND-05) | none | W1 | H | done |
 | CH-084 | DAT-001 | Knob additions (warning, intro, ghost alpha, controls, layer order) | none | W2 | H | todo |
 | CH-035 | SIM-001 | BoardSim skeleton (existing ticket; board_sim agent #1) | CH-034, CH-078 | W3 | S | todo |
-| CH-047 | SHP-003 | Shape bank extractor + `shape_bank.tres` + `ShapeDef.source_pivot` | CH-027, CH-028 | W3 | S | todo |
-| CH-048 | SIM-003 | ActivePiece (shape, orient, pivot, cells, up-kick count) | CH-027 | W3 | H | todo |
+| CH-047 | SHP-003 | Shape bank extractor + `shape_bank.tres` + `ShapeDef.source_pivot` | CH-027, CH-028 | W3 | S | staged |
+| CH-048 | SIM-003 | ActivePiece (shape, orient, pivot, cells, up-kick count) | CH-027 | W3 | H | staged |
 | CH-049 | DAT-002 | LevelLoader minimal + LoadResult (float weights → copies, G3) | CH-034, CH-037, CH-084 | W3 | S | todo |
-| CH-052 | RUL-001 | RuleApi read subset | CH-031, CH-034 | W3 | H | todo |
-| CH-083 | BRD-001 | Meadow content types in blocks.json (mushroom, sprout, egg, chick) | none | W3 | H | todo |
+| CH-052 | RUL-001 | RuleApi read subset | CH-031, CH-034 | W3 | H | staged |
+| CH-083 | BRD-001 | Meadow content types in blocks.json (mushroom, sprout, egg, chick) | none | W3 | H | staged |
 | CH-087 | SCO-001 | StarRater (time stars, survive stars, F1/F4 fallback, trim = warning) | CH-043 | W3 | S | todo |
 | CH-088 | SCO-001 | ScoreKeeper (clear F2, combo/drop/place F3) | none | W3 | S | todo |
 | CH-050 | BRD-003 | BoardState writes + delta (+ CH-054 same agent) | CH-031 | W4 | S | todo |
@@ -92,7 +92,7 @@ Models: H = Haiku, S = Sonnet. RND = block-rendering-plan id folded in.
 | CH-102 | MDW-004 | Mechanic entries B: mushroom_popup, build_race, wobble, fill_shape, sticky_landing | CH-077 | W12 | H | todo |
 | CH-103 | MDW-006 | Mechanic entries C: sprouts, fog, fog_ghost, topsy_tumble, hatching_eggs, mill_belt | CH-077 | W12 | H | todo |
 | CH-104 | MDW-002 | `mascot_catch` plugin (lock veto → return to spawn) | CH-092 | W13 | S | todo |
-| CH-105 | MDW-003 | Spawner per-bag piece tags (G5) | CH-044 | W13 | S | todo |
+| CH-105 | MDW-003 | Spawner per-bag piece tags (G5) | CH-044 | W13 | S | staged |
 | CH-106 | MDW-003 | `gust` twist plugin | CH-092 | W13 | S | todo |
 | CH-107 | MDW-003 | Gust telegraph presenter scene (world-anchored arrow) | CH-065 | W13 | S | todo |
 | CH-108 | MDW-003 | meadow_01..03 JSON: add mascot_catch; meadow_03 JSON | CH-101, CH-076 | W13 | H | todo |

@@ -88,13 +88,24 @@
     {
       "id": "view.yaw_offset_deg",
       "type": "scalar",
-      "default": 15.0,
+      "default": 45.0,
       "min": 0.0,
-      "max": 29.0,
-      "allows_zero": false,
+      "max": 359.0,
+      "allows_zero": true,
       "rule_adjustable": false,
       "source": "design/gdd/camera-rotate-view.md#f1-view-yaw",
-      "note": "GDD default is 45 deg, outside its own 0-29 range; 15 is the same value mod 30 (corner views at k = 0,3,6,9). TODO(design): fix GDD range or default."
+      "note": "Yaw of snap k=0; 45 puts corner views at k = 0,3,6,9 (needs yaw_offset mod 30 = 15)"
+    },
+    {
+      "id": "view.settle_ms",
+      "type": "count",
+      "default": 150,
+      "min": 0,
+      "max": 300,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/camera-rotate-view.md#tuning-knobs",
+      "note": "Settle tween after an orbit release (ADR-0014 section 3); 0 = reduced motion"
     }
   ]
 }

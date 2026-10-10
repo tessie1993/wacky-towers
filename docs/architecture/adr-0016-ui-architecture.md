@@ -153,7 +153,7 @@ The UX specs (`design/gdd/ux/`) give every screen a portrait and a landscape lay
 | `mirror` | `OrientationLayout` mirror switch (§4) | HUD rule 3 |
 | AccessKit names | Every icon-only control sets an accessibility name from a translation key (`UI_A11Y_*`). Full TalkBack support is ACC-37 LATER | P6 |
 
-Animation durations and easing come only from the UX specs or `assets/data/ui/ui.json` (e.g. squash 80 ms, pop-in 150–250 ms, resume beat 600 ms), never from script literals.
+Animation durations and easing come only from the UX specs or `assets/data/ui/ui.json` (e.g. button squash 150–250 ms everywhere (amendment 2026-10-10, user decision), pop-in 150–250 ms, resume beat 600 ms), never from script literals.
 
 ### 9. Text and translation keys
 
@@ -327,3 +327,8 @@ No production UI exists yet. Changes when this ADR is accepted:
 - ADR-0010 (depends on: stack, Back, pause, process modes), ADR-0001 (SimEvent stream), ADR-0005 (biome data, level-name keys), ADR-0007 (shape-symbol materials, danger line)
 - ADR-0012 input, ADR-0013 save/profile/settings, ADR-0014 camera/orientation/safe area, ADR-0015 audio/feedback (sibling contracts, §10)
 - `design/gdd/hud.md`, `design/gdd/menus-level-select.md`, `design/gdd/ux/*.md`, `design/accessibility-requirements.md`, `design/art/art-bible.md` §4, §7
+
+## Amendment (2026-10-10)
+
+Status unchanged (Accepted). Cross-doc fixes from `production/session-state/conflicts-open.md`:
+- Button press squash is 150–250 ms everywhere (default 180 ms, `ui-theme.md`), replacing the 80 ms example in §8.

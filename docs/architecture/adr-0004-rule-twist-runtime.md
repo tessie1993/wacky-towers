@@ -123,7 +123,7 @@ The game's promise is variety on constant blocks: wind, gravity flips (all 6 dir
 
 ### 7. RuleApi facade
 
-The only object behaviours and strategies get. Board content writes (`set_cell`, `clear_cell`, `move_cells`), `request_mask`/`request_down_axis`/`request_slot` (queued to Resolving), piece `try_translate`/`place_nearest_up`/`replace_shape`/`set_travel_dir`, queue `inject_front`/`add_to_next_bag`, goals `add_condition`, `emit(kind, data)` for visuals/audio, `knob(id)`, `param(name)`, and `rng()` (the rule's own stream, ADR-0006). Writes from `on_tick`/`on_fall_step` are buffered and applied at end of tick in priority order (GDD rule 14). No behaviour holds a reference to `BoardSim` internals.
+The only object behaviours and strategies get. Board content writes (`set_cell`, `clear_cell`, `move_cells`), `request_mask`/`request_down_axis`/`request_slot`/`request_stack_flip` (queued to Resolving; applied at S4a, ADR-0011 §3), piece `try_translate`/`place_nearest_up`/`replace_shape`/`set_travel_dir`, queue `inject_front`/`add_to_next_bag`, goals `add_condition`, `emit(kind, data)` for visuals/audio, `knob(id)`, `param(name)`, and `rng()` (the rule's own stream, ADR-0006). Writes from `on_tick`/`on_fall_step` are buffered and applied at end of tick in priority order (GDD rule 14). No behaviour holds a reference to `BoardSim` internals.
 
 ### 8. Rule instances and lifetimes
 
@@ -132,6 +132,13 @@ The only object behaviours and strategies get. Board content writes (`set_cell`,
 ### 9. Minigames
 
 Minigames are separate scenes (user decision Q2), found through `assets/data/minigames/<id>.json` (`scene`, `min_players`, `standing` types, weights). They may create their own `RuleRuntime` and `BoardSim`, or none. The framework does not constrain them.
+
+### 10. Cross-board rules (amendment 2026-10-10)
+
+Still **one `RuleRuntime` per board**. A rule that must see more than one board (M11 Pair Clear, later two-board atoms) is a `CrossBoardRule` (RefCounted, found through `PluginRegistry`, data in `mechanics/<id>.json` with `scope: "match"`) held by a match-level **`MatchCoordinator`** (pure, RefCounted, owned by the play session, one per level/match, absent on single-board levels).
+- Order: every tick the boards step in fixed board-index order; then the coordinator reads each board's `Array[SimEvent]` for that tick in the same order and runs its rules.
+- Writes: a cross-board rule never touches a board directly. It may (a) emit match events (score bonus such as `pair_clear {depth}`, applied by scoring like any event) or (b) queue a `RuleApi` request on a target board through `MatchCoordinator.request(board_index, ...)`, which that board applies at its next tick (t+1), at the normal step for the request type (structure requests at S4a).
+- Determinism: coordinator state is in `snapshot()`, folded into the match hash after the boards'; no RNG except its own `rule` stream (ADR-0006, key `match/<rule_id>`). Versus boards on separate phones never share a coordinator (ADR-0009: no lockstep); cross-board rules are single-device layouts only.
 
 ### Architecture
 
@@ -264,3 +271,9 @@ None — new code.
 | `design/gdd/level-goals-fail-states.md` | Goals | Per-level top-out, goal types | `goal.type`, `goal.top_out` slots (trim per round-2 decision) |
 | `design/gdd/twist-library.md` | Twist Library | Wind, gravity flip, invisible, spawned objects | Behaviours + `request_down_axis` (6 directions) |
 | `design/gdd/physics-mode.md` | Physics Mode | Replaces Movement, Fall, Clearing for a level | `board.kind` slot |
+
+## Amendment (2026-10-10)
+
+Status unchanged (Accepted). Cross-doc fixes from `production/session-state/conflicts-open.md`:
+- §7: `RuleApi.request_stack_flip()` (queued, applied at S4a; EV03 stack flip, island stays; ADR-0011 §3/§5).
+- §10 (new): cross-board rules run by a match-level `MatchCoordinator`; still one `RuleRuntime` per board (M11 Pair Clear).

@@ -30,7 +30,7 @@ Every mechanic atom and level event that changes the game (Pip's catch, the Mill
 | **Knowledge Risk** | LOW for the sim side: pure GDScript RefCounted, no new engine API. MEDIUM for staging: beehave 2.9.3 is a third-party GDScript addon (post-cutoff version), and its `BeehaveTree._ready()` calls `get_tree().root.get_node("BeehaveGlobalDebugger")` unconditionally outside the editor (`addons/beehave/nodes/beehave_tree.gd` lines 138 and 323) |
 | **References Consulted** | `docs/engine-reference/godot/VERSION.md`, `current-best-practices.md`; `addons/beehave/plugin.cfg` (2.9.3), `addons/beehave/nodes/beehave_tree.gd` (`ProcessThread { IDLE, PHYSICS, MANUAL }`, `tick()`, `interrupt()`, `tick_rate`), `addons/beehave/plugin.gd` (registers autoloads `BeehaveGlobalMetrics`, `BeehaveGlobalDebugger`), `addons/beehave/debug/global_debugger.gd` |
 | **Post-Cutoff APIs Used** | None in the sim. Staging: beehave 2.9.3 node API (`BeehaveTree`, `Blackboard`, composites, `ActionLeaf`/`ConditionLeaf`) |
-| **Verification Required** | (1) A `StagingTree` (subclass of `BeehaveTree`) runs with `process_thread = MANUAL` when the two beehave autoloads are stripped from a release export: the subclass overrides `_get_global_debugger()` and `_get_global_metrics()` to return a no-op stub node when the autoload is missing. Without that override the release build errors on the first tree's `_ready()`. (2) Beehave trees load and tick in a headless gdUnit run on 4.7.2. (3) Beehave trees run in an Android export (pure GDScript, so low risk). (4) `interrupt()` resets running leaves on retry without leaking `running_action` blackboard entries |
+| **Verification Required** | (1) A `StagingTree` (subclass of `BeehaveTree`) runs with `process_thread = MANUAL` in a release export where the two beehave autoloads are replaced by the no-op stubs (amendment 2026-10-10); as a second guard, the subclass overrides `_get_global_debugger()` and `_get_global_metrics()` to return a no-op stub node when the autoload is missing. Without that override the release build errors on the first tree's `_ready()`. (2) Beehave trees load and tick in a headless gdUnit run on 4.7.2. (3) Beehave trees run in an Android export (pure GDScript, so low risk). (4) `interrupt()` resets running leaves on retry without leaking `running_action` blackboard entries |
 
 ## ADR Dependencies
 
@@ -109,7 +109,7 @@ This answers the GDD's open questions:
 | S1 | cubes written | | |
 | S2 | | `on_lock` | |
 | S3 | clear routine (slot `clear.detector`, `clear.collapse`) | `on_clear` per cell | |
-| **S4a** | queued `request_down_axis` / `request_mask` / `request_slot` applied, then the stack settles | — | EV03 flip. Only here may the board's structure change |
+| **S4a** | queued `request_stack_flip` / `request_down_axis` / `request_mask` / `request_slot` applied (in that order), then the stack settles | — | EV03 flip (`request_stack_flip`: each column inverted in place, `y → h−1−y`, then empty layers removed by the slice shift; down axis, floor, island, spawn zone and camera unchanged — twist-library rule 12). Only here may the board's structure change |
 | S4b | | `on_resolve_end` (ascending F2) | content, then twists, then the mechanic |
 | **S4c** | if any S4b subscriber wrote or removed content (the `RuleApi` write buffer's dirty flag), the clear routine runs **once** more | `on_clear` | `on_resolve_end` does not run again; a layer still full waits for the next check. S4c clears count normally |
 | S5–S10 | goal, top-out, outcome, entry delay, spawn | `on_goal_check`, `on_top_out`, `on_spawn` | |
@@ -136,7 +136,7 @@ func snapshot() -> Dictionary: return {&"left": _catches_left}
 - `snapshot() -> Dictionary` (new `RuleBehaviour` virtual, default `{}`) returns all mutable state. `BoardSim.state_hash()` folds every active rule's snapshot in F2 order. A behaviour with state that it leaves out of the snapshot is a bug, and the replay test catches it.
 - State is set in `on_level_start`. A retry builds a new `BoardSim` with new behaviour instances (ADR-0010 `PlaySession.restart()`).
 - Counters count locks (only completed S1 locks) or sim ms. Never frames.
-- `RuleApi` gains the pure queries the atoms need (GDD §10): `would_clear(cells)`, `new_covered_holes(cells)`, `would_top_out(cells)`, `goal_would_meet(cells)`, `spawn_cells_free()`, plus the writes `set_piece_flag(flag)` and `return_piece_to_spawn(hold_ms)`. Queries never write and never draw RNG.
+- `RuleApi` gains the pure queries the atoms need (GDD §10): `would_clear(cells)`, `new_covered_holes(cells)`, `would_top_out(cells)`, `goal_would_meet(cells)`, `spawn_cells_free()`, plus the writes `set_piece_flag(flag)`, `return_piece_to_spawn(hold_ms)` and the queued `request_stack_flip()` (applied at S4a; amendment 2026-10-10). Queries never write and never draw RNG.
 
 ### 5. The Meadow events
 
@@ -145,8 +145,8 @@ func snapshot() -> Dictionary: return {&"left": _catches_left}
 | **Pip's catch** WO11 | `mascot_catch` (`mascot`, 1); tiers 1–3 only, rule absent from 04 | P3 veto, hold `catch_ms` with no gravity | `mascot_catch {from_cells, to_cells, hold_ms}`; `mascot_catch_spent {cells}` when K3–K7 hold but no catch is left | Pip leaps and carries the piece back inside `hold_ms`; Pip covers his eyes on `_spent` |
 | **Pip's hint** WO06 | `mascot_hint` (`mascot`, 1) | `on_spawn` | `mascot_hint {cell}` | Pip points at the cell |
 | **Gust** EV01 (the Miller's sails) | `gust` (`twist`, 3) | P1 `on_tick`; piece moved only by `try_translate` | `gust_warn {dir, at_ms}` `wind_warn_ms` ahead; `gust {dir, moved}`; `gust_dropped` | grass bends, sails spin up, Miller cranks |
-| **Topsy Tumble** EV03 (the Miller's lever) | `flip` (`twist`, 3) | due → warning (`flip_warn_ms` play time) → S4a at the first Resolving after the warning | `flip_due {axis, in_ms}`, `flip_applied {axis}` | Miller hauls the lever, countdown ring, islet turns |
-| **Mill Belt** EV05 | `mill_belt` (`mechanic`, 4) | S4b, last | `belt_windup` (lock before a shift), `belt_shift {dir, wrapped}` | Miller's lever, belt rolls |
+| **Topsy Tumble** EV03 (the Miller's lever) | `flip` (`twist`, 3) | due → warning (`flip_warn_ms` play time) → S4a at the first Resolving after the warning | `flip_due {in_ms}`, `flip_applied {h, moves}` (`moves`: from→to cells for staging) | Miller hauls the lever, countdown ring, **the stack tumbles over in place; the island stays** (amendment 2026-10-10). `flip_mode = axis` (down-axis change via `request_down_axis`) stays available to later biomes |
+| **Mill Belt** EV05 | `conveyor` (`mechanic`, 4; biome-neutral id, Meadow presents it as Mill Belt — amendment 2026-10-10) | S4b, last | `belt_windup` (lock before a shift), `belt_shift {dir, wrapped}` | Miller's lever, belt rolls |
 | **Hatching eggs** SP21 | `egg` (`content`, 2) + content types `egg`, `chick` (ADR-0002) | S3 `on_clear` bonus; S4b hatch; S4c if a chick completes a layer | `egg_bonus`, `egg_hatched {cell}`, `chick_hop {from, to}` | eggs wobble, chick hops |
 | **Picnic ants** SP31 | `ants` (`content`, 2) + content type `ant` | S3 shoo; S4b eat and move (canonical sort, one `api.rng()` draw) | `ant_shooed`, `ant_moved {from, to}`, `ant_ate`, `ant_left` | ant march, crumbs |
 
@@ -169,7 +169,7 @@ func snapshot() -> Dictionary: return {&"left": _catches_left}
 - **Intro and Results skits** (ADR-0010) run on the same trees while the sim isn't stepping. `PlaySession` waits for `StagingHost.skit_finished` (with a timeout of `intro_skit_max_ms`, a knob) before Countdown. That is the flow waiting for a skit, not the sim waiting for the view. Retry skips the skit.
 - **Retry:** `StagingHost.reset()` calls `interrupt()` on each tree and clears the blackboards.
 - **Reduced motion** (follows the OS setting): leaves pick the short variant. Gameplay timing is unchanged, because the sim never sees it (TR-game-feel-vfx-005).
-- The beehave autoloads `BeehaveGlobalMetrics` and `BeehaveGlobalDebugger` are dev-only and are stripped from release exports with the other dev autoloads (decision sheet defaults).
+- The beehave autoloads `BeehaveGlobalMetrics` and `BeehaveGlobalDebugger` are dev-only. **Release exports keep a no-op stub autoload under each name** (`src/view/staging/beehave_stub.gd`: same method names, empty bodies), so `BeehaveTree._ready()` always finds them and no tree breaks (amendment 2026-10-10, user decision). The real debugger/metrics autoloads are the ones stripped. The `StagingTree` overrides stay as a second guard.
 
 ### 8. How a level attaches staging
 
@@ -207,7 +207,7 @@ func snapshot() -> Dictionary: return {&"left": _catches_left}
 ```
  level JSON (rules + params) ─▶ RuleRuntime ─▶ BoardSim.step()  (pure, 60 Hz, sim ms)
                                    │   P3 veto ─ S1 ─ S2 ─ S3 ─ S4a ─ S4b ─ S4c ─ S5..S10
-                                   │   RuleBehaviours: mascot_catch · gust · flip · egg · ants · mill_belt
+                                   │   RuleBehaviours: mascot_catch · gust · flip · egg · ants · conveyor
                                    │        └ only via RuleApi (writes, queries, rng, emit)
                                    ▼
                           Array[SimEvent]  (mascot_catch, gust_warn, flip_due, belt_windup, ...)
@@ -371,3 +371,11 @@ Little code exists (`src/core/rules/rule_api.gd` is a stub, `src/core/rules/rule
 - ADR-0014 camera cues, ADR-0015 audio cues, ADR-0017 level maker (atoms only; trees in official scenes)
 - `design/gdd/mechanics-module.md`, `design/gdd/meadow-candidate-atoms.md`, `design/gdd/rule-twist-framework.md`, `design/gdd/level-specific-mechanics.md`, `design/gdd/twist-library.md`, `design/gdd/fall-drop-lock.md`
 - `production/levels/meadow/scene-build-sheets.md`, `production/levels/meadow/world-and-scenes.md`, `docs/architecture/architecture-modular-layout.md` §5
+
+## Amendment (2026-10-10)
+
+Status unchanged (Accepted). Cross-doc fixes from `production/session-state/conflicts-open.md`:
+- **Stack flip**: EV03 uses `RuleApi.request_stack_flip()`, applied first at S4a; each column turns over in place, island/floor/spawn/down axis/camera unchanged (twist-library rule 12). Events `flip_due {in_ms}`, `flip_applied {h, moves}`.
+- **Conveyor id**: rule id `mill_belt` → biome-neutral `conveyor`; Meadow presents it as Mill Belt.
+- **Beehave release**: no-op stub autoloads named `BeehaveGlobalMetrics` / `BeehaveGlobalDebugger` ship in release; only the real debug autoloads are stripped.
+- **CV17 clear check without a lock (§3).** A structural `ControlVerb` command that changes board content without a lock (e.g. `layer_twist`) is applied at P0 and marks the tick `resolve_without_lock`. That tick then runs S3 (clear routine) → S4a → S4b → S4c → S5–S7 in Resolving, skipping P3, S1, S2 and S8–S10 (no `on_lock`, no lock counters, no spawn). The resolve-sequence test gains this path.

@@ -141,10 +141,11 @@ A crash between any two steps always leaves at least one valid copy. Load order:
 ### 5. Reserved inventory (design TBD)
 
 ```json
-"wallet":    { "points": 0 },
+"wallet":    { "stars": 0 },
 "inventory": { "perks": {}, "potions": {}, "skills": {} }
 ```
 
+- **Shop currency = stars (amendment 2026-10-10, user decision).** `wallet.stars` is a per-profile *spendable* balance, separate from the earned per-level stars in `levels`. When `ProgressRecord.apply` raises a level's stars, the gain (`new − old`, never negative) is added to `wallet.stars` in the same write. Spending only lowers `wallet.stars` and never touches `levels`, so earned stars (unlocks, star totals) never decrease. The balance is an `int` clamped at ≥ 0; a spend that would go below 0 is refused.
 - These exist from schema 1 so the first real design does not need a migration just to add them. Each map is `item_id → Dictionary`. `SaveStore` treats the inner dictionaries as opaque and stores whatever the owning system puts there. The owning system (Points, Perks, Potions, Skills, none designed yet) defines the inner fields and their migration when it lands.
 - Rules fixed now, so later designs cannot break the save: ids are stable `StringName`s from data files (never display names). Counts are `int`. Nothing in these maps is computed from wall time. A skill's use rule (charge meter / once per level / consumable, decision sheet) lives in the skill's **data**, and only the player's ownership and count live here.
 - **Monetisation seam**: there is none in the save. Any future purchase record would be a new `kind` file with its own schema, so receipts never mix with progress.
@@ -159,7 +160,8 @@ A crash between any two steps always leaves at least one valid copy. Load order:
   ```
   `slots` always has exactly 4 entries, and `null` means empty. `last_used` is a slot number or `null`.
 - `profile_id` is 32 hex characters from `Crypto.generate_random_bytes(16)`, not the slot number, so profiles from two devices never collide when merged later (§8).
-- **The index is the single source of truth.** A slot folder that the index does not list is an orphan left by a crash. It is deleted at boot. A slot the index lists whose folder is missing loads fresh defaults. All index changes use the atomic write from §3.
+- **The index is the single source of truth — while it is readable.** A slot folder that a *valid* index does not list is an orphan left by a crash. It is deleted at boot. A slot the index lists whose folder is missing loads fresh defaults. All index changes use the atomic write from §3.
+- **Unreadable index = rebuild, never clean up** (amendment 2026-10-10, `design/gdd/ux/loading-and-save-error.md`). When `index.json` loads as `recovered = &"fresh"` (main, `.bak` and `.tmp` all invalid), boot **skips orphan cleanup entirely** and rebuilds the index from the slot folders: each `slot_<n>/` whose `progress.json` (or its `.bak`) is valid becomes an entry with the `profile_id` stored in that file; the name falls back to a translated default (`UI_PROFILE_DEFAULT_NAME`, "Player n+1"), color/badge to defaults; `last_used = null` so profile select shows. The rebuilt index is written atomically, then the normal fresh-start/backup notice rules apply. A slot folder with no valid file is left on disk untouched (kept for bug reports), not deleted.
 - **Create**: uses the lowest empty slot. If none is free, the create button is disabled, so a 5th profile can never be made (AC 5). Write order: the slot's `progress.json` and `settings.json` are written first (defaults, with the per-profile settings seeded from the current device's choices), then the index. A crash in between leaves an orphan folder, which boot cleans up.
 - **Rename**: changes the index only, in one atomic write. The name is trimmed, control characters are stripped, it must be 1–12 characters (`profile_name_length` knob), and it must not match another slot's name case-insensitively. User-typed names are shown as typed and never pass through translation.
 - **Delete**: needs a confirmation that names the profile and what is lost ("Mia: 23 ★ and 9 levels"). It is allowed only from the profile screens, never while a `PlaySession` exists. Order: (1) clear the slot in the index (atomic), (2) remove the slot folder. A crash between the steps leaves an orphan, which boot cleans up, so a deleted profile can never come back half-there. Deleting the `last_used` slot sets `last_used = null`. Deleting the active profile first switches to "no profile", then shows profile select.
@@ -380,6 +382,7 @@ No save code exists yet. This is schema 1. Follow-up edits to other files, not m
 - [ ] [U] `ProgressRecord.apply`: ★★ then ★ keeps ★★ (Scoring AC 4). A new `level_hash` with fewer stars keeps the old stars and hash. Equal stars with a faster time updates `best_ms`. `best_score` is the max on its own.
 - [ ] [U] `SettingsStore`: out-of-range values clamp. Unknown values fall back to defaults. `reduced_motion: "system"` follows an injected OS query.
 - [ ] [U] Guest (`active_profile() == null`): no `SaveIO.write_text` call happens.
+- [ ] [U] `ProfileStore`: with `index.json` + `.bak` corrupt and 3 valid slot folders, boot deletes nothing and the rebuilt index lists those 3 `profile_id`s with `last_used = null`.
 - [ ] [U] `ProfileStore`: 4 creates fill slots 0–3 and a 5th returns -1. Each slot keeps separate progress and settings (Save & Profile AC 5). A duplicate or empty rename is rejected. Delete interrupted after the index write leaves no profile, and boot removes the orphan folder. `needs_profile_select()` is true on a fresh install and after deleting the last-used slot, and false otherwise.
 - [ ] [U] Changing a volume in profile 0 and switching to profile 1 keeps the volume (device-wide). Changing `relaxed_timing` in profile 0 does not affect profile 1.
 - [ ] [I] headless: win meadow_01, restart the app, and the stars and settings are restored. A save request during `PLAYING` is deferred to the result.
@@ -389,3 +392,9 @@ No save code exists yet. This is schema 1. Follow-up edits to other files, not m
 ## Related
 - ADR-0001 (determinism: relaxed timing applied at construction), ADR-0004 (`relaxed_time_scale` knob), ADR-0005 (`level_hash`, level ids), ADR-0010 (`app_backgrounded`, result fan-out, no saves in play), ADR-0012 (remap `to_dict/from_dict`), ADR-0015 (audio buses), ADR-0016 (settings/profile screens, older-version marker)
 - `design/gdd/save-profile.md`, `design/gdd/scoring-stars.md`, `design/gdd/ux/settings.md`, `design/gdd/level-data-definition.md`, `design/accessibility-requirements.md` (ACC-02, ACC-40, ACC-50)
+
+## Amendment (2026-10-10)
+
+Status unchanged (Accepted). Cross-doc fixes from `production/session-state/conflicts-open.md`:
+- **§6 data-loss fix**: an unreadable `index.json` (recovered fresh) skips orphan cleanup and rebuilds the index from valid slot files (`profile_id` from each file); nothing is deleted (`design/gdd/ux/loading-and-save-error.md`).
+- **§5 shop currency = stars**: `wallet.stars` spendable balance per profile, credited with each level's star gain, reduced only by spending; earned per-level stars never decrease.
