@@ -1,0 +1,53 @@
+{
+ "_doc": "TouchInput layouts (ADR-0012 s4). Values are viewport-fraction centres for a right-handed player; the left-hand mirror flips x in code. one_hand_left = one_hand + mirror. Slots missing from a block are not shown.",
+ "presets": {
+  "buttons": {
+   "landscape": {
+    "move_up": [0.10, 0.58], "move_down": [0.10, 0.88], "move_left": [0.04, 0.73], "move_right": [0.16, 0.73],
+    "spin_left": [0.62, 0.50], "spin_right": [0.72, 0.50],
+    "tilt_left": [0.62, 0.68], "tilt_right": [0.72, 0.68],
+    "roll_left": [0.62, 0.86], "roll_right": [0.72, 0.86],
+    "soft": [0.91, 0.62], "hard": [0.91, 0.86],
+    "view_left": [0.42, 0.09], "view_right": [0.58, 0.09], "restart": [0.06, 0.09], "pause": [0.94, 0.09]
+   },
+   "portrait": {
+    "move_up": [0.14, 0.76], "move_down": [0.14, 0.94], "move_left": [0.05, 0.85], "move_right": [0.23, 0.85],
+    "spin_left": [0.58, 0.70], "spin_right": [0.72, 0.70],
+    "tilt_left": [0.58, 0.82], "tilt_right": [0.72, 0.82],
+    "roll_left": [0.58, 0.94], "roll_right": [0.72, 0.94],
+    "soft": [0.90, 0.76], "hard": [0.90, 0.92],
+    "view_left": [0.62, 0.58], "view_right": [0.78, 0.58], "restart": [0.08, 0.05], "pause": [0.92, 0.05]
+   }
+  },
+  "gestures": {
+   "landscape": {
+    "roll_left": [0.62, 0.86], "roll_right": [0.72, 0.86],
+    "soft": [0.91, 0.62], "hard": [0.91, 0.86],
+    "view_left": [0.42, 0.09], "view_right": [0.58, 0.09], "restart": [0.06, 0.09], "pause": [0.94, 0.09]
+   },
+   "portrait": {
+    "roll_left": [0.58, 0.94], "roll_right": [0.72, 0.94],
+    "soft": [0.90, 0.76], "hard": [0.90, 0.92],
+    "view_left": [0.62, 0.58], "view_right": [0.78, 0.58], "restart": [0.08, 0.05], "pause": [0.92, 0.05]
+   }
+  },
+  "one_hand": {
+   "landscape": {
+    "move_up": [0.62, 0.52], "move_down": [0.62, 0.90], "move_left": [0.55, 0.71], "move_right": [0.69, 0.71],
+    "spin_left": [0.78, 0.45], "spin_right": [0.88, 0.45],
+    "tilt_left": [0.78, 0.65], "tilt_right": [0.88, 0.65],
+    "roll_left": [0.78, 0.85], "roll_right": [0.88, 0.85],
+    "soft": [0.96, 0.57], "hard": [0.96, 0.80],
+    "view_left": [0.42, 0.09], "view_right": [0.58, 0.09], "restart": [0.06, 0.09], "pause": [0.94, 0.09]
+   },
+   "portrait": {
+    "move_up": [0.50, 0.68], "move_down": [0.50, 0.94], "move_left": [0.40, 0.81], "move_right": [0.60, 0.81],
+    "spin_left": [0.72, 0.60], "spin_right": [0.88, 0.60],
+    "tilt_left": [0.72, 0.74], "tilt_right": [0.88, 0.74],
+    "roll_left": [0.72, 0.88], "roll_right": [0.88, 0.88],
+    "soft": [0.94, 0.50], "hard": [0.94, 0.94],
+    "view_left": [0.62, 0.50], "view_right": [0.78, 0.50], "restart": [0.08, 0.05], "pause": [0.92, 0.05]
+   }
+  }
+ }
+}

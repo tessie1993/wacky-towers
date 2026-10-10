@@ -25,7 +25,7 @@
 |---|---|---|
 | Path | Winding **vertical** path, 01 at the bottom, 10 at the top; scrolls vertically; 4–5 islands visible | Winding **horizontal** path, 01 left, 10 right; scrolls horizontally; 5–6 visible |
 | Bonus island | Floats off the path beside 07–08 | Floats above the path near 07–08 |
-| Top bar (safe area) | ◀ back (Title) left · biome star total `★ 17 / 30` centre · ⚙ right | Same |
+| Top bar (safe area) | ◀ back (Title) left, then the **profile chip** (badge + name, 48 pt tall, [profile-select.md](profile-select.md)) · biome star total `★ 17 / 30` centre · ⚙ right | Same |
 Each island hit area ≥ 72 pt round; labels: level number on a parchment tag (digits), stars + time under it. Auto-scroll centres the wizard's island on entry.
 
 ## Interactions
@@ -38,6 +38,7 @@ Each island hit area ≥ 72 pt round; labels: level number on a parchment tag (d
 | Keys / pad | ◀ ▶ (L) or ▲ ▼ (P) step along islands in order, bonus reached by the perpendicular direction from 07–08; A/Enter = open |
 | Back | Title |
 | ⚙ | Settings overlay |
+| Profile chip | Profile select (List, focus on the active card); back returns here. Switching profile reloads the map for that save |
 Drag vs tap: a touch that moves > 12 pt is a scroll, never a tap (Touch F2 dead zone).
 
 ## Edge cases
@@ -56,5 +57,6 @@ Drag vs tap: a touch that moves > 12 pt is a scroll, never a tap (Touch F2 dead 
 3. [I] At 20 meadow ★ the bonus opens; bonus stars do not count toward the 15★ bank gate.
 4. [I] Any open island → Level intro in 1 tap; Play in 2.
 5. [I] P and L: every island ≥ 72 pt hit area, nothing outside the safe area; state readable in greyscale (lock, !, star shapes).
-6. [I] Keyboard-only and gamepad-only can reach every island, bonus, back and ⚙.
+6. [I] Keyboard-only and gamepad-only can reach every island, bonus, back, the profile chip and ⚙.
+8. [I] The profile chip shows the active profile's badge and name, is ≥ 48 pt tall inside the safe area, and opens Profile select; after a switch the map shows the new profile's stars.
 7. [I] A 20 pt drag on an island scrolls and does not open it.

@@ -1,5 +1,7 @@
 # Coding chunks — batch 4: real first playable (meadow_01), then all of Meadow (CH-037..CH-147)
 
+> **NO TESTS (user rule 2026-10-10).** Ignore every "tests first", "Tests to write FIRST", gdUnit and test-file instruction in this file and in the tickets. Writers write game code only; the integrator proves each chunk in the editor (script eval + `logs_read`, or run the scene + screenshot). New tickets: `README-batch5.md`.
+
 Lead: godot-specialist (fresh lead, 2026-10-10). Source: `production/orchestration/core-loop-orchestration-plan.md` (CH-037..077 numbers kept),
 `docs/architecture/architecture-modular-layout.md` (paths), `orchestration-playbook.md` (wave size, merges, gates),
 `block-rendering-plan.md` RND-01..08 (folded below), `production/levels/meadow/coder-handoff.md` (levels 02–10).
@@ -28,35 +30,35 @@ Models: H = Haiku, S = Sonnet. RND = block-rendering-plan id folded in.
 | CH-039 | DAT-004 | meadow_01 JSON into its level folder + biomes/meadow.json | none | W1 | H | done |
 | CH-040 | INP-001 | Desktop key table — **superseded** by the PLG GUIDE mapping context (no ticket file) | — | — | — | superseded |
 | CH-042 | INP-001 | Gestures: tap / hold / drag / flick classifier | none | W1 | S | done |
-| CH-078 | SIM-001 | Move SimCommand + SimEvent to core/model (plan gap 5) | none | W1 | H | staged |
+| CH-078 | SIM-001 | Move SimCommand + SimEvent to core/model (plan gap 5) | none | W1 | H | done |
 | CH-079 | VEW-002 | Cube mesh `.res` + import contract test (RND-01) | none | W1 | S | done |
 | CH-080 | VEW-002 | SlotMap (pure, RND-04) | none | W1 | S | done |
 | CH-034 | DAT-002 | LevelData + GameCatalog (existing ticket) | CH-022, CH-028, CH-033 | W2 | H | in-progress |
 | CH-041 | VEW-003 | ArtSet + BoardGeom (RND-03; cube scale fixes 1.03 overlap) | CH-038, CH-079 | W2 | S | todo |
-| CH-043 | RUL-001 | GoalState + GoalEvaluator + TopOutPolicy bases | CH-078 | W2 | S | todo |
-| CH-044 | SIM-002 | Spawner: weighted bag + opening set + lookahead | CH-028 | W2 | S | staged |
+| CH-043 | RUL-001 | GoalState + GoalEvaluator + TopOutPolicy bases | CH-078 | W2 | S | superseded by CH-151 |
+| CH-044 | SIM-002 | Spawner: weighted bag + opening set + lookahead | CH-028 | W2 | S | done |
 | CH-045 | INP-001 | GuideIntents: GUIDE actions → intent signals (desktop keys) | PLG GUIDE ticket | W3 | S | todo |
-| CH-046 | INP-002 | TouchInput Scheme A (all axes, hidden when disabled) | CH-042 | W2 | S | todo |
+| CH-046 | INP-002 | TouchInput Scheme A (all axes, hidden when disabled) | CH-042 | W2 | S | staged |
 | CH-081 | VEW-002 | BlockViewMath (pure, RND-05) | none | W1 | H | done |
-| CH-084 | DAT-001 | Knob additions (warning, intro, ghost alpha, controls, layer order) | none | W2 | H | todo |
+| CH-084 | DAT-001 | Knob additions (warning, intro, ghost alpha, controls, layer order) | none | W2 | H | done |
 | CH-035 | SIM-001 | BoardSim skeleton (existing ticket; board_sim agent #1) | CH-034, CH-078 | W3 | S | todo |
-| CH-047 | SHP-003 | Shape bank extractor + `shape_bank.tres` + `ShapeDef.source_pivot` | CH-027, CH-028 | W3 | S | staged |
-| CH-048 | SIM-003 | ActivePiece (shape, orient, pivot, cells, up-kick count) | CH-027 | W3 | H | staged |
-| CH-049 | DAT-002 | LevelLoader minimal + LoadResult (float weights → copies, G3) | CH-034, CH-037, CH-084 | W3 | S | todo |
-| CH-052 | RUL-001 | RuleApi read subset | CH-031, CH-034 | W3 | H | staged |
-| CH-083 | BRD-001 | Meadow content types in blocks.json (mushroom, sprout, egg, chick) | none | W3 | H | staged |
+| CH-047 | SHP-003 | Shape bank extractor + `shape_bank.tres` + `ShapeDef.source_pivot` | CH-027, CH-028 | W3 | S | done |
+| CH-048 | SIM-003 | ActivePiece (shape, orient, pivot, cells, up-kick count) | CH-027 | W3 | H | done |
+| CH-049 | DAT-002 | LevelLoader minimal + LoadResult (float weights → copies, G3) | CH-034, CH-037, CH-084 | W3 | S | staged |
+| CH-052 | RUL-001 | RuleApi read subset | CH-031, CH-034 | W3 | H | done |
+| CH-083 | BRD-001 | Meadow content types in blocks.json (mushroom, sprout, egg, chick) | none | W3 | H | done |
 | CH-087 | SCO-001 | StarRater (time stars, survive stars, F1/F4 fallback, trim = warning) | CH-043 | W3 | S | todo |
 | CH-088 | SCO-001 | ScoreKeeper (clear F2, combo/drop/place F3) | none | W3 | S | todo |
-| CH-050 | BRD-003 | BoardState writes + delta (+ CH-054 same agent) | CH-031 | W4 | S | todo |
-| CH-054 | BRD-003 | BoardState.shift_layers (with CH-050) | CH-050 | W4 | S | todo |
-| CH-051 | SIM-003 | Movement translate / drop / resting, 3D (+ CH-053 same agent) | CH-031, CH-048 | W4 | S | todo |
-| CH-053 | SIM-003 | Movement rotate X/Y/Z + kick table F2 incl. up-kick budget (with CH-051) | CH-051 | W4 | S | todo |
+| CH-050 | BRD-003 | BoardState writes + delta (+ CH-054 same agent) | CH-031 | W4 | S | done |
+| CH-054 | BRD-003 | BoardState.shift_layers (with CH-050) | CH-050 | W4 | S | done |
+| CH-051 | SIM-003 | Movement translate / drop / resting, 3D (+ CH-053 same agent) | CH-031, CH-048 | W4 | S | staged |
+| CH-053 | SIM-003 | Movement rotate X/Y/Z + kick table F2 incl. up-kick budget (with CH-051) | CH-051 | W4 | S | staged |
 | CH-055 | DAT-002 | CatalogLoader + CatalogResult | CH-049, CH-038, CH-047, CH-022, CH-083 | W4 | S | todo |
-| CH-059 | RUL-003 | `top` arrival plugin | CH-052, CH-047 | W4 | S | todo |
+| CH-059 | RUL-003 | `top` arrival plugin | CH-052, CH-047 | W4 | S | staged |
 | CH-061 | RUL-003 | `clear_n` goal + `rescue` + `lose` top-out plugins | CH-043, CH-052, CH-050 | W4 | S | todo |
 | CH-062 | UI-001 | HUD + result panel (stars, time, score) | CH-078 | W4 | S | todo |
-| CH-056 | VEW-002 | BoardView MultiMesh greybox (RND-06) | CH-041, CH-050, CH-080, CH-081 | W5 | S | todo |
-| CH-057 | VEW-003 | PieceView + ghost (RND-08) | CH-041, CH-047, CH-048 | W5 | S | todo |
+| CH-056 | VEW-002 | BoardView MultiMesh greybox (RND-06) | CH-041, CH-050, CH-080, CH-081 | W5 | S | staged |
+| CH-057 | VEW-003 | PieceView + ghost (RND-08) | CH-041, CH-047, CH-048 | W5 | S | staged |
 | CH-058 | APP-001 | BoardController (fixed tick, intents → world commands via the camera) | CH-035, CH-045, CH-046, PLG camera ticket | W5 | S | todo |
 | CH-060 | RUL-003 | `layer` + `none` detectors + `slice` collapse | CH-052, CH-054 | W5 | S | todo |
 | CH-064 | SIM-003 | BoardSim spawn / countdown / gravity / soft drop / move (board_sim #2) | CH-035, CH-044, CH-051, CH-059, CH-049 | W5 | S | todo |

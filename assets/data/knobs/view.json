@@ -31,6 +31,17 @@
       "source": "design/gdd/camera-rotate-view.md#f4-turn-animation-and-fade"
     },
     {
+      "id": "view.ghost_alpha",
+      "type": "scalar",
+      "default": 0.35,
+      "min": 0.1,
+      "max": 1.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "RND-08",
+      "note": "Landing-ghost opacity"
+    },
+    {
       "id": "view.margin",
       "type": "scalar",
       "default": 0.5,
@@ -65,6 +76,17 @@
       "source": "design/gdd/camera-rotate-view.md#overview"
     },
     {
+      "id": "view.settle_ms",
+      "type": "count",
+      "default": 150,
+      "min": 0,
+      "max": 300,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/camera-rotate-view.md#tuning-knobs",
+      "note": "Settle tween after an orbit release (ADR-0014 section 3); 0 = reduced motion"
+    },
+    {
       "id": "view.side_on_min_deg",
       "type": "count",
       "default": 45,
@@ -95,17 +117,6 @@
       "rule_adjustable": false,
       "source": "design/gdd/camera-rotate-view.md#f1-view-yaw",
       "note": "Yaw of snap k=0; 45 puts corner views at k = 0,3,6,9 (needs yaw_offset mod 30 = 15)"
-    },
-    {
-      "id": "view.settle_ms",
-      "type": "count",
-      "default": 150,
-      "min": 0,
-      "max": 300,
-      "allows_zero": true,
-      "rule_adjustable": false,
-      "source": "design/gdd/camera-rotate-view.md#tuning-knobs",
-      "note": "Settle tween after an orbit release (ADR-0014 section 3); 0 = reduced motion"
     }
   ]
 }

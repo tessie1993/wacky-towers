@@ -56,6 +56,19 @@
       "note": ""
     },
     {
+      "id": "control.fog_ghost_preview",
+      "type": "choice",
+      "default": "faint",
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [
+        "none",
+        "faint",
+        "full"
+      ],
+      "source": "handoff G6"
+    },
+    {
       "id": "control.hold_ms",
       "type": "count",
       "default": 200,
@@ -76,6 +89,14 @@
       "rule_adjustable": false,
       "source": "design/gdd/touch-controls.md#tuning-knobs",
       "note": ""
+    },
+    {
+      "id": "control.invert_spin",
+      "type": "flag",
+      "default": false,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "rules-audit M1"
     },
     {
       "id": "control.kick_enabled",
@@ -133,6 +154,14 @@
       "note": ""
     },
     {
+      "id": "control.left_hand_mirror",
+      "type": "flag",
+      "default": false,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/touch-controls.md rule 5"
+    },
+    {
       "id": "control.max_up_kicks_per_piece",
       "type": "count",
       "default": 2,
@@ -177,6 +206,14 @@
       "note": ""
     },
     {
+      "id": "control.rotate_repeat",
+      "type": "flag",
+      "default": false,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "rules-audit T3"
+    },
+    {
       "id": "control.rotation_axes_enabled",
       "type": "structure",
       "default": [
@@ -199,6 +236,18 @@
       "rule_adjustable": false,
       "source": "design/gdd/touch-controls.md#formulas",
       "note": ""
+    },
+    {
+      "id": "control.touch_scheme",
+      "type": "choice",
+      "default": "a",
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [
+        "a",
+        "b"
+      ],
+      "source": "design/gdd/touch-controls.md schemes"
     },
     {
       "id": "control.verb",

@@ -40,7 +40,7 @@ Level Goals & Fail States turns the board's reports into a result. It reads the 
    Other proposals (shake, bonk, hearts; Mechanics Catalog §6) are added here when a mode first needs them.
 10c. **Lose.** The first top-out loses the level (or puts the player **out** in versus). `warnings_max` and `rescue_margin` are inert. It behaves like `rescue` with `warnings_max = 0` and exists so modes can say so plainly.
 10b. **Trim** (default for No-Clear Build Race and Fill the Target Shape; user decision 2026-10-09: build races have no rescue wipe). After a resolve with `over_limit()` true, every content at or above `H_play` is removed with a visible pop-off-the-island effect. Trimmed cubes are not cleared: no `layers_cleared`, no score, no `on_clear`. No warning is used and the level is **never lost to a top-out**; the cost is time (and the ★★★ condition, Scoring & Stars). The goal is checked before the trim (rule 10), so a lock that reaches the target and pokes over the limit wins. Because the spawn zone is empty after a trim, spawn blocked can only come from content a trim cannot remove (see Edge Cases).
-10c. **Out of pieces** (puzzle levels with a `fixed_list`, Spawner rule 5b): if the last listed piece has resolved and the goal is not met, the level is lost. No warning is used; retry is free.
+10d. **Out of pieces** (puzzle levels with a `fixed_list`, Spawner rule 5b): if the last listed piece has resolved and the goal is not met, the level is lost. No warning is used; retry is free.
 11. A level may add **extra fail conditions** from Level Data (for example a time limit, or "an object reached the edge"). Each is checked after every resolve; time limits on every sim tick against `level_ms`. Extra fail conditions do not use warnings unless the level says so.
 
 **Level flow and clock**
@@ -170,7 +170,7 @@ The goal_progress formula is defined as:
 - **If a Survive level's timer ends during a resolve**: the result waits until the resolve ends, then the win counts unless a top-out with no warning happened in that resolve.
 - **If the app is paused or backgrounded**: the clock stops.
 - **If the player quits**: counted as a loss for that attempt, with no rescue.
-- **If two players meet the goal close together** (versus): the lower round clock (sim ms) wins; an exact sim-ms tie goes to the message that reached the host first (ADR-0009 §5).
+- **If two players meet the goal close together** (versus): the lower round clock (sim ms) wins; an exact sim-ms tie is a **split win** (user decision 2026-10-10): both players win the round, and in tournaments both get the round's points (Tournament Flow). This replaces the "first message at the host" tie-break of ADR-0009 §5 (flag for technical-director).
 - **If every remaining player goes out at the same round clock** (versus): the one with more layers cleared wins; then the lower stack; then a shared result (Tournament Flow may break it).
 - **If a twist adds an extra fail condition that triggers during a warning**: it is checked after the warning ends.
 

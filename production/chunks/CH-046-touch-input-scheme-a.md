@@ -6,7 +6,7 @@ disabled axes are hidden, not greyed (Touch GDD rule 9).
 **Depends:** CH-042 · **Parallel-safe with:** W2
 **Before starting:** read `production/chunks/README-plugins.md` (if it exists). If a PLG GUIDE ticket routes on-screen buttons through GUIDE
 actions, emit through that instead of the signals below; if unclear: `blocked (GUIDE touch route)`.
-**Files:** new `src/game/input/touch_input.gd`, `src/game/input/touch_input.tscn`, `tests/unit/game/touch_input_test.gd`.
+**Files:** new `src/game/input/touch_input.gd`, `src/game/input/touch_input.tscn`.
 
 ## API (intent contract, README-batch4)
 ```gdscript
@@ -34,7 +34,8 @@ TiltAway,TiltToward,RollLeft,RollRight}` (bottom-right diamond, roll arcs above)
   before timeout `hard_drop_requested()`, after `soft_drop_changed(false)`.
 - View buttons -> `rotate_view_requested(-1 / +1)`.
 
-## Tests first (`touch_input_test.gd`; instance the scene with `auto_free`, `monitor_signals`)
+## Expected results (no tests)
+User rule 2026-10-10: NO TESTS. Do not write test files. These are the expected results: the integrator checks them in the editor (godot-ai script eval or a scratch script, read with `logs_read`) after moving the file in.
 1. `test_dpad_dirs` — press Left/Up -> (-1,0) / (0,-1).
 2. `test_rotation_buttons_all_axes` — each of 6 buttons emits its (axis, dir).
 3. `test_disabled_axes_hidden` — `set_enabled_axes(["spin"])`: Tilt*/Roll* not visible, Spin* visible.
@@ -42,7 +43,7 @@ TiltAway,TiltToward,RollLeft,RollRight}` (bottom-right diamond, roll arcs above)
 5. `test_inactive_emits_nothing`.
 No orphans (exit 101 is a fail).
 
-## Run / Done when
-`--import`, `-a res://tests/unit/game`. README "Done when"; 5 tests green.
-**Verify in editor:** run the scene, screenshot `production/qa/evidence/CH-046.png` (all axes) and `CH-046-spin-only.png`.
+## Run
+Integrator: move staged files in, rescan, `logs_read` must show no parse errors or class-name clashes, then check the cases above. No gdUnit run.
+
 **Out of scope:** Scheme B (CH-098), portrait/mirror (CH-099), repeat/buffer (CH-095), pause button (HUD).

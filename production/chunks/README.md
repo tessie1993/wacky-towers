@@ -1,5 +1,7 @@
 # Coding chunks (tickets)
 
+> **NO TESTS (user rule 2026-10-10).** Ignore every "tests first", "Tests to write FIRST", gdUnit and test-file instruction in this file and in the tickets. Writers write game code only; the integrator proves each chunk in the editor (script eval + `logs_read`, or run the scene + screenshot). New tickets: `README-batch5.md`.
+
 Tiny, self-contained coding tickets. One Sonnet coder takes one ticket, writes the
 tests first, then the code, runs the suite, and flips the status.
 Source of truth: `docs/architecture/implementation-plan.md` (class names, file paths,
@@ -18,7 +20,7 @@ FND-001 (RNG, `Seeds`) is done.
 | CH-006 | BRD-001 | AsciiGrid.parse_layers | CH-005 | B | done |
 | CH-007 | BRD-001 | BoardSpec + BoardSpecResult: parse part 1 | CH-002, CH-003, CH-004, CH-005 | B | done |
 | CH-008 | BRD-001 | BoardSpec.parse part 2: contents + anchor | CH-006, CH-007 | C | done |
-| CH-009 | BRD-001 | BoardSpec fuzz test | CH-008 | D | todo |
+| CH-009 | BRD-001 | BoardSpec fuzz test | CH-008 | D | dropped (no-tests rule) |
 
 Group A = 5 tickets in parallel; B = 2 in parallel; then C, then D. No two tickets in
 the same group edit the same file. A ticket may start as soon as its own deps are `done`.
@@ -71,11 +73,11 @@ Merged from main (PR #11), renumbered CH-037..041 → CH-148..152 because this b
 
 | ID | Story | Title | Depends | Group | Status |
 |----|-------|-------|---------|-------|--------|
-| CH-148 | DAT-002/SIM-004 | core/model: ValidationIssue + GoalState (+ confirm SimCommand/SimEvent in model) — overlaps CH-078, CH-043 | CH-032 | M | staged |
+| CH-148 | DAT-002/SIM-004 | core/model: ValidationIssue + GoalState (+ confirm SimCommand/SimEvent in model) — overlaps CH-078, CH-043 | CH-032 | M | done |
 | CH-149 | DAT-001 | JsonNum.whole_int extraction (refactor, gap 2) — superseded by CH-037 (applied on this branch) | CH-003, CH-008, CH-011, CH-013 | M | superseded |
-| CH-150 | RUL-001 | validate() on the four existing bases | CH-021, CH-034, CH-148 | N | todo |
-| CH-151 | RUL-001 | Bases: GoalEvaluator + TopOutPolicy — overlaps CH-043 | CH-021, CH-034, CH-148 | N | todo |
-| CH-152 | RUL-001 | Bases: ControlVerb + LayoutKind | CH-021, CH-032, CH-034, CH-148 | N | todo |
+| CH-150 | RUL-001 | validate() on the four existing bases | CH-021, CH-034, CH-148 | N | staged |
+| CH-151 | RUL-001 | Bases: GoalEvaluator + TopOutPolicy — overlaps CH-043 | CH-021, CH-034, CH-148 | N | staged |
+| CH-152 | RUL-001 | Bases: ControlVerb + LayoutKind | CH-021, CH-032, CH-034, CH-148 | N | staged |
 
 ## Plan gaps / deviations (for the architecture lead)
 

@@ -3,7 +3,7 @@
 **Story:** DAT-001 · **Model:** Haiku · **Wave:** W1 · **Mode:** direct
 **Goal:** plan gap 2 decision: one public helper replaces three copies of the whole-number rule.
 **Depends:** none (CH-008 done) · **Parallel-safe with:** W1 (no other W1 ticket touches these files)
-**Files:** new `src/core/board/json_num.gd`, `tests/unit/board_grid/json_num_test.gd`;
+**Files:** new `src/core/board/json_num.gd`;
 edit `src/core/board/board_spec.gd` (delete `_whole_int`, `MAX_SAFE_INT`), `src/core/rules/knob_defs.gd` (delete `_whole_int`),
 `src/data/json_reader.gd` (delete `whole_int`, `MAX_SAFE_INT`).
 
@@ -22,10 +22,12 @@ static func whole_int(v: Variant) -> Variant
 - `KnobDefs` has `_MAX_WHOLE` (2^53) for its own float check: keep it only if a caller still needs it, else delete. If a knob test needs a
   value above int32, stop: `blocked (knob > int32)`.
 
-## Tests first (`json_num_test.gd`)
+## Expected results (no tests)
+User rule 2026-10-10: NO TESTS. Do not write test files. These are the expected results: the integrator checks them in the editor (godot-ai script eval or a scratch script, read with `logs_read`) after moving the file in.
 1. `test_accepts_whole` — 0, 4, -3, 4.0, -2.0, 2147483647.0 -> ints.
 2. `test_rejects` — 4.5, "4", true, null, NAN, INF, 2147483648.0, -2147483649.0 -> null.
 
-## Run / Done when
-`--import`, then `-a res://tests/unit/board_grid`, `data`, `rules`. README "Done when"; all three folders green; `grep` above finds only `JsonNum`.
+## Run
+Integrator: move staged files in, rescan, `logs_read` must show no parse errors or class-name clashes, then check the cases above. No gdUnit run.
+
 **Out of scope:** any behaviour change in callers.

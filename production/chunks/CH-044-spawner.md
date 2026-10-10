@@ -4,7 +4,7 @@
 **Status:** staged (MB-012)
 **Goal:** the deterministic piece sequence for a round (Spawner GDD bag randomizer; meadow_01 opening {o, i}).
 **Depends:** CH-028 (ShapeBank ids only, for the test) · **Parallel-safe with:** W2
-**Files:** new `src/core/sim/spawner.gd`, `tests/unit/sim/spawner_test.gd`.
+**Files:** new `src/core/sim/spawner.gd`.
 
 ## API
 ```gdscript
@@ -26,7 +26,8 @@ func drawn_count() -> int
 - Weights are ints here: LevelLoader (CH-049) converts float weights to copies (G3). Weight 0 = never.
 - No global RNG, no `hash()`.
 
-## Tests first (`spawner_test.gd`; pieces for meadow_01: shapes [i,o,t,l,s], opening [o,i], count 2)
+## Expected results (no tests)
+User rule 2026-10-10: NO TESTS. Do not write test files. These are the expected results: the integrator checks them in the editor (godot-ai script eval or a scratch script, read with `logs_read`) after moving the file in.
 1. `test_opening_first` — first 2 ids are {o, i} in some order, for seeds 1..20.
 2. `test_bag_contains_each_once` — ids 3..7 are a permutation of [i,o,t,l,s]; same for 8..12.
 3. `test_weights_copies` — weights {big_cube: 1, i: 2}, shapes [i, big_cube], no opening: each bag of 3 holds i twice.
@@ -34,6 +35,7 @@ func drawn_count() -> int
 5. `test_peek_does_not_consume` — `peek(3)` then `next()` == `peek(3)[0]`; `drawn_count()` 1.
 6. `test_opening_count_over_set` — set [o], count 3 -> o, o, o.
 
-## Run / Done when
-`--import`, `-a res://tests/unit/sim`. README "Done when"; 6 tests green.
+## Run
+Integrator: move staged files in, rescan, `logs_read` must show no parse errors or class-name clashes, then check the cases above. No gdUnit run.
+
 **Out of scope:** per-bag tags (CH-105), hold, history randomizer, fixed_list.

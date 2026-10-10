@@ -123,4 +123,4 @@ All targets ≥ 48 dp × control scale (P1); colour and badge chips 56 pt. Insid
 
 - **Name for a kid who can't read**: is the pre-filled random name + badge enough, or do we want badge-only profiles with no name? Default: name required (ADR-0013 1–12 characters).
 - **Steam floating keyboard** for gamepad-only name typing on PC: in MVP or later?
-- **Profile chip on Title / Island map**: title.md and island-map.md owners to place it (flagged).
+- **Profile chip on Title / Island map**: placed on the Island map top bar (2026-10-10); title.md still to place it.

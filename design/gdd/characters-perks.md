@@ -10,7 +10,7 @@
 
 Four playable characters: the cloud wizard and three cute builder friends. Each has one big skill (Skills GDD) and a **perk set**: one always-on **signature** perk that is a pure trade-off (sidegrade) and three **edge** perks that give a small, capped advantage. Perks and potions work in every mode, including the solo campaign; quick versus allows sidegrades only. A loadout's total edge is capped at about 15%, and campaign star times are balanced for no perks at all.
 
-> **Quick reference** — Layer: `Feature` · Priority: `Alpha` · Key deps: `Rule-Twist Framework, Skills, Shop / Points (later)`
+> **Quick reference** — Layer: `Feature` · Priority: `Alpha` · Key deps: `Rule-Twist Framework, Skills, Shop / stars (later)`
 
 ## Overview
 
@@ -28,7 +28,7 @@ A character is a data record: a slot id (C1–C4), a mechanical identity, one sk
 **Perks**
 4. A perk has: `perk_id` (unique across characters), `character_id`, `kind` (`signature` or `edge`), `edge` value `e`, icon, one-line description key, and framework operations (modifiers on rule-adjustable knobs, or a `RuleBehaviour` id). Layer is always `perk`, scope the owner, lifetime the whole level / round.
 5. **Signature perk**: always active for its character in every mode where perks are on. It must be a sidegrade: `|e| ≤ sidegrade_tolerance` (0.02, F2).
-6. **Edge perks**: `0 < e ≤ edge_max_single` (0.08). Owned through the Shop / Points system (later; prices are the Shop's). Not owned = not selectable.
+6. **Edge perks**: `0 < e ≤ edge_max_single` (0.08). Owned through the Shop / stars system (later; prices are the Shop's). Not owned = not selectable.
 7. **Loadout**: signature + up to `edge_slots` (2) owned edge perks of the chosen character. The loadout is valid only if `E_loadout ≤ edge_cap` (F1); the select screen greys out a perk that would break the cap. The equipped set is saved per perk in the profile (`inventory.perks[perk_id] = {"owned": bool, "equipped": bool}`, ADR-0013 reserved map).
 
 **Modes**
@@ -91,7 +91,7 @@ Per perk instance: framework states, **Pending** (loaded with the level) → **A
 | Fall, Drop & Lock, Piece Spawner & Queue, Level Goals | ← | Knobs: gravity, lock, ramp, grace, preview, hold, randomizer, warnings |
 | Obstacle Clearing, Layer Clearing | → Perk | Break and clear events (charge perks) |
 | Scoring & Stars | ← | Star times assume no perks (F2 measurement baseline) |
-| Shop / Points (later) | → | Ownership of edge perks; potions |
+| Shop / stars (later) | → | Ownership of edge perks; potions |
 | Save & Profile (ADR-0013) | ↔ | `inventory.perks` owned / equipped |
 | Local Multiplayer (ADR-0009) | ↔ | Character + loadout ids, host validation |
 | Menus / UI (ADR-0016), HUD | ← | Character select + perks screen; pause-screen perk list |
@@ -166,7 +166,7 @@ The star_margin formula is defined as:
 
 **Upstream:** Rule-Twist Framework (Hard), Skills (Hard), Items (Soft: slot and use events), Fall, Drop & Lock, Piece Spawner & Queue, Level Goals & Fail States (Hard: knobs), Scoring & Stars (Hard: star baseline), Save & Profile (Hard), Local Multiplayer (Hard in versus).
 
-**Downstream:** Shop / Points (Hard, later: sells edge perks and potions), Tournament Flow (Soft: loadout check before rounds), Menus / UI (Hard: character select + perks screen), HUD (Soft: pause list), Narrative and Art (fill names, looks, portraits).
+**Downstream:** Shop / stars (Hard, later: sells edge perks and potions), Tournament Flow (Soft: loadout check before rounds), Menus / UI (Hard: character select + perks screen), HUD (Soft: pause list), Narrative and Art (fill names, looks, portraits).
 
 Bidirectional notes are in place (2026-10-10) in Rule-Twist Framework, Items, Scoring & Stars and Tournament Flow.
 

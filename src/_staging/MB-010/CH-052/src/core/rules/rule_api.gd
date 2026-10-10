@@ -10,7 +10,8 @@ var _piece: ActivePiece
 
 
 ## Binds the facade to one board state, its effective knobs and the calling rule params.
-func _init(p_board: BoardState, p_knobs: KnobRegistry, p_params: Dictionary = {}) -> void:
+## Defaults let tests build an unbound facade (tests/unit/rules/rule_value_types_test.gd calls RuleApi.new()).
+func _init(p_board: BoardState = null, p_knobs: KnobRegistry = null, p_params: Dictionary = {}) -> void:
 	_board = p_board
 	_knobs = p_knobs
 	_params = p_params
@@ -93,7 +94,10 @@ func over_limit() -> bool:
 
 ## World cells of the falling piece; empty when none.
 func piece_cells() -> Array[Vector3i]:
-	return _piece.cells() if _piece != null else ([] as Array[Vector3i])
+	if _piece != null:
+		return _piece.cells()
+	var none: Array[Vector3i] = []
+	return none
 
 
 ## Effective knob value (null if unknown). Scalars are milli-units (ADR-0004 section 3).

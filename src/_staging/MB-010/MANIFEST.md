@@ -7,3 +7,9 @@
 | CH-052/src/core/rules/rule_api.gd | src/core/rules/rule_api.gd | replace (stub) | Read-only facade: `RuleApi.new(board, knob_registry, params)`; call `is_free`, `layer_count`, `knob_int`, `param`. Uses BoardState API as in MB-011 staging (same signatures). |
 
 Notes: knob id for up-kick budget (max_up_kicks_per_piece) is passed in by Movement; it belongs to CH-084 knobs (not staged). RuleApi writes/rng/can() are CH-091.
+
+## Review (godot-specialist, 2026-10-10)
+- CH-052 rule_api.gd: `_init` board/knobs now default to null. The live test tests/unit/rules/rule_value_types_test.gd:36 calls `RuleApi.new()` with no args and would have failed. `piece_cells()` no longer uses `[] as Array[Vector3i]`; it returns a typed local instead.
+- CH-048 active_piece.gd: no fixes. Pure; enum/int mixing is valid.
+- CH-083 blocks.json: matches meadow-candidate-atoms §2 (sprout/egg/chick are solid cell + fills_layer) and meadow.md 04 (mushroom fills a cell and clears with its layer). No change.
+- CH-084 (folder present despite "skipped" above): the diffs only add ids (the rest is re-sorting); the JSON is valid; all keys are in KnobDefs.ENTRY_KEYS. `item_slots` has no domain prefix (no loader rule needs one); rename it to `item.slots` if the items GDD prefers.

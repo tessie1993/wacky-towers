@@ -17,6 +17,14 @@ const F_HAS_STATUS := 16
 const F_HAS_OVERLAY := 32
 const F_HAS_EXTRA := 64
 
+## Delta ops (ADR-0002 §5). Delta is a flat PackedInt32Array of [op, a, b] triples.
+enum Op { SET, REMOVE, MOVE, STATUS, OVERLAY, LAYOUT }
+
+## Causes carried in REMOVE's b slot (ADR-0002 §5).
+enum Cause { CLEAR, DISPLACED, DAMAGE, MASKED, TRIM, RESCUE }
+
+const _CONTENT_BITS := F_OCCUPIED | F_SOLID | F_FILLS_LAYER
+
 const _DOWN_VECTORS: Array[Vector3i] = [
 	Vector3i(-1, 0, 0), Vector3i(1, 0, 0),
 	Vector3i(0, -1, 0), Vector3i(0, 1, 0),
@@ -37,6 +45,10 @@ var _layer_start: PackedInt32Array = PackedInt32Array()
 var _layer_active: PackedInt32Array = PackedInt32Array()
 var _layer_filled: PackedInt32Array = PackedInt32Array()
 var _layer_solid: PackedInt32Array = PackedInt32Array()
+var _delta: PackedInt32Array = PackedInt32Array()
+var _touched: Dictionary = {} # cell index -> true; written since the last take_delta()
+var _status: Dictionary = {} # cell index -> {status_id, counter, rule_id}; moves with the block (ADR-0002 §2)
+var _overlay: Dictionary = {} # cell index -> {type_id, data}; stays with the cell
 
 
 ## Allocates the board from a validated spec: expands the mask over every layer and writes starting contents.
@@ -268,3 +280,225 @@ func limit_layer() -> int:
 ## True if any solid content sits at layer >= limit_layer(). Usage: if b.over_limit(): top_out()
 func over_limit() -> bool:
 	return stack_height() >= limit_layer()
+
+
+## Cells written since the last take_delta(), unordered, no duplicates. Rules start their searches here.
+## Usage: for i in b.touched()
+func touched() -> PackedInt32Array:
+	return PackedInt32Array(_touched.keys())
+
+
+## Returns the change record [op, a, b, ...] since the last call and clears it (and touched()).
+## Usage: var d := b.take_delta()
+func take_delta() -> PackedInt32Array:
+	var out: PackedInt32Array = _delta
+	_delta = PackedInt32Array()
+	_touched.clear()
+	return out
+
+
+## Writes CELL-slot content at i. Existing content is removed first with Cause.DISPLACED (ADR-0002 §3).
+## Inactive cells and OVERLAY kinds are caller bugs and are rejected with an error.
+## Setup / Resolving only. Usage: b.place(b.index(c), kind, hue, piece_uid)
+func place(i: int, kind: int, hue: int, piece_uid: int) -> void:
+	if not is_active(i) or _types.slot(kind) != ContentTypes.SLOT_CELL or kind == ContentTypes.KIND_EMPTY:
+		push_error("BoardState.place: cell %d inactive or kind %d not placeable" % [i, kind])
+		return
+	if (_flags[i] & F_OCCUPIED) != 0:
+		remove(i, Cause.DISPLACED)
+	_put(i, layer_of(i), kind, hue, piece_uid, _content_flags(kind))
+	_log(Op.SET, i, 0)
+
+
+## Clears CELL-slot content at i; no-op on an empty cell. Usage: b.remove(i, BoardState.Cause.CLEAR)
+func remove(i: int, cause: int) -> void:
+	if (_flags[i] & F_OCCUPIED) == 0:
+		return
+	_take(i, layer_of(i))
+	if _status.erase(i): # status belongs to the block
+		_flags[i] &= ~F_HAS_STATUS
+	_log(Op.REMOVE, i, cause)
+	if cause == Cause.CLEAR and _overlay.has(i):
+		set_overlay(i, {}) # ADR-0002 §3: overlays go when their cell is cleared
+
+
+## Sets or clears (empty rec) the status of the block at i: rec = {status_id, counter, rule_id}.
+## No-op on an empty cell when setting. Usage: b.set_status(i, {"status_id": 3, "counter": 2, "rule_id": &"ice"})
+func set_status(i: int, rec: Dictionary) -> void:
+	if rec.is_empty():
+		if not _status.has(i):
+			return
+		_status.erase(i)
+		_flags[i] &= ~F_HAS_STATUS
+		_log(Op.STATUS, i, 0)
+		return
+	if (_flags[i] & F_OCCUPIED) == 0:
+		return
+	_status[i] = rec
+	_flags[i] |= F_HAS_STATUS
+	_log(Op.STATUS, i, int(rec.get("status_id", 0)))
+
+
+## Sets or clears (empty rec) the overlay of active cell i: rec = {type_id, data}.
+## Usage: b.set_overlay(i, {"type_id": kind, "data": {}})
+func set_overlay(i: int, rec: Dictionary) -> void:
+	if rec.is_empty():
+		if not _overlay.has(i):
+			return
+		_overlay.erase(i)
+		_flags[i] &= ~F_HAS_OVERLAY
+		_log(Op.OVERLAY, i, 0)
+		return
+	if not is_active(i):
+		return
+	_overlay[i] = rec
+	_flags[i] |= F_HAS_OVERLAY
+	_log(Op.OVERLAY, i, int(rec.get("type_id", 0)))
+
+
+## Block record at i: {shape_id, piece_instance_id, owner, tags, status}; {} on an empty cell.
+## Usage: b.get_record(i)["status"]
+func get_record(i: int) -> Dictionary:
+	if (_flags[i] & F_OCCUPIED) == 0:
+		return {}
+	# ponytail: no per-piece table yet (shape_id/owner/tags defaults); add pieces[uid] when owners/tags land (ADR-0009)
+	return {"shape_id": &"", "piece_instance_id": _piece[i], "owner": 0, "tags": PackedStringArray(),
+		"status": _status.get(i, {})}
+
+
+## Changes gravity and rebuilds the layer ordering and counters. Setup / Resolving only.
+## Usage: b.set_down(BoardState.Down.X_NEG)
+func set_down(d: Down) -> void:
+	if d == _spec_down:
+		return
+	_spec_down = d
+	_rebuild_layout()
+	_log(Op.LAYOUT, 0, 0)
+
+
+## Turns a footprint column (all heights) on or off; content in a column turned off is removed (MASKED).
+## Setup / Resolving only. Usage: b.set_active(2, 3, false)
+func set_active(x: int, z: int, on: bool) -> void:
+	if x < 0 or z < 0 or x >= _size.x or z >= _size.z:
+		return
+	var changed: bool = false
+	for y: int in _size.y:
+		var i: int = index(Vector3i(x, y, z))
+		if is_active(i) == on:
+			continue
+		changed = true
+		if not on:
+			remove(i, Cause.MASKED)
+			set_overlay(i, {})
+			_flags[i] &= ~F_ACTIVE
+			_active_count -= 1
+		else:
+			_flags[i] |= F_ACTIVE
+			_active_count += 1
+	if changed:
+		_rebuild_layout()
+		_log(Op.LAYOUT, 0, 0)
+
+
+## Moves CELL content from one cell to another (displacing whatever is at the target). No-op if from is empty
+## or to is inactive. Usage: b.move(from_i, to_i)
+func move(from: int, to: int) -> void:
+	if from == to or (_flags[from] & F_OCCUPIED) == 0 or not is_active(to):
+		return
+	if (_flags[to] & F_OCCUPIED) != 0:
+		remove(to, Cause.DISPLACED)
+	_relocate(from, layer_of(from), to, layer_of(to))
+	_log(Op.MOVE, from, to)
+
+
+## Slice collapse (Layer Clearing F1): empties every layer in cleared (REMOVE/CLEAR per cell), then drops each
+## higher layer by the number of cleared layers beneath it (MOVE per cell). Order of cleared and duplicates
+## do not matter; out-of-range layers are ignored. Setup / Resolving only. Usage: b.shift_layers(b.full_layers())
+func shift_layers(cleared: PackedInt32Array) -> void:
+	var is_cleared: PackedByteArray = PackedByteArray()
+	is_cleared.resize(layer_count())
+	var any: bool = false
+	for k: int in cleared:
+		if k >= 0 and k < is_cleared.size():
+			is_cleared[k] = 1
+			any = true
+	if not any:
+		return
+	for k: int in is_cleared.size():
+		if is_cleared[k] == 1:
+			for i: int in layer_cells(k):
+				remove(i, Cause.CLEAR)
+	var below: int = 0 # cleared layers beneath k
+	for k: int in is_cleared.size():
+		if is_cleared[k] == 1:
+			below += 1
+			continue
+		if below == 0:
+			continue
+		# Same position j in a layer is the same footprint cell: layer_cells is ascending within a layer.
+		var src: PackedInt32Array = layer_cells(k)
+		var dst: PackedInt32Array = layer_cells(k - below)
+		for j: int in src.size():
+			if (_flags[src[j]] & F_OCCUPIED) == 0:
+				continue
+			if not is_active(dst[j]):
+				remove(src[j], Cause.MASKED)
+				continue
+			_relocate(src[j], k, dst[j], k - below)
+			_log(Op.MOVE, src[j], dst[j])
+
+
+func _content_flags(kind: int) -> int:
+	var f: int = F_OCCUPIED
+	if _types.is_solid(kind):
+		f |= F_SOLID
+	if _types.fills_layer(kind):
+		f |= F_FILLS_LAYER
+	return f
+
+
+## Raw write of content into an empty cell in layer k, keeping layer counters in step.
+func _put(i: int, k: int, kind: int, hue: int, piece_uid: int, content_flags: int) -> void:
+	_kind[i] = kind
+	_color[i] = hue
+	_piece[i] = piece_uid
+	_flags[i] = (_flags[i] & ~_CONTENT_BITS) | content_flags
+	if content_flags & F_FILLS_LAYER:
+		_layer_filled[k] += 1
+	if content_flags & F_SOLID:
+		_layer_solid[k] += 1
+
+
+## Raw clear of occupied cell i in layer k, keeping layer counters in step.
+func _take(i: int, k: int) -> void:
+	var f: int = _flags[i]
+	if f & F_FILLS_LAYER:
+		_layer_filled[k] -= 1
+	if f & F_SOLID:
+		_layer_solid[k] -= 1
+	_kind[i] = 0
+	_color[i] = 0
+	_piece[i] = 0
+	_flags[i] = f & ~_CONTENT_BITS
+
+
+## Raw move of content between cells (target must be empty). No delta entry.
+func _relocate(from: int, kf: int, to: int, kt: int) -> void:
+	_put(to, kt, _kind[from], _color[from], _piece[from], _flags[from] & _CONTENT_BITS)
+	_take(from, kf)
+	if _status.has(from): # status moves with the block (ADR-0002 §7 Block Status Effects)
+		_status[to] = _status[from]
+		_status.erase(from)
+		_flags[from] &= ~F_HAS_STATUS
+		_flags[to] |= F_HAS_STATUS
+
+
+func _log(op: int, a: int, b: int) -> void:
+	_delta.append(op)
+	_delta.append(a)
+	_delta.append(b)
+	if op == Op.LAYOUT:
+		return
+	_touched[a] = true
+	if op == Op.MOVE:
+		_touched[b] = true

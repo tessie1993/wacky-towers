@@ -4,8 +4,7 @@
 **Goal:** a locked cube keeps the colour its piece had (Fall GDD: no change of look). GP-0 found no hue -> colour map.
 **Depends:** none · **Parallel-safe with:** W1
 **Files:** new `tools/asset-pipeline/sample_block_colours.gd` (`extends SceneTree`, run with `-s`), generated
-`assets/data/palettes/candy_toy.json`, generated `assets/data/shapes/shape_hand_fields.json`, new `src/view/palette_table.gd`,
-new `tests/unit/view/palette_table_test.gd`.
+`assets/data/palettes/candy_toy.json`, generated `assets/data/shapes/shape_hand_fields.json`, new `src/view/palette_table.gd`.
 
 ## Data formats
 - `palettes/candy_toy.json`: `{ "set": "candy_toy", "colors": { "0": "#9a9a9a", "1": "#e8606c" } }` (hue id string -> hex)
@@ -28,12 +27,14 @@ func size() -> int
 func errors() -> PackedStringArray     ## "colors.<k>: bad hex '<v>'", "colors.<k>: id not an int"
 ```
 
-## Tests first (`palette_table_test.gd`)
+## Expected results (no tests)
+User rule 2026-10-10: NO TESTS. Do not write test files. These are the expected results: the integrator checks them in the editor (godot-ai script eval or a scratch script, read with `logs_read`) after moving the file in.
 1. `test_parses_hex` — `{"colors":{"0":"#000000","2":"#ff0000"}}`: `color(2) == Color(1,0,0)`, `size() == 2`.
 2. `test_unknown_hue_falls_back` — `color(9) == color(0)`.
 3. `test_bad_hex_errors` — `{"colors":{"1":"#zz"}}` -> one error naming `colors.1`.
 4. `test_real_candy_palette` — read `palettes/candy_toy.json` (JsonReader): no errors, `size() >= 2`; every `hue` in `shape_hand_fields.json` has a colour.
 
-## Run / Done when
-Run the tool, then `--import`, `-a res://tests/unit/view`. README "Done when"; 4 tests green.
+## Run
+Integrator: move staged files in, rescan, `logs_read` must show no parse errors or class-name clashes, then check the cases above. No gdUnit run.
+
 **Out of scope:** ArtSet (CH-041), neon_voxel palette (no cube GLB).

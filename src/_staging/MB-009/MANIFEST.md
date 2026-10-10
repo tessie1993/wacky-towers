@@ -6,3 +6,7 @@
 | assets/data/shapes/shape_bank.tres | GENERATED, integrator runs the extractor (not staged) | `ShapeBank.shapes.size()` is 67 (the `cube` file is skipped); `get_shape(&"t").distinct_count == 12`, `i` 3, `o` 3, `big_cube` 1. |
 
 Notes: the 24 orientations (spin = Y, tilt = X, roll = Z, +/-90 each) already come from `Orientations`; the extractor needs nothing extra. Hand fields come from `shape_hand_fields.json` (currently all empty/0), else the old bank. Only the `candy_toy` set is read (ADR-0003 default). No tests (user rule).
+
+## Review (godot-specialist, 2026-10-10)
+- No fixes needed. shape_def.gd parses clean (single canonical_key/_rotated/_normalise/_serialise); build() 3rd arg is optional, so existing callers/tests are unaffected.
+- Extractor assumes cube children sit at unit spacing relative to the post-import root (block_post_import.gd drops the glTF wrapper). If a set is exported at another cube pitch, `position.round()` will be wrong: check the first run's distinct_count numbers in the manifest table.
