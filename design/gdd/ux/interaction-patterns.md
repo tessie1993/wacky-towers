@@ -16,7 +16,7 @@ All sizes × control scale (100–150%). Decorative trim never counts toward siz
 | State | Look (art-director owns the style) | Non-colour cue |
 |---|---|---|
 | Idle | Parchment plate, ink outline | n/a |
-| Pressed | Squash 90%, 80 ms | Shape change |
+| Pressed | Squash 92%, 150–250 ms (default 180; ui-theme) | Shape change |
 | Focused (keys/pad) | Thick ink ring + slight lift | Ring shape, not just tint |
 | Disabled | Hidden in play (Touch rule 9); in menus 50% + lock icon | Lock icon |
 Fire on **release** in menus (lets the thumb slide off to cancel); fire on **press** in play (latency < 50 ms).
@@ -59,11 +59,13 @@ Reduced motion: shakes and wiggles become a 200 ms static outline.
 | Action | GUIDE action | Keys | Touch label |
 |---|---|---|---|
 | Move | `move` | WASD / arrows | d-pad |
-| Turn ◀ / ▶ (turntable, world Y) | `rot_h_left/right` | Q / E | Turn ◀ ▶ |
-| Flip ◀ / ▶ (screen plane) | `rot_v_left/right` | R / F | Flip ◀ ▶ |
+| Turn ◀ / ▶ (axis id `spin`: turntable, world Y) | `rot_spin_left/right` (was `rot_h_*`) | Q / E | Turn ◀ ▶ |
+| Flip ◀ / ▶ (axis id `tilt`: horizontal axis nearest screen-horizontal) | `rot_tilt_left/right` (was `rot_v_*`) | R / F | Flip ◀ ▶ |
+| Roll ◀ / ▶ (axis id `roll`: the other horizontal axis) | `rot_roll_left/right` (new) | T / G (proposed, pending user) | Roll ◀ ▶ |
+| Use skill | `use_skill` | X | Skill button |
 | Soft drop (hold) | `soft_drop` | Shift hold (S/↓ are moves) | Soft |
 | Hard drop | `hard_drop` | Space | Drop |
 | View ◀ / ▶ | `view_l/r` | Z / C | View ◀ ▶ |
 | Pause | `pause` | Esc / P | ❚❚ |
 | Restart | `restart` | Backspace (confirm) | in Pause only |
-Keys are UX defaults; where `play_keyboard.tres` differs, align it to this table (or log the difference). Every row is remappable (settings.md). Rotation buttons show arrow art of the on-screen motion, never x/y/z.
+Action and axis ids per ADR-0012 (rename `rot_h_*` → `rot_spin_*`, `rot_v_*` → `rot_tilt_*`, add `rot_roll_*`; player-facing names Turn / Flip / Roll are text keys). Gamepad: shoulders = Turn, triggers = Flip, X / Y = Roll, right stick X = View (ADR-0012). Keys are UX defaults; where `play_keyboard.tres` differs, align it to this table (or log the difference). Every row is remappable (settings.md). Rotation buttons show arrow art of the on-screen motion, never x/y/z.

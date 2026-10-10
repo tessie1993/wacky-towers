@@ -7,13 +7,14 @@
 | Control | Size | Command | Shown |
 |---|---|---|---|
 | D-pad (4 arms) | 56 pt arms | `move` screen-relative, hold-repeat (Touch F3) | Always |
-| **Turn ◀ ▶** | 56 pt | Turntable about world Y (spin) | Always |
-| **Flip ◀ ▶** | 56 pt | Screen-plane turn; resolves to the roll world axis (Movement rule 9) | Hidden in meadow_01 (spin only) |
+| **Turn ◀ ▶** | 56 pt | `rot_spin_*`, axis `spin`: turntable about world Y | Always |
+| **Flip ◀ ▶** | 56 pt | `rot_tilt_*`, axis `tilt`: the horizontal world axis nearest screen-horizontal (Movement rule 9) | Hidden in meadow_01 (spin only) |
+| **Roll ◀ ▶** | 56 pt | `rot_roll_*`, axis `roll`: the other horizontal world axis (Movement rule 9) | Hidden in meadow_01; from meadow_02 |
 | Drop | 64 pt | Hard drop | Always |
 | Soft | 56 pt | Soft drop while held | Always |
 | View ◀ ▶ + 12-tick compass | 56 pt | `rotate_view(±1)`, hold-repeat | Camera type = Snap buttons |
 | ❚❚ Pause | 44 pt | Pause | Always |
-Arrow art shows the on-screen motion; Turn = flat curved arrow, Flip = upright curved arrow (shape differs, not just colour). No hold/items in Meadow; their slots stay reserved and empty. Restart is in Pause only (removed from the HUD: mis-tap risk).
+Arrow art shows the on-screen motion; Turn = flat curved arrow, Flip = upright curved arrow, Roll = curved arrow seen end-on (a circling arrow round a dot) (shape differs, not just colour). Skill button (Skills GDD, post-MVP): 64 pt circle in the reserved row, with the Stitch pin ring, the Smash chunk outline under the ghost while Ready, and Redraw fit marks on the board. No hold/items in Meadow; their slots stay reserved and empty. Restart is in Pause only (removed from the HUD: mis-tap risk).
 
 ## Layout
 
@@ -22,7 +23,7 @@ Arrow art shows the on-screen motion; Turn = flat curved arrow, Flip = upright c
 | Top band (≈ 80 pt + inset) | ❚❚ · goal plate (left) · rule strip (centre) · next-piece plate 64 pt (right) | Same order across the top |
 | Board rect | 92% W × 45% H directly under the band | 45% W × 57.5% H, centred |
 | Left thumb | D-pad, bottom-left | D-pad, bottom-left side column |
-| Right thumb | 2 × 2 rotation grid (Turn row above Flip row), Drop 64 pt + Soft below it | Rotation grid + Drop/Soft column to its right |
+| Right thumb | 3 × 2 rotation grid (Turn row, Flip row, Roll row from top), Drop 64 pt + Soft below it | Rotation grid + Drop/Soft column to its right |
 | View ◀ compass ▶ | Row between board and thumb zones, right side | Top of the right side column, under the band |
 | Reserved (hold/items) | Row above the d-pad | Top of the left side column |
 Everything inside safe-area insets; ≥ 8 pt between buttons. **Left-hand mirror** swaps left/right groups (top band and thumbs); rule strip stays centred. **Control scale** 100–150% grows buttons; the board shrinks first, within Board F5 (cube edge ≥ 20 px, warn in Settings).
@@ -60,9 +61,9 @@ As `design/gdd/hud.md` (Hidden, Countdown, Play, Danger, Paused, Result). Contro
 ## Acceptance criteria
 
 1. [M] Reference phone P and L: no HUD or control overlaps the board rect at any of the 12 yaws; all inside the safe area.
-2. [I] meadow_01: Flip ◀ ▶ hidden (not greyed); meadow_02: shown.
+2. [I] meadow_01: Flip ◀ ▶ and Roll ◀ ▶ hidden (not greyed); meadow_02: both shown.
 3. [I] Mirror: d-pad on the right, rotation/drop on the left, "◀" still moves screen-left.
 4. [I] 150% scale: buttons ≥ 56 pt × 1.5 where space allows, never < 56 pt; cube edge warning if < 20 px.
 5. [I] Each camera type: Snap shows View buttons; Swipe hides them and board drag orbits; Auto turns only on spawn.
-6. [M] Greyscale screenshot: ghost, danger line, Turn vs Flip buttons and piece shapes still distinguishable.
+6. [M] Greyscale screenshot: ghost, danger line, Turn vs Flip vs Roll buttons and piece shapes still distinguishable.
 7. [I] Keyboard only and gamepad only can play meadow_01 to a win (GUIDE play context, no touch).

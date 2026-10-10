@@ -1,9 +1,9 @@
 # Layer Clearing
 
-> **Status**: In Design
+> **Status**: Designed
 > **Author**: Tessa + agents
-> **Last Updated**: 2026-10-09
-> **Last Verified**: 2026-10-09
+> **Last Updated**: 2026-10-10
+> **Last Verified**: 2026-10-10 (against ADR-0001, ADR-0002, ADR-0004, ADR-0011)
 > **Implements Pillar**: The Block Is the Constant; Readable Chaos; Comeback Energy
 
 ## Summary
@@ -21,13 +21,13 @@ The Board reports which layers are full; it never removes anything. Layer Cleari
 ### Core Rules
 
 **When it runs**
-1. A clear check runs at step 3 of the **per-lock sequence** owned by Fall, Drop & Lock (rule 15: after `on_lock`, before `on_resolve_end`, the goal check and the top-out check), and whenever a rule outside the player's control changes the board's contents (a twist spawns blocks, an item places cubes). The board is in **Resolving** for the whole routine. This GDD does not define what happens after the routine; the per-lock sequence does.
+1. A clear check runs at **S3** of the **per-lock sequence** owned by Fall, Drop & Lock (rule 15, step ids per ADR-0011 §3: after the P3 lock veto, S1 lock and S2 `on_lock`; before S4a structure changes, S4b `on_resolve_end`, the goal check and the top-out check), and **once more at S4c** if an S4b `on_resolve_end` subscriber wrote or removed content (`on_clear` fires as usual; S4c clears count normally; `on_resolve_end` does not re-run, so a layer still full after S4c waits for the next check). Content written by a rule outside the per-lock sequence (an `on_tick` write, an item placing cubes) is checked at the next lock's S3. A vetoed lock (P3) runs no clear check. The board is in **Resolving** for the whole routine. This GDD does not define what happens after the routine; the per-lock sequence does.
 2. If `clear_enabled` is off (a level, twist or mechanic switched it off), the check does nothing: full layers simply stay on the board. They are still reported by the board for goals that count them.
-2a. **Rescue entry point: `wipe_bottom(k)`.** Level Goals calls this for a `rescue` top-out (Level Goals rule 8). It removes the bottom `k` layers (along the down axis) and settles the stack with a **slice shift** (F1), whatever the level's `collapse` and `clear_enabled`. It is a **silent wipe**: no `on_clear` hooks, no status or bomb effects, no chain rounds, and it does **not** add to `layers_cleared` (or any clear count), the gravity ramp, the score or the goal. It emits only `rescue_wiped(k, n_cubes)` for presentation. It is not called by anything else.
+2a. **Rescue entry point: `wipe_bottom(k)`.** Level Goals calls this for a `rescue` top-out (Level Goals rule 8). It removes the bottom `k` layers (along the down axis) and settles the stack with a **slice shift** (F1), whatever the level's `collapse` and `clear_enabled`. It is a **silent wipe**: no `on_clear` hooks, no status or bomb effects, no chain rounds, and it does **not** add to `layers_cleared` (or any clear count), the gravity ramp, the score or the goal. It emits only `rescue_wiped(k, n_cubes)` for presentation. It is not called by anything else. (Its board deltas need their own cause so the view does not play clear effects: ADR-0002 lists no `RESCUE` cause yet, an open amendment.)
 3. Only layers perpendicular to the board's current **down axis** are checked ("layer" and "full" are defined by Board / Grid), for any of the 6 down directions.
 
 **The routine**
-4. **Find.** The level's **`clear_detector`** decides what is cleared. Default `layer`: ask the board for `full_layers()` and sort them from the bottom up (along the down axis); a layer with no active cells is never full. Other detectors are per-level options defined in Level-Specific Mechanics (`row` M8, `colour_connect` M5, `colour_bridge` M6, mono layer M7, and later catalogue entries); each returns a set of cells to clear, and rules 5–12 apply to those cells the same way. If nothing is found, the routine ends with `t_resolve = 0`.
+4. **Find.** The level's **`clear_detector`** (slot `clear.detector`, ADR-0004; `collapse_mode` is slot `clear.collapse`) decides what is cleared. Default `layer`: ask the board for `full_layers()` and sort them from the bottom up (along the down axis); a layer with no active cells is never full. Other detectors are per-level options defined in Level-Specific Mechanics (`row` M8, `colour_connect` M5, `colour_bridge` M6, mono layer M7, and later catalogue entries); each returns a set of cells to clear, and rules 5–12 apply to those cells the same way. If nothing is found, the routine ends with `t_resolve = 0`.
 5. **Notify.** For each cell in a full layer, fire the `on_clear(cell, content)` hook before removal, so status effects (burning, honey, bomb tags and the like) and objects can react. Hooks run in layer order, bottom to top, in cell order.
 6. **Remove.** All contents in every full layer are removed as one logical step (blocks, obstacles and objects alike), with the exceptions Obstacle Clearing defines: a layer held by a breakable obstacle with hit points left is deferred, and stone pillar cells stay in place. The cleared Blocks' records (`{shape_id, piece_instance_id, owner, tags, status}`, Board / Grid rule 6) are kept for the events below; hue is derived from `shape_id` and the art set when the effect is drawn.
 7. **Settle.** The stack above is settled by the level's **`collapse`** mode (`collapse_mode` in level data; rules 8–10). **Slice is the default**; cascade (and chunks) are set per level or by a level mechanic.
@@ -35,10 +35,10 @@ The Board reports which layers are full; it never removes anything. Layer Cleari
 9. **Cascade (level option).** After removal, every cube that is not supported falls one layer at a time, all unsupported cubes together, one layer per `cascade_step_ms`, until nothing can fall. A cube is *supported* if the cell below it is the floor or holds solid content. Then the board is checked again: if layers are now full, they clear (the next *round*, chain index +1) and the settle repeats. Rounds stop at `chain_max`; any layers still full are handled by the next clear check.
 10. **Chunks (level option).** After removal, Blocks are grouped into face-connected **chunks**; a chunk is supported if any of its cubes rests on the floor or on a supported chunk. Unsupported chunks fall together one layer per `cascade_step_ms` until all are supported; chain rounds work as in rule 9.
 11. **Events.** For each cleared layer the routine emits `layer_cleared(layer, cubes[], owners[], round)`; at the end it emits `clear_resolved(n_layers, n_cubes, rounds)`. It also adds `n_layers` to the level's `layers_cleared` count (which feeds the gravity ramp in Fall, Drop & Lock and goals). With a non-layer `clear_detector`, the mechanic defines what one clear counts as (a row, a pop, a bridge) and that count is used instead. There is no fixed number of clears per level: how many clears happen is up to the player.
-12. **Return.** The routine ends and control returns to the per-lock sequence (`on_resolve_end`, goal check, then the top-out check). `over_limit()` is therefore read **after** the routine, so a clear can bring a too-high stack back under the limit.
+12. **Return.** The routine ends and control returns to the per-lock sequence (S4a, S4b `on_resolve_end`, S4c, goal check, then the top-out check). `over_limit()` is therefore read **after** the routine, so a clear can bring a too-high stack back under the limit.
 
 **Pacing and presentation (logic is instant, visuals are staggered)**
-13. The logical result of rules 4–8 happens in one step at the start of Resolving. The visuals then play over `t_resolve` (Formulas F2): the cleared layers dissolve one after another from the bottom up, `clear_stagger_ms` apart, each taking `clear_anim_ms`; then the layers above drop together over `clear_settle_ms`. The player cannot act on the board during Resolving (the next piece has not spawned), so the visuals never block control.
+13. The logical result of rules 4–8 happens in one step on the lock tick, at the start of Resolving; the sim then stays in Resolving for `t_resolve_ms` (F2, plus the S4c round when S4c clears) and reports that length in the `resolve_started` event (ADR-0001, ADR-0011). The sim never waits for the view. The visuals then play over `t_resolve` (Formulas F2): the cleared layers dissolve one after another from the bottom up, `clear_stagger_ms` apart, each taking `clear_anim_ms`; then the layers above drop together over `clear_settle_ms`. The player cannot act on the board during Resolving (the next piece has not spawned), so the visuals never block control.
 14. A long ripple is capped at `resolve_max_ms`; the stagger shrinks to fit (F2).
 
 **Rules from outside**
@@ -152,7 +152,8 @@ The cascade_time formula is defined as:
 - **If a hook vetoes a layer**: that layer is skipped this round and remains full; other layers clear.
 - **If the board is masked**: fullness uses only active cells; slices move along the down axis and keep their footprint position.
 - **If the stack above is empty** (the top layer cleared): nothing settles; `settle` time is skipped (F2 still uses `clear_settle_ms` only when something moves).
-- **If a twist wants to flip the down axis or resize the board during Resolving**: it waits until the routine ends (Board / Grid).
+- **If a twist wants to flip the down axis or resize the board**: the request is queued and applied at S4a, after this routine's S3 pass and before `on_resolve_end` (ADR-0011); layers are then defined by the new down axis.
+- **If an `on_resolve_end` hook fills a layer** (a hatched chick, a belt shift): the S4c pass clears it once; any layer still full afterwards waits for the next lock.
 - **If the game is paused during Animating**: visuals freeze and resume; the logical state is unchanged.
 - **If the mode ends (win or loss) during Animating**: the logical clear stands; visuals jump to the end state.
 - **If cascade or chunk mode reaches `chain_max`**: the routine stops, the board returns to Live, and any layers still full are cleared at the next check.
@@ -212,7 +213,7 @@ Board / Grid and Fall, Drop & Lock already name Layer Clearing; the remaining do
 
 ## Game Feel
 
-Clearing should be the most satisfying moment of the loop: a clean ripple and a firm settle, over before the player gets impatient. Targets: logical result in the same frame as the lock resolves; first dissolve starts within one frame; single-layer clear ≤ 450 ms; any clear ≤ 1 s in slice mode; the rising pitch makes a multi-clear feel bigger without extra waiting. Reduced motion keeps the same timing with fades instead of motion.
+Clearing should be the most satisfying moment of the loop: a clean ripple and a firm settle, over before the player gets impatient. Targets: logical result on the lock tick; first dissolve starts within one frame of the `resolve_started` event; single-layer clear ≤ 450 ms; any clear ≤ 1 s in slice mode; the rising pitch makes a multi-clear feel bigger without extra waiting. Reduced motion keeps the same timing with fades instead of motion.
 
 ## UI Requirements
 
@@ -267,7 +268,8 @@ None directly. The HUD shows the layers-cleared count and goals (Level Goals & F
 21. [U] **GIVEN** a chain that would exceed `chain_max = 10`, **THEN** it stops at round 10, the board returns to Live, and the remaining full layers clear at the next check.
 
 **Robustness**
-22. [U] **GIVEN** a down-axis flip requested during Animating, **THEN** it applies after the routine ends.
+22. [U] **GIVEN** a down-axis flip requested before or during a lock's resolve, **THEN** it applies at S4a, after the S3 clear and before `on_resolve_end`.
+22a. [U] **GIVEN** an S4b hook that completes a layer, **THEN** S4c clears it once with `on_clear` firing and `layers_cleared` rising; **GIVEN** no S4b write, **THEN** S4c does not run; **GIVEN** a lock vetoed at P3, **THEN** no clear check runs.
 23. [I] **GIVEN** two boards in local versus, **THEN** each resolves independently with its own events.
 24. [I] **GIVEN** reduced motion, **THEN** no shake or confetti plays; layers fade out; timings are unchanged.
 25. [M] **GIVEN** the reference phone, **THEN** a 4-layer clear reads clearly (which layers cleared and where the stack lands) and ends within 1 s.

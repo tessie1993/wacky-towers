@@ -2,7 +2,7 @@
 
 > **Status**: Draft
 > **Created**: 2026-10-09
-> **Last Updated**: 2026-10-09
+> **Last Updated**: 2026-10-10 (wave 2 rows #30–37, #39; revised core GDDs; dependency notes)
 > **Source Concept**: design/gdd/game-concept.md
 
 ---
@@ -28,11 +28,11 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 3 | Touch Controls | Core | MVP | Designed | design/gdd/touch-controls.md | — |
 | 4 | Camera & Rotate-View | Core | MVP | Designed | design/gdd/camera-rotate-view.md | Board / Grid |
 | 5 | Piece Spawner & Queue (inferred) | Gameplay | MVP | Designed | design/gdd/piece-spawner-queue.md | Piece Set |
-| 6 | Movement & Rotation | Gameplay | MVP | Needs Revision | design/gdd/movement-rotation.md | Board / Grid, Piece Set, Touch Controls, Camera & Rotate-View |
-| 7 | Fall, Drop & Lock (inferred) | Gameplay | MVP | Needs Revision | design/gdd/fall-drop-lock.md | Board / Grid, Movement & Rotation |
+| 6 | Movement & Rotation | Gameplay | MVP | Designed (revised 2026-10-10) | design/gdd/movement-rotation.md | Board / Grid, Piece Set, Touch Controls, Camera & Rotate-View |
+| 7 | Fall, Drop & Lock (inferred) | Gameplay | MVP | Designed (revised 2026-10-10) | design/gdd/fall-drop-lock.md | Board / Grid, Movement & Rotation |
 | 8 | Layer Clearing | Gameplay | MVP | Designed | design/gdd/layer-clearing.md | Board / Grid, Fall, Drop & Lock |
-| 9 | Level Goals & Fail States | Gameplay | MVP | Needs Revision | design/gdd/level-goals-fail-states.md | Board / Grid, Layer Clearing |
-| 10 | Rule-Twist Framework | Gameplay | MVP | Needs Revision | design/gdd/rule-twist-framework.md | Board / Grid, Piece Spawner & Queue, Movement & Rotation, Fall, Drop & Lock, Layer Clearing |
+| 9 | Level Goals & Fail States | Gameplay | MVP | Designed (revised 2026-10-10) | design/gdd/level-goals-fail-states.md | Board / Grid, Layer Clearing |
+| 10 | Rule-Twist Framework | Gameplay | MVP | Designed (revised 2026-10-10) | design/gdd/rule-twist-framework.md | Board / Grid, Piece Spawner & Queue, Movement & Rotation, Fall, Drop & Lock, Layer Clearing |
 | 11 | Level-Specific Mechanics | Gameplay | MVP | Needs Revision | design/gdd/level-specific-mechanics.md | Rule-Twist Framework |
 | 12 | Twist Library | Gameplay | MVP | Designed | design/gdd/twist-library.md | Rule-Twist Framework |
 | 13 | Level Data & Definition (inferred) | Gameplay | MVP | Needs Revision | design/gdd/level-data-definition.md | Level Goals & Fail States, Rule-Twist Framework, Level-Specific Mechanics, Twist Library |
@@ -52,14 +52,15 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 27 | Game Feel & VFX (inferred) | UI | Vertical Slice | Needs Revision | design/gdd/game-feel-vfx.md | Layer Clearing, Buffs & Debuffs, Items |
 | 28 | Physics Mode | Gameplay | Alpha | Needs Revision | design/gdd/physics-mode.md | Board / Grid, Piece Set, Fall, Drop & Lock, Rule-Twist Framework |
 | 29 | Block Status Effects (inferred) | Gameplay | Alpha | Designed | design/gdd/block-status-effects.md | Board / Grid, Rule-Twist Framework |
-| 30 | Skills | Gameplay | Alpha | Not Started | — | Rule-Twist Framework, Buffs & Debuffs |
-| 31 | Characters & Perks | Progression | Alpha | Not Started | — | Skills, Buffs & Debuffs |
-| 32 | Points System | Economy | Alpha | Not Started | — | Scoring & Stars, Tournament Flow |
-| 33 | Shop | Economy | Alpha | Not Started | — | Points System, Characters & Perks, Buffs & Debuffs |
+| 30 | Skills | Gameplay | Alpha | Designed (Draft; C2–C4 story skills 2026-10-10) | design/gdd/skills.md | Rule-Twist Framework, Buffs & Debuffs, Characters & Perks |
+| 31 | Characters & Perks | Progression | Alpha | Designed (Draft) | design/gdd/characters-perks.md | Skills, Buffs & Debuffs, Rule-Twist Framework |
+| 32 | Points System (currency: stars) | Economy | Alpha | In Design (Draft; currency rework in progress) | design/gdd/points-system.md | Scoring & Stars, Tournament Flow |
+| 33 | Shop | Economy | Alpha | In Design (Draft; currency rework in progress) | design/gdd/shop.md | Points System, Characters & Perks, Buffs & Debuffs |
 | 34 | Tournament Minigames | Gameplay | Alpha | Needs Revision | design/gdd/tournament-minigames.md (ideas: design/gdd/mechanics-catalog.md) | Board / Grid, Piece Set, Level Goals & Fail States, Mode / Minigame Randomizer |
-| 35 | Mascot Reactions (inferred) | UI | Alpha | Not Started | — | Characters & Perks, Level Goals & Fail States |
-| 36 | Audio (inferred) | Audio | Alpha | Not Started | — | Layer Clearing, Items, Campaign Structure |
-| 37 | Onboarding & Accessibility (inferred) | Meta | Alpha | Not Started | — | Touch Controls, HUD, Campaign Structure |
+| 35 | Mascot Reactions (inferred) | UI | Alpha | Designed (Draft) | design/gdd/mascot-reactions.md | Level Goals & Fail States, Fall, Drop & Lock, Layer Clearing, Mechanics Module |
+| 36 | Audio (inferred) | Audio | Alpha | Designed (Draft) | design/gdd/audio.md (+ design/gdd/audio/) | Layer Clearing, Items, Campaign Structure |
+| 37 | Onboarding & Accessibility (inferred) | Meta | Alpha | Designed (Draft) | design/gdd/onboarding-accessibility.md | Touch Controls, HUD, Campaign Structure |
+| 39 | Level-Maker Dock (dev tool, ADR-0017) | Meta | Vertical Slice | Designed (ADR-0017; UI spec pending) | docs/architecture/adr-0017-level-maker-tooling.md | Level Data & Definition, Rule-Twist Framework, Mechanics Module |
 | 38 | Mechanics Module (box of tricks: atoms, recipes, daily generator) | Gameplay | Vertical Slice | Needs Revision | design/gdd/mechanics-module.md (folder: design/mechanics/README.md) | Rule-Twist Framework, Level Data & Definition, Level-Specific Mechanics, Twist Library, Tournament Minigames |
 
 ---
@@ -221,8 +222,8 @@ None found, after three relationships were directed one way:
 
 | Metric | Count |
 |--------|-------|
-| Total systems identified | 38 |
-| Design docs started | 30 |
+| Total systems identified | 39 |
+| Design docs started | 38 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
 | MVP systems designed | 14/14 |

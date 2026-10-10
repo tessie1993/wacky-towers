@@ -1,70 +1,87 @@
-# Music Sourcing: Meadow MVP (toybox folk, CC0 / CC-BY)
+# Music Sourcing: user-supplied tracks, licence and credit checklist
 
-> **Status**: Draft shortlist, nothing downloaded
+> **Status**: Draft. Revised 2026-10-10: the user supplies every music track; "Carefree" is the placeholder only
 > **Author**: audio-director
 > **Last Updated**: 2026-10-10
-> **Uses**: `design/gdd/audio/audio-direction.md` §5 (slots, stem plan) · `assets/data/credits.json` (credit entries)
+> **Uses**: `design/gdd/audio/audio-direction.md` §4–5 (formats, track slots) · `docs/architecture/adr-0015-audio-feedback-pipeline.md` §5, §8 (music catalogue, import) · `assets/data/audio/music.json` (catalogue) · `assets/data/credits.json` (credit entries)
 
-**Rules (defaults):** prefer **CC0**; **CC-BY** is fine with the exact credit line in the in-game credits **and** `credits.json`. Avoid NC (non-commercial), ND (no-derivatives: we need to cut loops, render stems and transpose), and "free but custom licence" packs unless the user reads and accepts the terms. Open each page and **confirm the licence on the page itself before downloading**. Search snippets are not proof, and the licence can change. Save a dated copy of the licence page next to the files.
+**Every value here is a tunable default.**
 
-## 1. Shortlist
+## 1. Who supplies what
 
-| # | Track / pack | Artist | URL | Licence (as listed) | Fit | Slot it could fill | Loop / stems |
-|---|---|---|---|---|---|---|---|
-| 1 | **Quinklette** | Cakeflaps @ You're Perfect Studio | https://opengameart.org/content/quinklette | CC0 (also offered as CC-BY 4.0 / OGA-BY 3.0; **pick CC0**) | Described as cute and loopable; instruments not stated, so **listen first** | Title/map music-box candidate, or bonus | Loopable; WAV + OGG; no stems |
-| 2 | **[Music Assets] FREE Music Loop Bundle** | Tallbeard Studios | https://tallbeard.itch.io/music-loop-bundle | Listed as CC0 in one listing; **not confirmed** on the page | 150–200+ seamless loops in all genres; dig for acoustic/whimsical ones | Danger, build or ant-march loops; filler for any gap | Seamless loops; no stems |
-| 3 | **Catsong** | Dan Knoflicek (uploaded by josepharaoh99) | https://opengameart.org/content/catsong | CC0 | Short, happy, funny | Results win jingle or skit stinger source | Short; no stems |
-| 4 | **CC0 – Comical / Silly Music** (collection) | various, collected by josepharaoh99 | https://opengameart.org/content/cc0-comical-silly-music | CC0 | Silly, fun; small collection | Skit stingers, loss jingle | Mixed |
-| 5 | **Carefree** | Kevin MacLeod | https://incompetech.com (search "Carefree") | CC-BY 4.0 (verify on the track page) | Real ukulele, cheerful, exactly the toybox-folk sound | Meadow theme (fallback B in audio-direction §5.1) | Loopable with an edit; no stems; MacLeod sells MIDI/sheet for some tracks (check) |
-| 6 | **Monkeys Spinning Monkeys** | Kevin MacLeod | https://incompetech.com (search the title) | CC-BY (one source says 3.0, others 4.0: **verify** the version) | Pizzicato and bouncy; good for the bonus ant march or the mill rhythm | Bonus (B) or 10 phase 1 | Loopable with an edit; no stems |
+- **The user supplies the music**: one full mixed track per slot (audio-direction §5.2). No stems, no MIDI rendering, no in-house composition.
+- **Placeholder until then**: Kevin MacLeod, "Carefree" (CC-BY 4.0), catalogued as `meadow_theme` and used as the biome default for every Meadow level and for `title_theme`. It is a **placeholder**, not a pick: it is a well-known internet meme ("royalty-free ukulele") and could make the game feel cheap.
+- The audio-director and sound-designer check each delivered track against the brief and the checklist below, cut the loop, and add the catalogue and credit rows. They do not choose the music.
 
-**CC-BY credit lines** (copy the exact text from the track page if it differs):
-- `"Carefree" by Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License. http://creativecommons.org/licenses/by/4.0/`
-- `"Monkeys Spinning Monkeys" by Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License. http://creativecommons.org/licenses/by/4.0/` (use 3.0 and its URL if the page says 3.0)
-- If we cut, loop or transpose a CC-BY track, add `Modified (looped and transposed) for Wacky Towers.`
-- CC0 tracks need no credit, but we credit them anyway (courtesy, and it records where the file came from). Catsong is credited to **Dan Knoflicek**, not the uploader.
+**Track brief (for the user, a guide, not a rule):** toybox folk (ukulele, glockenspiel, pizzicato, light percussion), cheerful, loops cleanly, **sparse in the 700 Hz–4 kHz band** so block sounds read over it on a phone speaker, no vocals with words. Lengths: level tracks about 1.5–3 min loops, jingles 2–6 s, skit stingers under 2 s.
+
+## 2. Licence checklist (one per delivered file)
+
+Tick every line before the file goes into `assets/audio/music/`.
+
+- [ ] **Source recorded**: page URL, or "made by / commissioned by the user", with the date.
+- [ ] **Licence confirmed on the source page itself** (not a search snippet; licences change). A dated copy (PDF or screenshot) saved next to the files in `assets/audio/music/licences/`.
+- [ ] **Licence allows commercial use** (no NC). The game may be sold later; monetization is undecided but the seam is there.
+- [ ] **Licence allows edits** (no ND): we cut loops, trim, fade and re-level.
+- [ ] **Licence allows bundling in a game on Android and PC/Steam**. "Free but custom licence" packs: the user reads and accepts the terms, and the terms file is saved.
+- [ ] **No Content ID / fingerprint registration** that would flag streamers or YouTube videos of the game. If the track is registered (common for some royalty-free libraries), the user decides whether that is acceptable.
+- [ ] **Commissioned or own work**: a short written note (email is fine) that the composer grants the game the right to use and edit it, saved in `licences/`.
+- [ ] **Credit line written** exactly as the licence asks (§3).
+- [ ] **`credits.json` entry added**, its `files` listing the exact asset paths.
+- [ ] **Catalogue row added** in `music.json` (`file`, `volume_db`, `loop_offset_s`, `credit`).
+
+**Allowed by default**: CC0, CC-BY (any version, credit as required), the user's own or commissioned work, paid licences the user has bought and read. **Not allowed**: CC-BY-NC, CC-BY-ND, "personal use only", ripped commercial music.
+
+## 3. Credit lines
+
+- CC-BY: copy the exact line from the track page. Placeholder:
+  `"Carefree" by Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License. http://creativecommons.org/licenses/by/4.0/`
+- If we cut, loop or re-level a CC-BY track, add `Modified (looped) for Wacky Towers.`
+- CC0 tracks need no credit, but we credit them anyway (courtesy, and it records where the file came from).
+- Own or commissioned work: `Music by <name>` (or as the composer asks).
+- Credits appear in the in-game Credits screen (UI defaults: credits + privacy note are the only extra screens) and in `credits.json`.
 
 **`credits.json` entry shape** (same as the existing items):
 
 ```json
-{"name": "Carefree", "author": "Kevin MacLeod", "licence": "CC-BY-4.0", "source": "https://incompetech.com", "files": ["assets/audio/music/mus_meadow_theme_full_loop.ogg"]}
+{"name": "Carefree", "author": "Kevin MacLeod", "licence": "CC-BY-4.0", "source": "https://incompetech.com", "files": ["assets/audio/music/mus_meadow_theme_loop.ogg"]}
 ```
 
-## 2. Warnings
+**`music.json` catalogue row** (ADR-0015 §5):
 
-- **MacLeod's "Carefree" and "Monkeys Spinning Monkeys" are internet memes** ("royalty-free ukulele"; TikTok and YouTube background music). Players will recognise them, and that can make the game feel cheap or turn it into a joke. They fit the sound perfectly, so this is a taste call for the user (open question 2).
-- **Fluffing a Duck** (MacLeod, CC-BY) was considered and dropped: it is even more of a meme (the 2024 Golden Globes, TikTok).
-- **Paid packs that fit well but are not free**: "Playful Pizzicato" (skcompositions, itch.io, $20 min, licence not stated). Listed only in case the user changes the budget rule.
-- **CC-BY-ND packs** (for example "Cute Medieval Fantasy Loops", Callum Lee Gow) are unusable: no loop edits or stems allowed.
+```json
+"meadow_theme": {"file": "res://assets/audio/music/mus_meadow_theme_loop.ogg", "volume_db": 0.0, "loop_offset_s": 0.0, "credit": "Carefree"}
+```
 
-## 3. Gaps
+## 4. Technical check per delivered track
 
-| Gap | Why | Default plan |
-|---|---|---|
-| **Stems for one Meadow theme** | None of the candidates ships stems; meadow.md §9 needs layers | audio-direction §5.1 A: find a CC0 tune with MIDI (Komiku's CC0 albums on OpenGameArt ship MIDI, for example "Helice Incredible Adventure", https://opengameart.org/node/96795, but that one is disco/RPG, not folk) and render toybox stems; else fallback B (one full mix + filters) |
-| **+2 semitone boss version** | No free track ships one | Make offline from our stems (or Audacity pitch shift on the full mix; CC0/CC-BY both allow it) |
-| **Faster 08 version** | Same | Offline time-stretch +10 % |
-| **Matched key and tempo across slots** | Tracks from different artists will not share a key | Use one theme for all 11 levels (the plan); only jingles and stingers may come from other sources, and they should be pitch-matched to the theme |
-| **Danger layer, build layer, ant-march tick** | Too specific for a free pack | Render from MIDI with the stems, or pull a percussion loop from the Tallbeard bundle and match its tempo |
-| **Glockenspiel-led title music box** | Not found as CC0 | Render from the theme MIDI (glock + uke) |
+Done by sound-designer when the file arrives (audio-direction §4, ADR-0015 §8):
 
-## 4. Next steps (for the user)
+- [ ] OGG Vorbis, 44.1 kHz stereo, quality ~5 (~160 kbps). If delivered as WAV/MP3, re-encode to OGG.
+- [ ] Integrated loudness about -18 LUFS (jingles about -16 LUFS short-term), true peak ≤ -1 dBTP.
+- [ ] Loop point clean: no click at the seam; `loop_offset_s` set if the track has an intro.
+- [ ] Sums to mono without losing the melody.
+- [ ] Listening test on the reference phone at 50 % volume: a 4-layer clear is clearly audible over it.
+- [ ] Size fits the music budget (≤ 25 MB total for the MVP).
+- [ ] Named per audio-direction §4 (`mus_<context>_<name>_loop.ogg`, `jgl_…`, `stg_…`).
 
-1. Listen to #1, #3, #5 and #6 and pick the theme direction (CC0 original vs. MacLeod meme risk).
-2. Confirm each licence on its page and save a dated copy.
-3. Decide who renders the stems (audio-direction open question 1).
-4. Then sound-designer downloads, cuts loops and adds every file to `credits.json`.
+## 5. Release gate
 
-## Sources (search results, 2026-10-10)
+- [ ] Every file in `assets/audio/music/` has a `credits.json` entry and a saved licence copy.
+- [ ] "Carefree" is either replaced or kept by an explicit user decision (ADR-0015 risk table).
+- [ ] No catalogue row points at a missing file.
 
-- [Quinklette, OpenGameArt](https://opengameart.org/content/quinklette)
-- [Tallbeard FREE Music Loop Bundle, itch.io](https://tallbeard.itch.io/music-loop-bundle/purchase)
-- [Catsong, OpenGameArt](https://opengameart.org/content/catsong)
-- [CC0 Comical / Silly Music, OpenGameArt](https://opengameart.org/content/cc0-comical-silly-music)
-- [Komiku, Helice Incredible Adventure (CC0 + MIDI), OpenGameArt](https://opengameart.org/node/96795)
-- [Royalty Free Ukulele ("Carefree") meme, Know Your Meme](https://amp.knowyourmeme.com/memes/royalty-free-ukulele)
-- [Monkeys Spinning Monkeys, NPR](https://www.npr.org/2024/09/24/g-s1-23951/monkeys-spinning-youtube-tiktok-viral-social-media-music)
-- [Monkeys Spinning Monkeys licence note, flutetunes](https://flutetunes.com/tunes.php?id=4614)
-- [Fluffing a Duck, Know Your Meme](https://amp.knowyourmeme.com/memes/fluffing-a-duck-by-kevin-macleod)
-- [Playful Pizzicato, itch.io](https://skcompositions.itch.io/playful-pizzicato)
-- [Cute Medieval Fantasy Loops (CC-BY-ND), itch.io](https://callumleegow.itch.io/cute-medieval-fantasy-loops)
+## Appendix: earlier candidate shortlist (ideas only, not picks)
+
+Kept for reference if the user wants starting points. Licences were **not** confirmed on the pages.
+
+| Track / pack | Artist | URL | Licence (as listed) | Note |
+|---|---|---|---|---|
+| Carefree | Kevin MacLeod | https://incompetech.com | CC-BY 4.0 | **Current placeholder.** Meme risk |
+| Quinklette | Cakeflaps | https://opengameart.org/content/quinklette | CC0 (pick CC0) | Cute, loopable; listen first |
+| FREE Music Loop Bundle | Tallbeard Studios | https://tallbeard.itch.io/music-loop-bundle | CC0 per one listing, unconfirmed | Many loops; dig for acoustic ones |
+| Catsong | Dan Knoflicek | https://opengameart.org/content/catsong | CC0 | Jingle or stinger source |
+| CC0 Comical / Silly Music | various | https://opengameart.org/content/cc0-comical-silly-music | CC0 | Stingers, loss jingle |
+| Monkeys Spinning Monkeys | Kevin MacLeod | https://incompetech.com | CC-BY (3.0 or 4.0, verify) | Meme risk, like Carefree |
+
+Rejected: "Fluffing a Duck" (meme), CC-BY-ND packs such as "Cute Medieval Fantasy Loops" (no edits allowed), paid packs with no stated licence.

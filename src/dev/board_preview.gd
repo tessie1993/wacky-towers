@@ -12,10 +12,10 @@ const CONTENT_JSON := "res://assets/data/content/blocks.json"
 const CONTENT_MAX_BYTES := 65536
 
 ## Dev-only extra content kinds so the preview can show one colour per glyph.
-## blocks.json today defines only "#" (starter); these are NOT game data.
+## blocks.json uses "#", "m", "s", "e", "c"; dev glyphs must not clash. These are NOT game data.
 const DEV_TYPES: Array[Dictionary] = [
 	{"id": "dev_grass", "kind_id": 10, "glyph": "g", "slot": "cell", "solid": true, "fills_layer": true, "hue": 1, "mesh": ""},
-	{"id": "dev_stone", "kind_id": 11, "glyph": "s", "slot": "cell", "solid": true, "fills_layer": true, "hue": 2, "mesh": ""},
+	{"id": "dev_stone", "kind_id": 11, "glyph": "k", "slot": "cell", "solid": true, "fills_layer": true, "hue": 2, "mesh": ""},
 	{"id": "dev_flower", "kind_id": 12, "glyph": "f", "slot": "cell", "solid": true, "fills_layer": true, "hue": 3, "mesh": ""},
 ]
 
@@ -23,7 +23,7 @@ const DEV_TYPES: Array[Dictionary] = [
 const GLYPH_COLOURS: Dictionary = {
 	"#": Color(0.93, 0.62, 0.36),
 	"g": Color(0.45, 0.78, 0.38),
-	"s": Color(0.55, 0.57, 0.66),
+	"k": Color(0.55, 0.57, 0.66),
 	"f": Color(0.95, 0.45, 0.70),
 }
 const UNKNOWN_COLOUR := Color(1, 0, 1)
@@ -48,32 +48,32 @@ const BOARD: Dictionary = {
 const STARTING: Dictionary = {"layers": {
 	"0": [
 		".gggggg.",
-		"gg#ggsgg",
-		"g##gssgg",
-		"gg.gsggg",
+		"gg#ggkgg",
+		"g##gkkgg",
+		"gg.gkggg",
 		"ggg..ggf",
-		"gsgg.ggg",
-		"gssggg#g",
+		"gkgg.ggg",
+		"gkkggg#g",
 		".gggggg.",
 	],
 	"1": [
 		"........",
-		".##..s..",
-		".#...ss.",
-		"....s...",
+		".##..k..",
+		".#...kk.",
+		"....k...",
 		"......f.",
-		".s......",
-		".ss...#.",
+		".k......",
+		".kk...#.",
 		"........",
 	],
 	"2": [
 		"........",
 		".#......",
-		"......s.",
+		"......k.",
 		"........",
 		"........",
 		"........",
-		".s......",
+		".k......",
 		"........",
 	],
 }}

@@ -3,7 +3,7 @@
 **Story:** VEW-003 (folds RND-03) · **Model:** Sonnet · **Wave:** W2 · **Mode:** direct
 **Goal:** one resolver for block-set files and one place for board-space maths (layout doc §4.3, §7).
 **Depends:** CH-038 (PaletteTable, palette file), CH-079 (cube `.res`) · **Parallel-safe with:** W2
-**Files:** new `src/view/art_set.gd`, `src/view/board_geom.gd`, `tests/unit/view/art_set_paths_test.gd`, `tests/unit/view/board_geom_test.gd`.
+**Files:** new `src/view/art_set.gd`, `src/view/board_geom.gd`.
 
 ## API
 ```gdscript
@@ -31,17 +31,19 @@ static func piece_root_transform(origin: Vector3i, o: int, source_pivot: Vector3
 	## basis = orient_basis(o); position = cell_center(origin) - basis * source_pivot (layout doc §7)
 ```
 
-## Tests first
-`art_set_paths_test.gd` (real candy_toy files, no mocks):
+## Expected results (no tests)
+User rule 2026-10-10: NO TESTS. Do not write test files. These are the expected results: the integrator checks them in the editor (godot-ai script eval or a scratch script, read with `logs_read`) after moving the file in.
+ArtSet checks (real candy_toy files):
 1. `test_paths` — `shape_scene_path(&"l")` ends with `candy_toy/blk_candy_toy_l.glb`; `shape_scene(&"l") != null`; `shape_scene(&"nope") == null`.
 2. `test_resolve_order` — (`&"x"`, {...}) -> `&"x"`; (`&""`, {"art_set":"candy_toy"}) -> candy_toy; (`&""`, {}) -> candy_toy.
 3. `test_cube_mesh_and_scale` — candy_toy mesh not null; `cube_scale() * 1.03` ≈ 1.0 (0.01); neon_voxel `cube_mesh() == null`, not in `available_sets()`.
 4. `test_palette_fallback` — `ArtSet.new(&"neon_voxel").palette().size() > 0`.
-`board_geom_test.gd`:
+BoardGeom checks:
 5. `test_cell_center` — size (4,12,4): (0,0,0) -> (-1.5, 0.5, -1.5); (3,7,3) -> (1.5, 7.5, 1.5); size (5,·,5): (2,0,2) -> (0, 0.5, 0).
 6. `test_orient_basis_matches_orientations` — all 24 o x unit vectors ±x/±y/±z.
 7. `test_piece_root` — o 0, pivot (0,0,0): position == cell_center(origin).
 
-## Run / Done when
-`--import`, `-a res://tests/unit/view`. README "Done when"; 7 tests green.
+## Run
+Integrator: move staged files in, rescan, `logs_read` must show no parse errors or class-name clashes, then check the cases above. No gdUnit run.
+
 **Out of scope:** BoardView/PieceView, biome theming wiring (later RND-14).

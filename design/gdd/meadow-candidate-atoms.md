@@ -7,7 +7,9 @@
 > **Sources**: `design/levels/meadow.md` (§1, §6, §7, §10), `design/gdd/mechanics-module.md`, `twist-library.md`, `level-specific-mechanics.md`, `fall-drop-lock.md` (rule 15), `layer-clearing.md`, `board-grid.md`, `rule-twist-framework.md`, `level-goals-fail-states.md`, `production/orchestration/core-loop-rules-audit.md` (adopted defaults F1–F7), ADR-0001, ADR-0004, `docs/architecture/implementation-plan.md`.
 > **Every number here is a tunable default.** Meadow values come from `meadow.md`, except where §10 recommends a change.
 
-**ADR-0011 note.** No `adr-0011*` file exists in `docs/architecture/` (checked 2026-10-10). The tree sketches follow the brief: a beehave tree per behaviour, deterministic, acting through the sim. Two points need the ADR owner to decide (Open Questions 1–2).
+**ADR-0011 note** (updated 2026-10-10). [ADR-0011](../../docs/architecture/adr-0011-mechanic-level-event-runtime.md) now exists (status Proposed). It decides that every atom here is a `RuleBehaviour` (or slot plugin) inside the pure `BoardSim` and writes only through `RuleApi`. **Beehave is staging only**: trees in the level scene read `SimEvent`s and drive animation, and never write to the sim. The tree sketches in this file are therefore **logic specs**, implemented as plain GDScript in `handle(hook, ctx, api)` with one `match hook` branch per Sequence. Open Questions 1, 2 and 6 are closed by it.
+
+**Status in the library.** All seven atoms are **Designed** in `mechanics-module.md`, linking here.
 
 ---
 
@@ -47,7 +49,7 @@ Layer Clearing rule 1 says a clear check runs whenever a rule changes the conten
 - Every random choice uses the rule's own stream: `api.rng()` (ADR-0006, framework rule 13). There is never more than one draw per decision.
 - Candidates are sorted canonically first: layer index along the down axis (ascending), then x, then z. Then `i = rng.randi_range(0, n − 1)`.
 - If `n ≤ 1`, there is **no draw**, so the stream does not depend on how a container happens to iterate.
-- Beehave nodes that use time or global randomness (RandomSelector, Cooldown/Delay on wall time) are **forbidden**. Counters live in the blackboard and count locks or sim ms (`api.now_ms()`).
+- No beehave node runs in the sim (ADR-0011). Counters live in the behaviour's own fields, are returned by `snapshot()`, and count locks or sim ms (`api.now_ms()`). Time-based and random beehave nodes are allowed only in staging trees, where they are cosmetic and never replayed.
 
 ### 0.4 Terms
 
@@ -69,22 +71,24 @@ Layer Clearing rule 1 says a clear check runs whenever a rule changes the conten
 | `ant` (`ant_id`, `hungry`) | SP31 | true | true | yes | — | yes | yes |
 | (split halves) | SP28 | written as normal Blocks | | | yes | | |
 
-### 0.6 Rule layers and priority (proposal for ADR-0004 §2)
+### 0.6 Rule layers and priority (adopted by ADR-0011 §2)
 
 ADR-0004 puts specials, living blocks and mascot atoms in layers `content` and `mascot`, but gives them no rank.
 
-**Proposed ranks:** `mascot` = 1, `content` = 2, `twist` = 3, `level_mechanic` = 4.
+**Ranks** (ADR-0011 §2, data in `assets/data/rule_layers.json`): `mascot` = 1 (shared with `perk`), `content` = 2 (shared with `item_buff`), `twist` = 3, `mechanic` = 4. Ties fall through to `activated_tick`, then `rule_id`.
 
 The resulting S4b order is: ants, eggs and sprouts → mushrooms and wobble → the belt. Living blocks therefore act first, the mushroom picks its cell on the final surface, and the conveyor moves everything last.
 
 PL03 wobble is a `twist` (it is a rule, and it uses one of meadow_05's 2 twist slots).
 
-### 0.7 Tree convention (all sketches)
+### 0.7 Logic-spec convention (all sketches)
 
-- `bb.phase` is set by the behaviour's `handle(hook, ctx, api)` before it ticks the tree once for that hook call. Every tree is a root **Selector** of one **Sequence** per phase it uses.
-- `C` = condition leaf, `A` = action leaf.
-- Actions write only through `RuleApi`. Player intent arrives as `SimCommand`.
-- State is in the blackboard and is reset on `on_level_start` (a retry gets a fresh seed and fresh state).
+The sketches use tree notation, but they are **logic specs, not beehave trees** (ADR-0011 §1).
+- Each root **Selector** of one **Sequence** per phase maps to one `match hook` branch in the behaviour's `handle(hook, ctx, api)` (or `veto()` for P3). A behaviour handles every subscribed hook call it receives, so it can act at P3, S2, S3 and S4b in one tick.
+- `C` = condition, `A` = action. `bb.x` = a field of the behaviour, included in `snapshot()`.
+- Actions write only through `RuleApi`. Player intent arrives as `SimCommand`; a rule never queues one.
+- State is set on `on_level_start`. A retry builds a new `BoardSim` with new behaviour instances (fresh seed, fresh state).
+- Every decision the view must show ahead (catch, split seam, hatch, ant target) is announced by an event; the staging tree (Pip, the Miller, props) only reacts to it.
 
 ---
 
@@ -680,28 +684,32 @@ Degenerate strategies: none found that dominate. The ghost (SP26) is strong, but
 
 ---
 
-## 10. Proposed edits to owning GDDs (not made; for the owners)
+## 10. Edits to owning GDDs
 
-| File | Edit |
-|---|---|
-| `fall-drop-lock.md` rule 15 | Add S4a (structure changes applied) and S4c (post-hook clear pass, once). Add the P3 lock-veto step. |
-| `layer-clearing.md` rule 1 | Point to S4c as the single "rule changed contents" check after a lock. |
-| `rule-twist-framework.md` rule 12 / F2 | Add ranks `mascot` 1 and `content` 2 (0.6). Add `flip_max` to the rule-adjustable list. |
-| ADR-0004 §2, §7 | Same ranks. RuleApi additions: `set_piece_flag(&"intangible")`, `would_clear(cells)`, `new_covered_holes(cells)`, `would_top_out(cells)`, `GoalEvaluator.would_meet(cells)`. |
-| `movement-rotation.md` | `intangible` piece flag: `can_place` tests only bounds and the mask. |
-| `twist-library.md` | EV01 gaps (a–c), the EV02 rule 8 vs F2 fix, EV03 warning flow + `flip_max`, EV04 S4c. |
-| `level-specific-mechanics.md` M2 rule 9 | "Covered" includes `fills_layer` objects. |
-| `mechanics-module.md` | PL03, SP21, SP22, SP26, SP28, SP31, WO11 → status D (this file). `hatch_locks` default 6 → per level. Add `ant_every_locks`. |
-| `design/levels/meadow.md` | 09 `hatch_locks` 12; H2 `ant_every_locks` 3; 10 `flip_max` 1; 07: the ghost is solidified by hard drop (if accepted); §10 open questions closed by this doc. |
-| `touch-controls.md` | Only if Open Question 3 picks a tap: add the `solidify` gesture and button. |
-| `scoring-stars.md` | `egg_bonus`, `ant_shoo_bonus`; whether wobble pop-offs count as trims. |
-| ADR-0011 (missing) | Write it, or point to where the beehave decision lives. Rule that a tree ticks once per subscribed hook call (0.7). |
+Status as of 2026-10-10. **Done** rows were applied; **Open** rows are for the named file's owner (not made here).
+
+| File | Edit | Status |
+|---|---|---|
+| `fall-drop-lock.md` rule 15 | Add S4a (structure changes applied) and S4c (post-hook clear pass, once). Add the P3 lock-veto step. Source: ADR-0011 §3. | Open |
+| `layer-clearing.md` rule 1 | Point to S4c as the single "rule changed contents" check after a lock. | Open |
+| `rule-twist-framework.md` rule 12 / F2 | Add ranks `mascot` 1 and `content` 2 and point to `rule_layers.json` (ADR-0011 §2). Add `flip_max` to the rule-adjustable list. | Open |
+| ADR-0004 §2, §5, §7 | Ranks pointer; `snapshot()`; RuleApi additions `set_piece_flag`, `would_clear`, `new_covered_holes`, `would_top_out`, `goal_would_meet`, `spawn_cells_free`, `return_piece_to_spawn` (ADR-0011 §4 lists them). | Open (technical-director) |
+| `movement-rotation.md` | `intangible` piece flag: `can_place` tests only bounds and the mask. | Open |
+| `twist-library.md` | EV01 gaps (a–c), the EV02 rule 8 vs F2 fix, EV03 warning flow + `flip_max`, EV04 S4c. | Open |
+| `level-specific-mechanics.md` M2 rule 9 | "Covered" includes `fills_layer` objects. | Open |
+| `mechanics-module.md` | PL03, SP21, SP22, SP26, SP28, SP31, WO11 → status D (this file). `hatch_locks` default 6 → per level. Add `ant_every_locks`. | **Done** 2026-10-10 |
+| `design/levels/meadow.md` | 09 `hatch_locks` 12; H2 `ant_every_locks` 3; 10 `flip_max` 1; 07: the ghost is solidified by hard drop (if accepted); §10 open questions closed by this doc. | Open (level-designer) |
+| `touch-controls.md` | Only if Open Question 3 picks a tap: add the `solidify` gesture and button. | Open (waits on OQ 3) |
+| `scoring-stars.md` | `egg_bonus`, `ant_shoo_bonus`; whether wobble pop-offs count as trims. | Open |
+| ADR-0011 | Write it; decide the tree tick rate and RuleApi vs SimCommand. | **Done**: ADR-0011 written (Proposed). Trees are staging only; the sketches are logic specs (0.7) |
+| this file | Mark the sketches as logic specs; close OQ 1, 2, 6 (ADR-0011 migration plan). | **Done** 2026-10-10 |
+| `production/levels/meadow/scene-build-sheets.md` | "Beehave slot": trees are `StagingTree`s; per-mechanic trees override the default presenter (ADR-0011 §8). | Open |
 
 ## Open Questions
 
-1. **ADR-0011 is missing.** Confirm that a tree ticks once per subscribed hook call. A tree ticked "once per sim tick" cannot act between S2, S3 and S4 in one tick.
-2. **RuleApi vs SimCommand.** Mechanics write through RuleApi (ADR-0004), and only player intent is a SimCommand. Confirm this, or say what ADR-0011 intends.
+1. ~~**ADR-0011 is missing.**~~ Closed by ADR-0011 §1: no tree runs in the sim; a behaviour handles every subscribed hook call, so it acts at P3, S2, S3 and S4b in one tick.
+2. ~~**RuleApi vs SimCommand.**~~ Closed by ADR-0011 §1: mechanics write through `RuleApi`; `SimCommand` is only player intent and network attacks.
 3. **Fog ghost verb.** Hard drop solidifies (recommended: no new gesture), or a separate tap and button?
 4. **Balance.** Egg `hatch_locks` 6 → 12 (09); ants `ant_every_locks` 1 → 3 (H2); `flip_max` 1 for 10.
 5. **Readings of meadow.md.** Do wobble pop-offs count as "trimmed" for ★★★ in 05? Does the catch's "not during a warning" mean "not on a lock that would top out"?
-6. **Engine rules.** Accept the new S4a/S4c steps and the `mascot`/`content` ranks.
+6. ~~**Engine rules.**~~ Closed by ADR-0011 §2–3: S4a, S4c and the `mascot` / `content` ranks are adopted (pending ADR-0011 moving from Proposed to Accepted).

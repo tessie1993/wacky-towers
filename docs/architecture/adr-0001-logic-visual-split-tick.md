@@ -220,3 +220,8 @@ None — new code.
 | `design/gdd/local-multiplayer-setup.md` | Multiplayer | Each device simulates its own board; no lockstep | Sim per board; network sends commands/events only |
 | `design/gdd/layer-clearing.md` | Layer Clearing | Clear/collapse animation time `t_resolve` | Resolving duration from data; view animates inside it |
 | `design/gdd/physics-mode.md` | Physics Mode | Rigid bodies on Jolt | Named exception: `PhysicsBoard` with same command/event contract |
+
+## Amendment (2026-10-10)
+
+Status unchanged (Accepted). Cross-doc fixes from `production/session-state/conflicts-open.md`:
+- **FT12 undo/reset (mechanics-module BL/FT core changes).** Two new `SimCommand` kinds, `undo` and `reset`, accepted only when the level's rules include FT12 (otherwise rejected at P0 and logged). `reset` = `PlaySession.restart()` with the same pinned round seed. `undo` rebuilds the `BoardSim` from the level, seed and the command log truncated to just before the last completed lock's commands, then fast-forwards; no inverse-delta code, so it stays exactly as deterministic as replay. Both are recorded in the command log like any input. Ceiling: rebuild cost grows with locks; turn levels are short (snapshot every N locks if profiling ever demands it).

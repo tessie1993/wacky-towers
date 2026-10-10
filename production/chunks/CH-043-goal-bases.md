@@ -1,10 +1,11 @@
 # CH-043 GoalState + GoalEvaluator + TopOutPolicy bases
 
+**Status:** superseded by CH-151 (same bases, gap-decision signatures). Do not build this ticket.
+
 **Story:** RUL-001 · **Model:** Sonnet · **Wave:** W2 · **Mode:** direct
 **Goal:** the two slot bases goal plugins (`clear_n`, `height`, `shape`, `survive`) and top-out plugins (`rescue`, `trim`, `lose`) extend.
 **Depends:** CH-078 (core/model exists) · **Parallel-safe with:** W2
-**Files:** new `src/core/model/goal_state.gd`, `src/core/rules/bases/goal_evaluator.gd`, `src/core/rules/bases/top_out_policy.gd`,
-`tests/unit/rules/goal_bases_test.gd`, test fixtures `tests/unit/rules/fixtures/fake_goal.gd`, `fake_top_out.gd` (no `class_name`).
+**Files:** new `src/core/model/goal_state.gd`, `src/core/rules/bases/goal_evaluator.gd`, `src/core/rules/bases/top_out_policy.gd`, test fixtures, `fake_top_out.gd` .
 
 ## API
 ```gdscript
@@ -32,12 +33,14 @@ func tags() -> PackedStringArray
 ```
 Style: copy `src/core/rules/bases/clear_detector.gd` (`@abstract` on the line before `class_name`, `##` docs).
 
-## Tests first (`goal_bases_test.gd`)
+## Expected results (no tests)
+User rule 2026-10-10: NO TESTS. Do not write test files. These are the expected results: the integrator checks them in the editor (godot-ai script eval or a scratch script, read with `logs_read`) after moving the file in.
 1. `test_bases_abstract` — `(load(path) as GDScript).is_abstract()` true for both bases (`can_instantiate()` is true for abstract scripts in 4.7.2: do not use it).
 2. `test_fixtures_concrete` — fake_goal / fake_top_out `.new()` work; fake_goal.setup returns a GoalState with `target` from `goal["n"]`.
 3. `test_goal_state_defaults` — all zero / false.
 4. `test_outcome_values` — `TopOutPolicy.Outcome.LOST == 3`.
 
-## Run / Done when
-`--import`, `-a res://tests/unit/rules` and `model`. README "Done when"; 4 tests green; CH-022 PluginRegistry tests still green (new kinds discovered).
+## Run
+Integrator: move staged files in, rescan, `logs_read` must show no parse errors or class-name clashes, then check the cases above. No gdUnit run.
+
 **Out of scope:** `validate()` on bases (AF-1), the plugins (CH-061, CH-117, CH-122, CH-132).

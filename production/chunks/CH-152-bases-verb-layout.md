@@ -4,7 +4,7 @@
 **Goal:** the input-verb and multi-board layout extension points (ADR-0004 table: slot `control.verb`, `layout.kind`).
 **Depends:** CH-021 (pattern), CH-032, CH-034, CH-148
 **Parallel-safe with:** CH-150, CH-151, CH-042 … CH-050, CH-054
-**Files (new):** `src/core/rules/bases/control_verb.gd`, `src/core/rules/bases/layout_kind.gd`, `tests/unit/rules/plugin_bases_verb_test.gd`
+**Files (new):** `src/core/rules/bases/control_verb.gd`, `src/core/rules/bases/layout_kind.gd`
 
 ## API
 
@@ -29,14 +29,16 @@ func validate(level: LevelData, catalog: GameCatalog) -> Array[ValidationIssue]:
 
 > The plan's older `LayoutKind.validate(level) -> PackedStringArray` is superseded by gap decision 4 (same signature as every base).
 
-## Tests to write first
+## Expected results (no tests)
+User rule 2026-10-10: NO TESTS. Do not write test files. These are the expected results: the integrator checks them in the editor (godot-ai script eval or a scratch script, read with `logs_read`) after moving the file in.
 
 1. `test_bases_are_abstract` — `can_instantiate() == false` for both scripts.
 2. `test_defaults` — inner subclasses implementing the abstract methods trivially: `tags()` empty, `validate(...)` empty.
 3. `test_registry_still_clean` — `PluginRegistry.new(ProjectSettings.get_global_class_list()).errors().is_empty()`.
 
 ## Run
-`-a res://tests/unit/rules` (README; `--import` first).
+Integrator: move staged files in, rescan, `logs_read` must show no parse errors or class-name clashes, then check the cases above. No gdUnit run.
 
 ## Done when
-README "Done when" + 3 tests green.
+File(s) in place, editor scan clean, the expected results above hold.
+

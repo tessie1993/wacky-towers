@@ -1,9 +1,9 @@
 # Movement & Rotation
 
-> **Status**: In Design
+> **Status**: Designed
 > **Author**: Tessa + agents
-> **Last Updated**: 2026-10-09
-> **Last Verified**: 2026-10-09
+> **Last Updated**: 2026-10-10
+> **Last Verified**: 2026-10-10 (against ADR-0001, ADR-0003, ADR-0004, ADR-0011, ADR-0012, ADR-0014)
 > **Implements Pillar**: Readable Chaos; Comeback Energy
 
 ## Summary
@@ -23,8 +23,8 @@ The falling piece is a shape (Piece Set) in one of its orientations at a pivot p
 **The piece**
 1. A falling piece has: its shape (Piece Set), an **orientation** `R` (one of the 24 rotations of the cube; the shape lists its distinct ones), and a **pivot position** `p` (the cell of its pivot cube). Its occupied cells are `p + R · offset_i` for each cube offset `i` (Formulas F1).
 2. The piece is not stored in the grid. Movement & Rotation asks `can_place(cells[])` on the board; a cell passes if it is inside the board, active, and either empty or holding **overlay** content (Board / Grid rules 7 and `is_free`). Solid and **blocking** content fail the test.
-3. Every command is **atomic**: it fully succeeds or leaves the piece exactly as it was. It returns `Ok`, `Ok(kicked, offset)`, `Blocked(reason)` or `Disabled`. Reasons: `out_of_bounds`, `inactive`, `occupied`, `unsupported`.
-4. Commands from one player are resolved **in the order received**, including several in the same frame. There is no rate limit here (Touch Controls owns repeat timing).
+3. Every command is **atomic**: it fully succeeds or leaves the piece exactly as it was. Its result is `Ok`, `Ok(kicked, offset)`, `Blocked(reason)` or `Disabled`. Reasons: `out_of_bounds`, `inactive`, `occupied`, `unsupported`. Commands reach the sim as tick-stamped `SimCommand`s and apply at the start of the tick they are stamped with (ADR-0001, ADR-0012 §7); the result is not a synchronous return but a `SimEvent` in that tick's event list (`piece_moved`, `piece_rotated`, `piece_kicked`, `move_blocked`/`rotate_blocked {reason}`, `command_disabled`), which Touch Controls and the view read for feedback.
+4. Commands from one player are resolved **in arrival order**, including several stamped for the same tick, each against the result of the previous one. There is no rate limit here (Touch Controls owns repeat timing).
 5. With no falling piece, every command is ignored.
 
 **Move**
@@ -33,13 +33,14 @@ The falling piece is a shape (Piece Set) in one of its orientations at a pivot p
 8. `try_translate(delta)` is the general collision primitive. `move` uses it for ground steps; Fall, Drop & Lock uses it for fall steps and drops (including the landing ghost), so there is a single collision authority.
 
 **Rotate**
-9. `rotate(axis, sign)` turns the piece 90° about a **world** axis through the pivot cube, using the right-hand rule about +axis (Formulas F1). Which world axis a button or flick maps to is Touch Controls' job, using this **view-relative mapping** (the same at every one of the 12 camera snaps and for every gravity direction, so the controls never change meaning when gravity does):
-   - **spin** = the world vertical axis (y), which is always screen-vertical;
-   - **tilt** = the horizontal world axis (x or z) whose on-screen projection is closest to screen-horizontal; at the corner snaps, where x and z are equally close, the tie goes to the axis that appears **up-right**;
-   - **roll** = the other horizontal world axis.
-   If the level has not enabled that axis, the command returns `Disabled`: no change and no bonk.
+9. `rotate(axis, sign)` turns the piece 90° about a **world** axis through the pivot cube, using the right-hand rule about +axis (Formulas F1). There are **three rotation pairs** (user decision 2026-10-10), each a ◀/▶ pair. Player-facing names are **Turn / Flip / Roll** (UI text keys); code ids are `spin` / `tilt` / `roll` and never change with the wording (ADR-0012 §3). Which world axis a pair maps to is resolved in the view/camera layer from the **settled** camera snap `k` (ADR-0014 §2) before the command is built, using this **view-relative mapping** (the same at every one of the 12 snaps and for every gravity direction, so the controls never change meaning when gravity does):
+   - **Turn (`spin`)** = the world vertical axis (y), which is always screen-vertical;
+   - **Flip (`tilt`)** = the horizontal world axis (x or z) whose on-screen projection is closest to screen-horizontal; at the corner snaps, where x and z are equally close, the tie goes to the axis that appears **up-right**;
+   - **Roll (`roll`)** = the other horizontal world axis.
+   The sim sees only the world axis and sign. Enabled pairs come from `control.rotation_axes_enabled` (level data, rule-adjustable). A disabled pair's buttons are hidden and its keys emit nothing (ADR-0012); if a disabled-axis command still reaches the sim, the veto action `rotate.<axis_id>` returns `Disabled`: no change and no bonk.
+9a. **Progressive disclosure (Meadow).** `meadow_01` enables Turn only (`["spin"]`); **`meadow_02` ("Tilt & Roll") teaches the other two pairs, Flip and Roll** (all three enabled). Later levels choose per level data.
 10. **In place first.** The new orientation is tested at the same pivot. If it passes, the rotation succeeds with no kick.
-11. **Kick table.** If the in-place rotation fails, the candidates in Formulas F2 are tried in order; the first that passes is taken, and the rotation returns `Ok(kicked, offset)`. If none passes, it returns `Blocked` with the reason of the in-place test. Kicks are searched in world coordinates, so they do not depend on the camera angle.
+11. **Kick table (3D, plane-first).** If the in-place rotation fails, the candidates in Formulas F2 are tried in order; the first that passes is taken, and the rotation returns `Ok(kicked, offset)`. If none passes, it returns `Blocked` with the reason of the in-place test. Kicks are searched in world coordinates, so they do not depend on the camera angle. A 90° turn moves cubes only within the **rotation plane** (perpendicular to the rotation axis; every cube keeps its coordinate along the axis), so kicks **in the rotation plane are tried first**, then up, and kicks along the rotation axis come last. For Turn under normal gravity the plane is the ground plane, so all four ground kicks are in-plane (the classic table). For Flip and Roll the plane is vertical: the piece changes its height, so the in-plane ground pair and the up-kick do most of the work, which is what makes Roll kick off walls and the floor in 3D.
 12. **Kick limits.** A kick never moves the piece down. Up-kicks (against the down axis) are limited to `max_up_kicks_per_piece` (default 2) per falling piece, so repeated rotation cannot climb out of a hole or stall forever. Wide (2-cell) kicks apply only to pieces with a longest extent of at least `kick_wide_min_extent` (default 4) and only if the 1-cell offset in the same direction also passes, so the piece never leaps across a wall.
 13. A shape that is unchanged by the rotation (for example the Big Cube, or the Mono) succeeds with no kick; the orientation is recorded so feedback plays (Piece Set edge case).
 
@@ -96,16 +97,18 @@ The occupied_cells formula is defined as:
 |----------|------|-------|--------|-------------|
 | p | int[3] | inside the board | calculated | Pivot cell position |
 | R | 3×3 int matrix | one of the 24 cube rotations | calculated | Current orientation |
-| o_i | int[3] | −3 to +3 per axis | data file (Piece Set) | Offset of cube i from the pivot cube |
-| cells | int[3][] | 1–8 cells | calculated | Cells the piece occupies |
+| o_i | int[3] | −7 to +7 per axis (longest extent ≤ 8) | data file (Piece Set) | Offset of cube i from the pivot cube |
+| cells | int[3][] | 1–8 cells (Giant family 9–27) | calculated | Cells the piece occupies |
 
-**Output Range:** 1–8 cells; four turns about one axis return the original cells. **Example:** T `(0,0,0)(1,0,0)(2,0,0)(1,1,0)` turned +90° about y → `(0,0,0)(0,0,−1)(0,0,−2)(0,1,−1)`, one face-connected group as before.
+**Output Range:** 1–8 cells (up to 27 for Giant shapes, Piece Set rule 1); four turns about one axis return the original cells. **Example:** T `(0,0,0)(1,0,0)(2,0,0)(1,1,0)` turned +90° about y → `(0,0,0)(0,0,−1)(0,0,−2)(0,1,−1)`, one face-connected group as before.
 
 ### F2. Kick candidates and order
 
 The kick_candidates formula is defined as:
 
-`K = [ in-place ] + sort_by_centre(L1) + [ up ] + sort_by_centre(L1 + up) + sort_by_centre(L2)`, where `L1` = the 4 ground offsets of 1 cell, `up` = `(0, +1, 0)` (against the down axis), `L1 + up` = those 4 offsets with +1 up, and `L2` = the 4 ground offsets of 2 cells (used only if `longest_extent ≥ kick_wide_min_extent`). `sort_by_centre` orders candidates by `d² = (px − cx)² + (pz − cz)²` of the resulting pivot against the centre `(cx, cz)` of the active footprint, smallest first; ties use the fixed order +x, −x, +z, −z.
+`K = [ in-place ] + sort(G_in) + [ up ] + sort(G_in + up) + sort(G_out) + sort(G_out + up) + sort(2·G_in)`
+
+where `G` = the 4 one-cell **ground offsets** (perpendicular to the down axis), split by the rotation axis `a` into `G_in` (offsets perpendicular to `a`: in the rotation plane) and `G_out` (offsets parallel to `a`); `up` = one cell against the down axis; `+ up` = the same offsets with one cell up; `2·G_in` = the in-plane offsets at 2 cells (only if `longest_extent ≥ kick_wide_min_extent`). With down −y: Turn (a = y) gives `G_in` = all 4, `G_out` = none; Flip and Roll (a = x or z) give 2 and 2. `G_out` terms are skipped when `kick_off_axis = false`. `sort` orders candidates by `d²` of the resulting pivot's ground coordinates against the centre of the active footprint, smallest first; ties use the fixed order +x, −x, +z, −z (with sideways gravity, the two ground axes in x, y, z order).
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
@@ -114,8 +117,10 @@ The kick_candidates formula is defined as:
 | px, pz | int | within the footprint | calculated | Pivot after the candidate offset |
 | kick_wide_min_extent | int | 2–8 | data file | Smallest longest-extent for 2-cell kicks; default 4 |
 | max_up_kicks_per_piece | int | 0–4 | data file | Up-kick budget per falling piece; default 2 |
+| n_cubes | int | 1–27 | data file (Piece Set) | Cubes in the piece |
+| tests | int | 1–14 | calculated | Placement tests for one rotation |
 
-**Output Range:** at most 10 tests per rotation for most pieces (1 in place + 4 + 1 + 4), at most 14 for pieces with extent ≥ 4; at most 14 × 8 = 112 cell queries. **Example:** T at pivot `(3, 5, 1)` turned +90° about y needs z = −1 and fails in place. Candidates by `d²`: +z (2.5), +x (6.5), −x (8.5), −z (12.5). +z gives cells `(3,5,2)(3,5,1)(3,5,0)(3,6,1)`, which are free, so the rotation succeeds with offset `(0, 0, +1)`. Rotating −90° restores pivot `(3, 5, 1)` and the original orientation.
+**Output Range:** Turn: at most 1 + 4 + 1 + 4 + 0 + 0 + 4 = 14 tests (10 below the wide-kick extent); Flip/Roll: at most 1 + 2 + 1 + 2 + 2 + 2 + 2 = 12. Cell queries `≤ tests × n_cubes`: ≤ 112 for the 1–8-cube families, ≤ 14 × 27 = 378 for `giant_mega_cube` (bounded and cheap; Giant shapes keep kicks). **Example (Turn):** T at pivot `(3, 5, 1)` turned +90° about y needs z = −1 and fails in place. Candidates by `d²`: +z (2.5), +x (6.5), −x (8.5), −z (12.5). +z gives cells `(3,5,2)(3,5,1)(3,5,0)(3,6,1)`, which are free, so the rotation succeeds with offset `(0, 0, +1)`. Rotating −90° restores pivot `(3, 5, 1)` and the original orientation. **Example (Roll, 3D kick off the floor):** an I lying along x on the floor, offsets `(−1,0,0)(0,0,0)(1,0,0)(2,0,0)` at pivot `(3, 0, 3)`, rolled +90° about z (`R_z`) becomes `(0,−1,0)(0,0,0)(0,1,0)(0,2,0)`. In place, the cube at y = −1 is `out_of_bounds`; `G_in` = ±x (+x first: pivot (4, 3) has d² 0.5, −x (2, 3) has 2.5) both still need y = −1 and fail; `up` gives pivot `(3, 1, 3)` and cells `(3,0,3)…(3,3,3)`, free → `Ok(kicked, (0, +1, 0))` after 4 tests, using 1 of the 2 up-kicks.
 
 ### F3. Restore after a kick
 
@@ -162,7 +167,9 @@ The resting formula is defined as:
 - **If the opposite rotation is sent but the restore position is no longer free**: a normal opposite rotation with kicks is used.
 - **If any rotation other than the exact opposite comes between**: the undo record is replaced; the restore no longer applies.
 - **If a move or fall step happens between a kick and its undo**: the undo still works (the stored offset is relative).
-- **If two commands arrive in the same frame**: they resolve in arrival order, each against the result of the previous one.
+- **If two commands are stamped for the same tick**: they resolve in arrival order, each against the result of the previous one (none is merged or dropped).
+- **If the camera is being free-orbited when a rotate is pressed**: the axis is resolved from the last settled snap, not the drag angle (ADR-0014 §2).
+- **If a Flip or Roll kick along the rotation axis (`G_out`) feels like a jump in playtests**: set `kick_off_axis = false`; in-plane and up kicks remain.
 - **If a rotation axis is disabled by the level**: `Disabled`, no bonk, no change.
 - **If `landed_move_rule = supported` and the piece is resting**: a move or rotation that would end unsupported fails with `Blocked(unsupported)`, and a kick that ends unsupported is skipped.
 - **If a twist fills a cell under or inside the piece**: `place_nearest_up()` lifts the piece to the nearest free position upward; if none exists, spawn blocked is reported (Board / Grid).
@@ -201,18 +208,19 @@ Board / Grid, Piece Set and Touch Controls already mention Movement & Rotation; 
 
 | Knob | Range | Default | Source | Affects |
 |---|---|---|---|---|
-| kick_enabled | true / false | true | data file (level) | Whether the kick table is used at all; false makes rotations in-place only |
-| max_up_kicks_per_piece | 0–4 | 2 | data file | How much a piece can climb through rotation; interacts with Fall, Drop & Lock's lock-reset count |
-| kick_wide_min_extent | 2–8 | 4 | data file | Which pieces get 2-cell kicks |
-| kick_order | centre / fixed | centre | data file | Whether kicks prefer the board centre or follow the fixed order +x, −x, +z, −z |
-| landed_move_rule | free / supported | free | data file (level, perk) | Whether landed pieces can slide into gaps |
-| rotation_axes_enabled | subset of {spin, tilt, roll} | all (level may reduce) | data file (level) | Progressive disclosure (Touch Controls) |
+| kick_enabled (`control.kick_enabled`) | true / false | true | data file (level) | Whether the kick table is used at all; false makes rotations in-place only |
+| max_up_kicks_per_piece (`control.max_up_kicks_per_piece`) | 0–4 | 2 | data file | How much a piece can climb through rotation; interacts with Fall, Drop & Lock's lock-reset count |
+| kick_wide_min_extent (`control.kick_wide_min_extent`) | 2–8 | 4 | data file | Which pieces get 2-cell kicks |
+| kick_order (`control.kick_order`) | centre / fixed | centre | data file | Whether kicks prefer the board centre or follow the fixed order +x, −x, +z, −z |
+| kick_off_axis (`control.kick_off_axis`, new) | true / false | true | data file | Whether Flip/Roll try kicks along the rotation axis (`G_out`, F2) after the in-plane ones |
+| landed_move_rule (`control.landed_move_rule`) | free / supported | free | data file (level, perk) | Whether landed pieces can slide into gaps |
+| rotation_axes_enabled (`control.rotation_axes_enabled`) | subset of {spin, tilt, roll} | all (level may reduce; meadow_01 `["spin"]`) | data file (level) | Progressive disclosure (rule 9a) |
 
-`kick_enabled = false` makes `max_up_kicks_per_piece`, `kick_wide_min_extent` and `kick_order` inert.
+Knob ids are ADR-0004 dotted ids in `assets/data/knobs/controls.json`. `kick_enabled = false` makes the other kick knobs inert.
 
 ## Visual/Audio Requirements
 
-- **Move**: the piece snaps one cell with a short ease (about 60 ms); the landing ghost updates the same frame.
+- **Move**: the piece snaps one cell with a short ease (about 60 ms); the landing ghost updates on the tick the command applies.
 - **Rotate**: logical instant, drawn as a 120 ms turn about the pivot (Touch Controls); the axis gizmo flashes on the pivot (shape- and colour-coded). With reduced motion, turns are instant cuts.
 - **Kick**: drawn as the same turn plus a slide in the same 120 ms, with a small dust puff at the cell the piece slid away from, so the player sees why it moved.
 - **Blocked**: a short "bonk" shake of the piece (about 80 ms, translation only, respects reduced motion) with the blocked cubes briefly outlined in the danger red (art bible §4). A `Disabled` rotation shows nothing.
@@ -220,7 +228,7 @@ Board / Grid, Piece Set and Touch Controls already mention Movement & Rotation; 
 
 ## Game Feel
 
-Movement and rotation should feel immediate and honest: the piece changes cells on the same frame the command arrives, every blocked command says so within one frame, and a kick should feel like the game quietly helping rather than the piece jumping. Targets: command-to-logical-change in the same frame; move ease 60 ms; rotate turn 120 ms; bonk 80 ms; a kick never moves the piece more than 1 cell for most pieces (2 for extent ≥ 4). The restore rule means "undo" always feels exact.
+Movement and rotation should feel immediate and honest: the piece changes cells on the tick the command applies (at most one tick, ~17 ms, after the press; touch-to-visible < 50 ms, ADR-0012), every blocked command says so in that tick's events, and a kick should feel like the game quietly helping rather than the piece jumping. Targets: command-to-logical-change in the same frame; move ease 60 ms; rotate turn 120 ms; bonk 80 ms; a kick never moves the piece more than 1 cell for most pieces (2 for extent ≥ 4). The restore rule means "undo" always feels exact.
 
 ## UI Requirements
 
@@ -242,7 +250,7 @@ None directly. Touch Controls owns the buttons and gestures; the HUD owns the gh
 **[U]** unit, **[I]** integration, **[M]** manual or device. Defaults: 8 × 8 × 16 board, centre (3.5, 3.5), down axis −y, `landed_move_rule = free`.
 
 **Move**
-1. [U] **GIVEN** a free cell to the right, **WHEN** `move(+x)` is sent, **THEN** the pivot changes by (+1, 0, 0), the result is `Ok`, and the ghost updates in the same frame.
+1. [U] **GIVEN** a free cell to the right, **WHEN** `move(+x)` is sent, **THEN** the pivot changes by (+1, 0, 0), a `piece_moved` event is in that tick's events, and the ghost updates on the same tick.
 2. [U] **GIVEN** a piece at the +x edge, **WHEN** `move(+x)` is sent, **THEN** `Blocked(out_of_bounds)` and the piece is unchanged.
 3. [U] **GIVEN** a block, an inactive cell, a blocking object and an overlay object in four separate targets, **WHEN** moved into, **THEN** the results are `Blocked(occupied)`, `Blocked(inactive)`, `Blocked(occupied)` and `Ok`.
 4. [U] **GIVEN** a move then its opposite, **THEN** the piece returns to the starting pivot.
@@ -258,6 +266,9 @@ None directly. Touch Controls owns the buttons and gestures; the HUD owns the gh
 12. [U] **GIVEN** a Big Cube or Mono, **WHEN** rotated, **THEN** `Ok`, cells unchanged.
 12a. [U] **GIVEN** camera yaw 75° (+x appears 15° off screen-right), **THEN** tilt maps to the x axis and roll to z; **GIVEN** a corner snap (k = 0, 3, 6, 9), **THEN** tilt maps to the axis that appears up-right; **GIVEN** down axis −x, **THEN** the mapping is unchanged.
 13. [U] **GIVEN** a level with tilt disabled, **WHEN** a tilt rotation is sent, **THEN** `Disabled`, no change, no bonk event.
+13a. [U] F2 Roll example: the floor-lying I at pivot (3, 0, 3) rolled +90° about z → `Ok(kicked)` with offset (0, +1, 0) after exactly 4 tests, and the up-kick count is 1.
+13b. [U] **GIVEN** a Flip or Roll rotation, **THEN** the candidate order is in-place, in-plane ground, up, in-plane + up, along-axis, along-axis + up, wide in-plane; **GIVEN** `kick_off_axis = false`, **THEN** no along-axis candidate is tested.
+13c. [I] **GIVEN** `meadow_01` data, **THEN** only Turn is available; **GIVEN** `meadow_02`, **THEN** Turn, Flip and Roll all work on buttons, keyboard and gamepad (ADR-0012 validation).
 
 **Undo**
 14. [U] F3 example: after the kicked rotation, `rotate(y, −)` returns pivot (3, 5, 1) and the original orientation.
@@ -272,16 +283,16 @@ None directly. Touch Controls owns the buttons and gestures; the HUD owns the gh
 
 **Rules and robustness**
 21. [U] **GIVEN** a twist fills a cell under the piece, **WHEN** `place_nearest_up()` is called, **THEN** the piece moves to the nearest free position upward; **GIVEN** no position exists, **THEN** spawn blocked is reported once.
-22. [U] **GIVEN** two commands in one frame, **THEN** the second is evaluated against the first's result, in arrival order.
+22. [U] **GIVEN** two commands stamped for one tick, **THEN** the second is evaluated against the first's result, in arrival order.
 23. [U] **GIVEN** no piece (NoPiece) or Frozen, **THEN** every command is ignored with no result event and nothing buffered.
 24. [U] **GIVEN** the down axis flips to +y while a piece is active, **THEN** its cells are unchanged, ground axes are still perpendicular to the down axis, and the up-kick direction is now −y.
-25. [U] **GIVEN** any rotation, **THEN** at most 14 placement tests and 112 cell queries are made.
+25. [U] **GIVEN** any rotation, **THEN** at most 14 placement tests and `14 × n_cubes` cell queries are made (112 for ≤ 8 cubes, 378 for `giant_mega_cube`).
 26. [I] **GIVEN** a blocked command, **THEN** Touch Controls receives the reason and plays the bonk; **GIVEN** `Disabled`, **THEN** it plays nothing.
 27. [M] **GIVEN** the Touch Controls prototype, **WHEN** testers rotate pieces near walls and the stack, **THEN** fewer than 20% report that "the piece jumped" or did something unexpected.
 
 ## Open Questions
 
-- **Kick table values**: are 1-cell lateral, 1 up and 2-cell for extent ≥ 4 enough, or is a bigger table needed for the 3D Specials? Validate in the Touch Controls prototype.
+- **Kick table values**: the plane-first 3D table (F2) is the default of 2026-10-10; is it enough for the 3D Specials and Giant shapes? Validate in the Touch Controls prototype and meadow_02.
 - **Kick preview**: should the ghost show where a kick will land before the player commits? Decide after playtests.
 - **Pivot feel**: rotating about the pivot cube moves the piece's visual centre for odd shapes; consider a per-shape pivot override if rotations feel off.
 - **Lock-delay reset**: answered in Fall, Drop & Lock (successful moves and rotations, kicked ones included, restart the lock timer, up to 10 resets per piece, restored when the piece reaches a lower layer). The up-kick budget is a backstop.

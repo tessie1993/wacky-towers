@@ -99,6 +99,18 @@ GDScript gameplay --(factory)--> BoardQuery API (same signature)
                                          in: PackedInt32Array  out: PackedInt32Array
 ```
 
+## Amendment 1 (2026-10-10, user decision): PC/Steam ships with Android; export hygiene
+
+Accepted with the user's Wave 1 decisions. Does not change the GDScript-first rule above.
+
+1. **Platforms.** Android and PC (Windows, via Steam) ship **together** at MVP. "Android first" above now means "Android is the tightest budget", not "PC later". Every story is verified on both. MVP input is touch + keyboard/mouse + gamepad (ADR-0012).
+2. **Third-party native modules are exceptions, not a native scaffold.** Orchestrator (ADR-0010) and GodotSteam are prebuilt GDExtensions. They do not trigger rule 2's profiler-evidence requirement (no project C++), but each must load on every platform it ships to and is rechecked on every Godot upgrade.
+3. **GodotSteam is excluded from Android.** It is used only behind a feature-tag check (`OS.has_feature("steam")`, a custom feature set on the Steam/PC export preset) through one thin GDScript wrapper (`src/game/platform/steam_service.gd`), with a no-op twin on every other platform. The Android preset excludes `addons/godotsteam/**` from export, and the `.gdextension` lists no Android library. Nothing outside the wrapper references a Steam class.
+4. **Dev/AI autoloads are stripped from release exports.** `_mcp_game_helper` (godot_ai), `MCPRuntimeServer` (godot_mcp_toolkit) and the beehave debugger autoloads (`BeehaveGlobalMetrics`, `BeehaveGlobalDebugger`) must not run in a release build: release presets exclude their addon folders (or each autoload self-frees unless `OS.is_debug_build()` / a `dev` feature tag), and an export smoke test fails if any of them is present in a release `.pck`.
+5. **Monetization seam.** No ads/IAP SDKs now (and none on Android without a new ADR). Any future store SDK goes behind the same feature-tagged wrapper pattern as rule 3.
+
+Validation added: [M] Android release APK contains no GodotSteam or dev/AI autoload files and boots clean; [M] Steam/PC release build initialises GodotSteam only when the `steam` feature is present and runs without Steam (no-op twin) otherwise.
+
 ## Alternatives Considered
 
 ### Alternative 1: Scaffold C++ now

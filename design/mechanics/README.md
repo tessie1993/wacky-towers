@@ -8,7 +8,11 @@ All game mechanics live in one library: **[`design/gdd/mechanics-module.md`](../
 
 ## What's in the box
 
-The atoms are grouped into 14 slots. Each atom has an ID, a one-line rule, the game it came from, its tags, a cost and a status (Designed / Candidate / Parked).
+The atoms are grouped into 14 slots. Each atom has an ID, a one-line rule, the game it came from, its tags, a cost and a status (Designed / Candidate / Proposed / Parked).
+
+- **Proposed** (2026-10-10): 42 new atoms from the puzzle and party proposals. Their hook, knobs and guards are in module §2b. Review one to Candidate before a shipped level uses it.
+- **Renamed ids**: party BL17 → BL20 Handicap Footprint, GO27 → GO30 Boss Raid, EV20 → EV24 Sprinkle Shower, WO12 → WO14 Skill Rule. BL17, GO27, EV20 and WO12 are the puzzle atoms.
+- **Runtime**: every atom that changes the game is a rule or slot plugin inside the sim (ADR-0004, ADR-0011). Beehave trees only stage animation.
 
 | # | Slot | Prefix | Examples |
 |---|---|---|---|
@@ -41,7 +45,8 @@ The atoms are grouped into 14 slots. Each atom has an ID, a one-line rule, the g
 3. **Fill the five required slots**: Board, Arrival, Verb, Goal, Fail.
 4. **Add the optional atoms that tell the story**: a clear rule plus its collapse, placement, specials, scoring and events. A recipe allows at most 1 level mechanic and 2 twists.
    - Minigames must add at least one Interaction (IN) atom.
-   - Co-op and team atoms are Parked; don't use them.
+   - Co-op and team atoms are Parked; don't use them. Exception: the team-up events GO30 Boss Raid and IN31 Truce Pact, in tournaments only (scores stay individual).
+   - Atoms tagged `tourney` (edges and team-ups) are off in quick versus.
 5. **Check the tags.** No conflicting pairs, for example:
    - `noclr` with `clr`
    - `nofall` with `fall`
@@ -52,6 +57,8 @@ The atoms are grouped into 14 slots. Each atom has an ID, a one-line rule, the g
    - A campaign level has at most 2 atoms new to the player and 4 non-default atoms.
    - Showpiece levels in tiers 7–10 may have up to 6 non-default atoms.
    - A minigame has at most 3 new and 5 non-default, and lasts 30–240 s.
+   - **How to count**: Goal and Fail picks count when they are not the default (GO01, FT01). A listed bundle counts 1 (M1 build race GO02 + CL14 + FT02, M2 fill shape, Pull, Last standing; table in module F1). Secrets and the story card's mascot role count 0.
+   - Puzzle (`turn`) levels can be failed. FT12 undo/reset is an optional atom and counts if picked.
    - The idea must fit one sentence and be visible within the first two pieces.
    - **No drift curve.** How far a level strays from classic Tetris, and how much physics silliness it has, goes up and down from level to level, with only a general trend toward variety. A calm, near-classic level after a wild one is fine.
 7. **Write the level JSON.**
@@ -76,4 +83,4 @@ Interaction:   INxx (minigames only)
 One sentence:  "<the rule card>"
 ```
 
-Ten worked recipes (Sky Sprint, Toy Box Critter, Candy Cascade, Kitchen Rush, Melon Merge, Beat Sweep, Wobble Pull, Panel Clash, Picnic Tray, Storm Keeper) are in module §3.
+Ten worked recipes (Sky Sprint, Toy Box Critter, Candy Cascade, Kitchen Rush, Melon Merge, Beat Sweep, Wobble Pull, Panel Clash, Picnic Tray, Storm Keeper) and eight tournament rounds (T1–T8: Piñata Party, Monster Mash, Card Shark, Boss Raid, Spotlight Showdown, Sprinkle Frenzy, Skill Storm, Underdog Derby) are in module §3. All are within their caps under the count rule.

@@ -47,7 +47,7 @@
 #   Each entry: name, status, source, referenced_by[], attributes{}, added, revised
 
 version: 1
-last_updated: "2026-10-09"
+last_updated: "2026-10-10"
 
 # ─── ENTITIES ────────────────────────────────────────────────────────────────
 # Named game-world objects: enemies, NPCs, characters, factions, bosses.
@@ -58,7 +58,64 @@ last_updated: "2026-10-09"
 # Attribute fields: any key stats that could appear in another GDD
 #   (health, damage, drops, faction, etc.)
 
-entities: []
+entities:
+  # 2026-10-10: playable characters C1-C4 (story friends from production/narrative/campaign-story/brief.md §5)
+  - name: c1_cloud_wizard
+    status: active
+    source: design/gdd/characters-perks.md
+    referenced_by:
+      - design/gdd/characters-perks.md
+      - design/gdd/skills.md
+      - design/gdd/narrative/characters.md
+    character_id: c1
+    identity: tempo
+    skill_id: calm_skies
+    signature_perk: light_feet
+    unlock: start
+    added: 2026-10-10
+    revised: ""
+  - name: c2_lana
+    status: active
+    source: design/gdd/characters-perks.md
+    referenced_by:
+      - design/gdd/characters-perks.md
+      - design/gdd/skills.md
+    character_id: c2
+    species: alpaca (knitter, scaffolder)
+    identity: protect
+    skill_id: stitch
+    signature_perk: sturdy
+    unlock: ice biome finale (campaign); always in multiplayer
+    added: 2026-10-10
+    revised: ""
+  - name: c3_boulder
+    status: active
+    source: design/gdd/characters-perks.md
+    referenced_by:
+      - design/gdd/characters-perks.md
+      - design/gdd/skills.md
+    character_id: c3
+    species: pygmy hippo (demolition)
+    identity: remove
+    skill_id: smash
+    signature_perk: big_steps
+    unlock: lava biome finale (campaign); always in multiplayer
+    added: 2026-10-10
+    revised: ""
+  - name: c4_glim
+    status: active
+    source: design/gdd/characters-perks.md
+    referenced_by:
+      - design/gdd/characters-perks.md
+      - design/gdd/skills.md
+    character_id: c4
+    species: bat (architect)
+    identity: plan
+    skill_id: redraw
+    signature_perk: juggle
+    unlock: cave biome finale (campaign); always in multiplayer
+    added: 2026-10-10
+    revised: ""
 
 # Example (remove when first real entry is added):
 #
@@ -87,7 +144,64 @@ entities: []
 # Attribute fields: value_gold, weight, stackable, category, and any stat
 #   modifiers that another system (e.g., economy, crafting) might reference.
 
-items: []
+items:
+  # 2026-10-10: meta currency. Player-facing name is pending (conflicts-open item 13); id per shop.md price.currency
+  - name: currency_stars
+    status: active
+    source: design/gdd/points-system.md
+    referenced_by:
+      - design/gdd/points-system.md
+      - design/gdd/shop.md
+      - design/gdd/characters-perks.md
+    category: currency
+    id: stars
+    notes: "Display name under review (item 13); do not rename here until decided."
+    added: 2026-10-10
+    revised: ""
+  - name: potion_helper_drop
+    status: active
+    source: design/gdd/shop.md
+    referenced_by:
+      - design/gdd/shop.md
+      - design/gdd/buffs-debuffs.md
+    category: potion
+    effect: Helper Drop
+    price: 2
+    added: 2026-10-10
+    revised: ""
+  - name: potion_slow_time
+    status: active
+    source: design/gdd/shop.md
+    referenced_by:
+      - design/gdd/shop.md
+      - design/gdd/buffs-debuffs.md
+    category: potion
+    effect: Slow Time
+    price: 2
+    added: 2026-10-10
+    revised: ""
+  - name: potion_preview_peek
+    status: active
+    source: design/gdd/shop.md
+    referenced_by:
+      - design/gdd/shop.md
+      - design/gdd/buffs-debuffs.md
+    category: potion
+    effect: Preview Peek
+    price: 3
+    added: 2026-10-10
+    revised: ""
+  - name: potion_bomb
+    status: active
+    source: design/gdd/shop.md
+    referenced_by:
+      - design/gdd/shop.md
+      - design/gdd/buffs-debuffs.md
+    category: potion
+    effect: Bomb
+    price: 4
+    added: 2026-10-10
+    revised: ""
 
 # Example:
 #
@@ -2575,6 +2689,63 @@ constants:
     value: 2
     unit: locks
     added: 2026-10-09
+    revised: ""
+  # 2026-10-10: skills / characters cross-system values
+  - name: skill_rule
+    status: active
+    source: design/gdd/skills.md
+    referenced_by:
+      - design/gdd/skills.md
+      - design/gdd/characters-perks.md
+      - design/gdd/level-data-definition.md
+      - design/gdd/tournament-flow.md
+      - design/gdd/mechanics-module.md
+    value: [charge, once, consumable, "off"]
+    unit: enum (per play context; WO14 overrides)
+    added: 2026-10-10
+    revised: ""
+  - name: skill_charge_rate
+    status: active
+    source: design/gdd/skills.md
+    referenced_by:
+      - design/gdd/skills.md
+      - design/gdd/characters-perks.md
+      - design/gdd/rule-twist-framework.md
+    value: 1.0
+    unit: x (rule-adjustable knob skill.charge_rate, 0.5-1.5)
+    added: 2026-10-10
+    revised: ""
+  - name: item_slots
+    status: active
+    source: design/gdd/items.md
+    referenced_by:
+      - design/gdd/items.md
+      - design/gdd/characters-perks.md
+      - design/gdd/rule-twist-framework.md
+    value: 2
+    unit: slots (rule-adjustable count, 1-3)
+    added: 2026-10-10
+    revised: ""
+  - name: edge_cap
+    status: active
+    source: design/gdd/characters-perks.md
+    referenced_by:
+      - design/gdd/characters-perks.md
+      - design/gdd/shop.md
+      - design/gdd/scoring-stars.md
+    value: 0.15
+    unit: summed edge share
+    added: 2026-10-10
+    revised: ""
+  - name: edge_slots
+    status: active
+    source: design/gdd/characters-perks.md
+    referenced_by:
+      - design/gdd/characters-perks.md
+      - design/gdd/shop.md
+    value: 2
+    unit: edge perks per loadout
+    added: 2026-10-10
     revised: ""
 
 # Example:
