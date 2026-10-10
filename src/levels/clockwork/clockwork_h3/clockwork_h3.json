@@ -1,0 +1,234 @@
+{
+  "schema": 1,
+  "id": "clockwork_h3",
+  "biome": "clockwork",
+  "tier": 14,
+  "name": "LVL_CLOCKWORK_H3_TITLE",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.3,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "wind_keys",
+    "keys_needed": 5,
+    "keyholes": [
+      {
+        "wall": "-x",
+        "row": 2,
+        "y": 1
+      },
+      {
+        "wall": "+x",
+        "row": 2,
+        "y": 2
+      },
+      {
+        "wall": "-z",
+        "row": 2,
+        "y": 3
+      },
+      {
+        "wall": "+z",
+        "row": 2,
+        "y": 1
+      },
+      {
+        "wall": "-x",
+        "row": 4,
+        "y": 3
+      }
+    ]
+  },
+  "rules": [
+    {
+      "id": "key_stamp",
+      "params": {
+        "key_per_bag": 2
+      }
+    },
+    {
+      "id": "piston_punch",
+      "params": {
+        "piston_locks": 5,
+        "pistons": [
+          {
+            "wall": "west",
+            "row": 0,
+            "y": 1
+          },
+          {
+            "wall": "east",
+            "row": 3,
+            "y": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "magnet_pull",
+      "params": {
+        "magnet_col": [
+          4,
+          2
+        ],
+        "pull_interval_ms": 4000,
+        "pull_warn_ms": 800,
+        "pull_axis": "x"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 240000,
+    "t3": 170000
+  },
+  "music": "clockwork_h3_tbd",
+  "story": {
+    "title_key": "LVL_CLOCKWORK_H3_TITLE",
+    "premise_key": "LVL_CLOCKWORK_H3_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "key"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/clockwork.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "clockwork_h3",
+      "biome": "clockwork",
+      "tier": 14,
+      "name": "LVL_CLOCKWORK_H3_TITLE",
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.3,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "wind_keys",
+        "keys_needed": 5,
+        "keyholes": [
+          {
+            "wall": "-x",
+            "row": 2,
+            "y": 1
+          },
+          {
+            "wall": "+x",
+            "row": 2,
+            "y": 2
+          },
+          {
+            "wall": "-z",
+            "row": 2,
+            "y": 3
+          },
+          {
+            "wall": "+z",
+            "row": 2,
+            "y": 1
+          },
+          {
+            "wall": "-x",
+            "row": 4,
+            "y": 3
+          }
+        ]
+      },
+      "rules": [
+        {
+          "id": "key_stamp",
+          "params": {
+            "key_per_bag": 2
+          }
+        },
+        {
+          "id": "piston_punch",
+          "params": {
+            "piston_locks": 5,
+            "pistons": [
+              {
+                "wall": "west",
+                "row": 0,
+                "y": 1
+              },
+              {
+                "wall": "east",
+                "row": 3,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "id": "magnet_pull",
+          "params": {
+            "magnet_col": [
+              4,
+              2
+            ],
+            "pull_interval_ms": 4000,
+            "pull_warn_ms": 800,
+            "pull_axis": "x"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 240000,
+        "t3": 170000
+      },
+      "music": "clockwork_h3_tbd",
+      "story": {
+        "title_key": "LVL_CLOCKWORK_H3_TITLE",
+        "premise_key": "LVL_CLOCKWORK_H3_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "key"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "magnet_pull is a wave-3 rule (design/gdd/mechanics-wave3.md W1); rule def lands with the plugin",
+      "Piston rows (west z0, east z3) never face a keyhole row (west z2/z4, east z2), so a push cannot unwind a key"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": [
+      "Supersedes the pre-wave-3 H3 draft 'Frozen Turntable' (clockwork.md section 7); keeps the H2 draft's Piston Keys layout"
+    ]
+  }
+}

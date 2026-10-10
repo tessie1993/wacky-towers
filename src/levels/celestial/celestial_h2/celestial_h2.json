@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "id": "celestial_h2",
+  "biome": "celestial",
+  "tier": 13,
+  "name": "LVL_CELESTIAL_H2_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.45,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "fog",
+      "params": {
+        "visible_ms": 4000,
+        "fade_ms": 1000,
+        "invisible_alpha": 0.15,
+        "reveal_ms": 700,
+        "skin": "eclipse"
+      }
+    },
+    {
+      "id": "mystery_piece",
+      "params": {
+        "every": 4
+      }
+    }
+  ],
+  "stars": {
+    "t2": 305000,
+    "t3": 210000
+  },
+  "music": "celestial_h2_tbd",
+  "story": {
+    "title_key": "LVL_CELESTIAL_H2_TITLE",
+    "premise_key": "LVL_CELESTIAL_H2_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "wishing_star"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/celestial.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "celestial_h2",
+      "biome": "celestial",
+      "tier": 13,
+      "name": "LVL_CELESTIAL_H2_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.45,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 4
+      },
+      "rules": [
+        {
+          "id": "fog",
+          "params": {
+            "visible_ms": 4000,
+            "fade_ms": 1000,
+            "invisible_alpha": 0.15,
+            "reveal_ms": 700,
+            "skin": "eclipse"
+          }
+        },
+        {
+          "id": "mystery_piece",
+          "params": {
+            "every": 4
+          }
+        }
+      ],
+      "stars": {
+        "t2": 305000,
+        "t3": 210000
+      },
+      "music": "celestial_h2_tbd",
+      "story": {
+        "title_key": "LVL_CELESTIAL_H2_TITLE",
+        "premise_key": "LVL_CELESTIAL_H2_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "wishing_star"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "mystery_piece is a wave-3 rule (design/gdd/mechanics-wave3.md W6); pool defaults to the level's shape pool; rule def lands with the plugin"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": [
+      "Supersedes the pre-wave-3 H2 draft 'Dark Side' (celestial.md section 7): Every Way Down dropped to stay within one wave-3 rule plus known ideas"
+    ]
+  }
+}

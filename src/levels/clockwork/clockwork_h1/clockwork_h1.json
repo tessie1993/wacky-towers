@@ -1,0 +1,147 @@
+{
+  "schema": 1,
+  "id": "clockwork_h1",
+  "biome": "clockwork",
+  "tier": 12,
+  "name": "LVL_CLOCKWORK_H1_TITLE",
+  "board": {
+    "width": 8,
+    "depth": 4,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.3,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "conveyor",
+      "params": {
+        "conveyor_every": 3,
+        "conveyor_wrap": true,
+        "conveyor_dir": "+x"
+      }
+    },
+    {
+      "id": "magnet_pull",
+      "params": {
+        "magnet_col": [
+          0,
+          1
+        ],
+        "pull_interval_ms": 3000,
+        "pull_warn_ms": 600,
+        "pull_axis": "x"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 340000,
+    "t3": 235000
+  },
+  "music": "clockwork_h1_tbd",
+  "story": {
+    "title_key": "LVL_CLOCKWORK_H1_TITLE",
+    "premise_key": "LVL_CLOCKWORK_H1_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "magnet"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/clockwork.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "clockwork_h1",
+      "biome": "clockwork",
+      "tier": 12,
+      "name": "LVL_CLOCKWORK_H1_TITLE",
+      "board": {
+        "width": 8,
+        "depth": 4,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.3,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 5
+      },
+      "rules": [
+        {
+          "id": "conveyor",
+          "params": {
+            "conveyor_every": 3,
+            "conveyor_wrap": true,
+            "conveyor_dir": "+x"
+          }
+        },
+        {
+          "id": "magnet_pull",
+          "params": {
+            "magnet_col": [
+              0,
+              1
+            ],
+            "pull_interval_ms": 3000,
+            "pull_warn_ms": 600,
+            "pull_axis": "x"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 340000,
+        "t3": 235000
+      },
+      "music": "clockwork_h1_tbd",
+      "story": {
+        "title_key": "LVL_CLOCKWORK_H1_TITLE",
+        "premise_key": "LVL_CLOCKWORK_H1_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "magnet"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "magnet_pull is a wave-3 rule (design/gdd/mechanics-wave3.md W1); rule def lands with the plugin"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": [
+      "Supersedes the pre-wave-3 H1 draft 'Spring Streets' (clockwork.md section 7)"
+    ]
+  }
+}

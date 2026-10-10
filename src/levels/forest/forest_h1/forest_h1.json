@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "id": "forest_h1",
+  "biome": "forest",
+  "tier": 12,
+  "name": "LVL_FOREST_H1_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.25,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "fog",
+      "params": {
+        "visible_ms": 4000,
+        "fade_ms": 1000,
+        "invisible_alpha": 0.12,
+        "reveal_ms": 600
+      }
+    },
+    {
+      "id": "gust",
+      "params": {
+        "wind_mode": "rotating",
+        "wind_interval_ms": 10000,
+        "wind_jitter_ms": 2500,
+        "wind_strength": 1,
+        "wind_warn_ms": 1000
+      }
+    },
+    {
+      "id": "anvil_drop",
+      "params": {
+        "every": 6,
+        "max_crush": 3
+      }
+    }
+  ],
+  "stars": {
+    "t2": 375000,
+    "t3": 265000
+  },
+  "music": "forest_h1",
+  "story": {
+    "title_key": "LVL_FOREST_H1_TITLE",
+    "premise_key": "LVL_FOREST_H1_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "firefly"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/forest.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "forest_h1",
+      "biome": "forest",
+      "tier": 12,
+      "board": { "width": 6, "depth": 6, "h_play": 10 },
+      "knobs": { "fall.g0": 1.25, "goal.warnings_max": 1 },
+      "goal": { "type": "clear_n", "n": 5 },
+      "rules": [
+        { "id": "fog", "params": { "visible_ms": 4000, "fade_ms": 1000, "invisible_alpha": 0.12, "reveal_ms": 600 } },
+        { "id": "gust", "params": { "wind_mode": "rotating", "wind_interval_ms": 10000, "wind_jitter_ms": 2500, "wind_strength": 1, "wind_warn_ms": 1000 } },
+        { "id": "anvil_drop", "params": { "every": 6, "max_crush": 3 } }
+      ],
+      "stars": { "t2": 375000, "t3": 265000 },
+      "music": "forest_h1"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "anvil_drop is a wave-3 rule (design/gdd/mechanics-wave3.md W4), skinned as the Forest event 'Pinecone Plonk'; its assets/data/rules JSON lands with the wave-3 implementation."
+    ],
+    "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = 5 x 96 s",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

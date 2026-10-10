@@ -388,6 +388,8 @@ targets (both layers)   side (z = 2)
 
 ## 7. Hard-track remixes (tiers 12–14; open after 10)
 
+> **Superseded (2026-10-10, wave-3 remix pass).** The shipped `meadow_h1`–`h3` are specified in **"Hard-track remixes (tiers 12–14)"** at the end of this file. H1 keeps this concept and adds a wave-3 rule. H2 (ants, SP31) and H3 (islands, BL07) were replaced because neither atom was taught in the Meadow or exists as a runtime rule. This section is kept as history; the H rows in the section 2 table are out of date.
+
 ### H1 Seed Sprouts
 
 **Story card.** Pip's sunflower went to seed; sprouts shoot up all over the plot. Cap them or clear them before they poke through the danger line. · **Pip: watcher** (tries to weed them, gets flicked).
@@ -458,3 +460,74 @@ One meadow theme, layered: base (01–02) → + wind layer (03) → + plucks for
 - **Phase 2 busyness (10)**: if the flip plus gusts is too much, use EV13 to swap the gusts out.
 - **Starting-contents format** (cell list vs. ASCII) is with the architecture lead.
 - **Star times** are formula estimates; replace with playtest medians.
+
+---
+
+## Hard-track remixes (tiers 12–14)
+
+Wave-3 remix pass (level-designer, 2026-10-10), implementing Campaign Structure rule 17. All three open when `meadow_10` is finished and do not count toward the next biome's gate. Each one recombines 1–2 rules the Meadow already taught with **exactly one** wave-3 rule (`design/gdd/mechanics-wave3.md`), given a Meadow name. Twist cap (Rule-Twist Framework rule 15): at most 2 `twist` + 1 `mechanic`; `content` rules do not count. Pip is a watcher with no catch. No Mizzle clue.
+
+**Star calibration (hard track).** Harder than `meadow_10`, which sits at 0.82 × t_est for ★★: here `t2 = round5(0.78 × t_est)` and `t3 = round5(0.55 × t_est)`, with `t_est = N × 2.667 s × A` (A = 36 on 6×6 gives 96 s per clear). Levels with starter layers are hand-set. Speed stays near tier 9–10 (0.95–1.0): these levels are hard through rules, not speed. **Coins and gold are score only**: no goal type reads a counter yet, so every goal is a standard `clear_n`.
+
+| id | Name | Tier | Taught rules recombined | Wave-3 rule (Meadow name) | Twist / mech count | Goal | g0 | ★★ / ★★★ |
+|---|---|---|---|---|---|---|---|---|
+| meadow_h1 | Seed Sprouts | 12 | sprouts (06), gust (03) | `star_coins` (**Dandelion Coins**) | 1 twist + 1 mech | Clear 5 | 0.95 | 375 / 265 s |
+| meadow_h2 | Petal Party | 13 | mushroom_popup (04), topsy_tumble (09) | `confetti_fill` (**Petal Burst**) | 2 twists + 1 mech | Clear 4 | 1.0 | 300 / 210 s |
+| meadow_h3 | Lucky Dip | 14 | fog + fog_ghost (07) | `mystery_piece` (**Lucky Dip Seed Packet**) | 2 twists | Clear 4 (2 starter layers) | 0.95 | 180 / 125 s |
+
+### H1 Seed Sprouts (`meadow_h1`, tier 12)
+
+**Story card.** Pip's sunflower went to seed. Sprouts shoot up all over the plot, and dandelion clocks float above it. Each puff you catch is a wish. · **Pip: watcher** (tries to weed, gets flicked; jumps for a dandelion).
+**Idea recombined**: the 06 sprouts, with no cap (`grow_max` 0, +1 cube every 3 locks from four floor roots), plus the 03 gust (+x, every 10 s ± 2 s). **Wave-3 rule**: `star_coins` as **Dandelion Coins**: 6 dandelion clocks float in empty cells at layers 2–8. A piece that locks over one collects it (+50 score, a puff of seeds).
+**Goal**: Clear 5. 6×6, H10, 8 Std, g0 0.95, rescue, 1 warning.
+
+```text
+top-down (^ = sprout root)   side (z = 1)
+######                       10 ============
+#^##^#                        5 . * . . . *   * = dandelion coin
+######                        3 . ^ . . ^ .   +1 cube every 3 locks
+######                        :
+#^##^#                        0 . ^ . . ^ .
+######
+```
+**Wacky test**: surprising, the plot grows its own towers; silly, dandelion clocks bob in the air and burst into seeds when touched; funny failure, a sprout grows straight into a coin and leaves it hanging, because only locks collect (W8 edge case); big moment, the 5th clear mows every sprout down at once.
+**Counterplay**: cap sprouts early with a flat piece (a cube on top stops growth) or fold them into a layer. Use the +x gust to drift pieces onto coins near the downhill wall. Coins sink with each clear, so low coins come within reach on their own.
+**Stars**: t_est 5 × 96 = 480 s → 375 / 265 s. The sprouts give free filler, but they also push the stack up.
+
+### H2 Petal Party (`meadow_h2`, tier 13)
+
+**Story card.** The Miller has thrown a party nobody asked for. Mushrooms pop up, the hill flips, and every double clear sets off a petal cannon that plugs your holes. · **Pip: watcher** (wears a party hat; gets confetti in the face).
+**Idea recombined**: the 04 Mushroom Pop-up (every 6 locks, max 3) and the 09 Topsy Tumble (every 2 clears or 45 s, 2 s warning). **Wave-3 rule**: `confetti_fill` as **Petal Burst**: a clear of 2 or more layers at once fires petals that fill up to 4 covered holes, lowest first.
+**Goal**: Clear 4. 6×6, H10, 8 Std, g0 1.0, rescue, 1 warning.
+
+```text
+side (z = 2), a double clear then a Petal Burst
+ 3 # # . # # #  <- covered holes . get petal-filled (max 4)
+ 2 # . # # . #
+ 1 ============ cleared
+ 0 ============ cleared
+```
+**Wacky test**: surprising, your holes fill themselves; silly, petals stuffed into the stack like a party cracker; funny failure, a flip throws a confetti-plugged layer to the bottom where it is useless; big moment, a double clear, a petal cannon, then the whole hill flipping over.
+**Counterplay**: build toward doubles, because a flip lands on every 2nd clear and a double triggers the burst before the flip resolves. Leave a 1-cell gap at each mushroom sparkle. Keep the top flat before a flip warning.
+**Stars**: t_est 4 × 96 = 384 s → 300 / 210 s.
+
+### H3 Lucky Dip (`meadow_h3`, tier 14)
+
+**Story card.** The Miller fills the foggy hollow again, and this time he hands Pip a grab-bag of seed packets. Every 4th piece is a "?" packet: you find out what grows only when it drops. · **Pip: watcher** (shakes a packet next to its ear).
+**Idea recombined**: the 07 Morning Fog (visible 4 s, fade 1 s) with its fog ghost (1 per bag), on a new two-layer starter. **Wave-3 rule**: `mystery_piece` as **Lucky Dip Seed Packet**: every 4th queued piece shows as "?" and its shape is revealed at spawn.
+**Goal**: Clear 4. 6×6, H10 + 2 starter layers (13 holes), 8 Std, g0 0.95, rescue, 1 warning.
+
+```text
+layer 0     layer 1     side (z = 4)
+#.####      ###.#.      10 ============
+####.#      .#####       :
+######      ##.###       1 # . # # . #   fades after 4 s
+.#####      ####.#       0 # # # . # #
+###.##      #.##.#
+##.###      ######
+```
+**Wacky test**: surprising, you don't know the shape *or* the stack; silly, the "?" packet wiggles and sprouts its shape with a pop; funny failure, the packet turns out to be the one shape that fits nothing you remember; big moment, a ghost piece slipping into a remembered hole to finish a starter layer.
+**Counterplay**: study the starter during Countdown. Keep one "any-shape" landing spot (a flat 2×2 area) for each "?". Save the fog-ghost piece for the deepest remembered hole. Each clear reveals the stack for 0.6 s.
+**Stars**: hand-set. `meadow_07`'s 195 / 140 s tightened by about 8% → 180 / 125 s.
+
+**Open items**: `star_coins`, `confetti_fill` and `mystery_piece` rule JSONs land with wave-3. If a counter goal type is added later, H1 could become "collect 6 coins".
