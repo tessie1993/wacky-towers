@@ -1958,6 +1958,1088 @@
       },
       "always_available": true,
       "source": "docs/design/additional-party-minigames.md"
+    },
+    {
+      "id": "mg22",
+      "minigame_id": "MG22",
+      "mode": "mg22",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Block Bowling",
+      "card_name": "Block Bowling",
+      "name_key": "MG_22_NAME",
+      "rule": "Aim, add spin and roll your block to knock down the cube pins.",
+      "rule_key": "MG_22_RULE",
+      "icon": "mg22",
+      "duration_ms": 90000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "bowling",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 5,
+        "depth": 9,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_aim",
+        "mg_spin",
+        "mg_bowl",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "roll_step_ms": 120,
+        "curve_row": 4,
+        "balls_per_frame": 2,
+        "strike_points": 20,
+        "spare_points": 15,
+        "greased_charge": 2,
+        "greased_ms": 8000
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_c.gd"
+    },
+    {
+      "id": "mg23",
+      "minigame_id": "MG23",
+      "mode": "mg23",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Simon Stack",
+      "card_name": "Simon Stack",
+      "name_key": "MG_23_NAME",
+      "rule": "Watch the pads light up, then repeat the whole sequence.",
+      "rule_key": "MG_23_RULE",
+      "icon": "mg23",
+      "duration_ms": 90000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "sequence",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 1,
+        "depth": 1,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_pad",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "start_len": 3,
+        "flash_ms": 600,
+        "gap_ms": 200,
+        "scramble_charge": 2
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_c.gd"
+    },
+    {
+      "id": "mg24",
+      "minigame_id": "MG24",
+      "mode": "mg24",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Quick Drop",
+      "card_name": "Quick Drop",
+      "name_key": "MG_24_NAME",
+      "rule": "Tap the instant the block turns green, but never before.",
+      "rule_key": "MG_24_RULE",
+      "icon": "mg24",
+      "duration_ms": 60000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "shared"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "signal",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 1,
+        "depth": 1,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_tap"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "wait_min_ms": 1500,
+        "wait_max_ms": 4500,
+        "timeout_ms": 1500,
+        "gap_ms": 1200,
+        "fake_chance": 0.3,
+        "false_start_penalty": 2,
+        "shared_bonus": 3
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_c.gd"
+    },
+    {
+      "id": "mg25",
+      "minigame_id": "MG25",
+      "mode": "mg25",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Cube Count",
+      "card_name": "Cube Count",
+      "name_key": "MG_25_NAME",
+      "rule": "Count every cube in the tower before it disappears.",
+      "rule_key": "MG_25_RULE",
+      "icon": "mg25",
+      "duration_ms": 75000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "count",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 8
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_answer",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "show_ms": 3000,
+        "show_min_ms": 1200,
+        "peek_cut_ms": 1200,
+        "fast_ms": 2000,
+        "correct_points": 3,
+        "fast_bonus": 2,
+        "peek_charge": 2
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_c.gd"
+    },
+    {
+      "id": "mg26",
+      "minigame_id": "MG26",
+      "mode": "mg26",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Odd Block Out",
+      "card_name": "Odd Block Out",
+      "name_key": "MG_26_NAME",
+      "rule": "Spot the one block that is a mirror twin, not a turn.",
+      "rule_key": "MG_26_RULE",
+      "icon": "mg26",
+      "duration_ms": 75000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "odd",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 1,
+        "depth": 1,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_pick",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "copies": 4,
+        "copies_late": 5,
+        "late_after": 4,
+        "pick_lock_ms": 1000,
+        "decoy_charge": 3,
+        "decoy_copies": 6
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_c.gd"
+    },
+    {
+      "id": "mg27",
+      "minigame_id": "MG27",
+      "mode": "mg27",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Toy Pairs",
+      "card_name": "Toy Pairs",
+      "name_key": "MG_27_NAME",
+      "rule": "Flip two cards at a time and match every pair of blocks.",
+      "rule_key": "MG_27_RULE",
+      "icon": "mg27",
+      "duration_ms": 90000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "pairs",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 1,
+        "depth": 1,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_flip",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "grid_w": 4,
+        "grid_h": 4,
+        "mismatch_ms": 800,
+        "match_points": 2,
+        "clear_bonus": 5,
+        "shuffle_charge": 3
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_c.gd"
+    },
+    {
+      "id": "mg28",
+      "minigame_id": "MG28",
+      "mode": "mg28",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Block Dodge",
+      "card_name": "Block Dodge",
+      "name_key": "MG_28_NAME",
+      "rule": "Step between lanes to dodge the falling blocks.",
+      "rule_key": "MG_28_RULE",
+      "icon": "mg28",
+      "duration_ms": 90000,
+      "weight": 1.0,
+      "standing_metric": "alive_time",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "dodge",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "last_standing"
+      },
+      "board": {
+        "width": 5,
+        "depth": 1,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_step",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "lanes": 5,
+        "hearts": 3,
+        "shadow_ms": 900,
+        "rain_start_ms": 1100,
+        "rain_min_ms": 450,
+        "rain_step_ms": 40,
+        "wide_after_ms": 30000,
+        "survive_point_ms": 10000,
+        "rain_charge": 3,
+        "extra_rain": 3
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_c.gd"
+    },
+    {
+      "id": "mg29",
+      "minigame_id": "MG29",
+      "mode": "mg29",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Slide Shuffle",
+      "card_name": "Slide Shuffle",
+      "name_key": "MG_29_NAME",
+      "rule": "Slide the tiles back into the picture of the block.",
+      "rule_key": "MG_29_RULE",
+      "icon": "mg29",
+      "duration_ms": 120000,
+      "weight": 1.0,
+      "standing_metric": "race_progress",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "slide",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "puzzle_race"
+      },
+      "board": {
+        "width": 3,
+        "depth": 3,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_slide",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "scramble_moves": 30,
+        "puzzles_target": 2,
+        "nudge_charge": 5,
+        "nudge_moves": 3
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_c.gd"
+    },
+    {
+      "id": "mg30",
+      "minigame_id": "MG30",
+      "mode": "mg30",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Mirror Mirror",
+      "card_name": "Mirror Mirror",
+      "name_key": "MG_30_NAME",
+      "rule": "Paint the mirror image of the pattern on the other side.",
+      "rule_key": "MG_30_RULE",
+      "icon": "mg30",
+      "duration_ms": 90000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "mirror",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_move",
+        "mg_paint",
+        "mg_submit",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "start_cells": 6,
+        "max_cells": 12,
+        "flip_charge": 2,
+        "flip_accuracy": 0.9
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_d.gd"
+    },
+    {
+      "id": "mg31",
+      "minigame_id": "MG31",
+      "mode": "mg31",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Colour Count",
+      "card_name": "Colour Count",
+      "name_key": "MG_31_NAME",
+      "rule": "Count the blocks of the target colour in the parade.",
+      "rule_key": "MG_31_RULE",
+      "icon": "mg31",
+      "duration_ms": 75000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "tally",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 1,
+        "depth": 1,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_answer",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "parade_min": 12,
+        "parade_max": 20,
+        "parade_ms": 450,
+        "parade_min_ms": 250,
+        "fast_cut_ms": 150,
+        "correct_points": 3,
+        "fast_charge": 2
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_d.gd"
+    },
+    {
+      "id": "mg32",
+      "minigame_id": "MG32",
+      "mode": "mg32",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Whack-a-Block",
+      "card_name": "Whack-a-Block",
+      "name_key": "MG_32_NAME",
+      "rule": "Tap the blocks as they pop up, but leave the bombs alone.",
+      "rule_key": "MG_32_RULE",
+      "icon": "mg32",
+      "duration_ms": 60000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "whack",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 3,
+        "depth": 3,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_whack",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "pop_ms": 900,
+        "pop_min_ms": 550,
+        "golden_chance": 0.1,
+        "bomb_chance": 0.125,
+        "block_points": 1,
+        "golden_points": 3,
+        "bomb_penalty": 2,
+        "decoy_charge": 8,
+        "decoy_count": 4,
+        "disguise_ms": 300
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_d.gd"
+    },
+    {
+      "id": "mg33",
+      "minigame_id": "MG33",
+      "mode": "mg33",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Tower Pull",
+      "card_name": "Tower Pull",
+      "name_key": "MG_33_NAME",
+      "rule": "Pull bars from your tower without letting it topple.",
+      "rule_key": "MG_33_RULE",
+      "icon": "mg33",
+      "duration_ms": 120000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "pull",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 3,
+        "depth": 3,
+        "h_play": 12
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_pull",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "layers": 9,
+        "rebuild_ms": 2500,
+        "topple_penalty": 5,
+        "deep_bonus_layers": 3,
+        "wobble_charge": 4,
+        "wobble_ms": 5000
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_d.gd"
+    },
+    {
+      "id": "mg34",
+      "minigame_id": "MG34",
+      "mode": "mg34",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Spin Match",
+      "card_name": "Spin Match",
+      "name_key": "MG_34_NAME",
+      "rule": "Turn your block to match the target in as few turns as you can.",
+      "rule_key": "MG_34_RULE",
+      "icon": "mg34",
+      "duration_ms": 90000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "none",
+        "spawn_entry": "spin",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 1,
+        "depth": 1,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_rotate",
+        "mg_submit",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "par_bonus": 6,
+        "sticky_charge": 3,
+        "sticky_ms": 8000
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_d.gd"
+    },
+    {
+      "id": "mg35",
+      "minigame_id": "MG35",
+      "mode": "mg35",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Plinko Drop",
+      "card_name": "Plinko Drop",
+      "name_key": "MG_35_NAME",
+      "rule": "Drop your block through the pegs into the best bucket.",
+      "rule_key": "MG_35_RULE",
+      "icon": "mg35",
+      "duration_ms": 75000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "shared"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "plinko",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 7,
+        "depth": 6,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_aim",
+        "mg_bowl"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "columns": 7,
+        "rows": 6,
+        "buckets": [
+          1,
+          3,
+          5,
+          10,
+          5,
+          3,
+          1
+        ],
+        "drop_step_ms": 180,
+        "drop_cooldown_ms": 1200,
+        "jackpot_ms": 15000,
+        "jackpot_window_ms": 4000,
+        "jackpot_bonus": 5
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_d.gd"
+    },
+    {
+      "id": "mg36",
+      "minigame_id": "MG36",
+      "mode": "mg36",
+      "category": "minigame",
+      "tags": [
+        "minigame"
+      ],
+      "name": "Treasure Dig",
+      "card_name": "Treasure Dig",
+      "name_key": "MG_36_NAME",
+      "rule": "Dig the patch and follow the hot-cold numbers to the buried block.",
+      "rule_key": "MG_36_RULE",
+      "icon": "mg36",
+      "duration_ms": 120000,
+      "weight": 1.0,
+      "standing_metric": "score",
+      "standing_tiebreak": "score",
+      "interaction_hook": [
+        "send"
+      ],
+      "slots": {
+        "board_kind": "grid",
+        "spawn_entry": "dig",
+        "clear_detector": "none",
+        "collapse": "none",
+        "top_out_check": "none",
+        "goal_evaluator": "score_timer"
+      },
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 1
+      },
+      "piece_pool": [
+        "i",
+        "o",
+        "t",
+        "l",
+        "s",
+        "tripod",
+        "screw_left",
+        "screw_right"
+      ],
+      "items_enabled": false,
+      "item_whitelist": [],
+      "item_trigger": "none",
+      "twist_limit": 0,
+      "skill_support": false,
+      "perk_support": false,
+      "controls": [
+        "mg_move",
+        "mg_dig",
+        "send"
+      ],
+      "params": {
+        "k_cb": 0.5,
+        "leader_send_scale": 0.5,
+        "attack_warn_ms": 1000,
+        "pick_window_ms": 1500,
+        "ghost_send_ms": 15000,
+        "patch": 6,
+        "max_reward": 12,
+        "min_reward": 2,
+        "mud_charge": 2,
+        "mud_count": 3
+      },
+      "always_available": true,
+      "source": "design/gdd/party-minigames-wave2.md",
+      "rules_script": "res://src/game/minigames/rules_d.gd"
     }
   ]
 }

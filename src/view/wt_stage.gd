@@ -15,8 +15,13 @@ const BIOME_LOOKS := {
 	"cave": ["#CCD0DF", "#8C91A8", "#6D6B82", "#927AA8"],
 	"clockwork": ["#DFD6C7", "#B5A37E", "#8D7860", "#9B815E"],
 	"neon": ["#BCC6DD", "#8692AB", "#5D6681", "#8C79AF"],
-	"celestial": ["#D9DBE8", "#CFCAE2", "#A09AB8", "#B5A3CE"]
+	"celestial": ["#D9DBE8", "#CFCAE2", "#A09AB8", "#B5A3CE"],
+	"carnival": ["#F3E2E2", "#F1E4CF", "#B98C8F", "#E58FA8"]
 }
+## Tumble Fair (id `carnival`) candy-stripe set dressing: pink, cream, ticket gold, sky ribbon.
+const CARNIVAL_TRIM := {"pink": "#E98AA6", "cream": "#FBF1DE", "gold": "#EDC873", "sky": "#9CC3DE", "mint": "#A9D8C0", "wood": "#B9937A"}
+## Optional biome block material, owned by the shader pipeline (class WtBlockMaterials).
+const BLOCK_MATERIAL_CLASS: StringName = &"WtBlockMaterials"
 
 var _sim: BoardSim
 var _board: BoardState

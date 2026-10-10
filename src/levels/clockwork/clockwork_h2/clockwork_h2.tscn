@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/levels/_template/level_stage_base.tscn" id="1"]
+[ext_resource type="Script" uid="uid://bget2chj4yyf3" path="res://src/view/wt_stage.gd" id="2"]
+
+[node name="clockwork_h2" instance=ExtResource("1")]
+level_json = "res://src/levels/clockwork/clockwork_h2/clockwork_h2.json"
+biome = &"clockwork"
+
+[node name="MascotSpot" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 2)
+
+[node name="World" type="Node3D" parent="." index="2"]
+script = ExtResource("2")
+
+[node name="StoryOrigin" type="Marker3D" parent="World" index="0"]

@@ -6,7 +6,7 @@ const HOOKS: Array = ["send","steal","shared","item"]
 const SLOT_KEYS: Array = ["board_kind","spawn_entry","clear_detector","collapse","top_out_check","goal_evaluator"]
 const SLOT_VALUES: Dictionary = {
  "board_kind":["grid","physics","none"],
- "spawn_entry":["none","top","frame","slide_in","crane","chute","sky_lanes","rhythm","magnet","volley","island","paint","balance"],
+ "spawn_entry":["none","top","frame","slide_in","crane","chute","sky_lanes","rhythm","magnet","volley","island","paint","balance","bowling","sequence","signal","count","odd","pairs","dodge","slide","mirror","tally","whack","pull","spin","plinko","dig"],
  "clear_detector":["none","layer","colour_connect","mono_layer"],
  "collapse":["none","slice","cascade","stack_trim","physics"],
  "top_out_check":["none","lose","trim","drops"],

@@ -578,6 +578,8 @@ target layer 0 and 1 (32)   target layer 2 (4)    side (z = 1)
 
 ## 7. Hard-track remixes (tiers 12-14; open after 10)
 
+> **Superseded (2026-10-10, wave-3 remix pass).** The shipped `underwater_h1`-`h3` are specified in **"Hard-track remixes (tiers 12–14)"** at the end of this file. H3 Crab's Rematch keeps its concept and adds a wave-3 rule. H1 School Swim (AR02 `down_axis` +x, unsettled) and H2 Pearl Dive (GO08 + SP11, which have no runtime goal or rule) were replaced. This section is kept as history; the H rows in the section 2 table are out of date.
+
 All three recombine biome ideas harder through rules, not speed (`g0` about 1.0, below F2).
 
 ### H1 School Swim
@@ -649,3 +651,75 @@ One track per level (user rule): ids `underwater_01` ... `underwater_10`, `under
 - **Phase 2 busyness (10)**: if undertow + tide + claw is too much, swap the tide out with EV13.
 - **Star times** are formula estimates; replace with playtest medians.
 - **Starting-contents format** (cell list vs. ASCII) is with the architecture lead.
+
+---
+
+## Hard-track remixes (tiers 12–14)
+
+Wave-3 remix pass (level-designer, 2026-10-10), implementing Campaign Structure rule 17. All three open when `underwater_10` is finished and do not count toward the next biome's gate. Each one recombines 1-2 rules the reef already taught with **exactly one** wave-3 rule (`design/gdd/mechanics-wave3.md`), given an Underwater name. Twist cap: at most 2 `twist` + 1 `mechanic` (`content` does not count). Puff is a watcher with no bubble catch. No Mizzle clue.
+
+**Star calibration (hard track).** `t2 = round5(0.78 x t_est)`, `t3 = round5(0.55 x t_est)`, `t_est = N x 2.667 s x A`. That is tighter than F1's 0.85 / 0.6 and than `underwater_10` (325 / 230 s for Clear 3 on 8x6, about 0.85). Speed 1.05-1.1, below F2 on purpose: hard through rules, not speed. **Gold is score only**: no goal type reads a counter, so goals stay `clear_n`.
+
+| id | Name | Tier | Taught rules recombined | Wave-3 rule (Underwater name) | Twist / mech count | Goal | g0 | Stars (2 / 3) |
+|---|---|---|---|---|---|---|---|---|
+| underwater_h1 | Sinking Sand | 12 | bounce_pad (04), gust Tide Current (03) | `quicksand` (**Sinking Sand**) | 1 twist + 1 mech | Clear 4 | 1.05 | 300 / 210 s |
+| underwater_h2 | Riptide Whirl | 13 | turntable Whirlpool (09) | `magnet_pull` (**Riptide**) | 2 twists | Clear 3 | 1.05 | 225 / 160 s |
+| underwater_h3 | Crab's Rematch | 14 | crab_claw (10), fog Ink Cloud (07) | `golden_row` (**Crab's Gold Row**) | 2 twists + 1 mech | Clear 4 | 1.1 | 300 / 210 s |
+
+### H1 Sinking Sand (`underwater_h1`, tier 12)
+
+**Story card.** Two patches of the seabed have turned to sinking sand. Every few locks they swallow the bottom cube of their column, and the whole column sinks a step. The jellies keep boinging and the tide keeps pushing. · **Puff: watcher** (sinks to the chin, inflates, pops back out).
+**Idea recombined**: the 04 jellyfish pads (3 → 2 pads at (4,1) and (1,4), `bounce_h` 2, `last_move`) and the 03 Tide Current (+x, every 9 s ± 2 s). **Wave-3 rule**: `quicksand` as **Sinking Sand**: tiles (1,1) and (4,4). Every 4 locks, any tile with a layer-0 cube swallows it and the column moves down one cell. The sand swirls one lock ahead (`quicksand_warning`).
+**Goal**: Clear 4. 6x6, H10, Standard, g0 1.05, rescue, 1 warning.
+
+```text
+top-down (q = sinking sand, b = jelly pad)   side (z = 1)
+......                                       10 ============
+.q..b.                                        :
+......                                        1 # # # # # #   column x1 sinks: its top cell opens
+......                                        0 # q # # b #
+.b..q.
+......
+```
+**Wacky test**: surprising, a column you finished slides down out of your layer; silly, the sand burps bubbles each time it eats a cube; funny failure, a jelly bounce lands a piece right on the sand just before it gulps; big moment, a sink that drops the one missing cube into place and clears a layer.
+**Counterplay**: a sink shifts the column, so the gap appears at the column's **top**, where it is easy to refill. Leave the sand columns one cube short and let the sink line them up. Count to 4 on the warning swirl. Use pad bounces to reach the far columns against the tide.
+**Stars**: t_est 4 x 96 = 384 s → 300 / 210 s.
+
+### H2 Riptide Whirl (`underwater_h2`, tier 13)
+
+**Story card.** The whirlpool is back, and a riptide on the east wall tugs every falling piece toward it. The reef spins, the current doesn't. · **Puff: watcher** (spins round and round, then gets tugged to the wall and squashed flat).
+**Idea recombined**: the 09 Whirlpool (quarter turn every 6 locks, 1-lock warning, clockwise), with its tide swapped out for the new current. **Wave-3 rule**: `magnet_pull` as **Riptide**: the column at (5,3) pulls the falling piece one cell along x toward it every 3 s, with a 0.6 s ripple warning. A blocked pull does nothing, and an aligned piece is left alone.
+**Goal**: Clear 3. 6x6 (square, as the Whirlpool needs), H10, Standard, g0 1.05, rescue, 1 warning.
+
+```text
+top-down        R = riptide column (world-fixed); the stack turns under it
+######
+######
+######
+#####R   <- pull along x every 3 s
+######
+######
+```
+**Wacky test**: surprising, the piece drifts on its own *and* the floor turns; silly, the riptide is a grumpy eel pulling a rope; funny failure, a quarter turn spins the low corner you built away from the wall, right under the current; big moment, a turn that lines the riptide's wall up with a full row.
+**Counterplay**: build the east half of the stack first (the current delivers pieces there for free) and steer the west half between pulls. Before each turn warning, picture the stack after the quarter turn: the current stays on x 5 in world space.
+**Stars**: t_est 3 x 96 = 288 s → 225 / 160 s.
+
+### H3 Crab's Rematch (`underwater_h3`, tier 14)
+
+**Story card.** Admiral Crab is back with a borrowed octopus and a longer claw, and he has gilded one layer of the reef as "his". Clear his gold row for a pay-day, then he gilds the next one up. · **Puff: watcher**; Crab in the backdrop.
+**Idea recombined**: the 10 Crab's Claw (from the 1st clear, every 25 s ± 4 s, 2 s warning, grabs 1, clear to cancel) and the 07 Ink Cloud (visible 4 s). **Wave-3 rule**: `golden_row` as **Crab's Gold Row**: layer 1 starts gold. Clearing it pays +200 score (Crab drops a coin with a sulk), and gold moves up a layer, wrapping at layer 8.
+**Goal**: Clear 4. 6x6, H10, Standard, g0 1.1, rescue, 1 warning.
+
+```text
+side (z = 2)
+10 ============
+ 2 . . . . . .
+ 1 $ $ $ $ $ $   $ = gold layer (glows through the ink)
+ 0 . . . . . .
+claw marks one top column for 2 s; a clear washes the ink and cancels the claw
+```
+**Wacky test**: surprising, one layer is worth more and keeps moving; silly, Crab polishes his gold row with his hat; funny failure, the claw snatches the one cube you needed to clear the gold row; big moment, a gold clear that also cancels the claw and washes off the ink, with coins raining down.
+**Counterplay**: the gold row glows through the ink, so it is the one layer you can always read; build it first. Answer every claw mark with a clear. Gold is score, so a player chasing ★★★ time can ignore it, and a score chaser cannot.
+**Stars**: t_est 4 x 96 = 384 s → 300 / 210 s.
+
+**Open items**: `quicksand`, `magnet_pull` and `golden_row` rule JSONs land with wave-3. Stitch already vetoes Crab's Claw and the Whirlpool; whether it also holds Sinking Sand (it moves locked cubes) is a game-designer call.

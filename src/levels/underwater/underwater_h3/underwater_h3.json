@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "underwater_h3",
+  "biome": "underwater",
+  "tier": 14,
+  "name": "LVL_UNDERWATER_H3_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.1,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "crab_claw",
+      "params": {
+        "claw_start_layers": 1,
+        "claw_every_ms": 25000,
+        "claw_jitter_ms": 4000,
+        "claw_warn_ms": 2000,
+        "claw_grab": 1,
+        "counter": "clear"
+      }
+    },
+    {
+      "id": "fog",
+      "params": {
+        "visible_ms": 4000,
+        "fade_ms": 1000,
+        "invisible_alpha": 0.1,
+        "reveal_ms": 700
+      }
+    },
+    {
+      "id": "golden_row",
+      "params": {
+        "start_layer": 1,
+        "bonus": 200,
+        "goal_counter": "gold"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 300000,
+    "t3": 210000
+  },
+  "music": "underwater_h3",
+  "story": {
+    "title_key": "LVL_UNDERWATER_H3_TITLE",
+    "premise_key": "LVL_UNDERWATER_H3_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "crab"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_h3",
+      "biome": "underwater",
+      "tier": 14,
+      "board": { "width": 6, "depth": 6, "h_play": 10 },
+      "knobs": { "fall.g0": 1.1, "goal.warnings_max": 1 },
+      "goal": { "type": "clear_n", "n": 4 },
+      "rules": [
+        { "id": "crab_claw", "params": { "claw_start_layers": 1, "claw_every_ms": 25000, "claw_jitter_ms": 4000, "claw_warn_ms": 2000, "claw_grab": 1, "counter": "clear" } },
+        { "id": "fog", "params": { "visible_ms": 4000, "fade_ms": 1000, "invisible_alpha": 0.1, "reveal_ms": 700 } },
+        { "id": "golden_row", "params": { "start_layer": 1, "bonus": 200, "goal_counter": "gold" } }
+      ],
+      "stars": { "t2": 300000, "t3": 210000 },
+      "music": "underwater_h3"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "golden_row is a wave-3 rule (design/gdd/mechanics-wave3.md W15), skinned as the Underwater event 'Crab's Gold Row'; its assets/data/rules JSON lands with the wave-3 implementation. Gold is a score bonus only: no counter goal type exists."
+    ],
+    "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = 4 x 96 s",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

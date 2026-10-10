@@ -41,6 +41,7 @@ var _physics_variant: String = "tower_race"
 var _practice_loadouts: Array[Dictionary] = []
 var _selected_item_slot: int = 0
 var _arcade: WtArcadeDirector
+var _minigame: WtMinigameRound
 
 func _ready() -> void:
 	WtPlayerInput.install_actions()
@@ -75,6 +76,9 @@ func _ready() -> void:
 	get_tree().auto_accept_quit = false
 
 func _physics_process(_delta: float) -> void:
+	if _minigame != null:
+		if not _paused: _minigame_tick()
+		return
 	if _paused or _sim == null: return
 	_tick_counter += 1
 	for action: Dictionary in _input.poll(BoardSim.ms_at(_tick_counter)):
@@ -140,9 +144,16 @@ func _exit_tree() -> void:
 	_input.dispose()
 
 func _on_intent(id: StringName, args: Dictionary) -> void:
+	# Minigame verbs are session-local gameplay commands, not application-domain intents.
+	if _minigame != null and str(id).begins_with("mg_"):
+		_execute_intent(id, args)
+		return
 	_architecture.dispatch(id, args)
 
 func _execute_intent(id: StringName, args: Dictionary) -> void:
+	if _minigame != null and str(id).begins_with("mg_"):
+		if not _paused and not _result_shown: _minigame.queue(0, &"mg_gift_choose" if id == &"mg_choose_gift" else id, WtMinigameRound.intent_args(args))
+		return
 	match id:
 		&"play", &"continue", &"open_map":
 			if _store.active_profile() == null: _show_profiles()
@@ -187,6 +198,10 @@ func _execute_intent(id: StringName, args: Dictionary) -> void:
 		&"resume":
 			if _mode == &"lan":
 				_lan.set_paused(false)
+				return
+			if _minigame != null and not _result_shown:
+				_paused = false
+				_ui.show_minigame(_minigame.local_snapshot())
 				return
 			if _sim != null and not _result_shown:
 				_paused = false
@@ -282,7 +297,10 @@ func _execute_intent(id: StringName, args: Dictionary) -> void:
 		&"start_tournament":
 			var players: Array = args.get("players", [{"name": _profile_name()}, {"name": "Pip", "is_bot": true}])
 			if not _prepare_practice_loadouts(players): return
-			var configured: Dictionary = _modes.start_tournament(players, int(args.get("rounds", 3)), 20261010, args.get("modes", []))
+			var pool: Array = args.get("modes", [])
+			if pool.is_empty(): pool = _modes.round_modes()
+			pool = pool.filter(func(mode: Variant) -> bool: return not WtMinigameRound.UNSUPPORTED.has(str(mode)))
+			var configured: Dictionary = _modes.start_tournament(players, int(args.get("rounds", 3)), 20261010, pool)
 			if not configured.get("ok", false):
 				_ui.show_toast("Choose two to four players and a valid round pool.")
 				return
@@ -365,7 +383,12 @@ func _start_arcade(biome: StringName) -> void:
 
 func _start_round() -> void:
 	_mode = &"tournament"
-	var level: LevelData = _modes.next_round_level()
+	var draw: Dictionary = _modes.draw_next_round()
+	if draw.get("ok", false) and str(draw.get("phase", "")) == "round_show": draw = _modes.lock_round()
+	if draw.get("ok", false) and str(draw.get("category", "")) == "minigame":
+		_start_minigame_round(draw)
+		return
+	var level: LevelData = _modes.round_level(draw) if draw.get("ok", false) else null
 	if level == null:
 		_result_shown = true
 		_architecture.lifecycle(&"session_end", {"mode": "tournament"})
@@ -385,6 +408,44 @@ func _start_round() -> void:
 		rival.bind_abilities(abilities)
 		_rivals.append(rival)
 		_bots.append(WtBotPlayer.new())
+
+## Runs a drawn minigame round locally: the human is player 0, rivals are practice bots.
+func _start_minigame_round(draw: Dictionary) -> void:
+	_clear_session()
+	var players: Array = []
+	for player: Dictionary in _modes.tournament_snapshot().get("players", []): players.append({"name": player.get("name", "Builder"), "is_bot": int(player.get("index", 0)) > 0})
+	_minigame = WtMinigameRound.new()
+	if not _minigame.setup(draw.get("template", {}), int(draw.get("round_seed", 20261010)), _catalog, players):
+		# Unsupported template: score the round as a draw at zero so the tournament can continue.
+		var rows: Array[Dictionary] = []
+		for index: int in players.size(): rows.append({"id": str(index), "won": false, "score": 0, "ms": 0, "active": true})
+		_minigame = null
+		_modes.record_round(rows)
+		_ui.show_toast("This minigame is not available here yet; the next round is on its way.")
+		_start_round()
+		return
+	_result_shown = false
+	_paused = false
+	_store.set_playing(true)
+	_architecture.lifecycle(&"session_start", {"mode": "tournament", "minigame": str(draw.get("template_id", ""))})
+	_ui.show_minigame(_minigame.local_snapshot())
+
+func _minigame_tick() -> void:
+	_minigame.step()
+	_ui.update_minigame(_minigame.local_snapshot())
+	if _result_shown or not _minigame.finished(): return
+	var results: Array[Dictionary] = _minigame.results()
+	var local: Dictionary = results[0]
+	var round_end: Dictionary = _modes.record_round(results)
+	var winners: Array = (round_end.get("history", []) as Array).back().get("winners", []) if not (round_end.get("history", []) as Array).is_empty() else []
+	_result_shown = true
+	_paused = true
+	_store.set_playing(false)
+	_architecture.lifecycle(&"session_end", {"mode": "tournament"})
+	_ui.show_results({"won": winners.has("0"), "level_name": str(_minigame.template.get("name", "Minigame")) + " complete",
+		"score": int(local.get("score", 0)), "time": _format_ms(int(local.get("ms", 0))), "stars": 0,
+		"next_available": round_end.get("phase", "") != "finished", "standings": _modes.standings(), "mode": "tournament",
+		"message": String(round_end.get("message", "Fresh boards. Fresh chances."))})
 
 func _begin_session(level: LevelData) -> void:
 	_clear_session()
@@ -459,6 +520,7 @@ func _clear_session() -> void:
 		_stage.queue_free()
 		_stage = null
 	_sim = null
+	_minigame = null
 	_abilities = null
 	_arcade = null
 	_rivals.clear()
@@ -499,6 +561,10 @@ func _play_intent(id: StringName, args: Dictionary) -> void:
 		else: _sim.queue_command(cmd)
 
 func _pause() -> void:
+	if _minigame != null and not _result_shown:
+		_paused = true
+		_ui.show_pause({"level_name": str(_minigame.template.get("name", "Minigame")), "mode": _mode})
+		return
 	if _sim == null or _result_shown: return
 	_paused = true
 	_architecture.lifecycle(&"session_pause")
@@ -1031,7 +1097,7 @@ func _prepare_practice_loadouts(players: Array) -> bool:
 	return true
 
 func _architecture_context() -> Dictionary:
-	return {"has_profile":_store != null and _store.active_profile() != null, "has_session":_sim != null or _physics != null,
+	return {"has_profile":_store != null and _store.active_profile() != null, "has_session":_sim != null or _physics != null or _minigame != null,
 		"paused":_paused, "result":_result_shown, "mode":String(_mode), "level_id":String(_level_id), "screen":_ui.current_screen if _ui != null else "",
 		"lan_active":_lan != null and _lan.active, "lan_host":_lan != null and _lan.is_host()}
 

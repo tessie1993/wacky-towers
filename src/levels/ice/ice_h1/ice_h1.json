@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "id": "ice_h1",
+  "biome": "ice",
+  "tier": 12,
+  "name": "LVL_ICE_H1_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "starting_contents": {
+      "layers": {
+        "0": ["......", ".....n", "......", "......", ".....n", "......"]
+      }
+    }
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.05,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "snowball",
+      "params": {
+        "slope_dir": "-x",
+        "roll_locks": 1,
+        "snow_max": 3,
+        "balls_max": 4,
+        "respawn_locks": 5
+      }
+    },
+    {
+      "id": "gust",
+      "params": {
+        "wind_dir": "+z",
+        "wind_mode": "fixed",
+        "wind_interval_ms": 10000,
+        "wind_jitter_ms": 2000,
+        "wind_strength": 1,
+        "wind_warn_ms": 1000
+      }
+    },
+    {
+      "id": "rusty_hinge",
+      "params": {
+        "max_turns": 2
+      }
+    }
+  ],
+  "stars": {
+    "t2": 375000,
+    "t3": 265000
+  },
+  "music": "ice_h1",
+  "story": {
+    "title_key": "LVL_ICE_H1_TITLE",
+    "premise_key": "LVL_ICE_H1_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "snowball"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/ice.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "ice_h1",
+      "biome": "ice",
+      "tier": 12,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "starting_contents": {
+          "layers": {
+            "0": ["......", ".....m", "......", "......", ".....m", "......"]
+          }
+        }
+      },
+      "knobs": { "fall.g0": 1.05, "goal.warnings_max": 1 },
+      "goal": { "type": "clear_n", "n": 5 },
+      "rules": [
+        { "id": "snowball", "params": { "slope_dir": "-x", "roll_locks": 1, "snow_max": 3, "balls_max": 4, "respawn_locks": 5 } },
+        { "id": "gust", "params": { "wind_dir": "+z", "wind_mode": "fixed", "wind_interval_ms": 10000, "wind_jitter_ms": 2000, "wind_strength": 1, "wind_warn_ms": 1000 } },
+        { "id": "rusty_hinge", "params": { "max_turns": 2 } }
+      ],
+      "stars": { "t2": 375000, "t3": 265000 },
+      "music": "ice_h1"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "rusty_hinge is a wave-3 rule (design/gdd/mechanics-wave3.md W10); its assets/data/rules JSON lands with the wave-3 implementation."
+    ],
+    "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = 5 x 96 s",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

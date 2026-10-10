@@ -590,6 +590,8 @@ layer 0   layer 1   layer 2   side (z = 1)
 
 ## 7. Hard-track remixes (tiers 12–14; open after 10)
 
+> **Superseded (2026-10-10, wave-3 remix pass).** The shipped `forest_h1`–`h3` are specified in **"Hard-track remixes (tiers 12–14)"** at the end of this file. H1 Firefly Night keeps its concept and adds a wave-3 rule. H2 is rebuilt around Knock + Vines with the wave-3 echo, and the Heist moves to H3 (three twists would break the cap). H3 Canopy Windows (BL17 shelf) was replaced by Squirrel Shuffle. This section is kept as history; the H rows in the section 2 tables are out of date.
+
 ### H1 Firefly Night
 
 **Story card.** Chip chewed the lantern's candle and the glade went dark. Your stack fades into a faint swarm of fireflies, and leaves swirl from every side. · **Chip: watcher** (holds a stub of candle). **Light**: firefly dusk (dark). **Intro skit**: Chip bites the candle; the lantern goes out and fireflies take its place (`sweat`). **Payoff skit**: the lantern is relit; Chip tries to bite a firefly and gets a spark on its nose (`question`).
@@ -683,3 +685,73 @@ SFX cues (one-shots, no music change): wind chimes on every clear in 10 (one chi
 - **10 busyness.** If playtests find Root Slide + Leaf Gust + Acorn Shower too much, slow the gust (14 s) or swap it out with EV13 as in the Meadow, or spend the finale's third-twist allowance on nothing. EV18 lift tiles (considered for a hard-track "Rising Roots") are not used because their rule is unspecified.
 - **Skills.** Stitch vetoes `stack` writes; Smash can remove a chunk (it can undo a Heist hole or a knock-popped lid). Neither is tuned against. Glim does not join until the Cave.
 - **Star times** are formula estimates (and hand-set where noted); replace with playtest medians.
+
+---
+
+## Hard-track remixes (tiers 12–14)
+
+Wave-3 remix pass (level-designer, 2026-10-10), implementing Campaign Structure rule 17. All three open when `forest_10` is finished and do not count toward the next biome's gate. Each one recombines 1–2 rules the Forest already taught with **exactly one** wave-3 rule (`design/gdd/mechanics-wave3.md`), given a Forest name. Twist cap: at most 2 `twist` + 1 `mechanic` (`content` does not count). Chip is a watcher. Grandpa Oak dozes in the backdrop. No Mizzle clue. The biome's "breather" quirk is relaxed on the hard track, but each level keeps one friendly, readable disturbance as its headline.
+
+**Star calibration (hard track).** `t2 = round5(0.78 × t_est)`, `t3 = round5(0.55 × t_est)`, `t_est = N × 2.667 s × A`. That is tighter than F1's 0.85 / 0.6 and than `forest_10` (325 / 230 s for Clear 3 on 8×6, about 0.85). Speed is tier 9–10 (1.25–1.30).
+
+| id | Name | Tier | Taught rules recombined | Wave-3 rule (Forest name) | Twist / mech count | Goal | g0 | ★★ / ★★★ |
+|---|---|---|---|---|---|---|---|---|
+| forest_h1 | Firefly Night | 12 | fog Firefly Night (H-concept), gust rotating Leaf Gust (07) | `anvil_drop` (**Pinecone Plonk**) | 2 twists + 1 mech | Clear 5 | 1.25 | 375 / 265 s |
+| forest_h2 | Drum Solo | 13 | woodpecker_knock + vines (08) | `echo_drop` (**Echo Drum**) | 2 twists | Clear 5 | 1.25 | 260 / 185 s |
+| forest_h3 | Squirrel Shuffle | 14 | conveyor Root Slide + squirrel_heist (09) | `jumbled_queue` (**Squirrel Shuffle**) | 2 twists + 1 mech | Clear 4 | 1.3 | 290 / 205 s |
+
+### H1 Firefly Night (`forest_h1`, tier 12)
+
+**Story card.** Chip chewed the lantern's candle and the glade went dark. Your stack fades into fireflies, leaves swirl in from every side, and every 6th piece is a fat pinecone that lands with a *plonk* and squashes the gaps beneath it shut. · **Chip: watcher** (holds a candle stub; ducks each plonk).
+**Idea recombined**: Firefly Night (`fog`, visible 4 s, fade 1 s, alpha 0.12, reveal 0.6 s) and the 07 swirl Leaf Gust (rotating, every 10 s ± 2.5 s). **Wave-3 rule**: `anvil_drop` as **Pinecone Plonk**: every 6th piece is a pinecone (`anvil_spawned`, shown in the preview). On lock it closes up to 3 cells of gap in each column under its lowest cubes.
+**Goal**: Clear 5. 6×6, H10, 8 Std, g0 1.25, rescue, 1 warning.
+
+```text
+side (z = 2), a pinecone lands over two hidden gaps
+ 3 P P . . . .    P = pinecone piece
+ 2 ~ . . . . .    ~ = faded cube (fireflies)
+ 1 . ~ ~ ~ ~ ~    gaps under P are crushed shut:
+ 0 ~ . ~ ~ ~ ~    the cubes above drop to fill them
+```
+**Wacky test**: surprising, a piece that fixes holes you can't even see; silly, the pinecone bounces once and lands with a cartoon "plonk", and the fireflies scatter; funny failure, a gust shoves the pinecone over the one flat area; big moment, a plonk that crushes a column into a full layer in the dark.
+**Counterplay**: keep a mental list of your worst hidden holes and save the pinecone for them (the preview shows when it is coming). Clears relight the stack for 0.6 s, so use those moments to re-read it. Hold the pinecone level against the rotating gust by dropping it early.
+**Stars**: t_est 5 × 96 = 480 s → 375 / 265 s (the draft's 410 / 290 tightened).
+
+### H2 Drum Solo (`forest_h2`, tier 13)
+
+**Story card.** The woodpecker has a new drum kit: the old trunk. It knocks loose cubes off, and its drumming echoes, so every 4th piece comes back as a copy of the last one. · **Chip: watcher** (taps along with a twig, out of time).
+**Idea recombined**: the 08 Woodpecker Knock (every 13 s ± 3 s, 1.5 s warning, pops at most 4 overhang cubes, highest first) with its Vines (1 per bag, vined cubes immune) on the same tall, narrow trunk (5×5, H12). **Wave-3 rule**: `echo_drop` as **Echo Drum**: every 4th lock the last piece's shape is injected at the front of the queue (`echo`: a drum-roll and a ghostly copy in the preview).
+**Goal**: Clear 5. 5×5, H12, 8 Std, g0 1.25, rescue, 1 warning.
+
+```text
+top-down 5×5   side (z = 2)
+#####          12 ===========
+#####           :
+##S##           2 . v v . .   v = vined cubes (knock-proof)
+#####           1 # . # # #   dotted outline = next knock pops
+#####           0 # # # # #
+```
+**Wacky test**: surprising, the queue repeats you; silly, the woodpecker drums a solo while the echo piece shimmers in like a delayed sound; funny failure, the echo hands you a second copy of the awkward screw that caused the overhang; big moment, an echoed I closing two layers in a row on the narrow trunk.
+**Counterplay**: on every 3rd lock, place a piece whose copy you *want* next (a flat O or I on a 5-wide board). Vine the cubes over your overhangs so the knock cannot pop them. Close overhangs before the 1.5 s warning ends.
+**Stars**: A = 25, t_est 5 × 66.7 = 333 s → 260 / 185 s. `forest_08` (tier 8, same board) had 180 / 130 s, but that was 5 clears on 4×4.
+
+### H3 Squirrel Shuffle (`forest_h3`, tier 14)
+
+**Story card.** The squirrel crew is back on the sliding root bank, and now they raid your next pieces too: every few locks they juggle the preview queue. · **Chip: watcher** (tries to keep the queue in order; gets an acorn on its head).
+**Idea recombined**: the 09 Root Slide (`conveyor`, +x every 3 locks, wrap) and Squirrel Heist (every 6 locks, 1-lock warning, `heist_min_fill` 0.5, clear to cancel). **Wave-3 rule**: `jumbled_queue` as **Squirrel Shuffle**: every 5 locks the preview is shuffled. A squirrel peeks at the queue one lock ahead (`queue_jumble_warning`), and a shuffle that would change nothing rotates the queue by one instead. The preview is raised to 3 so the shuffle has something to juggle.
+**Goal**: Clear 4. 7×5 (unmasked, as Root Slide needs), H10, 8 Std, g0 1.3, rescue, 1 warning.
+
+```text
+top-down 7×5 (roots slide → and wrap)   preview: [ L ][ O ][ T ]  →  squirrels juggle  →  [ T ][ L ][ O ]
+→ → → → → → →
+#######
+###S###
+#######
+#######
+#######
+```
+**Wacky test**: surprising, your plan changes order under you; silly, squirrels tossing the next pieces like juggling nuts; funny failure, a heist, a slide and a shuffle land on the same lock and the squirrels high-five; big moment, a clear that cancels the heist while the shuffle hands you exactly the I you needed.
+**Counterplay**: plan with the *set* of the next 3 pieces, not their order (the shuffle never changes which pieces come). Drop where the gap *will be* after the slide. Answer a heist mark by clearing its layer or locking a cube on top.
+**Stars**: A = 35, t_est 4 × 93.3 = 373 s → 290 / 205 s (`forest_09`, same board and same two rules: 315 / 225 s).
+
+**Open items**: `anvil_drop`, `echo_drop` and `jumbled_queue` rule JSONs land with wave-3. Stitch vetoes Knock, Heist and Root Slide on replays (valid counter). Whether it also holds the pinecone crush (it moves locked cubes) is a game-designer call.

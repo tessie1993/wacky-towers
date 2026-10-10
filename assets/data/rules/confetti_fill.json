@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "confetti_fill",
+  "name_key": "RULE_CONFETTI_FILL",
+  "layer": "mechanic",
+  "icon": "confetti_fill",
+  "behaviour": "confetti_fill",
+  "params": {
+    "min_layers": {
+      "type": "number"
+    },
+    "max_fill": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

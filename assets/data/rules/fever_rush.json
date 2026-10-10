@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "fever_rush",
+  "name_key": "RULE_FEVER_RUSH",
+  "layer": "twist",
+  "icon": "fever_rush",
+  "behaviour": "fever_rush",
+  "params": {
+    "window_ms": {
+      "type": "number"
+    },
+    "clears_needed": {
+      "type": "number"
+    },
+    "fever_ms": {
+      "type": "number"
+    },
+    "bonus": {
+      "type": "number"
+    },
+    "gravity_scale": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

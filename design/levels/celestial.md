@@ -701,3 +701,49 @@ SFX cues (one-shots): a soft "tink" when a star-rock lands; a puff "fwoop" when 
 - **F1 recount**: "new to the player" assumes the Meadow, Candy, Ice, Underwater, Lava and Forest files; Cave, Clockwork and Neon were not written yet. If any of them uses EV10, CV19 or EV15 first, the counts here only go down; if they teach none of the parade's events differently, nothing else changes.
 - **06 and B `solution` lists**: the validator should replay the known solutions in §6.
 - **Star times** are formula estimates (hand-set where noted); replace with playtest medians.
+
+---
+
+## Hard-track remixes (tiers 12–14)
+
+> **Wave-3 revision (level-designer, 2026-10-10). Supersedes the §7 drafts** (Meteor Storm, Dark Side, Twin Moons) per Campaign Structure rule 17: each remix recombines 1–2 Celestial rules **plus exactly one wave-3 mechanic** (`design/gdd/mechanics-wave3.md`). Twin Moons is dropped because islands (BL07) are not in the runtime rule catalog; Dark Side's Every Way Down is left out to keep one new verb per level. Twist cap held: 2 twists, no level mechanic. Runtime files: `src/levels/celestial/celestial_h1..h3/`.
+>
+> **Hard-track star rule:** `t2 = round5(0.80 × t_est)`, `t3 = round5(0.55 × t_est)` (F1 uses 0.85 / 0.60), with `t_est = N × A × 2.667 s`. Tier 10 is 335 / 235 s; these are tighter per unit of work and run at `g0` 1.45–1.50.
+
+| # | id | Name | Recombines | Wave-3 (biome event) | Goal | Board | g0 | ★★ / ★★★ |
+|---|---|---|---|---|---|---|---|---|
+| H1 | celestial_h1 | Meteor Storm | Solar Wind (03), rotating | `storm_bolt` (**Meteor**) | Clear 5 | 6×6, H10 | 1.45 | 385 / 265 s |
+| H2 | celestial_h2 | Wishing Eclipse | Eclipse (07) | `mystery_piece` (**Wishing Star**) | Clear 4 | 6×6, H10 | 1.45 | 305 / 210 s |
+| H3 | celestial_h3 | Constellation Shuffle | Drifting Islet (09) | `jumbled_queue` (**Constellation Shuffle**) | Clear 5 | 6×6, H10, preview 3 | 1.50 | 385 / 265 s |
+
+### H1 Meteor Storm
+
+**Story card.** The solar wind swings round the sky and meteors start falling with it. A meteor marks a column, then knocks the top cube off it. · **Comet: watcher** (a leaf umbrella, turned inside out).
+**Idea recombined**: Solar Wind (`gust`, `wind_mode` rotating, 9000 ± 2500 ms, strength 1, warn 1000).
+**Wave-3**: `storm_bolt` as the **Meteor**: `bolt_interval_ms` 8000, `bolt_warn_ms` 1500. A glowing trail marks the column 1.5 s ahead; the strike removes that column's highest cube. Meteors never hit the falling piece.
+**Goal**: Clear 5 on 6×6, H10, 8 Std, `g0` 1.45.
+**Wacky test**: surprising, the hazard that eats cubes can also dig out your own mistake; silly, the knocked-off cube bonks the Moon's nightcap in the backdrop; funny failure, a meteor knocks the last cube off a nearly-full layer and a gust blows the replacement piece past the gap; big moment, a meteor deleting a single overhang so the next I fills a buried hole.
+**Counterplay**: keep the top of every column flat and full (a bolt only removes one top cube); park bad overhangs where the trail is about to land; drop during the 1 s wind warning, not after.
+**Star rationale**: t_est = 5 × 36 × 2.667 = 480 s → 385 / 265 s.
+
+### H2 Wishing Eclipse
+
+**Story card.** The islet slips into the Moon's shadow and the stack fades. Every fourth star in the queue is a wishing star: it shows as "?" and you only learn what it is when it falls. · **Comet: watcher** (makes a wish with eyes shut, every "?").
+**Idea recombined**: Eclipse (`fog`, skin eclipse, visible 4000, fade 1000, alpha 0.15, reveal 700; alpha raised from 07's 0.12 because the "?" already removes planning).
+**Wave-3**: `mystery_piece` as the **Wishing Star**: `every` 4; pool is the level's 8 Std shapes, never the shape it replaced.
+**Goal**: Clear 4 on 6×6, H10, 8 Std, `g0` 1.45.
+**Wacky test**: surprising, you do not know your piece and you cannot see your stack; silly, the "?" twinkles and Comet crosses its paws; funny failure, the wish reveals a Tripod over a hole you forgot was there; big moment, the reveal lands an I into a faded four-long gap you remembered.
+**Counterplay**: keep one flat "any shape" landing zone for each "?"; the reveal is at spawn, so there is still full fall time to aim; a clear re-lights the stack (fog reveal) and gives you back your memory.
+**Star rationale**: t_est = 4 × 36 × 2.667 = 384 s → 305 / 210 s.
+
+### H3 Constellation Shuffle
+
+**Story card.** The drifting islet turns in its sleep, and every time it turns the stars in your queue swap places like a shuffled constellation. · **Comet: watcher** (counting stars, losing count on each shuffle).
+**Idea recombined**: Drifting Islet (`turntable`, every 5 locks, clockwise, wind-up 1 lock ahead).
+**Wave-3**: `jumbled_queue` as the **Constellation Shuffle**: `every` 5, with `spawn.preview_count` 3 so the shuffle is visible (the rule needs ≥ 2). Both rules count 5 locks, so they share **one beat**: lock 4 shows the star swirl on the rim and the queue's jumble warning together; lock 5 turns the islet and shuffles the queue. One telegraph, two effects on different channels (board vs preview).
+**Goal**: Clear 5 on 6×6, H10, 8 Std, `g0` 1.50 (the biome's top speed).
+**Wacky test**: surprising, your plan for the turned board is made with pieces that are about to swap; silly, the queue's stars draw a quick constellation (a fox) as they shuffle; funny failure, you leave the turned gap for the I and the shuffle sends it to the back of the queue; big moment, a shuffle that brings the I to the front just as the turn rotates its gap under the spawn.
+**Counterplay**: plan for shapes, not order: on the warning lock, build a surface that takes any of the three previews; the shuffle never changes which pieces come, only when.
+**Star rationale**: t_est = 5 × 36 × 2.667 = 480 s → 385 / 265 s.
+
+**Audio**: one-shots only: a rising whistle and a soft "tink-crack" for a meteor; a twinkle chime on each "?" reveal; a harp glissando on the shuffle (paired with the turn's star swirl). Tracks `celestial_h1_tbd`…`celestial_h3_tbd` are placeholders (play `celestial_04_tbd`, `celestial_07_tbd`, `celestial_09_tbd` until supplied).

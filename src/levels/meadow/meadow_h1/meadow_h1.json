@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "id": "meadow_h1",
+  "biome": "meadow",
+  "tier": 12,
+  "name": "LVL_MEADOW_H1_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "starting_contents": {
+      "layers": {
+        "0": ["......", ".^..^.", "......", "......", ".^..^.", "......"]
+      }
+    }
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 0.95,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "sprouts",
+      "params": {
+        "grow_locks": 3,
+        "grow_max": 0
+      }
+    },
+    {
+      "id": "gust",
+      "params": {
+        "wind_dir": "+x",
+        "wind_mode": "fixed",
+        "wind_interval_ms": 10000,
+        "wind_jitter_ms": 2000,
+        "wind_strength": 1,
+        "wind_warn_ms": 1000
+      }
+    },
+    {
+      "id": "star_coins",
+      "params": {
+        "coins": 6,
+        "min_layer": 2,
+        "score": 50,
+        "goal_counter": "coins"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 375000,
+    "t3": 265000
+  },
+  "music": "meadow_h1",
+  "story": {
+    "title_key": "LVL_MEADOW_H1_TITLE",
+    "premise_key": "LVL_MEADOW_H1_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "dandelion"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/meadow.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "meadow_h1",
+      "biome": "meadow",
+      "tier": 12,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "starting_contents": {
+          "layers": {
+            "0": ["......", ".^..^.", "......", "......", ".^..^.", "......"]
+          },
+          "legend": { "^": "sprout" }
+        }
+      },
+      "knobs": { "fall.g0": 0.95, "goal.top_out": "rescue", "goal.warnings_max": 1 },
+      "goal": { "type": "clear_n", "n": 5 },
+      "rules": [
+        { "id": "sprouts", "params": { "grow_locks": 3, "grow_max": 0 } },
+        { "id": "gust", "params": { "wind_dir": "+x", "wind_mode": "fixed", "wind_interval_ms": 10000, "wind_jitter_ms": 2000, "wind_strength": 1, "wind_warn_ms": 1000 } },
+        { "id": "star_coins", "params": { "coins": 6, "min_layer": 2, "score": 50, "goal_counter": "coins" } }
+      ],
+      "stars": { "t2": 375000, "t3": 265000 },
+      "music": "meadow_h1"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "star_coins is a wave-3 rule (design/gdd/mechanics-wave3.md W8); its assets/data/rules JSON lands with the wave-3 implementation. Coins are a score bonus only: no counter goal type exists."
+    ],
+    "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = 5 x 96 s",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

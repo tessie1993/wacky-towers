@@ -34,7 +34,7 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 9 | Level Goals & Fail States | Gameplay | MVP | Designed (revised 2026-10-10) | design/gdd/level-goals-fail-states.md | Board / Grid, Layer Clearing |
 | 10 | Rule-Twist Framework | Gameplay | MVP | Designed (revised 2026-10-10) | design/gdd/rule-twist-framework.md | Board / Grid, Piece Spawner & Queue, Movement & Rotation, Fall, Drop & Lock, Layer Clearing |
 | 11 | Level-Specific Mechanics | Gameplay | MVP | Needs Revision | design/gdd/level-specific-mechanics.md | Rule-Twist Framework |
-| 12 | Twist Library | Gameplay | MVP | Designed | design/gdd/twist-library.md | Rule-Twist Framework |
+| 12 | Twist Library | Gameplay | MVP | Designed | design/gdd/twist-library.md (wave-3 rules W1–W15: [mechanics-wave3.md](mechanics-wave3.md)) | Rule-Twist Framework |
 | 13 | Level Data & Definition (inferred) | Gameplay | MVP | Needs Revision | design/gdd/level-data-definition.md | Level Goals & Fail States, Rule-Twist Framework, Level-Specific Mechanics, Twist Library |
 | 14 | HUD (inferred) | UI | MVP | Needs Revision | design/gdd/hud.md | Piece Spawner & Queue, Level Goals & Fail States |
 | 15 | Obstacles | Gameplay | Vertical Slice | Needs Revision | design/gdd/obstacles.md | Board / Grid, Rule-Twist Framework |
@@ -56,7 +56,7 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 31 | Characters & Perks | Progression | Alpha | Designed (Draft) | design/gdd/characters-perks.md | Skills, Buffs & Debuffs, Rule-Twist Framework |
 | 32 | Points System (currency: stars) | Economy | Alpha | In Design (Draft; currency rework in progress) | design/gdd/points-system.md | Scoring & Stars, Tournament Flow |
 | 33 | Shop | Economy | Alpha | In Design (Draft; currency rework in progress) | design/gdd/shop.md | Points System, Characters & Perks, Buffs & Debuffs |
-| 34 | Tournament Minigames | Gameplay | Alpha | Needs Revision | design/gdd/tournament-minigames.md (ideas: design/gdd/mechanics-catalog.md; standalone practice: [Toy-Box Trials](arcade-pack.md)) | Board / Grid, Piece Set, Level Goals & Fail States, Mode / Minigame Randomizer |
+| 34 | Tournament Minigames | Gameplay | Alpha | Needs Revision | design/gdd/tournament-minigames.md (ideas: design/gdd/mechanics-catalog.md; standalone practice: [Toy-Box Trials](arcade-pack.md); wave 2 MG22–MG36: [party-minigames-wave2.md](party-minigames-wave2.md)) | Board / Grid, Piece Set, Level Goals & Fail States, Mode / Minigame Randomizer |
 | 35 | Mascot Reactions (inferred) | UI | Alpha | Designed (Draft) | design/gdd/mascot-reactions.md | Level Goals & Fail States, Fall, Drop & Lock, Layer Clearing, Mechanics Module |
 | 36 | Audio (inferred) | Audio | Alpha | Designed (Draft) | design/gdd/audio.md (+ design/gdd/audio/) | Layer Clearing, Items, Campaign Structure |
 | 37 | Onboarding & Accessibility (inferred) | Meta | Alpha | Designed (Draft) | design/gdd/onboarding-accessibility.md | Touch Controls, HUD, Campaign Structure |
