@@ -65,3 +65,66 @@ func test_unknown_def_is_empty() -> void:
 	var defs: KnobDefs = KnobDefs.from_tables([_table()])
 	assert_dict(defs.def(&"nope")).is_empty()
 	assert_bool(defs.has(&"nope")).is_false()
+
+
+func test_coerce_scalar_fixed_point() -> void:
+	var defs: KnobDefs = KnobDefs.from_tables([_table()])
+	assert_that(defs.coerce(&"fall.g0", 0.6)).is_equal(600)
+	assert_that(defs.coerce(&"fall.g0", 2)).is_equal(2000)
+	assert_str(defs.last_error()).is_equal("")
+
+
+func test_coerce_scalar_out_of_range() -> void:
+	var defs: KnobDefs = KnobDefs.from_tables([_table()])
+	assert_that(defs.coerce(&"fall.g0", 5.0)).is_null()
+	assert_str(defs.last_error()).contains("outside 0.1..3")
+
+
+func test_coerce_count() -> void:
+	var defs: KnobDefs = KnobDefs.from_tables([_table()])
+	assert_that(defs.coerce(&"fall.lock_delay_ms", 800.0)).is_equal(800)
+	assert_that(defs.coerce(&"fall.lock_delay_ms", 800.5)).is_null()
+	assert_str(defs.last_error()).contains("whole number")
+	assert_that(defs.coerce(&"fall.lock_delay_ms", 0)).is_null()
+
+
+func test_coerce_flag() -> void:
+	var defs: KnobDefs = KnobDefs.from_tables([_table()])
+	assert_that(defs.coerce(&"fall.hard_drop", false)).is_equal(false)
+	assert_str(defs.last_error()).is_equal("")
+	assert_that(defs.coerce(&"fall.hard_drop", 1)).is_null()
+	assert_str(defs.last_error()).contains("true or false")
+	assert_that(defs.coerce(&"fall.hard_drop", "true")).is_null()
+
+
+func test_coerce_slot_and_choice() -> void:
+	var defs: KnobDefs = KnobDefs.from_tables([_table()])
+	assert_that(defs.coerce(&"goal.top_out", "trim")).is_equal(&"trim")
+	assert_that(defs.coerce(&"goal.top_out", "explode")).is_null()
+	assert_str(defs.last_error()).contains("not one of")
+	assert_that(defs.coerce(&"view.occlusion", "ghost")).is_equal(&"ghost")
+
+
+func test_coerce_unknown_id() -> void:
+	var defs: KnobDefs = KnobDefs.from_tables([_table()])
+	assert_that(defs.coerce(&"nope", 1)).is_null()
+	assert_str(defs.last_error()).contains("unknown knob")
+
+
+func test_coerce_bad_types() -> void:
+	var defs: KnobDefs = KnobDefs.from_tables([_table()])
+	for bad: Variant in [NAN, INF, "0.6", null]:
+		assert_that(defs.coerce(&"fall.g0", bad)).is_null()
+		assert_str(defs.last_error()).contains("must be a number")
+
+
+func test_coerce_structure_duplicates() -> void:
+	var table: Dictionary = {"knobs": [{"id": "x.shape", "type": "structure", "default": {"a": 1}}]}
+	var defs: KnobDefs = KnobDefs.from_tables([table])
+	var raw: Dictionary = {"b": [1]}
+	var out: Variant = defs.coerce(&"x.shape", raw)
+	assert_that(out).is_equal(raw)
+	(raw["b"] as Array).append(2)
+	assert_int(((out as Dictionary)["b"] as Array).size()).is_equal(1)
+	assert_that(defs.coerce(&"x.shape", [1])).is_null()
+	assert_str(defs.last_error()).contains("must be an object")

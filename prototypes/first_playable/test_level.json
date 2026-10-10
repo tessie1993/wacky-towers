@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "test_level",
+  "biome": "meadow",
+  "tier": 1,
+  "name": "LVL_MEADOW_01_TITLE",
+  "board": { "width": 8, "depth": 8, "h_play": 8, "down_axis": "-y" },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s"],
+    "opening_set": ["o", "i"],
+    "opening_count": 2
+  },
+  "knobs": {
+    "fall.g0": 0.6,
+    "control.rotation_axes_enabled": ["spin"],
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 2
+  },
+  "goal": { "type": "clear_n", "n": 4 },
+  "rules": [],
+  "stars": { "t2": 145000, "t3": 105000 },
+  "story": { "title_key": "LVL_MEADOW_01_TITLE", "premise_key": "LVL_MEADOW_01_PREMISE", "mascot_role": "helper", "icon": "sprout" }
+}

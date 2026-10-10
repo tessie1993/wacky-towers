@@ -8,7 +8,6 @@
       "max": 16.0,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/touch-controls.md#formulas",
       "note": ""
     },
@@ -20,7 +19,6 @@
       "max": 56.0,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/touch-controls.md#formulas",
       "note": ""
     },
@@ -32,7 +30,6 @@
       "max": 35.0,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/touch-controls.md#formulas",
       "note": ""
     },
@@ -44,7 +41,6 @@
       "max": 90.0,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/touch-controls.md#formulas",
       "note": ""
     },
@@ -56,7 +52,6 @@
       "max": 250,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/touch-controls.md#formulas",
       "note": ""
     },
@@ -68,7 +63,6 @@
       "max": 250,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/touch-controls.md#formulas",
       "note": ""
     },
@@ -80,7 +74,6 @@
       "max": 150,
       "allows_zero": true,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/touch-controls.md#tuning-knobs",
       "note": ""
     },
@@ -90,7 +83,6 @@
       "default": true,
       "allows_zero": true,
       "rule_adjustable": true,
-      "choices": [],
       "source": "design/gdd/movement-rotation.md#tuning-knobs",
       "note": ""
     },
@@ -115,7 +107,6 @@
       "max": 8,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/movement-rotation.md#tuning-knobs",
       "note": ""
     },
@@ -140,7 +131,6 @@
       "max": 4,
       "allows_zero": true,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/movement-rotation.md#tuning-knobs",
       "note": ""
     },
@@ -152,7 +142,6 @@
       "max": 300,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/touch-controls.md#formulas",
       "note": ""
     },
@@ -164,7 +153,6 @@
       "max": 120,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/touch-controls.md#formulas",
       "note": ""
     },
@@ -176,7 +164,6 @@
       "max": 160,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/touch-controls.md#tuning-knobs",
       "note": ""
     },
@@ -190,7 +177,6 @@
       ],
       "allows_zero": true,
       "rule_adjustable": true,
-      "choices": [],
       "source": "design/gdd/movement-rotation.md#tuning-knobs",
       "note": ""
     },
@@ -202,7 +188,6 @@
       "max": 250,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/touch-controls.md#formulas",
       "note": ""
     },

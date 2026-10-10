@@ -1,0 +1,16 @@
+{
+  "biome": "Meadow",
+  "nodes": [
+    { "id": "meadow_01", "name": "First Sprout", "pos": [0.12, 0.86] },
+    { "id": "meadow_02", "name": "Tilt & Roll", "pos": [0.30, 0.78] },
+    { "id": "meadow_03", "name": "Breezy Hill", "pos": [0.50, 0.88] },
+    { "id": "meadow_04", "name": "Mushroom Ring", "pos": [0.72, 0.80] },
+    { "id": "meadow_05", "name": "Tall Tower", "pos": [0.86, 0.64] },
+    { "id": "meadow_06", "name": "Flower Bed", "pos": [0.66, 0.54] },
+    { "id": "meadow_07", "name": "Hide & Seek", "pos": [0.44, 0.60] },
+    { "id": "meadow_08", "name": "Dewdrop", "pos": [0.22, 0.48] },
+    { "id": "meadow_09", "name": "Topsy-Turvy", "pos": [0.24, 0.30] },
+    { "id": "meadow_10", "name": "Meadow Mill", "pos": [0.48, 0.22] },
+    { "id": "meadow_bonus", "name": "Picnic Puzzle", "pos": [0.80, 0.18], "bonus": true }
+  ]
+}

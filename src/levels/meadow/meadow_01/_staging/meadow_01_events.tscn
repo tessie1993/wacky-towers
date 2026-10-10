@@ -1,0 +1,74 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/levels/meadow/meadow_01/meadow_01_events.gd" id="1"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="2"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence.gd" id="3"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/decorators/succeeder.gd" id="4"]
+[ext_resource type="Script" path="res://src/levels/meadow/meadow_01/m01_cond_not_started.gd" id="10"]
+[ext_resource type="Script" path="res://src/levels/meadow/meadow_01/m01_act_banner.gd" id="11"]
+[ext_resource type="Script" path="res://src/levels/meadow/meadow_01/m01_cond_just_cleared.gd" id="12"]
+[ext_resource type="Script" path="res://src/levels/meadow/meadow_01/m01_act_cheer.gd" id="13"]
+[ext_resource type="Script" path="res://src/levels/meadow/meadow_01/m01_cond_one_more.gd" id="14"]
+[ext_resource type="Script" path="res://src/levels/meadow/meadow_01/m01_act_one_more.gd" id="15"]
+[ext_resource type="Script" path="res://src/levels/meadow/meadow_01/m01_cond_finished.gd" id="16"]
+[ext_resource type="Script" path="res://src/levels/meadow/meadow_01/m01_act_finish.gd" id="17"]
+
+[node name="Meadow01Events" type="Node"]
+script = ExtResource("1")
+
+[node name="Tree" type="BeehaveTree" parent="."]
+script = ExtResource("2")
+process_thread = 2
+actor_node_path = NodePath("..")
+
+[node name="All" type="Node" parent="Tree"]
+script = ExtResource("3")
+
+[node name="IntroAlways" type="Node" parent="Tree/All"]
+script = ExtResource("4")
+
+[node name="Intro" type="Node" parent="Tree/All/IntroAlways"]
+script = ExtResource("3")
+
+[node name="Cond" type="Node" parent="Tree/All/IntroAlways/Intro"]
+script = ExtResource("10")
+
+[node name="Act" type="Node" parent="Tree/All/IntroAlways/Intro"]
+script = ExtResource("11")
+
+[node name="CheerAlways" type="Node" parent="Tree/All"]
+script = ExtResource("4")
+
+[node name="Cheer" type="Node" parent="Tree/All/CheerAlways"]
+script = ExtResource("3")
+
+[node name="Cond" type="Node" parent="Tree/All/CheerAlways/Cheer"]
+script = ExtResource("12")
+
+[node name="Act" type="Node" parent="Tree/All/CheerAlways/Cheer"]
+script = ExtResource("13")
+
+[node name="OneMoreAlways" type="Node" parent="Tree/All"]
+script = ExtResource("4")
+
+[node name="OneMore" type="Node" parent="Tree/All/OneMoreAlways"]
+script = ExtResource("3")
+
+[node name="Cond" type="Node" parent="Tree/All/OneMoreAlways/OneMore"]
+script = ExtResource("14")
+
+[node name="Act" type="Node" parent="Tree/All/OneMoreAlways/OneMore"]
+script = ExtResource("15")
+
+[node name="FinishAlways" type="Node" parent="Tree/All"]
+script = ExtResource("4")
+
+[node name="Finish" type="Node" parent="Tree/All/FinishAlways"]
+script = ExtResource("3")
+
+[node name="Cond" type="Node" parent="Tree/All/FinishAlways/Finish"]
+script = ExtResource("16")
+
+[node name="Act" type="Node" parent="Tree/All/FinishAlways/Finish"]
+script = ExtResource("17")
+

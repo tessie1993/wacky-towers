@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "id": "meadow_10",
+  "biome": "meadow",
+  "tier": 10,
+  "name": "LVL_MEADOW_10_TITLE",
+  "board": { "width": 8, "depth": 6, "h_play": 12, "down_axis": "-y" },
+  "pieces": { "shapes": ["i", "o", "t", "l", "tripod", "screw_left", "screw_right", "chair"] },
+  "knobs": { "fall.g0": 1.0, "goal.top_out": "rescue", "goal.warnings_max": 1 },
+  "goal": { "type": "clear_n", "n": 3 },
+  "rules": [
+    { "id": "mill_belt", "params": { "conveyor_dir": "+x", "conveyor_every": 2, "conveyor_wrap": true } },
+    { "id": "gust", "params": { "wind_dir": "+z", "wind_mode": "fixed", "wind_interval_ms": 8000, "wind_jitter_ms": 2000, "wind_strength": 1, "wind_warn_ms": 1000 } },
+    { "id": "topsy_tumble", "params": { "flip_every_layers": 2, "flip_every_ms": 180000, "flip_warn_ms": 2000 } }
+  ],
+  "stars": { "t2": 315000, "t3": 225000 },
+  "story": { "title_key": "LVL_MEADOW_10_TITLE", "premise_key": "LVL_MEADOW_10_PREMISE", "mascot_role": "boss", "icon": "windmill" }
+}

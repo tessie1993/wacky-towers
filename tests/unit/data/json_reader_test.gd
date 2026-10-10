@@ -4,13 +4,13 @@ extends GdUnitTestSuite
 const FIX := "res://tests/unit/data/fixtures/"
 
 
-func test_whole_int() -> void:
-	assert_that(JsonReader.whole_int(8.0)).is_equal(8)
-	assert_that(JsonReader.whole_int(8)).is_equal(8)
-	assert_that(JsonReader.whole_int(-3.0)).is_equal(-3)
+func test_json_num_whole_int_delegates() -> void:
+	assert_that(JsonNum.whole_int(8.0)).is_equal(8)
+	assert_that(JsonNum.whole_int(8)).is_equal(8)
+	assert_that(JsonNum.whole_int(-3.0)).is_equal(-3)
 	var bad: Array = [6.5, NAN, INF, 1e12, "8", true, null]
 	for v: Variant in bad:
-		assert_that(JsonReader.whole_int(v)).is_null()
+		assert_that(JsonNum.whole_int(v)).is_null()
 
 
 func test_json_numbers_are_floats_pinned() -> void:
@@ -21,7 +21,7 @@ func test_json_numbers_are_floats_pinned() -> void:
 func test_read_ok() -> void:
 	var r: Dictionary = JsonReader.read_file(FIX + "ok.json", 1024)
 	assert_bool(r["ok"]).is_true()
-	assert_that(JsonReader.whole_int(r["data"]["a"])).is_equal(8)
+	assert_that(JsonNum.whole_int(r["data"]["a"])).is_equal(8)
 
 
 func test_read_missing() -> void:
@@ -46,3 +46,27 @@ func test_read_array_root() -> void:
 	var r: Dictionary = JsonReader.read_file(FIX + "array_root.json", 1024)
 	assert_bool(r["ok"]).is_false()
 	assert_str(r["error"]).contains("root must be an object")
+
+
+func test_read_dir_keys_by_stem() -> void:
+	var r: Dictionary = JsonReader.read_dir(FIX + "dir")
+	var files: Dictionary = r["files"]
+	var keys: Array = files.keys()
+	keys.sort()
+	assert_array(keys).is_equal([&"a", &"b"])
+	assert_int((r["errors"] as PackedStringArray).size()).is_equal(0)
+
+
+func test_read_dir_rejects_user_path() -> void:
+	var r: Dictionary = JsonReader.read_dir("user://x")
+	var errors: PackedStringArray = r["errors"]
+	assert_int(errors.size()).is_equal(1)
+	assert_str(errors[0]).contains("only res://")
+	assert_int((r["files"] as Dictionary).size()).is_equal(0)
+
+
+func test_read_dir_missing() -> void:
+	var r: Dictionary = JsonReader.read_dir(FIX + "nope")
+	var errors: PackedStringArray = r["errors"]
+	assert_int(errors.size()).is_equal(1)
+	assert_str(errors[0]).contains("not found")

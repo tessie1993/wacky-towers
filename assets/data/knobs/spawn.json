@@ -20,7 +20,6 @@
       "max": 64,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
       "note": ""
     },
@@ -32,7 +31,6 @@
       "max": 8,
       "allows_zero": true,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
       "note": ""
     },
@@ -44,7 +42,6 @@
       "max": 8,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
       "note": ""
     },
@@ -54,7 +51,6 @@
       "default": false,
       "allows_zero": true,
       "rule_adjustable": true,
-      "choices": [],
       "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
       "note": ""
     },
@@ -66,7 +62,6 @@
       "max": 2,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
       "note": ""
     },
@@ -78,7 +73,6 @@
       "max": 10,
       "allows_zero": true,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
       "note": ""
     },
@@ -88,7 +82,6 @@
       "default": [],
       "allows_zero": true,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
       "note": ""
     },
@@ -100,7 +93,6 @@
       "max": 5,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
       "note": ""
     },
@@ -112,7 +104,6 @@
       "max": 3,
       "allows_zero": true,
       "rule_adjustable": true,
-      "choices": [],
       "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
       "note": ""
     },
@@ -124,7 +115,6 @@
       "max": 5,
       "allows_zero": false,
       "rule_adjustable": false,
-      "choices": [],
       "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
       "note": ""
     },

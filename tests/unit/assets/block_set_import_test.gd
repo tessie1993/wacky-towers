@@ -129,6 +129,62 @@ func test_block_pieces_child_count_matches_shape_bank() -> void:
 	assert_array(failures).is_empty()
 
 
+## Set names that have a blk_<set>_cube.glb.
+func _sets_with_cube_glb() -> Array[String]:
+	var out: Array[String] = []
+	for set_name: String in DirAccess.get_directories_at(BLOCKS_DIR):
+		if FileAccess.file_exists("%s%s/blk_%s_cube.glb" % [BLOCKS_DIR, set_name, set_name]):
+			out.append(set_name)
+	return out
+
+
+func test_cube_res_for_every_cube_glb() -> void:
+	var failures: Array[String] = []
+	for set_name: String in _sets_with_cube_glb():
+		var path := "%s%s/blk_%s_cube.res" % [BLOCKS_DIR, set_name, set_name]
+		if not FileAccess.file_exists(path) or not load(path) is Mesh:
+			failures.append("%s: missing or not a Mesh" % path)
+	assert_array(failures).is_empty()
+
+
+func test_cube_res_matches_glb() -> void:
+	var failures: Array[String] = []
+	for set_name: String in _sets_with_cube_glb():
+		var base := "%s%s/blk_%s_cube" % [BLOCKS_DIR, set_name, set_name]
+		var res := load(base + ".res") as Mesh
+		var scene := load(base + ".glb") as PackedScene
+		if res == null or scene == null:
+			failures.append("%s: cannot load res/glb" % base)
+			continue
+		var root: Node = auto_free(scene.instantiate())
+		var glb_mesh: Mesh = (root as MeshInstance3D).mesh if root is MeshInstance3D else null
+		if glb_mesh == null:
+			failures.append("%s: glb root is not a MeshInstance3D" % base)
+			continue
+		if res.get_surface_count() != glb_mesh.get_surface_count():
+			failures.append("%s: surface count differs" % base)
+		elif res.surface_get_arrays(0)[Mesh.ARRAY_VERTEX].size() != glb_mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX].size():
+			failures.append("%s: vertex count differs" % base)
+	assert_array(failures).is_empty()
+
+
+func test_block_import_flags() -> void:
+	var failures: Array[String] = []
+	for set_name: String in DirAccess.get_directories_at(BLOCKS_DIR):
+		for file: String in DirAccess.get_files_at(BLOCKS_DIR + set_name):
+			if not file.ends_with(".glb.import"):
+				continue
+			var cfg := ConfigFile.new()
+			if cfg.load(BLOCKS_DIR + set_name + "/" + file) != OK:
+				failures.append("%s: cannot read" % file)
+				continue
+			if cfg.get_value("params", "meshes/generate_lods", null) != false:
+				failures.append("%s: generate_lods is not false" % file)
+			if cfg.get_value("params", "meshes/create_shadow_meshes", null) != false:
+				failures.append("%s: create_shadow_meshes is not false" % file)
+	assert_array(failures).is_empty()
+
+
 ## shape_id from blk_<set>_<shape>.glb; the whole basename if the prefix is missing.
 func _shape_of(path: String) -> String:
 	return path.get_file().get_basename().trim_prefix("blk_%s_" % path.get_base_dir().get_file())

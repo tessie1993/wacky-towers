@@ -1,0 +1,337 @@
+{
+	"antenna": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"arch": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"big_cube": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"big_tripod": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"big_zigzag": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"chair": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"claw_left": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"claw_right": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"crank": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"crown": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"dented_cube": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"dog_bone": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"duo": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"giant_fridge": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"giant_mega_cube": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"giant_ring": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"giant_slab": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"heart": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"hook_left": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"hook_right": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"i": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"jack": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"kink_left": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"kink_right": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"l": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"loop": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"mono": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"mushroom": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"nook": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"o": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pento_f": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pento_i": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pento_l": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pento_n": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pento_p": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pento_t": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pento_u": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pento_v": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pento_w": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pento_x": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pento_y": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pento_z": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"periscope_left": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"periscope_right": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"plank": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"pole": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"ring": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"rocket": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"s": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"screw_left": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"screw_right": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"signpost": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"slab": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"snake_left": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"snake_right": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"staircase": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"step_block": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"stool": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"t": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"tall_corner": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"tri_corner": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"tri_straight": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"tripod": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"twist_left": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"twist_right": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"wiggle_left": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	},
+	"wiggle_right": {
+		"family": "",
+		"hue": 0,
+		"motif": ""
+	}
+}

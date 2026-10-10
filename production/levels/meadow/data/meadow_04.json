@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "meadow_04",
+  "biome": "meadow",
+  "tier": 4,
+  "name": "LVL_MEADOW_04_TITLE",
+  "board": {
+    "width": 7, "depth": 7, "h_play": 10, "down_axis": "-y",
+    "mask": ["#######", "#######", "##...##", "##...##", "##...##", "#######", "#######"],
+    "spawn_anchor": { "x": 3, "z": 5 }
+  },
+  "pieces": { "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"] },
+  "knobs": { "fall.g0": 0.75, "goal.top_out": "rescue", "goal.warnings_max": 1 },
+  "goal": { "type": "clear_n", "n": 3 },
+  "rules": [
+    { "id": "mushroom_popup", "params": { "spawn_every_locks": 5, "objects_max": 4 } }
+  ],
+  "stars": { "t2": 270000, "t3": 190000 },
+  "story": { "title_key": "LVL_MEADOW_04_TITLE", "premise_key": "LVL_MEADOW_04_PREMISE", "mascot_role": "watcher", "icon": "mushroom" }
+}

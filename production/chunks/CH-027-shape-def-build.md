@@ -11,7 +11,7 @@
 ## API (add)
 
 ```gdscript
-static func build(id: StringName, offsets: PackedVector3iArray) -> ShapeDef
+static func build(id: StringName, offsets: Array[Vector3i]) -> ShapeDef
 	## New ShapeDef with shape_id, cube_count and all geometry fields filled; hand fields left default.
 	## Precondition: offsets contain the pivot (0,0,0), are face-connected and have no duplicates (SHP-003 checks).
 ```

@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "meadow_07",
+  "biome": "meadow",
+  "tier": 7,
+  "name": "LVL_MEADOW_07_TITLE",
+  "board": {
+    "width": 6, "depth": 6, "h_play": 10, "down_axis": "-y",
+    "starting_contents": { "layers": {
+      "0": ["##.###", "######", "#####.", ".#####", "######", "###.##"],
+      "1": ["##.#..", ".#####", "##.##.", ".###..", "######", "##..##"]
+    } }
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"],
+    "tags": { "fog_ghost": { "per_bag": 1 } }
+  },
+  "knobs": { "fall.g0": 0.85, "goal.top_out": "rescue", "goal.warnings_max": 1, "control.fog_ghost_preview": "faint" },
+  "goal": { "type": "clear_n", "n": 4 },
+  "rules": [
+    { "id": "fog", "params": { "visible_ms": 5000, "fade_ms": 1000, "invisible_alpha": 0.1, "reveal_ms": 600 } },
+    { "id": "fog_ghost", "params": {} }
+  ],
+  "stars": { "t2": 195000, "t3": 140000 },
+  "story": { "title_key": "LVL_MEADOW_07_TITLE", "premise_key": "LVL_MEADOW_07_PREMISE", "mascot_role": "watcher", "icon": "fog" }
+}
