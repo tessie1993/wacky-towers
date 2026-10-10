@@ -2,9 +2,7 @@
 
 ## Status
 
-Proposed
-
-> Who may move this to `Accepted`: the user, or `technical-director` on the user's explicit confirmation.
+Accepted (2026-10-10, accepted by user)
 
 ## Date
 
@@ -234,6 +232,7 @@ static func bake(art_set: StringName, shape_ids: PackedStringArray, host: Node) 
 
 - Shared, documented per-instance layout (the table in section 1). Both the shader and `BoardView` cite this ADR.
 - Never set `instance_count` during play; resize only on `LAYOUT`.
+- **Debug view first** (2026-10-10, implementation plan VEW-002): the first `BoardView` uses per-instance setters (`set_instance_transform`, `set_instance_color`) and a flat-hue `StandardMaterial3D`; the packed `multimesh_set_buffer` upload replaces them only when profiling asks for it. This defers verification items 1 and 3.
 - No `MeshInstance3D` per locked cube anywhere, including debug paths.
 - Screenshot evidence for the board, fade, outline and each status goes in `production/qa/evidence/` (coding standards: Visual/UI rows).
 - The shader specialist (`godot-shader-specialist`) writes `block.gdshader` against the layout here. The technical-artist signs off the look.

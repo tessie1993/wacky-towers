@@ -1,0 +1,168 @@
+{
+  "knobs": [
+    {
+      "id": "fall.entry_delay_ms",
+      "type": "count",
+      "default": 200,
+      "min": 0,
+      "max": 600,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.g0",
+      "type": "scalar",
+      "default": 1.0,
+      "min": 0.3,
+      "max": 4.0,
+      "allows_zero": false,
+      "rule_adjustable": true,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.g_max",
+      "type": "scalar",
+      "default": 6.0,
+      "min": 1.0,
+      "max": 10.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.gravity_scale",
+      "type": "scalar",
+      "default": 1.0,
+      "min": 0.0,
+      "max": 4.0,
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.hard_drop_grace_ms",
+      "type": "count",
+      "default": 150,
+      "min": 0,
+      "max": 400,
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.lock_delay_ms",
+      "type": "count",
+      "default": 500,
+      "min": 0,
+      "max": 1500,
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.lock_resets_max",
+      "type": "count",
+      "default": 10,
+      "min": 0,
+      "max": 30,
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.ramp_per_clear",
+      "type": "scalar",
+      "default": 0.05,
+      "min": 0.0,
+      "max": 0.5,
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.ramp_per_min",
+      "type": "scalar",
+      "default": 0.0,
+      "min": 0.0,
+      "max": 0.5,
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.soft_drop_carry",
+      "type": "flag",
+      "default": false,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.soft_drop_factor",
+      "type": "scalar",
+      "default": 10.0,
+      "min": 2.0,
+      "max": 40.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.soft_drop_locks",
+      "type": "flag",
+      "default": false,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.soft_drop_max",
+      "type": "scalar",
+      "default": 30.0,
+      "min": 1.0,
+      "max": 60.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "fall.soft_drop_min",
+      "type": "scalar",
+      "default": 8.0,
+      "min": 1.0,
+      "max": 60.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/fall-drop-lock.md#tuning-knobs",
+      "note": ""
+    }
+  ]
+}

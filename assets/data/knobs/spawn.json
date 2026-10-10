@@ -1,0 +1,159 @@
+{
+  "knobs": [
+    {
+      "id": "spawn.arrival",
+      "type": "slot",
+      "default": "top",
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [
+        "top"
+      ],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "spawn.bag_max_size",
+      "type": "count",
+      "default": 32,
+      "min": 8,
+      "max": 64,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "spawn.history_len",
+      "type": "count",
+      "default": 4,
+      "min": 0,
+      "max": 8,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "spawn.history_tries",
+      "type": "count",
+      "default": 4,
+      "min": 1,
+      "max": 8,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "spawn.hold_enabled",
+      "type": "flag",
+      "default": false,
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "choices": [],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "spawn.hold_uses_per_piece",
+      "type": "count",
+      "default": 1,
+      "min": 1,
+      "max": 2,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "spawn.opening_count",
+      "type": "count",
+      "default": 0,
+      "min": 0,
+      "max": 10,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "spawn.opening_set",
+      "type": "structure",
+      "default": [],
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "spawn.preview_cap",
+      "type": "count",
+      "default": 3,
+      "min": 1,
+      "max": 5,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "spawn.preview_count",
+      "type": "count",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "choices": [],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "spawn.queue_lookahead",
+      "type": "count",
+      "default": 3,
+      "min": 1,
+      "max": 5,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "spawn.randomizer",
+      "type": "choice",
+      "default": "bag",
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "choices": [
+        "bag",
+        "history",
+        "random"
+      ],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "spawn.sequence_mode",
+      "type": "choice",
+      "default": "shared",
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [
+        "shared",
+        "independent"
+      ],
+      "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
+      "note": ""
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{ "types": [
+  { "id": "block",   "kind_id": 1, "glyph": "",  "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" },
+  { "id": "starter", "kind_id": 2, "glyph": "#", "slot": "cell", "solid": true, "fills_layer": true, "hue": 0, "mesh": "" }
+] }

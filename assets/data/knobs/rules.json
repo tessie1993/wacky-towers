@@ -1,0 +1,9 @@
+{
+  "knobs": [
+    {"id": "rules.framework_budget_ms", "type": "scalar", "default": 0.5, "min": 0.2, "max": 2.0, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/rule-twist-framework.md#tuning-knobs", "note": "Time per frame the framework may use on the reference phone"},
+    {"id": "rules.layer_order", "type": "structure", "default": ["mechanic", "twist", "item_buff", "perk", "base"], "rule_adjustable": false, "source": "design/gdd/rule-twist-framework.md#tuning-knobs", "note": "Highest priority first (F2); permutation of the 5 layers; change only with care"},
+    {"id": "rules.max_hook_depth", "type": "count", "default": 4, "min": 1, "max": 8, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/rule-twist-framework.md#tuning-knobs", "note": "Chain reactions from actions (ADR-0004 section 5)"},
+    {"id": "rules.max_level_mechanics", "type": "count", "default": 1, "min": 0, "max": 2, "allows_zero": true, "rule_adjustable": false, "source": "design/gdd/rule-twist-framework.md#tuning-knobs", "note": "Level mechanics per level (F3, ADR-0004 section 2)"},
+    {"id": "rules.max_twists", "type": "count", "default": 2, "min": 0, "max": 4, "allows_zero": true, "rule_adjustable": false, "source": "design/gdd/rule-twist-framework.md#tuning-knobs", "note": "Twists per level (F3, ADR-0004 section 2)"}
+  ]
+}

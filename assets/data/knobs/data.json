@@ -1,0 +1,35 @@
+{
+  "knobs": [
+    {
+      "id": "data.length_warn_max_minutes",
+      "type": "count",
+      "default": 15,
+      "min": 3,
+      "max": 20,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/level-data-definition.md#tuning-knobs"
+    },
+    {
+      "id": "data.length_warn_min_minutes",
+      "type": "count",
+      "default": 5,
+      "min": 3,
+      "max": 20,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/level-data-definition.md#tuning-knobs"
+    },
+    {
+      "id": "data.max_level_bytes",
+      "type": "count",
+      "default": 262144,
+      "min": 1024,
+      "max": 4194304,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "docs/architecture/adr-0005-data-format-validator.md",
+      "note": "ADR default 256 KB; range is a sensible cap. TODO(design): no range in ADR."
+    }
+  ]
+}

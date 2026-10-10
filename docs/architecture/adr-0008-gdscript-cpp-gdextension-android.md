@@ -2,9 +2,7 @@
 
 ## Status
 
-Proposed
-
-> Only the user, or `technical-director` on the user's explicit confirmation, may move this to `Accepted`.
+Accepted (2026-10-10, accepted by user)
 
 ## Date
 

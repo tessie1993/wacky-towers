@@ -1,0 +1,13 @@
+{
+  "knobs": [
+    {"id": "clear.anim_ms", "type": "count", "default": 250, "min": 100, "max": 600, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/layer-clearing.md#tuning-knobs", "note": "Length of one layer dissolve (F2)"},
+    {"id": "clear.cascade_step_ms", "type": "count", "default": 180, "min": 80, "max": 400, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/layer-clearing.md#tuning-knobs", "note": "Time per falling layer; inert in slice mode"},
+    {"id": "clear.chain_max", "type": "count", "default": 10, "min": 1, "max": 20, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/layer-clearing.md#tuning-knobs", "note": "Safety limit on chain rounds; inert in slice mode"},
+    {"id": "clear.collapse", "type": "slot", "default": "slice", "choices": ["slice"], "rule_adjustable": true, "source": "design/gdd/layer-clearing.md#tuning-knobs", "note": "GDD collapse_mode; cascade/chunks not built for Meadow"},
+    {"id": "clear.detector", "type": "slot", "default": "layer", "choices": ["layer", "none"], "rule_adjustable": false, "source": "design/gdd/layer-clearing.md#tuning-knobs", "note": "GDD clear_detector; none = clearing off"},
+    {"id": "clear.enabled", "type": "flag", "default": true, "rule_adjustable": true, "source": "design/gdd/layer-clearing.md#tuning-knobs", "note": "False makes every other clear knob inert"},
+    {"id": "clear.resolve_max_ms", "type": "count", "default": 1000, "min": 500, "max": 2000, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/layer-clearing.md#tuning-knobs", "note": "Longest pause a big clear can cause (F2)"},
+    {"id": "clear.settle_ms", "type": "count", "default": 200, "min": 100, "max": 500, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/layer-clearing.md#tuning-knobs", "note": "Time for the stack to drop (F2)"},
+    {"id": "clear.stagger_ms", "type": "count", "default": 100, "min": 0, "max": 200, "allows_zero": true, "rule_adjustable": false, "source": "design/gdd/layer-clearing.md#tuning-knobs", "note": "Ripple speed between layers (F2)"}
+  ]
+}

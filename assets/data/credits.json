@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "items": [
+    {"name": "gdUnit4", "author": "Mike Schulze", "licence": "MIT", "source": "https://github.com/MikeSchulze/gdUnit4", "files": ["addons/gdUnit4/"]},
+    {"name": "TileMapLayer3D", "author": "DanTrz", "licence": "MIT", "source": "https://github.com/DanTrz/TileMapLayer3D", "files": ["addons/TileMapLayer3D/"]},
+    {"name": "Godot AI", "author": "Godot AI contributors", "licence": "MIT", "source": "", "files": ["addons/godot_ai/"]},
+    {"name": "Godot MCP Toolkit", "author": "NPGameDev", "licence": "MIT", "source": "", "files": ["addons/godot_mcp_toolkit/"]},
+    {"name": "G.U.I.D.E", "author": "Jan Thomä", "licence": "MIT", "source": "https://github.com/godotneers/G.U.I.D.E", "files": ["addons/guide/"]},
+    {"name": "Phantom Camera", "author": "Marcus Skov", "licence": "MIT", "source": "https://github.com/ramokz/phantom-camera", "files": ["addons/phantom_camera/"]},
+    {"name": "Expose Them Properties!", "author": "Guillem Chesa", "licence": "MIT", "source": "", "files": ["addons/xesa/"]},
+    {"name": "Script-IDE", "author": "Marius Hanl", "licence": "MIT", "source": "https://github.com/Maran23/script-ide", "files": ["addons/script-ide/"]}
+  ]
+}

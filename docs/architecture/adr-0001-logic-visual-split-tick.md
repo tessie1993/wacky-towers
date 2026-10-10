@@ -2,9 +2,7 @@
 
 ## Status
 
-Proposed
-
-> Who may move this to `Accepted`: the user, or `technical-director` on the user's explicit confirmation.
+Accepted (2026-10-10, accepted by user)
 
 ## Date
 
@@ -72,7 +70,7 @@ No gameplay code exists (`src/dev/` holds only a block-set preview).
 ### The sim
 
 - `BoardSim extends RefCounted` owns one **player's play space**: one or more boards (islands, lanes; ADR-0002 section 7) and their rule state: board (ADR-0002), active piece, spawner, rule runtime (ADR-0004), goal state, RNG streams (ADR-0006). No `Node`, no signals, no `await`, no `Time`/`OS` calls, no global RNG.
-- Dependencies are injected at construction: `BoardSim.new(level: LevelData, round_seed: int, catalog: RuleCatalog)`.
+- Dependencies are injected at construction: `BoardSim.new(level: LevelData, round_seed: int, catalog: GameCatalog)`.
 
 ### The clock
 
@@ -86,6 +84,7 @@ No gameplay code exists (`src/dev/` holds only a block-set preview).
 
 - Input is turned into `SimCommand {tick, kind: StringName, args}` (move, rotate, soft_drop_on/off, hard_drop, hold, plus network-received attacks). Commands are queued with the tick they apply on (the next tick) and applied in arrival order at the start of that tick.
 - `BoardSim.step()` runs one tick: apply commands → rule `on_tick` hooks → gravity/travel step → lock → resolve (clear strategy, collapse) → goal check → append `SimEvent`s.
+- **Lock veto** (2026-10-10, implementation plan): before writing cubes the sim asks `can(&"piece.lock", ...)`. If a rule vetoes it after calling `RuleApi.return_piece_to_spawn()`, the piece returns to its spawn origin in its current orientation with the gravity clock reset (mascot catch, WO11).
 - Events are plain data: `SimEvent {tick, kind: StringName, data: Dictionary}` (`piece_spawned`, `piece_moved`, `piece_locked`, `cells_cleared`, `rule_started`, `rule_blocked`, `goal_reached`, …). `step()` returns the tick's events; the sim keeps no listeners.
 - **Resolving has a duration from data**, not from animations: the sim stays in Resolving for `t_resolve_ms` (Layer Clearing) and the view plays its animation in that window. The sim never waits for the view.
 
@@ -123,7 +122,7 @@ No gameplay code exists (`src/dev/` holds only a block-set preview).
 
 ```gdscript
 class_name BoardSim extends RefCounted
-func _init(level: LevelData, round_seed: int, catalog: RuleCatalog) -> void
+func _init(level: LevelData, round_seed: int, catalog: GameCatalog) -> void
 func queue_command(cmd: SimCommand) -> void
 func step() -> Array[SimEvent]          # advances exactly one tick
 func get_tick() -> int

@@ -1,6 +1,6 @@
 # Wacky Towers — Architecture Overview
 
-> **Status**: Proposed (all nine ADRs are `Proposed`; only the user, or technical-director on the user's confirmation, may accept them)
+> **Status**: Accepted (2026-10-10, accepted by user; all nine ADRs Accepted)
 > **Date**: 2026-10-09 (updated 2026-10-10: mechanic atoms, control verb, tools scan)
 > **Engine**: Godot 4.7.2, Mobile renderer, Jolt physics, GDScript (C++ GDExtension later, only on profiler evidence)
 > **Owner**: godot-specialist (lead architect), with engine-programmer, godot-gdextension-specialist, network-programmer
@@ -83,6 +83,8 @@ Every number in these documents is a **tunable default** that lives in data, not
 
 Each recipe touches only the files listed. If a recipe ever needs a core edit, stop and raise an ADR change.
 
+> **Folder paths**: the buildable paths (`src/gameplay/slots/<slot>/`, `twists/`, `mechanics/`) are in `implementation-plan.md` §3 and win over the shorter paths below.
+
 | To add… | Do this | Files |
 |---|---|---|
 | **Twist that changes only numbers or forbids actions** | Write a rule JSON with `layer`, `icon`, `params`, `modifiers`, `vetoes`, and add an icon | `assets/data/rules/<id>.json`, icon |
@@ -123,22 +125,23 @@ Discovery: a plugin is any `class_name` script whose base chain reaches a plugin
 ```
 src/
   core/
-    sim/        board_sim.gd, board_controller.gd, sim_command.gd, sim_event.gd, replay.gd
-    board/      board_state.gd, board_spec.gd, board_limits.gd, content_types.gd   (ADR-0002)
+    sim/        board_sim.gd, sim_command.gd, sim_event.gd, replay.gd
+    board/      board_state.gd, board_spec.gd, board_limits.gd, content_types.gd, ascii_grid.gd   (ADR-0002)
     shapes/     shape_def.gd, shape_bank.gd, orientations.gd                     (ADR-0003)
     rules/      rule_runtime.gd, knob_registry.gd, rule_api.gd, rule_instance.gd,
                 plugin_registry.gd, bases/ (rule_behaviour, clear_detector, collapse_policy,
                 arrival_style, goal_evaluator, top_out_policy, piece_router, board_kind,
                 layout_kind, standing_fn, control_verb)                         (ADR-0004)
     rng/        seeds.gd                                                         (ADR-0006)
-  data/         data_loader.gd, level_data.gd, level_validator.gd, level_migrations.gd (ADR-0005)
-  gameplay/     rules/ clear/ arrival/ verbs/ goals/ layout/ board_kinds/ standing/ daily/  ← plugins only
-  view/         board_view.gd, piece_view.gd, preview_baker.gd, shaders/       (ADR-0007)
-  input/        touch_controls.gd, camera_rig.gd
+    model/      level_data.gd, game_catalog.gd   (plain containers; lets core take a LevelData without importing data/)
+  data/         json_reader.gd, level_loader.gd, catalog_loader.gd, level_validator.gd, level_migrations.gd (ADR-0005)
+  gameplay/     slots/<slot>/ verbs/ twists/ mechanics/ daily/  ← plugins only (board_kinds/ standing/ when first needed)
+  view/         board_view.gd, piece_view.gd, camera_rig.gd, camera_math.gd, preview_baker.gd, shaders/       (ADR-0007)
+  input/        touch_input.gd (Scheme A), gesture_input.gd (Scheme B, later)
   ui/           hud/, menus/
   net/          net_session.gd (autoload), tournament_host.gd, match_client.gd, codec.gd (ADR-0009)
   minigames/    <id>/ (scene + scripts)
-  app/          main.tscn, scene flow, save/profile
+  app/          main.tscn, app_flow.gd, level_scene.gd, board_controller.gd (node bridge), profile_store.gd
   native/       (empty until ADR-0008 triggers)
   dev/          block_set_preview (existing dev tool)
 assets/data/    levels/ rules/ knobs/ content/ biomes/ minigames/ shapes/ palette.json atom_tags.json credits.json

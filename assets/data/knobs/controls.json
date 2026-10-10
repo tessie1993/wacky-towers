@@ -1,0 +1,222 @@
+{
+  "knobs": [
+    {
+      "id": "control.dead_zone_px",
+      "type": "scalar",
+      "default": 12.0,
+      "min": 8.0,
+      "max": 16.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/touch-controls.md#formulas",
+      "note": ""
+    },
+    {
+      "id": "control.drag_px_per_cell",
+      "type": "scalar",
+      "default": 44.0,
+      "min": 36.0,
+      "max": 56.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/touch-controls.md#formulas",
+      "note": ""
+    },
+    {
+      "id": "control.flick_cone_deg",
+      "type": "scalar",
+      "default": 30.0,
+      "min": 25.0,
+      "max": 35.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/touch-controls.md#formulas",
+      "note": ""
+    },
+    {
+      "id": "control.flick_min_px",
+      "type": "scalar",
+      "default": 70.0,
+      "min": 60.0,
+      "max": 90.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/touch-controls.md#formulas",
+      "note": ""
+    },
+    {
+      "id": "control.flick_ms",
+      "type": "count",
+      "default": 200,
+      "min": 150,
+      "max": 250,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/touch-controls.md#formulas",
+      "note": ""
+    },
+    {
+      "id": "control.hold_ms",
+      "type": "count",
+      "default": 200,
+      "min": 150,
+      "max": 250,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/touch-controls.md#formulas",
+      "note": ""
+    },
+    {
+      "id": "control.input_buffer_ms",
+      "type": "count",
+      "default": 100,
+      "min": 0,
+      "max": 150,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/touch-controls.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "control.kick_enabled",
+      "type": "flag",
+      "default": true,
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "choices": [],
+      "source": "design/gdd/movement-rotation.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "control.kick_order",
+      "type": "choice",
+      "default": "centre",
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [
+        "centre",
+        "fixed"
+      ],
+      "source": "design/gdd/movement-rotation.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "control.kick_wide_min_extent",
+      "type": "count",
+      "default": 4,
+      "min": 2,
+      "max": 8,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/movement-rotation.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "control.landed_move_rule",
+      "type": "choice",
+      "default": "free",
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "choices": [
+        "free",
+        "supported"
+      ],
+      "source": "design/gdd/movement-rotation.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "control.max_up_kicks_per_piece",
+      "type": "count",
+      "default": 2,
+      "min": 0,
+      "max": 4,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/movement-rotation.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "control.repeat_delay_ms",
+      "type": "count",
+      "default": 240,
+      "min": 180,
+      "max": 300,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/touch-controls.md#formulas",
+      "note": ""
+    },
+    {
+      "id": "control.repeat_interval_ms",
+      "type": "count",
+      "default": 90,
+      "min": 60,
+      "max": 120,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/touch-controls.md#formulas",
+      "note": ""
+    },
+    {
+      "id": "control.rotate_anim_ms",
+      "type": "count",
+      "default": 120,
+      "min": 80,
+      "max": 160,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/touch-controls.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "control.rotation_axes_enabled",
+      "type": "structure",
+      "default": [
+        "spin",
+        "tilt",
+        "roll"
+      ],
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "choices": [],
+      "source": "design/gdd/movement-rotation.md#tuning-knobs",
+      "note": ""
+    },
+    {
+      "id": "control.tap_ms",
+      "type": "count",
+      "default": 200,
+      "min": 180,
+      "max": 250,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [],
+      "source": "design/gdd/touch-controls.md#formulas",
+      "note": ""
+    },
+    {
+      "id": "control.verb",
+      "type": "slot",
+      "default": "piece",
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "choices": [
+        "piece"
+      ],
+      "source": "design/gdd/movement-rotation.md#tuning-knobs",
+      "note": ""
+    }
+  ]
+}
