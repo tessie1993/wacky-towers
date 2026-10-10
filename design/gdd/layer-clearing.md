@@ -21,20 +21,21 @@ The Board reports which layers are full; it never removes anything. Layer Cleari
 ### Core Rules
 
 **When it runs**
-1. A clear check runs when a piece has been written to the board (Fall, Drop & Lock lock event) and whenever a rule outside the player's control changes the board's contents (a twist spawns blocks, an item places cubes). The board is in **Resolving** for the whole routine and returns to Live when it ends.
-2. If `clear_enabled` is off (a level, twist or mechanic switched it off), the check does nothing: full layers simply stay on the board. They are still reported by the board for goals that count them. Rescue wipes requested by Level Goals carry a `rescue` flag and run regardless.
-3. Only layers perpendicular to the board's current **down axis** are checked ("layer" and "full" are defined by Board / Grid).
+1. A clear check runs at step 3 of the **per-lock sequence** owned by Fall, Drop & Lock (rule 15: after `on_lock`, before `on_resolve_end`, the goal check and the top-out check), and whenever a rule outside the player's control changes the board's contents (a twist spawns blocks, an item places cubes). The board is in **Resolving** for the whole routine. This GDD does not define what happens after the routine; the per-lock sequence does.
+2. If `clear_enabled` is off (a level, twist or mechanic switched it off), the check does nothing: full layers simply stay on the board. They are still reported by the board for goals that count them.
+2a. **Rescue entry point: `wipe_bottom(k)`.** Level Goals calls this for a `rescue` top-out (Level Goals rule 8). It removes the bottom `k` layers (along the down axis) and settles the stack with a **slice shift** (F1), whatever the level's `collapse` and `clear_enabled`. It is a **silent wipe**: no `on_clear` hooks, no status or bomb effects, no chain rounds, and it does **not** add to `layers_cleared` (or any clear count), the gravity ramp, the score or the goal. It emits only `rescue_wiped(k, n_cubes)` for presentation. It is not called by anything else.
+3. Only layers perpendicular to the board's current **down axis** are checked ("layer" and "full" are defined by Board / Grid), for any of the 6 down directions.
 
 **The routine**
-4. **Find.** Ask the board for `full_layers()`; sort them from the bottom up (along the down axis). A layer with no active cells is never full. If there are none, the routine ends with `t_resolve = 0`.
+4. **Find.** The level's **`clear_detector`** decides what is cleared. Default `layer`: ask the board for `full_layers()` and sort them from the bottom up (along the down axis); a layer with no active cells is never full. Other detectors are per-level options defined in Level-Specific Mechanics (`row` M8, `colour_connect` M5, `colour_bridge` M6, mono layer M7, and later catalogue entries); each returns a set of cells to clear, and rules 5–12 apply to those cells the same way. If nothing is found, the routine ends with `t_resolve = 0`.
 5. **Notify.** For each cell in a full layer, fire the `on_clear(cell, content)` hook before removal, so status effects (burning, honey, bomb tags and the like) and objects can react. Hooks run in layer order, bottom to top, in cell order.
-6. **Remove.** All contents in every full layer are removed as one logical step (blocks, obstacles and objects alike), with the exceptions Obstacle Clearing defines: a layer held by a breakable obstacle with hit points left is deferred, and stone pillar cells stay in place. The cleared cubes' piece ids, owners, hues and status are recorded for the events below.
-7. **Settle.** The stack above is settled by the level's `collapse_mode` (rules 8–10).
+6. **Remove.** All contents in every full layer are removed as one logical step (blocks, obstacles and objects alike), with the exceptions Obstacle Clearing defines: a layer held by a breakable obstacle with hit points left is deferred, and stone pillar cells stay in place. The cleared Blocks' records (`{shape_id, piece_instance_id, owner, tags, status}`, Board / Grid rule 6) are kept for the events below; hue is derived from `shape_id` and the art set when the effect is drawn.
+7. **Settle.** The stack above is settled by the level's **`collapse`** mode (`collapse_mode` in level data; rules 8–10). **Slice is the default**; cascade (and chunks) are set per level or by a level mechanic.
 8. **Slice shift (default).** Each remaining layer moves down by the number of cleared layers below it (Formulas F1), all contents together with their flags and status. The order of layers is preserved. Slice shift never creates a new full layer, so it never chains.
 9. **Cascade (level option).** After removal, every cube that is not supported falls one layer at a time, all unsupported cubes together, one layer per `cascade_step_ms`, until nothing can fall. A cube is *supported* if the cell below it is the floor or holds solid content. Then the board is checked again: if layers are now full, they clear (the next *round*, chain index +1) and the settle repeats. Rounds stop at `chain_max`; any layers still full are handled by the next clear check.
 10. **Chunks (level option).** After removal, Blocks are grouped into face-connected **chunks**; a chunk is supported if any of its cubes rests on the floor or on a supported chunk. Unsupported chunks fall together one layer per `cascade_step_ms` until all are supported; chain rounds work as in rule 9.
-11. **Events.** For each cleared layer the routine emits `layer_cleared(layer, cubes[], owners[], round)`; at the end it emits `clear_resolved(n_layers, n_cubes, rounds)`. It also adds `n_layers` to the level's `layers_cleared` count (which feeds the gravity ramp in Fall, Drop & Lock and goals).
-12. **Return.** The board goes back to Live. Fall, Drop & Lock then waits its entry delay and spawns the next piece. `over_limit()` is checked **after** the routine ends, so a clear can bring a too-high stack back under the limit (Open Questions).
+11. **Events.** For each cleared layer the routine emits `layer_cleared(layer, cubes[], owners[], round)`; at the end it emits `clear_resolved(n_layers, n_cubes, rounds)`. It also adds `n_layers` to the level's `layers_cleared` count (which feeds the gravity ramp in Fall, Drop & Lock and goals). With a non-layer `clear_detector`, the mechanic defines what one clear counts as (a row, a pop, a bridge) and that count is used instead. There is no fixed number of clears per level: how many clears happen is up to the player.
+12. **Return.** The routine ends and control returns to the per-lock sequence (`on_resolve_end`, goal check, then the top-out check). `over_limit()` is therefore read **after** the routine, so a clear can bring a too-high stack back under the limit.
 
 **Pacing and presentation (logic is instant, visuals are staggered)**
 13. The logical result of rules 4–8 happens in one step at the start of Resolving. The visuals then play over `t_resolve` (Formulas F2): the cleared layers dissolve one after another from the bottom up, `clear_stagger_ms` apart, each taking `clear_anim_ms`; then the layers above drop together over `clear_settle_ms`. The player cannot act on the board during Resolving (the next piece has not spawned), so the visuals never block control.
@@ -63,7 +64,7 @@ The Board is Resolving from Checking until Idle.
 |---|---|---|
 | Board / Grid | ↔ | Reads `full_layers()`, `active_cells_in_layer`, down axis; removes and moves contents (`clear`, `set`) during Resolving |
 | Fall, Drop & Lock | FDL → | Lock event starts the check; Layer Clearing's end returns the board to Live; `t_resolve` feeds the piece cycle time |
-| Level Goals & Fail States | LC → | `layer_cleared`, `clear_resolved`, `layers_cleared`; `over_limit()` evaluated after the routine |
+| Level Goals & Fail States | ↔ | `layer_cleared`, `clear_resolved`, `layers_cleared`; Goals calls `wipe_bottom(k)` for a rescue; `over_limit()` evaluated after the routine (per-lock sequence) |
 | Rule-Twist Framework, Twist Library | ↔ | `clear_enabled`, `collapse_mode`, `on_clear` hooks, vetoes |
 | Level-Specific Mechanics | ↔ | May contradict this system ("full layers do not clear here"); the framework's priority order decides |
 | Obstacles, Obstacle Clearing | ↔ | Contents with their own clear behaviour (provisional) |
@@ -119,7 +120,7 @@ The cubes_cleared formula is defined as:
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
-| active_cells_in_layer(y) | int | 4–64 (default 64) | calculated (Board) | Cells needed to fill layer y |
+| active_cells_in_layer(y) | int | Board F1 range (default 64) | calculated (Board) | Cells needed to fill layer y |
 | n_cubes | int | 0 to `board_capacity` | calculated | Cubes removed in the round |
 
 **Output Range:** 0 to the board's capacity. **Example:** default 8 × 8 board, 2 layers cleared → 128 cubes (about 32 average-size pieces' worth; the Board's F2 expects about 21 pieces per layer on average, since layers are built over time).
@@ -189,6 +190,7 @@ Board / Grid and Fall, Drop & Lock already name Layer Clearing; the remaining do
 | Knob | Range | Default | Source | Affects |
 |---|---|---|---|---|
 | clear_enabled | true / false | true | data file (level, twist) | Whether full layers clear; false makes every other knob inert |
+| clear_detector | layer / row / colour_connect / colour_bridge / mono / … | layer | data file (level, mechanic) | What counts as a clear (rule 4; options in Level-Specific Mechanics) |
 | collapse_mode | slice / cascade / chunks | slice | data file (level) | How the stack settles; cascade and chunks add chains and ignore F1 |
 | clear_anim_ms | 100–600 | 250 | data file | Length of one layer's dissolve (F2) |
 | clear_stagger_ms | 0–200 | 100 | data file | Ripple speed between layers (F2) |
@@ -255,6 +257,8 @@ None directly. The HUD shows the layers-cleared count and goals (Level Goals & F
 15. [U] **GIVEN** a hook vetoes layer 5 of {2, 5}, **THEN** layer 2 clears, layer 5 stays full, and F1 uses C = {2}.
 16. [U] **GIVEN** a clear, **THEN** `layer_cleared` is emitted once per layer with its cubes and owners, `clear_resolved` once, and `layers_cleared` rises by n.
 17. [U] F3: two cleared 8 × 8 layers → `n_cubes = 128`.
+17a. [U] **GIVEN** `wipe_bottom(3)` on a stack with a bomb-tagged Block in layer 1 and `collapse_mode = cascade`, **THEN** layers 0–2 are removed, the rest slice-shift down 3, no `on_clear` hook fires, no chain round runs, and `layers_cleared` is unchanged.
+17b. [U] **GIVEN** `clear_detector = row`, **WHEN** a lock completes one row, **THEN** only that row's cells are removed and the clear count rises by 1 (the mechanic's unit).
 18. [I] **GIVEN** the lock completes a layer above the height limit, **WHEN** the clear brings the stack below it, **THEN** `over_limit()` evaluated afterwards is false.
 
 **Optional modes**
@@ -271,7 +275,8 @@ None directly. The HUD shows the layers-cleared count and goals (Level Goals & F
 ## Open Questions
 
 - **Obstacles and survivors**: answered in Obstacle Clearing (layers with surviving rocks are deferred; pillars stay).
-- **Over-limit timing**: this GDD evaluates `over_limit()` after the clear. Board / Grid and Fall, Drop & Lock say "after a lock" — confirm they mean after the resolve; no number changes.
+- ~~**Over-limit timing**~~: resolved — after the clear, in the per-lock sequence (Fall, Drop & Lock rule 15).
+- **Silent rescue wipe (rule 2a), open to playtest**: designer default 2026-10-09 is that a rescue wipe fires no effects or chains, so it reads as a calm second chance. If it feels flat, the wacky moment can come from presentation (the biome mascot hauling the bottom away) rather than from rule effects.
 - **Cascade and chunk balance**: both modes are provisional until a level wants them; chain rules, scoring and support rules need a prototype pass.
 - **Versus attacks**: do multi-layer clears send junk or trigger comeback items, and by how much? Items and Tournament Flow to decide; this system only reports owners and counts.
 - **Ripple direction with a flipped down axis**: bottom-to-top follows the current down axis; confirm it reads well when the view is upside down.

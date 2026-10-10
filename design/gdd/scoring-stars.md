@@ -26,6 +26,7 @@ Scoring & Stars has two outputs. **Stars** are the campaign's mastery measure (c
    - ★★ if the level clock is ≤ `t2` (Formulas F1);
    - ★★★ if the level clock is ≤ `t3` **and** no warning was used.
    A won level that misses `t3` but used no warning still gets only the stars its time earns.
+   Under `topout_rule = trim` (build races, shape levels; Level Goals rule 10b) there are no warnings, so "no warning used" reads as **"no cube trimmed"**.
 2. **Survive** goals (fixed time) use layers cleared instead of time: ★★ if `layers_cleared ≥ s2`, ★★★ if `layers_cleared ≥ s3` and no warning was used (F4).
 3. Star times come from Level Data's `stars` section; if absent they use F1 (or F4 for Survive). Times are rounded to 5 s for display.
 4. Only the **best** result per level is saved (more stars, then faster time). Stars are never lost on a replay.
@@ -74,7 +75,7 @@ The star_times formula is defined as:
 | star2_share | float | 0.6–1.0 | data file | Default 0.85 |
 | star3_share | float | 0.4–0.9 | data file | Default 0.6 |
 
-**Output Range:** `t3 < t2`. **Example:** meadow_03, `t_est ≈ 512 s` → `t2 = 435 s` (7:15), `t3 = 305 s` (5:05). meadow_01, 480 s → 410 s and 290 s.
+**Output Range:** `t3 < t2`. **Example:** `t_est = 512 s` → `t2 = 435 s` (7:15), `t3 = 305 s` (5:05). Short tutorial meadow_01 (`T_level` 180, `t_est ≈ 171 s`) → 145 s and 105 s. Levels with `starting_contents` hand-set their times (`design/levels/meadow.md`).
 
 ### F2. Clear score
 
@@ -114,16 +115,16 @@ The combo_score formula is defined as:
 
 The survive_stars formula is defined as:
 
-`expected = T / (P_eff × t_piece)`; `s2 = max(1, round(survive2_share × expected))`, `s3 = max(s2 + 1, round(survive3_share × expected))`
+`expected = T / t_beat`; `s2 = max(1, round(survive2_share × expected))`, `s3 = max(s2 + 1, round(survive3_share × expected))`
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
 | T | float | > 0 s | data file (goal) | Survive time |
-| P_eff, t_piece | float | — | Board F2 / Level Goals | Pieces per clear, seconds per piece |
+| t_beat | float | 5–340 s | calculated (Board F6) | Seconds between clears for this board, clear rule and piece set |
 | survive2_share, survive3_share | float | 0.3–1.5 | data file | Defaults 0.6 and 1.0 |
 
-**Output Range:** `s3 > s2 ≥ 1`. **Example:** T = 180 s on 8 × 8: expected = 180 / 170 ≈ 1.06 → s2 = 1, s3 = 2.
+**Output Range:** `s3 > s2 ≥ 1`. **Example:** meadow_08 on 5 × 5 (`t_beat ≈ 66.7 s`), T = 150 s: expected ≈ 2.25 → s2 = 1, s3 = 2. Default 6 × 6 (`t_beat = 96 s`), T = 180 s: expected ≈ 1.9 → s2 = 1, s3 = 2. 8 × 8 with row clears (`t_beat = 20 s`), T = 180 s: expected = 9 → s2 = 5, s3 = 9.
 
 ## Edge Cases
 
@@ -186,12 +187,13 @@ Result screen with stars and conditions, best time and score; level select shows
 
 1. [U] F1: `t_est = 512` → t2 = 435, t3 = 305.
 2. [U] **GIVEN** a win at 300 s with no warning, **THEN** ★★★; at 300 s with a warning → ★★; at 420 s → ★★; at 500 s → ★; a loss → 0.
-3. [U] F4: Survive 180 s on 8 × 8 → s2 = 1, s3 = 2; 2 layers cleared and no warning → ★★★.
+3. [U] F4: Survive 180 s with `t_beat = 96` (6 × 6) → s2 = 1, s3 = 2; with `t_beat = 20` → s2 = 5, s3 = 9; 2 layers cleared and no warning → ★★★.
 4. [U] **GIVEN** a replay with fewer stars, **THEN** the saved best is unchanged.
 5. [U] F2: 8 × 8, n = 1 / 2 / 4 → 100 / 300 / 1 000; 6 × 6, n = 2 → 169; cascade round 2 → × 1.5.
 6. [U] F3: the worked example scores 222.
 7. [U] **GIVEN** a non-clearing lock or a warning, **THEN** the combo resets.
 8. [U] **GIVEN** a rescue wipe, **THEN** no score and no layers counted.
+8a. [U] **GIVEN** a trim level won under `t3`, **THEN** ★★★ if no cube was trimmed, ★★ if any was.
 9. [U] **GIVEN** a level with `t3 ≥ t2`, **THEN** validation fails.
 10. [M] **GIVEN** a playtest of the 10 meadow levels, **THEN** first-attempt median stars are ★★ on 1–5 and ★–★★ on 6–10, and testers can say why they got each star.
 

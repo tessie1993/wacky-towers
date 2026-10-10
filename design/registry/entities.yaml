@@ -170,17 +170,19 @@ formulas:
     source: design/gdd/board-grid.md
     referenced_by:
       - design/gdd/board-grid.md
+      - design/gdd/camera-rotate-view.md
     variables:
-      - S_h
-      - S_w
-      - f
-      - g
+      - Sa_w
+      - Sa_h
+      - elev
+      - margin
       - W
       - D
       - board_height
-    output_range: [24, 45]
+    output_range: [25, 75]
+    notes: "Rewritten 2026-10-09 (was S_h, S_w, f, g; fixed landscape). Now both orientation profiles over 12 yaws; landscape binds."
     added: 2026-10-09
-    revised: ""
+    revised: "2026-10-09"
 
 # Example:
 #
@@ -548,11 +550,11 @@ formulas:
       - design/gdd/level-goals-fail-states.md
     variables:
       - T_level
-      - P_eff
-      - t_piece
+      - t_beat
     output_range: [1, unbounded]
+    notes: "2026-10-09: N = round(T_level / t_beat), a suggestion only; N authored per level (was T_level / (P_eff * t_piece), fixed N = 3 default)."
     added: 2026-10-09
-    revised: ""
+    revised: "2026-10-09"
   - name: tower_height
     status: active
     source: design/gdd/level-goals-fail-states.md
@@ -755,12 +757,11 @@ formulas:
       - design/gdd/level-data-definition.md
     variables:
       - N
-      - P_eff
-      - t_piece
+      - t_beat
       - T
     output_range: [warn outside 5-15 min]
     added: 2026-10-09
-    revised: ""
+    revised: "2026-10-09"
   - name: top_band_height
     status: active
     source: design/gdd/hud.md
@@ -890,13 +891,12 @@ formulas:
       - design/gdd/scoring-stars.md
     variables:
       - T
-      - P_eff
-      - t_piece
+      - t_beat
       - survive2_share
       - survive3_share
     output_range: [s3 > s2 >= 1]
     added: 2026-10-09
-    revised: ""
+    revised: "2026-10-09"
   - name: expected_items
     status: active
     source: design/gdd/items.md
@@ -1100,13 +1100,90 @@ formulas:
     output_range: [0, 40]
     added: 2026-10-09
     revised: ""
+  - name: heartbeat
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+      - design/gdd/level-goals-fail-states.md
+      - design/gdd/level-data-definition.md
+      - design/gdd/scoring-stars.md
+      - design/gdd/piece-set.md
+    variables:
+      - U
+      - t_piece
+      - c
+      - eta_r
+    output_range: [5, 340]
+    expression: "t_beat = U * t_piece / (c * eta_r)"
+    notes: "Seconds between clears (Board F6). U = A (layer), mean side (row), k_min (colour-connect). Replaces fixed N = 3 pacing; per-level-type bands in board-grid.md."
+    added: 2026-10-09
+    revised: ""
+  - name: hidden_share
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    variables:
+      - n_v
+      - p
+      - delta
+      - elev
+    output_range: [0, 0.58]
+    notes: "Board F7; placeholder model, replace by 12-yaw ray-cast measurement."
+    added: 2026-10-09
+    revised: ""
+  - name: footprint_side
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+      - design/gdd/piece-set.md
+    variables:
+      - c
+      - P_band
+      - L_max
+    output_range: [4, 8]
+    expression: "n = ceil(sqrt(c * P_band)), n >= L_max"
+    added: 2026-10-09
+    revised: ""
+  - name: survive_pressure
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    variables:
+      - T
+      - c
+      - t_piece_s
+      - eta
+      - A
+      - H_play
+    output_range: [0, unbounded]
+    expression: "rho = (T * c / t_piece_s) / (eta * A * H_play)"
+    notes: "Board F9; target 0.8-1.2."
+    added: 2026-10-09
+    revised: ""
+  - name: playable_height_any_axis
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    variables:
+      - E_down
+      - C
+    output_range: [6, 12]
+    expression: "H_play_axis = E_down - C; valid only if E_down >= C + 6"
+    added: 2026-10-09
+    revised: ""
 constants:
+  # 2026-10-09: default board 8 x 8 x 12 (16 drawn) -> 6 x 6 x 10 (14 drawn), board-size math (board-grid.md F6)
   - name: default_board_width
     status: active
     source: design/gdd/board-grid.md
     referenced_by:
       - design/gdd/board-grid.md
-    value: 8
+    value: 6
     unit: cells
     added: 2026-10-09
     revised: "2026-10-09"
@@ -1115,7 +1192,7 @@ constants:
     source: design/gdd/board-grid.md
     referenced_by:
       - design/gdd/board-grid.md
-    value: 8
+    value: 6
     unit: cells
     added: 2026-10-09
     revised: "2026-10-09"
@@ -1124,10 +1201,66 @@ constants:
     source: design/gdd/board-grid.md
     referenced_by:
       - design/gdd/board-grid.md
-    value: 12
+    value: 10
     unit: layers
     added: 2026-10-09
     revised: "2026-10-09"
+  - name: eta_layer
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    value: 0.75
+    unit: fraction (placeholder)
+    added: 2026-10-09
+    revised: ""
+  - name: eta_row
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    value: 0.8
+    unit: fraction (placeholder)
+    added: 2026-10-09
+    revised: ""
+  - name: eta_colour
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    value: 0.5
+    unit: fraction (placeholder)
+    added: 2026-10-09
+    revised: ""
+  - name: eta_mono
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+    value: 0.3
+    unit: fraction (placeholder)
+    added: 2026-10-09
+    revised: ""
+  - name: board_area_landscape_px
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+      - design/gdd/camera-rotate-view.md
+    value: [1139, 673]
+    unit: px (w, h; 45% x 57.5% of 2532 x 1170, placeholder)
+    added: 2026-10-09
+    revised: ""
+  - name: board_area_portrait_px
+    status: active
+    source: design/gdd/board-grid.md
+    referenced_by:
+      - design/gdd/board-grid.md
+      - design/gdd/camera-rotate-view.md
+    value: [1076, 1139]
+    unit: px (w, h; 92% x 45% of 1170 x 2532, placeholder)
+    added: 2026-10-09
+    revised: ""
   - name: spawn_clearance
     status: active
     source: design/gdd/board-grid.md
@@ -1143,7 +1276,7 @@ constants:
     source: design/gdd/board-grid.md
     referenced_by:
       - design/gdd/board-grid.md
-    value: 16
+    value: 14
     unit: layers
     added: 2026-10-09
     revised: "2026-10-09"

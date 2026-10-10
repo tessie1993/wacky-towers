@@ -56,10 +56,11 @@ Wacky Towers is a 3D falling-block puzzle party game for mobile: rotate pieces o
 | 31 | Characters & Perks | Progression | Alpha | Not Started | — | Skills, Buffs & Debuffs |
 | 32 | Points System | Economy | Alpha | Not Started | — | Scoring & Stars, Tournament Flow |
 | 33 | Shop | Economy | Alpha | Not Started | — | Points System, Characters & Perks, Buffs & Debuffs |
-| 34 | Tournament Minigames | Gameplay | Alpha | Not Started | — | Board / Grid, Piece Set, Level Goals & Fail States, Mode / Minigame Randomizer |
+| 34 | Tournament Minigames | Gameplay | Alpha | Designed | design/gdd/tournament-minigames.md (ideas: design/gdd/mechanics-catalog.md) | Board / Grid, Piece Set, Level Goals & Fail States, Mode / Minigame Randomizer |
 | 35 | Mascot Reactions (inferred) | UI | Alpha | Not Started | — | Characters & Perks, Level Goals & Fail States |
 | 36 | Audio (inferred) | Audio | Alpha | Not Started | — | Layer Clearing, Items, Campaign Structure |
 | 37 | Onboarding & Accessibility (inferred) | Meta | Alpha | Not Started | — | Touch Controls, HUD, Campaign Structure |
+| 38 | Mechanics Module (box of tricks: atoms, recipes, daily generator) | Gameplay | Vertical Slice | Designed | design/gdd/mechanics-module.md (folder: design/mechanics/README.md) | Rule-Twist Framework, Level Data & Definition, Level-Specific Mechanics, Twist Library, Tournament Minigames |
 
 ---
 
@@ -220,12 +221,12 @@ None found, after three relationships were directed one way:
 
 | Metric | Count |
 |--------|-------|
-| Total systems identified | 37 |
-| Design docs started | 29 |
+| Total systems identified | 38 |
+| Design docs started | 30 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
 | MVP systems designed | 14/14 |
-| Vertical Slice systems designed | 13/13 |
+| Vertical Slice systems designed | 14/14 |
 
 > Gates: TD-SYSTEM-BOUNDARY, PR-SCOPE and CD-SYSTEMS skipped — lean review mode.
 

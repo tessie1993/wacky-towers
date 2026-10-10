@@ -8,31 +8,39 @@
 
 ## Summary
 
-This system decides when a level is won or lost. Every level has one goal — clear N layers, build to a height, survive for a time, or fill a target shape — and the same fail rule: if the stack goes over the limit or a piece can't spawn, the player gets one warning (the bottom of the tower is wiped to give them room) and the next top-out loses. There is no time limit by default; the clock only feeds the star times.
+This system decides when a level is won or lost. Every level has one goal — clear N layers, build to a height, survive for a time, or fill a target shape — and a **top-out rule** set per level or mode (`topout_rule`): `rescue` (the bottom of the tower is wiped and a warning is used; the default, with 1 warning), `trim` (cubes over the limit pop off and the level never fails), or `lose` (the first top-out loses). There is no time limit by default; the clock only feeds the star times.
 
 > **Quick reference** — Layer: `Core` · Priority: `MVP` · Key deps: `Board / Grid, Layer Clearing, Fall, Drop & Lock`
 
 ## Overview
 
-Level Goals & Fail States turns the board's reports into a result. It reads the layers-cleared count and clear events (Layer Clearing), the stack height and over-limit report (Board / Grid), spawn-blocked reports (Spawner) and the level clock, and checks them against the level's **goal** after every resolve. Four goal types are in the MVP: **Clear** (clear N layers; the default, with N set by a formula so a level takes about 8 minutes on its board), **Height** (build the tower to a target height, usually with clearing off), **Survive** (don't top out until the timer ends), and **Shape** (fill a marked set of cells). Losing is the same everywhere by default: topping out (over the limit or spawn blocked) first gives a **warning** — a visible rescue wipe of the bottom layers — and the second top-out loses; a level, perk or item can change the number of warnings. Levels have no time limit unless the goal is Survive or the level asks for one; the level clock feeds the 3-star times (Scoring & Stars). In versus play each board has its own goal and fail state, and the mode decides how a round ends (default: first to the goal wins; a player who tops out with no warnings left is out). This serves *The Block Is the Constant* (every goal is built from the same blocks), *Readable Chaos* (one goal at a time, always shown), and *Comeback Energy* (the warning gives a second chance). All values are starting defaults.
+Level Goals & Fail States turns the board's reports into a result. It reads the layers-cleared count and clear events (Layer Clearing), the stack height and over-limit report (Board / Grid), spawn-blocked reports (Spawner) and the level clock, and checks them against the level's **goal** at its step of the per-lock sequence (Fall, Drop & Lock rule 15). Four goal types are in the MVP: **Clear** (clear N layers; the default goal, with N set per level — there is no fixed clears-per-level pacing, and Formulas F1 only suggests a starting N when a level gives none), **Height** (build the tower to a target height, usually with clearing off), **Survive** (don't top out until the timer ends), and **Shape** (fill a marked set of cells). What a top-out (over the limit after clears, or spawn blocked) does is the level's or mode's `topout_rule`: **rescue** (default: a **warning** — a visible wipe of the bottom layers — and the top-out after the last warning loses; a level, perk or item can change the number of warnings), **trim** (build races and shape levels) or **lose**. Failures should be funny, never harsh: the biome's mascot reacts and the tower's fate is played for slapstick. Levels have no time limit unless the goal is Survive or the level asks for one; the level clock feeds the 3-star times (Scoring & Stars). In versus play each board has its own goal and fail state, and the mode decides how a round ends (default: first to the goal wins; a player who tops out with no warnings left is out). This serves *The Block Is the Constant* (every goal is built from the same blocks), *Readable Chaos* (one goal at a time, always shown), and *Comeback Energy* (the warning gives a second chance). All values are starting defaults.
 
 ## Detailed Design
 
 ### Core Rules
 
 **Goals**
-1. Each level has exactly **one goal** from Level Data: `clear`, `height`, `survive` or `shape`, with its target. Arcade also uses `endless`: no win condition; the run ends on a loss (Arcade Mode). A level with no goal uses `clear` with the default N (Formulas F1).
+1. Each level has exactly **one goal** from Level Data: `clear`, `height`, `survive` or `shape`, with its target. Arcade also uses `endless`: no win condition; the run ends on a loss (Arcade Mode). A level with no goal uses `clear`, with N from Formulas F1 as a starting suggestion; levels normally set N by hand.
 2. **Clear N layers.** The goal is met when `layers_cleared ≥ N`. Only layers cleared by Layer Clearing count; rescue wipes do not.
 3. **Height H.** The tower's **height** is the number of layers from the floor up to the highest layer that is at least `height_coverage` full (default 50% of its active cells; Formulas F2). The goal is met when height ≥ `H_target`. `H_target` must be below the height limit (default `H_play − 2`). Height levels usually set `clear_enabled = false` (Layer Clearing).
 4. **Survive T.** The goal is met when the level clock reaches `T` without a loss. The level usually ramps gravity (Fall, Drop & Lock).
-5. **Shape.** The level marks a set of target cells `M`. The goal is met when every cell in `M` holds content with `fills_layer = true`. Blocks outside `M` are allowed. Shape levels usually set `clear_enabled = false`; if clearing is on, a cleared target cell becomes unfilled again.
-6. The goal is checked **after every resolve** (after Layer Clearing ends, or after a lock with no clear) and, for Survive, every frame.
+5. **Shape.** The level marks a set of target cells `M` (`goal.target_shape`, per-layer ASCII grids; Level Data rule 4a). The goal is met when every cell in `M` holds content with `fills_layer = true`. Blocks outside `M` are allowed. Shape levels usually set `clear_enabled = false`; if clearing is on, a cleared target cell becomes unfilled again.
+6. The goal is checked at **step 5 of the per-lock sequence** (Fall, Drop & Lock rule 15: after the clear routine and `on_resolve_end`, before the top-out check) and, for Survive, every frame. This GDD does not define its own order; it supplies steps 5–8.
 
 **Fail states**
-7. A **top-out** happens when, after a resolve, `over_limit()` is true, or when the Spawner reports spawn blocked.
-8. **Warnings.** Each level gives `warnings_max` warnings (default 1; level 0–3; perks and items may add). On a top-out with a warning left, a **rescue** runs: the bottom `k` layers (Formulas F3) are wiped through Layer Clearing's routine with a `rescue` flag (hooks and effects fire, slices shift down), the stack ends at least `rescue_margin` layers below the limit, and one warning is used. Rescue wipes do not count toward `layers_cleared` or the score. Then play continues with the next spawn.
+7. A **top-out** happens when `over_limit()` is true at step 6 of the per-lock sequence (after all clears), or when the Spawner reports spawn blocked. `on_top_out` hooks run, then the level's `topout_rule` (rule 10a) applies.
+8. **Warnings (`rescue`).** Each level gives `warnings_max` warnings (default 1; level 0–3; perks, items and difficulty may add). On a top-out with a warning left, a **rescue** runs: Layer Clearing's `wipe_bottom(k)` removes the bottom `k` layers (Formulas F3) as a **silent wipe** (no hooks, effects or chains; slices shift down), the stack ends at least `rescue_margin` layers below the limit, and one warning is used. Rescue wipes do not count toward `layers_cleared`, the ramp or the score. Then play continues with the next spawn.
 9. On a top-out with **no warning left**, the level is **lost**.
 10. If a goal is met and a top-out happens in the same resolve, the **win counts** (the goal is checked first).
+10a. **Top-out rule.** `topout_rule` (level or mode data, rule-adjustable) picks what a top-out does. This GDD owns the enum `rescue | trim | lose`:
+   - `rescue` (default, rules 8–9);
+   - `trim` (rule 10b);
+   - `lose` (rule 10c).
+   Other proposals (shake, bonk, hearts; Mechanics Catalog §6) are added here when a mode first needs them.
+10c. **Lose.** The first top-out loses the level (or puts the player **out** in versus). `warnings_max` and `rescue_margin` are inert. It behaves like `rescue` with `warnings_max = 0` and exists so modes can say so plainly.
+10b. **Trim** (default for No-Clear Build Race and Fill the Target Shape; user decision 2026-10-09: build races have no rescue wipe). After a resolve with `over_limit()` true, every content at or above `H_play` is removed with a visible pop-off-the-island effect. Trimmed cubes are not cleared: no `layers_cleared`, no score, no `on_clear`. No warning is used and the level is **never lost to a top-out**; the cost is time (and the ★★★ condition, Scoring & Stars). The goal is checked before the trim (rule 10), so a lock that reaches the target and pokes over the limit wins. Because the spawn zone is empty after a trim, spawn blocked can only come from content a trim cannot remove (see Edge Cases).
+10c. **Out of pieces** (puzzle levels with a `fixed_list`, Spawner rule 5b): if the last listed piece has resolved and the goal is not met, the level is lost. No warning is used; retry is free.
 11. A level may add **extra fail conditions** from Level Data (for example a time limit, or "an object reached the edge"). Each is checked after every resolve; time limits every frame. Extra fail conditions do not use warnings unless the level says so.
 
 **Level flow and clock**
@@ -83,17 +91,19 @@ All values are starting defaults to tune by prototype and simulation.
 
 The default_clear_target formula is defined as:
 
-`N = max(1, round( T_level / (P_eff × t_piece) ))`
+`N = max(1, round( T_level / t_beat ))`
+
+There is **no fixed clear count** for the game (user decision 2026-10-09). Pacing is set by the heartbeat `t_beat` (Board / Grid F6, time between clears), which must sit in the level type's band; N is **authored per level**, and this formula only suggests it (the editor shows the suggestion; a level with no goal uses it).
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
 | T_level | float | 120–900 s | data file | Target level length; default 480 s (8 min, within the concept's 5–15 min) |
-| P_eff | float | 3–40 | calculated (Board F2, `pieces_per_clear`) | Pieces needed per layer clear on this board and piece set |
-| t_piece | float | 4–12 s | data file | Average time per piece; default 8 s (between Touch Controls P1's 6 s flat and 10 s 3D) |
-| N | int | ≥ 1 | calculated | Layers to clear |
+| t_beat | float | 5–340 s | calculated (Board F6) | Expected seconds between clears for this board, clear rule, piece set and `t_piece` |
+| t_piece | float | 4–12 s | data file | Average time per piece, used inside t_beat; default 8 s (between Touch Controls P1's 6 s flat and 10 s 3D) |
+| N | int | ≥ 1 | data file (suggested here) | Clears to make |
 
-**Output Range:** 1 upward; a level may override N. **Example:** default 8 × 8 board, `P_eff ≈ 21.3` → `480 / (21.3 × 8) ≈ 2.8` → N = 3. A 4 × 4 tutorial board, `P_eff ≈ 5.3` → `480 / 42.7 ≈ 11.2` → N = 11.
+**Output Range:** 1 upward; the level's own N always wins. The validator **warns** if t_beat is outside the level type's band (Board / Grid "Recommended board per level type"), not if N differs from the suggestion. **Example:** default 6 × 6 board, `t_beat = 96 s` → `480 / 96 = 5` → N = 5. A 4 × 4 tutorial, `t_beat ≈ 42.7 s` → `480 / 42.7 ≈ 11.2` → N = 11 (a tutorial authors `T_level` 180 → N = 4). 8 × 8 with row clears, `t_beat = 20 s` → N = 24.
 
 ### F2. Tower height
 
@@ -151,6 +161,9 @@ The goal_progress formula is defined as:
 - **If the rescue cannot bring the stack under the limit** (k would wipe the whole stack and something still sits over the limit, e.g. an indestructible obstacle): the warning is still used and the level is lost.
 - **If spawn is blocked but the stack is under the limit** (a piece in the spawn zone, an object): treated as a top-out; the rescue wipes from the bottom as usual.
 - **If `warnings_max = 0`**: the first top-out loses (classic).
+- **If `topout_rule = trim` and a piece locks partly above the limit**: only its cubes at or above `H_play` pop off; the rest stay (pieces may be split).
+- **If `topout_rule = trim` and spawn is still blocked** (content a trim cannot remove, e.g. an indestructible obstacle): the level is lost; `warnings_max` and `rescue_margin` are inert under trim.
+- **If `topout_rule = trim` in a Survive level**: allowed, but the level can then only be won; validation warns.
 - **If a perk or item adds a warning during play**: it can be used immediately.
 - **If clearing is on in a Shape level and a target cell is cleared**: it counts as unfilled again; progress may go down.
 - **If a Height level has clearing on**: allowed; clears lower the tower and make the goal harder.
@@ -191,10 +204,11 @@ Board / Grid already lists this system; Layer Clearing and Fall, Drop & Lock nam
 | Knob | Range | Default | Source | Affects |
 |---|---|---|---|---|
 | goal | clear / height / survive / shape | clear | data file (level) | What wins |
-| T_level | 120–900 s | 480 | data file | Default N (F1) |
-| t_piece | 4–12 s | 8 | data file | Default N (F1); update from playtests |
+| T_level | 120–900 s | 480 | data file | Suggested N (F1) |
+| t_piece | 4–12 s | 8 | data file | Heartbeat t_beat (Board F6) and suggested N (F1); update from playtests |
 | N, H_target, T, M | per goal | F1 / `H_play − 2` / 180 s / level | data file (level) | Goal targets |
 | height_coverage | 0.25–1.0 | 0.5 | data file | How "real" a tower must be (F2) |
+| topout_rule | rescue / trim / lose | rescue (trim under M1, M2) | data file (level, mode, mechanic) | What a top-out does (rules 10a–10c) |
 | warnings_max | 0–3 | 1 | data file (level, perk, item) | Forgiveness |
 | rescue_margin | 0–4 | 2 | data file | Room after a rescue (F3) |
 | countdown_ms | 0–5 000 | 3 000 | data file | Start pacing |
@@ -208,7 +222,9 @@ Board / Grid already lists this system; Layer Clearing and Fall, Drop & Lock nam
 - **Height goals**: a target line around the board at `H_target`, distinct from the danger-red height limit; it glows when reached.
 - **Shape goals**: target cells drawn as soft marked outlines on the board (art bible: below the piece and ghost in the eye order), filling in as they are covered.
 - **Warning**: the board edge flashes danger red (art bible §4), the mascot reacts, and the bottom `k` layers wipe with a distinct "rescue" effect (not the clear confetti); a warning token on the HUD breaks.
-- **Win**: board-wide celebration in the biome's style; **Loss**: the tower topples gently (visual only), never a harsh failure screen.
+- **Win**: board-wide celebration in the biome's style — a big visual moment. **Loss**: a **funny failure**, never a harsh screen: the tower topples in a slapstick tumble (visual only), the biome's mascot reacts (wholesome, dry or cheeky, per the biome's humour), and the result card lands with a wink.
+- **Trim**: cubes over the limit pop off the island with a comic boing and tumble away; **Rescue**: the wipe is presented as a gag (for example the mascot hauling the bottom layers away), with the logic still a silent wipe.
+- The **biome mascot** reacts to warnings, trims, wins and losses (Mascot Reactions owns the animations).
 - Audio events (owned by Audio): `goal_shown`, `countdown_tick`, `go`, `warning`, `rescue_wipe`, `goal_met`, `level_lost`, `player_out` (versus).
 
 ## Game Feel
@@ -238,7 +254,7 @@ The player should always know what they're aiming for and how close they are, an
 **[U]** unit, **[I]** integration, **[M]** manual or device. Defaults: 8 × 8 × 16 board, `H_play = 12`, 1 warning, margin 2.
 
 **Goals**
-1. [U] F1: `P_eff = 21.3`, `t_piece = 8`, `T_level = 480` → N = 3; `P_eff = 5.3` → N = 11; a level override replaces N.
+1. [U] F1: `t_beat = 96`, `T_level = 480` → suggested N = 5; `t_beat = 42.7` → N = 11; `t_beat = 20` → N = 24; a level's own N replaces the suggestion, and only a t_beat outside the level type's band raises a validator warning.
 2. [U] **GIVEN** clear N = 3, **WHEN** the 3rd layer clears, **THEN** the level is won after that resolve; a rescue wipe does not raise `layers_cleared`.
 3. [U] F2: layer 9 with 33 of 64 filled and layer 10 with 20 → height 10; a single column of blocks to layer 11 with nothing else → height 0 (no layer at 50%).
 4. [U] **GIVEN** a Survive level with T = 180 s, **WHEN** the clock reaches 180 s with no loss, **THEN** won; pauses and countdown do not count.
@@ -247,12 +263,16 @@ The player should always know what they're aiming for and how close they are, an
 
 **Fail states**
 7. [U] F3: s = 13 → k = 4, top ends at 9; spawn blocked with s = 15 → k = 6.
-8. [I] **GIVEN** 1 warning, **WHEN** the stack goes over the limit, **THEN** the bottom k layers wipe through Layer Clearing with effects firing, the warning count becomes 0, and the next piece spawns.
+8. [I] **GIVEN** 1 warning, **WHEN** the stack goes over the limit, **THEN** the bottom k layers are removed by `wipe_bottom(k)` with no hooks or effects firing, `layers_cleared` is unchanged, the warning count becomes 0, and the next piece spawns.
+8a. [U] **GIVEN** `topout_rule = lose`, **WHEN** the stack is over the limit after the clears, **THEN** the level is lost on that lock, whatever `warnings_max` says.
+8b. [U] **GIVEN** a lock that goes over the limit and also clears a layer that brings the stack back under, **THEN** no top-out happens.
 9. [U] **GIVEN** no warnings left, **WHEN** a top-out happens, **THEN** the level is lost and no spawn follows.
 10. [U] **GIVEN** `warnings_max = 0`, **THEN** the first top-out loses.
 11. [U] **GIVEN** the goal is met and the stack is over the limit in the same resolve, **THEN** the level is won.
 12. [U] **GIVEN** a rescue that cannot clear the stack under the limit, **THEN** the warning is used and the level is lost.
 13. [U] **GIVEN** an extra time-limit fail of 120 s, **WHEN** the clock reaches 120 s, **THEN** lost (no warning used unless the level says so).
+13a. [U] **GIVEN** `topout_rule = trim`, `H_play = 12`, **WHEN** a piece locks with cubes at y = 11 and y = 12, **THEN** the y = 12 cube is removed, the y = 11 cube stays, `layers_cleared` and score are unchanged, no warning is used, and play continues.
+13b. [U] **GIVEN** trim and a Height goal met by the same lock that pokes over the limit, **THEN** the level is won.
 
 **Flow and clock**
 14. [I] **GIVEN** a level start, **THEN** Intro → 3 s Countdown → first spawn; the clock starts at the first spawn.
@@ -268,12 +288,15 @@ The player should always know what they're aiming for and how close they are, an
 20. [U] F4: N = 3, 2 cleared → 0.67; height 5 of 10 → 0.5.
 21. [I] **GIVEN** any resolve, **THEN** the HUD progress updates in the same frame.
 22. [M] **GIVEN** the reference phone, **THEN** the goal card is readable in under 2 s with no text beyond a number, and the warning sequence takes ≤ 1.5 s.
-23. [M] **GIVEN** a playtest of 5 default levels, **THEN** the median level length is 5–12 minutes (validates `t_piece` and N).
+23. [M] **GIVEN** a playtest of 5 default levels, **THEN** the median level length is 5–12 minutes and the median time between clears is inside each level type's t_beat band (validates `t_piece`, η and N).
 
 ## Open Questions
 
-- **Rescue style**: is a bottom wipe the right warning, or should it remove the top pieces instead, or only the layers over the limit? Prototype both.
-- **`t_piece` = 8 s**: replace with measured placement times from the Touch Controls prototype; N follows.
+- **Rescue style**: is a bottom wipe the right warning, or should it remove the top pieces instead, or only the layers over the limit? Prototype both. (Build races and shape levels use trim instead; rule 10b.)
+- **Trim feel**: does popping cubes off read as "too high" rather than a bug? Prototype with meadow_05.
+- **Silent rescue wipe (rule 8), open to playtest**: designer default 2026-10-09 (no effects or chains during a rescue). The fun comes from how it is shown, not from extra rules.
+- **Starting N (F1)**: there is no fixed clears-per-level pacing; F1 is only a fallback when a level gives no N. The systems-designer owns the pacing tables.
+- **`t_piece` = 8 s**: replace with measured placement times from the Touch Controls prototype; t_beat (Board F6) and the suggested N follow.
 - **Height coverage 50%**: is that the right line between a real tower and a spire? Bot simulation and playtest.
 - **Shape goals with clearing on**: should filled target cells "stick" once filled? Default no; decide with the first shape level.
 - **Versus round rules**: first to goal vs. last standing vs. score — Tournament Flow and Mode / Minigame Randomizer own this; this GDD only sets the default.

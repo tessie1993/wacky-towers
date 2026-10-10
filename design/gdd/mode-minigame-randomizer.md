@@ -114,3 +114,36 @@ Roulette screen between rounds (Tournament Flow's between-round screen). 📌 **
 - **Minigames** join the pool in Alpha (Tournament Minigames).
 - **Vote option**: add a "players vote from 3" setting later?
 - **Mode weights**: tune after the first party playtests.
+
+---
+
+## Addendum (2026-10-09): Minigames in the pool
+
+> **Author**: game-designer. Implements the "Minigames join the pool in Alpha" open question above. The 15 minigames are designed in `design/gdd/tournament-minigames.md`. All values are tunable defaults.
+
+8. **Minigame templates** (tag `minigame`) join the pool from Alpha. Each minigame counts as its own mode for the no-repeat rule (rule 3).
+
+9. **Category share.** Each pick first chooses a category: a minigame with probability `minigame_share` (default 0.4), otherwise a versus mode. It then picks a template inside that category with F1. If one category is empty, the other is used.
+
+10. **No recent repeat.** A minigame played in the last `mg_no_repeat_rounds` rounds (default 3) is excluded. If that empties the minigame category, the oldest-played minigame comes back.
+
+11. **Twists.** Minigames get 0 twists; F2 does not apply to them. A template that opts in to 1 twist (Tournament Minigames rule 12) gets its twist from the normal twist pool.
+
+12. **Standing for items and comebacks.** Each round uses its template's `standing_metric`: Level Goals F4 for versus modes, and the minigame's own metric for minigames (`race_progress`, `score`, `height` or `alive_time`). This is the decision of 2026-10-09 that item-roll standing varies per minigame.
+
+13. **Re-roll.** Rule 6 applies unchanged. A re-roll redraws the category too.
+
+### F3. Minigame pick
+
+`P(minigame j) = minigame_share × 1 / |MG_eligible|`; `P(versus template k) = (1 − minigame_share) × F1(k)`.
+
+**Example:** 15 minigames, 3 played recently → 12 eligible → each has 0.4 / 12 ≈ 3.3%.
+
+| Knob | Range | Default |
+|---|---|---|
+| minigame_share | 0–1 | 0.4 |
+| mg_no_repeat_rounds | 0–10 | 3 |
+
+**Acceptance.**
+6. [U] With `minigame_share = 0.4`, between 38% and 42% of picks over 10 000 draws are minigames.
+7. [U] No minigame repeats within 3 rounds while 4 or more are eligible.

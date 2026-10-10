@@ -26,7 +26,16 @@ Wacky Towers' promise is variety: dozens of twists on the same blocks (wind, gra
 3. Rules are defined in data (Level Data, Twist Library, Items, Characters & Perks). Behaviour beyond parameters and the built-in actions is a small scripted action that only uses the framework's API (rule 13), never a direct write to a core system.
 
 **Operation 1 — parameter modifiers**
-4. A rule may change any parameter that a core GDD lists as a tuning knob and marks as rule-adjustable: for example `gravity_scale`, `g0`, `lock_delay_ms`, `lock_resets_max`, `preview_count`, `hold_enabled`, `randomizer`, `clear_enabled`, `collapse_mode`, `landed_move_rule`, `rotation_axes_enabled`, `kick_enabled`, `warnings_max`, the down axis, the cell mask. A parameter the framework does not know is a validation error.
+4. A rule may change only the **rule-adjustable parameters** below (a closed list, starting default 2026-10-09; add to it when a new twist or mechanic needs a knob, and record the owning GDD). Every other level field is level-base only. A parameter the framework does not know is a validation error.
+
+| Owner | Rule-adjustable parameters |
+|---|---|
+| Fall, Drop & Lock | `gravity_scale`, `g0`, `ramp_per_clear`, `ramp_per_min`, `lock_delay_ms`, `lock_resets_max`, `hard_drop_grace_ms` |
+| Piece Spawner & Queue | `preview_count`, `hold_enabled`, `randomizer` |
+| Layer Clearing | `clear_enabled`, `collapse_mode` |
+| Movement & Rotation, Touch Controls | `landed_move_rule`, `rotation_axes_enabled`, `kick_enabled` |
+| Level Goals & Fail States | `warnings_max`, `topout_rule` |
+| Board / Grid | down axis, cell mask |
 5. Each parameter has a **type** taken from its knob: **scalar** (float), **count** (int), **flag** (true/false), **choice** (enum) or **structure** (down axis, mask). Allowed operations: scalars — `multiply` or `set`; counts — `add` or `set`; flags, choices and structures — `set` only.
 6. **Effective value** (Formulas F1): the highest-priority `set` (if any) replaces the base; then all multipliers multiply (scalars) or all adds add (counts); then the result is clamped to the knob's safe range. Flags, choices and structures use the highest-priority `set`.
 7. Effective values are **recomputed** whenever a rule starts or ends. A timer already running (a lock delay, a grace, a fall step) keeps the value it started with; the new value applies from the next start.
@@ -286,7 +295,7 @@ The player should never wonder why the game behaved differently: every rule that
 
 ## Open Questions
 
-- **Rule-adjustable knob list**: each core GDD should mark which of its knobs rules may change (and confirm safe ranges). Do this in one pass after the MVP GDDs are done.
+- **Rule-adjustable knob list**: a closed list is now in rule 4 (covers the 4 MVP twists and 4 mechanics). Still open: each owning GDD should mark those knobs as rule-adjustable in its Tuning Knobs table and confirm the safe ranges.
 - **Scripted actions**: which language and sandbox for rule behaviours (Godot scripts with a restricted API?) → becomes an ADR after `/setup-engine`.
 - **Layer order exceptions**: should some items deliberately outrank twists (a "shield" that ignores wind)? If needed, add a per-rule `priority_bonus` rather than changing the order.
 - **Items consumed with no effect**: confirm with Items (consumed vs. refunded).

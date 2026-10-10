@@ -170,11 +170,13 @@ In 3D, L/J and S/Z are the same shape (one rotates into the other), so the 5 fla
 
 ### Set values (uniform weights)
 
-| Set | Shapes | c | L_max | P_eff on 8 × 8 (η = 0.75) |
-|---|---|---|---|---|
-| Default: 8 Standard | 8 | 4.00 | 4 | ≈ 21.3 |
-| Standard + all 7 Specials | 15 | 74 / 15 ≈ 4.93 | 4 | ≈ 17.3 |
-| Specials only | 7 | 42 / 7 = 6.00 | 4 | ≈ 14.2 |
+| Set | Shapes | c | L_max | P_eff on 6 × 6 (η = 0.75) | t_beat on 6 × 6 (t_piece 8 s, Board F6) | Footprint side, Board F8 (P_band 9) |
+|---|---|---|---|---|---|---|
+| Default: 8 Standard | 8 | 4.00 | 4 | 12 | 96 s | 6 |
+| Standard + all 7 Specials | 15 | 74 / 15 ≈ 4.93 | 4 | ≈ 9.7 | ≈ 78 s (≈ 112 s with t_piece 10 s, η 0.65) | 7 |
+| Specials only | 7 | 42 / 7 = 6.00 | 4 | 8 | 64 s (slower in practice: bigger pieces raise t_piece and lower η) | 8 |
+
+On 8 × 8 the same sets give P_eff ≈ 21.3 / 17.3 / 14.2.
 
 ## Edge Cases
 

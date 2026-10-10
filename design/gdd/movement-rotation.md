@@ -22,18 +22,22 @@ The falling piece is a shape (Piece Set) in one of its orientations at a pivot p
 
 **The piece**
 1. A falling piece has: its shape (Piece Set), an **orientation** `R` (one of the 24 rotations of the cube; the shape lists its distinct ones), and a **pivot position** `p` (the cell of its pivot cube). Its occupied cells are `p + R · offset_i` for each cube offset `i` (Formulas F1).
-2. The piece is not stored in the grid. Movement & Rotation asks `can_place(cells[])` on the board; a cell passes if it is inside the board, active, and either empty or holding content with `solid = false`.
+2. The piece is not stored in the grid. Movement & Rotation asks `can_place(cells[])` on the board; a cell passes if it is inside the board, active, and either empty or holding **overlay** content (Board / Grid rules 7 and `is_free`). Solid and **blocking** content fail the test.
 3. Every command is **atomic**: it fully succeeds or leaves the piece exactly as it was. It returns `Ok`, `Ok(kicked, offset)`, `Blocked(reason)` or `Disabled`. Reasons: `out_of_bounds`, `inactive`, `occupied`, `unsupported`.
 4. Commands from one player are resolved **in the order received**, including several in the same frame. There is no rate limit here (Touch Controls owns repeat timing).
 5. With no falling piece, every command is ignored.
 
 **Move**
-6. `move(dir)` shifts `p` by one cell along one of the two **ground axes** (the axes perpendicular to the down axis, default ±x and ±z). Touch Controls has already turned a screen direction into a world direction using the camera's direction map; this system only sees world directions.
+6. `move(dir)` shifts `p` by one cell along one of the two **ground axes** (the axes perpendicular to the down axis: default ±x and ±z; with sideways gravity, one of them is ±y). Touch Controls has already turned a screen direction into a world direction using the camera's direction map; this system only sees world directions.
 7. A move whose target cells all pass `can_place` succeeds; otherwise it fails with the reason of the first failing cell. There is no wrap-around at board edges unless a twist adds it.
 8. `try_translate(delta)` is the general collision primitive. `move` uses it for ground steps; Fall, Drop & Lock uses it for fall steps and drops (including the landing ghost), so there is a single collision authority.
 
 **Rotate**
-9. `rotate(axis, sign)` turns the piece 90° about a **world** axis through the pivot cube, using the right-hand rule about +axis (Formulas F1). Which axis a button or flick maps to (spin, tilt or roll) is Touch Controls' job. If the level has not enabled that axis, the command returns `Disabled`: no change and no bonk.
+9. `rotate(axis, sign)` turns the piece 90° about a **world** axis through the pivot cube, using the right-hand rule about +axis (Formulas F1). Which world axis a button or flick maps to is Touch Controls' job, using this **view-relative mapping** (the same at every one of the 12 camera snaps and for every gravity direction, so the controls never change meaning when gravity does):
+   - **spin** = the world vertical axis (y), which is always screen-vertical;
+   - **tilt** = the horizontal world axis (x or z) whose on-screen projection is closest to screen-horizontal; at the corner snaps, where x and z are equally close, the tie goes to the axis that appears **up-right**;
+   - **roll** = the other horizontal world axis.
+   If the level has not enabled that axis, the command returns `Disabled`: no change and no bonk.
 10. **In place first.** The new orientation is tested at the same pivot. If it passes, the rotation succeeds with no kick.
 11. **Kick table.** If the in-place rotation fails, the candidates in Formulas F2 are tried in order; the first that passes is taken, and the rotation returns `Ok(kicked, offset)`. If none passes, it returns `Blocked` with the reason of the in-place test. Kicks are searched in world coordinates, so they do not depend on the camera angle.
 12. **Kick limits.** A kick never moves the piece down. Up-kicks (against the down axis) are limited to `max_up_kicks_per_piece` (default 2) per falling piece, so repeated rotation cannot climb out of a hole or stall forever. Wide (2-cell) kicks apply only to pieces with a longest extent of at least `kick_wide_min_extent` (default 4) and only if the 1-cell offset in the same direction also passes, so the piece never leaps across a wall.
@@ -45,7 +49,7 @@ The falling piece is a shape (Piece Set) in one of its orientations at a pivot p
 16. Moves are undone by the opposite move (reversible by nature; if it is blocked, the usual blocked rule applies).
 
 **After landing**
-17. The piece is **resting** if any of its cubes has solid content or the floor directly below it (relative to the down axis). Whether the piece is resting is reported to Fall, Drop & Lock, which owns lock timing.
+17. The piece is **resting** if any of its cubes has solid or blocking content, or the floor, directly below it (one cell along the down axis). Overlay content never supports. Whether the piece is resting is reported to Fall, Drop & Lock, which owns lock timing.
 18. `landed_move_rule` (default `free`): moves and rotations behave the same whether the piece is resting or in the air. A level or perk may set it to `supported`: while resting, a move or rotation must also end resting, otherwise it fails with `unsupported`. This stops sliding off the edge into a gap during lock delay.
 
 **Overlap rescue**
@@ -132,14 +136,14 @@ The restore formula is defined as:
 
 The resting formula is defined as:
 
-`resting = OR over cubes c of ( floor_below(c) OR solid(content(c + down)) )`
+`resting = OR over cubes c of ( floor_below(c) OR supports(content(c + down)) )`, where `supports` is true for solid and blocking content and false for empty and overlay cells
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
 | c | int[3] | a cell of the piece | calculated | One of the piece's cells |
 | down | int[3] | unit axis vector | data file (Board) | Down direction, default `(0, −1, 0)` |
-| solid() | bool | true / false | data file (Board) | The `solid` flag of the cell's content |
+| supports() | bool | true / false | data file (Board) | True for solid or blocking content (Board / Grid rule 7) |
 
 **Output Range:** true / false; used for `landed_move_rule = supported` and reported to Fall, Drop & Lock. **Example:** an I lying flat on layer 0 is resting; the same I hovering one layer above the floor with empty cells under all four cubes is not.
 
@@ -147,7 +151,8 @@ The resting formula is defined as:
 
 - **If a move would leave the footprint**: `Blocked(out_of_bounds)`, no change, bonk.
 - **If the target cell is inactive (holes in a masked board)**: `Blocked(inactive)`.
-- **If the target cell holds a solid block, obstacle or object**: `Blocked(occupied)`. If its content has `solid = false`, the cell passes.
+- **If the target cell holds a solid block, obstacle or object, or blocking content**: `Blocked(occupied)`. If it holds overlay content, the cell passes (and the overlay's on-lock behaviour runs only if the piece locks there).
+- **If the down axis is sideways** (e.g. −x): ground axes are y and z; spin, tilt and roll keep their view-relative meaning (rule 9), not a gravity-relative one.
 - **If a rotation fits in place**: it is taken with no kick, even when a "better" kick exists.
 - **If a rotation fits only at a kick**: the kick is taken and reported as `Ok(kicked, offset)`; the visuals play rotate and slide in one motion.
 - **If no kick fits**: `Blocked` with the in-place reason; the piece and the undo record are unchanged.
@@ -239,7 +244,7 @@ None directly. Touch Controls owns the buttons and gestures; the HUD owns the gh
 **Move**
 1. [U] **GIVEN** a free cell to the right, **WHEN** `move(+x)` is sent, **THEN** the pivot changes by (+1, 0, 0), the result is `Ok`, and the ghost updates in the same frame.
 2. [U] **GIVEN** a piece at the +x edge, **WHEN** `move(+x)` is sent, **THEN** `Blocked(out_of_bounds)` and the piece is unchanged.
-3. [U] **GIVEN** a block, an inactive cell and a non-solid object in three separate targets, **WHEN** moved into, **THEN** the results are `Blocked(occupied)`, `Blocked(inactive)` and `Ok`.
+3. [U] **GIVEN** a block, an inactive cell, a blocking object and an overlay object in four separate targets, **WHEN** moved into, **THEN** the results are `Blocked(occupied)`, `Blocked(inactive)`, `Blocked(occupied)` and `Ok`.
 4. [U] **GIVEN** a move then its opposite, **THEN** the piece returns to the starting pivot.
 
 **Rotate**
@@ -251,6 +256,7 @@ None directly. Touch Controls owns the buttons and gestures; the HUD owns the gh
 10. [U] **GIVEN** a piece with extent 4 and a 2-cell kick that fits only if the 1-cell offset is also free, **WHEN** the 1-cell offset is blocked, **THEN** the wide kick is not used; **GIVEN** a piece with extent 3, **THEN** wide kicks are never tried.
 11. [U] **GIVEN** no candidate fits, **THEN** `Blocked(reason)`, the piece and undo record are unchanged.
 12. [U] **GIVEN** a Big Cube or Mono, **WHEN** rotated, **THEN** `Ok`, cells unchanged.
+12a. [U] **GIVEN** camera yaw 75° (+x appears 15° off screen-right), **THEN** tilt maps to the x axis and roll to z; **GIVEN** a corner snap (k = 0, 3, 6, 9), **THEN** tilt maps to the axis that appears up-right; **GIVEN** down axis −x, **THEN** the mapping is unchanged.
 13. [U] **GIVEN** a level with tilt disabled, **WHEN** a tilt rotation is sent, **THEN** `Disabled`, no change, no bonk event.
 
 **Undo**
@@ -280,6 +286,7 @@ None directly. Touch Controls owns the buttons and gestures; the HUD owns the gh
 - **Pivot feel**: rotating about the pivot cube moves the piece's visual centre for odd shapes; consider a per-shape pivot override if rotations feel off.
 - **Lock-delay reset**: answered in Fall, Drop & Lock (successful moves and rotations, kicked ones included, restart the lock timer, up to 10 resets per piece, restored when the piece reaches a lower layer). The up-kick budget is a backstop.
 - **Wrap-around boards**: should a twist be allowed to wrap the board edges (move off one side, appear on the other)? Rule-Twist Framework to decide.
-- **Non-solid contents**: Board's `is_free` is defined as empty cells; this GDD lets `solid = false` content pass. Confirm in Board / Grid and Obstacles, including what happens when such a piece locks onto it.
+- ~~**Non-solid contents**~~: resolved — overlay content passes, blocking content blocks and supports; on-lock behaviour per type (Board / Grid rule 7).
+- **Screen-fixed rotation under sideways gravity (rule 9), open to playtest**: designer default 2026-10-09 is that spin, tilt and roll stay screen-fixed whatever the gravity. If players expect "spin" to turn around the fall direction, try a gravity-relative option.
 - **Landed restriction as a perk**: `landed_move_rule = supported` is a level or perk property; Characters & Perks and Level Data should decide which levels use it.
 - **Smart rotate**: if neither Touch Controls scheme meets the 3D targets, consider an "auto-fit rotate" that chooses the next orientation that fits.
