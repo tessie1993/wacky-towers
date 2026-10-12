@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "transport": "Real Main scenes over ENet UDP localhost",
+  "independent_processes": 4,
+  "frames": 540,
+  "checkpoint_comparisons_per_process": 18,
+  "distinct_player_characters": 4,
+  "owned_perks_per_player": 1,
+  "same_identity_hash_compared_across_devices": true,
+  "port": 48496,
+  "outcomes": [
+    {
+      "role": "Host",
+      "exit_code": 0
+    },
+    {
+      "role": "ClientA",
+      "exit_code": 0
+    },
+    {
+      "role": "ClientB",
+      "exit_code": 0
+    },
+    {
+      "role": "ClientC",
+      "exit_code": 0
+    }
+  ]
+}

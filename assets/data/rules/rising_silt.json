@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "rising_silt",
+  "name_key": "RULE_RISING_SILT",
+  "layer": "twist",
+  "icon": "rising_silt",
+  "behaviour": "rising_silt",
+  "params": {
+    "silt_every_locks": {
+      "type": "number"
+    },
+    "silt_gaps": {
+      "type": "number"
+    },
+    "silt_warn_locks": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "moody_cube",
+  "name_key": "RULE_MOODY_CUBE",
+  "layer": "content",
+  "icon": "moody_cube",
+  "behaviour": "moody_cube",
+  "params": {
+    "per_bag": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

@@ -1,0 +1,179 @@
+{
+  "schema": 1,
+  "id": "lava_09",
+  "biome": "lava",
+  "tier": 9,
+  "name": "level.lava_09.name",
+  "board": {
+    "width": 8,
+    "depth": 6,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "duo",
+      "tri_corner"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.2
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "conveyor",
+      "params": {
+        "conveyor_dir": "+x",
+        "conveyor_every": 3,
+        "conveyor_wrap": true
+      }
+    },
+    {
+      "id": "lava_rise",
+      "params": {
+        "melt_every_s": 60,
+        "first_s": 50,
+        "melt_max": 2
+      }
+    },
+    {
+      "id": "lava_rock_spawn",
+      "params": {
+        "every_locks": 8,
+        "objects_max": 2,
+        "object": "SP19",
+        "object_kind": "rock",
+        "hard_hits": 2
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "lava_09",
+  "story": {
+    "mascot_role": "watcher",
+    "icon": "magma_belt"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/lava.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "lava_09",
+      "biome": "lava",
+      "tier": 9,
+      "name": "level.lava_09.name",
+      "board": {
+        "width": 8,
+        "depth": 6,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "duo",
+          "tri_corner"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.2
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "EV05",
+          "params": {
+            "dir": [
+              1,
+              0,
+              0
+            ],
+            "every_locks": 3,
+            "wrap": true
+          }
+        },
+        {
+          "id": "EV06",
+          "params": {
+            "melt_every_s": 60,
+            "first_s": 50,
+            "melt_max": 2
+          }
+        },
+        {
+          "id": "EV04",
+          "params": {
+            "every_locks": 8,
+            "objects_max": 2,
+            "object": "SP19"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "music": "lava_09",
+      "story": {
+        "mascot_role": "watcher",
+        "icon": "magma_belt"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "EV05",
+        "runtime": "conveyor",
+        "params": {
+          "conveyor_dir": "+x",
+          "conveyor_every": 3,
+          "conveyor_wrap": true
+        }
+      },
+      {
+        "source": "EV06",
+        "runtime": "lava_rise",
+        "params": {
+          "melt_every_s": 60,
+          "first_s": 50,
+          "melt_max": 2
+        }
+      },
+      {
+        "source": "EV04",
+        "runtime": "lava_rock_spawn",
+        "params": {
+          "every_locks": 8,
+          "objects_max": 2,
+          "object": "SP19",
+          "object_kind": "rock",
+          "hard_hits": 2
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

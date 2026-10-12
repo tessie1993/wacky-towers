@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "pressure_cooker",
+  "name_key": "RULE_PRESSURE_COOKER",
+  "layer": "twist",
+  "icon": "pressure_cooker",
+  "behaviour": "pressure_cooker",
+  "params": {
+    "step": {
+      "type": "number"
+    },
+    "max_scale": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

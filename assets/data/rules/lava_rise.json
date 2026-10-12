@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "lava_rise",
+  "name_key": "RULE_LAVA_RISE",
+  "layer": "twist",
+  "icon": "lava_rise",
+  "behaviour": "lava_rise",
+  "params": {
+    "melt_every_s": {
+      "type": "number"
+    },
+    "first_s": {
+      "type": "number"
+    },
+    "melt_max": {
+      "type": "number"
+    },
+    "melt_warn_ms": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

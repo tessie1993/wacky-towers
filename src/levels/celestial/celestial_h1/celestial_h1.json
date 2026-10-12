@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "id": "celestial_h1",
+  "biome": "celestial",
+  "tier": 12,
+  "name": "LVL_CELESTIAL_H1_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.45,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "gust",
+      "params": {
+        "wind_mode": "rotating",
+        "wind_interval_ms": 9000,
+        "wind_jitter_ms": 2500,
+        "wind_strength": 1,
+        "wind_warn_ms": 1000
+      }
+    },
+    {
+      "id": "storm_bolt",
+      "params": {
+        "bolt_interval_ms": 8000,
+        "bolt_warn_ms": 1500
+      }
+    }
+  ],
+  "stars": {
+    "t2": 385000,
+    "t3": 265000
+  },
+  "music": "celestial_h1_tbd",
+  "story": {
+    "title_key": "LVL_CELESTIAL_H1_TITLE",
+    "premise_key": "LVL_CELESTIAL_H1_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "meteor"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/celestial.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "celestial_h1",
+      "biome": "celestial",
+      "tier": 12,
+      "name": "LVL_CELESTIAL_H1_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.45,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 5
+      },
+      "rules": [
+        {
+          "id": "gust",
+          "params": {
+            "wind_mode": "rotating",
+            "wind_interval_ms": 9000,
+            "wind_jitter_ms": 2500,
+            "wind_strength": 1,
+            "wind_warn_ms": 1000
+          }
+        },
+        {
+          "id": "storm_bolt",
+          "params": {
+            "bolt_interval_ms": 8000,
+            "bolt_warn_ms": 1500
+          }
+        }
+      ],
+      "stars": {
+        "t2": 385000,
+        "t3": 265000
+      },
+      "music": "celestial_h1_tbd",
+      "story": {
+        "title_key": "LVL_CELESTIAL_H1_TITLE",
+        "premise_key": "LVL_CELESTIAL_H1_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "meteor"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "storm_bolt is a wave-3 rule (design/gdd/mechanics-wave3.md W11), skinned as a meteor; rule def lands with the plugin"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": [
+      "Supersedes the pre-wave-3 H1 draft 'Meteor Storm' (celestial.md section 7): Meteor Drizzle replaced by storm_bolt meteors"
+    ]
+  }
+}

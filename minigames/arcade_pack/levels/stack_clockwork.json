@@ -1,0 +1,28 @@
+{
+  "id": "stack_clockwork",
+  "mode": "stack",
+  "name": "Clockwork Lift",
+  "biome": "clockwork",
+  "story": "Tock needs the last gear raised to the clock. Build the lift on its two alternating tracks.",
+  "objective": "Lock 10 supported slabs above the foundation before the timer ends.",
+  "twist": "The pendulum pulse changes slide speed; two magnet charges can rescue a close landing.",
+  "rule": "Time 10 slab drops, alternate both slide directions, and keep enough overlap to support the tower.",
+  "controls": "Space / tap: lock. U or E: use one of two magnet charges inside the blue snap guide. Watch each slide's rhythm before locking. Magnet locks break the perfect streak.",
+  "time_limit": 85.0,
+  "star_times": [
+    27.0,
+    48.0
+  ],
+  "base_width": 4.0,
+  "target_height": 10,
+  "speed_start": 2.1,
+  "speed_max": 3.6,
+  "motion_extent": 2.9,
+  "perfect_tolerance": 0.14,
+  "magnet_charges": 2,
+  "magnet_range": 0.8,
+  "wind_amplitude": 0.2,
+  "wind_period": 3.8,
+  "rhythm_amplitude": 0.16,
+  "rhythm_period": 2.2
+}

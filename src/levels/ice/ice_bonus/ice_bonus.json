@@ -1,0 +1,138 @@
+{
+  "schema": 1,
+  "id": "ice_bonus",
+  "biome": "ice",
+  "tier": 11,
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 6
+  },
+  "pieces": {
+    "kit": [
+      "big_cube",
+      "big_cube",
+      "tripod",
+      "tripod",
+      "screw_left",
+      "screw_left"
+    ],
+    "shapes": [
+      "big_cube",
+      "tripod",
+      "screw_left"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.5,
+    "spawn.arrival": "kit_box",
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "shape",
+    "target_shape": {
+      "layers": {
+        "0": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ],
+        "1": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ]
+      }
+    },
+    "piece_budget": 6
+  },
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {}
+    },
+    {
+      "id": "undo_reset",
+      "params": {}
+    }
+  ],
+  "stars": {
+    "t2": 120000,
+    "t3": 80000
+  },
+  "music": "ice_bonus",
+  "name": "LVL_ICE_BONUS_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/ice.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "ice_bonus",
+      "biome": "ice",
+      "tier": 11,
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 6
+      },
+      "pieces": {
+        "kit": [
+          "big_cube",
+          "big_cube",
+          "tripod",
+          "tripod",
+          "screw_left",
+          "screw_left"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.5,
+        "spawn.arrival": "kit_box",
+        "goal.top_out": "piece_budget"
+      },
+      "goal": {
+        "type": "shape",
+        "target_shape": {
+          "layers": {
+            "0": [
+              "++++",
+              "++++",
+              "++++",
+              "++++"
+            ],
+            "1": [
+              "++++",
+              "++++",
+              "++++",
+              "++++"
+            ]
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "fill_shape",
+          "params": {}
+        },
+        {
+          "id": "undo_reset",
+          "params": {}
+        }
+      ],
+      "stars": {
+        "t2": 120000,
+        "t3": 80000
+      },
+      "music": "ice_bonus"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

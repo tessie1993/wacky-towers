@@ -1,0 +1,199 @@
+{
+  "schema": 1,
+  "id": "cave_05",
+  "biome": "cave",
+  "tier": 5,
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 12,
+    "spawn_anchor": [
+      1,
+      1
+    ],
+    "starting_contents": {
+      "layers": {
+        "0": [
+          ".....",
+          ".....",
+          "..R..",
+          ".....",
+          "....."
+        ],
+        "1": [
+          ".....",
+          ".....",
+          "..R..",
+          ".....",
+          "....."
+        ],
+        "2": [
+          ".....",
+          ".....",
+          "..R..",
+          ".....",
+          "....."
+        ],
+        "3": [
+          ".....",
+          ".....",
+          "..R..",
+          ".....",
+          "....."
+        ],
+        "4": [
+          ".....",
+          ".....",
+          "..R..",
+          ".....",
+          "....."
+        ],
+        "5": [
+          ".....",
+          ".....",
+          "..R..",
+          ".....",
+          "....."
+        ],
+        "6": [
+          ".....",
+          ".....",
+          "..R..",
+          ".....",
+          "....."
+        ]
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 1.15,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "height",
+    "height_coverage": 0.6,
+    "h_target": 10
+  },
+  "rules": [
+    {
+      "id": "build_race",
+      "params": {}
+    },
+    {
+      "id": "rock_obstacle",
+      "params": {
+        "cells": [
+          [
+            2,
+            0,
+            2
+          ],
+          [
+            2,
+            1,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            2,
+            4,
+            2
+          ],
+          [
+            2,
+            5,
+            2
+          ],
+          [
+            2,
+            6,
+            2
+          ]
+        ]
+      }
+    }
+  ],
+  "stars": {
+    "t2": 230000,
+    "t3": 160000
+  },
+  "music": "cave_05_tbd",
+  "name": "LVL_CAVE_05_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/cave.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "cave_05",
+      "biome": "cave",
+      "tier": 5,
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 12,
+        "rock": {
+          "columns": [
+            {
+              "x": 2,
+              "z": 2,
+              "y_from": 0,
+              "y_to": 6
+            }
+          ]
+        },
+        "spawn_anchor": {
+          "x": 1,
+          "z": 1
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.15,
+        "goal.top_out": "trim"
+      },
+      "goal": {
+        "type": "height",
+        "H_target": 10,
+        "height_coverage": 0.6
+      },
+      "rules": [
+        {
+          "id": "build_race",
+          "params": {}
+        }
+      ],
+      "stars": {
+        "t2": 230000,
+        "t3": 160000
+      },
+      "music": "cave_05_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "carnival_08",
+  "biome": "carnival",
+  "tier": 8,
+  "name": "LVL_CARNIVAL_08_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.4,
+    "goal.warnings_max": 1,
+    "goal.top_out": "rescue"
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    { "id": "pressure_cooker", "params": { "step": 0.08, "max_scale": 1.6 } },
+    { "id": "fog", "params": { "visible_ms": 5000, "fade_ms": 1000, "invisible_alpha": 0.15, "reveal_ms": 600, "skin": "popcorn_steam" } }
+  ],
+  "stars": {
+    "t2": 245000,
+    "t3": 175000
+  },
+  "music": "carnival_08_tbd",
+  "story": {
+    "title_key": "LVL_CARNIVAL_08_TITLE",
+    "premise_key": "LVL_CARNIVAL_08_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "popcorn"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/carnival.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1, "id": "carnival_08", "biome": "carnival", "tier": 8, "name": "LVL_CARNIVAL_08_TITLE",
+      "board": { "width": 6, "depth": 6, "h_play": 10 },
+      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r"] },
+      "knobs": { "fall.g0": 1.40, "goal.warnings_max": 1, "goal.top_out": "rescue" },
+      "goal": { "type": "clear_n", "N": 3 },
+      "rules": [
+        { "id": "pressure_cooker", "params": { "step": 0.08, "max_scale": 1.6 } },
+        { "id": "fog", "params": { "visible_ms": 5000, "fade_ms": 1000, "invisible_alpha": 0.15, "reveal_ms": 600, "skin": "popcorn_steam" } }
+      ],
+      "stars": { "t2": 245000, "t3": 175000 },
+      "music": "carnival_08_tbd",
+      "story": { "title_key": "LVL_CARNIVAL_08_TITLE", "premise_key": "LVL_CARNIVAL_08_PREMISE", "mascot_role": "watcher", "icon": "popcorn" }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "pressure_cooker is a wave-3 rule (W7), skinned as the 'Popcorn Machine'. step 0.08 / max_scale 1.6 sit at the gentle end of the W7 safe ranges (0.05-0.3 / 1.5-3.5).",
+      "g0 1.40 is deliberately 0.115 below F2 (1.515): at full pressure the piece falls at 2.24 cells/s, the fastest main-path speed in the campaign.",
+      "fog is the Meadow 07 / Celestial 07 callback skinned as popcorn steam; skin 'popcorn_steam' needs an art asset."
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

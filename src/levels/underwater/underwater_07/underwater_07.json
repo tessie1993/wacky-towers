@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "id": "underwater_07",
+  "biome": "underwater",
+  "tier": 7,
+  "board": {
+    "width": 7,
+    "depth": 7,
+    "h_play": 10,
+    "mask": [
+      "#######",
+      "#######",
+      "#.###.#",
+      "#######",
+      "#.###.#",
+      "#######",
+      "#######"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.0
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "fog",
+      "params": {
+        "visible_ms": 3500,
+        "fade_ms": 1000,
+        "invisible_alpha": 0.1,
+        "reveal_ms": 700
+      }
+    }
+  ],
+  "stars": {
+    "t2": 305000,
+    "t3": 215000
+  },
+  "music": "underwater_07",
+  "name": "LVL_UNDERWATER_07_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_07",
+      "biome": "underwater",
+      "tier": 7,
+      "board": {
+        "width": 7,
+        "depth": 7,
+        "h_play": 10,
+        "mask": {
+          "rows": [
+            "#######",
+            "#######",
+            "#.###.#",
+            "#######",
+            "#.###.#",
+            "#######",
+            "#######"
+          ]
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.0
+      },
+      "goal": {
+        "type": "clear",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "fog",
+          "params": {
+            "visible_ms": 3500,
+            "fade_ms": 1000,
+            "invisible_alpha": 0.1,
+            "reveal_ms": 700
+          }
+        }
+      ],
+      "stars": {
+        "t2": 305000,
+        "t3": 215000
+      },
+      "music": "underwater_07"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

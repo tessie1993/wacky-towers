@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://07qfl6uidwjd"]
+
+[ext_resource type="PackedScene" path="res://src/levels/_template/level_stage_base.tscn" id="1"]
+[ext_resource type="Script" uid="uid://bget2chj4yyf3" path="res://src/view/wt_stage.gd" id="2_8vpnj"]
+
+[node name="ice_10" unique_id=1420097050 instance=ExtResource("1")]
+level_json = "res://src/levels/ice/ice_10/ice_10.json"
+biome = &"ice"
+
+[node name="MascotSpot" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 2)
+
+[node name="World" type="Node3D" parent="." index="2" unique_id=504291822]
+script = ExtResource("2_8vpnj")
+
+[node name="StoryOrigin" type="Marker3D" parent="World" index="0" unique_id=1215880119]

@@ -1,0 +1,129 @@
+{
+  "schema": 1,
+  "id": "lava_h1",
+  "biome": "lava",
+  "tier": 12,
+  "board": {
+    "width": 8,
+    "depth": 3,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.3
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "lava_rise",
+      "params": {
+        "melt_every_s": 25,
+        "first_s": 30,
+        "melt_max": 4
+      }
+    },
+    {
+      "id": "lava_rock_spawn",
+      "params": {
+        "every_locks": 6,
+        "objects_max": 2,
+        "object": "SP19",
+        "object_kind": "rock",
+        "hard_hits": 2
+      }
+    }
+  ],
+  "stars": {
+    "t2": 270000,
+    "t3": 190000
+  },
+  "music": "lava_h1",
+  "name": "LVL_LAVA_H1_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/lava.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "lava_h1",
+      "biome": "lava",
+      "tier": 12,
+      "board": {
+        "width": 8,
+        "depth": 3,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.3
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 5
+      },
+      "rules": [
+        {
+          "id": "EV06",
+          "params": {
+            "melt_every_s": 25,
+            "first_s": 30,
+            "melt_max": 4
+          }
+        },
+        {
+          "id": "EV04",
+          "params": {
+            "every_locks": 6,
+            "objects_max": 2,
+            "object": "SP19"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 270000,
+        "t3": 190000
+      },
+      "music": "lava_h1"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "EV06",
+        "runtime": "lava_rise",
+        "params": {
+          "melt_every_s": 25,
+          "first_s": 30,
+          "melt_max": 4
+        }
+      },
+      {
+        "source": "EV04",
+        "runtime": "lava_rock_spawn",
+        "params": {
+          "every_locks": 6,
+          "objects_max": 2,
+          "object": "SP19",
+          "object_kind": "rock",
+          "hard_hits": 2
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

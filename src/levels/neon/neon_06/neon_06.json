@@ -1,0 +1,180 @@
+{
+  "schema": 1,
+  "id": "neon_06",
+  "biome": "neon",
+  "tier": 6,
+  "name": "LVL_NEON_06_TITLE",
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 6
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "big_cube"
+    ],
+    "fixed_list": [
+      "big_cube",
+      "big_cube",
+      "i",
+      "i",
+      "o",
+      "o",
+      "o",
+      "o"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.9,
+    "goal.top_out": "trim",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "shape",
+    "piece_budget": 8,
+    "target_shape": {
+      "layers": {
+        "0": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ],
+        "1": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ],
+        "2": [
+          "....",
+          ".++.",
+          ".++.",
+          "...."
+        ],
+        "3": [
+          "....",
+          ".++.",
+          ".++.",
+          "...."
+        ]
+      }
+    }
+  },
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {}
+    }
+  ],
+  "stars": {
+    "t2": 80000,
+    "t3": 55000
+  },
+  "story": {
+    "title_key": "LVL_NEON_06_TITLE",
+    "premise_key": "LVL_NEON_06_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "star"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/neon.md",
+    "status": "Proposed",
+    "design_spec": {
+      "schema": 1,
+      "id": "neon_06",
+      "biome": "neon",
+      "tier": 6,
+      "name": "LVL_NEON_06_TITLE",
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 6
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "big_cube"
+        ],
+        "fixed_list": [
+          "big_cube",
+          "big_cube",
+          "i",
+          "i",
+          "o",
+          "o",
+          "o",
+          "o"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.9,
+        "goal.top_out": "trim",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "shape",
+        "piece_budget": 8,
+        "target_shape": {
+          "layers": {
+            "0": [
+              "++++",
+              "++++",
+              "++++",
+              "++++"
+            ],
+            "1": [
+              "++++",
+              "++++",
+              "++++",
+              "++++"
+            ],
+            "2": [
+              "....",
+              ".++.",
+              ".++.",
+              "...."
+            ],
+            "3": [
+              "....",
+              ".++.",
+              ".++.",
+              "...."
+            ]
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "fill_shape",
+          "params": {}
+        }
+      ],
+      "stars": {
+        "t2": 80000,
+        "t3": 55000
+      },
+      "story": {
+        "title_key": "LVL_NEON_06_TITLE",
+        "premise_key": "LVL_NEON_06_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "star"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": [
+      {
+        "id": "neon_06",
+        "reason": "New40cell stepped sign proposal replaces repeated24cell Forest picture; eight fixed pieces are constructively packed."
+      }
+    ]
+  }
+}

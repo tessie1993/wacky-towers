@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "id": "forest_h3",
+  "biome": "forest",
+  "tier": 14,
+  "name": "LVL_FOREST_H3_TITLE",
+  "board": {
+    "width": 7,
+    "depth": 5,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.3,
+    "goal.warnings_max": 1,
+    "spawn.preview_count": 3
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "conveyor",
+      "params": {
+        "conveyor_every": 3,
+        "conveyor_wrap": true,
+        "conveyor_dir": "+x"
+      }
+    },
+    {
+      "id": "squirrel_heist",
+      "params": {
+        "heist_every_locks": 6,
+        "heist_warn_locks": 1,
+        "heist_min_fill": 0.5
+      }
+    },
+    {
+      "id": "jumbled_queue",
+      "params": {
+        "every": 5
+      }
+    }
+  ],
+  "stars": {
+    "t2": 290000,
+    "t3": 205000
+  },
+  "music": "forest_h3",
+  "story": {
+    "title_key": "LVL_FOREST_H3_TITLE",
+    "premise_key": "LVL_FOREST_H3_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "squirrel"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/forest.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "forest_h3",
+      "biome": "forest",
+      "tier": 14,
+      "board": { "width": 7, "depth": 5, "h_play": 10 },
+      "knobs": { "fall.g0": 1.3, "goal.warnings_max": 1, "spawn.preview_count": 3 },
+      "goal": { "type": "clear_n", "n": 4 },
+      "rules": [
+        { "id": "conveyor", "params": { "conveyor_every": 3, "conveyor_wrap": true, "conveyor_dir": "+x" } },
+        { "id": "squirrel_heist", "params": { "heist_every_locks": 6, "heist_warn_locks": 1, "heist_min_fill": 0.5 } },
+        { "id": "jumbled_queue", "params": { "every": 5 } }
+      ],
+      "stars": { "t2": 290000, "t3": 205000 },
+      "music": "forest_h3"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "jumbled_queue is a wave-3 rule (design/gdd/mechanics-wave3.md W5), skinned as the Forest event 'Squirrel Shuffle'; its assets/data/rules JSON lands with the wave-3 implementation. preview_count 3 because the shuffle needs at least 2 queued ids.",
+      "Conveyor (Root Slide) needs an unmasked rectangle: 7x5 has no mask."
+    ],
+    "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = 4 x 93.3 s (A = 35)",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

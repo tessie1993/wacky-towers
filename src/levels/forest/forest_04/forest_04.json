@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "id": "forest_04",
+  "biome": "forest",
+  "tier": 4,
+  "board": {
+    "width": 7,
+    "depth": 7,
+    "h_play": 10,
+    "spawn_anchor": [
+      3,
+      2
+    ],
+    "mask": [
+      "##...##",
+      "##...##",
+      ".#####.",
+      "..###..",
+      "..###..",
+      "..###..",
+      "..###.."
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.0,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "squirrel_heist",
+      "params": {
+        "heist_every_locks": 6,
+        "heist_warn_locks": 1,
+        "heist_min_fill": 0.5
+      }
+    }
+  ],
+  "stars": {
+    "t2": 225000,
+    "t3": 160000
+  },
+  "music": "forest_04_tbd",
+  "name": "LVL_FOREST_04_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/forest.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "forest_04",
+      "biome": "forest",
+      "tier": 4,
+      "board": {
+        "width": 7,
+        "depth": 7,
+        "h_play": 10,
+        "spawn_anchor": {
+          "x": 3,
+          "z": 2
+        },
+        "mask": {
+          "layers": {
+            "all": [
+              "##...##",
+              "##...##",
+              ".#####.",
+              "..###..",
+              "..###..",
+              "..###..",
+              "..###.."
+            ]
+          }
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.0,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "squirrel_heist",
+          "params": {
+            "heist_every_locks": 6,
+            "heist_warn_locks": 1,
+            "heist_min_fill": 0.5
+          }
+        }
+      ],
+      "stars": {
+        "t2": 225000,
+        "t3": 160000
+      },
+      "music": "forest_04_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "ember",
+  "name_key": "RULE_EMBER",
+  "layer": "content",
+  "icon": "ember",
+  "behaviour": "ember",
+  "params": {
+    "drill_depth": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

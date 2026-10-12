@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "id": "underwater_h1",
+  "biome": "underwater",
+  "tier": 12,
+  "name": "LVL_UNDERWATER_H1_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "starting_contents": {
+      "layers": {
+        "0": ["......", "....b.", "......", "......", ".b....", "......"]
+      }
+    }
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.05,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "bounce_pad",
+      "params": {
+        "bounce_h": 2,
+        "dir_mode": "last_move"
+      }
+    },
+    {
+      "id": "gust",
+      "params": {
+        "wind_dir": "+x",
+        "wind_interval_ms": 9000,
+        "wind_jitter_ms": 2000,
+        "wind_strength": 1,
+        "wind_warn_ms": 1000
+      }
+    },
+    {
+      "id": "quicksand",
+      "params": {
+        "tiles": [[1, 1], [4, 4]],
+        "sink_every": 4
+      }
+    }
+  ],
+  "stars": {
+    "t2": 300000,
+    "t3": 210000
+  },
+  "music": "underwater_h1",
+  "story": {
+    "title_key": "LVL_UNDERWATER_H1_TITLE",
+    "premise_key": "LVL_UNDERWATER_H1_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "quicksand"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_h1",
+      "biome": "underwater",
+      "tier": 12,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "starting_contents": {
+          "layers": {
+            "0": ["......", "....b.", "......", "......", ".b....", "......"]
+          },
+          "legend": { "b": "bounce_pad" }
+        }
+      },
+      "knobs": { "fall.g0": 1.05, "goal.warnings_max": 1 },
+      "goal": { "type": "clear_n", "n": 4 },
+      "rules": [
+        { "id": "bounce_pad", "params": { "bounce_h": 2, "dir_mode": "last_move" } },
+        { "id": "gust", "params": { "wind_dir": "+x", "wind_interval_ms": 9000, "wind_jitter_ms": 2000, "wind_strength": 1, "wind_warn_ms": 1000 } },
+        { "id": "quicksand", "params": { "tiles": [[1, 1], [4, 4]], "sink_every": 4 } }
+      ],
+      "stars": { "t2": 300000, "t3": 210000 },
+      "music": "underwater_h1"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "quicksand is a wave-3 rule (design/gdd/mechanics-wave3.md W13), skinned as the Underwater event 'Sinking Sand'; its assets/data/rules JSON lands with the wave-3 implementation.",
+      "Quicksand tiles (1,1) and (4,4) never share a cell with the jelly pads (4,1) and (1,4)."
+    ],
+    "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = 4 x 96 s",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

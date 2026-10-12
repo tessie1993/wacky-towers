@@ -685,3 +685,50 @@ SFX cues (one-shots, no music change): a ratchet click on every turn and a tooth
 - **06 and B `solution` lists.** The validator should replay the known solutions above; in 06 the L may need mirroring (Flip), and in B the validator must replay through the turns (the target sets are 90°-symmetric, so any rotated placement of the same piece is valid).
 - **10 busyness.** If belt + pistons + stopwatch is too much, slow the stopwatch (20 s) or drop the pistons, or swap one out with EV13 as in the Meadow.
 - **Star times** are formula estimates (and hand-set where noted); replace with playtest medians.
+
+---
+
+## Hard-track remixes (tiers 12–14)
+
+> **Wave-3 revision (level-designer, 2026-10-10). Supersedes the §7 drafts** (Spring Streets, Piston Keys, Frozen Turntable) per Campaign Structure rule 17: each remix recombines 1–2 Clockwork rules **plus exactly one wave-3 mechanic** (`design/gdd/mechanics-wave3.md`). The H2 draft's keyhole layout survives in H3. Twist cap held: at most 2 twists + 1 level mechanic. Runtime files: `src/levels/clockwork/clockwork_h1..h3/`.
+>
+> **Hard-track star rule (all three biomes in this pass):** `t2 = round5(0.80 × t_est)`, `t3 = round5(0.55 × t_est)` (F1 uses 0.85 / 0.60), so remixes are tighter per unit of work than tier 10. `t_est = N × A × 2.667 s` for Clear-N; key goals are hand-set.
+
+| # | id | Name | Recombines | Wave-3 (biome event) | Goal | Board | g0 | ★★ / ★★★ |
+|---|---|---|---|---|---|---|---|---|
+| H1 | clockwork_h1 | Magnet Tram | Tram Street (03, 10) | `magnet_pull` (**Electro-Magnet**) | Clear 5 | 8×4, H10 | 1.30 | 340 / 235 s |
+| H2 | clockwork_h2 | Boiler Bench | Cog Turn (02, 09) | `pressure_cooker` (**Boiler**) | Clear 4 | 6×6, H10 | 1.30 | 305 / 210 s |
+| H3 | clockwork_h3 | Magnet Keys | Winding Keys (08) + Piston Punch (04) | `magnet_pull` (**Electro-Magnet**) | Wind 5 keys | 5×5, H10 | 1.30 | 240 / 170 s |
+
+### H1 Magnet Tram
+
+**Story card.** Cuckoo bolted an electro-magnet to the tram depot at the west end of the street. The street still rolls east; the magnet tugs your falling piece west. · **Tock: watcher** (his key sticks to the magnet).
+**Idea recombined**: Tram Street (`conveyor`, +x, every 3 locks, wrap).
+**Wave-3**: `magnet_pull` as the **Electro-Magnet**: `magnet_col` [0, 1] (the depot, west wall), `pull_interval_ms` 3000, `pull_warn_ms` 600, `pull_axis` "x". Every 3 s a falling piece is tugged one cell west unless already aligned or blocked.
+**Goal**: Clear 5 on 8×4, H10, 8 Std, `g0` 1.30.
+**Wacky test**: surprising, the belt and the magnet pull opposite ways; silly, Tock's wind-up key flying off his back and clanging onto the magnet; funny failure, a perfect drop tugged one cell west onto the depot's pile while the belt carries the gap east; big moment, a hard drop in the 600 ms warning window that lands exactly where both forces agree.
+**Counterplay**: hard drop before a pull (the magnet crackles blue 600 ms ahead); use the pull as a free move toward the west wall; the belt's one-cell lead plus the pull means "aim one cell east of where you want it" when a pull is due.
+**Star rationale**: t_est = 5 × 32 × 2.667 = 427 s → 340 / 235 s.
+
+### H2 Boiler Bench
+
+**Story card.** The workshop bench sits on a boiler. Every piece you lock without a clear builds steam, and the drizzle falls faster; a clear blows the whistle and the pressure drops. The bench still turns every 4 pieces. · **Tock: watcher** (his bow tie spins faster with the gauge).
+**Idea recombined**: Cog Turn (`turntable`, every 4 locks, clockwise, wind-up 1 lock ahead).
+**Wave-3**: `pressure_cooker` as the **Boiler**: `step` 0.12, `max_scale` 2.2 (×1.6 after 5 clearless locks, cap after 10). A pressure gauge on the board rim shows the level; the whistle is `pressure_release`.
+**Goal**: Clear 4 on 6×6, H10, 8 Std, `g0` 1.30.
+**Wacky test**: surprising, not clearing is what speeds you up; silly, the boiler whistle blows Tock's hat off on every clear; funny failure, a turn swings your nearly-full layer's gap to the far side right as the gauge hits red; big moment, a clear at max pressure: the whistle shrieks and the drizzle visibly slows back down.
+**Counterplay**: build flat (turns are free on a flat stack) and take small clears early instead of saving for a big one; the gauge is always visible, so the player can choose when to cash in.
+**Star rationale**: t_est = 4 × 36 × 2.667 = 384 s → 305 / 210 s.
+
+### H3 Magnet Keys
+
+**Story card.** Five keyholes, two wall pistons, and the electro-magnet on the east wall tugging every key piece toward it. Turn the brass key to the wall before the magnet drags it out of line. · **Tock: watcher** (slumped, one notch wound per key; magnet tugs his key on each pull).
+**Ideas recombined**: Winding Keys (`key_stamp` 2 per bag, `wind_keys` 5; keyholes −x z2 y1, +x z2 y2, −z x2 y3, +z x2 y1, −x z4 y3, the §7 H2 layout) + Piston Punch (`piston_locks` 5; west row z0 y1, east row z3 y2; neither faces a keyhole row, so a push never unwinds a key).
+**Wave-3**: `magnet_pull` (**Electro-Magnet**): `magnet_col` [4, 2] (beside the east keyhole), `pull_interval_ms` 4000, `pull_warn_ms` 800, `pull_axis` "x". Slower than H1 because key placement needs rotation time.
+**Goal**: Wind 5 keys on 5×5, H10, 8 Std, `g0` 1.30.
+**Wacky test**: surprising, the magnet helps you reach the east keyhole and fights you on the west ones; silly, Tock's own key twitching toward the magnet as he perks up; funny failure, a key cube lined up perfectly on the west wall, then yanked one cell east with its stamp facing nothing; big moment, a pull that delivers a key piece onto the east keyhole for you.
+**Counterplay**: rotate the stamp early, hard drop inside the pull's cooldown (4 s); do west keyholes right after a pull; let the magnet carry pieces east for the +x keyhole. Clears still free covered keyholes.
+**Star rationale**: hand-set. `clockwork_08` is 200 / 140 s for 4 keys (50 / 35 s a key); 5 keys = 250 / 175, tightened 4% for the hard track → 240 / 170 s.
+
+**Audio**: one-shots only: an electric crackle-hum on the magnet warning and a "clank" on the pull; a rising boiler hiss with the gauge and a whistle on release. Tracks `clockwork_h1_tbd`…`clockwork_h3_tbd` are placeholders (play `clockwork_03_tbd`, `clockwork_09_tbd`, `clockwork_08_tbd` until supplied).
+**Open questions**: magnet_pull is used twice (H1, H3) and pressure_cooker once; swap H3 to pressure_cooker if the user wants each suggested mechanic once more evenly. `wind_keys` + `magnet_pull`: confirm a pulled key piece re-evaluates its keyhole glow on the ghost after the move.

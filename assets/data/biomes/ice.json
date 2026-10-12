@@ -1,0 +1,65 @@
+{
+  "id": "ice",
+  "index": 3,
+  "art_set": "candy_toy",
+  "palette": "meadow",
+  "side_island": false,
+  "default_music": "mus_ice_default",
+  "levels": [
+    {
+      "id": "ice_01",
+      "json": "res://src/levels/ice/ice_01/ice_01.json",
+      "scene": "res://src/levels/ice/ice_01/ice_01.tscn"
+    },
+    {
+      "id": "ice_02",
+      "json": "res://src/levels/ice/ice_02/ice_02.json",
+      "scene": "res://src/levels/ice/ice_02/ice_02.tscn"
+    },
+    {
+      "id": "ice_03",
+      "json": "res://src/levels/ice/ice_03/ice_03.json",
+      "scene": "res://src/levels/ice/ice_03/ice_03.tscn"
+    },
+    {
+      "id": "ice_04",
+      "json": "res://src/levels/ice/ice_04/ice_04.json",
+      "scene": "res://src/levels/ice/ice_04/ice_04.tscn"
+    },
+    {
+      "id": "ice_05",
+      "json": "res://src/levels/ice/ice_05/ice_05.json",
+      "scene": "res://src/levels/ice/ice_05/ice_05.tscn"
+    },
+    {
+      "id": "ice_06",
+      "json": "res://src/levels/ice/ice_06/ice_06.json",
+      "scene": "res://src/levels/ice/ice_06/ice_06.tscn"
+    },
+    {
+      "id": "ice_07",
+      "json": "res://src/levels/ice/ice_07/ice_07.json",
+      "scene": "res://src/levels/ice/ice_07/ice_07.tscn"
+    },
+    {
+      "id": "ice_08",
+      "json": "res://src/levels/ice/ice_08/ice_08.json",
+      "scene": "res://src/levels/ice/ice_08/ice_08.tscn"
+    },
+    {
+      "id": "ice_09",
+      "json": "res://src/levels/ice/ice_09/ice_09.json",
+      "scene": "res://src/levels/ice/ice_09/ice_09.tscn"
+    },
+    {
+      "id": "ice_10",
+      "json": "res://src/levels/ice/ice_10/ice_10.json",
+      "scene": "res://src/levels/ice/ice_10/ice_10.tscn"
+    },
+    {
+      "id": "ice_bonus",
+      "json": "res://src/levels/ice/ice_bonus/ice_bonus.json",
+      "scene": "res://src/levels/ice/ice_bonus/ice_bonus.tscn"
+    }
+  ]
+}

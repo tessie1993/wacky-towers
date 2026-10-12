@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "piston_punch",
+  "name_key": "RULE_PISTON_PUNCH",
+  "layer": "twist",
+  "icon": "piston_punch",
+  "behaviour": "piston_punch",
+  "params": {
+    "piston_locks": {
+      "type": "number"
+    },
+    "pistons": {
+      "type": "structure"
+    }
+  },
+  "incompatible_with": []
+}

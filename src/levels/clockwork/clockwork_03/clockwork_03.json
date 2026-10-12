@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "id": "clockwork_03",
+  "biome": "clockwork",
+  "tier": 3,
+  "board": {
+    "width": 8,
+    "depth": 4,
+    "h_play": 10,
+    "spawn_anchor": [
+      3,
+      1
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.1,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "conveyor",
+      "params": {
+        "conveyor_every": 3,
+        "conveyor_wrap": true,
+        "conveyor_dir": "+x"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 290000,
+    "t3": 205000
+  },
+  "music": "clockwork_03_tbd",
+  "name": "LVL_CLOCKWORK_03_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/clockwork.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "clockwork_03",
+      "biome": "clockwork",
+      "tier": 3,
+      "board": {
+        "width": 8,
+        "depth": 4,
+        "h_play": 10,
+        "spawn_anchor": {
+          "x": 3,
+          "z": 1
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.1,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "conveyor",
+          "params": {
+            "dir": "+x",
+            "conveyor_every": 3,
+            "conveyor_wrap": true
+          }
+        }
+      ],
+      "stars": {
+        "t2": 290000,
+        "t3": 205000
+      },
+      "music": "clockwork_03_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

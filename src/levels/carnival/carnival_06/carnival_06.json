@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "id": "carnival_06",
+  "biome": "carnival",
+  "tier": 6,
+  "name": "LVL_CARNIVAL_06_TITLE",
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 6
+  },
+  "pieces": {
+    "fixed_list": ["i", "o", "i", "o", "o", "i", "o", "i"],
+    "shapes": ["i", "o"]
+  },
+  "knobs": {
+    "fall.g0": 0.6,
+    "spawn.preview_count": 3,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "shape",
+    "piece_budget": 8,
+    "target_shape": {
+      "layers": {
+        "0": ["++++", "++++", "++++", "++++"],
+        "1": ["++++", "++++", "++++", "++++"]
+      }
+    }
+  },
+  "rules": [
+    { "id": "fill_shape", "params": { "topout_rule": "trim" } },
+    { "id": "jumbled_queue", "params": { "every": 3 } }
+  ],
+  "stars": {
+    "t2": 95000,
+    "t3": 65000
+  },
+  "music": "carnival_06_tbd",
+  "story": {
+    "title_key": "LVL_CARNIVAL_06_TITLE",
+    "premise_key": "LVL_CARNIVAL_06_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "shell"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/carnival.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1, "id": "carnival_06", "biome": "carnival", "tier": 6, "name": "LVL_CARNIVAL_06_TITLE",
+      "board": { "width": 4, "depth": 4, "h_play": 6 },
+      "pieces": { "fixed_list": ["i","o","i","o","o","i","o","i"] },
+      "knobs": { "fall.g0": 0.60, "spawn.preview_count": 3, "goal.top_out": "out_of_pieces" },
+      "goal": { "type": "shape", "piece_budget": 8,
+                "target_shape": { "layers": { "0": ["####","####","####","####"], "1": ["####","####","####","####"] } } },
+      "rules": [ { "id": "jumbled_queue", "params": { "every": 3 } } ],
+      "stars": { "t2": 95000, "t3": 65000 },
+      "solution": "see level notes",
+      "music": "carnival_06_tbd",
+      "story": { "title_key": "LVL_CARNIVAL_06_TITLE", "premise_key": "LVL_CARNIVAL_06_PREMISE", "mascot_role": "watcher", "icon": "shell" }
+    },
+    "unsupported": ["field:solution"],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:solution",
+      "jumbled_queue is a wave-3 rule (W5), skinned as 'Shell Game'; it reorders the fixed list's preview. The level is solvable in every order: rows z0-z1 take the four I pieces (two per row, layers 0 and 1), rows z2-z3 take the four O pieces stood on edge (2 wide x 2 tall). See design/levels/carnival.md section 6, level 06.",
+      "fill_shape (M2) is the Meadow bonus / Celestial 06 callback; runtime top-out mirrors Celestial 06 (trim)."
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

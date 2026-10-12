@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "source": "design/gdd/items.md#item-table-and-standing",
+  "items": [
+    {
+      "id": "slow_time",
+      "weight": 10,
+      "bias": 0,
+      "debuff": false
+    },
+    {
+      "id": "bomb",
+      "weight": 8,
+      "bias": 0.5,
+      "debuff": false
+    },
+    {
+      "id": "helper_drop",
+      "weight": 10,
+      "bias": 0,
+      "debuff": false
+    },
+    {
+      "id": "preview_peek",
+      "weight": 10,
+      "bias": -0.5,
+      "debuff": false
+    },
+    {
+      "id": "junk_rain",
+      "weight": 8,
+      "bias": 1,
+      "debuff": true
+    },
+    {
+      "id": "fog",
+      "weight": 6,
+      "bias": 0.5,
+      "debuff": true
+    },
+    {
+      "id": "speed_up",
+      "weight": 8,
+      "bias": 1,
+      "debuff": true
+    },
+    {
+      "id": "spin_lock",
+      "weight": 6,
+      "bias": 0.5,
+      "debuff": true
+    }
+  ]
+}

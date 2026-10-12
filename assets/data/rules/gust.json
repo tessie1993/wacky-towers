@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "id": "gust",
+  "name_key": "RULE_GUST",
+  "layer": "twist",
+  "icon": "gust",
+  "behaviour": "gust",
+  "params": {
+    "wind_dir": {
+      "type": "string"
+    },
+    "wind_interval_ms": {
+      "type": "number"
+    },
+    "wind_jitter_ms": {
+      "type": "number"
+    },
+    "wind_strength": {
+      "type": "number"
+    },
+    "wind_warn_ms": {
+      "type": "number"
+    },
+    "wind_mode": {
+      "type": "string"
+    },
+    "skin": {
+      "type": "string"
+    }
+  },
+  "incompatible_with": []
+}

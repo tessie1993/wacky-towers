@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "id": "lava_lid",
+  "name_key": "RULE_LAVA_LID",
+  "layer": "twist",
+  "icon": "lava_lid",
+  "behaviour": "lava_lid",
+  "params": {
+    "mode": {
+      "type": "string"
+    },
+    "lid_first_s": {
+      "type": "number"
+    },
+    "lid_every_s": {
+      "type": "number"
+    },
+    "lid_max": {
+      "type": "number"
+    },
+    "lid_warn_ms": {
+      "type": "number"
+    },
+    "lid_push_per_clear": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

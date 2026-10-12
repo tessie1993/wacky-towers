@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "mono_layer",
+  "name_key": "RULE_MONO_LAYER",
+  "layer": "mechanic",
+  "icon": "mono_layer",
+  "behaviour": "mono_layer",
+  "params": {
+    "mono_extra_layers": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

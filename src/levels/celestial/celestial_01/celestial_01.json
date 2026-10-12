@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "id": "celestial_01",
+  "biome": "celestial",
+  "tier": 1,
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 9
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "opening_set": [
+      "o",
+      "i"
+    ],
+    "opening_count": 2
+  },
+  "knobs": {
+    "fall.g0": 1.14,
+    "goal.warnings_max": 2,
+    "goal.top_out": "rescue"
+  },
+  "goal": {
+    "type": "clear_n",
+    "T_level": 200,
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "mascot_hint",
+      "params": {}
+    },
+    {
+      "id": "angle_gem",
+      "params": {
+        "skin": "duck_constellation"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 170000,
+    "t3": 120000
+  },
+  "music": "celestial_01_tbd",
+  "story": {
+    "mascot_role": "helper",
+    "icon": "star"
+  },
+  "name": "LVL_CELESTIAL_01_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/celestial.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "celestial_01",
+      "biome": "celestial",
+      "tier": 1,
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 9
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "screw_r"
+        ],
+        "opening_set": [
+          "o",
+          "i"
+        ],
+        "opening_count": 2
+      },
+      "knobs": {
+        "fall.g0": 1.14,
+        "goal.warnings_max": 2,
+        "goal.top_out": "rescue"
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3,
+        "T_level": 200
+      },
+      "rules": [
+        {
+          "id": "mascot_hint",
+          "params": {}
+        },
+        {
+          "id": "angle_gem",
+          "params": {
+            "skin": "duck_constellation"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "music": "celestial_01_tbd",
+      "story": {
+        "mascot_role": "helper",
+        "icon": "star"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

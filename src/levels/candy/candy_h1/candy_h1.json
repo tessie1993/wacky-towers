@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "id": "candy_h1",
+  "biome": "candy",
+  "tier": 12,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.0,
+    "clear.detector": "colour_connect",
+    "clear.collapse": "gummy",
+    "goal.warnings_max": 1,
+    "spawn.colour_count": 3
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 7
+  },
+  "rules": [
+    {
+      "id": "colour_pop",
+      "params": {
+        "pop_min": 6,
+        "layer_clear_too": true
+      }
+    },
+    {
+      "id": "moody_cube",
+      "params": {
+        "per_bag": 1
+      }
+    },
+    {
+      "id": "mascot_mood",
+      "params": {
+        "prank": "tickle_gummy"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 330000,
+    "t3": 230000
+  },
+  "music": "mus_candy_h1",
+  "name": "LVL_CANDY_H1_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "tags": {
+      "moody": {
+        "per_bag": 1
+      }
+    }
+  },
+  "metadata": {
+    "source": "design/levels/candy.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "candy_h1",
+      "biome": "candy",
+      "tier": 12,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.0,
+        "clear.detector": "colour_connect",
+        "clear.collapse": "gummy",
+        "goal.warnings_max": 1,
+        "spawn.colour_count": 3
+      },
+      "goal": {
+        "type": "clear",
+        "N": 7
+      },
+      "rules": [
+        {
+          "id": "colour_pop",
+          "params": {
+            "pop_min": 6,
+            "layer_clear_too": true
+          }
+        },
+        {
+          "id": "moody_cube",
+          "params": {
+            "per_bag": 1
+          }
+        },
+        {
+          "id": "mascot_mood",
+          "params": {
+            "prank": "tickle_gummy"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 330000,
+        "t3": 230000
+      },
+      "music": "mus_candy_h1"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

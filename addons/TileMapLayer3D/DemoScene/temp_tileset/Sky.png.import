@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ccuom15csfruo"
 path.s3tc="res://.godot/imported/Sky.png-10659757e6d16b6481ddd6c510aff0de.s3tc.ctex"
+path.etc2="res://.godot/imported/Sky.png-10659757e6d16b6481ddd6c510aff0de.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://addons/TileMapLayer3D/DemoScene/temp_tileset/Sky.png"
-dest_files=["res://.godot/imported/Sky.png-10659757e6d16b6481ddd6c510aff0de.s3tc.ctex"]
+dest_files=["res://.godot/imported/Sky.png-10659757e6d16b6481ddd6c510aff0de.s3tc.ctex", "res://.godot/imported/Sky.png-10659757e6d16b6481ddd6c510aff0de.etc2.ctex"]
 
 [params]
 

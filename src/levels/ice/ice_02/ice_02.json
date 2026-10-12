@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "id": "ice_02",
+  "biome": "ice",
+  "tier": 2,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 0.75
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "ice_slide",
+      "params": {
+        "slide_dir": "+z",
+        "slide_cells": 1
+      }
+    },
+    {
+      "id": "mascot_hint",
+      "params": {}
+    },
+    {
+      "id": "angle_gem",
+      "params": {
+        "where": "under_island"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 245000,
+    "t3": 175000
+  },
+  "music": "ice_02",
+  "name": "LVL_ICE_02_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/ice.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "ice_02",
+      "biome": "ice",
+      "tier": 2,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 0.75
+      },
+      "goal": {
+        "type": "clear",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "ice_slide",
+          "params": {
+            "slide_dir": "+z",
+            "slide_cells": 1
+          }
+        },
+        {
+          "id": "mascot_hint",
+          "params": {}
+        },
+        {
+          "id": "angle_gem",
+          "params": {
+            "where": "under_island"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
+      "music": "ice_02",
+      "recipe": {
+        "context": "campaign",
+        "atoms": [
+          "BL01",
+          "AR01",
+          "CV01",
+          "CL01",
+          "CO01",
+          "GO01",
+          "FT01",
+          "EV09",
+          "SE05",
+          "WO06"
+        ],
+        "story": {
+          "premise": "The floe is glass and every piece slides.",
+          "mascot_role": "helper"
+        }
+      }
+    },
+    "unsupported": [
+      "field:recipe"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:recipe"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "id": "neon_02",
+  "biome": "neon",
+  "tier": 2,
+  "name": "LVL_NEON_02_TITLE",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "fixed_list": []
+  },
+  "knobs": {
+    "fall.g0": 1.0,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "stopwatch",
+      "params": {}
+    }
+  ],
+  "stars": {
+    "t2": 260000,
+    "t3": 185000
+  },
+  "story": {
+    "title_key": "LVL_NEON_02_TITLE",
+    "premise_key": "LVL_NEON_02_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "star"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/neon.md",
+    "status": "Proposed",
+    "design_spec": {
+      "schema": 1,
+      "id": "neon_02",
+      "biome": "neon",
+      "tier": 2,
+      "name": "LVL_NEON_02_TITLE",
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ],
+        "fixed_list": []
+      },
+      "knobs": {
+        "fall.g0": 1.0,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 4
+      },
+      "rules": [
+        {
+          "id": "stopwatch",
+          "params": {}
+        }
+      ],
+      "stars": {
+        "t2": 260000,
+        "t3": 185000
+      },
+      "story": {
+        "title_key": "LVL_NEON_02_TITLE",
+        "premise_key": "LVL_NEON_02_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "star"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

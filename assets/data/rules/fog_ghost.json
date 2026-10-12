@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "id": "fog_ghost",
+  "name_key": "RULE_FOG_GHOST",
+  "layer": "content",
+  "icon": "fog_ghost",
+  "behaviour": "fog_ghost",
+  "params": {},
+  "incompatible_with": []
+}

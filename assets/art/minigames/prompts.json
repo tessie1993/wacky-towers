@@ -1,0 +1,186 @@
+{
+  "provider": "built-in image_gen",
+  "transparent_background": true,
+  "style": "Original toy-block clay/painted-wood party diorama",
+  "assets": [
+    {
+      "id": "mg01",
+      "name": "Hole in the Wall",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a turquoise L-shaped voxel piece turning toward a coral toy wall with an L-shaped hole, a lavender rotation arrow and golden perfect-fit star",
+      "path": "res://assets/art/minigames/mg01.png",
+      "status": "generated"
+    },
+    {
+      "id": "mg02",
+      "name": "Copycat",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: two matching small castles made of lavender, turquoise and peach voxel blocks, one raised on a cream display pad and the other being reconstructed with a tiny golden memory sparkle",
+      "path": "res://assets/art/minigames/mg02.png",
+      "status": "generated",
+      "source_path": "/workspace/scratch/704a41285bd5/generated_images/exec-17b75bdd-b5e4-4919-9902-e417222387ee.png",
+      "sha256": "08966561b9f08f184bb141aa652e8d449ae44bfaaccee2cc087ea50785e3785f",
+      "width": 1254,
+      "height": 1254,
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "id": "mg03",
+      "name": "Colour Rush",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: four clusters of vivid pastel voxel cubes with matching coloured faces, one group joyfully popping into golden star sparks above a small round board",
+      "path": "res://assets/art/minigames/mg03.png",
+      "status": "generated",
+      "source_path": "/workspace/scratch/704a41285bd5/generated_images/exec-ec2c82c4-8f06-467a-b346-1fb9787f48b3.png",
+      "sha256": "c3084b12000adc2c9a29e3768f9f01af9f6c639d4003c0fe3a5ae1ad1298c109",
+      "width": 1254,
+      "height": 1254,
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "id": "mg04",
+      "name": "Perfect Stack",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a striped peach slab sliding sideways exactly over a tall turquoise voxel tower, a friendly clock dial and golden perfect-alignment sparkle",
+      "path": "res://assets/art/minigames/mg04.png",
+      "status": "generated",
+      "source_path": "/workspace/scratch/704a41285bd5/generated_images/exec-1ac6ef09-6d3e-40fb-b48a-b45901d91758.png",
+      "sha256": "8a39c8e32ed0057b5843c49e236d9d3a08dfb90eb47faeb051305655b71f4149",
+      "width": 1254,
+      "height": 1254,
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "id": "mg05",
+      "name": "Crane Tower",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a tiny lavender toy crane suspending a turquoise tetromino over a wobbly coral-and-cream block tower, a swinging curved arrow and golden height ribbon",
+      "path": "res://assets/art/minigames/mg05.png",
+      "status": "generated",
+      "source_path": "/workspace/scratch/704a41285bd5/generated_images/exec-a644ae33-c2ae-424e-9368-da997e5aba28.png",
+      "sha256": "b72fc6f5b15dae25e9fa1f3143f752a9a5416d99e8ee837928c902218c104adc",
+      "width": 1254,
+      "height": 1254,
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "id": "mg06",
+      "name": "Mascot Bridge Race",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a cheerful original round mint cloud creature crossing a half-built bridge of colourful voxel blocks between two tiny floating grassy cliffs, a coral flag",
+      "path": "res://assets/art/minigames/mg06.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg07",
+      "name": "Box Packers",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a shallow cream wooden packing box being tightly filled with pastel tetromino blocks, one lavender piece floating over the last matching gap and a turquoise bow",
+      "path": "res://assets/art/minigames/mg07.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg08",
+      "name": "Gift Exchange",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: two colourful large voxel-block gift parcels with gold and lavender bows flying between two small toy towers, a curved playful exchange arrow",
+      "path": "res://assets/art/minigames/mg08.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg09",
+      "name": "Speed Sort",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a cream toy chute with three colour-labelled baskets in coral, turquoise and lavender, one golden voxel piece falling between cheerful matching cubes",
+      "path": "res://assets/art/minigames/mg09.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg10",
+      "name": "Shadow Duel",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a colourful small voxel sculpture between two navy-and-cream silhouette panels showing its front and side shadows, a golden light bulb",
+      "path": "res://assets/art/minigames/mg10.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg11",
+      "name": "Memory Tower",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a tall lavender voxel tower whose lower blocks fade into soft transparent sparkles, a turquoise memory ribbon and small cream eye-shaped lantern",
+      "path": "res://assets/art/minigames/mg11.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg12",
+      "name": "Spin Cycle",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a turquoise circular toy turntable carrying a short coral and lavender voxel tower, broad cream rotation arrow and bright golden clear sparks",
+      "path": "res://assets/art/minigames/mg12.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg13",
+      "name": "Floor Is Lava",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a tiny voxel tower of turquoise and lavender blocks rising above a coral-orange lava pool, a friendly mint cloud mascot safely standing atop, a small upward heat arrow",
+      "path": "res://assets/art/minigames/mg13.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg14",
+      "name": "Hot Block",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a chunky coral 2-by-2-by-2 voxel cube with a short glowing gold fuse being passed between two pastel toy-block hands, harmless little smoke puffs",
+      "path": "res://assets/art/minigames/mg14.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg15",
+      "name": "Catch Tower",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a turquoise three-by-three toy tray sliding sideways to catch a lavender tetromino falling from above, a coral floor shadow and gold catch sparkle",
+      "path": "res://assets/art/minigames/mg15.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg16",
+      "name": "Rhythm Blocks",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: three colourful chunky voxel drum pads with a pair of cream toy mallets, coral music notes and lavender rhythmic sparkles",
+      "path": "res://assets/art/minigames/mg16.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg17",
+      "name": "Magnet Maze",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a big coral horseshoe toy magnet pulling a turquoise voxel cube along a cream maze track toward a lavender marked dock, a curved golden pull trail",
+      "path": "res://assets/art/minigames/mg17.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg18",
+      "name": "Balloon Volley",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a large lavender balloon lifting a turquoise cube while two original soft toy paddles bat a smaller coral cube upward, golden motion arc and cheerful bounce sparkles",
+      "path": "res://assets/art/minigames/mg18.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg19",
+      "name": "Gem Grab",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a tiny turquoise voxel explorer carrying a cream basket of colourful gem cubes on a grassy miniature block island, a gold gem and coral home flag",
+      "path": "res://assets/art/minigames/mg19.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg20",
+      "name": "Paint Dash",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a cream toy paint roller spreading turquoise and lavender paint across the top faces of a coral voxel tile board, a star-shaped stencil and tiny paint splashes",
+      "path": "res://assets/art/minigames/mg20.png",
+      "status": "queued"
+    },
+    {
+      "id": "mg21",
+      "name": "Balance Budget",
+      "prompt": "Use case: stylized-concept. Asset type: a single original 3D toy game icon on genuinely transparent background, square composition, for the Wacky Towers party minigame. Style: polished friendly clay-and-painted-wood diorama, rounded bevels, clear readable silhouette at thumbnail scale, soft light, cream highlights and navy details, minimal objects. Keep the entire subject in frame with generous clear alpha margin. No text, numbers, logos, watermarks, copyrighted characters or franchise objects. An original toy-block universe with cheerful party-game mood. Subject: a lavender toy balance scale with two cream pans holding differently shaped coral and turquoise voxel pieces, a golden balanced sparkle at the centre",
+      "path": "res://assets/art/minigames/mg21.png",
+      "status": "queued"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "stack_celestial",
+  "mode": "stack",
+  "name": "Moon's Pillow",
+  "biome": "celestial",
+  "story": "Comet wants a high sleeping perch. Build a moonlit tower through the starwind.",
+  "objective": "Lock 12 supported slabs above the foundation before the timer ends.",
+  "twist": "Smooth wind and pulse variations test the climb; save the single magnet charge for recovery.",
+  "rule": "Time 12 slab drops, alternate both slide directions, and keep enough overlap to support the tower.",
+  "controls": "Space / tap: lock. U or E: spend the single magnet charge while inside the blue snap guide. Watch the wind before committing; the guide remains centred on the supported slab. Magnet locks break the perfect streak.",
+  "time_limit": 90.0,
+  "star_times": [
+    30.0,
+    52.0
+  ],
+  "base_width": 4.0,
+  "target_height": 12,
+  "speed_start": 2.2,
+  "speed_max": 4.0,
+  "motion_extent": 3.0,
+  "perfect_tolerance": 0.11,
+  "magnet_charges": 1,
+  "magnet_range": 0.7,
+  "wind_amplitude": 0.45,
+  "wind_period": 3.1,
+  "rhythm_amplitude": 0.26,
+  "rhythm_period": 1.8
+}

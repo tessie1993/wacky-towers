@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "snowball",
+  "name_key": "RULE_SNOWBALL",
+  "layer": "content",
+  "icon": "snowball",
+  "behaviour": "snowball",
+  "params": {
+    "slope_dir": {
+      "type": "string"
+    },
+    "roll_locks": {
+      "type": "number"
+    },
+    "snow_max": {
+      "type": "number"
+    },
+    "balls_max": {
+      "type": "number"
+    },
+    "respawn_locks": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

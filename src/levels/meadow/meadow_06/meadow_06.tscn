@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://b766rwwkr0oyb"]
+
+[ext_resource type="PackedScene" path="res://src/levels/_template/level_stage_base.tscn" id="1"]
+[ext_resource type="Script" uid="uid://bget2chj4yyf3" path="res://src/view/wt_stage.gd" id="2_2gjsw"]
+
+[node name="meadow_06" unique_id=2133137470 instance=ExtResource("1")]
+level_json = "res://src/levels/meadow/meadow_06/meadow_06.json"
+lighting = &"golden"
+
+[node name="MascotSpot" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 2)
+
+[node name="World" type="Node3D" parent="." index="2" unique_id=887715363]
+script = ExtResource("2_2gjsw")
+
+[node name="StoryOrigin" type="Marker3D" parent="World" index="0" unique_id=1545754398]

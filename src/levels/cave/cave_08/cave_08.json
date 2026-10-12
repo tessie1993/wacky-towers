@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "id": "cave_08",
+  "biome": "cave",
+  "tier": 8,
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.25,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "fog",
+      "params": {
+        "visible_ms": 3000,
+        "fade_ms": 800,
+        "invisible_alpha": 0.12,
+        "reveal_ms": 600,
+        "lantern_radius": 1,
+        "skin": "lantern_circle"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 225000,
+    "t3": 160000
+  },
+  "music": "cave_08_tbd",
+  "name": "LVL_CAVE_08_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/cave.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "cave_08",
+      "biome": "cave",
+      "tier": 8,
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.25,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "fog",
+          "params": {
+            "visible_ms": 3000,
+            "fade_ms": 800,
+            "invisible_alpha": 0.12,
+            "reveal_ms": 600,
+            "lantern_radius": 1,
+            "skin": "lantern_circle"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 225000,
+        "t3": 160000
+      },
+      "music": "cave_08_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "mill_belt",
+  "name_key": "RULE_MILL_BELT",
+  "layer": "mechanic",
+  "icon": "mill_belt",
+  "behaviour": "mill_belt",
+  "params": {
+    "conveyor_dir": {
+      "type": "string"
+    },
+    "conveyor_every": {
+      "type": "number"
+    },
+    "conveyor_wrap": {
+      "type": "flag"
+    }
+  },
+  "incompatible_with": []
+}

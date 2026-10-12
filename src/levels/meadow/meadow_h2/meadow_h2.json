@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "id": "meadow_h2",
+  "biome": "meadow",
+  "tier": 13,
+  "name": "LVL_MEADOW_H2_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.0,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "mushroom_popup",
+      "params": {
+        "spawn_every_locks": 6,
+        "objects_max": 3
+      }
+    },
+    {
+      "id": "topsy_tumble",
+      "params": {
+        "flip_every_layers": 2,
+        "flip_every_ms": 45000,
+        "flip_warn_ms": 2000
+      }
+    },
+    {
+      "id": "confetti_fill",
+      "params": {
+        "min_layers": 2,
+        "max_fill": 4
+      }
+    }
+  ],
+  "stars": {
+    "t2": 300000,
+    "t3": 210000
+  },
+  "music": "meadow_h2",
+  "story": {
+    "title_key": "LVL_MEADOW_H2_TITLE",
+    "premise_key": "LVL_MEADOW_H2_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "mushroom"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/meadow.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "meadow_h2",
+      "biome": "meadow",
+      "tier": 13,
+      "board": { "width": 6, "depth": 6, "h_play": 10 },
+      "knobs": { "fall.g0": 1.0, "goal.top_out": "rescue", "goal.warnings_max": 1 },
+      "goal": { "type": "clear_n", "n": 4 },
+      "rules": [
+        { "id": "mushroom_popup", "params": { "spawn_every_locks": 6, "objects_max": 3 } },
+        { "id": "topsy_tumble", "params": { "flip_every_layers": 2, "flip_every_ms": 45000, "flip_warn_ms": 2000 } },
+        { "id": "confetti_fill", "params": { "min_layers": 2, "max_fill": 4 } }
+      ],
+      "stars": { "t2": 300000, "t3": 210000 },
+      "music": "meadow_h2"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "confetti_fill is a wave-3 rule (design/gdd/mechanics-wave3.md W12); its assets/data/rules JSON lands with the wave-3 implementation."
+    ],
+    "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = 4 x 96 s",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

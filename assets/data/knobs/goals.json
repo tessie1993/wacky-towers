@@ -1,23 +1,237 @@
 {
   "knobs": [
-    {"id": "goal.chain_bonus", "type": "scalar", "default": 0.5, "min": 0.0, "max": 1.0, "allows_zero": true, "rule_adjustable": false, "source": "design/gdd/scoring-stars.md#tuning-knobs", "note": "Value of chains"},
-    {"id": "goal.clear_base", "type": "count", "default": 100, "min": 50, "max": 500, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/scoring-stars.md#tuning-knobs", "note": "Score scale"},
-    {"id": "goal.combo_bonus", "type": "count", "default": 50, "min": 0, "max": 200, "allows_zero": true, "rule_adjustable": false, "source": "design/gdd/scoring-stars.md#tuning-knobs", "note": "Value of consecutive clears"},
-    {"id": "goal.countdown_ms", "type": "count", "default": 3000, "min": 0, "max": 5000, "allows_zero": true, "rule_adjustable": false, "source": "design/gdd/level-goals-fail-states.md#tuning-knobs", "note": "Start pacing"},
-    {"id": "goal.drop_points", "type": "count", "default": 2, "min": 0, "max": 5, "allows_zero": true, "rule_adjustable": false, "source": "design/gdd/scoring-stars.md#tuning-knobs", "note": "Small per-piece points"},
-    {"id": "goal.height_coverage", "type": "scalar", "default": 0.5, "min": 0.25, "max": 1.0, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/level-goals-fail-states.md#tuning-knobs", "note": "How real a tower must be (F2)"},
-    {"id": "goal.intro_card_ms", "type": "count", "default": 2000, "min": 0, "max": 4000, "allows_zero": true, "rule_adjustable": false, "source": "rules-audit G1", "note": "Level intro card; 0 skips it"},
-    {"id": "goal.place_points", "type": "count", "default": 1, "min": 0, "max": 5, "allows_zero": true, "rule_adjustable": false, "source": "design/gdd/scoring-stars.md#tuning-knobs", "note": "Small per-piece points"},
-    {"id": "goal.rescue_margin", "type": "count", "default": 2, "min": 0, "max": 4, "allows_zero": true, "rule_adjustable": false, "source": "design/gdd/level-goals-fail-states.md#tuning-knobs", "note": "Room after a rescue (F3); inert when warnings_max = 0"},
-    {"id": "goal.star2_share", "type": "scalar", "default": 0.85, "min": 0.0, "max": 1.0, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/scoring-stars.md#tuning-knobs", "note": "TODO(design): no range in GDD (see F1); 0..1 assumed"},
-    {"id": "goal.star3_share", "type": "scalar", "default": 0.6, "min": 0.0, "max": 1.0, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/scoring-stars.md#tuning-knobs", "note": "TODO(design): no range in GDD (see F1); 0..1 assumed"},
-    {"id": "goal.survive2_share", "type": "scalar", "default": 0.6, "min": 0.0, "max": 1.0, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/scoring-stars.md#tuning-knobs", "note": "TODO(design): no range in GDD (see F4); 0..1 assumed"},
-    {"id": "goal.survive3_share", "type": "scalar", "default": 1.0, "min": 0.0, "max": 1.0, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/scoring-stars.md#tuning-knobs", "note": "TODO(design): no range in GDD (see F4); 0..1 assumed"},
-    {"id": "goal.t_level_s", "type": "count", "default": 480, "min": 120, "max": 900, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/level-goals-fail-states.md#tuning-knobs", "note": "Suggested N (F1), seconds"},
-    {"id": "goal.t_piece_s", "type": "scalar", "default": 8.0, "min": 4.0, "max": 12.0, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/level-goals-fail-states.md#tuning-knobs", "note": "Heartbeat t_beat (Board F6) and suggested N (F1); seconds"},
-    {"id": "goal.top_out", "type": "slot", "default": "rescue", "choices": ["rescue", "trim", "lose"], "rule_adjustable": true, "source": "design/gdd/level-goals-fail-states.md#tuning-knobs", "note": "GDD topout_rule; trim under M1, M2 is set per level"},
-    {"id": "goal.type", "type": "slot", "default": "clear_n", "choices": ["clear_n", "height", "shape", "survive"], "rule_adjustable": false, "source": "design/gdd/level-goals-fail-states.md#tuning-knobs", "note": "GDD goal (clear/height/survive/shape); targets N, H_target, T, M are level data"},
-    {"id": "goal.warning_ms", "type": "count", "default": 1200, "min": 600, "max": 1500, "allows_zero": false, "rule_adjustable": true, "source": "rules-audit F7", "note": "Top-out warning duration"},
-    {"id": "goal.warnings_max", "type": "count", "default": 1, "min": 0, "max": 3, "allows_zero": true, "rule_adjustable": true, "source": "design/gdd/level-goals-fail-states.md#tuning-knobs", "note": "Forgiveness; 0 makes rescue_margin inert"}
+    {
+      "id": "goal.chain_bonus",
+      "type": "scalar",
+      "default": 0.5,
+      "min": 0.0,
+      "max": 1.0,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/scoring-stars.md#tuning-knobs",
+      "note": "Value of chains"
+    },
+    {
+      "id": "goal.clear_base",
+      "type": "count",
+      "default": 100,
+      "min": 50,
+      "max": 500,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/scoring-stars.md#tuning-knobs",
+      "note": "Score scale"
+    },
+    {
+      "id": "goal.combo_bonus",
+      "type": "count",
+      "default": 50,
+      "min": 0,
+      "max": 200,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/scoring-stars.md#tuning-knobs",
+      "note": "Value of consecutive clears"
+    },
+    {
+      "id": "goal.countdown_ms",
+      "type": "count",
+      "default": 3000,
+      "min": 0,
+      "max": 5000,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/level-goals-fail-states.md#tuning-knobs",
+      "note": "Start pacing"
+    },
+    {
+      "id": "goal.drop_points",
+      "type": "count",
+      "default": 2,
+      "min": 0,
+      "max": 5,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/scoring-stars.md#tuning-knobs",
+      "note": "Small per-piece points"
+    },
+    {
+      "id": "goal.height_coverage",
+      "type": "scalar",
+      "default": 0.5,
+      "min": 0.25,
+      "max": 1.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/level-goals-fail-states.md#tuning-knobs",
+      "note": "How real a tower must be (F2)"
+    },
+    {
+      "id": "goal.intro_card_ms",
+      "type": "count",
+      "default": 2000,
+      "min": 0,
+      "max": 4000,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "rules-audit G1",
+      "note": "Level intro card; 0 skips it"
+    },
+    {
+      "id": "goal.place_points",
+      "type": "count",
+      "default": 1,
+      "min": 0,
+      "max": 5,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/scoring-stars.md#tuning-knobs",
+      "note": "Small per-piece points"
+    },
+    {
+      "id": "goal.rescue_margin",
+      "type": "count",
+      "default": 2,
+      "min": 0,
+      "max": 4,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/level-goals-fail-states.md#tuning-knobs",
+      "note": "Room after a rescue (F3); inert when warnings_max = 0"
+    },
+    {
+      "id": "goal.star2_share",
+      "type": "scalar",
+      "default": 0.85,
+      "min": 0.0,
+      "max": 1.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/scoring-stars.md#tuning-knobs",
+      "note": "TODO(design): no range in GDD (see F1); 0..1 assumed"
+    },
+    {
+      "id": "goal.star3_share",
+      "type": "scalar",
+      "default": 0.6,
+      "min": 0.0,
+      "max": 1.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/scoring-stars.md#tuning-knobs",
+      "note": "TODO(design): no range in GDD (see F1); 0..1 assumed"
+    },
+    {
+      "id": "goal.survive2_share",
+      "type": "scalar",
+      "default": 0.6,
+      "min": 0.0,
+      "max": 1.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/scoring-stars.md#tuning-knobs",
+      "note": "TODO(design): no range in GDD (see F4); 0..1 assumed"
+    },
+    {
+      "id": "goal.survive3_share",
+      "type": "scalar",
+      "default": 1.0,
+      "min": 0.0,
+      "max": 1.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/scoring-stars.md#tuning-knobs",
+      "note": "TODO(design): no range in GDD (see F4); 0..1 assumed"
+    },
+    {
+      "id": "goal.t_level_s",
+      "type": "count",
+      "default": 480,
+      "min": 120,
+      "max": 900,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/level-goals-fail-states.md#tuning-knobs",
+      "note": "Suggested N (F1), seconds"
+    },
+    {
+      "id": "goal.t_piece_s",
+      "type": "scalar",
+      "default": 8.0,
+      "min": 4.0,
+      "max": 12.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/level-goals-fail-states.md#tuning-knobs",
+      "note": "Heartbeat t_beat (Board F6) and suggested N (F1); seconds"
+    },
+    {
+      "id": "goal.top_out",
+      "type": "slot",
+      "default": "rescue",
+      "choices": [
+        "rescue",
+        "trim",
+        "lose",
+        "piece_budget",
+        "out_of_pieces",
+        "budget"
+      ],
+      "rule_adjustable": true,
+      "source": "design/gdd/level-goals-fail-states.md#tuning-knobs",
+      "note": "GDD topout_rule; trim under M1, M2 is set per level"
+    },
+    {
+      "id": "goal.type",
+      "type": "slot",
+      "default": "clear_n",
+      "choices": [
+        "clear_n",
+        "height",
+        "shape",
+        "survive",
+        "endless",
+        "rescue_all",
+        "bonk_boss",
+        "dig_rescue",
+        "wind_keys",
+        "bake_oven"
+      ],
+      "rule_adjustable": false,
+      "source": "design/gdd/level-goals-fail-states.md#tuning-knobs",
+      "note": "GDD goal (clear/height/survive/shape); targets N, H_target, T, M are level data"
+    },
+    {
+      "id": "goal.warning_ms",
+      "type": "count",
+      "default": 1200,
+      "min": 600,
+      "max": 1500,
+      "allows_zero": false,
+      "rule_adjustable": true,
+      "source": "rules-audit F7",
+      "note": "Top-out warning duration"
+    },
+    {
+      "id": "goal.warnings_max",
+      "type": "count",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "source": "design/gdd/level-goals-fail-states.md#tuning-knobs",
+      "note": "Forgiveness; 0 makes rescue_margin inert"
+    },
+    {
+      "id": "goal.time_limit_ms",
+      "type": "count",
+      "default": 0,
+      "min": 0,
+      "max": 900000,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/levels/meadow.md#picnic-puzzle"
+    }
   ]
 }

@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "crumble_tiles",
+  "name_key": "RULE_CRUMBLE_TILES",
+  "layer": "mechanic",
+  "icon": "crumble_tiles",
+  "behaviour": "crumble_tiles",
+  "params": {
+    "tiles": {
+      "type": "structure"
+    },
+    "crumble_after": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

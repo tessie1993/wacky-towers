@@ -1,0 +1,190 @@
+{
+  "schema": 1,
+  "id": "clockwork_10",
+  "biome": "clockwork",
+  "tier": 10,
+  "board": {
+    "width": 8,
+    "depth": 6,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "chair"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.4,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "conveyor",
+      "params": {
+        "conveyor_every": 3,
+        "conveyor_wrap": true,
+        "conveyor_dir": "+x"
+      }
+    },
+    {
+      "id": "piston_punch",
+      "params": {
+        "piston_locks": 4,
+        "pistons": [
+          {
+            "wall": "south",
+            "row": 2,
+            "y": 1
+          },
+          {
+            "wall": "south",
+            "row": 5,
+            "y": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "stopwatch",
+      "params": {
+        "stop_every_ms": 16000,
+        "stop_jitter_ms": 3000,
+        "stop_warn_ms": 1000,
+        "stop_ms": 2000,
+        "catchup_scale": 1500,
+        "catchup_ms": 2000
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "clockwork_10_tbd",
+  "story": {
+    "mascot_role": "boss",
+    "icon": "cuckoo"
+  },
+  "name": "LVL_CLOCKWORK_10_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/clockwork.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "clockwork_10",
+      "biome": "clockwork",
+      "tier": 10,
+      "board": {
+        "width": 8,
+        "depth": 6,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "tripod",
+          "screw_l",
+          "screw_r",
+          "chair"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.4,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "conveyor",
+          "params": {
+            "dir": "+x",
+            "conveyor_every": 3,
+            "conveyor_wrap": true
+          }
+        },
+        {
+          "id": "pistons",
+          "params": {
+            "piston_locks": 4,
+            "pistons": [
+              {
+                "wall": "+z",
+                "row": 2,
+                "y": 1
+              },
+              {
+                "wall": "+z",
+                "row": 5,
+                "y": 1
+              }
+            ]
+          }
+        },
+        {
+          "id": "stopwatch",
+          "params": {
+            "stop_every_ms": 16000,
+            "stop_jitter_ms": 3000,
+            "stop_warn_ms": 1000,
+            "stop_ms": 2000,
+            "catchup_scale": 1500,
+            "catchup_ms": 2000
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "music": "clockwork_10_tbd",
+      "story": {
+        "mascot_role": "boss",
+        "icon": "cuckoo"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "pistons",
+        "runtime": "piston_punch",
+        "params": {
+          "piston_locks": 4,
+          "pistons": [
+            {
+              "wall": "south",
+              "row": 2,
+              "y": 1
+            },
+            {
+              "wall": "south",
+              "row": 5,
+              "y": 1
+            }
+          ]
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

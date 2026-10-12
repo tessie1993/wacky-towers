@@ -1,0 +1,121 @@
+{
+  "schema": 1,
+  "id": "forest_07",
+  "biome": "forest",
+  "tier": 7,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.15,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "gust",
+      "params": {
+        "wind_mode": "rotating",
+        "wind_interval_ms": 9000,
+        "wind_jitter_ms": 2500,
+        "wind_strength": 1,
+        "wind_warn_ms": 1000
+      }
+    },
+    {
+      "id": "dandelion_puff",
+      "params": {
+        "per_bag": 1
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "forest_07_tbd",
+  "name": "LVL_FOREST_07_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "tags": {
+      "dandelion_puff": {
+        "per_bag": 1
+      }
+    }
+  },
+  "metadata": {
+    "source": "design/levels/forest.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "forest_07",
+      "biome": "forest",
+      "tier": 7,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.15,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "gust",
+          "params": {
+            "wind_mode": "rotating",
+            "wind_interval_ms": 9000,
+            "wind_jitter_ms": 2500,
+            "wind_strength": 1,
+            "wind_warn_ms": 1000
+          }
+        },
+        {
+          "id": "split_piece",
+          "params": {
+            "per_bag": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "music": "forest_07_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "split_piece",
+        "runtime": "dandelion_puff",
+        "params": {
+          "per_bag": 1
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

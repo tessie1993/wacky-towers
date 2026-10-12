@@ -23,6 +23,9 @@ jobs:
         with:
           lfs: true
 
+      - name: Install checksum-verified Orchestrator native extension
+        run: python3 tools/setup/install_orchestrator.py
+
       # version: installed runs the gdUnit4 committed in addons/.
       - name: Run GdUnit4 Tests
         uses: godot-gdunit-labs/gdUnit4-action@v1

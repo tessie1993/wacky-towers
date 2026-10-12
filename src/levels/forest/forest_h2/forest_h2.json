@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "id": "forest_h2",
+  "biome": "forest",
+  "tier": 13,
+  "name": "LVL_FOREST_H2_TITLE",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.25,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "woodpecker_knock",
+      "params": {
+        "knock_interval_ms": 13000,
+        "knock_jitter_ms": 3000,
+        "knock_warn_ms": 1500,
+        "knock_pop_max": 4
+      }
+    },
+    {
+      "id": "vines",
+      "params": {
+        "vine_per_bag": 1
+      }
+    },
+    {
+      "id": "echo_drop",
+      "params": {
+        "every": 4
+      }
+    }
+  ],
+  "stars": {
+    "t2": 260000,
+    "t3": 185000
+  },
+  "music": "forest_h2",
+  "story": {
+    "title_key": "LVL_FOREST_H2_TITLE",
+    "premise_key": "LVL_FOREST_H2_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "woodpecker"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/forest.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "forest_h2",
+      "biome": "forest",
+      "tier": 13,
+      "board": { "width": 5, "depth": 5, "h_play": 12 },
+      "knobs": { "fall.g0": 1.25, "goal.warnings_max": 1 },
+      "goal": { "type": "clear_n", "n": 5 },
+      "rules": [
+        { "id": "woodpecker_knock", "params": { "knock_interval_ms": 13000, "knock_jitter_ms": 3000, "knock_warn_ms": 1500, "knock_pop_max": 4 } },
+        { "id": "vines", "params": { "vine_per_bag": 1 } },
+        { "id": "echo_drop", "params": { "every": 4 } }
+      ],
+      "stars": { "t2": 260000, "t3": 185000 },
+      "music": "forest_h2"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "echo_drop is a wave-3 rule (design/gdd/mechanics-wave3.md W9), skinned as the Forest event 'Echo Drum'; its assets/data/rules JSON lands with the wave-3 implementation."
+    ],
+    "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = 5 x 66.7 s (A = 25)",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

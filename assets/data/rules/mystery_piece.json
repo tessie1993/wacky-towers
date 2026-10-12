@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "mystery_piece",
+  "name_key": "RULE_MYSTERY_PIECE",
+  "layer": "twist",
+  "icon": "mystery_piece",
+  "behaviour": "mystery_piece",
+  "params": {
+    "every": {
+      "type": "number"
+    },
+    "pool": {
+      "type": "structure"
+    }
+  },
+  "incompatible_with": []
+}

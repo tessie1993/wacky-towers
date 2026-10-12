@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "carnival_07",
+  "biome": "carnival",
+  "tier": 7,
+  "name": "LVL_CARNIVAL_07_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.45,
+    "goal.warnings_max": 1,
+    "goal.top_out": "rescue"
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    { "id": "echo_drop", "params": { "every": 4 } },
+    { "id": "mirror", "params": { "mirror_axis": "x", "skin": "funhouse" } }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "carnival_07_tbd",
+  "story": {
+    "title_key": "LVL_CARNIVAL_07_TITLE",
+    "premise_key": "LVL_CARNIVAL_07_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "mirror"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/carnival.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1, "id": "carnival_07", "biome": "carnival", "tier": 7, "name": "LVL_CARNIVAL_07_TITLE",
+      "board": { "width": 6, "depth": 6, "h_play": 10 },
+      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r"] },
+      "knobs": { "fall.g0": 1.45, "goal.warnings_max": 1, "goal.top_out": "rescue" },
+      "goal": { "type": "clear_n", "N": 4 },
+      "rules": [
+        { "id": "echo_drop", "params": { "every": 4 } },
+        { "id": "mirror", "params": { "mirror_axis": "x", "skin": "funhouse" } }
+      ],
+      "stars": { "t2": 325000, "t3": 230000 },
+      "music": "carnival_07_tbd",
+      "story": { "title_key": "LVL_CARNIVAL_07_TITLE", "premise_key": "LVL_CARNIVAL_07_PREMISE", "mascot_role": "watcher", "icon": "mirror" }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "echo_drop is a wave-3 rule (W9), skinned as 'Hall of Mirrors Echo'. mirror is the Neon callback; Neon levels ship it with empty params, so mirror_axis 'x' and skin 'funhouse' need confirming against the mirror behaviour.",
+      "g0 1.45 is 0.02 below F2 (1.47)."
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

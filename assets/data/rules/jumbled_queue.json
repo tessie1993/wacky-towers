@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "jumbled_queue",
+  "name_key": "RULE_JUMBLED_QUEUE",
+  "layer": "twist",
+  "icon": "jumbled_queue",
+  "behaviour": "jumbled_queue",
+  "params": {
+    "every": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

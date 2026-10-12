@@ -1,0 +1,206 @@
+{
+  "id": "shadow_clockwork_sign",
+  "mode": "shadow",
+  "name": "Clockwork Sign",
+  "biome": "clockwork",
+  "story": "Tock has two direction signs and a tray of spare clock parts. Crossed sockets belong to moving gears, so keep them clear.",
+  "objective": "Rebuild three clock signs without using crossed gear sockets.",
+  "twist": "Forbidden sockets force you to solve the depth ambiguity while a strict cube budget rewards reuse.",
+  "rule": "Match both panels exactly within the cube budget. Crossed sockets cannot hold cubes. Removal refunds a cube.",
+  "controls": "Arrows: move. E/Q: raise/lower. Space: add/remove. U: undo. Crossed sockets are blocked.",
+  "time_limit": 360,
+  "star_times": [
+    240,
+    300
+  ],
+  "grid_size": 3,
+  "ending": "The clock ticks again; Tock proudly points both signs toward the chime.",
+  "puzzles": [
+    {
+      "id": "gear_lever",
+      "name": "The winding lever",
+      "grid_size": 3,
+      "cube_budget": 5,
+      "front": [
+        "##.",
+        "##.",
+        "#.."
+      ],
+      "side": [
+        ".##",
+        "##.",
+        "#.."
+      ],
+      "blocked_cells": [
+        [
+          0,
+          0,
+          2
+        ]
+      ],
+      "solution": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          2,
+          0
+        ]
+      ],
+      "story": "Tock leaves one moving gear socket crossed. Shift the lever into another depth.",
+      "payoff": "The winding lever clicks into place."
+    },
+    {
+      "id": "chime_bridge",
+      "name": "A bridge for the chime",
+      "grid_size": 3,
+      "cube_budget": 6,
+      "front": [
+        "###",
+        "#.#",
+        ".#."
+      ],
+      "side": [
+        "#.#",
+        ".##",
+        ".#."
+      ],
+      "blocked_cells": [
+        [
+          0,
+          0,
+          2
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          2,
+          1,
+          1
+        ]
+      ],
+      "solution": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          1
+        ]
+      ],
+      "story": "The chime bridge must avoid three gear teeth. All six spare cubes must cast useful shadows.",
+      "payoff": "The chime reaches its hanging bell."
+    },
+    {
+      "id": "double_sign",
+      "name": "Two directions at once",
+      "grid_size": 3,
+      "cube_budget": 6,
+      "front": [
+        ".#.",
+        "###",
+        "#.#"
+      ],
+      "side": [
+        "#..",
+        "#.#",
+        ".##"
+      ],
+      "blocked_cells": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          1,
+          0
+        ],
+        [
+          2,
+          2,
+          1
+        ]
+      ],
+      "solution": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          1,
+          2
+        ],
+        [
+          2,
+          1,
+          0
+        ],
+        [
+          0,
+          2,
+          1
+        ],
+        [
+          2,
+          2,
+          2
+        ]
+      ],
+      "story": "Two direction signs share the same spare parts. The crossed sockets hint which depth is safe.",
+      "payoff": "Both signs point toward the clock."
+    }
+  ]
+}

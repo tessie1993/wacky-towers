@@ -1,0 +1,177 @@
+{
+  "schema": 1,
+  "id": "lava_02",
+  "biome": "lava",
+  "tier": 2,
+  "name": "level.lava_02.name",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 10,
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "#####",
+          "#.###",
+          "###.#",
+          "##.##",
+          "#####"
+        ],
+        "1": [
+          ".....",
+          ".#...",
+          "...#.",
+          "..#..",
+          "....."
+        ]
+      }
+    }
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "duo",
+      "tripod"
+    ],
+    "opening_set": [
+      "i",
+      "i"
+    ],
+    "opening_count": 2,
+    "tags": {
+      "ember": {
+        "per_bag": 1
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 0.9,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "ember",
+      "params": {
+        "drill_depth": 1
+      }
+    }
+  ],
+  "stars": {
+    "t2": 150000,
+    "t3": 105000
+  },
+  "music": "lava_02",
+  "story": {
+    "mascot_role": "watcher",
+    "icon": "ember_hole"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/lava.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "lava_02",
+      "biome": "lava",
+      "tier": 2,
+      "name": "level.lava_02.name",
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 10,
+        "starting_contents": {
+          "layers": {
+            "0": [
+              "#####",
+              "#.###",
+              "###.#",
+              "##.##",
+              "#####"
+            ],
+            "1": [
+              ".....",
+              ".L...",
+              "...L.",
+              "..L..",
+              "....."
+            ]
+          }
+        }
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "duo",
+          "tripod"
+        ],
+        "opening_set": [
+          "i",
+          "i"
+        ],
+        "opening_count": 2
+      },
+      "knobs": {
+        "fall.g0": 0.9,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "SP40",
+          "params": {
+            "ember_per_bag": 1,
+            "drill_depth": 1
+          }
+        }
+      ],
+      "recipe": [
+        {
+          "slot": "se",
+          "atom": "SE05"
+        }
+      ],
+      "stars": {
+        "t2": 150000,
+        "t3": 105000
+      },
+      "music": "lava_02",
+      "story": {
+        "mascot_role": "watcher",
+        "icon": "ember_hole"
+      }
+    },
+    "unsupported": [
+      "field:recipe"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:recipe"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "SP40",
+        "runtime": "ember",
+        "params": {
+          "drill_depth": 1
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

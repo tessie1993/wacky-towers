@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "id": "celestial_05",
+  "biome": "celestial",
+  "tier": 5,
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "big_cube"
+    ],
+    "weights": {
+      "big_cube": 0.5
+    }
+  },
+  "knobs": {
+    "fall.g0": 1.3,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "height",
+    "height_coverage": 0.6,
+    "h_target": 10
+  },
+  "rules": [
+    {
+      "id": "build_race",
+      "params": {}
+    },
+    {
+      "id": "balloon",
+      "params": {
+        "balloon_per_bag": 1,
+        "balloon_g_mult": 0.5,
+        "balloon_drift_ms": 3000
+      }
+    }
+  ],
+  "stars": {
+    "t2": 240000,
+    "t3": 170000
+  },
+  "music": "celestial_05_tbd",
+  "name": "LVL_CELESTIAL_05_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/celestial.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "celestial_05",
+      "biome": "celestial",
+      "tier": 5,
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "screw_r",
+          "big_cube"
+        ],
+        "weights": {
+          "big_cube": 0.5
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.3,
+        "goal.top_out": "trim"
+      },
+      "goal": {
+        "type": "height",
+        "H_target": 10,
+        "height_coverage": 0.6
+      },
+      "rules": [
+        {
+          "id": "build_race",
+          "params": {}
+        },
+        {
+          "id": "balloon*",
+          "params": {
+            "balloon_per_bag": 1,
+            "balloon_g_mult": 0.5,
+            "balloon_drift_ms": 3000
+          }
+        }
+      ],
+      "stars": {
+        "t2": 240000,
+        "t3": 170000
+      },
+      "music": "celestial_05_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "balloon*",
+        "runtime": "balloon",
+        "params": {
+          "balloon_per_bag": 1,
+          "balloon_g_mult": 0.5,
+          "balloon_drift_ms": 3000
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

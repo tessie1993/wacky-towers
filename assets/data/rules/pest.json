@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "pest",
+  "name_key": "RULE_PEST",
+  "layer": "content",
+  "icon": "pest",
+  "behaviour": "pest",
+  "params": {
+    "skin": {
+      "type": "string"
+    },
+    "ant_every_locks": {
+      "type": "number"
+    },
+    "late_spawn_s": {
+      "type": "number"
+    },
+    "rim_escape": {
+      "type": "flag"
+    }
+  },
+  "incompatible_with": []
+}

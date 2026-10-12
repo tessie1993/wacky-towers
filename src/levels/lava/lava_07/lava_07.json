@@ -1,0 +1,149 @@
+{
+  "schema": 1,
+  "id": "lava_07",
+  "biome": "lava",
+  "tier": 7,
+  "name": "level.lava_07.name",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "duo",
+      "tri_corner"
+    ],
+    "tags": {
+      "ember": {
+        "per_bag": 1
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 1.1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "fog",
+      "params": {
+        "visible_ms": 3500,
+        "fade_ms": 1000,
+        "reveal_ms": 800,
+        "invisible_alpha": 0.1
+      }
+    },
+    {
+      "id": "ember",
+      "params": {
+        "drill_depth": 1
+      }
+    }
+  ],
+  "stars": {
+    "t2": 245000,
+    "t3": 175000
+  },
+  "music": "lava_07",
+  "story": {
+    "mascot_role": "watcher",
+    "icon": "smoke"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/lava.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "lava_07",
+      "biome": "lava",
+      "tier": 7,
+      "name": "level.lava_07.name",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "duo",
+          "tri_corner"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "EV02",
+          "params": {
+            "visible_ms": 3500,
+            "fade_ms": 1000,
+            "alpha": 0.1,
+            "reveal_ms": 800
+          }
+        },
+        {
+          "id": "SP40",
+          "params": {
+            "ember_per_bag": 1,
+            "drill_depth": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
+      "music": "lava_07",
+      "story": {
+        "mascot_role": "watcher",
+        "icon": "smoke"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "EV02",
+        "runtime": "fog",
+        "params": {
+          "visible_ms": 3500,
+          "fade_ms": 1000,
+          "reveal_ms": 800,
+          "invisible_alpha": 0.1
+        }
+      },
+      {
+        "source": "SP40",
+        "runtime": "ember",
+        "params": {
+          "drill_depth": 1
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

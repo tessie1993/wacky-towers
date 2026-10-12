@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "chameleon_paint",
+  "name_key": "RULE_CHAMELEON_PAINT",
+  "layer": "twist",
+  "icon": "chameleon_paint",
+  "behaviour": "chameleon_paint",
+  "params": {
+    "min_neighbours": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

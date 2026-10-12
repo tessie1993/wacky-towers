@@ -9,6 +9,7 @@ const NO_AXIS: int = -1
 ## The shape being played.
 var shape: ShapeDef
 ## Orientation index 0..23 (Orientations).
+var hue_id: int = 0
 var orient: int = 0
 ## World position of the pivot cube.
 var pivot: Vector3i = Vector3i.ZERO
@@ -25,6 +26,7 @@ var last_kick: Vector3i = Vector3i.ZERO
 ## Creates a piece at a pivot in the shape spawn orientation (or p_orient if >= 0).
 func _init(p_shape: ShapeDef = null, p_pivot: Vector3i = Vector3i.ZERO, p_orient: int = -1) -> void:
 	shape = p_shape
+	hue_id = p_shape.hue_id if p_shape != null else 0
 	pivot = p_pivot
 	orient = p_orient if p_orient >= 0 else (p_shape.spawn_orient if p_shape != null else 0)
 
@@ -83,6 +85,7 @@ func spend_up_kick() -> void:
 ## Independent copy (the shape is shared, it is immutable data).
 func duplicate_piece() -> ActivePiece:
 	var c: ActivePiece = ActivePiece.new(shape, pivot, orient)
+	c.hue_id = hue_id
 	c.up_kicks_used = up_kicks_used
 	c.last_axis = last_axis
 	c.last_sign = last_sign

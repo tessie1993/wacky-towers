@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "rusty_hinge",
+  "name_key": "RULE_RUSTY_HINGE",
+  "layer": "twist",
+  "icon": "rusty_hinge",
+  "behaviour": "rusty_hinge",
+  "params": {
+    "max_turns": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

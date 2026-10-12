@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "id": "forest_05",
+  "biome": "forest",
+  "tier": 5,
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 12
+  },
+  "knobs": {
+    "fall.g0": 1.05,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "height",
+    "height_coverage": 0.6,
+    "h_target": 10
+  },
+  "rules": [
+    {
+      "id": "build_race",
+      "params": {}
+    }
+  ],
+  "stars": {
+    "t2": 165000,
+    "t3": 115000
+  },
+  "music": "forest_05_tbd",
+  "name": "LVL_FOREST_05_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/forest.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "forest_05",
+      "biome": "forest",
+      "tier": 5,
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 12
+      },
+      "knobs": {
+        "fall.g0": 1.05,
+        "goal.top_out": "trim"
+      },
+      "goal": {
+        "type": "height",
+        "H_target": 10,
+        "height_coverage": 0.6
+      },
+      "rules": [
+        {
+          "id": "build_race",
+          "params": {}
+        }
+      ],
+      "stars": {
+        "t2": 165000,
+        "t3": 115000
+      },
+      "music": "forest_05_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

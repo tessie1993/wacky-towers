@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "rainbow_piece",
+  "name_key": "RULE_RAINBOW_PIECE",
+  "layer": "content",
+  "icon": "rainbow_piece",
+  "behaviour": "rainbow_piece",
+  "params": {
+    "per_bag": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

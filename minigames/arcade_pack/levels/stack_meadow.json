@@ -1,0 +1,28 @@
+{
+  "id": "stack_meadow",
+  "mode": "stack",
+  "name": "Picnic Beacon",
+  "biome": "meadow",
+  "story": "Pip wants a lookout to find the picnic. Stack a cheerful beacon above the meadow.",
+  "objective": "Lock 8 supported slabs above the foundation before the timer ends.",
+  "twist": "A gentle first climb with three magnet charges and steady slide timing.",
+  "rule": "Time 8 slab drops, alternate both slide directions, and keep enough overlap to support the tower.",
+  "controls": "Space / tap: lock the moving slab. U or E: spend a magnet charge to snap and lock within the blue guide. Magnet locks break the perfect streak. Arrows and Q have no effect.",
+  "time_limit": 80.0,
+  "star_times": [
+    24.0,
+    44.0
+  ],
+  "base_width": 4.0,
+  "target_height": 8,
+  "speed_start": 2.0,
+  "speed_max": 3.0,
+  "motion_extent": 2.8,
+  "perfect_tolerance": 0.18,
+  "magnet_charges": 3,
+  "magnet_range": 0.9,
+  "wind_amplitude": 0.0,
+  "wind_period": 3.6,
+  "rhythm_amplitude": 0.0,
+  "rhythm_period": 2.4
+}

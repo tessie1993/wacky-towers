@@ -1,0 +1,171 @@
+{
+  "schema": 1,
+  "id": "lava_h3",
+  "biome": "lava",
+  "tier": 14,
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 6,
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "####",
+          "#.##",
+          "##.#",
+          "####"
+        ],
+        "1": [
+          "....",
+          ".#..",
+          "..#.",
+          "...."
+        ]
+      }
+    }
+  },
+  "pieces": {
+    "fixed_list": [
+      "i",
+      "i",
+      "i",
+      "i",
+      "tri_corner",
+      "tri_corner",
+      "duo"
+    ],
+    "fixed_tags": [
+      [
+        "ember"
+      ],
+      [
+        "ember"
+      ],
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "shapes": [
+      "i",
+      "tri_corner",
+      "duo"
+    ],
+    "tags": {
+      "ember": {
+        "per_bag": 1
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 0.8,
+    "spawn.preview_count": 3
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 2
+  },
+  "rules": [
+    {
+      "id": "ember",
+      "params": {
+        "drill_depth": 1
+      }
+    }
+  ],
+  "stars": {
+    "t2": 130000,
+    "t3": 85000
+  },
+  "music": "lava_h3",
+  "name": "LVL_LAVA_H3_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/lava.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "lava_h3",
+      "biome": "lava",
+      "tier": 14,
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 6,
+        "starting_contents": {
+          "layers": {
+            "0": [
+              "####",
+              "#.##",
+              "##.#",
+              "####"
+            ],
+            "1": [
+              "....",
+              ".L..",
+              "..L.",
+              "...."
+            ]
+          }
+        }
+      },
+      "pieces": {
+        "fixed_list": [
+          {
+            "shape": "i",
+            "tags": {
+              "ember": "end"
+            }
+          },
+          {
+            "shape": "i",
+            "tags": {
+              "ember": "end"
+            }
+          },
+          "i",
+          "i",
+          "tri_corner",
+          "tri_corner",
+          "duo"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.8,
+        "spawn.preview_count": 3
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 2
+      },
+      "rules": [
+        {
+          "id": "SP40",
+          "params": {
+            "drill_depth": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 130000,
+        "t3": 85000
+      },
+      "music": "lava_h3"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "SP40",
+        "runtime": "ember",
+        "params": {
+          "drill_depth": 1
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

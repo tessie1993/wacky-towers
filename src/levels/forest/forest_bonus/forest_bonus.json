@@ -1,0 +1,146 @@
+{
+  "schema": 1,
+  "id": "forest_bonus",
+  "biome": "forest",
+  "tier": 11,
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 7
+  },
+  "pieces": {
+    "kit": [
+      "o",
+      "o",
+      "o",
+      "o",
+      "i",
+      "l",
+      "l",
+      "duo",
+      "duo"
+    ],
+    "shapes": [
+      "o",
+      "i",
+      "l",
+      "duo"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.6,
+    "spawn.arrival": "kit_box",
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "shape",
+    "piece_budget": 9,
+    "target_shape": {
+      "layers": {
+        "0": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ],
+        "1": [
+          "++++",
+          "+..+",
+          "+..+",
+          "++++"
+        ],
+        "2": [
+          "....",
+          "+..+",
+          "+..+",
+          "...."
+        ]
+      }
+    }
+  },
+  "stars": {
+    "t2": 130000,
+    "t3": 90000
+  },
+  "music": "forest_bonus_tbd",
+  "name": "LVL_FOREST_BONUS_TITLE",
+  "seed": null,
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {
+        "topout_rule": "trim"
+      }
+    }
+  ],
+  "metadata": {
+    "source": "design/levels/forest.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "forest_bonus",
+      "biome": "forest",
+      "tier": 11,
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 7
+      },
+      "pieces": {
+        "kit": [
+          "o",
+          "o",
+          "o",
+          "o",
+          "i",
+          "l",
+          "l",
+          "duo",
+          "duo"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.6,
+        "spawn.arrival": "kit_box",
+        "goal.top_out": "out_of_pieces"
+      },
+      "goal": {
+        "type": "shape",
+        "piece_budget": 9,
+        "target_shape": {
+          "layers": {
+            "0": [
+              "####",
+              "####",
+              "####",
+              "####"
+            ],
+            "1": [
+              "####",
+              "#..#",
+              "#..#",
+              "####"
+            ],
+            "2": [
+              "....",
+              "#..#",
+              "#..#",
+              "...."
+            ]
+          }
+        }
+      },
+      "stars": {
+        "t2": 130000,
+        "t3": 90000
+      },
+      "music": "forest_bonus_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "id": "celestial_09",
+  "biome": "celestial",
+  "tier": 9,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.5,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "turntable",
+      "params": {
+        "turn_warn_locks": 1,
+        "turn_locks": 5,
+        "clockwise": true
+      }
+    },
+    {
+      "id": "balloon",
+      "params": {
+        "balloon_per_bag": 1,
+        "balloon_g_mult": 0.5,
+        "balloon_drift_ms": 3000
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "celestial_09_tbd",
+  "name": "LVL_CELESTIAL_09_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/celestial.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "celestial_09",
+      "biome": "celestial",
+      "tier": 9,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.5,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "turntable",
+          "params": {
+            "turn_every_locks": 5,
+            "turn_dir": "cw",
+            "turn_warn_locks": 1
+          }
+        },
+        {
+          "id": "balloon*",
+          "params": {
+            "balloon_per_bag": 1,
+            "balloon_g_mult": 0.5,
+            "balloon_drift_ms": 3000
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "music": "celestial_09_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "balloon*",
+        "runtime": "balloon",
+        "params": {
+          "balloon_per_bag": 1,
+          "balloon_g_mult": 0.5,
+          "balloon_drift_ms": 3000
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

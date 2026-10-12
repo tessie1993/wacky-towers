@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "id": "bubble",
+  "name_key": "RULE_BUBBLE",
+  "layer": "content",
+  "icon": "bubble",
+  "behaviour": "bubble",
+  "params": {},
+  "incompatible_with": []
+}

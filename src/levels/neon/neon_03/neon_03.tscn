@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://b5ttpb6243qdx"]
+
+[ext_resource type="PackedScene" path="res://src/levels/_template/level_stage_base.tscn" id="1"]
+[ext_resource type="Script" uid="uid://bget2chj4yyf3" path="res://src/view/wt_stage.gd" id="2_0vb8w"]
+
+[node name="neon_03" unique_id=1989139496 instance=ExtResource("1")]
+level_json = "res://src/levels/neon/neon_03/neon_03.json"
+biome = &"neon"
+
+[node name="MascotSpot" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 2)
+
+[node name="World" type="Node3D" parent="." index="2" unique_id=1323717704]
+script = ExtResource("2_0vb8w")
+
+[node name="StoryOrigin" type="Marker3D" parent="World" index="0" unique_id=443438463]

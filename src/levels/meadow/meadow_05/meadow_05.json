@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "id": "meadow_05",
+  "biome": "meadow",
+  "tier": 5,
+  "name": "LVL_MEADOW_05_TITLE",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 12,
+    "down_axis": "-y"
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "big_cube"
+    ],
+    "weights": {
+      "big_cube": 0.5
+    }
+  },
+  "knobs": {
+    "fall.g0": 0.8,
+    "goal.height_coverage": 0.6
+  },
+  "goal": {
+    "type": "height",
+    "h_target": 10
+  },
+  "rules": [
+    {
+      "id": "build_race",
+      "params": {
+        "topout_rule": "trim"
+      }
+    },
+    {
+      "id": "wobble",
+      "params": {
+        "wobble_max": 6
+      }
+    }
+  ],
+  "stars": {
+    "t2": 240000,
+    "t3": 170000
+  },
+  "story": {
+    "title_key": "LVL_MEADOW_05_TITLE",
+    "premise_key": "LVL_MEADOW_05_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "tower"
+  },
+  "metadata": {
+    "source": "production/levels/meadow/data/meadow_05.json",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "meadow_05",
+      "biome": "meadow",
+      "tier": 5,
+      "name": "LVL_MEADOW_05_TITLE",
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 12,
+        "down_axis": "-y"
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right",
+          "big_cube"
+        ],
+        "weights": {
+          "big_cube": 0.5
+        }
+      },
+      "knobs": {
+        "fall.g0": 0.8,
+        "goal.height_coverage": 0.6
+      },
+      "goal": {
+        "type": "height",
+        "h_target": 10
+      },
+      "rules": [
+        {
+          "id": "build_race",
+          "params": {
+            "topout_rule": "trim"
+          }
+        },
+        {
+          "id": "wobble",
+          "params": {
+            "wobble_max": 6
+          }
+        }
+      ],
+      "stars": {
+        "t2": 240000,
+        "t3": 170000
+      },
+      "story": {
+        "title_key": "LVL_MEADOW_05_TITLE",
+        "premise_key": "LVL_MEADOW_05_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "tower"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

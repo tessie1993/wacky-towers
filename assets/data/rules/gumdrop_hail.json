@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "id": "gumdrop_hail",
+  "name_key": "RULE_GUMDROP_HAIL",
+  "layer": "twist",
+  "icon": "gumdrop_hail",
+  "behaviour": "gumdrop_hail",
+  "params": {
+    "object": {
+      "type": "string"
+    },
+    "sticky": {
+      "type": "flag"
+    },
+    "spawn_every_locks": {
+      "type": "number"
+    },
+    "objects_max": {
+      "type": "number"
+    },
+    "hail_after_locks": {
+      "type": "number"
+    },
+    "avoid_start_holes": {
+      "type": "flag"
+    }
+  },
+  "incompatible_with": []
+}

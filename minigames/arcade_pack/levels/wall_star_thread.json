@@ -1,0 +1,51 @@
+{
+  "id": "wall_star_thread",
+  "mode": "wall",
+  "name": "Star Thread",
+  "biome": "celestial",
+  "story": "Comet is threading toy constellations through the celestial skylights. Each portal sees the lantern from a different side. Spend a little starlight to slow a gate when you need another turn.",
+  "objective": "Guide seven lantern parcels through the portals to light the star road.",
+  "twist": "Exact openings, changing wall direction and closing-beat bonuses combine. Two focus charges slow the current portal for 2.5 seconds without losing points.",
+  "rule": "Fit seven lantern parcels through the star portals. U spends a focus charge to slow this wall; three bonks end the flight.",
+  "controls": "E/Q: turn in 3D \u00b7 Arrows/WASD: align on current wall \u00b7 Space: send \u00b7 U: focus slow time (2 charges)",
+  "time_limit": 115.0,
+  "star_times": [
+    55.0,
+    88.0
+  ],
+  "frame_size": 5,
+  "pass_target": 7,
+  "miss_limit": 3,
+  "wall_interval": 8.5,
+  "wall_interval_min": 5.5,
+  "wall_ramp": 0.45,
+  "axis_intro_interval": 12.0,
+  "wall_axes": [
+    "z",
+    "x",
+    "x",
+    "z"
+  ],
+  "hole_slack": 0,
+  "slack_step_every": 0,
+  "shape_pool": [
+    "corner",
+    "stair",
+    "arch",
+    "elbow",
+    "step"
+  ],
+  "target_turns_y": 3,
+  "target_turns_x": 3,
+  "random_initial_orientation": true,
+  "rhythm_window": 1.2,
+  "rhythm_bonus": 1,
+  "focus_charges": 2,
+  "focus_seconds": 2.5,
+  "focus_rate": 0.35,
+  "stun_seconds": 0.8,
+  "tight_charge": 3,
+  "opening_hint": "E/Q turns the parcel; arrows align its outline with the gap. Space sends it through.",
+  "win_text": "All parcels delivered. Route complete!",
+  "fail_text": "The gates have closed. Try this route again!"
+}

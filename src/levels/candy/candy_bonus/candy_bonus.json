@@ -1,0 +1,191 @@
+{
+  "schema": 1,
+  "id": "candy_bonus",
+  "biome": "candy",
+  "tier": 11,
+  "name": "LVL_CANDY_BONUS_TITLE",
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 2,
+    "down_axis": "-y"
+  },
+  "pieces": {
+    "fixed_list": [
+      "big_cube",
+      "big_cube",
+      "i",
+      "i",
+      "o",
+      "o"
+    ],
+    "fixed_hues": [
+      1,
+      2,
+      3,
+      3,
+      1,
+      3
+    ],
+    "shapes": [
+      "big_cube",
+      "i",
+      "o"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.55,
+    "spawn.preview_count": 3,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "shape",
+    "target_shape": {
+      "colours": true,
+      "layers": {
+        "0": [
+          "PPMM",
+          "PPMM",
+          "VVMM",
+          "VVMM"
+        ],
+        "1": [
+          "PPPP",
+          "PPPP",
+          "VVMM",
+          "VVMM"
+        ]
+      }
+    },
+    "time_limit_ms": 60000
+  },
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {}
+    },
+    {
+      "id": "mascot_paw",
+      "params": {
+        "every_s": 15,
+        "warn_ms": 2000
+      }
+    }
+  ],
+  "stars": {
+    "t2": 45000,
+    "t3": 30000,
+    "three_star_zero_metrics": [
+      "paw_eaten"
+    ]
+  },
+  "music": "mus_candy_bonus",
+  "story": {
+    "title_key": "LVL_CANDY_BONUS_TITLE",
+    "premise_key": "LVL_CANDY_BONUS_PREMISE",
+    "mascot_role": "prankster",
+    "icon": "chocolate_box"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/candy.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "candy_bonus",
+      "biome": "candy",
+      "tier": 11,
+      "name": "LVL_CANDY_BONUS_TITLE",
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 2,
+        "down_axis": "-y"
+      },
+      "pieces": {
+        "fixed_list": [
+          {
+            "shape": "big_cube",
+            "colour": "P"
+          },
+          {
+            "shape": "big_cube",
+            "colour": "V"
+          },
+          {
+            "shape": "i",
+            "colour": "M"
+          },
+          {
+            "shape": "i",
+            "colour": "M"
+          },
+          {
+            "shape": "o",
+            "colour": "P"
+          },
+          {
+            "shape": "o",
+            "colour": "M"
+          }
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.55,
+        "spawn.preview_count": 3,
+        "goal.top_out": "budget",
+        "goal.time_limit_s": 60
+      },
+      "goal": {
+        "type": "shape",
+        "target_shape": {
+          "colours": true,
+          "layers": {
+            "0": [
+              "PPMM",
+              "PPMM",
+              "VVMM",
+              "VVMM"
+            ],
+            "1": [
+              "PPPP",
+              "PPPP",
+              "VVMM",
+              "VVMM"
+            ]
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "fill_shape",
+          "params": {}
+        },
+        {
+          "id": "mascot_paw",
+          "params": {
+            "every_s": 15,
+            "warn_ms": 2000
+          }
+        }
+      ],
+      "stars": {
+        "t2": 45000,
+        "t3": 30000
+      },
+      "music": "mus_candy_bonus",
+      "story": {
+        "title_key": "LVL_CANDY_BONUS_TITLE",
+        "premise_key": "LVL_CANDY_BONUS_PREMISE",
+        "mascot_role": "prankster",
+        "icon": "chocolate_box"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

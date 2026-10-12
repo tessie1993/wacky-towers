@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "id": "underwater_01",
+  "biome": "underwater",
+  "tier": 1,
+  "name": "level.underwater_01.name",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 9
+  },
+  "pieces": {
+    "opening_set": [
+      "o",
+      "i"
+    ],
+    "opening_count": 2,
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.75,
+    "goal.warnings_max": 2
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "mascot_hint"
+    },
+    {
+      "id": "mascot_catch",
+      "params": {
+        "mascot_catches": 1
+      }
+    },
+    {
+      "id": "angle_gem",
+      "params": {
+        "cell": [
+          2,
+          -1,
+          2
+        ],
+        "view_snap": 150
+      }
+    }
+  ],
+  "stars": {
+    "t2": 170000,
+    "t3": 120000
+  },
+  "music": "underwater_01",
+  "story": {
+    "mascot_role": "helper",
+    "icon": "pearl"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_01",
+      "biome": "underwater",
+      "tier": 1,
+      "name": "level.underwater_01.name",
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 9
+      },
+      "pieces": {
+        "opening_set": [
+          "O",
+          "I"
+        ],
+        "opening_count": 2
+      },
+      "knobs": {
+        "fall.g0": 0.75,
+        "goal.warnings_max": 2
+      },
+      "goal": {
+        "type": "clear",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "mascot_hint"
+        },
+        {
+          "id": "mascot_catch",
+          "params": {
+            "mascot_catches": 1
+          }
+        },
+        {
+          "id": "angle_gem",
+          "params": {
+            "cell": [
+              2,
+              -1,
+              2
+            ],
+            "view_snap": 150
+          }
+        }
+      ],
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "music": "underwater_01",
+      "story": {
+        "mascot_role": "helper",
+        "icon": "pearl"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

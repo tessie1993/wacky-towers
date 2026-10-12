@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "transport": "ENet UDP on localhost",
+  "scenario": "disconnect",
+  "independent_processes": 4,
+  "port": 37949,
+  "outcomes": [
+    {
+      "role": "host",
+      "exit_code": 0
+    },
+    {
+      "role": "ClientA",
+      "exit_code": 0
+    },
+    {
+      "role": "ClientB",
+      "exit_code": 0
+    },
+    {
+      "role": "ClientC",
+      "exit_code": 0
+    }
+  ]
+}

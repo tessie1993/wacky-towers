@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "id": "undo_reset",
+  "name_key": "RULE_UNDO_RESET",
+  "layer": "content",
+  "icon": "undo_reset",
+  "behaviour": "undo_reset",
+  "params": {},
+  "incompatible_with": []
+}

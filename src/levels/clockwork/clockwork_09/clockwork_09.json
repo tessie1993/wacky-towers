@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "id": "clockwork_09",
+  "biome": "clockwork",
+  "tier": 9,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.35,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "turntable",
+      "params": {
+        "turn_warn_locks": 1,
+        "turn_locks": 5,
+        "clockwise": false
+      }
+    },
+    {
+      "id": "flip",
+      "params": {
+        "flip_mode": "stack",
+        "flip_every_layers": 2,
+        "flip_every_ms": 40000,
+        "flip_warn_ms": 2000
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "clockwork_09_tbd",
+  "name": "LVL_CLOCKWORK_09_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/clockwork.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "clockwork_09",
+      "biome": "clockwork",
+      "tier": 9,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.35,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "turntable",
+          "params": {
+            "turn_every_locks": 5,
+            "turn_dir": "ccw",
+            "turn_warn_locks": 1
+          }
+        },
+        {
+          "id": "flip",
+          "params": {
+            "flip_mode": "stack",
+            "flip_every_layers": 2,
+            "flip_every_ms": 40000,
+            "flip_warn_ms": 2000
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "music": "clockwork_09_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

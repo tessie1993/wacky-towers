@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "underwater_08",
+  "biome": "underwater",
+  "tier": 8,
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 8
+  },
+  "knobs": {
+    "fall.g0": 1.05,
+    "fall.ramp_per_min": 0.1
+  },
+  "goal": {
+    "type": "survive",
+    "T": 150,
+    "t_ms": 150000
+  },
+  "rules": [
+    {
+      "id": "rising_silt",
+      "params": {
+        "silt_every_locks": 10,
+        "silt_gaps": 3,
+        "silt_warn_locks": 1
+      }
+    }
+  ],
+  "stars": {
+    "s2": 1,
+    "s3": 2
+  },
+  "music": "underwater_08",
+  "name": "LVL_UNDERWATER_08_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_08",
+      "biome": "underwater",
+      "tier": 8,
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 8
+      },
+      "knobs": {
+        "fall.g0": 1.05,
+        "fall.ramp_per_min": 0.1
+      },
+      "goal": {
+        "type": "survive",
+        "T": 150
+      },
+      "rules": [
+        {
+          "id": "rising_silt",
+          "params": {
+            "silt_every_locks": 10,
+            "silt_gaps": 3,
+            "silt_warn_locks": 1
+          }
+        }
+      ],
+      "stars": {
+        "s2": 1,
+        "s3": 2
+      },
+      "music": "underwater_08"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

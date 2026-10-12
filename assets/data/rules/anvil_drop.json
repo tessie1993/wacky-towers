@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "anvil_drop",
+  "name_key": "RULE_ANVIL_DROP",
+  "layer": "mechanic",
+  "icon": "anvil_drop",
+  "behaviour": "anvil_drop",
+  "params": {
+    "every": {
+      "type": "number"
+    },
+    "max_crush": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

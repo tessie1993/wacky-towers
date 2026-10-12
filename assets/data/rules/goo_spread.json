@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "goo_spread",
+  "name_key": "RULE_GOO_SPREAD",
+  "layer": "twist",
+  "icon": "goo_spread",
+  "behaviour": "goo_spread",
+  "params": {
+    "skin": {
+      "type": "string"
+    },
+    "per_lock": {
+      "type": "number"
+    },
+    "cancel_on_clear": {
+      "type": "flag"
+    }
+  },
+  "incompatible_with": []
+}

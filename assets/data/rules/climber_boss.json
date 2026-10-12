@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "climber_boss",
+  "name_key": "RULE_CLIMBER_BOSS",
+  "layer": "content",
+  "icon": "climber_boss",
+  "behaviour": "climber_boss",
+  "params": {
+    "size": {
+      "type": "structure"
+    },
+    "skin": {
+      "type": "string"
+    }
+  },
+  "incompatible_with": []
+}

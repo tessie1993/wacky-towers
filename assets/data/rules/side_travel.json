@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "side_travel",
+  "name_key": "RULE_SIDE_TRAVEL",
+  "layer": "twist",
+  "icon": "side_travel",
+  "behaviour": "side_travel",
+  "params": {
+    "travel_dir": {
+      "type": "string"
+    },
+    "side_view_min_deg": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

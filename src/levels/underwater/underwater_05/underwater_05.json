@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "id": "underwater_05",
+  "biome": "underwater",
+  "tier": 5,
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "duo"
+    ],
+    "weights": {
+      "duo": 0.5
+    }
+  },
+  "knobs": {
+    "fall.g0": 0.95,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "height",
+    "height_coverage": 0.6,
+    "h_target": 10
+  },
+  "rules": [
+    {
+      "id": "build_race"
+    },
+    {
+      "id": "gust",
+      "params": {
+        "wind_dir": "-x",
+        "wind_interval_ms": 6000,
+        "wind_jitter_ms": 2000,
+        "wind_warn_ms": 1000
+      }
+    }
+  ],
+  "stars": {
+    "t2": 265000,
+    "t3": 185000
+  },
+  "music": "underwater_05",
+  "name": "LVL_UNDERWATER_05_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_05",
+      "biome": "underwater",
+      "tier": 5,
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "I",
+          "O",
+          "T",
+          "L",
+          "S",
+          "tripod",
+          "screw_l",
+          "screw_r",
+          "duo"
+        ],
+        "weights": {
+          "duo": 0.5
+        }
+      },
+      "knobs": {
+        "fall.g0": 0.95,
+        "goal.top_out": "trim"
+      },
+      "goal": {
+        "type": "height",
+        "H_target": 10,
+        "height_coverage": 0.6
+      },
+      "rules": [
+        {
+          "id": "build_race"
+        },
+        {
+          "id": "gust",
+          "params": {
+            "wind_dir": "-x",
+            "wind_interval_ms": 6000,
+            "wind_jitter_ms": 2000,
+            "wind_warn_ms": 1000
+          }
+        }
+      ],
+      "stars": {
+        "t2": 265000,
+        "t3": 185000
+      },
+      "music": "underwater_05"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

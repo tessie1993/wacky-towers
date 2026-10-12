@@ -1,0 +1,161 @@
+{
+  "schema": 1,
+  "id": "candy_h2",
+  "biome": "candy",
+  "tier": 13,
+  "board": {
+    "width": 8,
+    "depth": 4,
+    "h_play": 10,
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "#.2#.3.#",
+          "#2..#.3#",
+          "##.3#.#.",
+          ".#2.##.#"
+        ]
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 1.0,
+    "goal.warnings_max": 1,
+    "spawn.colour_count": 3
+  },
+  "goal": {
+    "type": "rescue_all",
+    "content": "frosting"
+  },
+  "rules": [
+    {
+      "id": "syrup_band",
+      "params": {
+        "band_rows": [
+          1,
+          2
+        ],
+        "syrup_slow": 0.5,
+        "syrup_dir": "+x",
+        "syrup_glide": 2
+      }
+    },
+    {
+      "id": "frosting",
+      "params": {}
+    },
+    {
+      "id": "mascot_mood",
+      "params": {
+        "prank": "hop_nudge"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 350000,
+    "t3": 245000
+  },
+  "music": "mus_candy_h2",
+  "name": "LVL_CANDY_H2_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/candy.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "candy_h2",
+      "biome": "candy",
+      "tier": 13,
+      "board": {
+        "width": 8,
+        "depth": 4,
+        "h_play": 10,
+        "starting_contents": {
+          "layers": {
+            "0": [
+              "#.2#.3.#",
+              "#2..#.3#",
+              "##.3#.#.",
+              ".#2.##.#"
+            ]
+          }
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.0,
+        "goal.warnings_max": 1,
+        "spawn.colour_count": 3
+      },
+      "goal": {
+        "type": "rescue_all",
+        "content": "frosting"
+      },
+      "rules": [
+        {
+          "id": "syrup_band*",
+          "params": {
+            "band_rows": [
+              1,
+              2
+            ],
+            "syrup_slow": 0.5,
+            "syrup_dir": "+x",
+            "syrup_glide": 2
+          }
+        },
+        {
+          "id": "frosting*",
+          "params": {}
+        },
+        {
+          "id": "mascot_mood",
+          "params": {
+            "prank": "hop_nudge"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 350000,
+        "t3": 245000
+      },
+      "music": "mus_candy_h2"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "syrup_band*",
+        "runtime": "syrup_band",
+        "params": {
+          "band_rows": [
+            1,
+            2
+          ],
+          "syrup_slow": 0.5,
+          "syrup_dir": "+x",
+          "syrup_glide": 2
+        }
+      },
+      {
+        "source": "frosting*",
+        "runtime": "frosting",
+        "params": {}
+      }
+    ],
+    "design_amendments": []
+  }
+}

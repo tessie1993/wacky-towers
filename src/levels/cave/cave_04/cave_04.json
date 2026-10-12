@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "id": "cave_04",
+  "biome": "cave",
+  "tier": 4,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.1,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "gust",
+      "params": {
+        "wind_mode": "rotating",
+        "wind_interval_ms": 9000,
+        "wind_jitter_ms": 2500,
+        "wind_strength": 1,
+        "wind_warn_ms": 1000,
+        "skin": "bat_flap"
+      }
+    },
+    {
+      "id": "mushroom_popup",
+      "params": {
+        "spawn_every_locks": 6,
+        "objects_max": 3,
+        "skin": "pebble"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "cave_04_tbd",
+  "name": "LVL_CAVE_04_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/cave.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "cave_04",
+      "biome": "cave",
+      "tier": 4,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.1,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "gust",
+          "params": {
+            "wind_mode": "rotating",
+            "wind_interval_ms": 9000,
+            "wind_jitter_ms": 2500,
+            "wind_strength": 1,
+            "wind_warn_ms": 1000,
+            "skin": "bat_flap"
+          }
+        },
+        {
+          "id": "mushroom_popup",
+          "params": {
+            "spawn_every_locks": 6,
+            "objects_max": 3,
+            "skin": "pebble"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "music": "cave_04_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

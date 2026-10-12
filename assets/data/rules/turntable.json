@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "turntable",
+  "name_key": "RULE_TURNTABLE",
+  "layer": "twist",
+  "icon": "turntable",
+  "behaviour": "turntable",
+  "params": {
+    "turn_warn_locks": {
+      "type": "number"
+    },
+    "turn_locks": {
+      "type": "number"
+    },
+    "clockwise": {
+      "type": "flag"
+    }
+  },
+  "incompatible_with": []
+}

@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "charge_layer_milli": 125,
+  "charge_combo_milli": 30,
+  "calm_duration_ms": 8000,
+  "calm_gravity_milli": 250,
+  "calm_lock_milli": 1500,
+  "stitch_duration_ms": 10000,
+  "smash_size": 3,
+  "smash_depth": 3,
+  "redraw_pieces": 3,
+  "once_ready_ms": 3000,
+  "potion_duration_ms": 10000
+}

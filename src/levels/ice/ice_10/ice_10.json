@@ -1,0 +1,176 @@
+{
+  "schema": 1,
+  "id": "ice_10",
+  "biome": "ice",
+  "tier": 10,
+  "board": {
+    "down_axis": "-x",
+    "width": 16,
+    "depth": 3,
+    "h_play": 6,
+    "spawn_anchor": [
+      4,
+      1
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.1,
+    "spawn.arrival": "side_travel"
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "side_travel",
+      "params": {
+        "travel_dir": "-x",
+        "side_view_min_deg": 45
+      }
+    },
+    {
+      "id": "gust",
+      "params": {
+        "wind_dir": "+z",
+        "wind_interval_ms": 9000,
+        "wind_jitter_ms": 2000,
+        "wind_strength": 1,
+        "wind_warn_ms": 1000
+      }
+    },
+    {
+      "id": "ice_slide",
+      "params": {
+        "slide_dir": "+z",
+        "slide_cells": 1,
+        "start_after_clears": 2
+      }
+    }
+  ],
+  "stars": {
+    "t2": 270000,
+    "t3": 190000
+  },
+  "music": "ice_10",
+  "story": {
+    "mascot_role": "watcher",
+    "icon": "sled"
+  },
+  "name": "LVL_ICE_10_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/ice.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "ice_10",
+      "biome": "ice",
+      "tier": 10,
+      "board": {
+        "down_axis": "-x",
+        "width": 12,
+        "depth": 6,
+        "h_play": 12,
+        "spawn_anchor": {
+          "x": 11,
+          "z": 2
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.1,
+        "spawn.arrival": "side_travel"
+      },
+      "goal": {
+        "type": "clear",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "side_travel",
+          "params": {
+            "travel_dir": "-x",
+            "side_view_min_deg": 45
+          }
+        },
+        {
+          "id": "gust",
+          "params": {
+            "wind_dir": "+z",
+            "wind_interval_ms": 9000,
+            "wind_jitter_ms": 2000,
+            "wind_strength": 1,
+            "wind_warn_ms": 1000
+          }
+        },
+        {
+          "id": "ice_slide",
+          "params": {
+            "slide_dir": "+z",
+            "slide_cells": 1,
+            "start_after_clears": 2
+          }
+        }
+      ],
+      "stars": {
+        "t2": 270000,
+        "t3": 190000
+      },
+      "music": "ice_10",
+      "story": {
+        "mascot_role": "watcher",
+        "icon": "sled"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": [
+      {
+        "id": "ice_10",
+        "board": {
+          "width": 16,
+          "depth": 3,
+          "h_play": 6,
+          "spawn_anchor": {
+            "x": 4,
+            "z": 1
+          }
+        },
+        "reason": "Resolve the source sketch gravity-frame ambiguity using existing ADR-0002/F4 axis contract. Fresh Godot4.7.2 original JSON measured physical12x16x6, danger8,96-cell clearplanes instead of intended12travel and30-cell planes. Physical16x10x3 (C4) restores12playable X layers and30-cell full rectangular YZ planes; the cross-section is10x3 instead of6x5. Pool,4-clear goal,g0,gust,phase2slide and stars remain authored. Full footprint is active; no cross mask.",
+        "before_engine": {
+          "physical_size": [
+            12,
+            16,
+            6
+          ],
+          "danger_limit": 8,
+          "active_clear_plane": 96
+        },
+        "after_engine_expected": {
+          "physical_size": [
+            16,
+            10,
+            3
+          ],
+          "danger_limit": 12,
+          "active_clear_plane": 30
+        }
+      }
+    ]
+  }
+}

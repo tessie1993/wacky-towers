@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "id": "event_card",
+  "name_key": "RULE_EVENT_CARD",
+  "layer": "mechanic",
+  "icon": "event_card",
+  "behaviour": "event_card",
+  "params": {
+    "event_card_locks": {
+      "type": "number"
+    },
+    "no_repeat": {
+      "type": "flag"
+    },
+    "pool": {
+      "type": "structure"
+    },
+    "gust": {
+      "type": "structure"
+    },
+    "drop": {
+      "type": "structure"
+    },
+    "slide": {
+      "type": "structure"
+    }
+  },
+  "incompatible_with": []
+}

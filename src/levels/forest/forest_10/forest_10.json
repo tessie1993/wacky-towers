@@ -1,0 +1,148 @@
+{
+  "schema": 1,
+  "id": "forest_10",
+  "biome": "forest",
+  "tier": 10,
+  "board": {
+    "width": 8,
+    "depth": 6,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "chair"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.3,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "conveyor",
+      "params": {
+        "conveyor_every": 3,
+        "conveyor_wrap": true,
+        "conveyor_dir": "+x"
+      }
+    },
+    {
+      "id": "gust",
+      "params": {
+        "wind_mode": "fixed",
+        "wind_dir": "+z",
+        "wind_interval_ms": 10000,
+        "wind_jitter_ms": 2500,
+        "wind_warn_ms": 1000
+      }
+    },
+    {
+      "id": "mushroom_popup",
+      "params": {
+        "spawn_every_locks": 6,
+        "objects_max": 3,
+        "skin": "acorn"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "forest_10_tbd",
+  "story": {
+    "mascot_role": "boss",
+    "icon": "oak"
+  },
+  "name": "LVL_FOREST_10_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/forest.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "forest_10",
+      "biome": "forest",
+      "tier": 10,
+      "board": {
+        "width": 8,
+        "depth": 6,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "tripod",
+          "screw_l",
+          "screw_r",
+          "chair"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.3,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "conveyor",
+          "params": {
+            "dir": "+x",
+            "conveyor_every": 3,
+            "conveyor_wrap": true
+          }
+        },
+        {
+          "id": "gust",
+          "params": {
+            "wind_mode": "fixed",
+            "wind_dir": "+z",
+            "wind_interval_ms": 10000,
+            "wind_jitter_ms": 2500,
+            "wind_warn_ms": 1000
+          }
+        },
+        {
+          "id": "mushroom_popup",
+          "params": {
+            "spawn_every_locks": 6,
+            "objects_max": 3,
+            "skin": "acorn"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "music": "forest_10_tbd",
+      "story": {
+        "mascot_role": "boss",
+        "icon": "oak"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

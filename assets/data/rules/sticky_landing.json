@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "sticky_landing",
+  "name_key": "RULE_STICKY_LANDING",
+  "layer": "twist",
+  "icon": "sticky_landing",
+  "behaviour": "sticky_landing",
+  "params": {
+    "sticky_gravity_scale": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

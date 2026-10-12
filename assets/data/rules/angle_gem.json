@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "angle_gem",
+  "name_key": "RULE_ANGLE_GEM",
+  "layer": "mascot",
+  "icon": "angle_gem",
+  "behaviour": "angle_gem",
+  "params": {
+    "skin": {
+      "type": "string"
+    },
+    "where": {
+      "type": "string"
+    },
+    "cell": {
+      "type": "structure"
+    },
+    "view_snap": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

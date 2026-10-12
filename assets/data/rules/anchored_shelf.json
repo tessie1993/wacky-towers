@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "anchored_shelf",
+  "name_key": "RULE_ANCHORED_SHELF",
+  "layer": "content",
+  "icon": "anchored_shelf",
+  "behaviour": "anchored_shelf",
+  "params": {
+    "cells": {
+      "type": "structure"
+    }
+  },
+  "incompatible_with": []
+}

@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "id": "forest_03",
+  "biome": "forest",
+  "tier": 3,
+  "board": {
+    "width": 8,
+    "depth": 3,
+    "h_play": 10,
+    "spawn_anchor": [
+      3,
+      1
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.95,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "mushroom_popup",
+      "params": {
+        "spawn_every_locks": 5,
+        "objects_max": 4,
+        "skin": "acorn",
+        "place_mode": "lowest"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 270000,
+    "t3": 190000
+  },
+  "music": "forest_03_tbd",
+  "name": "LVL_FOREST_03_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/forest.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "forest_03",
+      "biome": "forest",
+      "tier": 3,
+      "board": {
+        "width": 8,
+        "depth": 3,
+        "h_play": 10,
+        "spawn_anchor": {
+          "x": 3,
+          "z": 1
+        }
+      },
+      "knobs": {
+        "fall.g0": 0.95,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 5
+      },
+      "rules": [
+        {
+          "id": "mushroom_popup",
+          "params": {
+            "spawn_every_locks": 5,
+            "objects_max": 4,
+            "skin": "acorn",
+            "place_mode": "lowest"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 270000,
+        "t3": 190000
+      },
+      "music": "forest_03_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

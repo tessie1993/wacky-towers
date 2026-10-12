@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "id": "lava_04",
+  "biome": "lava",
+  "tier": 4,
+  "name": "level.lava_04.name",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "duo",
+      "tri_corner"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.0
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "mushroom_popup",
+      "params": {
+        "objects_max": 3,
+        "object_kind": "bounce_pad",
+        "hard_hits": 2,
+        "spawn_every_locks": 5
+      }
+    },
+    {
+      "id": "bounce_pad",
+      "params": {
+        "bounce_h": 1,
+        "dir_mode": "last_move"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "lava_04",
+  "story": {
+    "mascot_role": "watcher",
+    "icon": "geyser"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/lava.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "lava_04",
+      "biome": "lava",
+      "tier": 4,
+      "name": "level.lava_04.name",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "duo",
+          "tri_corner"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.0
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "EV04",
+          "params": {
+            "every_locks": 5,
+            "objects_max": 3,
+            "object": "SP35"
+          }
+        },
+        {
+          "id": "SP35",
+          "params": {
+            "bounce_h": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "music": "lava_04",
+      "story": {
+        "mascot_role": "watcher",
+        "icon": "geyser"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "EV04",
+        "runtime": "lava_rock_spawn",
+        "params": {
+          "every_locks": 5,
+          "objects_max": 3,
+          "object": "SP35",
+          "object_kind": "SP35",
+          "hard_hits": 2
+        }
+      },
+      {
+        "source": "EV04",
+        "runtime": "mushroom_popup",
+        "params": {
+          "objects_max": 3,
+          "object_kind": "bounce_pad",
+          "hard_hits": 2,
+          "spawn_every_locks": 5
+        }
+      },
+      {
+        "source": "SP35",
+        "runtime": "bounce_pad",
+        "params": {
+          "bounce_h": 1,
+          "dir_mode": "last_move"
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

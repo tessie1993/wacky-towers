@@ -1,0 +1,80 @@
+{
+  "id": "candy",
+  "index": 2,
+  "art_set": "candy_toy",
+  "palette": "candy_toy",
+  "side_island": false,
+  "default_music": "mus_candy_default",
+  "levels": [
+    {
+      "id": "candy_01",
+      "json": "res://src/levels/candy/candy_01/candy_01.json",
+      "scene": "res://src/levels/candy/candy_01/candy_01.tscn"
+    },
+    {
+      "id": "candy_02",
+      "json": "res://src/levels/candy/candy_02/candy_02.json",
+      "scene": "res://src/levels/candy/candy_02/candy_02.tscn"
+    },
+    {
+      "id": "candy_03",
+      "json": "res://src/levels/candy/candy_03/candy_03.json",
+      "scene": "res://src/levels/candy/candy_03/candy_03.tscn"
+    },
+    {
+      "id": "candy_04",
+      "json": "res://src/levels/candy/candy_04/candy_04.json",
+      "scene": "res://src/levels/candy/candy_04/candy_04.tscn"
+    },
+    {
+      "id": "candy_05",
+      "json": "res://src/levels/candy/candy_05/candy_05.json",
+      "scene": "res://src/levels/candy/candy_05/candy_05.tscn"
+    },
+    {
+      "id": "candy_06",
+      "json": "res://src/levels/candy/candy_06/candy_06.json",
+      "scene": "res://src/levels/candy/candy_06/candy_06.tscn"
+    },
+    {
+      "id": "candy_07",
+      "json": "res://src/levels/candy/candy_07/candy_07.json",
+      "scene": "res://src/levels/candy/candy_07/candy_07.tscn"
+    },
+    {
+      "id": "candy_08",
+      "json": "res://src/levels/candy/candy_08/candy_08.json",
+      "scene": "res://src/levels/candy/candy_08/candy_08.tscn"
+    },
+    {
+      "id": "candy_09",
+      "json": "res://src/levels/candy/candy_09/candy_09.json",
+      "scene": "res://src/levels/candy/candy_09/candy_09.tscn"
+    },
+    {
+      "id": "candy_10",
+      "json": "res://src/levels/candy/candy_10/candy_10.json",
+      "scene": "res://src/levels/candy/candy_10/candy_10.tscn"
+    },
+    {
+      "id": "candy_bonus",
+      "json": "res://src/levels/candy/candy_bonus/candy_bonus.json",
+      "scene": "res://src/levels/candy/candy_bonus/candy_bonus.tscn"
+    },
+    {
+      "id": "candy_h1",
+      "json": "res://src/levels/candy/candy_h1/candy_h1.json",
+      "scene": "res://src/levels/candy/candy_h1/candy_h1.tscn"
+    },
+    {
+      "id": "candy_h2",
+      "json": "res://src/levels/candy/candy_h2/candy_h2.json",
+      "scene": "res://src/levels/candy/candy_h2/candy_h2.tscn"
+    },
+    {
+      "id": "candy_h3",
+      "json": "res://src/levels/candy/candy_h3/candy_h3.json",
+      "scene": "res://src/levels/candy/candy_h3/candy_h3.tscn"
+    }
+  ]
+}

@@ -7,7 +7,9 @@
       "allows_zero": true,
       "rule_adjustable": false,
       "choices": [
-        "top"
+        "top",
+        "side_travel",
+        "kit_box"
       ],
       "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
       "note": ""
@@ -144,6 +146,35 @@
       ],
       "source": "design/gdd/piece-spawner-queue.md#tuning-knobs",
       "note": ""
+    },
+    {
+      "id": "spawn.colour_count",
+      "type": "count",
+      "default": 0,
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "source": "design/gdd/mechanics-module.md",
+      "min": 0,
+      "max": 10,
+      "note": "Zero preserves family hues; positive count enables independent seeded flavour stream."
+    },
+    {
+      "id": "spawn.colour_streak",
+      "type": "scalar",
+      "default": 0.0,
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "source": "design/gdd/mechanics-module.md",
+      "min": 0.0,
+      "max": 1.0
+    },
+    {
+      "id": "spawn.colour_weights",
+      "type": "structure",
+      "default": {},
+      "allows_zero": true,
+      "rule_adjustable": true,
+      "source": "design/gdd/mechanics-module.md"
     }
   ]
 }

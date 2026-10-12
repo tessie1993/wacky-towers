@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "rock_obstacle",
+  "name_key": "RULE_ROCK_OBSTACLE",
+  "layer": "content",
+  "icon": "rock_obstacle",
+  "behaviour": "rock_obstacle",
+  "params": {
+    "cells": {
+      "type": "structure"
+    }
+  },
+  "incompatible_with": []
+}

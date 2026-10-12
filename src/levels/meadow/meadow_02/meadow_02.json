@@ -1,0 +1,166 @@
+{
+  "schema": 1,
+  "id": "meadow_02",
+  "biome": "meadow",
+  "tier": 2,
+  "name": "LVL_MEADOW_02_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "down_axis": "-y",
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "######",
+          "#.###.",
+          "######",
+          "######",
+          "####.#",
+          "######"
+        ],
+        "1": [
+          "######",
+          "#..#..",
+          "#.##.#",
+          "###.##",
+          "###..#",
+          "######"
+        ]
+      }
+    }
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "opening_set": [
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "opening_count": 3
+  },
+  "knobs": {
+    "fall.g0": 0.6,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "mascot_catch",
+      "params": {
+        "catches": 1
+      }
+    }
+  ],
+  "stars": {
+    "t2": 130000,
+    "t3": 90000
+  },
+  "story": {
+    "title_key": "LVL_MEADOW_02_TITLE",
+    "premise_key": "LVL_MEADOW_02_PREMISE",
+    "mascot_role": "helper",
+    "icon": "bed"
+  },
+  "metadata": {
+    "source": "production/levels/meadow/data/meadow_02.json",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "meadow_02",
+      "biome": "meadow",
+      "tier": 2,
+      "name": "LVL_MEADOW_02_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "down_axis": "-y",
+        "starting_contents": {
+          "layers": {
+            "0": [
+              "######",
+              "#.###.",
+              "######",
+              "######",
+              "####.#",
+              "######"
+            ],
+            "1": [
+              "######",
+              "#..#..",
+              "#.##.#",
+              "###.##",
+              "###..#",
+              "######"
+            ]
+          }
+        }
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ],
+        "opening_set": [
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ],
+        "opening_count": 3
+      },
+      "knobs": {
+        "fall.g0": 0.6,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 3
+      },
+      "rules": [
+        {
+          "id": "mascot_catch",
+          "params": {
+            "catches": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 130000,
+        "t3": 90000
+      },
+      "story": {
+        "title_key": "LVL_MEADOW_02_TITLE",
+        "premise_key": "LVL_MEADOW_02_PREMISE",
+        "mascot_role": "helper",
+        "icon": "bed"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

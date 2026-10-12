@@ -1,0 +1,1116 @@
+{
+  "schema": 1,
+  "items": [
+    {
+      "id": "breeze_brake",
+      "kind": "perk",
+      "character": "c1",
+      "tier": 1,
+      "edge": 0.06,
+      "effect": {
+        "gravity_scale": 0.92
+      },
+      "name_key": "PERK_BREEZE_BRAKE",
+      "text": "Breeze Brake",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": []
+    },
+    {
+      "id": "patient_hands",
+      "kind": "perk",
+      "character": "c1",
+      "tier": 2,
+      "edge": 0.05,
+      "effect": {
+        "lock_delay_scale": 1.25
+      },
+      "name_key": "PERK_PATIENT_HANDS",
+      "text": "Patient Hands",
+      "price": {
+        "currency": "stars",
+        "amount": 20
+      },
+      "requires": [
+        {
+          "any_of": [
+            {
+              "biome_open": 2
+            },
+            {
+              "tournaments_played": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quick_study",
+      "kind": "perk",
+      "character": "c1",
+      "tier": 3,
+      "edge": 0.04,
+      "effect": {
+        "charge_rate": 1.25
+      },
+      "name_key": "PERK_QUICK_STUDY",
+      "text": "Quick Study",
+      "price": {
+        "currency": "stars",
+        "amount": 35
+      },
+      "requires": [
+        {
+          "any_of": [
+            {
+              "biome_open": 4
+            },
+            {
+              "tournaments_played": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "second_wind",
+      "kind": "perk",
+      "character": "c2",
+      "tier": 1,
+      "edge": 0.05,
+      "effect": {
+        "warnings_add": 1
+      },
+      "name_key": "PERK_SECOND_WIND",
+      "text": "Second Wind",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": [
+        {
+          "any_of": [
+            {
+              "character": "c2"
+            },
+            {
+              "tournaments_played": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gentle_landing",
+      "kind": "perk",
+      "character": "c2",
+      "tier": 2,
+      "edge": 0.03,
+      "effect": {
+        "drop_grace_scale": 1.5
+      },
+      "name_key": "PERK_GENTLE_LANDING",
+      "text": "Gentle Landing",
+      "price": {
+        "currency": "stars",
+        "amount": 20
+      },
+      "requires": [
+        {
+          "any_of": [
+            {
+              "biome_open": 2
+            },
+            {
+              "tournaments_played": 5
+            }
+          ]
+        },
+        {
+          "any_of": [
+            {
+              "character": "c2"
+            },
+            {
+              "tournaments_played": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "builders_charge",
+      "kind": "perk",
+      "character": "c2",
+      "tier": 3,
+      "edge": 0.04,
+      "effect": {
+        "double_clear_charge": 0.05
+      },
+      "name_key": "PERK_BUILDERS_CHARGE",
+      "text": "Builders Charge",
+      "price": {
+        "currency": "stars",
+        "amount": 35
+      },
+      "requires": [
+        {
+          "any_of": [
+            {
+              "biome_open": 4
+            },
+            {
+              "tournaments_played": 15
+            }
+          ]
+        },
+        {
+          "any_of": [
+            {
+              "character": "c2"
+            },
+            {
+              "tournaments_played": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rubble_charge",
+      "kind": "perk",
+      "character": "c3",
+      "tier": 1,
+      "edge": 0.04,
+      "effect": {
+        "obstacle_charge": 0.05
+      },
+      "name_key": "PERK_RUBBLE_CHARGE",
+      "text": "Rubble Charge",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": [
+        {
+          "any_of": [
+            {
+              "character": "c3"
+            },
+            {
+              "tournaments_played": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "deep_pockets",
+      "kind": "perk",
+      "character": "c3",
+      "tier": 2,
+      "edge": 0.03,
+      "effect": {
+        "item_slots_add": 1
+      },
+      "name_key": "PERK_DEEP_POCKETS",
+      "text": "Deep Pockets",
+      "price": {
+        "currency": "stars",
+        "amount": 20
+      },
+      "requires": [
+        {
+          "any_of": [
+            {
+              "biome_open": 2
+            },
+            {
+              "tournaments_played": 5
+            }
+          ]
+        },
+        {
+          "any_of": [
+            {
+              "character": "c3"
+            },
+            {
+              "tournaments_played": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "solid_footing",
+      "kind": "perk",
+      "character": "c3",
+      "tier": 3,
+      "edge": 0.03,
+      "effect": {
+        "lock_resets_add": 3
+      },
+      "name_key": "PERK_SOLID_FOOTING",
+      "text": "Solid Footing",
+      "price": {
+        "currency": "stars",
+        "amount": 35
+      },
+      "requires": [
+        {
+          "any_of": [
+            {
+              "biome_open": 4
+            },
+            {
+              "tournaments_played": 15
+            }
+          ]
+        },
+        {
+          "any_of": [
+            {
+              "character": "c3"
+            },
+            {
+              "tournaments_played": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lucky_bag",
+      "kind": "perk",
+      "character": "c4",
+      "tier": 1,
+      "edge": 0.05,
+      "effect": {
+        "randomizer": "bag"
+      },
+      "name_key": "PERK_LUCKY_BAG",
+      "text": "Lucky Bag",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": [
+        {
+          "any_of": [
+            {
+              "character": "c4"
+            },
+            {
+              "tournaments_played": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "long_look",
+      "kind": "perk",
+      "character": "c4",
+      "tier": 2,
+      "edge": 0.05,
+      "effect": {
+        "preview_add": 1
+      },
+      "name_key": "PERK_LONG_LOOK",
+      "text": "Long Look",
+      "price": {
+        "currency": "stars",
+        "amount": 20
+      },
+      "requires": [
+        {
+          "any_of": [
+            {
+              "biome_open": 2
+            },
+            {
+              "tournaments_played": 5
+            }
+          ]
+        },
+        {
+          "any_of": [
+            {
+              "character": "c4"
+            },
+            {
+              "tournaments_played": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trick_charge",
+      "kind": "perk",
+      "character": "c4",
+      "tier": 3,
+      "edge": 0.04,
+      "effect": {
+        "item_charge": 0.1
+      },
+      "name_key": "PERK_TRICK_CHARGE",
+      "text": "Trick Charge",
+      "price": {
+        "currency": "stars",
+        "amount": 35
+      },
+      "requires": [
+        {
+          "any_of": [
+            {
+              "biome_open": 4
+            },
+            {
+              "tournaments_played": 15
+            }
+          ]
+        },
+        {
+          "any_of": [
+            {
+              "character": "c4"
+            },
+            {
+              "tournaments_played": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "potion_helper_drop",
+      "kind": "potion",
+      "effect": "helper_drop",
+      "name_key": "POTION_HELPER_DROP",
+      "text": "Helper Drop",
+      "price": {
+        "currency": "stars",
+        "amount": 2
+      },
+      "requires": {}
+    },
+    {
+      "id": "potion_slow_time",
+      "kind": "potion",
+      "effect": "slow_time",
+      "name_key": "POTION_SLOW_TIME",
+      "text": "Slow Time",
+      "price": {
+        "currency": "stars",
+        "amount": 2
+      },
+      "requires": {}
+    },
+    {
+      "id": "potion_preview_peek",
+      "kind": "potion",
+      "effect": "preview_peek",
+      "name_key": "POTION_PREVIEW_PEEK",
+      "text": "Preview Peek",
+      "price": {
+        "currency": "stars",
+        "amount": 3
+      },
+      "requires": {
+        "any_of": [
+          {
+            "biome_open": 2
+          },
+          {
+            "tournaments_played": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "potion_bomb",
+      "kind": "potion",
+      "effect": "bomb",
+      "name_key": "POTION_BOMB",
+      "text": "Bomb",
+      "price": {
+        "currency": "stars",
+        "amount": 4
+      },
+      "requires": {
+        "any_of": [
+          {
+            "biome_open": 3
+          },
+          {
+            "tournaments_played": 10
+          }
+        ]
+      }
+    },
+    {
+      "id": "meadow_stickers",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "meadow",
+      "name_key": "COSMETIC_MEADOW_STICKERS",
+      "text": "Meadow Stickers",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "meadow"
+      }
+    },
+    {
+      "id": "meadow_frame",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "meadow",
+      "name_key": "COSMETIC_MEADOW_FRAME",
+      "text": "Meadow Frame",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "meadow"
+      }
+    },
+    {
+      "id": "meadow_outfit",
+      "kind": "cosmetic",
+      "grade": "fancy",
+      "biome": "meadow",
+      "name_key": "COSMETIC_MEADOW_OUTFIT",
+      "text": "Meadow Outfit",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": {
+        "biome_open": "meadow"
+      }
+    },
+    {
+      "id": "meadow_board",
+      "kind": "cosmetic",
+      "grade": "grand",
+      "biome": "meadow",
+      "name_key": "COSMETIC_MEADOW_BOARD",
+      "text": "Meadow Board",
+      "price": {
+        "currency": "stars",
+        "amount": 15
+      },
+      "requires": {
+        "biome_open": "meadow"
+      }
+    },
+    {
+      "id": "candy_stickers",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "candy",
+      "name_key": "COSMETIC_CANDY_STICKERS",
+      "text": "Candy Stickers",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "candy"
+      }
+    },
+    {
+      "id": "candy_frame",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "candy",
+      "name_key": "COSMETIC_CANDY_FRAME",
+      "text": "Candy Frame",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "candy"
+      }
+    },
+    {
+      "id": "candy_outfit",
+      "kind": "cosmetic",
+      "grade": "fancy",
+      "biome": "candy",
+      "name_key": "COSMETIC_CANDY_OUTFIT",
+      "text": "Candy Outfit",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": {
+        "biome_open": "candy"
+      }
+    },
+    {
+      "id": "candy_board",
+      "kind": "cosmetic",
+      "grade": "grand",
+      "biome": "candy",
+      "name_key": "COSMETIC_CANDY_BOARD",
+      "text": "Candy Board",
+      "price": {
+        "currency": "stars",
+        "amount": 15
+      },
+      "requires": {
+        "biome_open": "candy"
+      }
+    },
+    {
+      "id": "ice_stickers",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "ice",
+      "name_key": "COSMETIC_ICE_STICKERS",
+      "text": "Ice Stickers",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "ice"
+      }
+    },
+    {
+      "id": "ice_frame",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "ice",
+      "name_key": "COSMETIC_ICE_FRAME",
+      "text": "Ice Frame",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "ice"
+      }
+    },
+    {
+      "id": "ice_outfit",
+      "kind": "cosmetic",
+      "grade": "fancy",
+      "biome": "ice",
+      "name_key": "COSMETIC_ICE_OUTFIT",
+      "text": "Ice Outfit",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": {
+        "biome_open": "ice"
+      }
+    },
+    {
+      "id": "ice_board",
+      "kind": "cosmetic",
+      "grade": "grand",
+      "biome": "ice",
+      "name_key": "COSMETIC_ICE_BOARD",
+      "text": "Ice Board",
+      "price": {
+        "currency": "stars",
+        "amount": 15
+      },
+      "requires": {
+        "biome_open": "ice"
+      }
+    },
+    {
+      "id": "underwater_stickers",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "underwater",
+      "name_key": "COSMETIC_UNDERWATER_STICKERS",
+      "text": "Underwater Stickers",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "underwater"
+      }
+    },
+    {
+      "id": "underwater_frame",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "underwater",
+      "name_key": "COSMETIC_UNDERWATER_FRAME",
+      "text": "Underwater Frame",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "underwater"
+      }
+    },
+    {
+      "id": "underwater_outfit",
+      "kind": "cosmetic",
+      "grade": "fancy",
+      "biome": "underwater",
+      "name_key": "COSMETIC_UNDERWATER_OUTFIT",
+      "text": "Underwater Outfit",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": {
+        "biome_open": "underwater"
+      }
+    },
+    {
+      "id": "underwater_board",
+      "kind": "cosmetic",
+      "grade": "grand",
+      "biome": "underwater",
+      "name_key": "COSMETIC_UNDERWATER_BOARD",
+      "text": "Underwater Board",
+      "price": {
+        "currency": "stars",
+        "amount": 15
+      },
+      "requires": {
+        "biome_open": "underwater"
+      }
+    },
+    {
+      "id": "lava_stickers",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "lava",
+      "name_key": "COSMETIC_LAVA_STICKERS",
+      "text": "Lava Stickers",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "lava"
+      }
+    },
+    {
+      "id": "lava_frame",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "lava",
+      "name_key": "COSMETIC_LAVA_FRAME",
+      "text": "Lava Frame",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "lava"
+      }
+    },
+    {
+      "id": "lava_outfit",
+      "kind": "cosmetic",
+      "grade": "fancy",
+      "biome": "lava",
+      "name_key": "COSMETIC_LAVA_OUTFIT",
+      "text": "Lava Outfit",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": {
+        "biome_open": "lava"
+      }
+    },
+    {
+      "id": "lava_board",
+      "kind": "cosmetic",
+      "grade": "grand",
+      "biome": "lava",
+      "name_key": "COSMETIC_LAVA_BOARD",
+      "text": "Lava Board",
+      "price": {
+        "currency": "stars",
+        "amount": 15
+      },
+      "requires": {
+        "biome_open": "lava"
+      }
+    },
+    {
+      "id": "forest_stickers",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "forest",
+      "name_key": "COSMETIC_FOREST_STICKERS",
+      "text": "Forest Stickers",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "forest"
+      }
+    },
+    {
+      "id": "forest_frame",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "forest",
+      "name_key": "COSMETIC_FOREST_FRAME",
+      "text": "Forest Frame",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "forest"
+      }
+    },
+    {
+      "id": "forest_outfit",
+      "kind": "cosmetic",
+      "grade": "fancy",
+      "biome": "forest",
+      "name_key": "COSMETIC_FOREST_OUTFIT",
+      "text": "Forest Outfit",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": {
+        "biome_open": "forest"
+      }
+    },
+    {
+      "id": "forest_board",
+      "kind": "cosmetic",
+      "grade": "grand",
+      "biome": "forest",
+      "name_key": "COSMETIC_FOREST_BOARD",
+      "text": "Forest Board",
+      "price": {
+        "currency": "stars",
+        "amount": 15
+      },
+      "requires": {
+        "biome_open": "forest"
+      }
+    },
+    {
+      "id": "cave_stickers",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "cave",
+      "name_key": "COSMETIC_CAVE_STICKERS",
+      "text": "Cave Stickers",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "cave"
+      }
+    },
+    {
+      "id": "cave_frame",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "cave",
+      "name_key": "COSMETIC_CAVE_FRAME",
+      "text": "Cave Frame",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "cave"
+      }
+    },
+    {
+      "id": "cave_outfit",
+      "kind": "cosmetic",
+      "grade": "fancy",
+      "biome": "cave",
+      "name_key": "COSMETIC_CAVE_OUTFIT",
+      "text": "Cave Outfit",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": {
+        "biome_open": "cave"
+      }
+    },
+    {
+      "id": "cave_board",
+      "kind": "cosmetic",
+      "grade": "grand",
+      "biome": "cave",
+      "name_key": "COSMETIC_CAVE_BOARD",
+      "text": "Cave Board",
+      "price": {
+        "currency": "stars",
+        "amount": 15
+      },
+      "requires": {
+        "biome_open": "cave"
+      }
+    },
+    {
+      "id": "clockwork_stickers",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "clockwork",
+      "name_key": "COSMETIC_CLOCKWORK_STICKERS",
+      "text": "Clockwork Stickers",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "clockwork"
+      }
+    },
+    {
+      "id": "clockwork_frame",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "clockwork",
+      "name_key": "COSMETIC_CLOCKWORK_FRAME",
+      "text": "Clockwork Frame",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "clockwork"
+      }
+    },
+    {
+      "id": "clockwork_outfit",
+      "kind": "cosmetic",
+      "grade": "fancy",
+      "biome": "clockwork",
+      "name_key": "COSMETIC_CLOCKWORK_OUTFIT",
+      "text": "Clockwork Outfit",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": {
+        "biome_open": "clockwork"
+      }
+    },
+    {
+      "id": "clockwork_board",
+      "kind": "cosmetic",
+      "grade": "grand",
+      "biome": "clockwork",
+      "name_key": "COSMETIC_CLOCKWORK_BOARD",
+      "text": "Clockwork Board",
+      "price": {
+        "currency": "stars",
+        "amount": 15
+      },
+      "requires": {
+        "biome_open": "clockwork"
+      }
+    },
+    {
+      "id": "neon_stickers",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "neon",
+      "name_key": "COSMETIC_NEON_STICKERS",
+      "text": "Neon Stickers",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "neon"
+      }
+    },
+    {
+      "id": "neon_frame",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "neon",
+      "name_key": "COSMETIC_NEON_FRAME",
+      "text": "Neon Frame",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "neon"
+      }
+    },
+    {
+      "id": "neon_outfit",
+      "kind": "cosmetic",
+      "grade": "fancy",
+      "biome": "neon",
+      "name_key": "COSMETIC_NEON_OUTFIT",
+      "text": "Neon Outfit",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": {
+        "biome_open": "neon"
+      }
+    },
+    {
+      "id": "neon_board",
+      "kind": "cosmetic",
+      "grade": "grand",
+      "biome": "neon",
+      "name_key": "COSMETIC_NEON_BOARD",
+      "text": "Neon Board",
+      "price": {
+        "currency": "stars",
+        "amount": 15
+      },
+      "requires": {
+        "biome_open": "neon"
+      }
+    },
+    {
+      "id": "celestial_stickers",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "celestial",
+      "name_key": "COSMETIC_CELESTIAL_STICKERS",
+      "text": "Celestial Stickers",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "celestial"
+      }
+    },
+    {
+      "id": "celestial_frame",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "celestial",
+      "name_key": "COSMETIC_CELESTIAL_FRAME",
+      "text": "Celestial Frame",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "biome_open": "celestial"
+      }
+    },
+    {
+      "id": "celestial_outfit",
+      "kind": "cosmetic",
+      "grade": "fancy",
+      "biome": "celestial",
+      "name_key": "COSMETIC_CELESTIAL_OUTFIT",
+      "text": "Celestial Outfit",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": {
+        "biome_open": "celestial"
+      }
+    },
+    {
+      "id": "celestial_board",
+      "kind": "cosmetic",
+      "grade": "grand",
+      "biome": "celestial",
+      "name_key": "COSMETIC_CELESTIAL_BOARD",
+      "text": "Celestial Board",
+      "price": {
+        "currency": "stars",
+        "amount": 15
+      },
+      "requires": {
+        "biome_open": "celestial"
+      }
+    },
+    {
+      "id": "party_stickers",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "party",
+      "name_key": "COSMETIC_PARTY_STICKERS",
+      "text": "Party Stickers",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "tournaments_played": 1
+      }
+    },
+    {
+      "id": "party_frame",
+      "kind": "cosmetic",
+      "grade": "small",
+      "biome": "party",
+      "name_key": "COSMETIC_PARTY_FRAME",
+      "text": "Party Frame",
+      "price": {
+        "currency": "stars",
+        "amount": 5
+      },
+      "requires": {
+        "tournaments_played": 1
+      }
+    },
+    {
+      "id": "party_outfit",
+      "kind": "cosmetic",
+      "grade": "fancy",
+      "biome": "party",
+      "name_key": "COSMETIC_PARTY_OUTFIT",
+      "text": "Party Outfit",
+      "price": {
+        "currency": "stars",
+        "amount": 10
+      },
+      "requires": {
+        "tournaments_played": 1
+      }
+    },
+    {
+      "id": "party_board",
+      "kind": "cosmetic",
+      "grade": "grand",
+      "biome": "party",
+      "name_key": "COSMETIC_PARTY_BOARD",
+      "text": "Party Board",
+      "price": {
+        "currency": "stars",
+        "amount": 15
+      },
+      "requires": {
+        "tournaments_played": 1
+      }
+    }
+  ]
+}

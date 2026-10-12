@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "balloon",
+  "name_key": "RULE_BALLOON",
+  "layer": "twist",
+  "icon": "balloon",
+  "behaviour": "balloon",
+  "params": {
+    "balloon_per_bag": {
+      "type": "number"
+    },
+    "balloon_g_mult": {
+      "type": "number"
+    },
+    "balloon_drift_ms": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

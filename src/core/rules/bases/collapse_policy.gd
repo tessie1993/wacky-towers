@@ -9,3 +9,9 @@ class_name CollapsePolicy extends RefCounted
 ## Compatibility tags (ADR-0004 atoms). Usage: `policy.tags().is_empty()`.
 func tags() -> PackedStringArray:
 	return PackedStringArray()
+
+
+## Extra checks this plugin needs on a level (e.g. "conveyor needs an unmasked board"). Default: none.
+## Usage: override and return `ValidationIssue.error(...)` entries.
+func validate(_level: LevelData, _catalog: GameCatalog) -> Array[ValidationIssue]:
+	return []

@@ -1,0 +1,154 @@
+{
+  "schema": 1,
+  "id": "meadow_09",
+  "biome": "meadow",
+  "tier": 9,
+  "name": "LVL_MEADOW_09_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "down_axis": "-y",
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "......",
+          ".e....",
+          "......",
+          "......",
+          "....e.",
+          "......"
+        ]
+      }
+    }
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.95,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "topsy_tumble",
+      "params": {
+        "flip_every_layers": 2,
+        "flip_every_ms": 40000,
+        "flip_warn_ms": 2000
+      }
+    },
+    {
+      "id": "hatching_eggs",
+      "params": {
+        "hatch_locks": 6
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "story": {
+    "title_key": "LVL_MEADOW_09_TITLE",
+    "premise_key": "LVL_MEADOW_09_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "flip"
+  },
+  "metadata": {
+    "source": "production/levels/meadow/data/meadow_09.json",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "meadow_09",
+      "biome": "meadow",
+      "tier": 9,
+      "name": "LVL_MEADOW_09_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "down_axis": "-y",
+        "starting_contents": {
+          "layers": {
+            "0": [
+              "......",
+              ".e....",
+              "......",
+              "......",
+              "....e.",
+              "......"
+            ]
+          }
+        }
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.95,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 4
+      },
+      "rules": [
+        {
+          "id": "topsy_tumble",
+          "params": {
+            "flip_every_layers": 2,
+            "flip_every_ms": 40000,
+            "flip_warn_ms": 2000
+          }
+        },
+        {
+          "id": "hatching_eggs",
+          "params": {
+            "hatch_locks": 6
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "story": {
+        "title_key": "LVL_MEADOW_09_TITLE",
+        "premise_key": "LVL_MEADOW_09_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "flip"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

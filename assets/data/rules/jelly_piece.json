@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "jelly_piece",
+  "name_key": "RULE_JELLY_PIECE",
+  "layer": "content",
+  "icon": "jelly_piece",
+  "behaviour": "jelly_piece",
+  "params": {
+    "per_bag": {
+      "type": "number"
+    },
+    "jelly_bounce": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

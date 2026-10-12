@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "underwater_h2",
+  "biome": "underwater",
+  "tier": 13,
+  "name": "LVL_UNDERWATER_H2_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.05,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "turntable",
+      "params": {
+        "turn_warn_locks": 1,
+        "turn_locks": 6,
+        "clockwise": true
+      }
+    },
+    {
+      "id": "magnet_pull",
+      "params": {
+        "magnet_col": [5, 3],
+        "pull_interval_ms": 3000,
+        "pull_warn_ms": 600,
+        "pull_axis": "x"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 225000,
+    "t3": 160000
+  },
+  "music": "underwater_h2",
+  "story": {
+    "title_key": "LVL_UNDERWATER_H2_TITLE",
+    "premise_key": "LVL_UNDERWATER_H2_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "whirlpool"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_h2",
+      "biome": "underwater",
+      "tier": 13,
+      "board": { "width": 6, "depth": 6, "h_play": 10 },
+      "knobs": { "fall.g0": 1.05, "goal.warnings_max": 1 },
+      "goal": { "type": "clear_n", "n": 3 },
+      "rules": [
+        { "id": "turntable", "params": { "turn_warn_locks": 1, "turn_locks": 6, "clockwise": true } },
+        { "id": "magnet_pull", "params": { "magnet_col": [5, 3], "pull_interval_ms": 3000, "pull_warn_ms": 600, "pull_axis": "x" } }
+      ],
+      "stars": { "t2": 225000, "t3": 160000 },
+      "music": "underwater_h2"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "magnet_pull is a wave-3 rule (design/gdd/mechanics-wave3.md W1), skinned as the Underwater event 'Riptide'; its assets/data/rules JSON lands with the wave-3 implementation.",
+      "The riptide column is world-anchored at (5,3): the Whirlpool turns the stack, not the current."
+    ],
+    "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = 3 x 96 s",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

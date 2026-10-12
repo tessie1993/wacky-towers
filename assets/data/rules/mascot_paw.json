@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "mascot_paw",
+  "name_key": "RULE_MASCOT_PAW",
+  "layer": "mascot",
+  "icon": "mascot_paw",
+  "behaviour": "mascot_paw",
+  "params": {
+    "every_s": {
+      "type": "number"
+    },
+    "warn_ms": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

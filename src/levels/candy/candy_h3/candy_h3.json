@@ -1,0 +1,225 @@
+{
+  "schema": 1,
+  "id": "candy_h3",
+  "biome": "candy",
+  "tier": 14,
+  "board": {
+    "width": 7,
+    "depth": 7,
+    "h_play": 14,
+    "mask": [
+      ".#####.",
+      "#######",
+      "#######",
+      "#######",
+      "#######",
+      "#######",
+      ".#####."
+    ],
+    "starting_contents": {
+      "layers": {
+        "0": [
+          ".sssss.",
+          "sssssss",
+          "sssssss",
+          "sssssss",
+          "sssssss",
+          "sssssss",
+          ".sssss."
+        ],
+        "1": [
+          ".sssss.",
+          "sssssss",
+          "sssssss",
+          "sssssss",
+          "sssssss",
+          "sssssss",
+          ".sssss."
+        ],
+        "2": [
+          ".sssss.",
+          "sssssss",
+          "sssssss",
+          "sssssss",
+          "sssssss",
+          "sssssss",
+          ".sssss."
+        ],
+        "3": [
+          ".sssss.",
+          "sssssss",
+          "sssssss",
+          "sssssss",
+          "sssssss",
+          "sssssss",
+          ".sssss."
+        ]
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 1.05,
+    "clear.detector": "colour_connect",
+    "clear.collapse": "cascade",
+    "goal.warnings_max": 1,
+    "spawn.colour_count": 3
+  },
+  "goal": {
+    "type": "bonk_boss",
+    "bonks_needed": 4
+  },
+  "rules": [
+    {
+      "id": "colour_pop",
+      "params": {
+        "pop_min": 6
+      }
+    },
+    {
+      "id": "climber_boss",
+      "params": {
+        "size": [
+          2,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "countdown_bomb",
+      "params": {
+        "thrown_every_locks": 8,
+        "cd_start": 8,
+        "blast_layers": 1
+      }
+    }
+  ],
+  "stars": {
+    "t2": 280000,
+    "t3": 200000
+  },
+  "music": "mus_candy_h3",
+  "name": "LVL_CANDY_H3_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/candy.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "candy_h3",
+      "biome": "candy",
+      "tier": 14,
+      "board": {
+        "width": 7,
+        "depth": 7,
+        "h_play": 14,
+        "mask": [
+          ".#####.",
+          "#######",
+          "#######",
+          "#######",
+          "#######",
+          "#######",
+          ".#####."
+        ],
+        "starting_contents": {
+          "layers": {
+            "0": [
+              ".sssss.",
+              "sssssss",
+              "sssssss",
+              "sssssss",
+              "sssssss",
+              "sssssss",
+              ".sssss."
+            ],
+            "1": "same as layer 0",
+            "2": "same as layer 0",
+            "3": "same as layer 0"
+          }
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.05,
+        "clear.detector": "colour_connect",
+        "clear.collapse": "cascade",
+        "goal.warnings_max": 1,
+        "spawn.colour_count": 3
+      },
+      "goal": {
+        "type": "bonk_boss",
+        "bonks_needed": 4
+      },
+      "rules": [
+        {
+          "id": "colour_pop",
+          "params": {
+            "pop_min": 6
+          }
+        },
+        {
+          "id": "climber_boss*",
+          "params": {
+            "size": [
+              2,
+              2,
+              1
+            ]
+          }
+        },
+        {
+          "id": "countdown_bomb*",
+          "params": {
+            "thrown_every_locks": 8,
+            "cd_start": 8,
+            "blast_layers": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 280000,
+        "t3": 200000
+      },
+      "music": "mus_candy_h3"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "climber_boss*",
+        "runtime": "climber_boss",
+        "params": {
+          "size": [
+            2,
+            2,
+            1
+          ]
+        }
+      },
+      {
+        "source": "countdown_bomb*",
+        "runtime": "countdown_bomb",
+        "params": {
+          "thrown_every_locks": 8,
+          "cd_start": 8,
+          "blast_layers": 1
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

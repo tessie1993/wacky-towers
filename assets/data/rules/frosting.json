@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "id": "frosting",
+  "name_key": "RULE_FROSTING",
+  "layer": "content",
+  "icon": "frosting",
+  "behaviour": "frosting",
+  "params": {},
+  "incompatible_with": []
+}

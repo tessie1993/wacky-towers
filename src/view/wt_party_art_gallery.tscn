@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://caembwj7cul44"]
+
+[ext_resource type="Script" uid="uid://b0g7r7yftwtjc" path="res://src/view/wt_party_art_gallery.gd" id="1_ilgc6"]
+
+[node name="PartyArtGallery" type="Node3D" unique_id=1214458153]
+script = ExtResource("1_ilgc6")

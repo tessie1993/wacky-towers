@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "items",
+  "name_key": "RULE_ITEMS",
+  "layer": "content",
+  "icon": "items",
+  "behaviour": "items",
+  "params": {
+    "enabled": {
+      "type": "flag",
+      "default": true
+    },
+    "p_item": {
+      "type": "number",
+      "default": 0.12,
+      "min": 0,
+      "max": 0.5
+    },
+    "slots": {
+      "type": "number",
+      "default": 2,
+      "min": 1,
+      "max": 3
+    },
+    "extra_slots": {
+      "type": "number",
+      "default": 0,
+      "min": 0,
+      "max": 2
+    },
+    "bomb_radius": {
+      "type": "number",
+      "default": 1,
+      "min": 1,
+      "max": 2
+    },
+    "full_slot_points": {
+      "type": "number",
+      "default": 50,
+      "min": 0
+    },
+    "table": {
+      "type": "item_table",
+      "min_entries": 1,
+      "max_entries": 8,
+      "ids": [
+        "slow_time",
+        "bomb",
+        "helper_drop",
+        "preview_peek",
+        "junk_rain",
+        "fog",
+        "speed_up",
+        "spin_lock"
+      ],
+      "entry_fields": {
+        "id": "known id",
+        "weight": "finite >=0",
+        "bias": "finite -1..2",
+        "debuff": "bool"
+      }
+    }
+  },
+  "incompatible_with": []
+}

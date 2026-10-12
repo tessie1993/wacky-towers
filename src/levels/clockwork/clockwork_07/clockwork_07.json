@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "id": "clockwork_07",
+  "biome": "clockwork",
+  "tier": 7,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 1.28,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "stopwatch",
+      "params": {
+        "stop_every_ms": 14000,
+        "stop_jitter_ms": 3000,
+        "stop_warn_ms": 1000,
+        "stop_ms": 2500,
+        "catchup_scale": 1600,
+        "catchup_ms": 2500
+      }
+    }
+  ],
+  "stars": {
+    "t2": 325000,
+    "t3": 230000
+  },
+  "music": "clockwork_07_tbd",
+  "name": "LVL_CLOCKWORK_07_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/clockwork.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "clockwork_07",
+      "biome": "clockwork",
+      "tier": 7,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.28,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "stopwatch",
+          "params": {
+            "stop_every_ms": 14000,
+            "stop_jitter_ms": 3000,
+            "stop_warn_ms": 1000,
+            "stop_ms": 2500,
+            "catchup_scale": 1600,
+            "catchup_ms": 2500
+          }
+        }
+      ],
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
+      "music": "clockwork_07_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

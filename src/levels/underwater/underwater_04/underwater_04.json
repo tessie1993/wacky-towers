@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "id": "underwater_04",
+  "biome": "underwater",
+  "tier": 4,
+  "board": {
+    "width": 6,
+    "depth": 5,
+    "h_play": 10,
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "......",
+          ".b..b.",
+          "......",
+          "...b..",
+          "......"
+        ]
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 0.9
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "bounce_pad",
+      "params": {
+        "bounce_h": 2,
+        "dir_mode": "last_move"
+      }
+    },
+    {
+      "id": "mushroom_popup",
+      "params": {
+        "object_id": "jelly",
+        "spawn_every_locks": 8,
+        "objects_max": 3
+      }
+    }
+  ],
+  "stars": {
+    "t2": 270000,
+    "t3": 190000
+  },
+  "music": "underwater_04",
+  "name": "LVL_UNDERWATER_04_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_04",
+      "biome": "underwater",
+      "tier": 4,
+      "board": {
+        "width": 6,
+        "depth": 5,
+        "h_play": 10,
+        "starting_contents": {
+          "layers": {
+            "0": [
+              "......",
+              ".m..m.",
+              "......",
+              "...m..",
+              "......"
+            ]
+          }
+        }
+      },
+      "knobs": {
+        "fall.g0": 0.9
+      },
+      "goal": {
+        "type": "clear",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "bounce_pad",
+          "params": {
+            "bounce_h": 2,
+            "dir_mode": "last_move"
+          }
+        },
+        {
+          "id": "mushroom_popup",
+          "params": {
+            "object_id": "jelly",
+            "spawn_every_locks": 8,
+            "objects_max": 3
+          }
+        }
+      ],
+      "stars": {
+        "t2": 270000,
+        "t3": 190000
+      },
+      "music": "underwater_04"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

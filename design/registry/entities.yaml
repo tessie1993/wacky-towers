@@ -1069,9 +1069,10 @@ formulas:
       - g0_start
       - g0_per_tier
       - g0_per_biome
-    output_range: [0.8, 1.7 cells/s]
+    output_range: [0.6, 1.545 cells/s]
     added: 2026-10-09
-    revised: ""
+    revised: "2026-10-10"
+    notes: "Propagated the explicit 2026-10-09 very-slow-early retune in campaign-structure F2; authored per-level g0 remains an override."
   - name: arcade_speed
     status: active
     source: design/gdd/campaign-structure.md
@@ -2425,10 +2426,10 @@ constants:
     source: design/gdd/campaign-structure.md
     referenced_by:
       - design/gdd/campaign-structure.md
-    value: 0.04
+    value: 0.045
     unit: cells/s
     added: 2026-10-09
-    revised: ""
+    revised: "2026-10-10"
   - name: g0_per_biome
     status: active
     source: design/gdd/campaign-structure.md

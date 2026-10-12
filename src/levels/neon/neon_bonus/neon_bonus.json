@@ -1,0 +1,148 @@
+{
+  "schema": 1,
+  "id": "neon_bonus",
+  "biome": "neon",
+  "tier": 11,
+  "name": "LVL_NEON_BONUS_TITLE",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.1,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "mirror",
+      "params": {}
+    },
+    {
+      "id": "fever_rush",
+      "params": {
+        "window_ms": 8000,
+        "clears_needed": 2,
+        "fever_ms": 10000,
+        "bonus": 150,
+        "gravity_scale": 0.5
+      }
+    },
+    {
+      "id": "golden_row",
+      "params": {
+        "start_layer": 0,
+        "bonus": 300
+      }
+    }
+  ],
+  "stars": {
+    "t2": 265000,
+    "t3": 185000
+  },
+  "music": "neon_bonus_tbd",
+  "story": {
+    "title_key": "LVL_NEON_BONUS_TITLE",
+    "premise_key": "LVL_NEON_BONUS_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "disco_ball"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/neon.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "neon_bonus",
+      "biome": "neon",
+      "tier": 11,
+      "name": "LVL_NEON_BONUS_TITLE",
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.1,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 5
+      },
+      "rules": [
+        {
+          "id": "mirror",
+          "params": {}
+        },
+        {
+          "id": "fever_rush",
+          "params": {
+            "window_ms": 8000,
+            "clears_needed": 2,
+            "fever_ms": 10000,
+            "bonus": 150,
+            "gravity_scale": 0.5
+          }
+        },
+        {
+          "id": "golden_row",
+          "params": {
+            "start_layer": 0,
+            "bonus": 300
+          }
+        }
+      ],
+      "stars": {
+        "t2": 265000,
+        "t3": 185000
+      },
+      "music": "neon_bonus_tbd",
+      "story": {
+        "title_key": "LVL_NEON_BONUS_TITLE",
+        "premise_key": "LVL_NEON_BONUS_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "disco_ball"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "fever_rush and golden_row are wave-3 rules (design/gdd/mechanics-wave3.md W14, W15); rule defs land with the plugins",
+      "Bonus uses 3 rules (2 twists + 1 level rule), the bonus allowance"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

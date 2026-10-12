@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "id": "ice_04",
+  "biome": "ice",
+  "tier": 4,
+  "board": {
+    "width": 7,
+    "depth": 5,
+    "h_play": 10,
+    "starting_contents": {
+      "layers": {
+        "0": [
+          ".......",
+          "......n",
+          ".......",
+          "......n",
+          "......."
+        ]
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 0.85
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "snowball",
+      "params": {
+        "slope_dir": "-x",
+        "roll_locks": 2,
+        "snow_max": 3,
+        "balls_max": 2,
+        "respawn_locks": 8
+      }
+    }
+  ],
+  "stars": {
+    "t2": 240000,
+    "t3": 170000
+  },
+  "music": "ice_04",
+  "name": "LVL_ICE_04_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/ice.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "ice_04",
+      "biome": "ice",
+      "tier": 4,
+      "board": {
+        "width": 7,
+        "depth": 5,
+        "h_play": 10,
+        "starting_contents": {
+          "layers": {
+            "0": [
+              ".......",
+              "......m",
+              ".......",
+              "......m",
+              "......."
+            ]
+          }
+        }
+      },
+      "knobs": {
+        "fall.g0": 0.85
+      },
+      "goal": {
+        "type": "clear",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "snowball",
+          "params": {
+            "slope_dir": "-x",
+            "roll_locks": 2,
+            "snow_max": 3,
+            "balls_max": 2,
+            "respawn_locks": 8
+          }
+        }
+      ],
+      "stars": {
+        "t2": 240000,
+        "t3": 170000
+      },
+      "music": "ice_04",
+      "recipe": {
+        "context": "campaign",
+        "atoms": [
+          "BL01",
+          "AR01",
+          "CV01",
+          "CL01",
+          "CO01",
+          "GO01",
+          "FT01",
+          "SP41"
+        ],
+        "story": {
+          "premise": "Sniffles' sneeze sends snowballs rolling down.",
+          "mascot_role": "watcher"
+        }
+      }
+    },
+    "unsupported": [
+      "field:recipe"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:recipe"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

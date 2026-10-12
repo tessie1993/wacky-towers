@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "id": "underwater_03",
+  "biome": "underwater",
+  "tier": 3,
+  "board": {
+    "width": 8,
+    "depth": 4,
+    "h_play": 10
+  },
+  "knobs": {
+    "fall.g0": 0.85
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "gust",
+      "params": {
+        "wind_mode": "fixed",
+        "wind_dir": "+x",
+        "wind_interval_ms": 3000,
+        "wind_jitter_ms": 500,
+        "wind_strength": 1,
+        "wind_warn_ms": 600
+      }
+    }
+  ],
+  "stars": {
+    "t2": 290000,
+    "t3": 205000
+  },
+  "music": "underwater_03",
+  "story": {
+    "mascot_role": "watcher"
+  },
+  "name": "LVL_UNDERWATER_03_TITLE",
+  "seed": null,
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "metadata": {
+    "source": "design/levels/underwater.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "underwater_03",
+      "biome": "underwater",
+      "tier": 3,
+      "board": {
+        "width": 8,
+        "depth": 4,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 0.85
+      },
+      "goal": {
+        "type": "clear",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "gust",
+          "params": {
+            "wind_mode": "fixed",
+            "wind_dir": "+x",
+            "wind_interval_ms": 3000,
+            "wind_jitter_ms": 500,
+            "wind_strength": 1,
+            "wind_warn_ms": 600
+          }
+        }
+      ],
+      "stars": {
+        "t2": 290000,
+        "t3": 205000
+      },
+      "music": "underwater_03",
+      "story": {
+        "mascot_role": "watcher"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

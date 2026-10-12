@@ -1,0 +1,46 @@
+{
+  "id": "wall_basket_gate",
+  "mode": "wall",
+  "name": "Basket Gate",
+  "biome": "meadow",
+  "story": "Pip has packed the meadow picnic, but the hedge gates open only for parcels with the right outline. Turn each toy basket and line it up with the gap.",
+  "objective": "Deliver five picnic parcels before the garden closes.",
+  "twist": "Friendly hedge openings have spare space. Every opening comes from your parcel, so a fitting turn always exists.",
+  "rule": "Rotate and align the floating parcel to fit the opening, then send it through. Five deliveries win; four bonks close the route.",
+  "controls": "E/Q: turn parcel \u00b7 Arrows/WASD: align on wall \u00b7 Space: send now \u00b7 Or wait for the gate",
+  "time_limit": 100.0,
+  "star_times": [
+    38.0,
+    68.0
+  ],
+  "frame_size": 5,
+  "pass_target": 5,
+  "miss_limit": 4,
+  "wall_interval": 10.0,
+  "wall_interval_min": 8.0,
+  "wall_ramp": 0.35,
+  "axis_intro_interval": 12.0,
+  "wall_axes": [
+    "z"
+  ],
+  "hole_slack": 2,
+  "slack_step_every": 0,
+  "shape_pool": [
+    "elbow",
+    "tee",
+    "step"
+  ],
+  "target_turns_y": 3,
+  "target_turns_x": 0,
+  "random_initial_orientation": false,
+  "rhythm_window": 0.0,
+  "rhythm_bonus": 0,
+  "focus_charges": 0,
+  "focus_seconds": 2.5,
+  "focus_rate": 0.35,
+  "stun_seconds": 0.65,
+  "tight_charge": 3,
+  "opening_hint": "E/Q turns the parcel; arrows align its outline with the gap. Space sends it through.",
+  "win_text": "All parcels delivered. Route complete!",
+  "fail_text": "The gates have closed. Try this route again!"
+}

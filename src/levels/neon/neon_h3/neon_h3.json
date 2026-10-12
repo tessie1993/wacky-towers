@@ -1,0 +1,140 @@
+{
+  "schema": 1,
+  "id": "neon_h3",
+  "biome": "neon",
+  "tier": 14,
+  "name": "LVL_NEON_H3_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.3,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1,
+    "spawn.colour_count": 3
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    {
+      "id": "mono_layer",
+      "params": {
+        "mono_extra_layers": 1
+      }
+    },
+    {
+      "id": "mirror",
+      "params": {}
+    },
+    {
+      "id": "chameleon_paint",
+      "params": {
+        "min_neighbours": 2
+      }
+    }
+  ],
+  "stars": {
+    "t2": 385000,
+    "t3": 265000
+  },
+  "music": "neon_h3_tbd",
+  "story": {
+    "title_key": "LVL_NEON_H3_TITLE",
+    "premise_key": "LVL_NEON_H3_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "paint"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/neon.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "neon_h3",
+      "biome": "neon",
+      "tier": 14,
+      "name": "LVL_NEON_H3_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_left",
+          "screw_right"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.3,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1,
+        "spawn.colour_count": 3
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 5
+      },
+      "rules": [
+        {
+          "id": "mono_layer",
+          "params": {
+            "mono_extra_layers": 1
+          }
+        },
+        {
+          "id": "mirror",
+          "params": {}
+        },
+        {
+          "id": "chameleon_paint",
+          "params": {
+            "min_neighbours": 2
+          }
+        }
+      ],
+      "stars": {
+        "t2": 385000,
+        "t3": 265000
+      },
+      "music": "neon_h3_tbd",
+      "story": {
+        "title_key": "LVL_NEON_H3_TITLE",
+        "premise_key": "LVL_NEON_H3_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "paint"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "chameleon_paint is a wave-3 rule (design/gdd/mechanics-wave3.md W3); rule def lands with the plugin",
+      "mono_layer is a Candy callback (candy_03), not taught in Neon; it is what gives chameleon_paint a gameplay payoff under layer clears"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

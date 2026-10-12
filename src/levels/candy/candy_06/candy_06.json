@@ -1,0 +1,212 @@
+{
+  "schema": 1,
+  "id": "candy_06",
+  "biome": "candy",
+  "tier": 6,
+  "name": "LVL_CANDY_06_TITLE",
+  "board": {
+    "width": 8,
+    "depth": 8,
+    "h_play": 3,
+    "down_axis": "-y"
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "duo",
+      "tri_straight",
+      "tri_corner"
+    ],
+    "tags": {
+      "rainbow": {
+        "per_bag": 1
+      }
+    }
+  },
+  "knobs": {
+    "fall.g0": 0.85,
+    "goal.top_out": "trim",
+    "spawn.colour_count": 2,
+    "spawn.colour_weights": {
+      "P": 0.3,
+      "V": 0.7
+    },
+    "control.rotation_axes_enabled": [
+      "spin"
+    ]
+  },
+  "goal": {
+    "type": "shape",
+    "win_correct": 38,
+    "target_shape": {
+      "colours": true,
+      "layers": {
+        "0": [
+          ".V.PP.V.",
+          ".VP..PV.",
+          ".VP..PV.",
+          "VVVVVVVV",
+          "V.VVVV.V",
+          "VPVPPVPV",
+          ".VVVVVV.",
+          "..VPPV.."
+        ]
+      }
+    }
+  },
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {
+        "top_out": "trim"
+      }
+    },
+    {
+      "id": "rainbow_piece",
+      "params": {
+        "per_bag": 1
+      }
+    },
+    {
+      "id": "mascot_mood",
+      "params": {
+        "prank": "smudge",
+        "smudge_cap": 2,
+        "happy_lick_every_locks": 6
+      }
+    }
+  ],
+  "stars": {
+    "t2": 160000,
+    "t3": 115000
+  },
+  "music": "mus_candy_06",
+  "story": {
+    "title_key": "LVL_CANDY_06_TITLE",
+    "premise_key": "LVL_CANDY_06_PREMISE",
+    "mascot_role": "mood_swing",
+    "icon": "icing_bag"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/candy.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "candy_06",
+      "biome": "candy",
+      "tier": 6,
+      "name": "LVL_CANDY_06_TITLE",
+      "board": {
+        "width": 8,
+        "depth": 8,
+        "h_play": 3,
+        "down_axis": "-y"
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "duo",
+          "tri_straight",
+          "tri_corner"
+        ],
+        "tags": {
+          "rainbow": 1
+        }
+      },
+      "knobs": {
+        "fall.g0": 0.85,
+        "goal.top_out": "trim",
+        "spawn.colour_count": 2,
+        "spawn.colour_weights": {
+          "P": 0.3,
+          "V": 0.7
+        },
+        "control.rotation_axes": [
+          "spin"
+        ]
+      },
+      "goal": {
+        "type": "shape",
+        "win_correct": 38,
+        "target_shape": {
+          "colours": true,
+          "layers": {
+            "0": [
+              ".V.PP.V.",
+              ".VP..PV.",
+              ".VP..PV.",
+              "VVVVVVVV",
+              "V.VVVV.V",
+              "VPVPPVPV",
+              ".VVVVVV.",
+              "..VPPV.."
+            ]
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "fill_shape",
+          "params": {
+            "top_out": "trim"
+          }
+        },
+        {
+          "id": "rainbow_piece*",
+          "params": {
+            "per_bag": 1
+          }
+        },
+        {
+          "id": "mascot_mood",
+          "params": {
+            "prank": "smudge",
+            "smudge_cap": 2,
+            "happy_lick_every_locks": 6
+          }
+        }
+      ],
+      "stars": {
+        "t2": 160000,
+        "t3": 115000
+      },
+      "music": "mus_candy_06",
+      "story": {
+        "title_key": "LVL_CANDY_06_TITLE",
+        "premise_key": "LVL_CANDY_06_PREMISE",
+        "mascot_role": "mood_swing",
+        "icon": "icing_bag"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "rainbow_piece*",
+        "runtime": "rainbow_piece",
+        "params": {
+          "per_bag": 1
+        }
+      },
+      {
+        "source": "rainbow_piece*",
+        "runtime": "rainbow_piece",
+        "params": {
+          "per_bag": 1
+        }
+      }
+    ],
+    "design_amendments": []
+  }
+}

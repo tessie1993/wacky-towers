@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "key_stamp",
+  "name_key": "RULE_KEY_STAMP",
+  "layer": "content",
+  "icon": "key_stamp",
+  "behaviour": "key_stamp",
+  "params": {
+    "key_per_bag": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

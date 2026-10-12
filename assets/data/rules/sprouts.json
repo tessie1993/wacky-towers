@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "sprouts",
+  "name_key": "RULE_SPROUTS",
+  "layer": "content",
+  "icon": "sprouts",
+  "behaviour": "sprouts",
+  "params": {
+    "grow_locks": {
+      "type": "number"
+    },
+    "grow_max": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

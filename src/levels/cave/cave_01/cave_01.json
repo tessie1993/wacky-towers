@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "id": "cave_01",
+  "biome": "cave",
+  "tier": 1,
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 8
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "opening_set": [
+      "o",
+      "i"
+    ],
+    "opening_count": 2
+  },
+  "knobs": {
+    "fall.g0": 0.95,
+    "goal.warnings_max": 2,
+    "goal.top_out": "rescue"
+  },
+  "goal": {
+    "type": "clear_n",
+    "T_level": 200,
+    "n": 3
+  },
+  "rules": [],
+  "stars": {
+    "t2": 170000,
+    "t3": 120000
+  },
+  "music": "cave_01_tbd",
+  "story": {
+    "mascot_role": "watcher",
+    "icon": "headlamp"
+  },
+  "name": "LVL_CAVE_01_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/cave.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "cave_01",
+      "biome": "cave",
+      "tier": 1,
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 8
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "screw_r"
+        ],
+        "opening_set": [
+          "o",
+          "i"
+        ],
+        "opening_count": 2
+      },
+      "knobs": {
+        "fall.g0": 0.95,
+        "goal.warnings_max": 2,
+        "goal.top_out": "rescue"
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3,
+        "T_level": 200
+      },
+      "rules": [
+        {
+          "id": "wo09_watcher",
+          "params": {}
+        }
+      ],
+      "secrets": [
+        {
+          "id": "SE05",
+          "params": {
+            "prop": "rubber_duck_bats",
+            "view_snap": "low_3"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 170000,
+        "t3": 120000
+      },
+      "music": "cave_01_tbd",
+      "story": {
+        "mascot_role": "watcher",
+        "icon": "headlamp"
+      }
+    },
+    "unsupported": [
+      "field:secrets"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:secrets"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "wo09_watcher",
+        "runtime": "story.mascot_role=watcher",
+        "presentation_only": true
+      }
+    ],
+    "design_amendments": []
+  }
+}

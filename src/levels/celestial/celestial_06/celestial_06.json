@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "id": "celestial_06",
+  "biome": "celestial",
+  "tier": 6,
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 6
+  },
+  "pieces": {
+    "fixed_list": [
+      "i",
+      "o",
+      "o",
+      "i",
+      "i",
+      "o"
+    ],
+    "shapes": [
+      "i",
+      "o"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.6,
+    "spawn.preview_count": 3,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "shape",
+    "piece_budget": 6,
+    "target_shape": {
+      "layers": {
+        "0": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ],
+        "1": [
+          "++++",
+          ".++.",
+          ".++.",
+          "...."
+        ]
+      }
+    }
+  },
+  "stars": {
+    "t2": 75000,
+    "t3": 50000
+  },
+  "music": "celestial_06_tbd",
+  "name": "LVL_CELESTIAL_06_TITLE",
+  "seed": null,
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {
+        "topout_rule": "trim"
+      }
+    }
+  ],
+  "metadata": {
+    "source": "design/levels/celestial.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "celestial_06",
+      "biome": "celestial",
+      "tier": 6,
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 6
+      },
+      "pieces": {
+        "fixed_list": [
+          "i",
+          "o",
+          "o",
+          "i",
+          "i",
+          "o"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.6,
+        "spawn.preview_count": 3,
+        "goal.top_out": "out_of_pieces"
+      },
+      "goal": {
+        "type": "shape",
+        "piece_budget": 6,
+        "target_shape": {
+          "layers": {
+            "0": [
+              "####",
+              "####",
+              "####",
+              "####"
+            ],
+            "1": [
+              "####",
+              ".##.",
+              ".##.",
+              "...."
+            ]
+          }
+        }
+      },
+      "stars": {
+        "t2": 75000,
+        "t3": 50000
+      },
+      "solution": "see level notes",
+      "music": "celestial_06_tbd"
+    },
+    "unsupported": [
+      "field:solution"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:solution"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

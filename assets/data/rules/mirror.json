@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "mirror",
+  "name_key": "RULE_MIRROR",
+  "layer": "twist",
+  "icon": "mirror",
+  "behaviour": "mirror",
+  "params": {
+    "mirror_axis": {
+      "type": "string"
+    },
+    "skin": {
+      "type": "string"
+    }
+  },
+  "incompatible_with": []
+}

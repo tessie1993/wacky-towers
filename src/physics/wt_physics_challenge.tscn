@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://xw2yokowayt1"]
+
+[ext_resource type="Script" uid="uid://dmqhwcjd3p2me" path="res://src/physics/wt_physics_challenge.gd" id="1_rw1tw"]
+
+[node name="PhysicsChallenge" type="Node3D" unique_id=1957922206]
+script = ExtResource("1_rw1tw")

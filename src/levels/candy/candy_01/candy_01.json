@@ -1,0 +1,165 @@
+{
+  "schema": 1,
+  "id": "candy_01",
+  "biome": "candy",
+  "tier": 1,
+  "name": "LVL_CANDY_01_TITLE",
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 8,
+    "down_axis": "-y"
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s"
+    ],
+    "opening_set": [
+      "o",
+      "i"
+    ],
+    "opening_count": 2
+  },
+  "knobs": {
+    "fall.g0": 0.65,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 2,
+    "spawn.colour_count": 2,
+    "spawn.colour_streak": 0.6,
+    "goal.t_piece_s": 8
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "mono_layer",
+      "params": {
+        "mono_extra_layers": 1
+      }
+    },
+    {
+      "id": "mascot_mood",
+      "params": {
+        "prank": "bounce"
+      }
+    },
+    {
+      "id": "mascot_catch",
+      "params": {
+        "catches": 1,
+        "happy_only": true
+      }
+    },
+    {
+      "id": "angle_gem",
+      "params": {
+        "skin": "gummy_duck"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 145000,
+    "t3": 105000
+  },
+  "seed": null,
+  "music": "mus_candy_01",
+  "story": {
+    "title_key": "LVL_CANDY_01_TITLE",
+    "premise_key": "LVL_CANDY_01_PREMISE",
+    "mascot_role": "mood_swing",
+    "icon": "sugar_cube"
+  },
+  "metadata": {
+    "source": "design/levels/candy.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "candy_01",
+      "biome": "candy",
+      "tier": 1,
+      "name": "LVL_CANDY_01_TITLE",
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 8,
+        "down_axis": "-y"
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s"
+        ],
+        "opening_set": [
+          "o",
+          "i"
+        ],
+        "opening_count": 2
+      },
+      "knobs": {
+        "fall.g0": 0.65,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 2,
+        "spawn.colour_count": 2,
+        "spawn.colour_streak": 0.6,
+        "goal.t_piece_s": 8
+      },
+      "goal": {
+        "type": "clear",
+        "N": 4
+      },
+      "rules": [
+        {
+          "id": "mono_layer",
+          "params": {
+            "mono_extra_layers": 1
+          }
+        },
+        {
+          "id": "mascot_mood",
+          "params": {
+            "prank": "bounce"
+          }
+        },
+        {
+          "id": "mascot_catch",
+          "params": {
+            "catches": 1
+          }
+        },
+        {
+          "id": "angle_gem",
+          "params": {
+            "skin": "gummy_duck"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 145000,
+        "t3": 105000
+      },
+      "seed": null,
+      "music": "mus_candy_01",
+      "story": {
+        "title_key": "LVL_CANDY_01_TITLE",
+        "premise_key": "LVL_CANDY_01_PREMISE",
+        "mascot_role": "mood_swing",
+        "icon": "sugar_cube"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

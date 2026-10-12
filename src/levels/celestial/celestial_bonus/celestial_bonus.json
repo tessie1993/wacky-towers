@@ -1,0 +1,158 @@
+{
+  "schema": 1,
+  "id": "celestial_bonus",
+  "biome": "celestial",
+  "tier": 11,
+  "board": {
+    "width": 4,
+    "depth": 4,
+    "h_play": 6
+  },
+  "pieces": {
+    "kit": [
+      "i",
+      "i",
+      "o",
+      "o",
+      "big_cube"
+    ],
+    "shapes": [
+      "i",
+      "o",
+      "big_cube"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.6,
+    "spawn.arrival": "kit_box",
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "shape",
+    "piece_budget": 5,
+    "target_shape": {
+      "layers": {
+        "0": [
+          "++++",
+          "++++",
+          "++++",
+          "++++"
+        ],
+        "1": [
+          "....",
+          ".++.",
+          ".++.",
+          "...."
+        ],
+        "2": [
+          "....",
+          ".++.",
+          ".++.",
+          "...."
+        ]
+      }
+    }
+  },
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {
+        "topout_rule": "trim"
+      }
+    },
+    {
+      "id": "undo_reset",
+      "params": {}
+    }
+  ],
+  "stars": {
+    "t2": 90000,
+    "t3": 60000
+  },
+  "music": "celestial_bonus_tbd",
+  "name": "LVL_CELESTIAL_BONUS_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/celestial.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "celestial_bonus",
+      "biome": "celestial",
+      "tier": 11,
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 6
+      },
+      "pieces": {
+        "kit": [
+          "i",
+          "i",
+          "o",
+          "o",
+          "big_cube"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.6,
+        "spawn.arrival": "kit_box",
+        "goal.top_out": "out_of_pieces"
+      },
+      "goal": {
+        "type": "shape",
+        "piece_budget": 5,
+        "target_shape": {
+          "layers": {
+            "0": [
+              "####",
+              "####",
+              "####",
+              "####"
+            ],
+            "1": [
+              "....",
+              ".##.",
+              ".##.",
+              "...."
+            ],
+            "2": [
+              "....",
+              ".##.",
+              ".##.",
+              "...."
+            ]
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "undo_reset*",
+          "params": {}
+        }
+      ],
+      "stars": {
+        "t2": 90000,
+        "t3": 60000
+      },
+      "solution": "see level notes",
+      "music": "celestial_bonus_tbd"
+    },
+    "unsupported": [
+      "field:solution"
+    ],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "field:solution"
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [
+      {
+        "source": "undo_reset*",
+        "runtime": "undo_reset",
+        "params": {}
+      }
+    ],
+    "design_amendments": []
+  }
+}

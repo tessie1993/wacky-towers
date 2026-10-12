@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "colour_pop",
+  "name_key": "RULE_COLOUR_POP",
+  "layer": "mechanic",
+  "icon": "colour_pop",
+  "behaviour": "colour_pop",
+  "params": {
+    "pop_min": {
+      "type": "number"
+    },
+    "layer_clear_too": {
+      "type": "flag"
+    },
+    "pop_min_pieces": {
+      "type": "number"
+    }
+  },
+  "incompatible_with": []
+}

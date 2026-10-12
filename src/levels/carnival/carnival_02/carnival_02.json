@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "id": "carnival_02",
+  "biome": "carnival",
+  "tier": 2,
+  "name": "LVL_CARNIVAL_02_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.25,
+    "goal.warnings_max": 1,
+    "goal.top_out": "rescue"
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    { "id": "mascot_hint", "params": {} },
+    { "id": "angle_gem", "params": { "skin": "duck_prize" } },
+    { "id": "star_coins", "params": { "coins": 5, "min_layer": 1, "score": 50, "goal_counter": "coins" } },
+    { "id": "mushroom_popup", "params": { "spawn_every_locks": 4, "objects_max": 4, "skin": "coconut" } }
+  ],
+  "stars": {
+    "t2": 245000,
+    "t3": 175000
+  },
+  "music": "carnival_02_tbd",
+  "story": {
+    "title_key": "LVL_CARNIVAL_02_TITLE",
+    "premise_key": "LVL_CARNIVAL_02_PREMISE",
+    "mascot_role": "helper",
+    "icon": "coconut"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/carnival.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1, "id": "carnival_02", "biome": "carnival", "tier": 2, "name": "LVL_CARNIVAL_02_TITLE",
+      "board": { "width": 6, "depth": 6, "h_play": 10 },
+      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r"] },
+      "knobs": { "fall.g0": 1.25, "goal.warnings_max": 1, "goal.top_out": "rescue" },
+      "goal": { "type": "clear_n", "N": 3 },
+      "rules": [
+        { "id": "mascot_hint", "params": {} },
+        { "id": "angle_gem", "params": { "skin": "duck_prize" } },
+        { "id": "star_coins", "params": { "coins": 5, "min_layer": 1, "score": 50, "goal_counter": "coins" } },
+        { "id": "mushroom_popup", "params": { "spawn_every_locks": 4, "objects_max": 4, "skin": "coconut" } }
+      ],
+      "stars": { "t2": 245000, "t3": 175000 },
+      "music": "carnival_02_tbd",
+      "story": { "title_key": "LVL_CARNIVAL_02_TITLE", "premise_key": "LVL_CARNIVAL_02_PREMISE", "mascot_role": "helper", "icon": "coconut" }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "star_coins is a wave-3 rule (W8), skinned as 'Fairground Tokens'. Coins are a score bonus only: no counter goal type exists.",
+      "mushroom_popup is the Meadow spawned-object callback, skinned as coconuts knocked off the shy; skin 'coconut' needs an art asset."
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

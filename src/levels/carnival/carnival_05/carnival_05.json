@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "id": "carnival_05",
+  "biome": "carnival",
+  "tier": 5,
+  "name": "LVL_CARNIVAL_05_TITLE",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 12
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right", "big_cube"],
+    "weights": {
+      "big_cube": 0.5
+    }
+  },
+  "knobs": {
+    "fall.g0": 1.38,
+    "goal.top_out": "trim"
+  },
+  "goal": {
+    "type": "height",
+    "height_coverage": 0.6,
+    "h_target": 10
+  },
+  "rules": [
+    { "id": "build_race", "params": {} },
+    { "id": "magnet_pull", "params": { "magnet_col": [4, 2], "pull_interval_ms": 4000, "pull_warn_ms": 800, "pull_axis": "x" } }
+  ],
+  "stars": {
+    "t2": 240000,
+    "t3": 170000
+  },
+  "music": "carnival_05_tbd",
+  "story": {
+    "title_key": "LVL_CARNIVAL_05_TITLE",
+    "premise_key": "LVL_CARNIVAL_05_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "fishing_hook"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/carnival.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1, "id": "carnival_05", "biome": "carnival", "tier": 5, "name": "LVL_CARNIVAL_05_TITLE",
+      "board": { "width": 5, "depth": 5, "h_play": 12 },
+      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r","big_cube"], "weights": { "big_cube": 0.5 } },
+      "knobs": { "fall.g0": 1.38, "goal.top_out": "trim" },
+      "goal": { "type": "height", "H_target": 10, "height_coverage": 0.6 },
+      "rules": [
+        { "id": "build_race", "params": {} },
+        { "id": "magnet_pull", "params": { "magnet_col": [4, 2], "pull_interval_ms": 4000, "pull_warn_ms": 800, "pull_axis": "x" } }
+      ],
+      "stars": { "t2": 240000, "t3": 170000 },
+      "music": "carnival_05_tbd",
+      "story": { "title_key": "LVL_CARNIVAL_05_TITLE", "premise_key": "LVL_CARNIVAL_05_PREMISE", "mascot_role": "watcher", "icon": "fishing_hook" }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "magnet_pull is a wave-3 rule (W1), skinned as 'Magnet Fishing' (the hook hangs over column x4 z2). Interval 4000 ms is slower than the W1 default 2500 because this level cannot be lost.",
+      "build_race is the Meadow 05 callback (M1 bundle); star times copy the Celestial 05 hand-set for the same board and target."
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

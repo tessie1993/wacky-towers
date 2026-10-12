@@ -587,6 +587,8 @@ targets (both layers)   side (z = 1)
 
 ## 7. Hard-track remixes (tiers 12–14; open after 10)
 
+> **Superseded (2026-10-10, wave-3 remix pass).** The shipped `ice_h1`–`h3` are specified in **"Hard-track remixes (tiers 12–14)"** at the end of this file. H1 and H2 keep these concepts and each adds one wave-3 rule. H3 Two Floes (islands, BL07, which is not a runtime rule) was replaced by Floe Breakup. This section is kept as history; the H rows in the section 2 tables are out of date.
+
 ### H1 Snowball Fight
 
 **Story card.** Sniffles caught a sniffle every lock. Snowballs roll down fast and grow, and the sneezes shove your pieces too. Make the balls part of the plan. · **Pebble: watcher** (hides behind a snowbank).
@@ -686,3 +688,78 @@ Departure from `lore-world.md` §7 (flagged): the lore table has the ring at 06,
 - **Pebble has no catch** (WO11 is Pip's). If the user wants a mascot-catch in Ice 01–02, WO11 can be reused as a one-line change.
 - **Star times** are formula estimates (`t_beat ≈ 2.67 × A`); replace with playtest medians. 06, 09 and the bonus are hand-set guesses.
 - **Bonus kit** solution is hand-verified on paper (four 2×2×2 blocks); the validator replay should confirm before it ships.
+
+---
+
+## Hard-track remixes (tiers 12–14)
+
+Wave-3 remix pass (level-designer, 2026-10-10), implementing Campaign Structure rule 17. All three open when `ice_10` is finished and do not count toward the next biome's gate. Each one recombines 1–2 rules Ice already taught with **exactly one** wave-3 rule (`design/gdd/mechanics-wave3.md`), given an Ice name. Twist cap: at most 2 `twist` + 1 `mechanic` (`content` and control verbs do not count). Pebble is a watcher. No Mizzle clue.
+
+**Star calibration (hard track).** `t2 = round5(0.78 × t_est)`, `t3 = round5(0.55 × t_est)`, `t_est = N × 2.667 s × A`. That is tighter than F1's 0.85 / 0.6 used on 01–10. Speed is about tier 9–10 (1.0–1.05; `ice_10` is 1.10 on a sideways lane).
+
+| id | Name | Tier | Taught rules recombined | Wave-3 rule (Ice name) | Twist / mech count | Goal | g0 | ★★ / ★★★ |
+|---|---|---|---|---|---|---|---|---|
+| ice_h1 | Snowball Fight | 12 | snowball (04), gust (10) | `rusty_hinge` (**Frozen Hinges**) | 2 twists | Clear 5 | 1.05 | 375 / 265 s |
+| ice_h2 | Blind Curling | 13 | curling flick verb (03), fog (07) | `storm_bolt` (**Icicle Drop**) | 2 twists | Clear 4 | 1.0 | 265 / 190 s |
+| ice_h3 | Floe Breakup | 14 | thin_ice (08), ice_slide (02/07/09) | `crumble_tiles` (**Cracked Floe**) | 2 twists + 1 mech | Clear 4 | 1.05 | 250 / 175 s |
+
+### H1 Snowball Fight (`ice_h1`, tier 12)
+
+**Story card.** Sniffles sneezes a snowball every lock, and the cold has frozen every hinge: each piece can turn only twice before it squeaks stuck. · **Pebble: watcher** (hides behind a snowbank, oils a hinge with a tiny can).
+**Idea recombined**: the 04 Snowball Roll, turned up (`roll_locks` 1, `balls_max` 4, `respawn_locks` 5, `slope_dir` −x, two starting balls at x 5), and the Sneeze Gust (+z, every 10 s ± 2 s). **Wave-3 rule**: `rusty_hinge` as **Frozen Hinges**: `max_turns` 2 per piece. A third turn is refused (`hinge_stuck`: frost puffs and a squeak), and a refused turn costs nothing.
+**Goal**: Clear 5. 6×6, H10, 8 Std, g0 1.05, rescue, 1 warning.
+
+```text
+top-down (m = start ball)   side (z = 1)
+......                      10 ============
+.....m   <- balls roll -x    :
+......                       0 . . . . . m   grows to 3 as it rolls
+......
+.....m
+......
+```
+**Wacky test**: surprising, your rotate button runs out; silly, frosty squeaks and a frozen spin wobble; funny failure, a piece stuck one turn short of fitting, then sneezed sideways anyway; big moment, four snowballs parking in a row and completing a layer for you.
+**Counterplay**: plan the orientation before the piece spawns (the preview shows it) and spend the 2 turns on purpose. Build so the balls park where you need filler: a 2-step wall stops a ball. Hold back a turn for the gust correction.
+**Stars**: t_est 5 × 96 = 480 s → 375 / 265 s (the 2026 draft's 410 / 290 tightened to the hard-track factor).
+
+### H2 Blind Curling (`ice_h2`, tier 13)
+
+**Story card.** Curling in a squall, under a cave roof full of icicles. Flick the stone through the gate while the lane fades, and watch the drip: an icicle snaps off and knocks the top cube off a marked column. · **Pebble: watcher** (sweeps ahead of the stone, ducks icicles).
+**Idea recombined**: the 03 lane with its two posts and Curling Flick (`control.verb` `curling_flick`, 1 per piece), plus the 07 Whiteout (visible 3.5 s, fade 1.2 s). **Wave-3 rule**: `storm_bolt` as **Icicle Drop**: every 11 s an icicle over one occupied column glints and drips for 1.8 s (`bolt_warn_ms`), then removes that column's highest cube. It never hits the falling piece. If a clear empties the column first, it fizzles.
+**Goal**: Clear 4. 4×8 lane, H10, posts at (0,5) and (3,5), spawn (1,3), 8 Std, g0 1.0, rescue, 1 warning.
+
+```text
+top-down 4×8   side (x = 1)
+....           10 =================
+....            :
+....  S         0 . . . . . . . .   icicles hang over the whole lane
+....
+....
+#..#  posts
+....
+....
+```
+**Wacky test**: surprising, a hidden stack loses cubes from the ceiling; silly, a cube hops off with a "plink" and an icicle sticks in the ice like a dart; funny failure, a flicked stone slides into the exact hole an icicle just made, but one layer too high; big moment, a clear washing out the whiteout and fizzling a dripping icicle.
+**Counterplay**: the drip shows the column even in the fog, so refill it straight away (its new top cell is open from above). Finish layers fast, because a clear fizzles the bolt. Flick to the far posts to keep the near columns low.
+**Stars**: t_est 4 × 85.3 = 341 s → 265 / 190 s.
+
+### H3 Floe Breakup (`ice_h3`, tier 14)
+
+**Story card.** Spring comes early. The floe cracks at the rim, and three cracked tiles in the middle give way after three bumps each, so whole columns sink. Everything still slides toward the cracking edge. · **Pebble: watcher** (rides a breaking slab, `dots`).
+**Idea recombined**: the 08 Thin Ice (2 strips, +z then +x, every 45 s, 3 s warning), run on a Clear goal instead of Survive, plus the Slippery Slide (+z, 1 cell). The slide points at the first strip to go. **Wave-3 rule**: `crumble_tiles` as **Cracked Floe**: tiles (1,1), (3,2), (2,4) crack. Each counts the locks that put a layer-0 cube on it; at 2 they spider-crack (`tile_cracking`), at 3 the bottom cube breaks away and the column sinks one cell.
+**Goal**: Clear 4. 6×6 → 6×5 → 5×5, H10, 8 Std, g0 1.05, rescue, 1 warning.
+
+```text
+top-down 6×6 (c = cracked tile, ~ = thin-ice strip; column x5 goes 2nd, +x)
+.....~   z0
+.c...~   z1
+...c.~   z2
+.....~   z3
+..c..~   z4
+~~~~~~   z5 strip goes 1st (+z); the slide pushes toward it
+```
+**Wacky test**: surprising, the floor under the middle gives way, not only the rim; silly, a column sinks with a "glug" and a fish peeks out; funny failure, the slide carries a perfect piece onto the strip that cracks off next; big moment, a crumble that drops a column into place and completes a layer.
+**Counterplay**: put the floor layer on the cracked tiles early, and let them crumble while layer 0 is still easy to refill. Aim pieces one cell short of the +z rim, because the slide does the rest. Never build tall on the z 5 row or the x 5 column. All three tiles sit inside the 5×5 core that survives.
+**Stars**: average A ≈ 30 (36 → 30 → 25), t_est 4 × 80 = 320 s → 250 / 175 s.
+
+**Open items**: `rusty_hinge`, `storm_bolt` and `crumble_tiles` rule JSONs land with wave-3. Stitch holds Thin Ice and Snowball Roll on replays, but not the hinge, the slide or the icicle bolt (`storm_bolt` removes a locked cube, so game-designer must decide whether Stitch vetoes it).

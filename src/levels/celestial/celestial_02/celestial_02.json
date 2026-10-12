@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "id": "celestial_02",
+  "biome": "celestial",
+  "tier": 2,
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10,
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "######",
+          "#.###.",
+          "######",
+          "######",
+          "####.#",
+          "######"
+        ],
+        "1": [
+          "######",
+          "#..#..",
+          "#.##.#",
+          "###.##",
+          "###..#",
+          "######"
+        ]
+      }
+    }
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "opening_set": [
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "opening_count": 3
+  },
+  "knobs": {
+    "fall.g0": 1.15,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "mascot_hint",
+      "params": {}
+    },
+    {
+      "id": "angle_gem",
+      "params": {
+        "skin": "duck_constellation"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 150000,
+    "t3": 105000
+  },
+  "music": "celestial_02_tbd",
+  "name": "LVL_CELESTIAL_02_TITLE",
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/celestial.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "celestial_02",
+      "biome": "celestial",
+      "tier": 2,
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10,
+        "starting_contents": {
+          "layers": {
+            "0": [
+              "######",
+              "#.###.",
+              "######",
+              "######",
+              "####.#",
+              "######"
+            ],
+            "1": [
+              "######",
+              "#..#..",
+              "#.##.#",
+              "###.##",
+              "###..#",
+              "######"
+            ]
+          }
+        }
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "screw_r"
+        ],
+        "opening_set": [
+          "tripod",
+          "screw_l",
+          "screw_r"
+        ],
+        "opening_count": 3
+      },
+      "knobs": {
+        "fall.g0": 1.15,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
+      "rules": [
+        {
+          "id": "mascot_hint",
+          "params": {}
+        },
+        {
+          "id": "angle_gem",
+          "params": {
+            "skin": "duck_constellation"
+          }
+        }
+      ],
+      "stars": {
+        "t2": 150000,
+        "t3": 105000
+      },
+      "music": "celestial_02_tbd"
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

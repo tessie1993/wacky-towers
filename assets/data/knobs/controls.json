@@ -256,10 +256,46 @@
       "allows_zero": true,
       "rule_adjustable": false,
       "choices": [
-        "piece"
+        "piece",
+        "curling_flick",
+        "ice_flick",
+        "choose_down"
       ],
       "source": "design/gdd/movement-rotation.md#tuning-knobs",
       "note": ""
+    },
+    {
+      "id": "control.flick_per_piece",
+      "type": "count",
+      "default": 1,
+      "rule_adjustable": false,
+      "source": "design/levels/ice.md and celestial.md",
+      "min": 1,
+      "max": 2,
+      "allows_zero": false
+    },
+    {
+      "id": "control.flick_dirs",
+      "type": "structure",
+      "default": [
+        "+z",
+        "-z"
+      ],
+      "rule_adjustable": false,
+      "source": "design/levels/ice.md and celestial.md"
+    },
+    {
+      "id": "control.travel_dirs",
+      "type": "structure",
+      "default": [
+        "down",
+        "+x",
+        "-x",
+        "+z",
+        "-z"
+      ],
+      "rule_adjustable": false,
+      "source": "design/levels/ice.md and celestial.md"
     }
   ]
 }

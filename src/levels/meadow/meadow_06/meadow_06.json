@@ -1,0 +1,200 @@
+{
+  "schema": 1,
+  "id": "meadow_06",
+  "biome": "meadow",
+  "tier": 6,
+  "name": "LVL_MEADOW_06_TITLE",
+  "board": {
+    "width": 8,
+    "depth": 8,
+    "h_play": 8,
+    "down_axis": "-y",
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "........",
+          "........",
+          "...^^...",
+          "........",
+          "........",
+          "........",
+          "........",
+          "........"
+        ]
+      }
+    }
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "duo",
+      "tri_corner"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 0.7
+  },
+  "goal": {
+    "type": "shape",
+    "target_shape": {
+      "layers": {
+        "0": [
+          ".++..++.",
+          "++++++++",
+          ".++++++.",
+          "++++++++",
+          ".++..++.",
+          "...++...",
+          ".++++...",
+          "...++..."
+        ],
+        "1": [
+          "........",
+          "..++++..",
+          "..++++..",
+          "..++++..",
+          "........",
+          "........",
+          "........",
+          "........"
+        ]
+      }
+    }
+  },
+  "rules": [
+    {
+      "id": "fill_shape",
+      "params": {
+        "topout_rule": "trim",
+        "stick_when_filled": false
+      }
+    },
+    {
+      "id": "sprouts",
+      "params": {
+        "grow_locks": 4,
+        "grow_max": 1
+      }
+    }
+  ],
+  "stars": {
+    "t2": 155000,
+    "t3": 110000
+  },
+  "story": {
+    "title_key": "LVL_MEADOW_06_TITLE",
+    "premise_key": "LVL_MEADOW_06_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "flower"
+  },
+  "metadata": {
+    "source": "production/levels/meadow/data/meadow_06.json",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1,
+      "id": "meadow_06",
+      "biome": "meadow",
+      "tier": 6,
+      "name": "LVL_MEADOW_06_TITLE",
+      "board": {
+        "width": 8,
+        "depth": 8,
+        "h_play": 8,
+        "down_axis": "-y",
+        "starting_contents": {
+          "layers": {
+            "0": [
+              "........",
+              "........",
+              "...^^...",
+              "........",
+              "........",
+              "........",
+              "........",
+              "........"
+            ]
+          }
+        }
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "duo",
+          "tri_corner"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.7
+      },
+      "goal": {
+        "type": "shape",
+        "target_shape": {
+          "layers": {
+            "0": [
+              ".++..++.",
+              "++++++++",
+              ".++++++.",
+              "++++++++",
+              ".++..++.",
+              "...++...",
+              ".++++...",
+              "...++..."
+            ],
+            "1": [
+              "........",
+              "..++++..",
+              "..++++..",
+              "..++++..",
+              "........",
+              "........",
+              "........",
+              "........"
+            ]
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "fill_shape",
+          "params": {
+            "topout_rule": "trim",
+            "stick_when_filled": false
+          }
+        },
+        {
+          "id": "sprouts",
+          "params": {
+            "grow_locks": 4,
+            "grow_max": 1
+          }
+        }
+      ],
+      "stars": {
+        "t2": 155000,
+        "t3": 110000
+      },
+      "story": {
+        "title_key": "LVL_MEADOW_06_TITLE",
+        "premise_key": "LVL_MEADOW_06_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "flower"
+      }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}
