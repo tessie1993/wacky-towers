@@ -60,6 +60,10 @@ var _hazard_cells: Dictionary = {}
 var _status_views: Dictionary = {}
 var _status_cells: Dictionary = {}
 var _windmill: Node3D
+var _carousel: Node3D
+var _ferris: Node3D
+var _carousel: Node3D
+var _ferris: Node3D
 var _audio: WtAudio
 var _snap: ViewSnap = ViewSnap.new()
 var _yaw: float = 45.0
@@ -94,6 +98,8 @@ func setup(sim: BoardSim, biome: StringName, settings: Dictionary = {}) -> void:
 	_prefs = settings.duplicate()
 	_art = ArtSet.new(&"candy_toy")
 	var palette_path: String = "res://assets/data/palettes/candy_toy.json" if biome == &"candy" else "res://assets/data/palettes/meadow.json"
+	if biome != &"candy" and FileAccess.file_exists("res://assets/data/palettes/%s.json" % biome):
+		palette_path = "res://assets/data/palettes/%s.json" % biome
 	_palette = PaletteTable.from_dict(JSON.parse_string(FileAccess.get_file_as_string(palette_path)))
 	_world = Node3D.new()
 	_world.name = "OriginalBiomeDiorama"
@@ -201,7 +207,10 @@ func sync(events: Array[SimEvent]) -> void:
 				_hazard_event(ev)
 				var kind: String = str(ev.kind)
 				if _boss!=null and ("warning" in kind or "windup" in kind):_boss.react(&"exclaim",1.0,_reduced())
-				if "wind" in kind or "gust" in kind:
+				var mapped: StringName=WtAudio.board_sfx(ev.kind)
+				if mapped!=&"":
+					if not kind.ends_with("_warning"):_audio.cue(mapped)
+				elif "wind" in kind or "gust" in kind:
 					_audio.cue(&"wind")
 				elif "flip" in kind or "gravity_changed" in kind:
 					_audio.cue(&"flip")
@@ -362,6 +371,18 @@ func _process(delta: float) -> void:
 		_update_camera()
 	if _windmill != null and not _reduced():
 		_windmill.rotation.z += delta * 0.35
+	if _carousel != null and not _reduced():
+		_carousel.rotation.y += delta * 0.4
+	if _ferris != null and not _reduced():
+		_ferris.rotation.z += delta * 0.2
+		for cab: Node in _ferris.get_children():
+			if cab is Node3D and cab.has_meta("gondola"):(cab as Node3D).rotation.z=-_ferris.rotation.z
+	if _carousel != null and not _reduced():
+		_carousel.rotation.y += delta * 0.4
+	if _ferris != null and not _reduced():
+		_ferris.rotation.z += delta * 0.2
+		for cab: Node in _ferris.get_children():
+			if cab is Node3D and cab.has_meta("gondola"):(cab as Node3D).rotation.z=-_ferris.rotation.z
 	if _danger.visible:
 		_danger_mat.albedo_color.a = 0.8 if _reduced() else 0.55 + 0.25 * sin(_time * 4.0)
 	_update_fx(delta)
@@ -448,6 +469,9 @@ func _build_island() -> void:
 		var p: Vector3 = Vector3(cos(a) * rim * 0.7, -1.2, sin(a) * rim * 0.61)
 		if _biome in [&"ice", &"cave", &"celestial"]:
 			_cylinder(_world, p, 0.2, 0.03, 1.3 + (i % 3) * 0.2, Color(look[3]).lightened(0.25), 5)
+		elif _biome == &"carnival":
+			# Candy-stripe drip under the fairground island.
+			_cylinder(_world, p, 0.12, 0.04, 1.1, Color(CARNIVAL_TRIM.pink) if i % 2 == 0 else Color(CARNIVAL_TRIM.cream), 6)
 		else:
 			_cylinder(_world, p, 0.1, 0.05, 1.0, Color(look[3]), 5)
 
@@ -482,6 +506,7 @@ func _build_board() -> void:
 	var cube: Mesh = _art.cube_mesh()
 	if cube == null: cube = BoxMesh.new()
 	_active = _multimesh(cube, 64, _block_material())
+	_apply_biome_block_material()
 	_ghost = _multimesh(BoxMesh.new(), 64, _ghost_material())
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(0.88, 0.88)
@@ -591,7 +616,7 @@ func _hazard_event(event: SimEvent) -> void:
 		if event.data.get("column") is Vector2i:
 			var column: Vector2i=event.data.column
 			for y: int in _board.h_play():cells.append(Vector3i(column.x,y,column.y))
-		_hazard_cells[prefix]=cells;_update_hazards();_react_toys(&"exclaim",&"sweat");_audio.cue(&"warning")
+		_hazard_cells[prefix]=cells;_update_hazards();_react_toys(&"exclaim",&"sweat");_audio.cue(WtAudio.board_sfx(event.kind,&"warning"))
 	else:
 		var remove: String={"lava_rise":"lava","lava_cooled":"lava","quake":"quake","geyser_pop":"geyser","heist_cancelled":"heist","squirrel_heist":"heist","claw_cancelled":"claw","crab_claw":"claw","lid_lowered":"lid","lid_lifted":"lid","woodpecker_peck":"woodpecker"}.get(kind,"")
 		if remove!="":_hazard_cells.erase(remove);_update_hazards()
@@ -994,6 +1019,9 @@ func _build_props() -> void:
 				for branch: int in 3:
 					var coral := _cylinder(_world,p+Vector3((branch-1)*.17,.35,0),.07,.1,.7,Color(look[3]).lightened(.2),7)
 					coral.rotation.z = (branch-1)*.35
+			&"carnival":
+				if i % 2 == 0: _carnival_tent(p, i)
+				else: _carnival_balloon_stall(p, i)
 			&"clockwork":
 				var gear := TorusMesh.new()
 				gear.inner_radius=.23;gear.outer_radius=.5;gear.rings=12;gear.ring_segments=6
@@ -1011,10 +1039,87 @@ func _build_props() -> void:
 			blade.position=Vector3(sin(i*PI*.5)*.53,cos(i*PI*.5)*.53,0)
 			blade.rotation.z=-i*PI*.5
 		_sphere(_windmill,Vector3.ZERO,.13,Color("#94795E"))
+	if _biome == &"carnival":
+		_build_carnival_rides()
 	# Quiet clouds and pebble clusters are outside the active grid.
 	for i: int in 6:
 		var a: float = i * 1.04
 		_sphere(_world,Vector3(cos(a)*(_size.x*.55+.9),-.14,sin(a)*(_size.z*.55+.9)),.2,Color(look[3]).lightened(.18),Vector3(1.4,.65,1))
+
+
+## Striped big-top tent: cream drum, alternating pink panels, cone roof and pennant.
+func _carnival_tent(p: Vector3, i: int) -> void:
+	var tent := Node3D.new(); tent.name = "StripedTent%d" % i; tent.position = p; _world.add_child(tent)
+	_cylinder(tent, Vector3(0, .28, 0), .4, .42, .56, Color(CARNIVAL_TRIM.cream), 12)
+	for s: int in 6:
+		var a: float = TAU * s / 6.0
+		var stripe := _box(tent, Vector3(cos(a) * .4, .28, sin(a) * .4), Vector3(.13, .57, .03), Color(CARNIVAL_TRIM.pink))
+		stripe.rotation.y = -a + PI * .5
+	_cylinder(tent, Vector3(0, .8, 0), 0, .52, .5, Color(CARNIVAL_TRIM.pink), 12)
+	_cylinder(tent, Vector3(0, .62, 0), .5, .52, .06, Color(CARNIVAL_TRIM.gold), 12)
+	_cylinder(tent, Vector3(0, 1.16, 0), .015, .015, .3, Color(CARNIVAL_TRIM.wood), 5)
+	_box(tent, Vector3(.07, 1.26, 0), Vector3(.14, .08, .02), Color(CARNIVAL_TRIM.sky))
+
+
+## Balloon stall: ticket-gold counter, striped awning and three balloons on strings.
+func _carnival_balloon_stall(p: Vector3, i: int) -> void:
+	var stall := Node3D.new(); stall.name = "BalloonStall%d" % i; stall.position = p; _world.add_child(stall)
+	_box(stall, Vector3(0, .2, 0), Vector3(.62, .4, .34), Color(CARNIVAL_TRIM.cream))
+	_box(stall, Vector3(0, .41, .02), Vector3(.66, .05, .38), Color(CARNIVAL_TRIM.gold))
+	for s: int in 4:
+		_box(stall, Vector3(-.24 + s * .16, .72, .06), Vector3(.16, .05, .42), Color(CARNIVAL_TRIM.pink) if s % 2 == 0 else Color(CARNIVAL_TRIM.cream))
+	for side: float in [-1.0, 1.0]:
+		_cylinder(stall, Vector3(side * .3, .56, -.12), .02, .02, .32, Color(CARNIVAL_TRIM.wood), 5)
+	var tints: Array = [CARNIVAL_TRIM.pink, CARNIVAL_TRIM.sky, CARNIVAL_TRIM.mint]
+	for b: int in 3:
+		var top := Vector3(-.16 + b * .16, 1.05 + (b % 2) * .14, -.1)
+		_cylinder(stall, (top + Vector3(0, .44, -.1)) * .5 + Vector3(0, -.2, 0), .006, .006, top.y - .44, Color(CARNIVAL_TRIM.wood), 4)
+		_sphere(stall, top, .11, Color(tints[(b + i) % 3]), Vector3(.9, 1.1, .9))
+
+
+## Carousel (stage right), ferris wheel (stage left) and bunting along the back edge.
+func _build_carnival_rides() -> void:
+	var ride := Node3D.new(); ride.name = "Carousel"
+	ride.position = Vector3(_size.x * .5 + 1.2, 0, -_size.z * .5 - .3); _world.add_child(ride)
+	_cylinder(ride, Vector3(0, .08, 0), .7, .74, .16, Color(CARNIVAL_TRIM.gold), 16)
+	_carousel = Node3D.new(); _carousel.name = "CarouselSpin"; ride.add_child(_carousel)
+	_cylinder(_carousel, Vector3(0, .62, 0), .06, .06, 1.1, Color(CARNIVAL_TRIM.cream), 8)
+	_cylinder(_carousel, Vector3(0, 1.3, 0), 0, .8, .4, Color(CARNIVAL_TRIM.pink), 16)
+	_cylinder(_carousel, Vector3(0, 1.12, 0), .8, .8, .08, Color(CARNIVAL_TRIM.cream), 16)
+	for h: int in 4:
+		var a: float = TAU * h / 4.0
+		var at := Vector3(cos(a) * .5, 0, sin(a) * .5)
+		_cylinder(_carousel, at + Vector3(0, .62, 0), .015, .015, 1.0, Color(CARNIVAL_TRIM.gold), 5)
+		var horse := _box(_carousel, at + Vector3(0, .45 + (h % 2) * .12, 0), Vector3(.1, .14, .3), Color(CARNIVAL_TRIM.cream if h % 2 == 0 else CARNIVAL_TRIM.sky))
+		horse.rotation.y = -a
+		_sphere(_carousel, at + Vector3(0, .58 + (h % 2) * .12, 0) + Vector3(-sin(a), 0, cos(a)) * .14, .06, Color(CARNIVAL_TRIM.cream if h % 2 == 0 else CARNIVAL_TRIM.sky))
+	var wheel := Node3D.new(); wheel.name = "FerrisWheel"
+	wheel.position = Vector3(-_size.x * .5 - 1.3, 0, -_size.z * .5 - .9); _world.add_child(wheel)
+	for side: float in [-1.0, 1.0]:
+		var leg := _box(wheel, Vector3(side * .28, .7, -.12), Vector3(.07, 1.5, .07), Color(CARNIVAL_TRIM.wood))
+		leg.rotation.z = side * .28
+	_ferris = Node3D.new(); _ferris.name = "FerrisSpin"; _ferris.position = Vector3(0, 1.4, 0); wheel.add_child(_ferris)
+	var rim := TorusMesh.new(); rim.inner_radius = .8; rim.outer_radius = .87; rim.rings = 24; rim.ring_segments = 6
+	_mesh(_ferris, rim, Vector3.ZERO, _mat(Color(CARNIVAL_TRIM.pink))).rotation.x = PI * .5
+	_sphere(_ferris, Vector3.ZERO, .1, Color(CARNIVAL_TRIM.gold))
+	for g: int in 6:
+		var a: float = TAU * g / 6.0
+		var spoke := _box(_ferris, Vector3(cos(a), sin(a), 0) * .42, Vector3(.84, .03, .03), Color(CARNIVAL_TRIM.cream))
+		spoke.rotation.z = a
+		var cab := Node3D.new(); cab.set_meta("gondola", true); cab.position = Vector3(cos(a), sin(a), 0) * .85; _ferris.add_child(cab)
+		_box(cab, Vector3(0, -.12, 0), Vector3(.2, .16, .16), Color([CARNIVAL_TRIM.sky, CARNIVAL_TRIM.mint, CARNIVAL_TRIM.gold][g % 3]))
+	var bunting := Node3D.new(); bunting.name = "Bunting"; _world.add_child(bunting)
+	var z: float = -_size.z * .5 - 1.35
+	var half: float = _size.x * .5 + .6
+	for side: float in [-1.0, 1.0]:
+		_cylinder(bunting, Vector3(side * half, .7, z), .03, .03, 1.4, Color(CARNIVAL_TRIM.wood), 5)
+	var flags: int = int(half * 2.0 / .3)
+	for f: int in flags:
+		var t: float = (f + .5) / flags
+		var x: float = lerpf(-half, half, t)
+		var sag: float = 1.32 - sin(t * PI) * .22
+		var flag := _cylinder(bunting, Vector3(x, sag, z), .1, 0, .16, Color([CARNIVAL_TRIM.pink, CARNIVAL_TRIM.cream, CARNIVAL_TRIM.gold, CARNIVAL_TRIM.sky][f % 4]), 3, Vector3(1, 1, .2))
+		flag.rotation.x = PI
 
 
 func _build_fx() -> void:
@@ -1127,6 +1232,25 @@ void fragment(){
 }"""
 	var m := ShaderMaterial.new();m.shader=shader
 	return m
+
+
+## Uses WtBlockMaterials.for_biome(_biome) when that pipeline class and its material exist.
+## Only a ShaderMaterial replaces the built-in one, so sticker/pattern uniforms keep working.
+func _apply_biome_block_material() -> void:
+	var material: Material = _biome_block_material()
+	if not material is ShaderMaterial: return
+	_active.material_override = material
+	if _locked != null and _locked._mmi != null: _locked._mmi.material_override = material
+
+
+func _biome_block_material() -> Material:
+	for entry: Dictionary in ProjectSettings.get_global_class_list():
+		if StringName(entry.get("class", "")) != BLOCK_MATERIAL_CLASS: continue
+		var script: Script = load(str(entry.get("path", ""))) as Script
+		if script == null or not script.has_method("for_biome"): return null
+		var result: Variant = script.call("for_biome", _biome)
+		return result as Material if result is Material else null
+	return null
 
 
 func _ghost_material() -> ShaderMaterial:

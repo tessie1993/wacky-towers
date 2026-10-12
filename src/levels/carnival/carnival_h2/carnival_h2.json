@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "carnival_h2",
+  "biome": "carnival",
+  "tier": 13,
+  "name": "LVL_CARNIVAL_H2_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.55,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    { "id": "mystery_piece", "params": { "every": 4 } },
+    { "id": "echo_drop", "params": { "every": 4 } }
+  ],
+  "stars": {
+    "t2": 305000,
+    "t3": 210000
+  },
+  "music": "carnival_h2_tbd",
+  "story": {
+    "title_key": "LVL_CARNIVAL_H2_TITLE",
+    "premise_key": "LVL_CARNIVAL_H2_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "lucky_dip"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/carnival.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1, "id": "carnival_h2", "biome": "carnival", "tier": 13, "name": "LVL_CARNIVAL_H2_TITLE",
+      "board": { "width": 6, "depth": 6, "h_play": 10 },
+      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r"] },
+      "knobs": { "fall.g0": 1.55, "goal.top_out": "rescue", "goal.warnings_max": 1 },
+      "goal": { "type": "clear_n", "N": 4 },
+      "rules": [
+        { "id": "mystery_piece", "params": { "every": 4 } },
+        { "id": "echo_drop", "params": { "every": 4 } }
+      ],
+      "stars": { "t2": 305000, "t3": 210000 },
+      "music": "carnival_h2_tbd",
+      "story": { "title_key": "LVL_CARNIVAL_H2_TITLE", "premise_key": "LVL_CARNIVAL_H2_PREMISE", "mascot_role": "watcher", "icon": "lucky_dip" }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "Hard track (tier 13): Lucky Dip (mystery_piece, from 10) recombined with Hall of Mirrors Echo (echo_drop, 07). Both count to 4 but one counts spawns and one counts locks; the echo is injected at the queue front, so it pushes the next mystery slot back by one. Confirm the mystery_preview index is recomputed after inject_front.",
+      "t_est = 4 x 36 x 2.667 = 384 s; hard-track rule 0.80 / 0.55."
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}

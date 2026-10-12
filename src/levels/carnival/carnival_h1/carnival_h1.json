@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "id": "carnival_h1",
+  "biome": "carnival",
+  "tier": 12,
+  "name": "LVL_CARNIVAL_H1_TITLE",
+  "board": {
+    "width": 6,
+    "depth": 6,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.55,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    { "id": "magnet_pull", "params": { "magnet_col": [0, 3], "pull_interval_ms": 3000, "pull_warn_ms": 600, "pull_axis": "x" } },
+    { "id": "storm_bolt", "params": { "bolt_interval_ms": 8000, "bolt_warn_ms": 1500, "bolt_jitter_ms": 2000 } }
+  ],
+  "stars": {
+    "t2": 385000,
+    "t3": 265000
+  },
+  "music": "carnival_h1_tbd",
+  "story": {
+    "title_key": "LVL_CARNIVAL_H1_TITLE",
+    "premise_key": "LVL_CARNIVAL_H1_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "target"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/carnival.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1, "id": "carnival_h1", "biome": "carnival", "tier": 12, "name": "LVL_CARNIVAL_H1_TITLE",
+      "board": { "width": 6, "depth": 6, "h_play": 10 },
+      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r"] },
+      "knobs": { "fall.g0": 1.55, "goal.top_out": "rescue", "goal.warnings_max": 1 },
+      "goal": { "type": "clear_n", "N": 5 },
+      "rules": [
+        { "id": "magnet_pull", "params": { "magnet_col": [0, 3], "pull_interval_ms": 3000, "pull_warn_ms": 600, "pull_axis": "x" } },
+        { "id": "storm_bolt", "params": { "bolt_interval_ms": 8000, "bolt_warn_ms": 1500, "bolt_jitter_ms": 2000 } }
+      ],
+      "stars": { "t2": 385000, "t3": 265000 },
+      "music": "carnival_h1_tbd",
+      "story": { "title_key": "LVL_CARNIVAL_H1_TITLE", "premise_key": "LVL_CARNIVAL_H1_PREMISE", "mascot_role": "watcher", "icon": "target" }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "Hard track (tier 12): Magnet Fishing (05) recombined with Fireworks (storm_bolt, 09) as the 'Shooting Gallery'. Hard-track star rule t2 = round5(0.80 x t_est), t3 = round5(0.55 x t_est), t_est = 5 x 36 x 2.667 = 480 s."
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}
