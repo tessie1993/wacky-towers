@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "carnival_h3",
+  "biome": "carnival",
+  "tier": 14,
+  "name": "LVL_CARNIVAL_H3_TITLE",
+  "board": {
+    "width": 5,
+    "depth": 5,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.45,
+    "goal.top_out": "rescue",
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 5
+  },
+  "rules": [
+    { "id": "rusty_hinge", "params": { "max_turns": 2 } },
+    { "id": "pressure_cooker", "params": { "step": 0.12, "max_scale": 2.0 } }
+  ],
+  "stars": {
+    "t2": 265000,
+    "t3": 185000
+  },
+  "music": "carnival_h3_tbd",
+  "story": {
+    "title_key": "LVL_CARNIVAL_H3_TITLE",
+    "premise_key": "LVL_CARNIVAL_H3_PREMISE",
+    "mascot_role": "watcher",
+    "icon": "roller_coaster"
+  },
+  "seed": null,
+  "metadata": {
+    "source": "design/levels/carnival.md",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "schema": 1, "id": "carnival_h3", "biome": "carnival", "tier": 14, "name": "LVL_CARNIVAL_H3_TITLE",
+      "board": { "width": 5, "depth": 5, "h_play": 10 },
+      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r"] },
+      "knobs": { "fall.g0": 1.45, "goal.top_out": "rescue", "goal.warnings_max": 1 },
+      "goal": { "type": "clear_n", "N": 5 },
+      "rules": [
+        { "id": "rusty_hinge", "params": { "max_turns": 2 } },
+        { "id": "pressure_cooker", "params": { "step": 0.12, "max_scale": 2.0 } }
+      ],
+      "stars": { "t2": 265000, "t3": 185000 },
+      "music": "carnival_h3_tbd",
+      "story": { "title_key": "LVL_CARNIVAL_H3_TITLE", "premise_key": "LVL_CARNIVAL_H3_PREMISE", "mascot_role": "watcher", "icon": "roller_coaster" }
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "nonblocking_notes": [
+      "Hard track (tier 14): Rusty Rides (rusty_hinge, bonus) recombined with the Popcorn Machine (pressure_cooker, 08) as the 'Rusty Rollercoaster'. Peak fall speed 1.45 x 2.0 = 2.9 cells/s after 9 clearless locks.",
+      "t_est = 5 x 25 x 2.667 = 333 s; hard-track rule 0.80 / 0.55."
+    ],
+    "tuning": "Initial estimates; no playtest medians",
+    "canonical_rule_mapping": [],
+    "design_amendments": []
+  }
+}
