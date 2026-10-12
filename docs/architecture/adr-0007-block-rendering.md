@@ -198,7 +198,7 @@ Follows the modular principle in `architecture.md`; no visual value or content l
 - **Block sets:** chosen by `set_id`. Meshes are found by the existing naming convention `res://assets/models/blocks/<set_id>/blk_<set_id>_<shape_id>.glb` (cube mesh: `blk_<set_id>_cube*.glb`). A new set is new files only.
 - **Status looks:** each status id maps to a look entry (animation kind, accent colour, optional shell GLB) in `res://assets/data/content/statuses.json`, next to the gameplay content table (ADR-0002 `ContentTypes`). The shader branches on a small set of look **kinds**, not on status ids, so a new status that reuses a kind is data only. A new look kind is one shader branch.
 - **Object/overlay meshes** (obstacles, spawned objects) are named per content type in the same content table. The view renders any type it finds there.
-- **Several boards per level** (islands, lanes, ADR-0002 section 7): one `BoardView` per board, each placed by its board's `world_transform` from level data. Diorama dressing (islands, props, mascot spots, board anchor) lives in the **level's own scene** (`res://scenes/levels/<biome>/<id>.tscn`, inheriting the base level scene; implementation plan §2.2, 2026-10-10). Player and daily levels use `generic_level.tscn` dressed by the biome's default scene named in `res://assets/data/biomes/<biome>.json`. Rules never live in scenes.
+- **Several boards per level** (islands, lanes, ADR-0002 section 7): one `BoardView` per board, each placed by its board's `world_transform` from level data. Diorama dressing (islands, props, mascot spots, board anchor) lives in the **level's own scene** (`res://src/levels/<biome>/<id>/<id>.tscn`, inheriting the base level scene, ADR-0005 amendment 2026-10-10; implementation plan §2.2, 2026-10-10). Player and daily levels use `generic_level.tscn` dressed by the biome's default scene named in `res://assets/data/biomes/<biome>.json`. Rules never live in scenes.
 
 ### Architecture
 
@@ -340,3 +340,8 @@ static func bake(art_set: StringName, shape_ids: PackedStringArray, host: Node) 
 - ADR-0001, ADR-0002, ADR-0003, ADR-0008.
 - `design/art/art-bible.md` (Materials, LOD and VFX; trade-offs 1–5), `design/gdd/camera-rotate-view.md`.
 - `src/dev/block_set_preview.gd`, `tools/asset-pipeline/block_post_import.gd`.
+
+## Amendment (2026-10-10)
+
+Status unchanged (Accepted). Cross-doc fixes from `production/session-state/conflicts-open.md`:
+- Level scene path follows ADR-0005's amendment: `res://src/levels/<biome>/<id>/<id>.tscn`.

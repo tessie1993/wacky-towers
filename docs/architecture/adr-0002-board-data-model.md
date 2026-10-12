@@ -169,7 +169,7 @@ All of them are bounded by the change, never "scan the whole board every tick":
   | op | a | b |
   |---|---|---|
   | `SET` | cell | — |
-  | `REMOVE` | cell | cause (`CLEAR`, `DISPLACED`, `DAMAGE`, `MASKED`, `TRIM`) |
+  | `REMOVE` | cell | cause (`CLEAR`, `DISPLACED`, `DAMAGE`, `MASKED`, `TRIM`, `RESCUE`) |
   | `MOVE` | from | to |
   | `STATUS` | cell | status id or 0 |
   | `OVERLAY` | cell | type id or 0 |
@@ -389,3 +389,9 @@ None. This is new code.
 
 - ADR-0001 (sim, events, travel direction), ADR-0003, ADR-0004, ADR-0005, ADR-0007, ADR-0008, ADR-0009.
 - `design/gdd/board-grid.md`, `layer-clearing.md`, `block-status-effects.md`, `level-data-definition.md`.
+
+## Amendment (2026-10-10)
+
+Status unchanged (Accepted). Cross-doc fixes from `production/session-state/conflicts-open.md`:
+- **RESCUE cause (item 21).** `REMOVE` gains cause `RESCUE`, used by the rescue top-out wipe (level-goals-fail-states), so view, audio and scoring can tell a rescue wipe from a clear (no score, no clear counters).
+- **BL19 wrap hook.** `BoardState` gains `wrap_axes: int` (bitmask x/z, set from layout data via a `LAYOUT` op). All neighbour and bounds queries go through one `step(i, dir) -> int` (returns -1 off-board) that applies modulo on wrap axes; piece cells resolve through the same function, so a piece may straddle the seam. Default `0` keeps current behaviour; no other code computes neighbours by hand (§ layer helper rule).

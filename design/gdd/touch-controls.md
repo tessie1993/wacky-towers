@@ -2,9 +2,10 @@
 
 > **Status**: In Design
 > **Author**: Tessa + agents
-> **Last Updated**: 2026-10-09
-> **Last Verified**: 2026-10-09
+> **Last Updated**: 2026-10-10 (ADR-0012 input pipeline, ADR-0014 free orbit + snap, Turn/Flip/Roll names, button size 75–200%)
+> **Last Verified**: 2026-10-10
 > **Implements Pillar**: Readable Chaos; Comeback Energy
+> **Technical**: ADR-0012 (GUIDE; touch buttons are virtual-gamepad buttons; presets in `assets/data/controls/touch_layouts.json`), ADR-0014 (camera), ADR-0013 (settings persistence) · **Exact layout**: `design/gdd/ux/hud.md`, `design/gdd/ux/settings.md`
 
 ## Summary
 
@@ -23,7 +24,7 @@ Touch Controls turn thumbs into piece commands: move the falling piece across th
 **Shared rules (both schemes)**
 1. **Commands, not physics.** Controls emit discrete commands — `move(dir)`, `rotate(axis, ±90°)`, `soft_drop(on/off)`, `hard_drop`, `rotate_view(±1)` (one 30° step, Camera & Rotate-View), `hold` (only when enabled), `use_item(slot)`, `use_skill(slot)`. Movement & Rotation and Fall/Drop/Lock decide whether a command succeeds.
 2. **Screen-relative mapping.** "Left/right/up/down" are screen directions. They are re-mapped to world ±x / ±z using the camera's direction map (Camera & Rotate-View F3) every time the view turns, so left always moves the piece toward the world direction that looks most like screen-left.
-3. **Rotation axes named in screen terms.** Yaw = **spin** (about the vertical axis), pitch = **tilt** (about the screen-horizontal axis, "toward/away from me"), roll = **roll** (about the view axis). Every rotation is a 90° step about a **world** axis: spin = the vertical axis; tilt = the horizontal world axis closest to screen-horizontal (from the camera's direction map), with ties at the corner snaps going to the axis that appears **up-right**; roll = the other horizontal world axis (Movement & Rotation rule 9). The mapping is **screen-fixed**: it depends only on the camera snap, never on the gravity direction. The UI never shows x/y/z.
+3. **Rotation axes named in screen terms: three pairs.** Player-facing names are **Turn / Flip / Roll** (user decision 2026-10-10); code ids stay `spin` / `tilt` / `roll` (ADR-0012 §3). Turn = **spin** (about the vertical axis), Flip = **tilt** (about the screen-horizontal axis, "toward/away from me"), Roll = **roll** (about the view axis). Every rotation is a 90° step about a **world** axis: spin = the vertical axis; tilt = the horizontal world axis closest to screen-horizontal (from the camera's direction map), with ties at the corner snaps going to the axis that appears **up-right**; roll = the other horizontal world axis (Movement & Rotation rule 9). The mapping is **screen-fixed**: it depends only on the camera snap, never on the gravity direction. The UI never shows x/y/z.
 4. **Fingers off the board.** No gameplay input starts on the board's screen area. The board shows only the piece, the landing ghost and (optionally) the axis gizmo.
 5. **Thumb zones (landscape, default right-handed).** Rotate and drop sit in the **right** thumb arc; movement in the **left** thumb arc; items and skills in a tap-only strip on the **left** side, away from movement; rotate-view is a 56 pt button at the top of the right zone. A **left-hand mirror** setting swaps the sides.
 5a. **Thumb zones (portrait).** The board sits in the upper part of the screen and **both thumbs work at the bottom**: movement in the bottom-left, rotate and drop in the bottom-right, items and skills in a tap-only row just above the movement zone, rotate-view at the top of the right cluster. The same scheme (A or B) and the same mirror setting apply; only the zone positions change. Minimum sizes are unchanged.
@@ -32,16 +33,19 @@ Touch Controls turn thumbs into piece commands: move the falling piece across th
 7. **Undo until lock.** Any move or rotation can be reversed until the piece locks (the opposite command). Lock timing belongs to Fall/Drop/Lock.
 8. **Feedback on every command.** Landing ghost always on; on rotation, the axis gizmo flashes on the pivot (shape- and colour-coded); optional haptic tick on move, pulse on rotate, stronger pulse on lock; a failed command (blocked move or rotation) gives a short "bonk" (no movement, small shake respecting reduced motion).
 8a. **Hold control.** When hold is enabled (by level, perk or difficulty; Piece Spawner & Queue rule 11), a tap-only **hold plate** appears in the item/skill strip's thumb zone. It works any time a piece is active, including while it rests during the lock delay, and is never buffered. When hold is off, no control is shown.
-9. **Progressive disclosure.** The first levels enable one rotation axis (spin); tilt and roll are introduced one at a time over early levels (Onboarding). Disabled axes' controls are hidden, not greyed.
+9. **Progressive disclosure.** meadow_01 enables Turn (and Flip if its level data says so); **Roll is taught in meadow_02** (user decision; ADR-0012). Enabled axes come from the level data. Disabled axes' controls are hidden, not greyed.
+10. **One input path.** Touch, keyboard/mouse and gamepad all feed the same GUIDE actions (ADR-0012 §1); every action here also has a keyboard and gamepad binding (remap list in `ux/settings.md`).
 
 **Scheme A — Twin Pads (buttons)**
 
 | Input | Action |
 |---|---|
 | Left thumb: 4-way d-pad (each arm ≥ 56 pt) | Tap = move 1 cell; hold = repeat |
-| Right thumb: rotation diamond — up/down | Tilt away / toward |
-| Rotation diamond — left/right | Spin left / right |
+| Right thumb: rotation diamond — up/down | Flip (tilt) away / toward |
+| Rotation diamond — left/right | Turn (spin) left / right |
 | Two roll arcs above the diamond | Roll left / right |
+
+(The UX spec `ux/hud.md` lays these six out as a 2 × 3 grid, one row per pair; either arrangement keeps one button per direction and the shape-coded arrows.)
 | 64 pt drop button below the diamond | Quick tap (release < tap threshold) = hard drop; hold = soft drop |
 | Item/skill strip above the d-pad | Tap = use |
 
@@ -65,8 +69,12 @@ Drag vs. flick is decided at release by speed and distance (Formulas F2). Flick 
 **One-handed mode (accessibility option)**
 - All controls move into one cluster in the dominant hand's corner, using the Scheme A layout compacted: d-pad, rotation diamond and drop button share the arc; roll and rotate-view sit above it; items move to a tap-only row along the top of the cluster. Fall speed can optionally be slowed (Onboarding & Accessibility). Not part of prototype selection; tested separately.
 
-**Board-area gestures**
-- Off by default. An optional setting allows one-finger drag on the board to rotate the view (camera orbit snaps to the nearest of the 12 views, 30° apart). Off by default to avoid accidental orbits.
+**Simple preset** (ADR-0012 §4): Scheme A buttons with hold-repeat on and soft drop as a toggle.
+
+**Board-area gestures: free orbit + snap (always on; user decision 2026-10-10, ADR-0014 §3)**
+- A one-finger drag that **starts on the board** orbits the camera freely; on release it settles to the nearest allowed of the 12 snaps (30° apart). It is the only board input and it can only rotate the view, never move or rotate a piece. The direction map changes only on release.
+- View ◀ ▶ buttons step one snap; four corner-view shortcuts jump to the 90° corner views. Optional Auto turn and Invert are camera settings.
+- Accidental orbits are limited by the drag dead zone (`dead_zone_px`) and by zone ownership (a touch that starts in a thumb zone never orbits).
 
 ### States and Transitions
 
@@ -168,7 +176,7 @@ The repeat_count formula is defined as:
 - **If the view rotates while a drag is in progress** (Scheme B): the drag ends at the rotation; the next drag uses the new mapping. A committed step is never re-interpreted.
 - **If the player presses rotate during the rotation animation**: it is applied immediately, because logical rotations are instant and only the animation lags; several presses are applied in order and never lost or merged. (`input_buffer_ms` applies only to the Waiting state.)
 - **If hard drop is pressed during Waiting** (between lock and spawn): it is ignored, never buffered, so a double-tap cannot hard-drop two pieces.
-- **If a touch starts on the board area**: it is ignored (unless the optional board-orbit setting is on, in which case it can only rotate the view).
+- **If a touch starts on the board area**: it can only orbit the view (free orbit + snap); a tap with no drag does nothing (except the rubber duck in meadow_01–02, `ux/hud.md`).
 - **If a touch starts in a zone and slides into another zone or onto the board**: the gesture belongs to the zone where it started; it ends when the finger lifts.
 - **If two touches hit the same control**: the second is ignored until the first lifts.
 - **If a flick is diagonal** (outside the cone): it is ignored, with no rotation, and with a subtle "?" hint the first 3 times per session during onboarding.
@@ -176,7 +184,7 @@ The repeat_count formula is defined as:
 - **If the app is backgrounded or a phone call arrives**: the game pauses immediately; all touches are cancelled; nothing is buffered across the pause.
 - **If a rotation axis is disabled by the level (progressive disclosure)**: its controls are hidden; its flick direction is ignored.
 - **If the left-hand mirror is on**: zones swap sides; screen-direction mapping is unchanged (left still moves left).
-- **If the screen is very small or the HUD scale is 150%**: controls keep their minimum sizes (44 pt, play controls 56 pt) and the board shrinks first; if the cube edge would drop below 20 px, the game warns in Settings.
+- **If the screen is very small or button size is high (up to 200%)**: controls keep their minimum sizes (menu 48 dp, play controls 56 dp) and the board shrinks first; if the cube edge would drop below 20 px, the game warns in Settings. At 75%, spacing and decoration shrink, never a hit area below 56 dp (ADR-0012 §5).
 
 ## Dependencies
 
@@ -212,7 +220,7 @@ Controls should feel snappy and trustworthy: every touch produces a visible resu
 
 - Scheme A: d-pad, rotation diamond, two roll arcs, drop button, rotate-view button, item/skill strip.
 - Scheme B: two invisible side zones, two roll arcs, drop button, rotate-view button, item/skill strip.
-- Settings: scheme choice, left-hand mirror, one-handed mode (all controls in one corner cluster), sensitivity (drag px per cell, flick thresholds, repeat timings), hold vs tap, haptics on/off, gizmo overlay on/off, board-orbit on/off, control scale 100–150%.
+- Settings (`ux/settings.md`): preset (Buttons / Gestures / One-hand / Simple), left-hand mirror, sensitivity (drag px per cell, flick thresholds, repeat timings, repeat on/off), soft drop hold/toggle, haptics, gizmo overlay, orbit sensitivity and invert, button size 75–200% (min 56 dp), reduced motion (follows the OS by default), remap of Turn / Flip / Roll and every other action.
 
 📌 **UX Flag — Touch Controls**: run `/ux-design` for the in-play control layout and the controls settings screen before implementation.
 
@@ -232,7 +240,7 @@ Controls should feel snappy and trustworthy: every touch produces a visible resu
 
 **Shared rules**
 1. [I] **GIVEN** each of the 12 camera yaws, **WHEN** the player moves left, **THEN** the piece moves in the world direction the camera's direction map gives for screen-left, and on screen it moves leftward (within 45° of screen-left).
-2. [I] **GIVEN** board-orbit off, **WHEN** a touch starts on the board area, **THEN** no command is sent; **GIVEN** board-orbit on, **THEN** that touch can only rotate the view.
+2. [I] **GIVEN** a touch that starts on the board area, **WHEN** it drags, **THEN** only the view orbits and on release it settles to the nearest allowed snap; no piece command is ever sent from the board.
 3. [I] **GIVEN** the left-hand mirror on, **WHEN** the layout loads, **THEN** zones swap sides and "left" still moves the piece screen-left.
 4. [I] **GIVEN** single-touch input only, **WHEN** every command is triggered, **THEN** each works; **GIVEN** a second touch on an already-held control, **THEN** it is ignored until the first lifts.
 5. [U] **GIVEN** a move or rotation, **WHEN** the opposite command is sent before lock, **THEN** the piece returns to its previous position and orientation.
@@ -259,7 +267,7 @@ Controls should feel snappy and trustworthy: every touch produces a visible resu
 16. [I] **GIVEN** a drag in progress, **WHEN** the view rotates, **THEN** the drag ends and steps already taken are unchanged.
 17. [I] **GIVEN** a touch starting in one zone, **WHEN** it slides into another zone or onto the board, **THEN** the starting zone owns it until the finger lifts.
 18. [M] **GIVEN** a held touch, **WHEN** the app is backgrounded or a call arrives, **THEN** the game pauses, touches are cancelled and nothing is buffered across the pause.
-19. [M] **GIVEN** the reference device at 150% control scale, **THEN** controls are ≥ 44 pt (play controls ≥ 56 pt), Scheme B zones ≥ 120 pt wide, and Settings warns if the cube edge is under 20 px.
+19. [M] **GIVEN** the reference device at 75% and at 200% button size, **THEN** menu targets are ≥ 48 dp, play controls ≥ 56 dp with ≥ 8 dp gaps, Scheme B zones ≥ 120 pt wide, and Settings warns if the cube edge is under 20 px.
 20. [M] **GIVEN** a device test build, **WHEN** the player moves the piece, **THEN** touch-to-visible-move latency is under 50 ms (high-speed camera, 20 samples).
 
 **Prototype selection [M]** — at least 8 testers per scheme, including at least 2 left-handed and 3 non-gamers. Placement time runs from spawn to lock.
@@ -281,7 +289,7 @@ Controls should feel snappy and trustworthy: every touch produces a visible resu
 - **Which scheme wins**: decided by the prototype against the targets in Acceptance Criteria; the loser may stay as an option.
 - ~~**Landscape vs portrait**~~: resolved — both are supported (user decision 2026-10-09; rules 5–5b).
 - **Designer defaults of 2026-10-09, open to playtest**: portrait thumbs both at the bottom (rule 5a); pause on a mid-level phone turn (rule 5b); latest-only input buffer; screen-fixed rotation mapping under sideways gravity (rule 3); hold usable until lock (rule 8a).
-- **Roll**: is roll needed at all, or can most pieces be placed with spin and tilt? If roll is rarely used, it could move behind a secondary control.
+- ~~**Roll**~~: resolved — three rotation pairs (Turn / Flip / Roll), Roll taught in meadow_02 (user decision 2026-10-10).
 - **Smart rotate**: if neither scheme meets the 3D targets, try reducing rotation scope (fewer axes, or an auto-fit rotate) before adding controls — a game-design call.
 - **Lock delay and reset count**: owned by Fall, Drop & Lock; they strongly affect how forgiving these controls feel.
 - **Item targeting**: items that need a target (a rival's board, a cell) — tap a rival's portrait, or drag-to-aim? Decide in Items.

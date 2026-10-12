@@ -4,7 +4,7 @@
 **Goal:** the two plain value types the plugin bases, validator and sim share.
 **Depends:** CH-032 (confirm `SimCommand`/`SimEvent` sit in `src/core/model/`; if not, move them first, `.uid` files included)
 **Parallel-safe with:** CH-149, CH-042 … CH-050, CH-054
-**Files (new):** `src/core/model/validation_issue.gd`, `src/core/model/goal_state.gd`, `tests/unit/model/value_types_test.gd`
+**Files (new):** `src/core/model/validation_issue.gd`, `src/core/model/goal_state.gd`
 
 ## API
 
@@ -36,14 +36,16 @@ var locks: int = 0
 var result: int = RESULT_RUNNING
 ```
 
-## Tests to write first (`value_types_test.gd`)
+## Expected results (no tests)
+User rule 2026-10-10: NO TESTS. Do not write test files. These are the expected results: the integrator checks them in the editor (godot-ai script eval or a scratch script, read with `logs_read`) after moving the file in.
 
 1. `test_issue_factories` — `ValidationIssue.error(&"meadow_01", "board.width", &"out_of_range", "3 outside 4..24")`: fields set, `is_error()`; `warn(...)` -> `is_error() == false`.
 2. `test_issue_to_string` — contains `"meadow_01 board.width: 3 outside 4..24 [out_of_range]"`.
 3. `test_goal_state_defaults` — all counters 0, `result == RESULT_RUNNING`.
 
 ## Run
-`-a res://tests/unit/model` (README).
+Integrator: move staged files in, rescan, `logs_read` must show no parse errors or class-name clashes, then check the cases above. No gdUnit run.
 
 ## Done when
-README "Done when" + 3 tests green; `src/core/sim/` contains no `sim_command.gd` / `sim_event.gd`.
+File(s) in place, editor scan clean, the expected results above hold.
+

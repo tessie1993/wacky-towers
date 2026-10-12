@@ -315,16 +315,16 @@ top-down 5×5   side (z = 2)
 Recipe: BL01 (6×6, H10) · AR01 · CV01 · GO01 (4) · FT01 (1) · CL01 + CO01 · EV03 Topsy Tumble · SP21 hatching eggs
 One sentence: "Down becomes up."
 ```
-**Encounters**: Flip every 2 layers or 40 s, 2 s warning (arrows and a countdown ring), applied at the next Resolving; the stack settles against the new floor. **Hatching eggs** (SP21): two eggs start at (1,0,1) and (4,0,4); each hatches after 6 locks into a chick cube that hops to the lowest free neighbour cell; clearing an egg before it hatches gives a bonus.
+**Encounters**: Flip every 2 layers or 40 s, 2 s warning (arrows and a countdown ring), applied at the next Resolving; the stack turns over in place on the same island floor (twist-library rule 12), so buried holes come up to the top. **Hatching eggs** (SP21): two eggs start at (1,0,1) and (4,0,4); each hatches after 6 locks into a chick cube that hops to the lowest free neighbour cell; clearing an egg before it hatches gives a bonus.
 
 ```text
-top-down 6×6   side (z = 2), before → after a flip
-######         13 . . S . . .     # # . # # #   (old floor is now the top)
-######         10 ============    :
-##S###          :                 ============
-######          1 # . # # . #     . . S . . .   (spawn at the old floor)
-######          0 # # . # # #
-######
+top-down 6×6   side (z = 2), before → after a flip (each column turns over in place)
+######         13 . . S . . .     . . S . . .   spawn stays
+######         10 ============    ============  danger line stays
+##S###          :                 :
+######          1 # . # # . #     # # . # # #   old floor is now the top
+######          0 # # . # # #     # . # # . #   old top is now the bottom
+######                                          island, floor and down axis stay
 ```
 **How it plays**: (1) normal stacking; the Miller cranks his lever on the hill. (2) After 2 clears or 40 s, the warning, then the flip. (3) Keep the top flat, because a spiky top becomes a messy floor; chicks hop into gaps after a flip. (4) The 4th clear; the hill flips back.
 **Wacky test**: surprising, gravity flips; silly, everything upside down; funny failure, the stack lands on its head with a "whump"; big moment, the stack tumbling to the new floor.
@@ -355,7 +355,7 @@ top-down 8×6 (belt → along x, gust ↓ along +z)   side (z = 3)
 ########                                          0 # # # . # # # #   → shift +x, wrap
 ########
 ########
-phase 2: the danger line and spawn move to the old floor (as in 09)
+phase 2: the stack turns over in place (as in 09); spawn, danger line and floor stay
 ```
 **How it plays**: (1) after the 2nd lock the whole stack slides right and wraps. (2) The first gust blows across the belt. (3) Phase 1: drop where the gap *will be*; each clear knocks a sail off. (4) Phase 2: the giant lever, the flip, the belt keeps turning. (5) The third clear bonks the Miller off the roof.
 **Wacky test**: surprising, the floor moves, then the hill turns over; silly, the Miller's wind-ups and giant lever; funny failure, he dances on the roof when you use a warning; big moment, the flip and the flour-cloud bonk.

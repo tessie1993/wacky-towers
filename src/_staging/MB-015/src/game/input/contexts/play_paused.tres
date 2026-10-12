@@ -1,0 +1,78 @@
+[gd_resource type="Resource" script_class="GUIDEMappingContext" format=3]
+
+[ext_resource type="Script" uid="uid://cpplm41b5bt6m" path="res://addons/guide/guide_action_mapping.gd" id="am"]
+[ext_resource type="Script" uid="uid://mtx1unc2aqn7" path="res://addons/guide/guide_input_mapping.gd" id="im"]
+[ext_resource type="Script" uid="uid://cw71o87tvdx3q" path="res://addons/guide/inputs/guide_input_key.gd" id="ik"]
+[ext_resource type="Script" uid="uid://rvttn472ix6v" path="res://addons/guide/inputs/guide_input_joy_button.gd" id="ib"]
+[ext_resource type="Script" uid="uid://dsa1dnifd6w32" path="res://addons/guide/guide_mapping_context.gd" id="mc"]
+[ext_resource type="Resource" path="res://src/game/input/actions/pause.tres" id="a0"]
+[ext_resource type="Resource" path="res://src/game/input/actions/restart.tres" id="a1"]
+[ext_resource type="Resource" path="res://src/game/input/actions/ui_cancel.tres" id="a2"]
+
+[sub_resource type="Resource" id="i0_0"]
+script = ExtResource("ik")
+key = 4194305
+
+[sub_resource type="Resource" id="i0_0m"]
+script = ExtResource("im")
+input = SubResource("i0_0")
+
+[sub_resource type="Resource" id="i0_1"]
+script = ExtResource("ik")
+key = 80
+
+[sub_resource type="Resource" id="i0_1m"]
+script = ExtResource("im")
+input = SubResource("i0_1")
+
+[sub_resource type="Resource" id="i0_2"]
+script = ExtResource("ib")
+button = 6
+
+[sub_resource type="Resource" id="i0_2m"]
+script = ExtResource("im")
+input = SubResource("i0_2")
+
+[sub_resource type="Resource" id="m0"]
+script = ExtResource("am")
+action = ExtResource("a0")
+input_mappings = Array[ExtResource("im")]([SubResource("i0_0m"), SubResource("i0_1m"), SubResource("i0_2m")])
+
+[sub_resource type="Resource" id="i1_0"]
+script = ExtResource("ik")
+key = 4194308
+
+[sub_resource type="Resource" id="i1_0m"]
+script = ExtResource("im")
+input = SubResource("i1_0")
+
+[sub_resource type="Resource" id="i1_1"]
+script = ExtResource("ib")
+button = 4
+
+[sub_resource type="Resource" id="i1_1m"]
+script = ExtResource("im")
+input = SubResource("i1_1")
+
+[sub_resource type="Resource" id="m1"]
+script = ExtResource("am")
+action = ExtResource("a1")
+input_mappings = Array[ExtResource("im")]([SubResource("i1_0m"), SubResource("i1_1m")])
+
+[sub_resource type="Resource" id="i2_0"]
+script = ExtResource("ib")
+button = 1
+
+[sub_resource type="Resource" id="i2_0m"]
+script = ExtResource("im")
+input = SubResource("i2_0")
+
+[sub_resource type="Resource" id="m2"]
+script = ExtResource("am")
+action = ExtResource("a2")
+input_mappings = Array[ExtResource("im")]([SubResource("i2_0m")])
+
+[resource]
+script = ExtResource("mc")
+display_name = "Play (paused)"
+mappings = Array[ExtResource("am")]([SubResource("m0"), SubResource("m1"), SubResource("m2")])

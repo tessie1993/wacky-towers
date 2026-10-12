@@ -195,3 +195,7 @@ mono_crash.*.json
 
 # Godot Android build
 /android/
+
+# Native add-ons installed per machine (user 2026-10-10) — see docs/setup/addons.md
+addons/orchestrator/
+addons/godotsteam/

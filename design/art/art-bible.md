@@ -321,18 +321,27 @@ Springy toy behaviour:
 
 Frames themselves stay still during play. Twinkling, flickering or sparking edges would pull the HUD above its place in the eye order.
 
-### Biome-themed frames
-| Frame | Default biome | Trim |
-|---|---|---|
-| Wood | Grass, forest | Grain, nails, vines |
-| Ice | Ice | Frost edge, short icicles |
-| Stone | Lava | Chipped edges, ember glow |
-| Rune/neon | Rune biome | Glowing line trim |
-| Marble and gold | Celestial | Filigree, sun and moon ornaments |
+### Biome-themed frames: painted wood, one set per biome
+Every UI frame is **painted wood** (user decision, 2026-10-10): the same chunky toy-wood construction everywhere, so the UI is one family. Each biome gets its **own frame set** that changes only the paint colours and a small painted or carved trim. Meadow is built first; the other sets follow their biomes. Starting defaults:
 
+| Biome | Paint (base / edge) | Painted or carved trim |
+|---|---|---|
+| Meadow (first) | Warm honey wood / leaf green | Daisies, clover, a little vine curl |
+| Candy | Pastel pink / mint | Sprinkle dots, piped icing edge |
+| Ice | Pale blue-white / deep teal | Snowflakes, a short painted icicle edge |
+| Underwater | Sea green / coral | Shells, bubble dots, wave scallops |
+| Lava | Charred brown / ember orange | Painted embers, chipped corners |
+| Forest | Dark oak / moss | Acorns, carved leaves |
+| Cave | Slate grey / crystal violet | Painted crystals, lantern dots |
+| Clockwork | Walnut / brass yellow | Painted cogs and rivets |
+| Neon | Navy / painted glow pink and cyan (flat paint, no emission) | Line trim |
+| Celestial | Cream / gold | Stars, sun and moon |
+
+- Side islands (Tumble Fair, Dune Bazaar, Boo Hollow, Drizzle Rock) reuse the nearest main-chain set with their own trim when they are built (post-MVP).
 - Trim changes per biome; the plate interior stays parchment and ink.
+- Frames are painted, never glowing: the Neon set uses flat bright paint so frames stay still (rule above).
 - Trim (icicles, vines, drips) stays under about 10% of plate height and points away from the board and the controls.
-- Each frame gets a dark neutral outer edge, so ice-on-ice or marble-on-nebula frames don't vanish into the backdrop.
+- Each frame gets a dark neutral outer edge, so pale-on-pale frames (Ice, Celestial) don't vanish into the backdrop.
 
 ### Readability and accessibility
 - A HUD scale setting from 100% to 150%, with plates reflowing rather than clipping. Menus follow the system text size.

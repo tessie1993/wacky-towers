@@ -2,13 +2,14 @@
 
 > **Status**: In Design
 > **Author**: Tessa + agents
-> **Last Updated**: 2026-10-09
-> **Last Verified**: 2026-10-09
+> **Last Updated**: 2026-10-10 (portrait + landscape, ADR-0014/0016, three rotation pairs in the thumb zones)
+> **Last Verified**: 2026-10-10
 > **Implements Pillar**: Readable Chaos
+> **Exact layout**: `design/gdd/ux/hud.md` · **Technical**: ADR-0016 (HUD = CanvasLayer 10, PAUSABLE, display-only projection), ADR-0014 (safe area, board rect, `view_changed`), ADR-0012 (controls) · **Look**: `design/gdd/ux/ui-theme.md`
 
 ## Summary
 
-The MVP HUD is a thin strip of plates along the top edge of a landscape phone: goal and warnings on the left, the active-rule icons in the middle, and the next piece (shown as the real 3D piece) on the right above the rotate thumb. Everything else that matters during play — the height limit, the ghost, targets, danger — lives on the board itself, and the board's area is never covered.
+The MVP HUD is a thin strip of plates along the top edge of the phone, in **portrait or landscape**: goal and warnings on the left, the active-rule icons in the middle, and the next piece (shown as the real 3D piece) on the right above the rotate thumb. Everything else that matters during play — the height limit, the ghost, targets, danger — lives on the board itself, and the board's area is never covered.
 
 > **Quick reference** — Layer: `Presentation` · Priority: `MVP` · Key deps: `Piece Spawner & Queue, Level Goals & Fail States`
 
@@ -20,8 +21,8 @@ The HUD shows the player what they need to plan the next move without pulling th
 
 ### Core Rules
 
-**Layout (landscape, right-handed default)**
-1. Three zones: a **top band** for HUD plates, the **board area** in the centre (never covered by HUD or touch input; Board F5 gives it about 57.5% of screen height and 45% of width), and the **bottom thumb arcs** for controls (Touch Controls).
+**Layout (right-handed default; both orientations)**
+1. Three zones: a **top band** for HUD plates, the **board area** (never covered by HUD or touch input), and the **thumb zones** for controls (Touch Controls). **Landscape**: board centred, about 57.5% of screen height and 45% of width (Board F5), thumbs in the bottom arcs on both sides. **Portrait**: board directly under the band, about 92% of width and 45% of height, both thumbs at the bottom. One HUD scene, two layout profiles swapped on viewport `size_changed` (ADR-0016 §4); a phone turned mid-level pauses first (ADR-0014 §5).
 2. Top band, left to right:
    - **Pause** button (44 pt, top-left corner inside the safe area).
    - **Goal plate**: goal icon, progress as a number (e.g. `2 / 3`, `7 / 10`, `1:42`, `38 / 60`) and a thin bar (Level Goals F4); warning tokens (one per warning left).
@@ -29,14 +30,15 @@ The HUD shows the player what they need to plan the next move without pulling th
    - **Preview plate** (top-right): the next piece as the real 3D piece in its spawn orientation from the gameplay camera angle (art bible §7), first plate ≥ 64 pt; with `preview_count` 2–3, further pieces stack below at ≥ 48 pt. The **hold plate** sits to the left of the preview when hold is enabled (Spawner).
 3. **Left-hand mirror** (Touch Controls) swaps the left and right groups; the rule strip stays centred.
 4. **Reserved slots** for later systems: score (Scoring & Stars) under the goal plate; item slots in the item strip (Touch Controls, left side); opponent mini-boards and player frames (Local Multiplayer Setup). The MVP leaves them empty without shifting the four groups.
-5. Everything stays inside the safe-area insets; no HUD element overlaps the board's screen rectangle at any of the 12 view angles.
+5. Everything stays inside the safe-area insets from `ScreenLayout` (ADR-0014; includes cutouts and a gesture-strip margin); no HUD element overlaps the board's screen rectangle at any of the 12 view angles or during a free orbit drag.
+5a. **View controls**: View ◀ ▶ with a 12-tick compass and four corner-view chips sit at the top of the right thumb cluster (L) or in a row between board and thumbs (P). The compass shows the settled snap; free orbit (board drag) is always on (ADR-0014 §3).
 
 **Behaviour**
-6. The HUD only displays; it never changes game state. Exceptions are taps: **pause** opens the pause menu; a **rule icon** tap shows its two-word name and one-line description for 1.5 s without pausing; the **hold plate** tap sends `hold` (when enabled).
+6. The HUD only displays; it never changes game state. It renders from a `HudSnapshot` and forwarded `SimEvent`s and sends only intents (`pause`, `hold`) (ADR-0016 §7). Exceptions are taps: **pause** opens the pause menu; a **rule icon** tap shows its two-word name and one-line description for 1.5 s without pausing; the **hold plate** tap sends `hold` (when enabled).
 7. Values update in the same frame as their source event (spawn, resolve, rule start/end, warning).
 8. **Danger state**: when `stack_height()` is within `danger_margin` layers of the height limit (Formulas F2), the HUD plates take a warm tint and the in-world danger line (Board) pulses; the state clears when the stack drops. During a warning (Level Goals) the goal plate's warning token breaks with a pop.
 9. HUD plates do not rotate with the camera; the preview piece is drawn from the gameplay camera's **current** yaw so it always matches the board.
-10. With reduced motion, pop-ins and pulses become instant changes and static highlights.
+10. With reduced motion (follows the OS setting unless the player overrides it, ADR-0013 §7), pop-ins and pulses become instant changes and static highlights.
 
 ### States and Transitions
 
@@ -120,7 +122,9 @@ The preview_plate_size formula is defined as:
 - **If the stack is in danger during a gravity flip**: F2 uses the board's current re-indexed layers.
 - **If a rule icon is tapped during a fast moment**: the label shows without pausing; it never covers the board.
 - **If the left-hand mirror is on**: preview and hold go top-left, goal plate and pause top-right.
-- **If HUD scale is 150%** (accessibility): plates grow; the clock and rule strip may move to a second row inside the top band; the board shrinks only within Board F5's limits.
+- **If text scale is 150%** (accessibility): plates grow; the clock and rule strip move to a second row inside the top band; the board shrinks only within Board F5's limits.
+- **If button size is 75–200%** (accessibility): in-play buttons scale but never go below 56 dp; plates do not follow button size (they follow text scale).
+- **If the phone turns mid-level**: the game pauses first, then the HUD applies the other layout profile; on resume it re-binds from a fresh snapshot (ADR-0014, ADR-0016).
 - **If the level has no warnings** (`warnings_max = 0`): no tokens are shown.
 
 ## Dependencies
@@ -142,7 +146,7 @@ The preview_plate_size formula is defined as:
 
 ## Visual/Audio Requirements
 
-- Plates use the biome frame (wood with vines in the meadow) with parchment inserts and ink text (art bible §4, §7); display font for numbers with fixed-width digits; H2 24–28 pt for progress and clock, never below 18 pt.
+- Plates use the biome's painted-wood frame set from the biome overlay theme (wood with vines in the meadow; `ui-theme.md` §2) with parchment inserts and ink text (art bible §4, §7); display font for numbers with fixed-width digits; H2 24–28 pt for progress and clock, never below 18 pt.
 - Preview plate: real 3D piece, slow idle turn disabled during play (static), lit like the board.
 - Rule icons: hazard-orange frames for twists and mechanics, cyan and magenta chevrons for buffs and debuffs (art bible §4).
 - Danger tint: warm darkening of plate edges, never the danger red fill (red stays on the board's line).
@@ -173,7 +177,7 @@ This whole GDD is a UI requirement. 📌 **UX Flag — HUD**: run `/ux-design hu
 
 **[U]** unit, **[I]** integration, **[M]** manual or device.
 
-1. [M] **GIVEN** the reference phone in landscape, **THEN** pause and goal plate are top-left, rule strip top-centre, preview top-right, all inside the safe area, and none overlaps the board rectangle at any of the 12 view angles.
+1. [M] **GIVEN** the reference phone in landscape **and** in portrait, **THEN** pause and goal plate are top-left, rule strip top-centre, preview top-right, all inside the safe area, and none overlaps the board rectangle at any of the 12 view angles.
 2. [I] **GIVEN** the left-hand mirror, **THEN** the left and right groups swap and the rule strip stays centred.
 3. [U] F1: no inset, 64 pt preview, 8 pt margins → 80 pt band; the board's 670 px fits below on the reference phone.
 4. [U] F2: `H_play = 12`, margin 2 → danger at stack height 9, not at 8.
@@ -191,5 +195,5 @@ This whole GDD is a UI requirement. 📌 **UX Flag — HUD**: run `/ux-design hu
 - **Clock by default**: off except for Survive and time limits — do players want it for 3-star chasing? Decide with Scoring & Stars.
 - **Preview turn**: should the preview piece slowly rotate to show its 3D shape, or stay static from the camera angle? Default static; test.
 - **Versus HUD**: per-player frames and opponent mini-boards for 2–4 players (Local Multiplayer Setup).
-- **Portrait**: if the Touch Controls prototype moves to portrait, this layout is redone.
+- ~~**Portrait**~~: resolved — both orientations are supported (rule 1; `design/gdd/ux/hud.md`).
 - **Board F5 placeholder**: F1 confirms the board's 57.5% height share fits on the reference phone; confirm the 45% width share once controls are laid out in `/ux-design`.

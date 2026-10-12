@@ -1,0 +1,9 @@
+{
+  "base":      {"rank": 0, "budget_key": null},
+  "perk":      {"rank": 1, "budget_key": null},
+  "mascot":    {"rank": 1, "budget_key": null},
+  "item_buff": {"rank": 2, "budget_key": null},
+  "content":   {"rank": 2, "budget_key": null},
+  "twist":     {"rank": 3, "budget_key": "rules.max_twists"},
+  "mechanic":  {"rank": 4, "budget_key": "rules.max_level_mechanics"}
+}

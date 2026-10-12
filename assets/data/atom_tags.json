@@ -1,0 +1,41 @@
+{
+	"version": 1,
+	"source": "design/gdd/mechanics-module.md §1 Compatibility tags; ADR-0004 §2",
+	"tags": {
+		"grid": "Needs board.kind grid",
+		"phys": "Needs board.kind physics",
+		"fall": "Needs a falling piece",
+		"nofall": "Has no falling piece",
+		"floor": "Needs a fixed down axis",
+		"axis": "Changes the down axis during play",
+		"clr": "Needs clears on",
+		"noclr": "Needs clears off",
+		"col": "Uses colour keys (2 or more colours)",
+		"tgt": "Needs target cells in the level data",
+		"rect": "Needs an unmasked rectangular footprint",
+		"multi": "Several boards per player",
+		"shared": "Several players write one board (Parked)",
+		"turn": "Piece- or move-limited, no gravity pressure",
+		"rt": "Real-time pressure",
+		"vs": "Multiplayer only (competitive)",
+		"solo": "Single-player only",
+		"coop": "Co-operative (Parked)",
+		"mg": "Needs a minigame scene",
+		"daily": "Allowed in the daily generator",
+		"absurd": "Counts as the daily challenge's absurd rule",
+		"wrap": "A ground axis wraps (Proposed)",
+		"cam": "Reads the camera snap via the recorded view_snap command (Proposed)",
+		"face": "Needs tilt and roll, the 3rd rotation pair (Proposed)",
+		"tourney": "Tournament rounds only, off in quick versus (Proposed)",
+		"stack": "Moves or removes locked cubes or changes stack structure; Stitch can pin it (Proposed)"
+	},
+	"conflicts": [
+		["grid", "phys"],
+		["fall", "nofall"],
+		["floor", "axis"],
+		["clr", "noclr"],
+		["turn", "rt"],
+		["vs", "solo"],
+		["tourney", "solo"]
+	]
+}

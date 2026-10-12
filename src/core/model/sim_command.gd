@@ -1,8 +1,11 @@
 class_name SimCommand extends RefCounted
 ## One player input for one tick (ADR-0001). Usage: SimCommand.make(SimEvents.CMD_HOLD, [], 12).
 
+## Tick this command applies to.
 var tick: int = 0
+## Command kind, one of the SimEvents.CMD_* constants.
 var kind: StringName = &""
+## Kind-specific arguments.
 var args: Array = []
 
 

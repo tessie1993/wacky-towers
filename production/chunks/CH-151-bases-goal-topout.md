@@ -4,7 +4,7 @@
 **Goal:** the goal and top-out slot extension points (ADR-0004 table: slots `goal.type`, `goal.top_out`).
 **Depends:** CH-021 (pattern), CH-034, CH-148
 **Parallel-safe with:** CH-150, CH-152, CH-042 … CH-050, CH-054
-**Files (new):** `src/core/rules/bases/goal_evaluator.gd`, `src/core/rules/bases/top_out_policy.gd`, `tests/unit/rules/plugin_bases_goal_test.gd`
+**Files (new):** `src/core/rules/bases/goal_evaluator.gd`, `src/core/rules/bases/top_out_policy.gd`
 
 ## API (implementation-plan §1.2)
 
@@ -29,7 +29,8 @@ func tags() -> PackedStringArray: return PackedStringArray()
 func validate(level: LevelData, catalog: GameCatalog) -> Array[ValidationIssue]: return []
 ```
 
-## Tests to write first
+## Expected results (no tests)
+User rule 2026-10-10: NO TESTS. Do not write test files. These are the expected results: the integrator checks them in the editor (godot-ai script eval or a scratch script, read with `logs_read`) after moving the file in.
 
 1. `test_bases_are_abstract` — `load(<path>).can_instantiate() == false` for both (same check CH-021 verified on 4.7.2).
 2. `test_result_constants_match_goal_state` — `GoalEvaluator.WON == GoalState.RESULT_WON`, `TopOutPolicy.LOST == 2`.
@@ -37,7 +38,8 @@ func validate(level: LevelData, catalog: GameCatalog) -> Array[ValidationIssue]:
 4. `test_registry_still_clean` — `PluginRegistry.new(ProjectSettings.get_global_class_list()).errors().is_empty()` (adding bases must not break the registry).
 
 ## Run
-`-a res://tests/unit/rules` (README; `--import` first).
+Integrator: move staged files in, rescan, `logs_read` must show no parse errors or class-name clashes, then check the cases above. No gdUnit run.
 
 ## Done when
-README "Done when" + 4 tests green.
+File(s) in place, editor scan clean, the expected results above hold.
+

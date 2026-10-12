@@ -20,10 +20,11 @@
 
 `rule_adjustable`: false for all new entries except `goal.warning_ms` (true).
 
-## Tests first
-No new test file. Run the existing `tests/unit/data/knob_files_test.gd` (CH-018) red-first only if it pins entry counts; then green.
-If a count assertion exists, update it in the same file (note it in the report).
+## Check
+User rule 2026-10-10: NO TESTS. Do not write test files. These are the expected results: the integrator checks them in the editor (godot-ai script eval or a scratch script, read with `logs_read`) after moving the file in.
+No new test file. Run the existing (CH-018) red-first only if it pins entry counts; then green.
 
-## Run / Done when
-`-a res://tests/unit/data` and `-a res://tests/unit/rules` green; every new id appears once.
+## Run
+Integrator: move staged files in, rescan, `logs_read` must show no parse errors or class-name clashes, then check the cases above. No gdUnit run.
+
 **Out of scope:** code that reads them (CH-057, CH-068, CH-095, CH-098, CH-099, CH-129).

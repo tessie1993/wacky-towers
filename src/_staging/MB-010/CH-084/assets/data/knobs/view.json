@@ -1,0 +1,122 @@
+{
+  "knobs": [
+    {
+      "id": "view.elevation_deg",
+      "type": "scalar",
+      "default": 30.0,
+      "min": 25.0,
+      "max": 40.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/camera-rotate-view.md#f2-orthographic-framing-size"
+    },
+    {
+      "id": "view.fade_alpha",
+      "type": "scalar",
+      "default": 0.3,
+      "min": 0.15,
+      "max": 0.5,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/camera-rotate-view.md#f4-turn-animation-and-fade"
+    },
+    {
+      "id": "view.fade_ms",
+      "type": "count",
+      "default": 100,
+      "min": 60,
+      "max": 150,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/camera-rotate-view.md#f4-turn-animation-and-fade"
+    },
+    {
+      "id": "view.ghost_alpha",
+      "type": "scalar",
+      "default": 0.35,
+      "min": 0.1,
+      "max": 1.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "RND-08",
+      "note": "Landing-ghost opacity"
+    },
+    {
+      "id": "view.margin",
+      "type": "scalar",
+      "default": 0.5,
+      "min": 0.3,
+      "max": 1.0,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/camera-rotate-view.md#f2-orthographic-framing-size",
+      "note": "Cells."
+    },
+    {
+      "id": "view.max_faded_blocks",
+      "type": "count",
+      "default": 40,
+      "min": 20,
+      "max": 64,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/camera-rotate-view.md#f4-turn-animation-and-fade"
+    },
+    {
+      "id": "view.occlusion_mode",
+      "type": "choice",
+      "default": "fade",
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "choices": [
+        "fade",
+        "cutaway",
+        "ghost_only"
+      ],
+      "source": "design/gdd/camera-rotate-view.md#overview"
+    },
+    {
+      "id": "view.settle_ms",
+      "type": "count",
+      "default": 150,
+      "min": 0,
+      "max": 300,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/camera-rotate-view.md#tuning-knobs",
+      "note": "Settle tween after an orbit release (ADR-0014 section 3); 0 = reduced motion"
+    },
+    {
+      "id": "view.side_on_min_deg",
+      "type": "count",
+      "default": 45,
+      "min": 30,
+      "max": 60,
+      "allows_zero": false,
+      "rule_adjustable": false,
+      "source": "design/gdd/camera-rotate-view.md#f4-turn-animation-and-fade"
+    },
+    {
+      "id": "view.turn_anim_ms",
+      "type": "count",
+      "default": 150,
+      "min": 0,
+      "max": 250,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/camera-rotate-view.md#f4-turn-animation-and-fade",
+      "note": "GDD range 100-250; 0 = reduced motion (instant cut)."
+    },
+    {
+      "id": "view.yaw_offset_deg",
+      "type": "scalar",
+      "default": 45.0,
+      "min": 0.0,
+      "max": 359.0,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/gdd/camera-rotate-view.md#f1-view-yaw",
+      "note": "Yaw of snap k=0; 45 puts corner views at k = 0,3,6,9 (needs yaw_offset mod 30 = 15)"
+    }
+  ]
+}

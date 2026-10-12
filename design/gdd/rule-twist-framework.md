@@ -1,14 +1,14 @@
 # Rule-Twist Framework
 
-> **Status**: In Design
+> **Status**: Designed
 > **Author**: Tessa + agents
-> **Last Updated**: 2026-10-09
-> **Last Verified**: 2026-10-09
+> **Last Updated**: 2026-10-10
+> **Last Verified**: 2026-10-10 (against ADR-0001, ADR-0004, ADR-0005, ADR-0011)
 > **Implements Pillar**: Variation Over Depth; Readable Chaos; The Block Is the Constant
 
 ## Summary
 
-The Rule-Twist Framework is the plug-in socket every rule change uses: biome twists, level-specific mechanics, items, buffs and perks all describe themselves as **rules** that adjust numbers or react at fixed moments in the game (spawn, fall, lock, clear and so on). When rules disagree, a fixed order decides — level mechanic, then twist, then item or buff, then perk, then the base game — and numbers changed by several rules are multiplied together and kept within safe limits. A level can have up to 2 twists and 1 level mechanic at once, so the chaos stays readable.
+The Rule-Twist Framework is the plug-in socket every rule change uses: biome twists, level-specific mechanics, items, buffs and perks all describe themselves as **rules** that adjust numbers or react at fixed moments in the game (spawn, fall, lock, clear and so on). When rules disagree, a fixed order decides — level mechanic, then twist, then item/buff and living content, then perk and mascot, then the base game — and numbers changed by several rules are multiplied together and kept within safe limits. A level can have up to 2 twists and 1 level mechanic at once, so the chaos stays readable.
 
 > **Quick reference** — Layer: `Core` · Priority: `MVP` · Key deps: `Board / Grid, Piece Spawner & Queue, Movement & Rotation, Fall, Drop & Lock, Layer Clearing, Level Goals & Fail States`
 
@@ -21,22 +21,24 @@ Wacky Towers' promise is variety: dozens of twists on the same blocks (wind, gra
 ### Core Rules
 
 **What a rule is**
-1. A **rule** has: `rule_id`, a **layer** (`level_mechanic`, `twist`, `item_buff`, `perk`, `base`), a **scope** (one board / one player / all players / the opponents of a player), a **lifetime** (the whole level, a duration in play time, a number of pieces, or until an event), an icon and a short name, and one or more **operations**.
+1. A **rule** has: `rule_id`, a **layer** (`mechanic`, `twist`, `item_buff`, `content`, `perk`, `mascot`, `base`; the layer table is data, `res://assets/data/rule_layers.json`, ADR-0011 §2), a **scope** (one board / one player / all players / the opponents of a player), a **lifetime** (the whole level, a duration in play time, a number of pieces, or until an event), an icon and a short name, and one or more **operations**.
 2. The base game is itself the lowest layer: the defaults in each core GDD are `base` values.
-3. Rules are defined in data (Level Data, Twist Library, Items, Characters & Perks). Behaviour beyond parameters and the built-in actions is a small scripted action that only uses the framework's API (rule 13), never a direct write to a core system.
+3. Rules are defined in data (Level Data, Twist Library, Items, Characters & Perks). **ADR-0004 owns the schemas**: rule files `res://assets/data/rules/<rule_id>.json`, knob files `res://assets/data/knobs/<system>.json` and the plugin registry; ADR-0005's validator checks levels against them. Behaviour beyond parameters and the built-in actions is a GDScript `RuleBehaviour` (or slot plugin) that only uses the framework's `RuleApi` (rule 13), never a direct write to a core system. **Everything that changes the game is a rule inside the sim** (mascot catches, gusts, flips, living content): beehave trees are presentation only and never write to the sim (ADR-0011 §1).
 
 **Operation 1 — parameter modifiers**
-4. A rule may change only the **rule-adjustable parameters** below (a closed list, starting default 2026-10-09; add to it when a new twist or mechanic needs a knob, and record the owning GDD). Every other level field is level-base only. A parameter the framework does not know is a validation error.
+4. A rule may change only knobs marked `rule_adjustable: true` in the knob JSON (ADR-0004 §3); that flag is the authority, and the table below is a readable copy of the 2026-10-10 files plus the Skills and Items rows added the same day (their knob JSON entries, `knobs/skill.json` and `knobs/items.json`, land with those systems' builds). Add a knob there (and here) when a new twist or mechanic needs one. Every other level field is level-base only. A knob id the registry does not know is a validation error.
 
-| Owner | Rule-adjustable parameters |
+| Owner | Rule-adjustable knob ids |
 |---|---|
-| Fall, Drop & Lock | `gravity_scale`, `g0`, `ramp_per_clear`, `ramp_per_min`, `lock_delay_ms`, `lock_resets_max`, `hard_drop_grace_ms` |
-| Piece Spawner & Queue | `preview_count`, `hold_enabled`, `randomizer` |
-| Layer Clearing | `clear_enabled`, `collapse_mode` |
-| Movement & Rotation, Touch Controls | `landed_move_rule`, `rotation_axes_enabled`, `kick_enabled` |
-| Level Goals & Fail States | `warnings_max`, `topout_rule` |
-| Board / Grid | down axis, cell mask |
-5. Each parameter has a **type** taken from its knob: **scalar** (float), **count** (int), **flag** (true/false), **choice** (enum) or **structure** (down axis, mask). Allowed operations: scalars — `multiply` or `set`; counts — `add` or `set`; flags, choices and structures — `set` only.
+| Fall, Drop & Lock | `fall.gravity_scale`, `fall.g0`, `fall.ramp_per_clear`, `fall.ramp_per_min`, `fall.lock_delay_ms`, `fall.lock_resets_max`, `fall.hard_drop_grace_ms` |
+| Piece Spawner & Queue | `spawn.preview_count`, `spawn.hold_enabled`, `spawn.randomizer` |
+| Layer Clearing | `clear.enabled`, `clear.collapse` (slot) |
+| Movement & Rotation, Touch Controls | `control.landed_move_rule`, `control.rotation_axes_enabled`, `control.kick_enabled` |
+| Level Goals & Fail States | `goal.warnings_max`, `goal.top_out` (slot) |
+| Skills | `skill.charge_rate` (scalar, 0.5–1.5, default 1.0; charge perks) |
+| Items | `item_slots` (count, 1–3, default 2; Deep Pockets perk) |
+| Board / Grid | down axis and cell mask, through `request_down_axis` / `request_mask` (applied at S4a), not knobs |
+5. Each knob has a **type**: **scalar** (stored as integer milli-units, 1000 = 1.0; JSON may write decimals, converted once on load), **count** (int), **flag**, **choice** (enum), **structure** or **slot** (a plugin id). Allowed operations: scalars — `multiply` or `set`; counts — `add` or `set`; flags, choices, structures and slots — `set` only. A slot change takes effect at the next Resolving (S4a).
 6. **Effective value** (Formulas F1): the highest-priority `set` (if any) replaces the base; then all multipliers multiply (scalars) or all adds add (counts); then the result is clamped to the knob's safe range. Flags, choices and structures use the highest-priority `set`.
 7. Effective values are **recomputed** whenever a rule starts or ends. A timer already running (a lock delay, a grace, a fall step) keeps the value it started with; the new value applies from the next start.
 
@@ -45,24 +47,29 @@ Wacky Towers' promise is variety: dozens of twists on the same blocks (wind, gra
 
 | Hook | Called by | When | Typical use |
 |---|---|---|---|
-| `on_level_start` | Level Goals | After Countdown | Place objects, set up the board |
-| `on_spawn(piece)` | Spawner | A piece is created, before it appears | Add a tag, swap the shape |
-| `on_tick(dt)` | Framework | Every frame while Playing | Wind or drift pushes, timers |
-| `on_fall_step(piece)` | Fall, Drop & Lock | After each gravity step | Drift, spin |
-| `on_lock(piece, cells)` | Fall, Drop & Lock | Cubes written, before the clear check | Sticky, convert, crumble |
-| `on_clear(cell, content)` | Layer Clearing | Before a cleared cell's content is removed | Bombs, status effects |
-| `on_resolve_end` | Layer Clearing | Board about to return to Live | Spawn objects, move blocks after placement |
-| `on_top_out` | Level Goals | Before a warning or loss is applied | Override the warning rule |
-| `on_goal_check` | Level Goals | After each resolve | Extra fail or win conditions |
+| `on_level_start` | Level Goals | After Countdown | Place objects, set up the board, set behaviour state |
+| `on_command` | Framework | P0, before a player command applies | Command vetoes and rewrites |
+| `on_spawn(piece)` | Spawner | S10, a piece is created, before it appears | Add a tag, swap the shape, mascot hint |
+| `on_tick` | Framework | P1, once per sim tick (60 Hz) while Playing; no `dt`, time is `api.now_ms()` | Wind or drift pushes, timers |
+| `on_fall_step(piece)` | Fall, Drop & Lock | P2, after each gravity step | Drift, spin |
+| veto `piece.lock` | Fall, Drop & Lock | P3, before cubes are written | Mascot catch (WO11) |
+| `on_lock(piece, cells)` | Fall, Drop & Lock | S2, cubes written, before the clear check | Sticky, convert, crumble |
+| `on_clear(cell, content)` | Layer Clearing | S3 and S4c, before a cleared cell's content is removed | Bombs, status effects, egg bonus |
+| `on_resolve_end` | Fall, Drop & Lock | S4b, after S4a structure changes, before the goal check | Spawn objects, belt shift, hatch, ants |
+| `on_goal_check` | Level Goals | S5 | Extra fail or win conditions |
+| `on_top_out` | Level Goals | S7, before a warning or loss is applied | Override the warning rule |
+
+Step ids are Fall, Drop & Lock rule 15 (ADR-0011 §3). ADR-0004 also defines `on_piece_enter`, `on_enter` and `on_attack_received`; any system may add a hook name without a framework edit.
 
 9. Within one hook call, rules run in **ascending priority** (F2), so for conflicting writes the **highest-priority rule writes last and wins** (Board / Grid criterion 18).
 10. Actions may trigger hooks (a bomb's `on_clear` clears more cells). The chain depth is limited to `max_hook_depth` (default 4); deeper actions are dropped and logged.
 
 **Operation 3 — vetoes**
 11. A rule may veto an action at a hook (for example, "this layer does not clear", "tilt is disabled"). A veto applies if its rule's priority is **equal to or higher than** the priority of the rule (or base system) asking for the action. A vetoed player command returns `Disabled` (Movement & Rotation), with feedback that a rule blocked it.
+11a. **Veto rank bonus.** A rule's veto may carry `veto_rank_bonus` (0–1, default 0), which raises the rank used for **that veto only** (never its modifiers or hook order). It exists for one case today: Lana's Stitch (Skills rule 14), an `item_buff` skill whose `stack.shift` / `stack.remove` vetoes act at rank 3, so they tie and therefore beat twists and still lose to the level mechanic (4). A bonus that would reach rank 4 fails validation. Veto ids `stack.shift` and `stack.remove` cover any `RuleApi` write that moves or removes a locked cube; rules that make such writes carry the `stack` atom tag (`atom_tags.json`).
 
 **Priority and conflicts**
-12. Priority order is **level mechanic (4) > twist (3) > item/buff (2) > perk (1) > base (0)**. Within a layer, the rule activated later has higher priority; if two activate in the same frame, the higher `rule_id` in sort order wins (deterministic). A level mechanic that contradicts a general rule (e.g. "full layers do not clear here") therefore always wins over twists, items and perks.
+12. Priority order is **mechanic (4) > twist (3) > item_buff = content (2) > perk = mascot (1) > base (0)** (F2; ranks from `rule_layers.json`). Within a rank (one layer, or two layers sharing it), the rule activated later has higher priority; if two activate on the same tick, the higher `rule_id` in sort order wins (deterministic). So at S4b living content runs first, then twists, then the mechanic last. A level mechanic that contradicts a general rule (e.g. "full layers do not clear here") therefore always wins over twists, items and perks.
 
 **The API rules may use**
 13. Actions go through the framework, never directly into a core system:
@@ -70,11 +77,14 @@ Wacky Towers' promise is variety: dozens of twists on the same blocks (wind, gra
     - piece: `try_translate(delta)` and `place_nearest_up()` (Movement & Rotation), replace the shape (Spawner / Movement);
     - queue: `inject_front`, `add_to_next_bag`, `set_preview_count`, `set_hold_enabled` (Spawner);
     - goals: add an extra fail or win condition (Level Goals);
-    - random numbers: each rule gets its **own seeded stream** from the round seed and its `rule_id`; it never uses the Spawner's stream (Spawner Core Rule 2).
-14. Board content writes from `on_tick` or `on_fall_step` are applied at the end of the frame; if they overlap the falling piece, `place_nearest_up()` runs (Board / Grid edge case).
+    - lock: veto `piece.lock` after `return_piece_to_spawn(hold_ms)`; pure queries `would_clear`, `new_covered_holes`, `would_top_out`, `goal_would_meet`, `spawn_cells_free` (never write, never draw RNG; ADR-0011 §4);
+    - events: `emit(kind, data)` for every decision the view must show, with `*_warn` / `*_due` events and window lengths ahead of the action (ADR-0011 §6);
+    - random numbers: each rule gets its **own seeded stream** (`api.rng()`) from the round seed and its `rule_id`; it never uses the Spawner's stream (Spawner Core Rule 2). Candidates are sorted canonically before a draw, and no draw is made when there is one candidate or none.
+    - state: all mutable behaviour state is returned by `snapshot()` and folded into the board's state hash (ADR-0011 §4).
+14. Board content writes from `on_tick` or `on_fall_step` are buffered and applied at the end of the tick in priority order; if they overlap the falling piece, `place_nearest_up()` runs (Board / Grid edge case).
 
 **Limits and readability**
-15. Per level, at most `max_twists` (default 2) twists and `max_level_mechanics` (default 1) level mechanics are active; Level Data fails validation above that. Items, buffs and perks are capped by their own systems.
+15. Per level, at most `rules.max_twists` (default 2) rules of layer `twist` and `rules.max_level_mechanics` (default 1) of layer `mechanic` are active; Level Data fails validation above that. Only those two layers count: `content` and `mascot` rules (eggs, ants, Pip's catch) do not (ADR-0004 §2). Items, buffs and perks are capped by their own systems.
 16. **Every active rule is visible**: its icon is in the HUD for as long as it lasts, and twists and level mechanics are shown on the Intro goal card. A rule with no icon fails validation.
 17. Validation warns when two rules at the same layer `set` the same parameter to different values in the same level (one will always be hidden).
 
@@ -114,18 +124,18 @@ All values are starting defaults.
 
 The effective_parameter formula is defined as:
 
-scalars: `v = clamp( (s_top ?? v_base) × Π m_i , v_min, v_max )`; counts: `v = clamp( (s_top ?? v_base) + Σ a_i , v_min, v_max )`; flags, choices, structures: `v = s_top ?? v_base`
+scalars (integer milli-units, ADR-0004 §3): `v = clamp( fold( (s_top ?? v_base), m_i ), v_min, v_max )` with `fold` applying `v = (v × m_i) / 1000` (integer division) once per multiplier in ascending priority order; counts: `v = clamp( (s_top ?? v_base) + Σ a_i , v_min, v_max )`; flags, choices, structures: `v = s_top ?? v_base`
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
 | v_base | any | knob range | data file (core GDD) | The base value |
 | s_top | any or none | knob range | calculated | The `set` value from the highest-priority active rule that sets this parameter |
-| m_i | float | > 0 (0 only if the knob allows 0) | data file (rules) | Multipliers from all active rules |
+| m_i | int (milli) | > 0 (0 only if the knob allows 0); 500 = ×0.5 | data file (rules) | Multipliers from all active rules |
 | a_i | int | any | data file (rules) | Additions from all active rules |
 | v_min, v_max | number | — | data file (core GDD) | The knob's safe range |
 
-**Output Range:** always within the knob's safe range. **Example:** gravity scale: base 1, a slow potion ×0.5 and a fast twist ×1.5 → 0.75. Lock delay: a level mechanic sets 300 ms, a perk ×1.2 → 360 ms. Preview count: base 1, perk +1, item +2 → 4, clamped to the cap 3. Clearing: base `true`, a twist sets `true`, the level mechanic sets `false` → `false`.
+**Output Range:** always within the knob's safe range; integer, identical on every device. **Example:** gravity scale: base 1000, a slow potion 500 and a fast twist 1500 → 1000 × 500 / 1000 = 500, then 500 × 1500 / 1000 = 750 (×0.75). Lock delay (a count): a level mechanic sets 300 ms, a perk adds +60 → 360 ms. Preview count: base 1, perk +1, item +2 → 4, clamped to the cap 3. Clearing: base `true`, a twist sets `true`, the level mechanic sets `false` → `false`.
 
 ### F2. Rule priority
 
@@ -136,11 +146,11 @@ The rule_priority formula is defined as:
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
-| layer_rank | int | 0–4 | data file | base 0, perk 1, item_buff 2, twist 3, level_mechanic 4 |
-| activated_at | int | ≥ 0 | calculated | Play-time tick when the rule became Active |
-| rule_id | string | — | data file | Deterministic tie-breaker |
+| layer_rank | int | 0–4 | data file (`rule_layers.json`) | base 0, perk 1, mascot 1, item_buff 2, content 2, twist 3, mechanic 4 |
+| activated_at | int | ≥ 0 | calculated | Sim tick when the rule became Active |
+| rule_id | StringName | — | data file | Deterministic tie-breaker |
 
-**Output Range:** a total order over active rules. **Example:** a twist activated at tick 10 beats an item activated at tick 900 (layer 3 > 2); of two items, the one at tick 900 beats the one at tick 10.
+**Output Range:** a total order over active rules (shared ranks fall through to tick, then id). On a shared rank a veto still wins a tie (rule 11). **Example:** a twist activated at tick 10 beats an item activated at tick 900 (rank 3 > 2); of two items, the one at tick 900 beats the one at tick 10; an egg (`content`, tick 0) and a potion (`item_buff`, tick 600) share rank 2, so the potion wins; Pip's catch (`mascot`, 1) is outranked by every twist.
 
 ### F3. Active rule budget
 
@@ -175,7 +185,7 @@ The rule_lifetime formula is defined as:
 
 ## Edge Cases
 
-- **If two rules at the same layer `set` one parameter in the same frame**: the higher `rule_id` wins (F2); validation warned at load.
+- **If two rules at the same rank `set` one parameter on the same tick**: the higher `rule_id` wins (F2); validation warned at load.
 - **If an item tries to undo a level mechanic** (e.g. re-enable clearing in a no-clear level): the level mechanic wins; the item's icon shows "no effect" and the item is still consumed unless the Items GDD says otherwise.
 - **If a multiplier would push a value outside its knob's range**: clamped (F1); the clamp is logged for tuning.
 - **If a multiplier of 0 is applied to a knob whose range excludes 0**: validation fails.
@@ -213,8 +223,10 @@ The rule_lifetime formula is defined as:
 | Level-Specific Mechanics, Twist Library | Hard | Define rules at layers 4 and 3 |
 | Level Data & Definition | Hard | Declares rules per level; F3 validation |
 | Obstacles, Block Status Effects, Physics Mode | Hard | Hooks and API |
-| Buffs & Debuffs, Items, Skills | Hard | Layer-2 rules |
-| Characters & Perks, Shop | Hard | Layer-1 rules |
+| Buffs & Debuffs, Items, Skills | Hard | Layer-2 rules; `skill.charge_rate`, `item_slots` knobs; Stitch's veto rank bonus (rule 11a) |
+| Characters & Perks, Shop | Hard | Layer-1 rules (perks); potions are layer-2 rules |
+| Mechanics Module | Hard | Every atom is a rule or slot; tags in `atom_tags.json` |
+| Mascot Reactions | Soft | `mascot`-layer rules (WO atoms) emit the events it stages |
 | HUD, Game Feel & VFX, Audio | Soft | Active-rule display and events |
 
 All six upstream GDDs mention the framework; each must add its rule-adjustable knobs to a "rule-adjustable" note when next revised (see Open Questions).
@@ -223,11 +235,11 @@ All six upstream GDDs mention the framework; each must add its rule-adjustable k
 
 | Knob | Range | Default | Source | Affects |
 |---|---|---|---|---|
-| max_twists | 0–4 | 2 | data file | Twists per level (F3) |
-| max_level_mechanics | 0–2 | 1 | data file | Level mechanics per level (F3) |
-| max_hook_depth | 1–8 | 4 | data file | Chain reactions from actions |
-| layer order | permutation of the 5 layers | mechanic > twist > item/buff > perk > base | data file | Who wins conflicts (F2); change only with care |
-| framework_budget_ms | 0.2–2 | 0.5 | data file | Time per frame the framework may use on the reference phone |
+| `rules.max_twists` | 0–4 | 2 | data file | Twists per level (F3) |
+| `rules.max_level_mechanics` | 0–2 | 1 | data file | Level mechanics per level (F3) |
+| `rules.max_hook_depth` | 1–8 | 4 | data file | Chain reactions from actions |
+| layer ranks (`rule_layers.json`) | rank 0–4 per layer | base 0, perk/mascot 1, item_buff/content 2, twist 3, mechanic 4 | data file | Who wins conflicts (F2); change only with care. Replaces the old 5-entry `rules.layer_order` knob (removed 2026-10-10) |
+| `rules.framework_budget_ms` | 0.2–2 | 0.5 | data file | Time per frame the framework may use on the reference phone |
 
 ## Visual/Audio Requirements
 
@@ -265,8 +277,8 @@ The player should never wonder why the game behaved differently: every rule that
 **[U]** unit, **[I]** integration, **[M]** manual or device.
 
 **Parameters**
-1. [U] F1: gravity scale ×0.5 and ×1.5 → 0.75; lock delay set 300 by a level mechanic and ×1.2 by a perk → 360; preview +1 and +2 → clamped to 3; `clear_enabled` set true by a twist and false by the level mechanic → false.
-2. [U] **GIVEN** a rule ends, **THEN** the effective value is recomputed in the same frame and equals the value without that rule.
+1. [U] F1: gravity scale 1000 with multipliers 500 and 1500 → 750; lock delay set 300 by a level mechanic and +60 by a perk → 360; preview +1 and +2 → clamped to 3; `clear_enabled` set true by a twist and false by the level mechanic → false.
+2. [U] **GIVEN** a rule ends, **THEN** the effective value is recomputed on the same tick and equals the value without that rule.
 3. [U] **GIVEN** a lock delay running at 500 ms, **WHEN** a rule changes it to 300, **THEN** the running timer keeps 500 and the next one starts at 300.
 4. [U] **GIVEN** a rule targeting an unknown parameter or multiplying a no-zero knob by 0, **THEN** the level fails validation.
 
@@ -280,7 +292,10 @@ The player should never wonder why the game behaved differently: every rule that
 
 **API and determinism**
 11. [U] **GIVEN** a mask change requested while Live, **THEN** it applies at the next Resolving.
-12. [U] **GIVEN** an `on_tick` write overlapping the falling piece, **THEN** it applies at the end of the frame and the piece is lifted by `place_nearest_up()`.
+12. [U] **GIVEN** an `on_tick` write overlapping the falling piece, **THEN** it applies at the end of the tick and the piece is lifted by `place_nearest_up()`.
+12a. [U] **GIVEN** `rule_layers.json`, **THEN** it loads, `mascot`/`perk` and `content`/`item_buff` ties break by tick then id, an unknown layer fails validation, and the S4b order is ants → mushrooms → belt (ADR-0011 `rule_rank_test`).
+12b. [U] **GIVEN** a level with 2 twists, 1 mechanic, 2 content rules and 1 mascot rule, **THEN** F3 passes (content and mascot do not count).
+12c. [U] **GIVEN** each Meadow rule mix replayed twice from one seed and command log, **THEN** events and `state_hash()` (including every `snapshot()`) are identical, with or without staging (ADR-0011 §9).
 13. [U] **GIVEN** the same round seed and rule, **THEN** its random choices are identical across runs and across players, and the Spawner's sequence is unchanged by the rule.
 
 **Limits, lifetimes and readability**
@@ -295,9 +310,9 @@ The player should never wonder why the game behaved differently: every rule that
 
 ## Open Questions
 
-- **Rule-adjustable knob list**: a closed list is now in rule 4 (covers the 4 MVP twists and 4 mechanics). Still open: each owning GDD should mark those knobs as rule-adjustable in its Tuning Knobs table and confirm the safe ranges.
-- **Scripted actions**: which language and sandbox for rule behaviours (Godot scripts with a restricted API?) → becomes an ADR after `/setup-engine`.
-- **Layer order exceptions**: should some items deliberately outrank twists (a "shield" that ignores wind)? If needed, add a per-rule `priority_bonus` rather than changing the order.
+- ~~**Rule-adjustable knob list**~~: resolved — the `rule_adjustable` flag in `assets/data/knobs/*.json` (ADR-0004 §3) is the list; rule 4 mirrors it.
+- ~~**Scripted actions**~~: resolved — GDScript `RuleBehaviour`s through `RuleApi` (ADR-0004); level data names rules, never code (ADR-0005); beehave is staging only (ADR-0011).
+- **Layer order exceptions**: answered for vetoes by rule 11a (`veto_rank_bonus`, used by Stitch). ADR-0004's rule schema needs the field (technical-director).
 - **Items consumed with no effect**: confirm with Items (consumed vs. refunded).
 - **Perk visibility**: perks are on the pause screen only — is that enough for Readable Chaos in versus?
 - **More than 2 twists**: tournament minigames may want 3; revisit after the MVP playtest.

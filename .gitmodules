@@ -1,0 +1,3 @@
+[submodule "tools/vendor/godot-game-dev-studio"]
+	path = tools/vendor/godot-game-dev-studio
+	url = https://github.com/bgrenat/godot-game-dev-studio.git

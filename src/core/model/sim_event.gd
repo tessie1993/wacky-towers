@@ -1,8 +1,11 @@
 class_name SimEvent extends RefCounted
 ## One thing that happened in the sim; plain data for view, audio, net (ADR-0001).
 
+## Tick the event happened on.
 var tick: int = 0
+## Event kind, one of the SimEvents constants.
 var kind: StringName = &""
+## Kind-specific payload.
 var data: Dictionary = {}
 
 
