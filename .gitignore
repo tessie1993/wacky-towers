@@ -51,10 +51,11 @@ dist/
 *.exe
 *.dll
 *.so
-# Fetch pinned native Orchestrator libraries with tools/setup/install_orchestrator.py.
-addons/orchestrator/*.wasm
 *.dylib
 *.app
+# ...but native add-on binaries are committed (user 2026-10-13, docs/setup/addons.md).
+!addons/orchestrator/**
+!addons/godotsteam/**
 
 # === Engine: Godot ===
 # Two subtleties, both of which produced a silently-wrong rule before this:
@@ -202,10 +203,6 @@ mono_crash.*.json
 
 # Godot Android build
 /android/
-
-# Native add-ons installed per machine (user 2026-10-10) — see docs/setup/addons.md
-addons/orchestrator/
-addons/godotsteam/
 
 # Runtime QA profiles and OS caches are disposable.
 production/qa/evidence/**/main-lan-userdata-*/
