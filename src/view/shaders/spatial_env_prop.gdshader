@@ -1,56 +1,44 @@
-// spatial_env_prop: island dressing props drawn as one MultiMesh per kind (technical art, 2026-10-13).
-// Meshes: assets/models/env/prop_*.glb (assets/source/blender/env/build_env_kit.py).
-// Vertex colour contract: RGB = sRGB albedo with AO baked in, A = tint mask (1 = multiplied by the
-// per-instance biome tint, 0 = fixed colour).
-// Per-instance data: INSTANCE_CUSTOM.rgb = linear tint, INSTANCE_CUSTOM.a = phase 0..1
-// (MultiMesh.use_custom_data must be on). No textures, no discard.
+// spatial_env_prop: rim dressing, hanging dressing and distant landmarks (procedural meshes built
+// by WtIslandBuilder, one MultiMesh per kind). Vertex colour contract: RGB = sRGB albedo,
+// A >= 0.75 tinted by the instance tint (INSTANCE_CUSTOM.rgb, linear; .a = 1 on MultiMesh)
+// or by `tint_color` on plain MeshInstances; 0.25..0.75 fixed colour; < 0.25 fixed + emissive.
+// Shared painted light(). Cost: 2 noise taps.
 shader_type spatial;
-render_mode cull_back, diffuse_burley, specular_schlick_ggx;
+render_mode cull_back;
+#include "res://src/view/shaders/env_painted.gdshaderinc"
 
-group_uniforms look;
-/** Emission of the tinted region (crystals, glowing mushrooms, neon). > 1 blooms with glow. */
-uniform float emission_strength : hint_range(0.0, 8.0) = 0.0;
-uniform float roughness_value : hint_range(0.0, 1.0) = 0.8;
-/** Soft sky rim on upward/silhouette edges. */
-uniform vec3 rim_color : source_color = vec3(1.0, 0.97, 0.9);
-uniform float rim : hint_range(0.0, 1.0) = 0.12;
-group_uniforms;
-
-group_uniforms motion;
-/** Wind/current sway in metres at 1 m height (kelp, trees). */
-uniform float sway : hint_range(0.0, 0.5) = 0.0;
-/** Spin in radians per second about the local Y axis (gears). Direction alternates per instance. */
-uniform float spin = 0.0;
-/** 0 under reduced motion. */
+uniform vec3 tint_color : source_color = vec3(1.0);
+/** Emission of tinted regions (crystals, stars). > 1 blooms. */
+uniform float glow : hint_range(0.0, 4.0) = 0.0;
+/** Emission of the emissive (A < 0.25) regions. */
+uniform float hot : hint_range(0.0, 6.0) = 2.2;
+uniform float paint : hint_range(0.0, 1.0) = 0.25;
+/** Wind sway in metres at 1 m height (trees, shrubs); 0 under reduced motion via `motion`. */
+uniform float sway : hint_range(0.0, 0.3) = 0.0;
 uniform float motion : hint_range(0.0, 1.0) = 1.0;
-group_uniforms;
 
 varying vec3 tint;
+varying vec3 lp;
 
 void vertex() {
-	tint = INSTANCE_CUSTOM.rgb;
-	float phase = INSTANCE_CUSTOM.a * 6.2831853;
-	if (spin != 0.0) {
-		float a = TIME * spin * motion * (INSTANCE_CUSTOM.a > 0.5 ? 1.0 : -1.0) + phase;
-		mat2 r = mat2(vec2(cos(a), sin(a)), vec2(-sin(a), cos(a)));
-		VERTEX.xz = r * VERTEX.xz;
-		NORMAL.xz = r * NORMAL.xz;
-	}
+	tint = INSTANCE_CUSTOM.a > 0.5 ? INSTANCE_CUSTOM.rgb : tint_color;
+	lp = VERTEX;
 	if (sway > 0.0) {
-		float h = max(VERTEX.y, 0.0);
-		float k = sway * h * h * motion;
-		VERTEX.x += sin(TIME * 1.3 + phase) * k;
-		VERTEX.z += cos(TIME * 1.05 + phase * 1.7) * k * 0.6;
+		float ph = wt_h21(vec2(float(INSTANCE_ID), 1.7)) * 6.2831;
+		float k = sway * max(VERTEX.y, 0.0) * max(VERTEX.y, 0.0) * motion;
+		VERTEX.x += sin(TIME * 1.3 + ph) * k;
+		VERTEX.z += cos(TIME * 1.05 + ph) * k * 0.6;
 	}
 }
 
 void fragment() {
 	vec3 base = pow(COLOR.rgb, vec3(2.2));
-	float mask = COLOR.a;
-	vec3 col = base * mix(vec3(1.0), tint, mask);
+	float tinted = step(0.75, COLOR.a);
+	float em = 1.0 - step(0.25, COLOR.a);
+	vec3 col = base * mix(vec3(1.0), tint, tinted);
+	col *= 1.0 - paint * 0.5 + paint * wt_fbm(lp.xz * 5.0 + lp.y * 3.0);
 	ALBEDO = col;
-	ROUGHNESS = roughness_value;
-	vec3 wn = (INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz;
-	float fres = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 3.0);
-	EMISSION = col * emission_strength * mask + rim_color * fres * rim * smoothstep(-0.2, 0.7, wn.y);
+	ROUGHNESS = 0.8;
+	EMISSION = col * em * hot + col * tinted * glow;
+	FOG = vec4(haze_color, haze);
 }
