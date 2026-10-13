@@ -207,3 +207,6 @@ mono_crash.*.json
 # Runtime QA profiles and OS caches are disposable.
 production/qa/evidence/**/main-lan-userdata-*/
 production/qa/evidence/**/userdata*/
+
+# Bot playtest scratch output
+production/qa/bot_tmp/
