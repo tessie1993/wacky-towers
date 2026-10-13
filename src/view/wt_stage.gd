@@ -62,8 +62,6 @@ var _status_cells: Dictionary = {}
 var _windmill: Node3D
 var _carousel: Node3D
 var _ferris: Node3D
-var _carousel: Node3D
-var _ferris: Node3D
 var _audio: WtAudio
 var _snap: ViewSnap = ViewSnap.new()
 var _yaw: float = 45.0
@@ -371,12 +369,6 @@ func _process(delta: float) -> void:
 		_update_camera()
 	if _windmill != null and not _reduced():
 		_windmill.rotation.z += delta * 0.35
-	if _carousel != null and not _reduced():
-		_carousel.rotation.y += delta * 0.4
-	if _ferris != null and not _reduced():
-		_ferris.rotation.z += delta * 0.2
-		for cab: Node in _ferris.get_children():
-			if cab is Node3D and cab.has_meta("gondola"):(cab as Node3D).rotation.z=-_ferris.rotation.z
 	if _carousel != null and not _reduced():
 		_carousel.rotation.y += delta * 0.4
 	if _ferris != null and not _reduced():
