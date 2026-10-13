@@ -92,6 +92,7 @@ func _play_level(entry: Dictionary, attempts: int) -> Dictionary:
 			if not res.is_won(): reason = _loss_reason(sim)
 		elif ticks >= tick_cap and reason == "":
 			reason = "tick cap reached before level clock cap"
+		if reason.begins_with("wall_budget"): outcome = "budget"
 		var gs: GoalState = sim.goal_state()
 		var att: Dictionary = {"seed": seed, "outcome": outcome, "level_ms": gs.level_ms, "locks": gs.locks, "stars": stars,
 			"layers_cleared": gs.layers_cleared, "warnings_used": gs.warnings_used, "cells_trimmed": gs.cells_trimmed,
@@ -103,6 +104,8 @@ func _play_level(entry: Dictionary, attempts: int) -> Dictionary:
 	if verb not in ASSESSED_VERBS: reasons.append("control verb '%s' is not used by WtBotPlayer (no choose_down/flick)" % verb)
 	if row.wins > 0: row.status = "WON"
 	elif not reasons.is_empty(): row.status = "NOT_ASSESSED"
+	elif row.attempts.all(func(a: Dictionary) -> bool: return a.outcome == "budget"):
+		row.status = "NOT_ASSESSED"; reasons.append("every attempt hit the wall-clock budget (sim too slow)")
 	elif row.attempts.any(func(a: Dictionary) -> bool: return a.outcome == "lost"): row.status = "LOST"
 	else: row.status = "TIMEOUT"
 	if not reasons.is_empty(): row.not_assessed_reason = "; ".join(reasons)

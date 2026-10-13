@@ -6,11 +6,28 @@ runtime_s = int(sys.argv[2]) if len(sys.argv) > 2 else -1
 ORDER = ["meadow","candy","ice","underwater","lava","forest","cave","clockwork","neon","celestial","carnival"]
 parts = [json.load(open(p)) for p in sorted(glob.glob("production/qa/bot_tmp/*.json"))]
 levels = [l for p in parts for l in p["levels"]]
+import re
+done = {l["id"] for l in levels}
+ATT = re.compile(r"(won|lost|timeout)@(\d+)s/L(\d+)(\((?:[^()]|\([^()]*\))*\))?")
+for log in sorted(glob.glob(sys.argv[3] + "/run_*.log")) if len(sys.argv) > 3 else []:
+    for line in open(log):
+        m = re.match(r"LEVEL (\S+) (\S+) wins=(\d+)/(\d+) wall=\d+ms (.*)", line)
+        if not m or m.group(1) in done: continue
+        lid = m.group(1); atts = [{"seed": None, "outcome": a, "level_ms": int(t)*1000, "locks": int(k), "stars": None, "reason": (r or "")[1:-1]} for a, t, k, r in ATT.findall(m.group(5))]
+        levels.append({"id": lid, "biome": lid.split("_")[0], "tier": 0, "attempts": atts, "wins": int(m.group(3)), "status": m.group(2),
+            "recovered_from_log": True, "not_assessed_reason": "recovered from killed-run log (no goal/stars detail)" if m.group(2)=="NOT_ASSESSED" else "", "t3_ms": -1})
+for l in levels:
+    for x in l.get("attempts", []):
+        if x["reason"].startswith("wall_budget"): x["outcome"] = "budget"
+    if l["status"] in ("LOST", "TIMEOUT") and all(x["outcome"] == "budget" for x in l["attempts"]):
+        l["status"] = "NOT_ASSESSED"; l["not_assessed_reason"] = "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal"
+    elif l["status"] == "TIMEOUT" and any(x["outcome"] == "budget" for x in l["attempts"]):
+        l["status"] = "TIMEOUT"; l["not_assessed_reason"] = "some attempts cut by wall-clock budget"
 levels.sort(key=lambda l: (ORDER.index(l["biome"]) if l["biome"] in ORDER else 99, l["tier"], l["id"]))
 missing = [b for b in ORDER if not any(l["biome"] == b for l in levels)]
 def flags(l):
     out = []; a = l.get("attempts", []); t3 = l.get("t3_ms", -1)
-    if l["status"] in ("LOST", "TIMEOUT"):
+    if l["status"] in ("LOST", "TIMEOUT") and not any(x["outcome"] == "budget" for x in a):
         out.append(("NEVER_FINISHED", 3, "bot-capable level, 0/%d wins (%s)" % (len(a), ", ".join(sorted({x["outcome"] for x in a})))))
     if any(x["reason"].startswith("stall") for x in a):
         out.append(("STALL", 4, "level clock froze: " + next(x["reason"] for x in a if x["reason"].startswith("stall"))))
@@ -32,7 +49,7 @@ count = lambda st: sum(1 for l in levels if l["status"] == st)
 totals = {s: count(s) for s in ["WON","LOST","TIMEOUT","NOT_ASSESSED","LOAD_FAIL"]}
 att = [x for l in levels for x in l.get("attempts", [])]
 report = {"schema": 1, "date": date, "runtime_s_wall_parallel": runtime_s, "level_count": len(levels), "missing_biomes": missing,
-  "totals_by_level": totals, "attempt_totals": {o: sum(1 for x in att if x["outcome"] == o) for o in ["won","lost","timeout"]},
+  "totals_by_level": totals, "attempt_totals": {o: sum(1 for x in att if x["outcome"] == o) for o in ["won","lost","timeout","budget"]},
   "caveat": parts[0]["caveat"] + " The tournament bot cannot reliably clear layers on 8x8 boards, so results are completability-only, not difficulty.",
   "method": {k: parts[0][k] for k in ["engine","seeds","hard_cap_ms","assessed_goals","assessed_verbs"]}, "levels": levels}
 json.dump(report, open(f"production/qa/bot-playtest-{date}.json", "w"), indent=1)
@@ -55,8 +72,8 @@ w("\n## Flag list (review queue, highest weight first)\n\n| Level | Status | Fla
 for l in fl: w(f"| {l['id']} | {l['status']} | " + "; ".join(f"**{f['flag']}** {f['detail']}" for f in l["flags"]) + " |")
 w("\n## Per level\n\n| Level | Goal | Verb | t3 s | Status | Attempts (outcome@s/locks/stars, reason) | Note |\n|---|---|---|---|---|---|---|")
 for l in levels:
-    at = "; ".join(f"{x['outcome']}@{x['level_ms']//1000}s/L{x['locks']}/{x['stars']}★" + (f" ({x['reason']})" if x['reason'] else "") for x in l.get("attempts", []))
-    w(f"| {l['id']} | {l.get('goal',{}).get('type','?')} | {l.get('verb','?')} | {l.get('t3_ms',-1)//1000 if l.get('t3_ms',-1)>0 else '-'} | {l['status']} | {at} | {l.get('not_assessed_reason','')}{' fixed level seed' if l.get('fixed_level_seed') is not None else ''} |")
+    at = "; ".join(f"{x['outcome']}@{x['level_ms']//1000}s/L{x['locks']}/{x['stars'] if x['stars'] is not None else '?'}★" + (f" ({x['reason']})" if x['reason'] else "") for x in l.get("attempts", []))
+    w(f"| {l['id']}{' (log)' if l.get('recovered_from_log') else ''} | {l.get('goal',{}).get('type','?')} | {l.get('verb','?')} | {l.get('t3_ms',-1)//1000 if l.get('t3_ms',-1)>0 else '-'} | {l['status']} | {at} | {l.get('not_assessed_reason','')}{' fixed level seed' if l.get('fixed_level_seed') is not None else ''} |")
 open(f"production/qa/bot-playtest-{date}.md", "w").write("\n".join(L) + "\n")
 print("totals", totals, "attempts", report["attempt_totals"], "missing", missing)
 for l in fl[:15]: print(l["id"], l["status"], " | ".join(f["flag"] + ": " + f["detail"] for f in l["flags"]))

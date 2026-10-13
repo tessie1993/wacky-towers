@@ -1,0 +1,8633 @@
+{
+ "schema": 1,
+ "date": "2026-10-13",
+ "runtime_s_wall_parallel": 900,
+ "level_count": 142,
+ "missing_biomes": [],
+ "totals_by_level": {
+  "WON": 13,
+  "LOST": 27,
+  "TIMEOUT": 2,
+  "NOT_ASSESSED": 100,
+  "LOAD_FAIL": 0
+ },
+ "attempt_totals": {
+  "won": 23,
+  "lost": 111,
+  "timeout": 5,
+  "budget": 287
+ },
+ "caveat": "WtBotPlayer is a deterministic practice opponent, weaker than a human. 'Never finished' means review, not proof of impossibility. The tournament bot cannot reliably clear layers on 8x8 boards, so results are completability-only, not difficulty.",
+ "method": {
+  "engine": "4.7.2-stable (official)",
+  "seeds": [
+   1729,
+   4242,
+   90001
+  ],
+  "hard_cap_ms": 600000,
+  "assessed_goals": [
+   "clear_n",
+   "height",
+   "survive"
+  ],
+  "assessed_verbs": [
+   "piece"
+  ]
+ },
+ "levels": [
+  {
+   "id": "meadow_01",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 220000,
+     "locks": 144,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 231000,
+     "locks": 151,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 233000,
+     "locks": 152,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    }
+   ],
+   "wins": 0,
+   "status": "LOST",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "id": "meadow_02",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 204000,
+     "locks": 128,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 159000,
+     "locks": 103,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 182000,
+     "locks": 114,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    }
+   ],
+   "wins": 0,
+   "status": "LOST",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "id": "meadow_03",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 218000,
+     "locks": 138,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 255000,
+     "locks": 157,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (15600 ticks in 20581 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 157000,
+     "locks": 99,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9600 ticks in 20610 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "LOST",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (15600 ticks in 20581 ms)"
+    }
+   ]
+  },
+  {
+   "id": "meadow_04",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 94000,
+     "locks": 21,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 83000,
+     "locks": 23,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 120000,
+     "locks": 30,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    }
+   ],
+   "wins": 0,
+   "status": "LOST",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "id": "meadow_05",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 147000,
+     "locks": 93,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9000 ticks in 22660 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 157000,
+     "locks": 101,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9600 ticks in 20100 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 187000,
+     "locks": 119,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (11400 ticks in 20879 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9000 ticks in 22660 ms)"
+    }
+   ]
+  },
+  {
+   "id": "meadow_06",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "won",
+     "level_ms": 52000,
+     "locks": 34,
+     "stars": null,
+     "reason": ""
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 97000,
+     "locks": 61,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6000 ticks in 20525 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 74,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 21212 ms)"
+    }
+   ],
+   "wins": 1,
+   "status": "WON",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6000 ticks in 20525 ms)"
+    }
+   ]
+  },
+  {
+   "id": "meadow_07",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 132065 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 44797 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 48223 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (600 ticks in 132065 ms)"
+    }
+   ]
+  },
+  {
+   "id": "meadow_08",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 67,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 21243 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 74,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 20574 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 87000,
+     "locks": 53,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (5400 ticks in 20047 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6600 ticks in 21243 ms)"
+    }
+   ]
+  },
+  {
+   "id": "meadow_09",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 67000,
+     "locks": 42,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4200 ticks in 22065 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 57000,
+     "locks": 35,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (3600 ticks in 20209 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 67000,
+     "locks": 41,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4200 ticks in 22615 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4200 ticks in 22065 ms)"
+    }
+   ]
+  },
+  {
+   "id": "meadow_10",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 77000,
+     "locks": 47,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4800 ticks in 21475 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 67000,
+     "locks": 41,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4200 ticks in 20119 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 87000,
+     "locks": 53,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (5400 ticks in 20686 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4800 ticks in 21475 ms)"
+    }
+   ]
+  },
+  {
+   "id": "meadow_bonus",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 9000,
+     "locks": 6,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 9000,
+     "locks": 6,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 9000,
+     "locks": 6,
+     "stars": null,
+     "reason": "out_of_pieces"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "recovered from killed-run log (no goal/stars detail)",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: out_of_pieces at locks [6] / [9]s"
+    }
+   ]
+  },
+  {
+   "id": "meadow_h1",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 55000,
+     "locks": 34,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (3600 ticks in 20401 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 55000,
+     "locks": 35,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (3600 ticks in 20022 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 62000,
+     "locks": 39,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    }
+   ],
+   "wins": 0,
+   "status": "LOST",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (3600 ticks in 20401 ms)"
+    }
+   ]
+  },
+  {
+   "id": "meadow_h2",
+   "biome": "meadow",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 147000,
+     "locks": 93,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9000 ticks in 21044 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 137000,
+     "locks": 87,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (8400 ticks in 20113 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 127000,
+     "locks": 80,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7800 ticks in 20303 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9000 ticks in 21044 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 222083,
+     "locks": 144,
+     "metrics": {
+      "tidiness_milli": 940
+     },
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 13659,
+     "warnings_used": 2
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 232733,
+     "locks": 151,
+     "metrics": {
+      "tidiness_milli": 905
+     },
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 14298,
+     "warnings_used": 2
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 234883,
+     "locks": 152,
+     "metrics": {
+      "tidiness_milli": 910
+     },
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 14427,
+     "warnings_used": 2
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": true,
+   "cap_ms": 420000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 2.0,
+    "type": "clear_n"
+   },
+   "id": "candy_01",
+   "stars_def": {
+    "t2": 290000,
+    "t3": 210000
+   },
+   "status": "LOST",
+   "t3_ms": 210000,
+   "tier": 1,
+   "verb": "piece",
+   "wall_ms": 30889,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 187500,
+     "locks": 119,
+     "metrics": {
+      "tidiness_milli": 927
+     },
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 11513,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 223100,
+     "locks": 140,
+     "metrics": {
+      "tidiness_milli": 977
+     },
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 13649,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 147000,
+     "locks": 93,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9000 ticks in 20012 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 9000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": true,
+   "cap_ms": 310000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 2.0,
+    "type": "clear_n"
+   },
+   "id": "candy_02",
+   "stars_def": {
+    "t2": 215000,
+    "t3": 155000
+   },
+   "status": "LOST",
+   "t3_ms": 155000,
+   "tier": 2,
+   "verb": "piece",
+   "wall_ms": 45912,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9000 ticks in 20012 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 87000,
+     "locks": 54,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (5400 ticks in 22711 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 5400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 77000,
+     "locks": 47,
+     "metrics": {
+      "tidiness_milli": 958
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (4800 ticks in 20316 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 4800,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 97000,
+     "locks": 60,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6000 ticks in 22404 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 6000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "candy_03",
+   "stars_def": {
+    "t2": 500000,
+    "t3": 350000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 350000,
+   "tier": 3,
+   "verb": "piece",
+   "wall_ms": 65520,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (5400 ticks in 22711 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 86,
+     "metrics": {
+      "jelly_bonus": 0,
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 21993 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 155816,
+     "locks": 101,
+     "metrics": {
+      "jelly_bonus": 0,
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9600 ticks in 20564 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 9600,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 107000,
+     "locks": 67,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6600 ticks in 20134 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 6600,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": true,
+   "cap_ms": 590000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "candy_04",
+   "stars_def": {
+    "t2": 425000,
+    "t3": 295000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 295000,
+   "tier": 4,
+   "verb": "piece",
+   "wall_ms": 62845,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (8400 ticks in 21993 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 25,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 207000,
+     "locks": 56,
+     "metrics": {
+      "frosted_tiers": 2,
+      "tidiness_milli": 592
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (12600 ticks in 20374 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 12600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 6,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 187000,
+     "locks": 43,
+     "metrics": {
+      "frosted_tiers": 3,
+      "tidiness_milli": 820
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (11400 ticks in 20247 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 11400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 11,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 157000,
+     "locks": 30,
+     "metrics": {
+      "frosted_tiers": 2,
+      "tidiness_milli": 632
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9600 ticks in 20452 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 9600,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "h_target": 8.0,
+    "height_coverage": 0.6,
+    "type": "height"
+   },
+   "id": "candy_05",
+   "stars_def": {
+    "metric": "frosted_tiers",
+    "s2": 3,
+    "s3": 4
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": -1,
+   "tier": 5,
+   "verb": "piece",
+   "wall_ms": 61126,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (12600 ticks in 20374 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 24866,
+     "locks": 16,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "won",
+     "reason": "",
+     "seed": 1729,
+     "stars": 3,
+     "ticks": 1684,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 27150,
+     "locks": 18,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "won",
+     "reason": "",
+     "seed": 4242,
+     "stars": 3,
+     "ticks": 1821,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 24966,
+     "locks": 16,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "won",
+     "reason": "",
+     "seed": 90001,
+     "stars": 3,
+     "ticks": 1690,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": false,
+   "cap_ms": 230000,
+   "fixed_level_seed": null,
+   "goal": {
+    "target_shape": {
+     "colours": true,
+     "layers": {
+      "0": [
+       ".V.PP.V.",
+       ".VP..PV.",
+       ".VP..PV.",
+       "VVVVVVVV",
+       "V.VVVV.V",
+       "VPVPPVPV",
+       ".VVVVVV.",
+       "..VPPV.."
+      ]
+     }
+    },
+    "type": "shape",
+    "win_correct": 38.0
+   },
+   "id": "candy_06",
+   "not_assessed_reason": "goal type 'shape' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 160000,
+    "t3": 115000
+   },
+   "status": "WON",
+   "t3_ms": 115000,
+   "tier": 6,
+   "verb": "piece",
+   "wall_ms": 16896,
+   "wins": 3,
+   "flags": []
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 5,
+     "level_ms": 70150,
+     "locks": 11,
+     "metrics": {
+      "tidiness_milli": 1000,
+      "worms_escaped": 1
+     },
+     "outcome": "won",
+     "reason": "",
+     "seed": 1729,
+     "stars": 2,
+     "ticks": 4428,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 5,
+     "level_ms": 132016,
+     "locks": 19,
+     "metrics": {
+      "tidiness_milli": 1000,
+      "worms_escaped": 1
+     },
+     "outcome": "won",
+     "reason": "",
+     "seed": 4242,
+     "stars": 2,
+     "ticks": 8140,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 5,
+     "level_ms": 83200,
+     "locks": 14,
+     "metrics": {
+      "tidiness_milli": 1000,
+      "worms_escaped": 1
+     },
+     "outcome": "won",
+     "reason": "",
+     "seed": 90001,
+     "stars": 2,
+     "ticks": 5211,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 5.0,
+    "type": "clear_n"
+   },
+   "id": "candy_07",
+   "stars_def": {
+    "t2": 490000,
+    "t3": 350000,
+    "three_star_zero_metrics": [
+     "worms_escaped"
+    ]
+   },
+   "status": "WON",
+   "t3_ms": 350000,
+   "tier": 7,
+   "verb": "piece",
+   "wall_ms": 53474,
+   "wins": 3,
+   "flags": []
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 3,
+     "level_ms": 17000,
+     "locks": 9,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (1200 ticks in 20670 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 1200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 2,
+     "level_ms": 17000,
+     "locks": 9,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (1200 ticks in 20422 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 1200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 8,
+     "level_ms": 37000,
+     "locks": 20,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (2400 ticks in 23076 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 2400,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "T": 150.0,
+    "ramp_per_min": 0.15,
+    "t_ms": 150000.0,
+    "type": "survive"
+   },
+   "id": "candy_08",
+   "stars_def": {
+    "s2": 1,
+    "s3": 2
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": -1,
+   "tier": 8,
+   "verb": "piece",
+   "wall_ms": 64231,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (1200 ticks in 20670 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 5,
+     "level_ms": 26550,
+     "locks": 15,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "won",
+     "reason": "",
+     "seed": 1729,
+     "stars": 3,
+     "ticks": 1812,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 5,
+     "level_ms": 27116,
+     "locks": 16,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "won",
+     "reason": "",
+     "seed": 4242,
+     "stars": 3,
+     "ticks": 1846,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 5,
+     "level_ms": 27866,
+     "locks": 16,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "won",
+     "reason": "",
+     "seed": 90001,
+     "stars": 3,
+     "ticks": 1891,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 5.0,
+    "type": "clear_n"
+   },
+   "id": "candy_09",
+   "stars_def": {
+    "t2": 565000,
+    "t3": 400000
+   },
+   "status": "WON",
+   "t3_ms": 400000,
+   "tier": 9,
+   "verb": "piece",
+   "wall_ms": 8134,
+   "wins": 3,
+   "flags": [
+    {
+     "flag": "TOO_EASY",
+     "weight": 2,
+     "detail": "won in 26.6s = 6% of 3-star time 400s"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 311,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 277816,
+     "locks": 141,
+     "metrics": {
+      "baked": 1,
+      "tidiness_milli": 595
+     },
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 16921,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 61,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 257000,
+     "locks": 112,
+     "metrics": {
+      "tidiness_milli": 677
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (15600 ticks in 20404 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 15600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 14,
+     "level_ms": 287000,
+     "locks": 88,
+     "metrics": {
+      "baked": 1,
+      "tidiness_milli": 825
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (17400 ticks in 22918 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 17400,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": false,
+   "cap_ms": 480000,
+   "fixed_level_seed": null,
+   "goal": {
+    "h_target": 4.0,
+    "height_coverage": 0.6,
+    "type": "bake_oven"
+   },
+   "id": "candy_10",
+   "not_assessed_reason": "goal type 'bake_oven' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 340000,
+    "t3": 240000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 240000,
+   "tier": 10,
+   "verb": "piece",
+   "wall_ms": 58731,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (15600 ticks in 20404 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 8,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 8850,
+     "locks": 6,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 711,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 8,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 8850,
+     "locks": 6,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 711,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 8,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 8850,
+     "locks": 6,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 711,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": false,
+   "cap_ms": 60000,
+   "fixed_level_seed": null,
+   "goal": {
+    "target_shape": {
+     "colours": true,
+     "layers": {
+      "0": [
+       "........",
+       "........",
+       "..PPMM..",
+       "..PPMM..",
+       "..VVMM..",
+       "..VVMM..",
+       "........",
+       "........"
+      ],
+      "1": [
+       "........",
+       "........",
+       "..PPPP..",
+       "..PPPP..",
+       "..VVMM..",
+       "..VVMM..",
+       "........",
+       "........"
+      ]
+     }
+    },
+    "time_limit_ms": 60000.0,
+    "type": "shape"
+   },
+   "id": "candy_bonus",
+   "not_assessed_reason": "goal type 'shape' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 45000,
+    "t3": 30000,
+    "three_star_zero_metrics": [
+     "paw_eaten"
+    ]
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 30000,
+   "tier": 11,
+   "verb": "piece",
+   "wall_ms": 1431,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: top_out_or_goal_fail at locks [6] / [8]s"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 5,
+     "level_ms": 77000,
+     "locks": 64,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (4800 ticks in 21078 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 4800,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 6,
+     "level_ms": 75100,
+     "locks": 63,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "won",
+     "reason": "",
+     "seed": 4242,
+     "stars": 3,
+     "ticks": 4725,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 6,
+     "level_ms": 80433,
+     "locks": 68,
+     "metrics": {
+      "tidiness_milli": 1000
+     },
+     "outcome": "won",
+     "reason": "",
+     "seed": 90001,
+     "stars": 3,
+     "ticks": 5045,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 6.0,
+    "type": "clear_n"
+   },
+   "id": "candy_h1",
+   "stars_def": {
+    "t2": 505000,
+    "t3": 350000
+   },
+   "status": "WON",
+   "t3_ms": 350000,
+   "tier": 12,
+   "verb": "piece",
+   "wall_ms": 51731,
+   "wins": 2,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4800 ticks in 21078 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 47000,
+     "locks": 29,
+     "metrics": {
+      "rescued": 0,
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (3000 ticks in 24480 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 3000,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 57000,
+     "locks": 35,
+     "metrics": {
+      "rescued": 0,
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (3600 ticks in 21288 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 3600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 47000,
+     "locks": 28,
+     "metrics": {
+      "rescued": 0,
+      "tidiness_milli": 1000
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (3000 ticks in 20486 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 3000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": false,
+   "cap_ms": 490000,
+   "fixed_level_seed": null,
+   "goal": {
+    "content": "frosting",
+    "type": "rescue_all"
+   },
+   "id": "candy_h2",
+   "not_assessed_reason": "goal type 'rescue_all' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 350000,
+    "t3": 245000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 245000,
+   "tier": 13,
+   "verb": "piece",
+   "wall_ms": 66306,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (3000 ticks in 24480 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 21,
+     "level_ms": 147000,
+     "locks": 49,
+     "metrics": {
+      "bonks": 1
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9000 ticks in 21519 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 9000,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 3,
+     "level_ms": 52966,
+     "locks": 18,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 3430,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 8,
+     "level_ms": 137000,
+     "locks": 34,
+     "metrics": {
+      "bonks": 1
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 22103 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "candy",
+   "bot_capable": false,
+   "cap_ms": 400000,
+   "fixed_level_seed": null,
+   "goal": {
+    "bonks_needed": 4.0,
+    "type": "bonk_boss"
+   },
+   "id": "candy_h3",
+   "not_assessed_reason": "goal type 'bonk_boss' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 280000,
+    "t3": 200000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 200000,
+   "tier": 14,
+   "verb": "piece",
+   "wall_ms": 52032,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9000 ticks in 21519 ms)"
+    }
+   ]
+  },
+  {
+   "id": "ice_01",
+   "biome": "ice",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 157000,
+     "locks": 97,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9600 ticks in 20168 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 157000,
+     "locks": 97,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9600 ticks in 20382 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 127000,
+     "locks": 78,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7800 ticks in 20767 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9600 ticks in 20168 ms)"
+    }
+   ]
+  },
+  {
+   "id": "ice_02",
+   "biome": "ice",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 67000,
+     "locks": 42,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4200 ticks in 21815 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 47000,
+     "locks": 29,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (3000 ticks in 21173 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 47000,
+     "locks": 28,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (3000 ticks in 20389 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4200 ticks in 21815 ms)"
+    }
+   ]
+  },
+  {
+   "id": "ice_03",
+   "biome": "ice",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 157000,
+     "locks": 96,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9600 ticks in 20606 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 175000,
+     "locks": 112,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (10800 ticks in 21279 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 245000,
+     "locks": 157,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "recovered from killed-run log (no goal/stars detail)",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9600 ticks in 20606 ms)"
+    }
+   ]
+  },
+  {
+   "id": "ice_04",
+   "biome": "ice",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 77000,
+     "locks": 48,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4800 ticks in 21096 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 77000,
+     "locks": 48,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4800 ticks in 20269 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 77000,
+     "locks": 47,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4800 ticks in 23348 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4800 ticks in 21096 ms)"
+    }
+   ]
+  },
+  {
+   "id": "ice_05",
+   "biome": "ice",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 73,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 21161 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 69,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 20625 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 97000,
+     "locks": 61,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6000 ticks in 20597 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (7200 ticks in 21161 ms)"
+    }
+   ]
+  },
+  {
+   "id": "ice_06",
+   "biome": "ice",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 77000,
+     "locks": 48,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4800 ticks in 23138 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 57000,
+     "locks": 37,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (3600 ticks in 21578 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 57000,
+     "locks": 36,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (3600 ticks in 20355 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "recovered from killed-run log (no goal/stars detail)",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4800 ticks in 23138 ms)"
+    }
+   ]
+  },
+  {
+   "id": "ice_07",
+   "biome": "ice",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 46636 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 58110 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 104371 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (600 ticks in 46636 ms)"
+    }
+   ]
+  },
+  {
+   "id": "ice_08",
+   "biome": "ice",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "won",
+     "level_ms": 140000,
+     "locks": 90,
+     "stars": null,
+     "reason": ""
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 69,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 21137 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "won",
+     "level_ms": 140000,
+     "locks": 89,
+     "stars": null,
+     "reason": ""
+    }
+   ],
+   "wins": 2,
+   "status": "WON",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6600 ticks in 21137 ms)"
+    }
+   ]
+  },
+  {
+   "id": "ice_09",
+   "biome": "ice",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 145000,
+     "locks": 91,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9000 ticks in 20155 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 135000,
+     "locks": 87,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (8400 ticks in 20285 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 135000,
+     "locks": 86,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (8400 ticks in 21121 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9000 ticks in 20155 ms)"
+    }
+   ]
+  },
+  {
+   "id": "ice_10",
+   "biome": "ice",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 51000,
+     "locks": 7,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 45000,
+     "locks": 6,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 20000,
+     "locks": 2,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    }
+   ],
+   "wins": 0,
+   "status": "LOST",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    },
+    {
+     "flag": "INSTANT_LOSS",
+     "weight": 4,
+     "detail": "lost with <=2 locks"
+    }
+   ]
+  },
+  {
+   "id": "ice_bonus",
+   "biome": "ice",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 9000,
+     "locks": 6,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 10000,
+     "locks": 6,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 10000,
+     "locks": 6,
+     "stars": null,
+     "reason": "out_of_pieces"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "recovered from killed-run log (no goal/stars detail)",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: out_of_pieces at locks [6] / [9, 10]s"
+    }
+   ]
+  },
+  {
+   "id": "ice_h1",
+   "biome": "ice",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 67000,
+     "locks": 43,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4200 ticks in 21106 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 105000,
+     "locks": 47,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 20524 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 50,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 20305 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4200 ticks in 21106 ms)"
+    }
+   ]
+  },
+  {
+   "id": "underwater_01",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 165000,
+     "locks": 103,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (10200 ticks in 20193 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 185000,
+     "locks": 115,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (11400 ticks in 20847 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 127000,
+     "locks": 78,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7800 ticks in 21674 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (10200 ticks in 20193 ms)"
+    }
+   ]
+  },
+  {
+   "id": "underwater_02",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 67000,
+     "locks": 42,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4200 ticks in 22073 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 37000,
+     "locks": 24,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (2400 ticks in 22418 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 47000,
+     "locks": 28,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (3000 ticks in 20147 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4200 ticks in 22073 ms)"
+    }
+   ]
+  },
+  {
+   "id": "underwater_03",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 67000,
+     "locks": 41,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4200 ticks in 21453 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 67,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 21698 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 77000,
+     "locks": 47,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4800 ticks in 20710 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4200 ticks in 21453 ms)"
+    }
+   ]
+  },
+  {
+   "id": "underwater_04",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 73,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 20243 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 137000,
+     "locks": 86,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (8400 ticks in 21281 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 137000,
+     "locks": 86,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (8400 ticks in 21202 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (7200 ticks in 20243 ms)"
+    }
+   ]
+  },
+  {
+   "id": "underwater_05",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 127000,
+     "locks": 80,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7800 ticks in 21701 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 69,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 20345 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 97000,
+     "locks": 61,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6000 ticks in 20283 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (7800 ticks in 21701 ms)"
+    }
+   ]
+  },
+  {
+   "id": "underwater_06",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 13000,
+     "locks": 9,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 14000,
+     "locks": 9,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 14000,
+     "locks": 9,
+     "stars": null,
+     "reason": "out_of_pieces"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "recovered from killed-run log (no goal/stars detail)",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: out_of_pieces at locks [9] / [13, 14]s"
+    }
+   ]
+  },
+  {
+   "id": "underwater_07",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 0,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 92820 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 0,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 39764 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 0,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 102870 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (600 ticks in 92820 ms)"
+    }
+   ]
+  },
+  {
+   "id": "underwater_08",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 95000,
+     "locks": 61,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6000 ticks in 20744 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 95000,
+     "locks": 61,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 93000,
+     "locks": 60,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    }
+   ],
+   "wins": 0,
+   "status": "LOST",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6000 ticks in 20744 ms)"
+    }
+   ]
+  },
+  {
+   "id": "underwater_09",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 97000,
+     "locks": 61,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6000 ticks in 20916 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 147000,
+     "locks": 93,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9000 ticks in 21822 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 68,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 21475 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6000 ticks in 20916 ms)"
+    }
+   ]
+  },
+  {
+   "id": "underwater_10",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 67000,
+     "locks": 41,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4200 ticks in 21064 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 87000,
+     "locks": 54,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (5400 ticks in 21094 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 127000,
+     "locks": 78,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7800 ticks in 20472 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4200 ticks in 21064 ms)"
+    }
+   ]
+  },
+  {
+   "id": "underwater_bonus",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 10000,
+     "locks": 7,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 10000,
+     "locks": 7,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 10000,
+     "locks": 7,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "recovered from killed-run log (no goal/stars detail)",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: top_out_or_goal_fail at locks [7] / [10]s"
+    }
+   ]
+  },
+  {
+   "id": "underwater_h1",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 147000,
+     "locks": 91,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9000 ticks in 20661 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 185000,
+     "locks": 119,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (11400 ticks in 21156 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 147000,
+     "locks": 91,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9000 ticks in 20324 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9000 ticks in 20661 ms)"
+    }
+   ]
+  },
+  {
+   "id": "underwater_h2",
+   "biome": "underwater",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 87000,
+     "locks": 54,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (5400 ticks in 20438 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 97000,
+     "locks": 61,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6000 ticks in 20827 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 72,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 20514 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (5400 ticks in 20438 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 181583,
+     "locks": 119,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 11158,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 186866,
+     "locks": 119,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 11475,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 172383,
+     "locks": 114,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 10606,
+     "warnings_used": 1
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": true,
+   "cap_ms": 410000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 2.0,
+    "type": "clear_n"
+   },
+   "id": "lava_01",
+   "stars_def": {
+    "t2": 290000,
+    "t3": 205000
+   },
+   "status": "LOST",
+   "t3_ms": 205000,
+   "tier": 1,
+   "verb": "piece",
+   "wall_ms": 21074,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 360000,
+     "locks": 230,
+     "metrics": {},
+     "outcome": "timeout",
+     "reason": "",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 21780,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 360000,
+     "locks": 224,
+     "metrics": {},
+     "outcome": "timeout",
+     "reason": "",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 21780,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 347000,
+     "locks": 225,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (21000 ticks in 20521 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 21000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": true,
+   "cap_ms": 360000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 2.0,
+    "type": "clear_n"
+   },
+   "id": "lava_02",
+   "stars_def": {
+    "t2": 255000,
+    "t3": 180000
+   },
+   "status": "TIMEOUT",
+   "t3_ms": 180000,
+   "tier": 2,
+   "verb": "piece",
+   "wall_ms": 46172,
+   "wins": 0,
+   "not_assessed_reason": "some attempts cut by wall-clock budget",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (21000 ticks in 20521 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 187000,
+     "locks": 119,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (11400 ticks in 20258 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 11400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 117000,
+     "locks": 74,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7200 ticks in 21642 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 7200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 127000,
+     "locks": 81,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7800 ticks in 20809 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 7800,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": true,
+   "cap_ms": 410000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 2.0,
+    "type": "clear_n"
+   },
+   "id": "lava_03",
+   "stars_def": {
+    "t2": 285000,
+    "t3": 205000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 205000,
+   "tier": 3,
+   "verb": "piece",
+   "wall_ms": 62774,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (11400 ticks in 20258 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 107000,
+     "locks": 68,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6600 ticks in 21225 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 6600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 175816,
+     "locks": 113,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (10800 ticks in 21701 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 10800,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 127000,
+     "locks": 79,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7800 ticks in 21599 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 7800,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "lava_04",
+   "stars_def": {
+    "t2": 580000,
+    "t3": 410000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 410000,
+   "tier": 4,
+   "verb": "piece",
+   "wall_ms": 64636,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6600 ticks in 21225 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 117000,
+     "locks": 74,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7200 ticks in 21008 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 7200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 88,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 20112 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 147000,
+     "locks": 95,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9000 ticks in 20945 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 9000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": true,
+   "cap_ms": 340000,
+   "fixed_level_seed": null,
+   "goal": {
+    "coverage": 0.6,
+    "h_target": 10.0,
+    "type": "height"
+   },
+   "id": "lava_05",
+   "stars_def": {
+    "t2": 240000,
+    "t3": 170000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 170000,
+   "tier": 5,
+   "verb": "piece",
+   "wall_ms": 62232,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (7200 ticks in 21008 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 32,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 167000,
+     "locks": 109,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (10200 ticks in 20919 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 10200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 117000,
+     "locks": 74,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7200 ticks in 21030 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 7200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 147000,
+     "locks": 92,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9000 ticks in 20016 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 9000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": false,
+   "cap_ms": 230000,
+   "fixed_level_seed": null,
+   "goal": {
+    "target_shape": {
+     "layers": {
+      "0": [
+       "........",
+       "........",
+       "++++++++",
+       "..++++++",
+       "........",
+       "++++++++",
+       "..++++++",
+       "........"
+      ],
+      "1": [
+       "........",
+       "........",
+       "..++++++",
+       "..++++++",
+       "........",
+       "..++++++",
+       "..++++++",
+       "........"
+      ]
+     }
+    },
+    "type": "shape"
+   },
+   "id": "lava_06",
+   "not_assessed_reason": "goal type 'shape' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 160000,
+    "t3": 115000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 115000,
+   "tier": 6,
+   "verb": "piece",
+   "wall_ms": 62070,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (10200 ticks in 20919 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 7000,
+     "locks": 4,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (600 ticks in 91397 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 7000,
+     "locks": 4,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (600 ticks in 38858 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 7000,
+     "locks": 4,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (600 ticks in 88749 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 600,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "lava_07",
+   "stars_def": {
+    "t2": 435000,
+    "t3": 310000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 310000,
+   "tier": 7,
+   "verb": "piece",
+   "wall_ms": 219080,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (600 ticks in 91397 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 107000,
+     "locks": 68,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6600 ticks in 21280 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 6600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 107000,
+     "locks": 67,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6600 ticks in 21350 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 6600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 86,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 20038 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "T": 150.0,
+    "t_ms": 150000.0,
+    "type": "survive"
+   },
+   "id": "lava_08",
+   "stars_def": {
+    "s2": 1,
+    "s3": 2
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": -1,
+   "tier": 8,
+   "verb": "piece",
+   "wall_ms": 62713,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6600 ticks in 21280 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 97000,
+     "locks": 58,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6000 ticks in 21861 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 6000,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 87000,
+     "locks": 52,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (5400 ticks in 21246 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 5400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 97000,
+     "locks": 59,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6000 ticks in 21028 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 6000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "lava_09",
+   "stars_def": {
+    "t2": 435000,
+    "t3": 305000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 305000,
+   "tier": 9,
+   "verb": "piece",
+   "wall_ms": 64274,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6000 ticks in 21861 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 87000,
+     "locks": 53,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (5400 ticks in 23236 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 5400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 77000,
+     "locks": 47,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (4800 ticks in 21766 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 4800,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 97000,
+     "locks": 60,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6000 ticks in 20508 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 6000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "lava_10",
+   "stars_def": {
+    "t2": 440000,
+    "t3": 305000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 305000,
+   "tier": 10,
+   "verb": "piece",
+   "wall_ms": 65911,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (5400 ticks in 23236 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 10216,
+     "locks": 7,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 793,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 10216,
+     "locks": 7,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 793,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 10216,
+     "locks": 7,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 793,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": false,
+   "cap_ms": 120000,
+   "fixed_level_seed": null,
+   "goal": {
+    "target_shape": {
+     "layers": {
+      "0": [
+       "........",
+       "........",
+       "........",
+       "..++++..",
+       "..++++..",
+       "........",
+       "........",
+       "........"
+      ],
+      "1": [
+       "........",
+       "........",
+       "........",
+       "...++...",
+       "...++...",
+       "........",
+       "........",
+       "........"
+      ],
+      "2": [
+       "........",
+       "........",
+       "........",
+       "++++++++",
+       "++++++++",
+       "........",
+       "........",
+       "........"
+      ]
+     }
+    },
+    "type": "shape"
+   },
+   "id": "lava_bonus",
+   "not_assessed_reason": "goal type 'shape' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 100000,
+    "t3": 60000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 60000,
+   "tier": 11,
+   "verb": "piece",
+   "wall_ms": 3710,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: top_out_or_goal_fail at locks [7] / [10]s"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 117000,
+     "locks": 73,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7200 ticks in 20177 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 7200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 117000,
+     "locks": 74,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7200 ticks in 20178 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 7200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 157000,
+     "locks": 100,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9600 ticks in 21208 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 9600,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "lava_h1",
+   "stars_def": {
+    "t2": 430000,
+    "t3": 305000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 305000,
+   "tier": 12,
+   "verb": "piece",
+   "wall_ms": 61602,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (7200 ticks in 20177 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 155816,
+     "locks": 101,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9600 ticks in 20150 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 9600,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 97000,
+     "locks": 61,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6000 ticks in 21032 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 6000,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 165816,
+     "locks": 104,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (10200 ticks in 20879 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 10200,
+     "warnings_used": 1
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "lava_h2",
+   "stars_def": {
+    "t2": 525000,
+    "t3": 365000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 365000,
+   "tier": 13,
+   "verb": "piece",
+   "wall_ms": 62247,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9600 ticks in 20150 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 9416,
+     "locks": 7,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 745,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 9416,
+     "locks": 7,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 745,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 9416,
+     "locks": 7,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 745,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "lava",
+   "bot_capable": true,
+   "cap_ms": 340000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 1.0,
+    "type": "clear_n"
+   },
+   "id": "lava_h3",
+   "stars_def": {
+    "t2": 260000,
+    "t3": 170000
+   },
+   "status": "LOST",
+   "t3_ms": 170000,
+   "tier": 14,
+   "verb": "piece",
+   "wall_ms": 2413,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    },
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: top_out_or_goal_fail at locks [7] / [9]s"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 149916,
+     "locks": 29,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 9329,
+     "warnings_used": 2
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 142216,
+     "locks": 30,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 8867,
+     "warnings_used": 2
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 131533,
+     "locks": 26,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 8226,
+     "warnings_used": 2
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": true,
+   "cap_ms": 340000,
+   "fixed_level_seed": null,
+   "goal": {
+    "T_level": 180.0,
+    "n": 2.0,
+    "type": "clear_n"
+   },
+   "id": "forest_01",
+   "stars_def": {
+    "t2": 245000,
+    "t3": 170000
+   },
+   "status": "LOST",
+   "t3_ms": 170000,
+   "tier": 1,
+   "verb": "piece",
+   "wall_ms": 7008,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 98316,
+     "locks": 65,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 6151,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 115233,
+     "locks": 75,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 7166,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 94650,
+     "locks": 61,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 5931,
+     "warnings_used": 1
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": true,
+   "cap_ms": 410000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "forest_02",
+   "stars_def": {
+    "t2": 285000,
+    "t3": 205000
+   },
+   "status": "LOST",
+   "t3_ms": 205000,
+   "tier": 2,
+   "verb": "piece",
+   "wall_ms": 9607,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 199150,
+     "locks": 127,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 12212,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 197466,
+     "locks": 125,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 12111,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 2,
+     "level_ms": 276100,
+     "locks": 177,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 16829,
+     "warnings_used": 1
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "forest_03",
+   "stars_def": {
+    "t2": 430000,
+    "t3": 305000
+   },
+   "status": "LOST",
+   "t3_ms": 305000,
+   "tier": 3,
+   "verb": "piece",
+   "wall_ms": 34985,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 61233,
+     "locks": 13,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 3937,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 58233,
+     "locks": 13,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 3757,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 53300,
+     "locks": 12,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 3461,
+     "warnings_used": 1
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": true,
+   "cap_ms": 420000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "forest_04",
+   "stars_def": {
+    "t2": 295000,
+    "t3": 210000
+   },
+   "status": "LOST",
+   "t3_ms": 210000,
+   "tier": 4,
+   "verb": "piece",
+   "wall_ms": 5784,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 88,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 230000,
+     "locks": 157,
+     "metrics": {},
+     "outcome": "timeout",
+     "reason": "",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 13980,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 177000,
+     "locks": 113,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (10800 ticks in 21412 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 10800,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 86,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 20996 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": true,
+   "cap_ms": 230000,
+   "fixed_level_seed": null,
+   "goal": {
+    "h_target": 10.0,
+    "height_coverage": 0.6,
+    "type": "height"
+   },
+   "id": "forest_05",
+   "stars_def": {
+    "t2": 165000,
+    "t3": 115000
+   },
+   "status": "TIMEOUT",
+   "t3_ms": 115000,
+   "tier": 5,
+   "verb": "piece",
+   "wall_ms": 62289,
+   "wins": 0,
+   "not_assessed_reason": "some attempts cut by wall-clock budget",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (10800 ticks in 21412 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 9450,
+     "locks": 6,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 747,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 9450,
+     "locks": 6,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 747,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 9450,
+     "locks": 6,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 747,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": false,
+   "cap_ms": 100000,
+   "fixed_level_seed": null,
+   "goal": {
+    "piece_budget": 6.0,
+    "target_shape": {
+     "layers": {
+      "0": [
+       "........",
+       "........",
+       "..++++..",
+       "..++++..",
+       "..++++..",
+       "..++++..",
+       "........",
+       "........"
+      ],
+      "1": [
+       "........",
+       "........",
+       "...++...",
+       "...++...",
+       "...++...",
+       "...++...",
+       "........",
+       "........"
+      ]
+     }
+    },
+    "type": "shape"
+   },
+   "id": "forest_06",
+   "not_assessed_reason": "goal type 'shape' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 75000,
+    "t3": 50000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 50000,
+   "tier": 6,
+   "verb": "piece",
+   "wall_ms": 2997,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: out_of_pieces at locks [6] / [9]s"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 67000,
+     "locks": 41,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (4200 ticks in 20331 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 4200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 67000,
+     "locks": 41,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (4200 ticks in 20862 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 4200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 2,
+     "level_ms": 97000,
+     "locks": 60,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6000 ticks in 21570 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 6000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "forest_07",
+   "stars_def": {
+    "t2": 580000,
+    "t3": 410000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 410000,
+   "tier": 7,
+   "verb": "piece",
+   "wall_ms": 62877,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4200 ticks in 20331 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 127000,
+     "locks": 79,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7800 ticks in 20383 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 7800,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 87,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 20183 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 117000,
+     "locks": 73,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7200 ticks in 20344 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 7200,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": true,
+   "cap_ms": 420000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 2.0,
+    "type": "clear_n"
+   },
+   "id": "forest_08",
+   "stars_def": {
+    "t2": 290000,
+    "t3": 210000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 210000,
+   "tier": 8,
+   "verb": "piece",
+   "wall_ms": 60986,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (7800 ticks in 20383 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 87000,
+     "locks": 54,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (5400 ticks in 20676 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 5400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 57000,
+     "locks": 34,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (3600 ticks in 20949 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 3600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 67000,
+     "locks": 41,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (4200 ticks in 21717 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 4200,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "forest_09",
+   "stars_def": {
+    "t2": 575000,
+    "t3": 410000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 410000,
+   "tier": 9,
+   "verb": "piece",
+   "wall_ms": 63409,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (5400 ticks in 20676 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 67000,
+     "locks": 41,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (4200 ticks in 20459 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 4200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 67000,
+     "locks": 41,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (4200 ticks in 20795 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 4200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 57000,
+     "locks": 34,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (3600 ticks in 21866 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 3600,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "forest_10",
+   "stars_def": {
+    "t2": 435000,
+    "t3": 305000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 305000,
+   "tier": 10,
+   "verb": "piece",
+   "wall_ms": 63203,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4200 ticks in 20459 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": true,
+     "layers_cleared": 0,
+     "level_ms": 14633,
+     "locks": 9,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 1058,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": true,
+     "layers_cleared": 0,
+     "level_ms": 13966,
+     "locks": 9,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 1018,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": true,
+     "layers_cleared": 0,
+     "level_ms": 13700,
+     "locks": 9,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 1002,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": false,
+   "cap_ms": 180000,
+   "fixed_level_seed": null,
+   "goal": {
+    "piece_budget": 9.0,
+    "target_shape": {
+     "layers": {
+      "0": [
+       "........",
+       "........",
+       "..++++..",
+       "..++++..",
+       "..++++..",
+       "..++++..",
+       "........",
+       "........"
+      ],
+      "1": [
+       "........",
+       "........",
+       "..++++..",
+       "..+..+..",
+       "..+..+..",
+       "..++++..",
+       "........",
+       "........"
+      ],
+      "2": [
+       "........",
+       "........",
+       "........",
+       "..+..+..",
+       "..+..+..",
+       "........",
+       "........",
+       "........"
+      ]
+     }
+    },
+    "type": "shape"
+   },
+   "id": "forest_bonus",
+   "not_assessed_reason": "goal type 'shape' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 130000,
+    "t3": 90000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 90000,
+   "tier": 11,
+   "verb": "piece",
+   "wall_ms": 5767,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: out_of_pieces at locks [9] / [13, 14]s"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 7000,
+     "locks": 4,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (600 ticks in 46517 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 7000,
+     "locks": 4,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (600 ticks in 59356 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 7000,
+     "locks": 4,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (600 ticks in 106019 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 600,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "forest_h1",
+   "stars_def": {
+    "t2": 535000,
+    "t3": 375000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 375000,
+   "tier": 12,
+   "verb": "piece",
+   "wall_ms": 211995,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (600 ticks in 46517 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 89,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 22075 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 107000,
+     "locks": 71,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6600 ticks in 22675 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 6600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 157000,
+     "locks": 102,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9600 ticks in 22451 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 9600,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": true,
+   "cap_ms": 570000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "forest_h2",
+   "stars_def": {
+    "t2": 400000,
+    "t3": 285000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 285000,
+   "tier": 13,
+   "verb": "piece",
+   "wall_ms": 67361,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (8400 ticks in 22075 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 87000,
+     "locks": 55,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (5400 ticks in 20180 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 5400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 67000,
+     "locks": 42,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (4200 ticks in 20563 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 4200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 77000,
+     "locks": 48,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (4800 ticks in 21236 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 4800,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "forest",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "forest_h3",
+   "stars_def": {
+    "t2": 530000,
+    "t3": 375000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 375000,
+   "tier": 14,
+   "verb": "piece",
+   "wall_ms": 62001,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (5400 ticks in 20180 ms)"
+    }
+   ]
+  },
+  {
+   "id": "cave_01",
+   "biome": "cave",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 271000,
+     "locks": 171,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 282000,
+     "locks": 178,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 294000,
+     "locks": 186,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    }
+   ],
+   "wins": 0,
+   "status": "LOST",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "id": "cave_02",
+   "biome": "cave",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 252000,
+     "locks": 157,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 234000,
+     "locks": 148,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 242000,
+     "locks": 155,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    }
+   ],
+   "wins": 0,
+   "status": "LOST",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "id": "cave_03",
+   "biome": "cave",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 215000,
+     "locks": 127,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (13200 ticks in 20149 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 147000,
+     "locks": 91,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9000 ticks in 20478 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 97000,
+     "locks": 60,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6000 ticks in 20159 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (13200 ticks in 20149 ms)"
+    }
+   ]
+  },
+  {
+   "id": "cave_04",
+   "biome": "cave",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 67,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 21237 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 127000,
+     "locks": 79,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7800 ticks in 20882 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 167000,
+     "locks": 103,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (10200 ticks in 20358 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6600 ticks in 21237 ms)"
+    }
+   ]
+  },
+  {
+   "id": "cave_05",
+   "biome": "cave",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 147000,
+     "locks": 91,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9000 ticks in 20458 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 137000,
+     "locks": 85,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (8400 ticks in 20305 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 157000,
+     "locks": 96,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9600 ticks in 20723 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9000 ticks in 20458 ms)"
+    }
+   ]
+  },
+  {
+   "id": "cave_06",
+   "biome": "cave",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 155000,
+     "locks": 100,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9600 ticks in 21096 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 135000,
+     "locks": 89,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (8400 ticks in 20626 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 68,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 20450 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9600 ticks in 21096 ms)"
+    }
+   ]
+  },
+  {
+   "id": "cave_07",
+   "biome": "cave",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 4000,
+     "locks": 3,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 4000,
+     "locks": 3,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 4000,
+     "locks": 3,
+     "stars": null,
+     "reason": "out_of_pieces"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "recovered from killed-run log (no goal/stars detail)",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: out_of_pieces at locks [3] / [4]s"
+    }
+   ]
+  },
+  {
+   "id": "cave_08",
+   "biome": "cave",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 105566 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 38769 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 73906 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (600 ticks in 105566 ms)"
+    }
+   ]
+  },
+  {
+   "id": "cave_09",
+   "biome": "cave",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 100111 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 102879 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 74502 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (600 ticks in 100111 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 57150,
+     "locks": 15,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 3763,
+     "warnings_used": 2
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 51766,
+     "locks": 16,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 3440,
+     "warnings_used": 2
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 56350,
+     "locks": 16,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 3715,
+     "warnings_used": 2
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": true,
+   "cap_ms": 340000,
+   "fixed_level_seed": null,
+   "goal": {
+    "T_level": 180.0,
+    "n": 2.0,
+    "type": "clear_n"
+   },
+   "id": "clockwork_01",
+   "stars_def": {
+    "t2": 245000,
+    "t3": 170000
+   },
+   "status": "LOST",
+   "t3_ms": 170000,
+   "tier": 1,
+   "verb": "piece",
+   "wall_ms": 4274,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 260000,
+     "locks": 156,
+     "metrics": {},
+     "outcome": "timeout",
+     "reason": "",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 15851,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 260000,
+     "locks": 159,
+     "metrics": {},
+     "outcome": "timeout",
+     "reason": "",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 15851,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 44550,
+     "locks": 27,
+     "metrics": {},
+     "outcome": "won",
+     "reason": "",
+     "seed": 90001,
+     "stars": 3,
+     "ticks": 2892,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": true,
+   "cap_ms": 260000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 1.0,
+    "type": "clear_n"
+   },
+   "id": "clockwork_02",
+   "stars_def": {
+    "t2": 185000,
+    "t3": 130000
+   },
+   "status": "WON",
+   "t3_ms": 130000,
+   "tier": 2,
+   "verb": "piece",
+   "wall_ms": 33357,
+   "wins": 1,
+   "flags": []
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 253800,
+     "locks": 147,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 15491,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 201816,
+     "locks": 128,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 12372,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 137000,
+     "locks": 85,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 20250 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "clockwork_03",
+   "stars_def": {
+    "t2": 435000,
+    "t3": 310000
+   },
+   "status": "LOST",
+   "t3_ms": 310000,
+   "tier": 3,
+   "verb": "piece",
+   "wall_ms": 56724,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (8400 ticks in 20250 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 87,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 20504 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 87,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 20910 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 86,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 20885 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "clockwork_04",
+   "stars_def": {
+    "t2": 435000,
+    "t3": 310000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 310000,
+   "tier": 4,
+   "verb": "piece",
+   "wall_ms": 62355,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (8400 ticks in 20504 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 193500,
+     "locks": 123,
+     "metrics": {},
+     "outcome": "won",
+     "reason": "",
+     "seed": 1729,
+     "stars": 1,
+     "ticks": 11802,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 147000,
+     "locks": 94,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9000 ticks in 20004 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 9000,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 167000,
+     "locks": 106,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (10200 ticks in 21202 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 10200,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": true,
+   "cap_ms": 230000,
+   "fixed_level_seed": null,
+   "goal": {
+    "h_target": 8.0,
+    "height_coverage": 0.6,
+    "type": "height"
+   },
+   "id": "clockwork_05",
+   "stars_def": {
+    "t2": 165000,
+    "t3": 115000
+   },
+   "status": "WON",
+   "t3_ms": 115000,
+   "tier": 5,
+   "verb": "piece",
+   "wall_ms": 60685,
+   "wins": 1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9000 ticks in 20004 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 10566,
+     "locks": 7,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 814,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 10566,
+     "locks": 7,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 814,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 10566,
+     "locks": 7,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 814,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": false,
+   "cap_ms": 110000,
+   "fixed_level_seed": null,
+   "goal": {
+    "piece_budget": 7.0,
+    "target_shape": {
+     "layers": {
+      "0": [
+       "........",
+       "........",
+       "..++++..",
+       "..++++..",
+       "..++++..",
+       "..++++..",
+       "........",
+       "........"
+      ],
+      "1": [
+       "........",
+       "........",
+       "........",
+       "...++...",
+       "...++...",
+       "........",
+       "........",
+       "........"
+      ],
+      "2": [
+       "........",
+       "........",
+       "........",
+       "...++...",
+       "...++...",
+       "........",
+       "........",
+       "........"
+      ],
+      "3": [
+       "........",
+       "........",
+       "........",
+       "...++...",
+       "...++...",
+       "........",
+       "........",
+       "........"
+      ]
+     }
+    },
+    "type": "shape"
+   },
+   "id": "clockwork_06",
+   "not_assessed_reason": "goal type 'shape' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 80000,
+    "t3": 55000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 55000,
+   "tier": 6,
+   "verb": "piece",
+   "wall_ms": 2770,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: out_of_pieces at locks [7] / [10]s"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 127000,
+     "locks": 77,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7800 ticks in 21487 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 7800,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 82,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 21511 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 87000,
+     "locks": 52,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (5400 ticks in 21857 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 5400,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "clockwork_07",
+   "stars_def": {
+    "t2": 580000,
+    "t3": 410000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 410000,
+   "tier": 7,
+   "verb": "piece",
+   "wall_ms": 64928,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (7800 ticks in 21487 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 127000,
+     "locks": 80,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7800 ticks in 21441 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 7800,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 88,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 20906 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 117000,
+     "locks": 73,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7200 ticks in 21940 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 7200,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": false,
+   "cap_ms": 280000,
+   "fixed_level_seed": null,
+   "goal": {
+    "keyholes": [
+     {
+      "row": 3.0,
+      "wall": "-x",
+      "y": 1.0
+     },
+     {
+      "row": 3.0,
+      "wall": "+x",
+      "y": 2.0
+     },
+     {
+      "row": 3.0,
+      "wall": "-z",
+      "y": 3.0
+     },
+     {
+      "row": 3.0,
+      "wall": "+z",
+      "y": 1.0
+     }
+    ],
+    "keys_needed": 4.0,
+    "type": "wind_keys"
+   },
+   "id": "clockwork_08",
+   "not_assessed_reason": "goal type 'wind_keys' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 200000,
+    "t3": 140000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 140000,
+   "tier": 8,
+   "verb": "piece",
+   "wall_ms": 64528,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (7800 ticks in 21441 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 57000,
+     "locks": 35,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (3600 ticks in 20455 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 3600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 107000,
+     "locks": 68,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6600 ticks in 20990 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 6600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 205866,
+     "locks": 130,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 12615,
+     "warnings_used": 1
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "clockwork_09",
+   "stars_def": {
+    "t2": 580000,
+    "t3": 410000
+   },
+   "status": "LOST",
+   "t3_ms": 410000,
+   "tier": 9,
+   "verb": "piece",
+   "wall_ms": 60845,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (3600 ticks in 20455 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 223983,
+     "locks": 137,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 13702,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 215816,
+     "locks": 131,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (13200 ticks in 20304 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 13200,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 185816,
+     "locks": 114,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (11400 ticks in 23597 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 11400,
+     "warnings_used": 1
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "clockwork_10",
+   "stars_def": {
+    "t2": 435000,
+    "t3": 305000
+   },
+   "status": "LOST",
+   "t3_ms": 305000,
+   "tier": 10,
+   "verb": "piece",
+   "wall_ms": 59858,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (13200 ticks in 20304 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": true,
+     "layers_cleared": 0,
+     "level_ms": 10800,
+     "locks": 7,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 828,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": true,
+     "layers_cleared": 0,
+     "level_ms": 11533,
+     "locks": 7,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 872,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": true,
+     "layers_cleared": 0,
+     "level_ms": 10866,
+     "locks": 7,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 832,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": false,
+   "cap_ms": 150000,
+   "fixed_level_seed": null,
+   "goal": {
+    "piece_budget": 7.0,
+    "target_shape": {
+     "layers": {
+      "0": [
+       "........",
+       "........",
+       "..++++..",
+       "..++++..",
+       "..++++..",
+       "..++++..",
+       "........",
+       "........"
+      ],
+      "1": [
+       "........",
+       "........",
+       "..++++..",
+       "..+..+..",
+       "..+..+..",
+       "..++++..",
+       "........",
+       "........"
+      ]
+     }
+    },
+    "type": "shape"
+   },
+   "id": "clockwork_bonus",
+   "not_assessed_reason": "goal type 'shape' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 110000,
+    "t3": 75000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 75000,
+   "tier": 11,
+   "verb": "piece",
+   "wall_ms": 5421,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: out_of_pieces at locks [7] / [10, 11]s"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 97000,
+     "locks": 58,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6000 ticks in 20240 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 6000,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 97000,
+     "locks": 57,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6000 ticks in 21517 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 6000,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 97000,
+     "locks": 60,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6000 ticks in 20410 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 6000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "clockwork_h1",
+   "stars_def": {
+    "t2": 545000,
+    "t3": 375000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 375000,
+   "tier": 12,
+   "verb": "piece",
+   "wall_ms": 62197,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6000 ticks in 20240 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 97000,
+     "locks": 60,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6000 ticks in 20084 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 6000,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 97000,
+     "locks": 61,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6000 ticks in 21394 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 6000,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 127000,
+     "locks": 80,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7800 ticks in 20045 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 7800,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "clockwork_h2",
+   "stars_def": {
+    "t2": 540000,
+    "t3": 375000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 375000,
+   "tier": 13,
+   "verb": "piece",
+   "wall_ms": 61576,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6000 ticks in 20084 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 147000,
+     "locks": 92,
+     "metrics": {
+      "keys_wound": 1
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9000 ticks in 20036 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 9000,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 117000,
+     "locks": 73,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7200 ticks in 20596 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 7200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 167000,
+     "locks": 105,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (10200 ticks in 20890 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 10200,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "clockwork",
+   "bot_capable": false,
+   "cap_ms": 340000,
+   "fixed_level_seed": null,
+   "goal": {
+    "keyholes": [
+     {
+      "row": 3.0,
+      "wall": "-x",
+      "y": 1.0
+     },
+     {
+      "row": 3.0,
+      "wall": "+x",
+      "y": 2.0
+     },
+     {
+      "row": 3.0,
+      "wall": "-z",
+      "y": 3.0
+     },
+     {
+      "row": 3.0,
+      "wall": "+z",
+      "y": 1.0
+     },
+     {
+      "row": 5.0,
+      "wall": "-x",
+      "y": 3.0
+     }
+    ],
+    "keys_needed": 5.0,
+    "type": "wind_keys"
+   },
+   "id": "clockwork_h3",
+   "not_assessed_reason": "goal type 'wind_keys' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 240000,
+    "t3": 170000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 170000,
+   "tier": 14,
+   "verb": "piece",
+   "wall_ms": 61563,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9000 ticks in 20036 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 195016,
+     "locks": 123,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 11964,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 212833,
+     "locks": 136,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 13033,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 37083,
+     "locks": 23,
+     "metrics": {},
+     "outcome": "won",
+     "reason": "",
+     "seed": 90001,
+     "stars": 3,
+     "ticks": 2444,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 280000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 1.0,
+    "type": "clear_n"
+   },
+   "id": "neon_01",
+   "stars_def": {
+    "t2": 195000,
+    "t3": 140000
+   },
+   "status": "WON",
+   "t3_ms": 140000,
+   "tier": 1,
+   "verb": "piece",
+   "wall_ms": 16352,
+   "wins": 1,
+   "flags": []
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 206500,
+     "locks": 128,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 12653,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 248716,
+     "locks": 149,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 15186,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 238600,
+     "locks": 148,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 14579,
+     "warnings_used": 1
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 470000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 2.0,
+    "type": "clear_n"
+   },
+   "id": "neon_02",
+   "stars_def": {
+    "t2": 335000,
+    "t3": 235000
+   },
+   "status": "LOST",
+   "t3_ms": 235000,
+   "tier": 2,
+   "verb": "piece",
+   "wall_ms": 29946,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "NEVER_FINISHED",
+     "weight": 3,
+     "detail": "bot-capable level, 0/3 wins (lost)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 207466,
+     "locks": 131,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 12711,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 127000,
+     "locks": 79,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7800 ticks in 21083 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 7800,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 87000,
+     "locks": 54,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (5400 ticks in 22270 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 5400,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 3.0,
+    "type": "clear_n"
+   },
+   "id": "neon_03",
+   "stars_def": {
+    "t2": 465000,
+    "t3": 330000
+   },
+   "status": "LOST",
+   "t3_ms": 330000,
+   "tier": 3,
+   "verb": "piece",
+   "wall_ms": 59937,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (7800 ticks in 21083 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 3,
+     "level_ms": 145816,
+     "locks": 95,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9000 ticks in 20382 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 9000,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 155816,
+     "locks": 102,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9600 ticks in 21513 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 9600,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 146100,
+     "locks": 96,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "top_out_or_goal_fail",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 9029,
+     "warnings_used": 1
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "neon_04",
+   "stars_def": {
+    "t2": 605000,
+    "t3": 425000
+   },
+   "status": "LOST",
+   "t3_ms": 425000,
+   "tier": 4,
+   "verb": "piece",
+   "wall_ms": 54632,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9000 ticks in 20382 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 198550,
+     "locks": 126,
+     "metrics": {},
+     "outcome": "won",
+     "reason": "",
+     "seed": 1729,
+     "stars": 2,
+     "ticks": 12105,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 157000,
+     "locks": 100,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9600 ticks in 20366 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 9600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 86,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 20948 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 370000,
+   "fixed_level_seed": null,
+   "goal": {
+    "h_target": 9.0,
+    "type": "height"
+   },
+   "id": "neon_05",
+   "stars_def": {
+    "t2": 260000,
+    "t3": 185000
+   },
+   "status": "WON",
+   "t3_ms": 185000,
+   "tier": 5,
+   "verb": "piece",
+   "wall_ms": 56184,
+   "wins": 1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9600 ticks in 20366 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 11183,
+     "locks": 8,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 851,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 11183,
+     "locks": 8,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 851,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 11183,
+     "locks": 8,
+     "metrics": {},
+     "outcome": "lost",
+     "reason": "out_of_pieces",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 851,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": false,
+   "cap_ms": 110000,
+   "fixed_level_seed": null,
+   "goal": {
+    "piece_budget": 8.0,
+    "target_shape": {
+     "layers": {
+      "0": [
+       "........",
+       "........",
+       "..++++..",
+       "..++++..",
+       "..++++..",
+       "..++++..",
+       "........",
+       "........"
+      ],
+      "1": [
+       "........",
+       "........",
+       "..++++..",
+       "..++++..",
+       "..++++..",
+       "..++++..",
+       "........",
+       "........"
+      ],
+      "2": [
+       "........",
+       "........",
+       "........",
+       "...++...",
+       "...++...",
+       "........",
+       "........",
+       "........"
+      ],
+      "3": [
+       "........",
+       "........",
+       "........",
+       "...++...",
+       "...++...",
+       "........",
+       "........",
+       "........"
+      ]
+     }
+    },
+    "type": "shape"
+   },
+   "id": "neon_06",
+   "not_assessed_reason": "goal type 'shape' is not targeted by WtBotPlayer",
+   "stars_def": {
+    "t2": 80000,
+    "t3": 55000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 55000,
+   "tier": 6,
+   "verb": "piece",
+   "wall_ms": 4212,
+   "wins": 0,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: out_of_pieces at locks [8] / [11]s"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 176516,
+     "locks": 113,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (10800 ticks in 20045 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 10800,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 157000,
+     "locks": 100,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9600 ticks in 20310 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 9600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 127000,
+     "locks": 79,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7800 ticks in 20217 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 7800,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "neon_07",
+   "stars_def": {
+    "t2": 510000,
+    "t3": 365000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 365000,
+   "tier": 7,
+   "verb": "piece",
+   "wall_ms": 60703,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (10800 ticks in 20045 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 67000,
+     "locks": 40,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (4200 ticks in 20515 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 4200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 87000,
+     "locks": 53,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (5400 ticks in 21414 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 5400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 57000,
+     "locks": 34,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (3600 ticks in 20821 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 3600,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "t_ms": 150000.0,
+    "type": "survive"
+   },
+   "id": "neon_08",
+   "stars_def": {
+    "s2": 1,
+    "s3": 2
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": -1,
+   "tier": 8,
+   "verb": "piece",
+   "wall_ms": 63032,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4200 ticks in 20515 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 47000,
+     "locks": 29,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (3000 ticks in 20921 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 3000,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 67000,
+     "locks": 42,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (4200 ticks in 20760 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 4200,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 147000,
+     "locks": 92,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9000 ticks in 20260 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 9000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "neon_09",
+   "stars_def": {
+    "t2": 585000,
+    "t3": 410000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 410000,
+   "tier": 9,
+   "verb": "piece",
+   "wall_ms": 62091,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (3000 ticks in 20921 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 187000,
+     "locks": 111,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (11400 ticks in 21917 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 11400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 137000,
+     "locks": 83,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (8400 ticks in 21430 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 8400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 97000,
+     "locks": 57,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6000 ticks in 22452 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 6000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "neon_10",
+   "stars_def": {
+    "t2": 645000,
+    "t3": 455000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 455000,
+   "tier": 10,
+   "verb": "piece",
+   "wall_ms": 65844,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (11400 ticks in 21917 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 107000,
+     "locks": 65,
+     "metrics": {
+      "gold": 1
+     },
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6600 ticks in 20303 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 6600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 127000,
+     "locks": 75,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7800 ticks in 21548 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 7800,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 127000,
+     "locks": 78,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7800 ticks in 21156 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 7800,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 480000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 2.0,
+    "type": "clear_n"
+   },
+   "id": "neon_bonus",
+   "stars_def": {
+    "t2": 345000,
+    "t3": 240000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 240000,
+   "tier": 11,
+   "verb": "piece",
+   "wall_ms": 63049,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6600 ticks in 20303 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 107000,
+     "locks": 64,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (6600 ticks in 21474 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 6600,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 127000,
+     "locks": 77,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7800 ticks in 21236 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 7800,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 147000,
+     "locks": 89,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9000 ticks in 22338 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 9000,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "neon_h1",
+   "stars_def": {
+    "t2": 545000,
+    "t3": 375000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 375000,
+   "tier": 12,
+   "verb": "piece",
+   "wall_ms": 65173,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6600 ticks in 21474 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 87000,
+     "locks": 55,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (5400 ticks in 21916 ms)",
+     "seed": 1729,
+     "stars": 0,
+     "ticks": 5400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 87000,
+     "locks": 55,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (5400 ticks in 21273 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 5400,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 117000,
+     "locks": 74,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7200 ticks in 20790 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 7200,
+     "warnings_used": 0
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "neon_h2",
+   "stars_def": {
+    "t2": 550000,
+    "t3": 375000
+   },
+   "status": "NOT_ASSESSED",
+   "t3_ms": 375000,
+   "tier": 13,
+   "verb": "piece",
+   "wall_ms": 64022,
+   "wins": 0,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (5400 ticks in 21916 ms)"
+    }
+   ]
+  },
+  {
+   "attempts": [
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 4,
+     "level_ms": 50350,
+     "locks": 33,
+     "metrics": {},
+     "outcome": "won",
+     "reason": "",
+     "seed": 1729,
+     "stars": 3,
+     "ticks": 3246,
+     "warnings_used": 0
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 0,
+     "level_ms": 155816,
+     "locks": 102,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (9600 ticks in 20646 ms)",
+     "seed": 4242,
+     "stars": 0,
+     "ticks": 9600,
+     "warnings_used": 1
+    },
+    {
+     "cells_trimmed": 0,
+     "kit_pick_by_harness": false,
+     "layers_cleared": 1,
+     "level_ms": 126816,
+     "locks": 83,
+     "metrics": {},
+     "outcome": "budget",
+     "reason": "wall_budget: sim too slow (7800 ticks in 20251 ms)",
+     "seed": 90001,
+     "stars": 0,
+     "ticks": 7800,
+     "warnings_used": 1
+    }
+   ],
+   "biome": "neon",
+   "bot_capable": true,
+   "cap_ms": 600000,
+   "fixed_level_seed": null,
+   "goal": {
+    "n": 4.0,
+    "type": "clear_n"
+   },
+   "id": "neon_h3",
+   "stars_def": {
+    "t2": 550000,
+    "t3": 375000
+   },
+   "status": "WON",
+   "t3_ms": 375000,
+   "tier": 14,
+   "verb": "piece",
+   "wall_ms": 55460,
+   "wins": 1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9600 ticks in 20646 ms)"
+    },
+    {
+     "flag": "TOO_EASY",
+     "weight": 2,
+     "detail": "won in 50.4s = 13% of 3-star time 375s"
+    }
+   ]
+  },
+  {
+   "id": "celestial_01",
+   "biome": "celestial",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "won",
+     "level_ms": 69000,
+     "locks": 44,
+     "stars": null,
+     "reason": ""
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 185000,
+     "locks": 117,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (11400 ticks in 20305 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 175000,
+     "locks": 112,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (10800 ticks in 21650 ms)"
+    }
+   ],
+   "wins": 1,
+   "status": "WON",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (11400 ticks in 20305 ms)"
+    }
+   ]
+  },
+  {
+   "id": "celestial_02",
+   "biome": "celestial",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 87000,
+     "locks": 55,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (5400 ticks in 20683 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 57000,
+     "locks": 37,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (3600 ticks in 22617 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 47000,
+     "locks": 28,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (3000 ticks in 23186 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (5400 ticks in 20683 ms)"
+    }
+   ]
+  },
+  {
+   "id": "celestial_03",
+   "biome": "celestial",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 67000,
+     "locks": 41,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4200 ticks in 22074 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 87000,
+     "locks": 55,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (5400 ticks in 21658 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 72,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 21481 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4200 ticks in 22074 ms)"
+    }
+   ]
+  },
+  {
+   "id": "celestial_04",
+   "biome": "celestial",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 73,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 21195 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 137000,
+     "locks": 87,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (8400 ticks in 20250 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 72,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 20403 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (7200 ticks in 21195 ms)"
+    }
+   ]
+  },
+  {
+   "id": "celestial_05",
+   "biome": "celestial",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 137000,
+     "locks": 87,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (8400 ticks in 20698 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 87000,
+     "locks": 56,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (5400 ticks in 21485 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 77000,
+     "locks": 49,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4800 ticks in 20168 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (8400 ticks in 20698 ms)"
+    }
+   ]
+  },
+  {
+   "id": "celestial_06",
+   "biome": "celestial",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 8000,
+     "locks": 6,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 8000,
+     "locks": 6,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 8000,
+     "locks": 6,
+     "stars": null,
+     "reason": "out_of_pieces"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "recovered from killed-run log (no goal/stars detail)",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: out_of_pieces at locks [6] / [8]s"
+    }
+   ]
+  },
+  {
+   "id": "celestial_07",
+   "biome": "celestial",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 97964 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 37505 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 94111 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (600 ticks in 97964 ms)"
+    }
+   ]
+  },
+  {
+   "id": "celestial_08",
+   "biome": "celestial",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 105000,
+     "locks": 67,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 21796 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 87000,
+     "locks": 55,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (5400 ticks in 20129 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 67,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 20723 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "recovered from killed-run log (no goal/stars detail)",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6600 ticks in 21796 ms)"
+    }
+   ]
+  },
+  {
+   "id": "celestial_09",
+   "biome": "celestial",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 73,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 22385 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 167000,
+     "locks": 106,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (10200 ticks in 20331 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 127000,
+     "locks": 81,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7800 ticks in 23151 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (7200 ticks in 22385 ms)"
+    }
+   ]
+  },
+  {
+   "id": "celestial_10",
+   "biome": "celestial",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 65,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 21188 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 97000,
+     "locks": 60,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6000 ticks in 20955 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 127000,
+     "locks": 79,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7800 ticks in 20596 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6600 ticks in 21188 ms)"
+    }
+   ]
+  },
+  {
+   "id": "celestial_bonus",
+   "biome": "celestial",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 7000,
+     "locks": 5,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 7000,
+     "locks": 5,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 8000,
+     "locks": 5,
+     "stars": null,
+     "reason": "out_of_pieces"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "recovered from killed-run log (no goal/stars detail)",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: out_of_pieces at locks [5] / [7, 8]s"
+    }
+   ]
+  },
+  {
+   "id": "celestial_h1",
+   "biome": "celestial",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 97000,
+     "locks": 60,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6000 ticks in 20682 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 74,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 20299 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 127000,
+     "locks": 82,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7800 ticks in 21756 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6000 ticks in 20682 ms)"
+    }
+   ]
+  },
+  {
+   "id": "carnival_01",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 157000,
+     "locks": 97,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9600 ticks in 20967 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 157000,
+     "locks": 97,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (9600 ticks in 21502 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 72,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 21232 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (9600 ticks in 20967 ms)"
+    }
+   ]
+  },
+  {
+   "id": "carnival_02",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 67000,
+     "locks": 42,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4200 ticks in 22747 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 37000,
+     "locks": 23,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (2400 ticks in 21250 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 47000,
+     "locks": 29,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (3000 ticks in 25781 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4200 ticks in 22747 ms)"
+    }
+   ]
+  },
+  {
+   "id": "carnival_03",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 73,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 20867 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 177000,
+     "locks": 110,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (10800 ticks in 20217 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 167000,
+     "locks": 105,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (10200 ticks in 21548 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (7200 ticks in 20867 ms)"
+    }
+   ]
+  },
+  {
+   "id": "carnival_04",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "won",
+     "level_ms": 14000,
+     "locks": 8,
+     "stars": null,
+     "reason": ""
+    },
+    {
+     "seed": null,
+     "outcome": "won",
+     "level_ms": 13000,
+     "locks": 8,
+     "stars": null,
+     "reason": ""
+    },
+    {
+     "seed": null,
+     "outcome": "won",
+     "level_ms": 15000,
+     "locks": 9,
+     "stars": null,
+     "reason": ""
+    }
+   ],
+   "wins": 3,
+   "status": "WON",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": []
+  },
+  {
+   "id": "carnival_05",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 137000,
+     "locks": 86,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (8400 ticks in 21526 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 75,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 20403 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 127000,
+     "locks": 80,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7800 ticks in 21454 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (8400 ticks in 21526 ms)"
+    }
+   ]
+  },
+  {
+   "id": "carnival_06",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 11000,
+     "locks": 8,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 11000,
+     "locks": 8,
+     "stars": null,
+     "reason": "out_of_pieces"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 12000,
+     "locks": 8,
+     "stars": null,
+     "reason": "out_of_pieces"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "recovered from killed-run log (no goal/stars detail)",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SAME_INSTANT_LOSS",
+     "weight": 3,
+     "detail": "all 3 losses: out_of_pieces at locks [8] / [11, 12]s"
+    }
+   ]
+  },
+  {
+   "id": "carnival_07",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 95000,
+     "locks": 65,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6000 ticks in 20811 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 88000,
+     "locks": 62,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 74,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 20009 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "LOST",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6000 ticks in 20811 ms)"
+    }
+   ]
+  },
+  {
+   "id": "carnival_08",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 81804 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 40676 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 7000,
+     "locks": 4,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (600 ticks in 103582 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (600 ticks in 81804 ms)"
+    }
+   ]
+  },
+  {
+   "id": "carnival_09",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 77000,
+     "locks": 48,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4800 ticks in 20215 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 77000,
+     "locks": 49,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4800 ticks in 20203 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 107000,
+     "locks": 67,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 22019 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4800 ticks in 20215 ms)"
+    }
+   ]
+  },
+  {
+   "id": "carnival_10",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 77000,
+     "locks": 44,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (4800 ticks in 20511 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 44,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 20617 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 87000,
+     "locks": 55,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (5400 ticks in 21435 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (4800 ticks in 20511 ms)"
+    }
+   ]
+  },
+  {
+   "id": "carnival_bonus",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 99000,
+     "locks": 41,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 105000,
+     "locks": 46,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6600 ticks in 20126 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 92000,
+     "locks": 40,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    }
+   ],
+   "wins": 0,
+   "status": "LOST",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6600 ticks in 20126 ms)"
+    }
+   ]
+  },
+  {
+   "id": "carnival_h1",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 97000,
+     "locks": 58,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (6000 ticks in 21388 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 127000,
+     "locks": 80,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7800 ticks in 21139 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 117000,
+     "locks": 74,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (7200 ticks in 21094 ms)"
+    }
+   ],
+   "wins": 0,
+   "status": "NOT_ASSESSED",
+   "recovered_from_log": true,
+   "not_assessed_reason": "every attempt hit the 20 s wall-clock budget (sim too slow); no completability signal",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (6000 ticks in 21388 ms)"
+    }
+   ]
+  },
+  {
+   "id": "carnival_h2",
+   "biome": "carnival",
+   "tier": 0,
+   "attempts": [
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 175000,
+     "locks": 121,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (10800 ticks in 21772 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "budget",
+     "level_ms": 165000,
+     "locks": 113,
+     "stars": null,
+     "reason": "wall_budget: sim too slow (10200 ticks in 20064 ms)"
+    },
+    {
+     "seed": null,
+     "outcome": "lost",
+     "level_ms": 168000,
+     "locks": 113,
+     "stars": null,
+     "reason": "top_out_or_goal_fail"
+    }
+   ],
+   "wins": 0,
+   "status": "LOST",
+   "recovered_from_log": true,
+   "not_assessed_reason": "",
+   "t3_ms": -1,
+   "flags": [
+    {
+     "flag": "SLOW_SIM",
+     "weight": 1,
+     "detail": "wall_budget: sim too slow (10800 ticks in 21772 ms)"
+    }
+   ]
+  }
+ ]
+}

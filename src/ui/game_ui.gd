@@ -5,10 +5,8 @@ extends CanvasLayer
 
 signal intent(id: StringName, args: Dictionary)
 
-const Diorama := preload("res://src/ui/toy_diorama.gd")
 const Glyph := preload("res://src/ui/common/ui_glyph.gd")
 const Format := preload("res://src/ui/common/ui_format.gd")
-const StoryStage := preload("res://src/ui/wordless_story.tscn")
 const MinigameStage := preload("res://src/ui/minigame_ui.tscn")
 const Kit := preload("res://src/ui/common/wt_storybook.gd")
 const CREAM := Kit.PARCHMENT
@@ -51,7 +49,6 @@ var _text_factor: float = 1.0
 var _control_factor: float = 1.0
 var _requested_control_factor: float = 1.0
 var _is_overlay: bool = false
-var _story_generation: int = 0
 var _minigame_view: Control
 var _round_widgets: Dictionary = {}
 
@@ -147,7 +144,6 @@ func _style(color: Color, radius: int = 12, border: Color = Color.TRANSPARENT, w
 
 func _begin(screen: String, data: Dictionary, overlay: bool = false) -> VBoxContainer:
 	current_screen = screen
-	_story_generation += 1
 	_is_overlay = overlay
 	_snapshot = data.duplicate(true)
 	_focus_default = null
@@ -1016,9 +1012,6 @@ func _fit_controls() -> void:
 
 ## Back inside a local form or confirmation is handled before the controller pops.
 func handle_back() -> bool:
-	if current_screen == "story":
-		if bool(_snapshot.get("skippable", str(_snapshot.get("phase", "post")) != "pre")): _finish_story(_snapshot)
-		return true
 	if not _remap_action.is_empty():
 		_remap_action = ""
 		show_settings(_snapshot)
@@ -1182,45 +1175,6 @@ func _direction_buttons(parent: Node, allowed: Array, id: StringName, enabled: b
 		var button := _button(label, id, {"direction": direction})
 		button.disabled = not enabled
 		parent.add_child(button)
-
-## The story is a timed sequence of portraits, emotes and props: no premise captions.
-func show_story(data: Dictionary = {}) -> void:
-	var col := _begin("story", data, true)
-	hide_countdown()
-	var panel := PanelContainer.new()
-	panel.add_theme_stylebox_override("panel", _style(CREAM, 28, INK, 2))
-	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	col.add_child(panel)
-	var theatre := StoryStage.instantiate()
-	theatre.custom_minimum_size.y = 260
-	panel.add_child(theatre)
-	var skip := _button("→", &"noop", {}, true, 56)
-	skip.tooltip_text = "Continue"
-	skip.pressed.disconnect(skip.pressed.get_connections()[0].callable)
-	skip.pressed.connect(func() -> void: _finish_story(data))
-	skip.visible = bool(data.get("skippable", str(data.get("phase", "post")) != "pre"))
-	col.add_child(skip)
-	_finish()
-	_play_story(theatre, data, _story_generation)
-
-func _play_story(theatre: Control, data: Dictionary, generation: int) -> void:
-	var beats: Array = data.get("beats", [])
-	var motion: Variant = _prefs.get("reduced_motion", "system")
-	var reduced: bool = motion if motion is bool else str(motion) == "on"
-	for index in beats.size():
-		if generation != _story_generation or not is_instance_valid(theatre): return
-		var beat: Dictionary = beats[index].duplicate(true)
-		if index == beats.size()-1 and data.has("guests") and not beat.has("guests"): beat.guests = data.guests
-		theatre.set_beat(beat, index, beats.size(), reduced)
-		await get_tree().create_timer(clampf(float(beat.get("duration", 1.0)), .15, 8.0)).timeout
-		if generation != _story_generation: return
-	_finish_story(data)
-
-func _finish_story(data: Dictionary) -> void:
-	if current_screen != "story": return
-	_story_generation += 1
-	current_screen = "story_done"
-	intent.emit(&"story_done", {"story_key": str(data.get("story_key", "")), "phase": str(data.get("phase", "post"))})
 
 func show_pause(data: Dictionary = {}) -> void:
 	var col := _begin("pause", data, true)
@@ -1812,7 +1766,6 @@ func _restore_screen(screen: String, data: Dictionary) -> void:
 		"round_card": show_round_card(data)
 		"round_results": show_round_results(data)
 		"tools": show_tools(data)
-		"story": show_story(data)
 		"confirm": _restore_screen(str(data.get("return_screen", "title")), data.get("return_data", {}))
 		_: intent.emit(&"back", {})
 
