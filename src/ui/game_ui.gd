@@ -640,7 +640,7 @@ func show_title(data: Dictionary = {}) -> void:
 	island.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	island.anchor_top = 0.34
 	# The wizard sprite is optional art: without it the island stands alone.
-	var wizard_art: Texture2D = Kit.sprite("wizard_cheer")
+	var wizard_art: Texture2D = _ui_sprite("wizard_cheer")
 	var wizard := TextureRect.new()
 	wizard.texture = wizard_art
 	wizard.visible = wizard_art != null
@@ -1157,6 +1157,16 @@ func _build_hud() -> void:
 	if is_instance_valid(_menu): _root.move_child(_menu, -1)
 	if is_instance_valid(_countdown): _root.move_child(_countdown, -1)
 
+## Kit.sprite(), plus a fallback for art dropped into assets/art/ui before the editor has
+## imported it (no .import yet): the PNG is decoded directly. Null when the file is absent.
+func _ui_sprite(sprite_name: String) -> Texture2D:
+	var art: Texture2D = Kit.sprite(sprite_name)
+	if art != null: return art
+	var path := Kit.SPRITES + sprite_name + ".png"
+	if not FileAccess.file_exists(path): return null
+	var image := Image.load_from_file(ProjectSettings.globalize_path(path))
+	return ImageTexture.create_from_image(image) if image != null and not image.is_empty() else null
+
 ## Biome HUD chip (meadow vines, ice frost, celestial gold) with trimmed content margins.
 func _chip_style(biome: String) -> StyleBox:
 	var chip: StyleBox = _kit(String(Kit.BIOME_CHIPS.get(biome, "chip_hud")))
@@ -1204,7 +1214,7 @@ func _build_dock() -> void:
 	for b: Button in [view_left, view_right, soft, _hud_labels.tools, _hud_labels.skill, _hud_labels.potion]:
 		b.custom_minimum_size = Vector2(0, 48)
 		b.add_theme_font_size_override("font_size", roundi(14 * _text_factor))
-		_kit_button(b, "btn_cream")
+		_kit_button(b, "sign_heading")
 		_tighten(b, 8.0)
 		actions.add_child(b)
 	var extra_axes: Array[String] = []
@@ -1217,7 +1227,7 @@ func _build_dock() -> void:
 			for dir: int in [-1, 1]:
 				var b := _play_button(title + (" ‹" if dir < 0 else " ›"), &"rotate", {"axis": StringName(axis), "direction": dir}, true)
 				b.custom_minimum_size.y = 48
-				_kit_button(b, "btn_cream")
+				_kit_button(b, "sign_heading")
 				axes.add_child(b)
 	var tray_row := _hbox(dock, 8)
 	tray_row.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -1225,7 +1235,7 @@ func _build_dock() -> void:
 	turn.custom_minimum_size = Vector2(84, 84) * _control_factor
 	turn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	turn.add_theme_font_size_override("font_size", roundi(18 * _text_factor))
-	_kit_button(turn, "btn_cream")
+	_kit_button(turn, "tray_slot")
 	tray_row.add_child(turn)
 	var tray := PanelContainer.new()
 	tray.add_theme_stylebox_override("panel", _chip_style(str(_hud_data.get("biome", "meadow"))))
