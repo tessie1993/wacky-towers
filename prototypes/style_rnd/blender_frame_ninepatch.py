@@ -68,11 +68,11 @@ def wood_material(name, along_x, dark, mid, light):
     tc = nodes.new("ShaderNodeTexCoord")
     mp = nodes.new("ShaderNodeMapping")
     # stretch the coordinate along the plank so grain runs lengthwise
-    mp.inputs["Scale"].default_value = (0.35, 3.0, 1.0) if along_x else (3.0, 0.35, 1.0)
+    mp.inputs["Scale"].default_value = (0.5, 3.5, 1.0) if along_x else (3.5, 0.5, 1.0)
     links.new(tc.outputs["Object"], mp.inputs["Vector"])
     wave = nodes.new("ShaderNodeTexWave"); wave.wave_type = 'BANDS'
     wave.bands_direction = 'Y' if along_x else 'X'
-    wave.inputs["Scale"].default_value = 2.2; wave.inputs["Distortion"].default_value = 6.0
+    wave.inputs["Scale"].default_value = 1.6; wave.inputs["Distortion"].default_value = 3.5
     wave.inputs["Detail"].default_value = 2.0; wave.inputs["Detail Scale"].default_value = 1.5
     links.new(mp.outputs[0], wave.inputs["Vector"])
     noise = nodes.new("ShaderNodeTexNoise"); noise.inputs["Scale"].default_value = 3.0
@@ -83,7 +83,15 @@ def wood_material(name, along_x, dark, mid, light):
     links.new(noise.outputs["Fac"], f.inputs[2])
     f2 = nodes.new("ShaderNodeMath"); f2.operation = 'MULTIPLY'; f2.inputs[1].default_value = 0.75
     links.new(f.outputs[0], f2.inputs[0])
-    base = ramp(nodes, links, f2.outputs[0], [(0.25, dark), (0.55, mid), (0.85, light)])
+    base = ramp(nodes, links, f2.outputs[0], [(0.22, dark), (0.5, mid), (0.88, light)])
+    # dark grain lines: a second, finer wave pushed through a narrow ramp
+    wave2 = nodes.new("ShaderNodeTexWave"); wave2.wave_type = 'BANDS'
+    wave2.bands_direction = 'Y' if along_x else 'X'
+    wave2.inputs["Scale"].default_value = 5.0; wave2.inputs["Distortion"].default_value = 3.0
+    wave2.inputs["Detail"].default_value = 1.0
+    links.new(mp.outputs[0], wave2.inputs["Vector"])
+    lines = ramp(nodes, links, wave2.outputs["Fac"], [(0.0, '#ffffff'), (0.08, '#ffffff'), (0.12, '#a58cbf')])
+    base = mix(nodes, links, 0.7, base, lines, 'MULTIPLY')
     # painted lighting baked into albedo: cavity darkening + bright lit edge
     edge, bev_n = edge_mask(nodes, links, 0.03)
     ao = ao_cavity(nodes, links)
@@ -97,8 +105,8 @@ def wood_material(name, along_x, dark, mid, light):
     col = mix(nodes, links, 0.85, col, ao_rgb.outputs[0], 'MULTIPLY')
     links.new(col, bsdf.inputs["Base Color"])
     links.new(bev_n, bsdf.inputs["Normal"])
-    bsdf.inputs["Roughness"].default_value = 0.55
-    bsdf.inputs["Coat Weight"].default_value = 0.15
+    bsdf.inputs["Roughness"].default_value = 0.72
+    bsdf.inputs["Specular IOR Level"].default_value = 0.3
     return m
 
 def flat_material(name, base, rough=0.5, metal=0.0, edge_light=None, emission=None, coat=0.0):
@@ -133,8 +141,8 @@ def parchment_material():
     links.new(c, bsdf.inputs["Base Color"]); bsdf.inputs["Roughness"].default_value = 0.85
     return m
 
-M_WOOD_H = wood_material("wood_purple_h", True, '#3f2a55', '#6b4a8a', '#9a78b8')
-M_WOOD_V = wood_material("wood_purple_v", False, '#3f2a55', '#6b4a8a', '#9a78b8')
+M_WOOD_H = wood_material("wood_purple_h", True, '#33224a', '#5e3f7e', '#8f6cae')
+M_WOOD_V = wood_material("wood_purple_v", False, '#33224a', '#5e3f7e', '#8f6cae')
 M_IRON = flat_material("iron_cap", '#4a3d5c', rough=0.35, metal=0.85, edge_light='#b7a8d0')
 M_GOLD = flat_material("gold", '#f8c840', rough=0.22, metal=1.0, edge_light='#fff3b0', emission='#c98418')
 M_VINE = flat_material("vine", '#4f9a3a', rough=0.5, edge_light='#8fd05a', coat=0.2)
@@ -195,7 +203,7 @@ for sx in (-1, 1):
             bpy.context.active_object.data.materials.append(M_GOLD); bpy.ops.object.shade_smooth()
 
 # ---------- vines ----------
-def vine(points, radius=0.018):
+def vine(points, radius=0.024):
     cu = bpy.data.curves.new("vine", 'CURVE'); cu.dimensions = '3D'
     cu.bevel_depth = radius; cu.bevel_resolution = 3; cu.use_fill_caps = True
     sp = cu.splines.new('NURBS'); sp.points.add(len(points) - 1)
@@ -207,7 +215,7 @@ def vine(points, radius=0.018):
     o.data.materials.append(M_VINE)
     return o, points
 
-def leaf(loc, angle, size=0.075):
+def leaf(loc, angle, size=0.095):
     bpy.ops.mesh.primitive_uv_sphere_add(segments=16, ring_count=8, radius=1.0, location=loc)
     o = bpy.context.active_object; o.scale = (size, size * 0.45, size * 0.12)
     o.rotation_euler = (0.35 * random.uniform(-1, 1), 0.4, angle)
@@ -233,17 +241,17 @@ def corner_vine(sx, sy):
         t = i / (n - 1)
         if t < 0.5:   # along horizontal plank, from inside toward the corner
             u = t / 0.5
-            x = sx * (0.35 + 0.62 * u); y = sy * (H - W / 2 + 0.11 * math.sin(u * 9.0))
+            x = sx * (0.52 + 0.45 * u); y = sy * (H - W / 2 + 0.11 * math.sin(u * 9.0))
         else:         # down the post
             u = (t - 0.5) / 0.5
-            x = sx * (H - W / 2 + 0.11 * math.sin(u * 8.0 + 1.0)); y = sy * (H - W * 0.4 - 0.62 * u)
-        z = T + 0.03 + 0.03 * math.sin(t * 20.0)   # over and under the plank surface
+            x = sx * (H - W / 2 + 0.11 * math.sin(u * 8.0 + 1.0)); y = sy * (H - W * 0.4 - 0.45 * u)
+        z = T + 0.045 + 0.012 * math.sin(t * 20.0)   # rides on the plank surface
         pts.append((x, y, z))
     vine(pts)
-    for i in range(1, n - 1, 2):
+    for i in range(1, n - 1):
         x, y, z = pts[i]
         ang = math.atan2(pts[i + 1][1] - pts[i - 1][1], pts[i + 1][0] - pts[i - 1][0])
-        side = 1 if (i // 2) % 2 == 0 else -1
+        side = 1 if i % 2 == 0 else -1
         leaf((x + math.cos(ang + side * 1.57) * 0.06, y + math.sin(ang + side * 1.57) * 0.06, z + 0.02), ang + side * 0.9)
     blossom((pts[3][0], pts[3][1] + sy * 0.05, T + 0.08))
     blossom((pts[10][0] - sx * 0.05, pts[10][1], T + 0.08), 0.03)
@@ -260,13 +268,13 @@ def area(name, loc, energy, color, size, target=(0, 0, 0)):
     ld = bpy.data.lights.new(name, 'AREA'); ld.energy = energy; ld.color = color; ld.size = size
     o = bpy.data.objects.new(name, ld); bpy.context.collection.objects.link(o); o.location = loc
     d = Vector(target) - Vector(loc); o.rotation_euler = d.to_track_quat('-Z', 'Y').to_euler()
-area("key_warm", (-2.5, 3.0, 4.0), 900, (1.0, 0.90, 0.76), 3.0)
-area("fill_cool", (3.0, -1.0, 3.0), 250, (0.72, 0.80, 1.0), 4.0)
-area("rim_top", (0.0, 4.0, 1.0), 200, (1.0, 0.95, 0.85), 2.0)
+area("key_warm", (-2.5, 3.0, 4.0), 520, (1.0, 0.90, 0.76), 3.0)
+area("fill_cool", (3.0, -1.0, 3.0), 140, (0.72, 0.80, 1.0), 4.0)
+area("rim_top", (0.0, 4.0, 1.0), 160, (1.0, 0.95, 0.85), 2.0)
 w = bpy.data.worlds.new("w"); sc.world = w
 try: w.use_nodes = True
 except Exception: pass
-w.node_tree.nodes["Background"].inputs[0].default_value = hexc('#e8dcff'); w.node_tree.nodes["Background"].inputs[1].default_value = 0.35
+w.node_tree.nodes["Background"].inputs[0].default_value = hexc('#e8dcff'); w.node_tree.nodes["Background"].inputs[1].default_value = 0.25
 
 cam_d = bpy.data.cameras.new("cam"); cam_d.type = 'ORTHO'; cam_d.ortho_scale = ORTHO
 cam = bpy.data.objects.new("cam", cam_d); bpy.context.collection.objects.link(cam)
@@ -284,7 +292,7 @@ bpy.ops.render.render(write_still=True)
 
 # nine-patch margins (pixels, at 2x). Corner patch must contain caps, vines and blossoms.
 px_per_unit = RES / ORTHO
-margin = int(round((ORTHO / 2 - (H - W - 0.42)) * px_per_unit))
+margin = int(round((ORTHO / 2 - (H - W - 0.22)) * px_per_unit))
 json.dump({"texture": "frame_purple_vine.png", "scale": 2, "margin_left": margin, "margin_top": margin,
            "margin_right": margin, "margin_bottom": margin, "axis_stretch": "stretch",
            "content_inset_px": int(round((ORTHO / 2 - (H - W)) * px_per_unit))},
