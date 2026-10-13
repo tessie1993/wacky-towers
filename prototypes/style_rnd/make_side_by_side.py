@@ -28,4 +28,4 @@ s = Image.new("RGB", (1400, 410), (59, 35, 70)); d = ImageDraw.Draw(s)
 for i, (im, k) in enumerate(zip(ims, ("LINEAR", "FILMIC", "ACES", "AGX (chosen)"))):
     s.paste(im, (i * 350, 50)); d.text((i * 350 + 10, 8), k, font=FONT, fill=(248, 200, 64) if i == 3 else (246, 231, 196))
 s.save(E + "a_tonemap_strip.png"); print("wrote strip")
-for k in ("linear", "filmic", "aces", "agx"): os.remove(E + "a_tonemap_%s.png" % k)
+#for k in ("linear", "filmic", "aces", "agx"): os.remove(E + "a_tonemap_%s.png" % k)

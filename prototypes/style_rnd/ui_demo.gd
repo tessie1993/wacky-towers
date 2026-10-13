@@ -14,7 +14,9 @@ func _run() -> void:
 	var meta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://prototypes/style_rnd/renders/frame_purple_vine.json"))
 	var margin: int = int(meta.margin_left)
 	var tex512 := Kit.load_tex(SRC, 512)
-	var tex256 := Kit.load_tex(SRC, 256)
+	var tex384 := Kit.load_tex(SRC, 384)
+	var chip_meta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://prototypes/style_rnd/renders/frame_purple_chip.json"))
+	var chip_tex := Kit.load_tex("res://prototypes/style_rnd/renders/frame_purple_chip.png", 256)
 	var lilita := Kit.load_font("res://prototypes/style_rnd/fonts/LilitaOne-Regular.ttf")
 	var fredoka := Kit.load_font("res://assets/fonts/fredoka/fredoka-700.woff2")
 
@@ -37,16 +39,17 @@ func _run() -> void:
 		l.position = Vector2(200, 260 + i * 90); ui.add_child(l)
 
 	# Tall panel (ref 08 proportions)
-	var tall := Kit.frame_patch(tex512, margin, 1024)
+	# size class rule: a nine-patch must be >= 2x its margin, so the tall panel uses the 384 px texture
+	var tall := Kit.frame_patch(tex384, margin, 1024)
 	tall.position = Vector2(790, 150); tall.size = Vector2(300, 520); ui.add_child(tall)
 	var t2 := Kit.title_text("OPTIONS", lilita, 54, 5)
 	t2.position = Vector2(940 - t2.size.x / 2, 90); ui.add_child(t2)
 
 	# HUD chip (ref 15 SCORE chip) from the same render, downscaled
-	var chip := Kit.frame_patch(tex256, margin, 1024)
-	chip.position = Vector2(1110, 160); chip.size = Vector2(150, 130); ui.add_child(chip)
-	var sl := Kit.label("SCORE", fredoka, 18); sl.position = Vector2(1155, 195); ui.add_child(sl)
-	var sv := Kit.label("1,250", lilita, 30); sv.position = Vector2(1150, 218); ui.add_child(sv)
+	var chip := Kit.frame_patch(chip_tex, int(chip_meta.margin_left), 1024)
+	chip.position = Vector2(1105, 160); chip.size = Vector2(160, 130); ui.add_child(chip)
+	var sl := Kit.label("SCORE", fredoka, 18); sl.position = Vector2(1157, 186); ui.add_child(sl)
+	var sv := Kit.label("1,250", lilita, 32); sv.position = Vector2(1146, 206); ui.add_child(sv)
 
 	for i in 6: await process_frame
 	await Kit.snap(root, OUT + "b_ninepatch_ui.png")
