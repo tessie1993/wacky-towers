@@ -42,6 +42,9 @@ var _practice_loadouts: Array[Dictionary] = []
 var _selected_item_slot: int = 0
 var _arcade: WtArcadeDirector
 var _minigame: WtMinigameRound
+## Rolls a fresh seed per attempt so the next block is never the same fixed order.
+## Level JSON seeds remain only for tests, replays and the campaign verifier.
+var _attempt_rng := RandomNumberGenerator.new()
 
 func _ready() -> void:
 	WtPlayerInput.install_actions()
@@ -68,6 +71,8 @@ func _ready() -> void:
 	_apply_preferences()
 	_input.setup(get_tree(),_settings())
 	_smoke = OS.get_cmdline_user_args().has("--smoke-game")
+	if _smoke: _attempt_rng.seed = 1729
+	else: _attempt_rng.randomize()
 	if _smoke:
 		if _store.active_profile() == null: _store.create("QA Builder")
 		_start_level(DEFAULT_LEVEL)
@@ -300,7 +305,7 @@ func _execute_intent(id: StringName, args: Dictionary) -> void:
 			var pool: Array = args.get("modes", [])
 			if pool.is_empty(): pool = _modes.round_modes()
 			pool = pool.filter(func(mode: Variant) -> bool: return not WtMinigameRound.UNSUPPORTED.has(str(mode)))
-			var configured: Dictionary = _modes.start_tournament(players, int(args.get("rounds", 3)), 20261010, pool)
+			var configured: Dictionary = _modes.start_tournament(players, int(args.get("rounds", 3)), _fresh_seed(), pool)
 			if not configured.get("ok", false):
 				_ui.show_toast("Choose two to four players and a valid round pool.")
 				return
@@ -379,7 +384,7 @@ func _start_arcade(biome: StringName) -> void:
 	_selected_biome = biome
 	_mode = &"arcade"
 	_level_id = &"arcade"
-	_begin_session(_modes.arcade_level(biome, 20261010))
+	_begin_session(_modes.arcade_level(biome, _fresh_seed()))
 
 func _start_round() -> void:
 	_mode = &"tournament"
@@ -456,7 +461,10 @@ func _begin_session(level: LevelData) -> void:
 		for key: String in ["t2", "t3"]:
 			if _level.stars.has(key): _level.stars[key] = int(_level.stars[key]) * 3 / 2
 	_apply_loadout(level)
-	_sim = BoardSim.new(level, level.seed if level.seed != LevelData.NO_SEED else 20261010, _catalog)
+	# Campaign attempts reshuffle every time; party rounds keep the round's shared seed so
+	# every player (and bot) faces the same random sequence.
+	var shared: bool = _mode in [&"tournament", &"lan"] and level.seed != LevelData.NO_SEED
+	_sim = BoardSim.new(level, level.seed if shared else _fresh_seed(), _catalog)
 	_abilities = WtAbilities.new()
 	_abilities.setup(level, _catalog, _sim.get_api(), _ability_character(), (&"tournament" if _mode == &"lan" else _mode))
 	_abilities.set_charge_perks(_session_effects())
@@ -866,6 +874,10 @@ func _goal_text(goal: Dictionary) -> String:
 		"endless": return "Keep building — beat your best score"
 		_: return "Clear %d full layers" % int(goal.get("n", 4))
 
+## A new non-negative seed for one attempt or one party round.
+func _fresh_seed() -> int:
+	return int(_attempt_rng.randi() & 0x7fffffff)
+
 static func _format_ms(ms: int) -> String:
 	if ms <= 0: return "—"
 	return "%d:%02d" % [ms / 60000, (ms / 1000) % 60]
@@ -894,7 +906,7 @@ func _start_lan_round() -> void:
 		var players: Array = []
 		for player: Dictionary in _lan.snapshot().players:
 			players.append({"id": str(player.id), "name": player.name, "character": player.character})
-		_network_state = _modes.start_tournament(players, _lan.rounds, 20261010)
+		_network_state = _modes.start_tournament(players, _lan.rounds, _fresh_seed())
 	var level: LevelData = _modes.next_round_level()
 	if level == null: return
 	_network_state = _modes.tournament_snapshot()
