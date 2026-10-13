@@ -33,6 +33,7 @@ uniform vec3 haze_color : source_color = vec3(0.87, 0.90, 0.96);
 uniform float haze : hint_range(0.0, 1.0) = 0.0;  // painted contact darkening at the bottom
 
 varying vec3 lp;
+varying vec3 ln;
 uniform vec3 half_size = vec3(0.5);
 uniform float edge_width = 0.13; // = rounding radius of the mesh // mesh half extents (edge mask in fragment, no tri artifacts)
 
@@ -48,6 +49,7 @@ float around(vec3 p) { return p.x + p.z + (abs(p.x) > abs(p.z) ? 0.0 : 3.0); }
 
 void vertex() {
 	lp = VERTEX;
+	ln = NORMAL;
 	// edge = how close the vertex is to a rounded edge (second-largest |axis| -> 0.5)
 	if (cap_y < 0.5) {
 		float band = smoothstep(cap_y - 0.06, cap_y + 0.10, VERTEX.y);
@@ -65,7 +67,9 @@ void fragment() {
 	float amx = max(a.x, max(a.y, a.z));
 	float amid = a.x + a.y + a.z - amx - min(a.x, min(a.y, a.z));
 	float edge = smoothstep(0.2, 1.0, amid);
-	vec2 side_uv = vec2(around(p), p.y);
+	// planar per facing: tops use xz, sides wrap around (around() jumps on the |x|=|z|
+	// diagonals, which must never be visible on a top face)
+	vec2 side_uv = abs(ln.y) > 0.6 ? p.xz * 1.3 : vec2(around(p), p.y);
 	vec3 wn = (INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz;
 	// ---- body: dirt with painted strata and pebbles
 	float paint = fbm(side_uv * paint_scale + seed);
