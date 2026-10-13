@@ -43,7 +43,16 @@
       "screw_right"
     ]
   },
-  "rules": [],
+  "rules": [
+    {
+      "id": "storm_bolt",
+      "params": {
+        "bolt_interval_ms": 12000,
+        "bolt_warn_ms": 2000,
+        "bolt_jitter_ms": 2000
+      }
+    }
+  ],
   "metadata": {
     "source": "design/levels/celestial.md",
     "status": "Authored; awaiting playtest",
@@ -89,7 +98,13 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 3 -> 3; time stars x1.78"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix (celestial needed a defender level)",
+        "change": "Added storm_bolt (12000 ms, warn 2000, jitter 2000) as falling meteors. design_spec has no rules array, so nothing mirrored; level_type defender"
       }
-    ]
+    ],
+    "level_type": "defender"
   }
 }

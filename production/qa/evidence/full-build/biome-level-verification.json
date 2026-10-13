@@ -125,7 +125,17 @@
 				8
 			],
 			"result_after_smoke": 0,
-			"rule_hooks": [],
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_command",
+						"on_tick",
+						"on_lock"
+					],
+					"id": "balloon"
+				}
+			],
 			"scene": "res://src/levels/meadow/meadow_01/meadow_01.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
@@ -176,6 +186,13 @@
 						"on_level_start"
 					],
 					"id": "mascot_catch"
+				},
+				{
+					"hooks": [
+						"on_lock",
+						"on_resolve_end"
+					],
+					"id": "wobble"
 				}
 			],
 			"scene": "res://src/levels/meadow/meadow_02/meadow_02.tscn",
@@ -552,6 +569,13 @@
 						"on_land"
 					],
 					"id": "sticky_landing"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "storm_bolt"
 				}
 			],
 			"scene": "res://src/levels/meadow/meadow_08/meadow_08.tscn",
@@ -758,7 +782,7 @@
 				"level_ms": 2000,
 				"locks": 6,
 				"stars": 3,
-				"state_hash": 2590757513,
+				"state_hash": 2982949791,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -1296,6 +1320,13 @@
 						"on_tick"
 					],
 					"id": "mascot_mood"
+				},
+				{
+					"hooks": [
+						"on_lock",
+						"on_resolve_end"
+					],
+					"id": "wobble"
 				}
 			],
 			"scene": "res://src/levels/candy/candy_04/candy_04.tscn",
@@ -2103,6 +2134,7 @@
 			"failures": [],
 			"goal": {
 				"n": 2.0,
+				"time_limit_ms": 360000.0,
 				"type": "clear_n"
 			},
 			"ice_flick_reachable": true,
@@ -2128,6 +2160,13 @@
 						"on_spawn"
 					],
 					"id": "mascot_hint"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "stopwatch"
 				},
 				{
 					"hooks": [
@@ -2245,7 +2284,15 @@
 				8
 			],
 			"result_after_smoke": 0,
-			"rule_hooks": [],
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_lock",
+						"on_resolve_end"
+					],
+					"id": "wobble"
+				}
+			],
 			"scene": "res://src/levels/ice/ice_03/ice_03.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
@@ -2752,7 +2799,7 @@
 				"level_ms": 2100,
 				"locks": 6,
 				"stars": 3,
-				"state_hash": 4057318574,
+				"state_hash": 2710147041,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -3028,6 +3075,15 @@
 						"on_command"
 					],
 					"id": "angle_gem"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_command",
+						"on_tick",
+						"on_lock"
+					],
+					"id": "balloon"
 				}
 			],
 			"scene": "res://src/levels/underwater/underwater_01/underwater_01.tscn",
@@ -3091,6 +3147,15 @@
 						"on_command"
 					],
 					"id": "angle_gem"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "crab_claw"
 				}
 			],
 			"scene": "res://src/levels/underwater/underwater_02/underwater_02.tscn",
@@ -3336,7 +3401,7 @@
 				"level_ms": 3250,
 				"locks": 9,
 				"stars": 3,
-				"state_hash": 4057203246,
+				"state_hash": 3715629205,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -3917,7 +3982,16 @@
 				8
 			],
 			"result_after_smoke": 0,
-			"rule_hooks": [],
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_resolve_end"
+					],
+					"id": "lava_rise"
+				}
+			],
 			"scene": "res://src/levels/lava/lava_01/lava_01.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
@@ -4769,7 +4843,15 @@
 				8
 			],
 			"result_after_smoke": 0,
-			"rule_hooks": [],
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_lock"
+					],
+					"id": "jumbled_queue"
+				}
+			],
 			"scene": "res://src/levels/forest/forest_01/forest_01.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
@@ -5388,7 +5470,7 @@
 				"level_ms": 3250,
 				"locks": 9,
 				"stars": 3,
-				"state_hash": 2053359150,
+				"state_hash": 161441784,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -5649,7 +5731,15 @@
 				8
 			],
 			"result_after_smoke": 0,
-			"rule_hooks": [],
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_lock",
+						"on_resolve_end"
+					],
+					"id": "wobble"
+				}
+			],
 			"scene": "res://src/levels/cave/cave_01/cave_01.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
@@ -6266,7 +6356,7 @@
 				"level_ms": 1333,
 				"locks": 4,
 				"stars": 3,
-				"state_hash": 3115295525,
+				"state_hash": 4153658527,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -6508,7 +6598,15 @@
 				8
 			],
 			"result_after_smoke": 0,
-			"rule_hooks": [],
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_lock",
+						"on_resolve_end"
+					],
+					"id": "wobble"
+				}
+			],
 			"scene": "res://src/levels/clockwork/clockwork_01/clockwork_01.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
@@ -7141,7 +7239,7 @@
 				"level_ms": 2483,
 				"locks": 7,
 				"stars": 3,
-				"state_hash": 2339488597,
+				"state_hash": 559609147,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -7418,7 +7516,17 @@
 				8
 			],
 			"result_after_smoke": 0,
-			"rule_hooks": [],
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn",
+						"on_command",
+						"on_tick",
+						"on_lock"
+					],
+					"id": "balloon"
+				}
+			],
 			"scene": "res://src/levels/neon/neon_01/neon_01.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
@@ -7720,7 +7828,7 @@
 				"level_ms": 2733,
 				"locks": 8,
 				"stars": 3,
-				"state_hash": 2525711146,
+				"state_hash": 758409148,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -7837,6 +7945,13 @@
 						"on_tick"
 					],
 					"id": "stopwatch"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "storm_bolt"
 				}
 			],
 			"scene": "res://src/levels/neon/neon_08/neon_08.tscn",
@@ -8285,6 +8400,13 @@
 						"on_command"
 					],
 					"id": "angle_gem"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn"
+					],
+					"id": "mystery_piece"
 				}
 			],
 			"scene": "res://src/levels/celestial/celestial_01/celestial_01.tscn",
@@ -8311,6 +8433,7 @@
 			"failures": [],
 			"goal": {
 				"n": 3.0,
+				"time_limit_ms": 330000.0,
 				"type": "clear_n"
 			},
 			"ice_flick_reachable": true,
@@ -8336,6 +8459,13 @@
 						"on_spawn"
 					],
 					"id": "mascot_hint"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "stopwatch"
 				},
 				{
 					"hooks": [
@@ -8710,7 +8840,15 @@
 				8
 			],
 			"result_after_smoke": 0,
-			"rule_hooks": [],
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "storm_bolt"
+				}
+			],
 			"scene": "res://src/levels/celestial/celestial_08/celestial_08.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
@@ -8916,7 +9054,7 @@
 				"level_ms": 1716,
 				"locks": 5,
 				"stars": 3,
-				"state_hash": 2318395982,
+				"state_hash": 1378729153,
 				"status": "WIN",
 				"trimmed": 0
 			},

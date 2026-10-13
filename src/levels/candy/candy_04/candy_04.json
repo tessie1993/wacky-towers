@@ -63,6 +63,12 @@
       "params": {
         "prank": "bridge_jump"
       }
+    },
+    {
+      "id": "wobble",
+      "params": {
+        "wobble_max": 7
+      }
     }
   ],
   "stars": {
@@ -143,6 +149,12 @@
           "params": {
             "prank": "bridge_jump"
           }
+        },
+        {
+          "id": "wobble",
+          "params": {
+            "wobble_max": 7
+          }
         }
       ],
       "stars": {
@@ -176,7 +188,13 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 8x3 -> 8x8 (offset x0 z2); clear_n 5 -> 3; time stars x1.60"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: level type mix (candy needed a balance level)",
+        "change": "Added wobble (wobble_max 7) to the jelly level; level_type balance"
       }
-    ]
+    ],
+    "level_type": "balance"
   }
 }

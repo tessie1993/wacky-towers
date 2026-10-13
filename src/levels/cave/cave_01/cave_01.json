@@ -35,7 +35,14 @@
     "T_level": 200,
     "n": 2
   },
-  "rules": [],
+  "rules": [
+    {
+      "id": "wobble",
+      "params": {
+        "wobble_max": 8
+      }
+    }
+  ],
   "stars": {
     "t2": 290000,
     "t3": 205000
@@ -91,6 +98,12 @@
         {
           "id": "wo09_watcher",
           "params": {}
+        },
+        {
+          "id": "wobble",
+          "params": {
+            "wobble_max": 8
+          }
         }
       ],
       "secrets": [
@@ -132,7 +145,13 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 5x5 -> 8x8 (offset x1 z1); clear_n 3 -> 2; time stars x1.71"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix (cave needed a balance level)",
+        "change": "Added wobble (wobble_max 8, gentler than default 6) as an unsteady cave floor; level_type balance"
       }
-    ]
+    ],
+    "level_type": "balance"
   }
 }

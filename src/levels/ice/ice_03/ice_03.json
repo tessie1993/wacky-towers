@@ -35,7 +35,14 @@
     "type": "clear_n",
     "n": 4
   },
-  "rules": [],
+  "rules": [
+    {
+      "id": "wobble",
+      "params": {
+        "wobble_max": 8
+      }
+    }
+  ],
   "stars": {
     "t2": 585000,
     "t3": 410000
@@ -95,7 +102,14 @@
         "type": "clear",
         "N": 5
       },
-      "rules": [],
+      "rules": [
+        {
+          "id": "wobble",
+          "params": {
+            "wobble_max": 8
+          }
+        }
+      ],
       "stars": {
         "t2": 365000,
         "t3": 255000
@@ -132,7 +146,13 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 4x8 -> 8x8 (offset x2 z0); clear_n 5 -> 4; time stars x1.60"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix",
+        "change": "Added wobble (wobble_max 8, gentler than default 6) to the curling level; level_type balance"
       }
-    ]
+    ],
+    "level_type": "balance"
   }
 }

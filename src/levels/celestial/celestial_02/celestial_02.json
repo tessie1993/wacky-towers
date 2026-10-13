@@ -56,12 +56,24 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 3
+    "n": 3,
+    "time_limit_ms": 330000
   },
   "rules": [
     {
       "id": "mascot_hint",
       "params": {}
+    },
+    {
+      "id": "stopwatch",
+      "params": {
+        "stop_every_ms": 16000,
+        "stop_jitter_ms": 3000,
+        "stop_warn_ms": 1500,
+        "stop_ms": 2000,
+        "catchup_scale": 1500,
+        "catchup_ms": 2000
+      }
     },
     {
       "id": "angle_gem",
@@ -142,6 +154,17 @@
           "params": {}
         },
         {
+          "id": "stopwatch",
+          "params": {
+            "stop_every_ms": 16000,
+            "stop_jitter_ms": 3000,
+            "stop_warn_ms": 1500,
+            "stop_ms": 2000,
+            "catchup_scale": 1500,
+            "catchup_ms": 2000
+          }
+        },
+        {
           "id": "angle_gem",
           "params": {
             "skin": "duck_constellation"
@@ -164,7 +187,13 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 3 -> 3; time stars x1.78"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix",
+        "change": "Added stopwatch (freeze every 16000 ms, as clockwork_10) and goal.time_limit_ms 330000 (t2 265000 x ~1.25) as a comet countdown; level_type race"
       }
-    ]
+    ],
+    "level_type": "race"
   }
 }

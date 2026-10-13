@@ -57,6 +57,12 @@
         "objects_max": 4,
         "skin": "coconut"
       }
+    },
+    {
+      "id": "wobble",
+      "params": {
+        "wobble_max": 7
+      }
     }
   ],
   "stars": {
@@ -133,6 +139,12 @@
             "objects_max": 4,
             "skin": "coconut"
           }
+        },
+        {
+          "id": "wobble",
+          "params": {
+            "wobble_max": 7
+          }
         }
       ],
       "stars": {
@@ -160,7 +172,13 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 3 -> 3; time stars x1.78"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: level type mix (carnival needed a balance level)",
+        "change": "Added wobble (wobble_max 7) as a wobbly coconut-shy stack; level_type balance"
       }
-    ]
+    ],
+    "level_type": "balance"
   }
 }

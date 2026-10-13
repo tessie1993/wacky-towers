@@ -38,6 +38,14 @@
       "params": {
         "sticky_gravity_scale": 0.7
       }
+    },
+    {
+      "id": "storm_bolt",
+      "params": {
+        "bolt_interval_ms": 15000,
+        "bolt_warn_ms": 2500,
+        "bolt_jitter_ms": 2000
+      }
     }
   ],
   "stars": {
@@ -93,6 +101,14 @@
           "params": {
             "sticky_gravity_scale": 0.7
           }
+        },
+        {
+          "id": "storm_bolt",
+          "params": {
+            "bolt_interval_ms": 15000,
+            "bolt_warn_ms": 2500,
+            "bolt_jitter_ms": 2000
+          }
         }
       ],
       "stars": {
@@ -116,7 +132,13 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 5x5 -> 8x8 (offset x1 z1); clear stars -> 1/2"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: level type mix (meadow needed a defender level)",
+        "change": "Added storm_bolt (15000 ms, warn 2500, jitter 2000; safe range 5000-20000) so the survive goal becomes defend-the-tower; level_type defender"
       }
-    ]
+    ],
+    "level_type": "defender"
   }
 }

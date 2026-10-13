@@ -54,6 +54,14 @@
         ],
         "view_snap": 150
       }
+    },
+    {
+      "id": "balloon",
+      "params": {
+        "balloon_per_bag": 1,
+        "balloon_g_mult": 0.6,
+        "balloon_drift_ms": 3500
+      }
     }
   ],
   "stars": {
@@ -115,6 +123,14 @@
             ],
             "view_snap": 150
           }
+        },
+        {
+          "id": "balloon",
+          "params": {
+            "balloon_per_bag": 1,
+            "balloon_g_mult": 0.6,
+            "balloon_drift_ms": 3500
+          }
         }
       ],
       "stars": {
@@ -137,7 +153,13 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 5x5 -> 8x8 (offset x1 z1); clear_n 3 -> 2; time stars x1.71"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix",
+        "change": "Added balloon as buoyant pieces (1 per bag, g x0.6, drift 3500 ms); level_type balance"
       }
-    ]
+    ],
+    "level_type": "balance"
   }
 }

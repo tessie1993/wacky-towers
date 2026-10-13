@@ -31,7 +31,16 @@
     "type": "clear_n",
     "n": 1
   },
-  "rules": [],
+  "rules": [
+    {
+      "id": "balloon",
+      "params": {
+        "balloon_per_bag": 1,
+        "balloon_g_mult": 0.7,
+        "balloon_drift_ms": 4000
+      }
+    }
+  ],
   "stars": {
     "t2": 195000,
     "t3": 140000
@@ -79,7 +88,16 @@
         "type": "clear_n",
         "n": 3
       },
-      "rules": [],
+      "rules": [
+        {
+          "id": "balloon",
+          "params": {
+            "balloon_per_bag": 1,
+            "balloon_g_mult": 0.7,
+            "balloon_drift_ms": 4000
+          }
+        }
+      ],
       "stars": {
         "t2": 145000,
         "t3": 105000
@@ -101,7 +119,13 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 4x4 -> 8x8 (offset x2 z2); clear_n 3 -> 1; time stars x1.33"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix (neon needed a balance level)",
+        "change": "Added gentle balloon (1 per bag, g x0.7, drift 4000 ms) as neon party balloons; level_type balance"
       }
-    ]
+    ],
+    "level_type": "balance"
   }
 }

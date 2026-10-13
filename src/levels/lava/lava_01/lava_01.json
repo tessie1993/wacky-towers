@@ -40,7 +40,17 @@
     "icon": "campfire"
   },
   "seed": null,
-  "rules": [],
+  "rules": [
+    {
+      "id": "lava_rise",
+      "params": {
+        "melt_every_s": 60,
+        "first_s": 60,
+        "melt_max": 2,
+        "melt_warn_ms": 3000
+      }
+    }
+  ],
   "metadata": {
     "source": "design/levels/lava.md",
     "status": "Authored; awaiting playtest",
@@ -106,7 +116,13 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 5x5 -> 8x8 (offset x1 z1); clear_n 3 -> 2; time stars x1.71"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix",
+        "change": "Added gentle lava_rise (first 60 s, every 60 s, max 2 melts, warn 3000 ms; gentler than lava_03). design_spec has no rules array, so nothing mirrored; level_type defender"
       }
-    ]
+    ],
+    "level_type": "defender"
   }
 }

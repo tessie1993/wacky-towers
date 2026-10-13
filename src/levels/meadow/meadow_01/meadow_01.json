@@ -36,7 +36,16 @@
     "type": "clear_n",
     "n": 2
   },
-  "rules": [],
+  "rules": [
+    {
+      "id": "balloon",
+      "params": {
+        "balloon_per_bag": 1,
+        "balloon_g_mult": 0.7,
+        "balloon_drift_ms": 4000
+      }
+    }
+  ],
   "stars": {
     "t2": 290000,
     "t3": 210000
@@ -88,7 +97,16 @@
         "type": "clear_n",
         "n": 4
       },
-      "rules": [],
+      "rules": [
+        {
+          "id": "balloon",
+          "params": {
+            "balloon_per_bag": 1,
+            "balloon_g_mult": 0.7,
+            "balloon_drift_ms": 4000
+          }
+        }
+      ],
       "stars": {
         "t2": 145000,
         "t3": 105000
@@ -110,7 +128,13 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 4x4 -> 8x8 (offset x2 z2); clear_n 4 -> 2; time stars x2.00"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix",
+        "change": "Added gentle balloon twist (1 per bag, g x0.7, drift 4000 ms); level_type funny"
       }
-    ]
+    ],
+    "level_type": "funny"
   }
 }
