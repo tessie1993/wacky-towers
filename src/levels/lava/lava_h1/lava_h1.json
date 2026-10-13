@@ -55,6 +55,7 @@
     ]
   },
   "metadata": {
+    "level_type": "defender",
     "source": "design/levels/lava.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

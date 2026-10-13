@@ -49,6 +49,7 @@
     ]
   },
   "metadata": {
+    "level_type": "balance",
     "source": "design/levels/celestial.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

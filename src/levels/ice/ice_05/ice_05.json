@@ -53,6 +53,7 @@
   "name": "LVL_ICE_05_TITLE",
   "seed": null,
   "metadata": {
+    "level_type": "race",
     "source": "design/levels/ice.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

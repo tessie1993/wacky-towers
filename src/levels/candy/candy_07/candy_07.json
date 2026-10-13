@@ -98,6 +98,7 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "defender",
     "source": "design/levels/candy.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

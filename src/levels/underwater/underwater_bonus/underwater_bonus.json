@@ -79,6 +79,7 @@
   "name": "LVL_UNDERWATER_BONUS_TITLE",
   "seed": null,
   "metadata": {
+    "level_type": "completing",
     "source": "design/levels/underwater.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

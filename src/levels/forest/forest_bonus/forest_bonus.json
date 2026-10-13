@@ -86,6 +86,7 @@
     }
   ],
   "metadata": {
+    "level_type": "completing",
     "source": "design/levels/forest.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

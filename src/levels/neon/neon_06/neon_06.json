@@ -97,6 +97,7 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "completing",
     "source": "design/levels/neon.md",
     "status": "Proposed",
     "design_spec": {

@@ -60,6 +60,7 @@
     ]
   },
   "metadata": {
+    "level_type": "defender",
     "source": "design/levels/forest.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

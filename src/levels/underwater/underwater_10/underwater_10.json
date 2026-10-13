@@ -73,6 +73,7 @@
   "name": "LVL_UNDERWATER_10_TITLE",
   "seed": null,
   "metadata": {
+    "level_type": "defender",
     "source": "design/levels/underwater.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

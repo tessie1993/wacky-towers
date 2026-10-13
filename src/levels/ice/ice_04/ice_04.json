@@ -61,6 +61,7 @@
     ]
   },
   "metadata": {
+    "level_type": "defender",
     "source": "design/levels/ice.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

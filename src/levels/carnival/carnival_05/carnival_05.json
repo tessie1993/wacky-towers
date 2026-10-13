@@ -65,6 +65,7 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "race",
     "source": "design/levels/carnival.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

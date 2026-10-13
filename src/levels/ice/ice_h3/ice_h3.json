@@ -83,6 +83,7 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "balance",
     "source": "design/levels/ice.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

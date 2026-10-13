@@ -78,6 +78,7 @@
     "icon": "picnic"
   },
   "metadata": {
+    "level_type": "completing",
     "source": "design/levels/meadow.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

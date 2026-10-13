@@ -93,6 +93,7 @@
     "icon": "flower"
   },
   "metadata": {
+    "level_type": "completing",
     "source": "production/levels/meadow/data/meadow_06.json",
     "status": "Authored; awaiting playtest",
     "design_spec": {

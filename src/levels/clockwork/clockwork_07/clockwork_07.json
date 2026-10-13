@@ -49,6 +49,7 @@
     ]
   },
   "metadata": {
+    "level_type": "race",
     "source": "design/levels/clockwork.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

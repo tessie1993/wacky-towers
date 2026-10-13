@@ -51,6 +51,7 @@
     ]
   },
   "metadata": {
+    "level_type": "balance",
     "source": "design/levels/underwater.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

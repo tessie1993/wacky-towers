@@ -79,6 +79,7 @@
   "name": "LVL_CAVE_BONUS_TITLE",
   "seed": null,
   "metadata": {
+    "level_type": "completing",
     "source": "design/levels/cave.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

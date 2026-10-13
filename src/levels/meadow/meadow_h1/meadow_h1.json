@@ -86,6 +86,7 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "twist",
     "source": "design/levels/meadow.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

@@ -81,6 +81,7 @@
   "name": "LVL_CLOCKWORK_BONUS_TITLE",
   "seed": null,
   "metadata": {
+    "level_type": "completing",
     "source": "design/levels/clockwork.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {

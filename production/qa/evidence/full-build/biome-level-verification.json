@@ -9402,6 +9402,13 @@
 						"on_resolve_end"
 					],
 					"id": "mushroom_popup"
+				},
+				{
+					"hooks": [
+						"on_lock",
+						"on_resolve_end"
+					],
+					"id": "wobble"
 				}
 			],
 			"scene": "res://src/levels/carnival/carnival_02/carnival_02.tscn",

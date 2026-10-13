@@ -72,6 +72,7 @@
     ]
   },
   "metadata": {
+    "level_type": "twist",
     "source": "design/levels/ice.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
