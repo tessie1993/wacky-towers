@@ -146,17 +146,111 @@ and unstyled text buttons.
 The cast is original. It is chunky "super-deformed" fantasy: big heads, big hands, about 2.5
 heads tall. Characters are painted, never flat.
 
-| Character | Look |
+| Character | Look (silhouette key, colour key, prop) |
 |---|---|
-| **The Wizard (mascot)** | Purple star-spangled robe and hat, huge white beard, rosy cheeks, gold star wand, often riding a cloud |
-| **Knight** | Silver armour, red plume, round friendly face |
-| **Pirate** | Red beard, tricorn hat with skull, eyepatch, cutlass |
-| **Dwarf** | Ginger braided beard, helmet or miner's lamp, pickaxe |
-| **Elf / Thief** | Green tunic and hood, blond, slingshot or lockpick |
-| **Robot** | White and blue round robot, glowing visor |
-| **Astronaut** | White suit, round visor |
-| **Tournament wizards** | Red, blue, green and purple wizard variants, each with a P1–P4 marker (circle, triangle, square, star) (ref 14) |
-| **Bosses** | Molten golem, rainbow kraken, angry wind cloud, stone guardian (refs 02, 07, 11) |
+| **The Wizard (mascot)** | Tall floppy purple hat with gold stars and a cream band, purple robe with star pattern and cream trim, huge white beard in 3-5 curl lobes, rosy cheeks, closed-eye smile, gold star wand. Rides a puffy cloud with lilac swirls. Poses: point (story), wand wave, peek (settings), cheer. Colour key: purple + white + gold (refs 01, 02, 07, 15, 16) |
+| **Knight** | Silver plate with a red plume, round friendly face, short sword or cannon crew (refs 01, 07, 09). Colour key: silver + red |
+| **Pirate** | Tricorn with skull badge, red or ginger beard, eyepatch, blue coat, cutlass. Colour key: navy + red (refs 01, 09, 10, 16) |
+| **Dwarf** | Stocky, ginger braided beard, steel helmet or miner's lamp, pickaxe or hammer, backpack. Colour key: ginger + steel (refs 01, 02, 12) |
+| **Elf / Thief** | Blond, green tunic and pointed hood, slingshot, grappling hook or lockpick. Colour key: green + tan (refs 01, 10, 11, 12) |
+| **Robot** | Small white and blue round-headed robot, glowing blue visor eyes, antenna, tiny arms. Colour key: white + cyan (refs 09, 12, 16) |
+| **Astronaut** | White chunky suit, gold-tinted round visor, backpack. Also used as a diver (ref 06). Colour key: white + gold visor (refs 02, 07, 12) |
+| **Explorer** | Pith hat, brown vest, backpack, rolled sleeves, runs (refs 06, 11, 12) |
+| **Alien** | Small green-skinned humanoid with big black eyes, sleek suit, hover board (ref 06). Colour key: lime + purple |
+| **Gnomes** | Tiny garden gnomes: red pointed hat, white beard, round nose. Meadow Mayhem herders and rock throwers (refs 12, 14, 15). 1.5 heads tall |
+| **Tournament wizards** | Four recolours of the mascot wizard at the same silhouette: red P1 (circle), blue P2 (triangle), green P3 (square), purple P4 (star). The marker shows on the hat and the tag. Each sits on a cloud (ref 14) |
+| **Crowd / extras** | Painted blurred spectator silhouettes with banners for arenas (refs 01, 07). Low detail, never in focus |
+| **Wildlife** | Sheep (fluffy, round), penguins, monkeys, jellyfish, shark, sea serpent. Same soft toy forms (refs 02, 10, 15, 06) |
+
+Each hero needs 5 poses: idle, run/carry, cheer, oops, point. Eyes: small glossy black ovals with
+catch-lights. Faces are friendly even on bosses' enemies (goblins excepted).
+
+### 5a. Bosses and enemies
+
+| Boss | Look | Where |
+|---|---|---|
+| **Molten golem** | Hulking basalt body, glowing orange cracks and a lava-rim mouth, big fists, rises from a lava pool. Emissive 2.0+ in cracks, dark rock mass, orange splash lighting | Forge Boss, Molten Guardian (refs 02, 07) |
+| **Rainbow kraken** | Giant octopus with a rainbow gradient body, purple suckers, big yellow eye, foamy white splash. Tentacles frame the screen edges | Kraken Blockade (ref 12) |
+| **Angry wind cloud** | Puffy storm cloud with a furious face and blowing cheeks, swirl streams of wind, lilac shading. Used over the sky climb | Chroma Sky Climb (ref 12) |
+| **Stone guardian** | Moss-covered stone golem with glowing teal eyes, sleeps in a maze of ruined pillars | Maze Heist (ref 11) |
+| **Goblins** | Green skin, big pointed ears, big noses, ragged brown clothes, throwing rocks from the bushes. The only "scary" faces in the game, and still cartoon | Goblins' Ambush (ref 07) |
+| **Sea serpent / swamp monster** | Teal friendly-grumpy sea monster with fins | Tumbling Towers (ref 10) |
+
+Boss rules: silhouette reads at 64 px. Each boss carries one dominant colour and one accent. Never
+photoreal. A boss health bar uses the party HUD language (5b).
+
+### 5b. Party-mode HUD language (refs 09-12, 15, mockups 06/12/14/15)
+
+All items share one set of materials: dark translucent navy-brown tags for the top row, parchment
+cards for the bottom row, wood-brown signboards for names.
+
+| Element | Spec |
+|---|---|
+| **Top player tag** | Rounded dark tag (navy for P1-style, brown-red for opponents), portrait on the outer side, name in Fredoka 700 cream, score in a bigger number. Stack of 2-4 tags down the left or right edge. P1 left, others right |
+| **Player card (portrait mode)** | Parchment card in a wood frame, bottom corner. Tab above it in the player colour with the label "P1" to "P4" (red, red-brown, gold, green). Portrait box left, "SCORE" and a big number, "LIVES" with 3 red hearts (empty = dark heart). Wizard portrait sits left of the number |
+| **Goal parchment chip** | Parchment card bottom right: minigame name in brown caps, goal line in small caps ("GOAL: HERD SHEEP!"). Torn-paper edge |
+| **Round timer lozenge** | Dark rounded lozenge top centre, cream digits, optional gear ornament on the sides, bunting above in party mode |
+| **NEXT slots** | Square wood-framed slot top right: label NEXT BLOCK / NEXT AMMO / NEXT ITEM / NEXT RAMP / NEXT HAZARD above, a 3D icon inside (block, log, ramp, key, pickaxe, boxing glove, boot, blaster) |
+| **Vertical thermometer meters** | Glass tube with a bulb at the bottom and a red-yellow-green gradient (heat: orange fill; balance and stability: red-yellow-green with Danger tick; altitude and pressure: green or cyan fill; speed boost: green). Label above. Always on the left edge |
+| **Horizontal bars** | Rising Lava Height, Conveyor Speed, Guard Sleep, Fort HP: thin wood-framed bar, coloured fill, small icon at the left |
+| **Boss health bar** | Wide red bar with a dark frame, top centre under the timer, label "BOSS" above |
+| **Goal chips / counters** | Small parchment chips: sheep 5/10, stars 7/12, targets 8/15, treasure 0/30 |
+| **Live leaderboard** | Dark panel, 4 rows, rank, portrait, score, gold highlight on first place |
+| **Hazard sign** | Yellow triangular warning sign with a red exclamation mark, on island edges |
+| **Hint bubble** | Parchment speech bubble with a brown outline and a pointing-hand cursor |
+
+Rules: HUD sits in the outer 15% of the screen. Chips never cover the play area. Colours of player
+tags match the P1-P4 colours used in the tournament (red, blue, green, purple).
+Sci-fi biomes (Cosmic, Quantum Spire) swap parchment for **holographic panels**: cyan glass, thin
+bright edge, hex pattern (refs 02, 17).
+
+### 5c. Party Quest hub (mockup 16)
+
+A **central wooden fort** on a floating island: octagonal plank deck, rail posts with lanterns, a
+barrels-and-cannon corner, a purple banner with a gold crown hanging below, a scoreboard stage at the
+back with a purple pennant and a four-row scoreboard. The four heroes (wizard, pirate, astronaut,
+robot) stand in the middle. **Four glowing wooden bridges** with blue rope-light run from the
+corners to four minigame islands, each a unique miniature of its game:
+Bridge Builders (grass island with block bridge), Bomb Defuse (brass clockwork disc with a giant bomb),
+Balloon Race (a cloud with a racing track and balloon carts), Lava Escape (volcano with a block pyramid).
+Each island has a brown signboard with its name and, optionally, a small stat row. Background: a flat
+sky blue, one gentle gradient, no clutter. Camera: iso 3/4 from above. The logo sits above the hub.
+Use our logo, not the board's.
+
+### 5d. Mode-select picture cards (refs 03, 05, 06)
+
+Each mode is a **painted illustration** inside a gold or wood frame. Content:
+- **Campaign**: winding dirt path over floating islands, stone towers, a red flag, the wizard on a cloud
+- **Story**: open glowing book, a castle springing from it, a feather quill
+- **Tournament**: gold trophy with a star, banners, a crowd silhouette, confetti
+- **Arcade**: tumbling rainbow cubes, coins, a stopwatch
+- **Biomes**: orbit of floating islands around a globe: meadow, ice, crystal
+A signboard label hangs over the bottom edge, cream text with a brown carved look, a tiny icon on the left.
+Variants: a big Campaign card with a "Level 15" ribbon, a "LIVE NOW" red badge on Tournament (ref 05);
+all five equal cards in a parchment grid with a candy-coloured outline per card (ref 06); library
+scene with five tall portrait cards on a shelf (ref 03). The wizard peeks over the top-right card.
+Background is a blurred library with big windows showing floating islands.
+
+### 5e. Story-beat scene composition (refs 01, 02, 07)
+
+Painted full-scene cards, one per beat, each with a **banner** at the bottom (purple wood or gold
+ribbon plaque with cream caps text). Compose with a clear foreground character group (rule of thirds), a
+glowing focal object (book, tower, treasure chest, portal) and a depth of 3 layers.
+
+| Beat | Composition |
+|---|---|
+| The Story Begins (lost tomes) | Library interior, warm candlelight, the wizard points at a glowing open book on a lectern, elf and dwarf watch, a ghosted block tower rising from the book, potion bottles |
+| Learn to Stack / tutorial | Bright sky, floating meadow island, a ghost block and dotted arrows, the wizard on a cloud, a hand cursor and a parchment tutorial bubble |
+| Explore the Biomes | Cart carrying heroes on a stacked-block wagon along a path through ice castle, volcano and neon city islands |
+| Canopy Chaos | Jungle, a buggy loaded with mossy blocks, monkeys, vines, waterfall |
+| Goblins' Ambush | Forest clearing, a brick fort and cannon, goblins throwing rocks |
+| Forge / Molten Guardian | Dark cave, orange rim light, golem rising from lava, miners with cart, lava-cracked blocks |
+| Cosmic Gateway / Nexus | Purple galaxy, a glowing crystal tower with a gold star, a swirling portal, astronauts on floating plates |
+| Grand Finale | Gold chest brimming with jewels, fireworks, confetti, the cast cheering on a floating island, "STORY VICTORY!" ribbon |
+| Tournament | Arena with bunting, crowd, towers of coloured blocks colliding, cannons and catapults |
+
+Scene lighting: one hero light (candle, lava, portal, sun) plus a cool fill. Palette per beat is warm
+or cool, never mixed. Text is always in a banner, never loose.
 
 - **In 3D:** low-poly sculpted, then hand-painted textures. Smooth shading, soft rim light.
   Idle bob and cheer/oops poses.
@@ -210,6 +304,14 @@ and an emissive for lava, neon and celestial. Small toppers are separate instanc
 - **Lighting:** warm key light from top-left, cool fill, soft shadows, glow on emissives,
   gentle bloom. Golden-hour warmth by default. Ice is cool. Celestial is night.
 - **Fair** (ref 14): bunting, lanterns, tents, Ferris wheel in a dusk palette.
+- **Minigame biome sets** (refs 09-12, mockups): waterfall canyon with a river (Bridge Bashers), snowy
+  mountain with avalanche (Avalanche Ascent), lava cave (Rubble Rumble, Digging Frenzy), castle meadow
+  (Fort Frenzy), forest racing track (Rolling Rumble), tropical ocean (Tumbling Towers, Kraken),
+  sea cliff and ships (Shatter Shootout, Fort Blast), jungle temple (Temple Roller), underwater (Submarine
+  Salvage), clockwork factory (Clockwork Conveyor, Factory Frenzy), neon stadium (Cosmic Gravity Goal),
+  candy cake land (Candy Dodger), glacier (Glacier Rush), crystal mine (Gem Grab), sci-fi hex deck
+  (Cyber Defender, Neon Splat, Quantum Spire). Every set is an island or arena diorama with a
+  readable play surface and dressing on its edges.
 
 ---
 
@@ -224,7 +326,10 @@ and an emissive for lava, neon and celestial. Small toppers are separate instanc
 | Results | 02 "Story Victory" | Banner, treasure chest, confetti, star row, gold buttons |
 | Settings | 04 / 08 | Wood or parchment panel, star sliders, star toggles, signboard headings |
 | Tournament | 14 | Lobby cards, spinning wheel, 4-island round play, standings table, win screen |
-| Story beats | 01 / 02 / 07 | Full painted scenes, title banner. Optional and secondary. Never flat vector |
+| Story beats | 01 / 02 / 07 | Full painted scenes, title banner. Optional and secondary. Never flat vector. See 5e |
+| Party minigame | 09-12, mockups 12/14/15 | Diorama play area, top tags, timer, NEXT slot, meter, player card. See 5b |
+| Party Quest hub | mockup 16 | Fort, four bridges, four islands. See 5c |
+| Mode select | 03 / 05 / 06 | Picture cards. See 5d |
 
 ---
 
@@ -253,3 +358,6 @@ and an emissive for lava, neon and celestial. Small toppers are separate instanc
 - [ ] Uses the palette tokens above.
 - [ ] Readable at phone size. Gameplay pieces are never obscured.
 - [ ] No third-party IP. Licence recorded.
+- [ ] No board logo (TETRO PARTY DIMENSIONS, WACKY PARTY, PARTY QUEST) and no "Tetris" naming.
+- [ ] Characters: 2.5 heads tall, one colour key, readable at 64 px.
+- [ ] HUD pieces use the 5b tokens and never overlap the play area.
