@@ -77,6 +77,8 @@ var _fx_material: StandardMaterial3D
 var _last_piece_uid: int = -1
 var _last_piece_shape: StringName = &""
 var _view_rect: Rect2 = Rect2()
+## Cells of island margin kept in frame beside the grid when sizing the camera.
+const FRAME_MARGIN := 1.2
 var _goal_overlay: Node3D
 var _prediction: ActivePiece
 var _ghost_focus: Vector3 = Vector3.ZERO
@@ -426,9 +428,10 @@ func _build_light() -> void:
 	env.background_mode = Environment.BG_COLOR
 	env.background_color = Color(look[0])
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color("#DDE8FF")
-	env.ambient_light_energy = 0.32
+	env.ambient_light_color = Color("#E6ECFF")
+	env.ambient_light_energy = 0.4
 	env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
+	WtIslandBuilder.new(_biome).build_sky(self, env)
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
@@ -436,7 +439,7 @@ func _build_light() -> void:
 	_key_light=key
 	key.rotation_degrees = Vector3(-52, -32, 0)
 	key.light_color = Color("#FFF4DA")
-	key.light_energy = 0.65
+	key.light_energy = 0.85
 	key.shadow_enabled = true
 	key.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	key.directional_shadow_max_distance = 45.0
@@ -451,44 +454,13 @@ func _build_light() -> void:
 
 
 func _build_island() -> void:
-	var look: Array = BIOME_LOOKS.get(str(_biome), BIOME_LOOKS["meadow"])
-	var rim: float = maxf(_size.x, _size.z) * 0.65 + 0.8
-	_cylinder(_world, Vector3(0, -0.21, 0), rim, rim * 0.96, 0.42, Color(look[1]), 12, Vector3(1.0, 1.0, 0.92))
-	_cylinder(_world, Vector3(0, -0.87, 0), rim * 0.95, rim * 0.85, 0.9, Color(look[2]), 11, Vector3(1.0, 1.0, 0.92))
-	_cylinder(_world, Vector3(0, -1.85, 0), rim * 0.85, 0.2, 1.15, Color(look[2]).darkened(0.16), 9, Vector3(1.0, 1.0, 0.92))
-	for i: int in 7:
-		var a: float = TAU * i / 7.0
-		var p: Vector3 = Vector3(cos(a) * rim * 0.7, -1.2, sin(a) * rim * 0.61)
-		if _biome in [&"ice", &"cave", &"celestial"]:
-			_cylinder(_world, p, 0.2, 0.03, 1.3 + (i % 3) * 0.2, Color(look[3]).lightened(0.25), 5)
-		elif _biome == &"carnival":
-			# Candy-stripe drip under the fairground island.
-			_cylinder(_world, p, 0.12, 0.04, 1.1, Color(CARNIVAL_TRIM.pink) if i % 2 == 0 else Color(CARNIVAL_TRIM.cream), 6)
-		else:
-			_cylinder(_world, p, 0.1, 0.05, 1.0, Color(look[3]), 5)
+	var builder := WtIslandBuilder.new(_biome)
+	builder.build_island(_world, _size, func(x: int, z: int) -> bool: return _board.is_active(_board.index(Vector3i(x, 0, z))))
+	builder.build_dressing(_world, _size)
 
 
 func _build_board() -> void:
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for z: int in _size.z:
-		for x: int in _size.x:
-			if not _board.is_active(_board.index(Vector3i(x, 0, z))): continue
-			var p: Vector3 = BoardGeom.cell_center(Vector3i(x, 0, z), _size)
-			var col: Color = Color("#56787B") if (x + z) % 2 == 0 else Color("#63888A")
-			st.set_color(col)
-			st.set_normal(Vector3.UP)
-			for v: Vector3 in [Vector3(-.485, .012, -.485), Vector3(-.485, .012, .485), Vector3(.485, .012, .485),
-				Vector3(-.485, .012, -.485), Vector3(.485, .012, .485), Vector3(.485, .012, -.485)]:
-				st.add_vertex(Vector3(p.x, 0, p.z) + v)
-	var mat := _mat(Color.WHITE)
-	mat.vertex_color_use_as_albedo = true
-	_mesh(_world, st.commit(), Vector3.ZERO, mat)
-	var edge: Color = Color("#687B6C")
-	_box(_world, Vector3(0, -0.06, -_size.z * 0.5 - .08), Vector3(_size.x + .4, .15, .16), edge)
-	_box(_world, Vector3(0, -0.06, _size.z * 0.5 + .08), Vector3(_size.x + .4, .15, .16), edge)
-	_box(_world, Vector3(-_size.x * .5 - .08, -.06, 0), Vector3(.16, .15, _size.z + .4), edge)
-	_box(_world, Vector3(_size.x * .5 + .08, -.06, 0), Vector3(.16, .15, _size.z + .4), edge)
+	# Floor tiles and the stone border are built by WtIslandBuilder in _build_island().
 	_locked = BoardView.new()
 	_locked.outline_grow = 0.012
 	add_child(_locked)
@@ -655,7 +627,7 @@ func _build_guides() -> void:
 	for z: int in range(_size.z + 1):
 		im.surface_add_vertex(Vector3(sx*w,0,z-d)); im.surface_add_vertex(Vector3(sx*w,h,z-d))
 	im.surface_end()
-	var m := _mat(Color(0.29, 0.44, 0.47, 0.19), true)
+	var m := _mat(Color(1.0, 1.0, 1.0, 0.16), true)
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	if _guides == null:
 		_guides = _mesh(self, im, Vector3.ZERO, m)
@@ -719,19 +691,29 @@ func _frame_camera() -> void:
 	if _camera == null or not is_inside_tree(): return
 	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
 	var aspect: float = viewport_size.x / maxf(1, viewport_size.y)
-	var usable: float = .88 if aspect > 1 else .62
+	var usable_h: float = 1.0
+	var usable_w: float = 1.0
 	if _view_rect.size.y > 0:
-		usable = _view_rect.size.y
-		aspect *= _view_rect.size.x / _view_rect.size.y
-	# Frame the visible danger height and island, rather than unused spawn-buffer rows.
-	var extent: Vector3i = Vector3i(_size.x + 3, _board.h_play() + 2, _size.z + 2)
-	_camera.size = CameraMath.ortho_size(extent, _elevation, aspect, .75) / usable
+		usable_h = _view_rect.size.y
+		usable_w = _view_rect.size.x
+	# Width: the board plus a slice of island margin fills the usable width (mockup framing:
+	# the island edge may run off-screen, the grid never does).
+	var widest: float = 0.0
+	for k: int in 12:
+		var yaw: float = deg_to_rad(_yaw + k * 30.0)
+		widest = maxf(widest, (_size.x + FRAME_MARGIN) * absf(cos(yaw)) + (_size.z + FRAME_MARGIN) * absf(sin(yaw)))
+	var elev: float = deg_to_rad(_elevation)
+	# Height: footprint depth plus the playable stack must stay visible for top-out reading.
+	var tall: float = widest * sin(elev) + (_board.h_play() + 1.0) * cos(elev)
+	var by_width: float = widest / (aspect * usable_w)
+	var by_height: float = tall / usable_h
+	_camera.size = maxf(by_width, by_height)
 	_update_camera()
 
 
 func _update_camera() -> void:
 	if _camera == null: return
-	var target := Vector3(0, _board.h_play() * .43, 0)
+	var target := Vector3(0, _board.h_play() * .36, 0)
 	var yaw: float = deg_to_rad(_yaw)
 	var elev: float = deg_to_rad(_elevation)
 	_camera.position = target + Vector3(sin(yaw) * cos(elev), sin(elev), cos(yaw) * cos(elev)) * 35.0
@@ -1231,8 +1213,11 @@ void fragment(){
 func _apply_biome_block_material() -> void:
 	var material: Material = _biome_block_material()
 	if not material is ShaderMaterial: return
-	_active.material_override = material
-	if _locked != null and _locked._mmi != null: _locked._mmi.material_override = material
+	# The falling piece never fades, so it gets its own copy without occlusion state.
+	var falling: ShaderMaterial = material.duplicate() as ShaderMaterial
+	falling.set_shader_parameter(&"use_cell_alpha", false)
+	_active.material_override = falling
+	if _locked != null: _locked.set_biome_material(material as ShaderMaterial)
 
 
 func _biome_block_material() -> Material:
