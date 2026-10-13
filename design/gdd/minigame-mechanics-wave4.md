@@ -116,9 +116,10 @@ apart).
 | n_oh | int | 0–5 | overhang cubes in the locked piece |
 | G' | int | **clamped 0–1000** | new value |
 
-  **Output range:** clamped to [0, 1000]. The unclamped extremes per tick are −2000 (`per_layer = −500`, L = 4)
-  and +1300 (+200 +200 +500·… is impossible because `per_layer` and `per_lock_no_clear` cannot both apply), so
-  the clamp is reachable in a single step. That is intended: a quad clear fully refills oxygen.
+  **Output range:** clamped to [0, 1000]. The unclamped per-tick delta spans about −2210 (`per_layer` −500 ×
+  L 4, `per_lock` −200, `per_s` −100 over 100 ms) to +2710 (`per_layer` +500 × 4, `per_lock` +200,
+  `per_overhang` 100 × 5, `per_s` +10). `per_lock_no_clear` and a positive L cannot both apply. The clamp can
+  therefore be reached in a single step. That is intended: a quad clear fully refills oxygen.
   Integer division of `per_s·Δt_ms` loses up to 1 milli per tick. Accumulate the remainder in `_frac` so the drift
   stays exact.
 
@@ -436,7 +437,121 @@ under the ghost piece. Spec on request.
 Crates rise one layer per `lift_every_ms` while ≥ `balloons_needed` balloon cubes are attached. Today's `balloon`
 only halves gravity. Used by one hub vignette only; defer until a minigame commits to it.
 
-### 4. Open decisions (for the caller to present)
+### 4. Level-module contract (campaign composition + tournament versus)
+
+**Decision (user, 2026-10-13):** minigame mechanics are not separate games. Every atom is a **module** that
+runs *alongside* the normal falling-block loop inside campaign levels. It is reskinned per biome and combined
+with other modules. The same modules make up head-to-head tournament rounds, which the randomizer
+(`design/gdd/mode-minigame-randomizer.md`) picks at random. A "minigame" is therefore just a level template
+with 1–3 modules and a module-driven goal.
+
+#### 4.1 Common fields (added to every atom's rule JSON / module entry)
+
+| Field | Type | Values | Default | Rule |
+|---|---|---|---|---|
+| `start` | dict | `{"on":"level_start"}` · `{"on":"time_ms","value":n}` · `{"on":"clears","value":n}` · `{"on":"height","value":layer}` · `{"on":"after","module":id}` | level_start | Before start, the module subscribes to no hooks and draws no RNG. `after` chains stages (the `bake_stage` swap pattern). |
+| `until` | dict | `{"on":"time_ms"}` · `"clears"` · `"height"` · `"hp_zero"` (A4 fort / A6 boss) · `"reached"` (A3) · `"orders"` (A7) · `"depth"` / `"gems"` (A9) · `"gauge"` (A1 value crosses) · `"never"` | never | When the condition becomes true at `on_resolve_end`, the module emits `<id>_ended`, **cancels any pending warning without firing it** (a hazard never acts after it has ended), and stops. |
+| `until_role` | enum | `goal` · `stage` · `stop` | stop | `goal`: meeting `until` wins the level (it fills the goal slot, like `bonk_boss`). `stage`: starts the module that names this one in `start.after`. `stop`: the module just stops, and the level goal is unaffected. At most **one** `goal` module per level. |
+| `skin` | string | a biome skin id (table 4.2) | `"default"` | Presentation only: art set, SFX bank, HUD icon, the event `skin` tag. **A skin must never change a rule or a param.** Same convention as the existing `conveyor.skin` / `climber_boss.skin`. An unknown skin → `"default"` plus a validator warning. |
+| `versus` | dict | `{"attack":effect_id,"charge":n,"cap_ms":n}` or `{}` | per atom (4.4) | Used only in tournament rounds; ignored in solo campaign. |
+
+#### 4.2 Biome skin hooks
+
+The five biomes that exist in data/art (meadow, candy, lava, underwater, forest) plus two mockup biomes
+(ice, space) that are pending art direction. Each cell is a skin id. Names are placeholders for the art
+director.
+
+| Atom | meadow | candy | lava | underwater | forest | ice* | space* |
+|---|---|---|---|---|---|---|---|
+| A1 gauge | `wind_sock` | `sweetness` | `heat` | `oxygen` | `sap_stability` | `frostbite` | `cargo_security` |
+| A2 tilt | `seesaw_log` | `cake_plate` | `basalt_slab` | `ship_deck` | `stump_spring` | `ice_floe` | `cloud_pad` |
+| A3 span | `plank_bridge` | `candy_rails` | `stepping_basalt` | `coral_conduit` | `vine_bridge` | `ice_ramp` | `light_bridge` |
+| A4 hp materials | grass/wood/stone/iron | sugar-glass/gingerbread/rock-candy/jawbreaker | ash/obsidian/basalt/iron | coral/driftwood/stone/hull | moss/log/stone/iron | snow/ice/stone/iron | glass/panel/alloy/core |
+| A5 siege | `catapult_castle` | `candy_cannon` | `magma_sling` | `pirate_cannon` | `acorn_trebuchet` | `snowball_fort` | `airship_cannon` |
+| A6 boss | `scarecrow_giant` | `cake_monster` | `lava_golem` | `kraken` | `jungle_giant` | `yeti` | `mothership` |
+| A7 intake | `mill_hopper` | `bakery_oven` | `forge` | `salvage_crane` | `sawmill` | `ice_factory` | `cargo_bay` |
+| A8 laser | `sun_beam` | `licorice_whip` | `lava_jet` | `eel_current` | `storm_ray` | `icicle_line` | `laser_grid` |
+| A9 dig | `meadow_soil` | `cake_layers` | `rubble_rumble` | `silt_salvage` | `root_mine` | `glacier_core` | `asteroid_core` |
+| A10 territory | `flower_claim` | `frosting_splat` | `crust_claim` | `coral_claim` | `moss_claim` | `snow_angel` | `neon_splat` |
+
+\*ice and space are not yet registered biomes. Their skins fall back to `default` until art direction confirms
+them.
+
+#### 4.3 Composition with other modules in the same level
+
+**Per-resolve evaluation order.** This extends the Mechanics README write order. Earlier steps write before
+later steps read.
+
+1. Content movers: `conveyor` / `mill_belt`, A2 slip, `turntable`.
+2. A7 intake consumes cubes on intake cells.
+3. Damage: A8 sweep, A5 shot landing, `storm_bolt` (A4 hp applies to all of them).
+4. Clear detection and collapse (normal loop; A6 / A9 gem credit reads `Cause.CLEAR` here).
+5. A9 strata feed (after collapse, so the height is final).
+6. Readers: A2 τ recompute, A1 gauge inputs, A3 reachability.
+7. `until` checks, then the goal slot.
+
+**Level budget:** at most 1 goal module (`until_role = goal`); at most 2 hazard modules (A1 with a non-`none`
+`on_full`, A2, A8, and any existing twist), which respects the framework's two-twist cap; at most 2 HUD meters
+(A1 / A2 / A6 bar), plus the timer.
+
+**Conflict matrix.** "✗" = hard conflict: add to `incompatible_with`; the validator rejects the level/round.
+"⚠" = allowed but needs the listed constraint. A blank cell = free to combine.
+
+| | A1 | A2 | A3 | A5 | A6 | A7 | A8 | A9 |
+|---|---|---|---|---|---|---|---|---|
+| **A2 tilt** | ⚠ `on_full≠slip` | — | | | | ✗ (the belt shifts the CoM every shift, so τ is not readable) | | |
+| **A3 span** | | ⚠ slip may break the path; `hold_ms ≥ 1000` | — | | | ✗ (the belt moves the bridge) | ⚠ the sweep may not target the walk layer | ✗ (the feed raises the chasm floor) |
+| **A5 siege** | | | | — | ✗ (two clear→damage sinks; pick one) | | | |
+| **A6 boss** | | | | ✗ | — | | | |
+| **A7 intake** | ⚠ the jam gauge is A1 | ✗ | ✗ | | | — | | ✗ (the feed pushes content into the intake) |
+| **A9 dig** | | ⚠ `material_weight=false` | ✗ | | | ✗ | | — |
+
+Conflicts with **existing rules**:
+
+| Atom | ✗ with | ⚠ with |
+|---|---|---|
+| A2 tilt | `wobble` (double slip), `side_travel`, `flip` in `axis` mode (tilt assumes vertical gravity) | `turntable` (recompute after the turn), `rising_silt` |
+| A3 span | `side_travel`, `flip`; `clear.enabled = true` with `slice` collapse (a clear deletes the bridge) unless `walk_layer_min` is above every clearable layer | `lava_rise` (walk layer must stay above the lava), `quicksand`, `crumble_tiles` |
+| A5 / A6 | `bonk_boss`, `climber_boss` (one boss/damage sink per level) | `items` in versus (bomb items also deal damage; both are allowed, but must use separate counters) |
+| A7 intake | `turntable`, `flip`, `piston_punch` | `mirror` |
+| A8 laser | — | `storm_bolt` (same role; allowed only if the combined hazard rate is ≤ 1 per 8 s) |
+| A9 dig | `rising_silt`, `lava_rise`, `quicksand` (each also owns the floor) | `anvil_drop` |
+| A1 gauge | `pressure_cooker` / `fever_rush` only when both drive the same knob | — |
+
+#### 4.4 Versus (head-to-head tournament rounds)
+
+**Shared seed.** Each module's RNG stream is `Seeds.make_rng(round_seed, [module_id, gauge_id or ""])`, where
+`round_seed` comes from the randomizer (`tournament_seed + round_index`). Both players therefore get the same
+gauge schedule, tilt plate, chasm, fort layout, boss phases, orders, laser times and strata. Rival attacks use
+the session's separate `attack_rng`, so receiving an attack never moves a player off the shared stream.
+Mid-round randomness that depends on a player's own board (e.g. "lowest reachable column") stays per-board,
+but its candidate ordering is canonical.
+
+**Attack rules shared by every module:** an attack is minted only by the sender's own play (the `charge`
+column); it is sent through `charge_send`; it is previewed to the target through `preview_attack` with
+**`warn_ms ≥ 1500`**; it can never skip the target module's own warning; at most one attack per `cap_ms`
+per target; a ghost or eliminated player is never targeted (the host retargets at send time, as `items` does);
+an attack aimed at a module the target does not have is dropped (`attack_unmatched`).
+
+| Atom | Versus shape | "Attack the rival" effect | Charged by | Cap |
+|---|---|---|---|---|
+| A1 gauge | mirrored race | `gauge_spike`: +150 to the rival's same `gauge_id` (it can push into the warning band; the trigger still waits for `warn_ms`) | each multi-layer clear | 1 / 5 s |
+| A2 tilt | mirrored race (last standing / most layers) | `heavy_piece`: the rival's next queued piece is flagged weight 4 (iron skin) and shown in their preview | double+ clear | 1 / 8 s |
+| A3 span | race to cross | `bird_peck` (exists, mg06): removes one cube on the rival's current path | 4 locks (mg06 `bird_charge_ms` pacing alternative) | 1 / 10 s |
+| A4 hp | (attribute) | — | — | — |
+| A5 siege | **direct duel**: each player's fort is the other's target | the shot itself (§3 A5) | ammo from clears | `fire_cooldown_ms` |
+| A6 boss | race on identical bosses (or coop on one shared pool, if `coop_shared`) | `boss_swipe`: triggers one of the rival boss's current-phase attacks early (with its normal warning) | every 60 damage dealt | 1 / 10 s |
+| A7 intake | mirrored race on identical order lists | `jam`: +150 to the rival's jam gauge; or `order_swap` (their next order is swapped with the one after, shown one order ahead) | completed order | 1 / 8 s |
+| A8 laser | mirrored hazard | `extra_sweep`: one extra sweep on the rival with the standard warning | triple+ clear | 1 / 10 s |
+| A9 dig | race to depth / gems | `hard_stratum`: the rival's next feed layer gets hp +1 (preview shows it) | each gem collected | 1 / 8 s |
+| A10 territory | **direct duel** on the shared map | the steal itself (§3 A10) | — | `steal_cooldown_ms` |
+
+**Solo campaign stand-ins for the duel atoms.** A5 targets an authored static fort (`fort_target` module: a
+second, non-playable board view whose blocks follow A4). A10 plays against a stencil (mg20 mode) or a scripted
+painter. Both run through a single-player `WtMinigameSession` wrapper. *A dependency is open: campaign levels
+do not host a session today.*
+
+### 5. Open decisions (for the caller to present)
 
 1. **Fort zone model (A5).** Is the fort (a) an authored zone protected from clears, separate from the build
    area (Recommended: clears always help you, and the fort strength is readable), or (b) the player's own stack,
@@ -446,7 +561,10 @@ only halves gravity. Used by one hub vignette only; defer until a minigame commi
    first minigame, but ~25 panels need meters).
 3. **Stability on grid or Jolt (A2).** (a) A grid `tilt_plate` (Recommended: deterministic, works online and with
    replays), or (b) extend the Jolt `balance`/`seesaw` variants (better feel, but no lockstep hashes).
-4. **Territory input (A10).** (a) Cursor stamping on a shared map, as in mg20 (Recommended: reuses the existing
+4. **Campaign host for session atoms (A5, A10).** (a) Add a single-player `WtMinigameSession` wrapper that
+   campaign levels can host (Recommended: one code path for solo and versus), or (b) reimplement the A5 static
+   fort as a pure `RuleBehaviour` (campaign only, and versus diverges).
+5. **Territory input (A10).** (a) Cursor stamping on a shared map, as in mg20 (Recommended: reuses the existing
    session code), or (b) pieces dropped onto a shared arena board (needs a multi-owner BoardSim, which does not
    exist yet).
 
@@ -495,6 +613,9 @@ Per-atom edge cases are listed in §3. Cross-atom cases:
 - **WtMinigameGeometry** (`bridge_path`, `lava_interval`, `safe_layers`): A3 generalises `bridge_path`.
 - **Physics Mode** (`design/gdd/physics-mode.md`): A2 is the grid counterpart of `balance`/`seesaw`. No shared
   code.
+- **Minigame Randomizer / Tournament Flow** (`design/gdd/mode-minigame-randomizer.md`): supplies `round_seed`
+  and the two-twist cap; module templates join its pool. *Needs a reciprocal note there.*
+- **Level Data / Rule-Twist Framework** (`incompatible_with`, stage swaps): enforces §4.3.
 - **HUD** (`design/gdd/hud.md`): one vertical meter widget used by A1, A2 and A6, with these keys:
   `gauge_state`, `tilt_state`, `boss_state`.
 
@@ -537,5 +658,16 @@ Per-atom edge cases are listed in §3. Cross-atom cases:
 8. A6: the defaults give D = 10/30/60/100 for L = 1–4; HP never goes below 0; trim/rescue removal deals 0 damage.
 9. A7: the red-L example scores 40 and completes the order; partial overlap consumes only the intake cells.
 10. A9: a gem removed by `Cause.DAMAGE` emits `gem_lost` and does not increase the gem counter.
-11. Each atom is used in at least one prototype minigame config and launched with a retained screenshot in
+11. **Module stop:** for each hazard module, a test where `until` becomes true while its warning is pending
+    asserts that `<id>_ended` is emitted and the hazard makes no board write afterwards.
+12. **Composition validator:** every ✗ pair in §4.3 is rejected by level/round validation with a named error;
+    every blank pair loads and runs 600 ticks without error.
+13. **Skins are cosmetic:** the same seed and command log with two different `skin` values produce identical
+    snapshots.
+14. **Versus seed:** two boards in one round with the same `round_seed` produce identical module schedules
+    (gauge/laser times, strata, orders, boss phases) until the first attack lands; attacks never consume the
+    shared module stream.
+15. **Attack telegraph:** every versus attack in §4.4 reaches the target's view ≥ 1500 ms before it changes
+    their board; a ghost target is never chosen; an attack on a missing module is dropped.
+16. Each atom is used in at least one prototype minigame config and launched with a retained screenshot in
     `production/qa/evidence/` (coding-standards: "a parse check is not a run").
