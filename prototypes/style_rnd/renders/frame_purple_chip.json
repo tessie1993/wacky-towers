@@ -1,0 +1,10 @@
+{
+ "texture": "frame_purple_chip.png",
+ "scale": 2,
+ "margin_left": 200,
+ "margin_top": 200,
+ "margin_right": 200,
+ "margin_bottom": 200,
+ "axis_stretch": "stretch",
+ "content_inset_px": 174
+}

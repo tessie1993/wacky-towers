@@ -146,3 +146,65 @@ static func snap(vp: Viewport, path: String) -> void:
 	var img := vp.get_texture().get_image()
 	img.save_png(path)
 	print("SNAP ", path, " ", img.get_size(), " method=", RenderingServer.get_current_rendering_method())
+
+# ---------------- UI helpers (no import step needed; works from -s scripts) ----------------
+static func load_tex(res_path: String, size_px := 0) -> ImageTexture:
+	var img := Image.load_from_file(ProjectSettings.globalize_path(res_path))
+	if size_px > 0: img.resize(size_px, size_px, Image.INTERPOLATE_LANCZOS)
+	return ImageTexture.create_from_image(img)
+
+static func load_font(res_path: String) -> FontFile:
+	var f := FontFile.new(); f.load_dynamic_font(ProjectSettings.globalize_path(res_path))
+	return f
+
+## Nine-patch from the Blender render. size_px = texture edge after downscale; margin scales with it.
+static func frame_patch(tex: Texture2D, margin_src: int, src_px: int, draw_center := true) -> NinePatchRect:
+	var np := NinePatchRect.new(); np.texture = tex
+	var m := int(round(float(margin_src) * tex.get_width() / src_px))
+	np.patch_margin_left = m; np.patch_margin_top = m; np.patch_margin_right = m; np.patch_margin_bottom = m
+	np.draw_center = draw_center
+	return np
+
+## Multicolour chunky title: each letter its own colour, a stacked dark "extrusion" (6 layers),
+## a thick plum outline, a lighter top highlight and a slight per-letter wobble.
+const LETTER_COLORS := [Color("f08a2c"), Color("f6e2b8"), Color("4aa8e8"), Color("6cc04a"), Color("b48ad8"), Color("ee6aa0")]
+static func title_text(text: String, font: Font, size := 96, depth := 7) -> Control:
+	var box := Control.new()
+	var x := 0.0
+	var i := 0
+	for ch in text:
+		if ch == " ": x += size * 0.35; continue
+		var col: Color = LETTER_COLORS[i % LETTER_COLORS.size()]; i += 1
+		var holder := Control.new(); holder.position = Vector2(x, 0)
+		holder.rotation_degrees = [-4.0, 3.0, -2.0, 4.0, -3.0, 2.0][i % 6]
+		holder.pivot_offset = Vector2(size * 0.35, size * 0.6)
+		for d in range(depth, -1, -1):
+			var l := Label.new(); l.text = ch
+			var ls := LabelSettings.new(); ls.font = font; ls.font_size = size
+			ls.outline_size = int(size * 0.16); ls.outline_color = Color("3b2346")
+			if d > 0:
+				ls.font_color = col.darkened(0.45)
+				if d == depth:
+					ls.shadow_color = Color(0.1, 0.03, 0.15, 0.45); ls.shadow_offset = Vector2(0, size * 0.06); ls.shadow_size = int(size * 0.08)
+			else:
+				ls.font_color = col
+			l.label_settings = ls; l.position = Vector2(0, d * size * 0.012)
+			holder.add_child(l)
+		# top highlight sliver: same glyph, lighter, clipped to the upper part
+		var clip := Control.new(); clip.clip_contents = true; clip.size = Vector2(size, size * 0.62)
+		var hl := Label.new(); hl.text = ch
+		var hs := LabelSettings.new(); hs.font = font; hs.font_size = size; hs.font_color = col.lightened(0.3)
+		hl.label_settings = hs; hl.position = Vector2(0, -size * 0.02)
+		clip.add_child(hl); holder.add_child(clip)
+		box.add_child(holder)
+		x += font.get_string_size(ch, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x * 0.96
+	box.custom_minimum_size = Vector2(x, size * 1.3)
+	box.size = box.custom_minimum_size
+	return box
+
+static func label(text: String, font: Font, size: int, col := Color("3b2346"), outline := 0, ocol := Color("3b2346")) -> Label:
+	var l := Label.new(); l.text = text
+	var ls := LabelSettings.new(); ls.font = font; ls.font_size = size; ls.font_color = col
+	ls.outline_size = outline; ls.outline_color = ocol
+	l.label_settings = ls
+	return l

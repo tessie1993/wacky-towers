@@ -11,7 +11,8 @@ os.makedirs(OUT, exist_ok=True)
 RES = 1024          # 2x asset; shown at 512 in Godot
 ORTHO = 2.30        # world units covered by the image
 H = 1.0             # frame outer half-size
-W = 0.34            # plank width
+VARIANT = os.environ.get("WT_VARIANT", "panel")  # panel | chip
+W = 0.34 if VARIANT == "panel" else 0.24   # plank width
 T = 0.13            # plank thickness (towards camera, +Z)
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -256,10 +257,11 @@ def corner_vine(sx, sy):
     blossom((pts[3][0], pts[3][1] + sy * 0.05, T + 0.08))
     blossom((pts[10][0] - sx * 0.05, pts[10][1], T + 0.08), 0.03)
 
-corner_vine(-1, 1)
-corner_vine(1, -1)
+if VARIANT == "panel":
+    corner_vine(-1, 1)
+    corner_vine(1, -1)
 # small extra sprig on the other two corners so all four corners read decorated
-for sx, sy in ((1, 1), (-1, -1)):
+for sx, sy in (((1, 1), (-1, -1)) if VARIANT == "panel" else ((-1, 1),)):
     blossom((sx * (H - W * 1.1), sy * (H - W * 0.5), T + 0.08), 0.03)
     leaf((sx * (H - W * 1.45), sy * (H - W * 0.45), T + 0.06), 0.4 * sx)
 
@@ -287,14 +289,15 @@ sc.render.resolution_x = sc.render.resolution_y = RES
 sc.render.image_settings.file_format = 'PNG'; sc.render.image_settings.color_mode = 'RGBA'
 sc.view_settings.view_transform = 'Standard'   # keeps palette hexes predictable (AgX desaturates)
 sc.view_settings.look = 'None'
-path = os.path.join(OUT, "frame_purple_vine.png"); sc.render.filepath = path
+NAME = "frame_purple_vine" if VARIANT == "panel" else "frame_purple_chip"
+path = os.path.join(OUT, NAME + ".png"); sc.render.filepath = path
 bpy.ops.render.render(write_still=True)
 
 # nine-patch margins (pixels, at 2x). Corner patch must contain caps, vines and blossoms.
 px_per_unit = RES / ORTHO
-margin = int(round((ORTHO / 2 - (H - W - 0.22)) * px_per_unit))
-json.dump({"texture": "frame_purple_vine.png", "scale": 2, "margin_left": margin, "margin_top": margin,
+margin = int(round((ORTHO / 2 - (H - W - (0.22 if VARIANT == 'panel' else 0.06))) * px_per_unit))
+json.dump({"texture": NAME + ".png", "scale": 2, "margin_left": margin, "margin_top": margin,
            "margin_right": margin, "margin_bottom": margin, "axis_stretch": "stretch",
            "content_inset_px": int(round((ORTHO / 2 - (H - W)) * px_per_unit))},
-          open(os.path.join(OUT, "frame_purple_vine.json"), "w"), indent=1)
+          open(os.path.join(OUT, NAME + ".json"), "w"), indent=1)
 print("WROTE", path, "margin", margin)
