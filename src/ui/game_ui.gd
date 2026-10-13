@@ -756,7 +756,12 @@ func show_map(data: Dictionary = {}) -> void:
 			if state == "pressed": color = Color("e4d4b5")
 			if state == "disabled": color = Color("e5e4d9")
 			if id == str(data.get("next_level_id", "")) and state != "disabled": color = ORANGE
-			var plate := _style(color, 14, INK, 2)
+			var plate: StyleBox = _chip_style(str(data.get("selected_biome", "meadow"))) if id == str(data.get("next_level_id", "")) else _slot_style()
+			if plate is StyleBoxTexture:
+				if state == "hover": (plate as StyleBoxTexture).modulate_color = Color(1.06, 1.06, 1.06)
+				if state == "pressed": (plate as StyleBoxTexture).modulate_color = Color(0.9, 0.88, 0.85)
+				if state == "disabled": (plate as StyleBoxTexture).modulate_color = Color(0.75, 0.72, 0.7, 0.85)
+			else: plate = _style(color, 14, INK, 2)
 			plate.content_margin_top = 78
 			plate.content_margin_bottom = 11
 			plate.content_margin_left = 14
@@ -779,14 +784,14 @@ func show_intro(data: Dictionary = {}) -> void:
 	_header(col, str(data.get("name", "Meadow adventure")), str(data.get("level_id", "Meadow")).replace("_", " ").capitalize())
 	var body := _scroll(col)
 	var card := _card(body)
-	card.add_child(_label("YOUR LITTLE MISSION", 14, MUTED, true))
+	card.add_child(_sign("YOUR LITTLE MISSION", 16))
 	if bool(data.get("preview", false)):
 		card.add_child(_label("DESIGN PREVIEW · NO STARS AWARDED", 16, MUTED, true))
 	card.add_child(_label(str(data.get("goal", "Clear a layer")), 32, INK, true))
 	card.add_child(_label(str(data.get("goal_detail", "Fill every square in a layer to make it disappear.")), 18, MUTED, true))
 	var twists: Array = data.get("twists", [])
 	if not twists.is_empty():
-		card.add_child(_label("Today's surprises", 20))
+		card.add_child(_sign("TODAY'S SURPRISES", 16))
 		for twist in twists: card.add_child(_label("•  " + str(twist).replace("_", " ").capitalize(), 18))
 	var targets: Array = data.get("star_targets", [])
 	if not targets.is_empty() and not bool(data.get("preview", false)):
@@ -911,7 +916,6 @@ func _build_hud() -> void:
 	next.add_child(_hud_labels.held)
 	_hud_labels.rules = _label("", 16, MUTED, true)
 	var rules_panel := PanelContainer.new()
-	rules_panel.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	var rules_face: StyleBox = _kit("panel_parchment")
 	rules_panel.add_theme_stylebox_override("panel", _pad(rules_face, 6, 2, 6, 4) if rules_face != null else _style(CREAM, 10))
 	var rules_margin := MarginContainer.new()
@@ -1063,7 +1067,6 @@ func _storybook_dock() -> bool:
 ## Bottom dock: small action pills, then the tray (hold slot + upcoming pieces)
 ## between a round Turn button and a round Drop button.
 func _build_dock() -> void:
-	var frame: Color = Kit.biome_frame(str(_hud_data.get("biome", "meadow")))
 	var dock := VBoxContainer.new()
 	dock.name = "StorybookDock"
 	dock.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -1455,7 +1458,7 @@ func show_tools(data: Dictionary = {}) -> void:
 	var capabilities: Dictionary = data.get("capabilities", {})
 	if bool(capabilities.get("kit", false)):
 		var kit := _card(content)
-		kit.add_child(_label("YOUR KIT  ·  %d LEFT" % int(data.get("selection_remaining", 0)), 24))
+		kit.add_child(_sign("YOUR KIT  ·  %d LEFT" % int(data.get("selection_remaining", 0))))
 		for choice: Dictionary in data.get("kit_choices", []):
 			var id := str(choice.get("shape_id", ""))
 			var remaining := int(choice.get("remaining", 0))
@@ -1464,11 +1467,11 @@ func show_tools(data: Dictionary = {}) -> void:
 			kit.add_child(button)
 	if bool(capabilities.get("choose_down", false)):
 		var directions := _card(content)
-		directions.add_child(_label("TRAVEL DIRECTION", 24))
+		directions.add_child(_sign("TRAVEL DIRECTION"))
 		_direction_buttons(directions, data.get("allowed_down", []), &"choose_down")
 	if bool(capabilities.get("ice_flick", false)):
 		var flick := _card(content)
-		flick.add_child(_label("ICE FLICK  ·  %d LEFT" % int(capabilities.get("flicks_left", 0)), 24))
+		flick.add_child(_sign("ICE FLICK  ·  %d LEFT" % int(capabilities.get("flicks_left", 0))))
 		_direction_buttons(flick, data.get("allowed_flick", []), &"flick", int(capabilities.get("flicks_left", 0)) > 0)
 	if bool(capabilities.get("undo", false)) or bool(capabilities.get("reset", false)):
 		var turns := _card(content)
@@ -1501,7 +1504,7 @@ func show_pause(data: Dictionary = {}) -> void:
 	col.add_child(center)
 	var card := _card(center)
 	card.custom_minimum_size.x = 300 if _portrait else 400
-	card.add_child(_label("Ⅱ", 64, INK, true))
+	card.add_child(_sign("Ⅱ", 40))
 	card.add_child(_button("Keep building  →", &"resume", {}, true, 64))
 	var retry := _button("Restart…", &"noop")
 	retry.pressed.disconnect(retry.pressed.get_connections()[0].callable)
@@ -1519,7 +1522,10 @@ func show_results(data: Dictionary = {}) -> void:
 	_header(col, "Beautifully built!" if bool(data.get("won", false)) else "One more little try?", str(data.get("level_name", "Meadow adventure")))
 	var content := _scroll(col)
 	var card := _card(content, MINT if bool(data.get("won", false)) else CREAM)
-	card.add_child(_label(Format.stars(int(data.get("stars", 0))), 64, INK, true))
+	var star_line := _label(Format.stars(int(data.get("stars", 0))), 64, Kit.STAR_ON, true)
+	star_line.add_theme_color_override("font_outline_color", Kit.GOLD_DEEP)
+	star_line.add_theme_constant_override("outline_size", 8)
+	card.add_child(star_line)
 	card.add_child(_label(str(data.get("message", "Every tower teaches you something.")), 22, INK, true))
 	var row := _hbox(card)
 	row.add_child(_label("SCORE\n%d" % int(data.get("score", 0)), 24, INK, true))
@@ -1648,7 +1654,9 @@ func _settings_page(parent: TabContainer, title: String) -> VBoxContainer:
 	margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	for side in ["left", "right", "top", "bottom"]: margin.add_theme_constant_override("margin_" + side, 18)
 	scroll.add_child(margin)
-	return _vbox(margin, 18)
+	var page := _vbox(margin, 18)
+	page.add_child(_sign(title.to_upper()))
+	return page
 
 func _toggle_setting(parent: Node, title: String, key: String, fallback: bool) -> void:
 	var toggle := CheckButton.new()
@@ -1724,7 +1732,7 @@ func show_shop(data: Dictionary = {}) -> void:
 			card.add_child(_button("Selected ✓" if selected else "Bring this potion", &"select_potion", {"item_id": str(item.get("id", ""))}, not selected))
 	var characters: Array = data.get("characters", [])
 	if not characters.is_empty():
-		content.add_child(_label("Your friends", 26))
+		content.add_child(_sign("YOUR FRIENDS"))
 		for character in characters:
 			var b := _button(str(character.get("name", "Cloud wizard")) + (" ✓" if bool(character.get("selected", false)) else ""), &"select_character", {"character_id": str(character.get("id", "c1"))})
 			b.disabled = not bool(character.get("unlocked", true))
@@ -1737,11 +1745,11 @@ func show_arcade(data: Dictionary = {}) -> void:
 	_header(col, "A little arcade adventure", "Toy-Box Trials or endless towers. Pick your next challenge.")
 	var content := _scroll(col)
 	var trials := _card(content)
-	trials.add_child(_label("TOY-BOX TRIALS", 30, INK, true))
+	trials.add_child(_sign("TOY-BOX TRIALS", 24))
 	trials.add_child(_label("Time a tower, turn parcels through gates,\nand build matching shadows. Three games, nine levels.", 18, MUTED, true))
 	trials.add_child(_button("Play Toy-Box Trials  →", &"open_minigames", {}, true, 64))
 	var card := _card(content)
-	card.add_child(_label("ARCADE", 46, INK, true))
+	card.add_child(_sign("ARCADE", 28))
 	card.add_child(_label("PERSONAL BEST\n%d" % int(data.get("best", 0)), 28, MUTED, true))
 	var skins: Array = data.get("skins", ["meadow"])
 	var picker := OptionButton.new()
@@ -1764,7 +1772,7 @@ func show_tournament(data: Dictionary = {}) -> void:
 	var mode_ids: Array[String] = []
 	var toggles: Array[CheckButton] = []
 	var network := _card(content)
-	network.add_child(_label("PLAY WITH FRIENDS", 24))
+	network.add_child(_sign("PLAY WITH FRIENDS"))
 	var status := str(data.get("network_status", "offline"))
 	var character_picker := OptionButton.new()
 	character_picker.custom_minimum_size.y = 56
@@ -1881,7 +1889,7 @@ func show_tournament(data: Dictionary = {}) -> void:
 		)
 		row.add_child(join)
 	var pool := _card(content)
-	pool.add_child(_label("WHAT GOES IN THE TOY BOX?",24))
+	pool.add_child(_sign("WHAT GOES IN THE TOY BOX?"))
 	pool.add_child(_label("Choose the versus rounds and minigames your party can draw.",16,MUTED))
 	var selected_modes: Array = data.get("selected_modes",[])
 	var category := ""
@@ -1890,7 +1898,7 @@ func show_tournament(data: Dictionary = {}) -> void:
 		var name := str(entry.get("name",id.replace("_"," ").capitalize())) if entry is Dictionary else id.replace("_"," ").capitalize()
 		var current_category := str(entry.get("category","Versus")) if entry is Dictionary else ("Minigames" if id.begins_with("mg") else "Versus")
 		if current_category != category:
-			pool.add_child(_label(current_category.capitalize(),22))
+			pool.add_child(_sign(current_category.to_upper(), 18))
 			category = current_category
 		var toggle := CheckButton.new()
 		toggle.text = name
@@ -1904,7 +1912,7 @@ func show_tournament(data: Dictionary = {}) -> void:
 		toggle.toggled.connect(func(_on: bool)->void: _snapshot["selected_modes"] = _party_mode_selection(mode_ids,toggles))
 	if status == "offline":
 		var practice := _card(content)
-		practice.add_child(_label("PRACTISE WITH TOY FRIENDS", 22))
+		practice.add_child(_sign("PRACTISE WITH TOY FRIENDS"))
 		practice.add_child(_label("Solo practice against deterministic computer players.", 16, MUTED))
 		var count := OptionButton.new()
 		count.custom_minimum_size.y = 52
@@ -2030,7 +2038,7 @@ func show_round_results(data: Dictionary = {}) -> void:
 		card.add_child(_label("%s   %s"%[str(result.get("name",result.get("id","Friend"))),str(result.get("standing_value",result.get("score",0)))],20))
 	var history: Array = data.get("history",[])
 	if not history.is_empty():
-		content.add_child(_label("Our little tournament",24))
+		content.add_child(_sign("OUR LITTLE TOURNAMENT"))
 		for index: int in history.size():
 			var row: Dictionary = history[index]
 			content.add_child(_label("%d · %s · %s"%[index+1,str(row.get("name",row.get("mode","Round"))).replace("_"," ").capitalize(),", ".join(PackedStringArray(row.get("winner_names",row.get("winners",[]))))],18))
@@ -2043,7 +2051,7 @@ func show_physics(data: Dictionary = {}) -> void:
 	var content := _scroll(col)
 	var card := _card(content)
 	var variants: Array = data.get("variants", PHYSICS_VARIANTS)
-	card.add_child(_label("PICK A CHALLENGE", 26))
+	card.add_child(_sign("PICK A CHALLENGE"))
 	var picker := OptionButton.new()
 	picker.custom_minimum_size.y = 60
 	var selected: int = 0

@@ -26,6 +26,6 @@ void fragment() {
 	vec3 tint = COLOR.rgb;
 	// Diagonal glass sheen streak.
 	float sheen = smoothstep(0.06, 0.0, abs(fract((lp.x + lp.y) * 1.2 + 0.2) - 0.5) - 0.12) * 0.25;
-	ALBEDO = mix(tint * 0.85 + 0.1, vec3(1.0), sheen) + (tint + 0.25) * edge * edge_glow;
+	ALBEDO = mix(tint, vec3(1.0), sheen) * (1.0 - edge) + tint * edge * edge_glow;
 	ALPHA = clamp(body_alpha + fres * 0.3 + sheen * 0.3 + edge * 0.85, 0.0, 1.0);
 }

@@ -213,8 +213,8 @@ void fragment() {
 		emit += vec3(0.8, 0.95, 1.0) * (sp * 0.6 + inner_crack * 0.06);
 		refl = 0.55;
 	} else if (style == 4) { // Underwater: faceted deep blue/violet glass, bubbles inside, sparkles.
-		vec2 fv = voronoi(suv * 1.9 + 11.0);
-		col = mix(col, col.r * vec3(2.2, 0.9, 1.0) + col.b * vec3(0.35, 0.1, 0.75), step(0.5, fv.y) * (0.55 + 0.4 * fv.y));
+		vec2 fv = voronoi(suv * 2.6 + 11.0);
+		col = mix(col, col.r * vec3(2.2, 0.9, 1.0) + col.b * vec3(0.35, 0.1, 0.75), step(0.55, fv.y) * (0.3 + 0.35 * fv.y));
 		col = mix(col * 0.65, col * 1.15, inner * 0.6 + fbm(suv * 3.0) * 0.4);
 		col *= mix(0.8, 1.08, smoothstep(0.0, 0.08, fv.x));
 		col += vec3(0.25, 0.35, 0.6) * (1.0 - smoothstep(0.0, 0.03, fv.x)) * 0.5;
