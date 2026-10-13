@@ -5,26 +5,30 @@
   "tier": 7,
   "name": "LVL_CANDY_07_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10,
     "mask": [
-      ".####.",
-      "######",
-      "######",
-      "######",
-      "######",
-      ".####."
+      "########",
+      "#.####.#",
+      "########",
+      "########",
+      "########",
+      "########",
+      "#.####.#",
+      "########"
     ],
     "starting_contents": {
       "layers": {
         "0": [
-          "......",
-          ".p....",
-          "......",
-          "....p.",
-          "......",
-          "......"
+          "........",
+          "........",
+          "..p.....",
+          "........",
+          ".....p..",
+          "........",
+          "........",
+          "........"
         ]
       }
     }
@@ -51,7 +55,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 6
+    "n": 5
   },
   "rules": [
     {
@@ -79,8 +83,8 @@
     }
   ],
   "stars": {
-    "t2": 330000,
-    "t3": 235000,
+    "t2": 490000,
+    "t3": 350000,
     "three_star_zero_metrics": [
       "worms_escaped"
     ]
@@ -193,6 +197,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 6 -> 5; time stars x1.48"
+      }
+    ]
   }
 }

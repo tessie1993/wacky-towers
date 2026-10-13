@@ -5,8 +5,8 @@
   "tier": 8,
   "name": "LVL_CANDY_08_TITLE",
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 8,
     "down_axis": "-y"
   },
@@ -70,8 +70,8 @@
     }
   ],
   "stars": {
-    "s2": 2,
-    "s3": 4
+    "s2": 1,
+    "s3": 2
   },
   "music": "mus_candy_08",
   "story": {
@@ -183,6 +183,12 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1); clear stars -> 1/2"
+      }
+    ]
   }
 }

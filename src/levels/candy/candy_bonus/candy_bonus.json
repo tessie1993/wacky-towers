@@ -5,8 +5,8 @@
   "tier": 11,
   "name": "LVL_CANDY_BONUS_TITLE",
   "board": {
-    "width": 4,
-    "depth": 4,
+    "width": 8,
+    "depth": 8,
     "h_play": 2,
     "down_axis": "-y"
   },
@@ -44,16 +44,24 @@
       "colours": true,
       "layers": {
         "0": [
-          "PPMM",
-          "PPMM",
-          "VVMM",
-          "VVMM"
+          "........",
+          "........",
+          "..PPMM..",
+          "..PPMM..",
+          "..VVMM..",
+          "..VVMM..",
+          "........",
+          "........"
         ],
         "1": [
-          "PPPP",
-          "PPPP",
-          "VVMM",
-          "VVMM"
+          "........",
+          "........",
+          "..PPPP..",
+          "..PPPP..",
+          "..VVMM..",
+          "..VVMM..",
+          "........",
+          "........"
         ]
       }
     },
@@ -186,6 +194,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 4x4 -> 8x8 (offset x2 z2)"
+      }
+    ]
   }
 }

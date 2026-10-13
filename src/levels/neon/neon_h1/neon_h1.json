@@ -5,8 +5,8 @@
   "tier": 12,
   "name": "LVL_NEON_H1_TITLE",
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "pieces": {
@@ -28,7 +28,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 6
+    "n": 4
   },
   "rules": [
     {
@@ -54,8 +54,8 @@
     }
   ],
   "stars": {
-    "t2": 320000,
-    "t3": 220000
+    "t2": 545000,
+    "t3": 375000
   },
   "music": "neon_h1_tbd",
   "story": {
@@ -143,6 +143,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1); clear_n 6 -> 4; time stars x1.71"
+      }
+    ]
   }
 }

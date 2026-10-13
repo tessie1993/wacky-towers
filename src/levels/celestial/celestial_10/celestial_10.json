@@ -4,8 +4,8 @@
   "biome": "celestial",
   "tier": 10,
   "board": {
-    "width": 7,
-    "depth": 7,
+    "width": 8,
+    "depth": 8,
     "h_play": 12
   },
   "pieces": {
@@ -97,8 +97,8 @@
     }
   ],
   "stars": {
-    "t2": 335000,
-    "t3": 235000
+    "t2": 440000,
+    "t3": 305000
   },
   "music": "celestial_10_tbd",
   "story": {
@@ -297,6 +297,11 @@
         "date": "2026-10-13",
         "source": "production/qa/campaign-difficulty-review-2026-10-10.md",
         "change": "Event card (lock 8, ~60-70 s) and lava lid (150 s, 5 s warning) are now introduced separately."
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 7x7 -> 8x8 (offset x0 z0); clear_n 3 -> 3; time stars x1.31"
       }
     ]
   }

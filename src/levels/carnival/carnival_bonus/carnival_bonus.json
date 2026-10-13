@@ -5,8 +5,8 @@
   "tier": 11,
   "name": "LVL_CARNIVAL_BONUS_TITLE",
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 9,
+    "depth": 9,
     "h_play": 10
   },
   "pieces": {
@@ -28,7 +28,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 4
+    "n": 2
   },
   "rules": [
     {
@@ -54,8 +54,8 @@
     }
   ],
   "stars": {
-    "t2": 225000,
-    "t3": 160000
+    "t2": 365000,
+    "t3": 260000
   },
   "music": "carnival_bonus_tbd",
   "story": {
@@ -143,6 +143,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 9x9 (offset x2 z2); clear_n 4 -> 2; time stars x1.62"
+      }
+    ]
   }
 }

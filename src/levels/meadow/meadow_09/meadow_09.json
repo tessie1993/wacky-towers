@@ -5,19 +5,21 @@
   "tier": 9,
   "name": "LVL_MEADOW_09_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10,
     "down_axis": "-y",
     "starting_contents": {
       "layers": {
         "0": [
-          "......",
-          ".e....",
-          "......",
-          "......",
-          "....e.",
-          "......"
+          "........",
+          "........",
+          "..e.....",
+          "........",
+          "........",
+          ".....e..",
+          "........",
+          "........"
         ]
       }
     }
@@ -60,8 +62,8 @@
     }
   ],
   "stars": {
-    "t2": 325000,
-    "t3": 230000
+    "t2": 580000,
+    "t3": 410000
   },
   "story": {
     "title_key": "LVL_MEADOW_09_TITLE",
@@ -149,6 +151,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 4 -> 4; time stars x1.78"
+      }
+    ]
   }
 }

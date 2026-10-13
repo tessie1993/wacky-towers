@@ -6,7 +6,7 @@
   "name": "LVL_CANDY_03_TITLE",
   "board": {
     "width": 8,
-    "depth": 4,
+    "depth": 8,
     "h_play": 10,
     "down_axis": "-y"
   },
@@ -31,7 +31,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 4
+    "n": 3
   },
   "rules": [
     {
@@ -44,8 +44,8 @@
       "id": "syrup_band",
       "params": {
         "band_rows": [
-          1,
-          2
+          3,
+          4
         ],
         "syrup_slow": 0.5,
         "syrup_dir": "+x",
@@ -76,8 +76,8 @@
     }
   ],
   "stars": {
-    "t2": 335000,
-    "t3": 235000
+    "t2": 500000,
+    "t3": 350000
   },
   "music": "mus_candy_03",
   "story": {
@@ -207,6 +207,12 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 8x4 -> 8x8 (offset x0 z2); clear_n 4 -> 3; time stars x1.50"
+      }
+    ]
   }
 }

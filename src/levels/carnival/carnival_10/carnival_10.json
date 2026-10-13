@@ -5,12 +5,21 @@
   "tier": 10,
   "name": "LVL_CARNIVAL_10_TITLE",
   "board": {
-    "width": 7,
-    "depth": 7,
+    "width": 8,
+    "depth": 8,
     "h_play": 12
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "tripod", "screw_left", "screw_right", "chair"]
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "chair"
+    ]
   },
   "knobs": {
     "fall.g0": 1.55,
@@ -22,14 +31,42 @@
     "n": 3
   },
   "rules": [
-    { "id": "mystery_piece", "params": { "every": 5 } },
-    { "id": "storm_bolt", "params": { "bolt_interval_ms": 12000, "bolt_warn_ms": 1500, "bolt_jitter_ms": 2000 } },
-    { "id": "fever_rush", "params": { "window_ms": 8000, "clears_needed": 2, "fever_ms": 8000, "bonus": 150, "gravity_scale": 0.6 } },
-    { "id": "golden_row", "params": { "start_layer": 2, "bonus": 300, "goal_counter": "gold" } }
+    {
+      "id": "mystery_piece",
+      "params": {
+        "every": 5
+      }
+    },
+    {
+      "id": "storm_bolt",
+      "params": {
+        "bolt_interval_ms": 12000,
+        "bolt_warn_ms": 1500,
+        "bolt_jitter_ms": 2000
+      }
+    },
+    {
+      "id": "fever_rush",
+      "params": {
+        "window_ms": 8000,
+        "clears_needed": 2,
+        "fever_ms": 8000,
+        "bonus": 150,
+        "gravity_scale": 0.6
+      }
+    },
+    {
+      "id": "golden_row",
+      "params": {
+        "start_layer": 2,
+        "bonus": 300,
+        "goal_counter": "gold"
+      }
+    }
   ],
   "stars": {
-    "t2": 335000,
-    "t3": 235000
+    "t2": 440000,
+    "t3": 305000
   },
   "music": "carnival_10_tbd",
   "story": {
@@ -43,20 +80,82 @@
     "source": "design/levels/carnival.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
-      "schema": 1, "id": "carnival_10", "biome": "carnival", "tier": 10, "name": "LVL_CARNIVAL_10_TITLE",
-      "board": { "width": 7, "depth": 7, "h_play": 12 },
-      "pieces": { "shapes": ["i","o","t","l","tripod","screw_l","screw_r","chair"] },
-      "knobs": { "fall.g0": 1.55, "goal.warnings_max": 1, "goal.top_out": "rescue" },
-      "goal": { "type": "clear_n", "N": 3 },
+      "schema": 1,
+      "id": "carnival_10",
+      "biome": "carnival",
+      "tier": 10,
+      "name": "LVL_CARNIVAL_10_TITLE",
+      "board": {
+        "width": 7,
+        "depth": 7,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "tripod",
+          "screw_l",
+          "screw_r",
+          "chair"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.55,
+        "goal.warnings_max": 1,
+        "goal.top_out": "rescue"
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
       "rules": [
-        { "id": "mystery_piece", "params": { "every": 5 } },
-        { "id": "storm_bolt", "params": { "bolt_interval_ms": 12000, "bolt_warn_ms": 1500, "bolt_jitter_ms": 2000 } },
-        { "id": "fever_rush", "params": { "window_ms": 8000, "clears_needed": 2, "fever_ms": 8000, "bonus": 150, "gravity_scale": 0.6 } },
-        { "id": "golden_row", "params": { "start_layer": 2, "bonus": 300, "goal_counter": "gold" } }
+        {
+          "id": "mystery_piece",
+          "params": {
+            "every": 5
+          }
+        },
+        {
+          "id": "storm_bolt",
+          "params": {
+            "bolt_interval_ms": 12000,
+            "bolt_warn_ms": 1500,
+            "bolt_jitter_ms": 2000
+          }
+        },
+        {
+          "id": "fever_rush",
+          "params": {
+            "window_ms": 8000,
+            "clears_needed": 2,
+            "fever_ms": 8000,
+            "bonus": 150,
+            "gravity_scale": 0.6
+          }
+        },
+        {
+          "id": "golden_row",
+          "params": {
+            "start_layer": 2,
+            "bonus": 300,
+            "goal_counter": "gold"
+          }
+        }
       ],
-      "stars": { "t2": 335000, "t3": 235000 },
+      "stars": {
+        "t2": 335000,
+        "t3": 235000
+      },
       "music": "carnival_10_tbd",
-      "story": { "title_key": "LVL_CARNIVAL_10_TITLE", "premise_key": "LVL_CARNIVAL_10_PREMISE", "mascot_role": "boss", "icon": "top_hat" }
+      "story": {
+        "title_key": "LVL_CARNIVAL_10_TITLE",
+        "premise_key": "LVL_CARNIVAL_10_PREMISE",
+        "mascot_role": "boss",
+        "icon": "top_hat"
+      }
     },
     "unsupported": [],
     "blocking_gameplay": [],
@@ -67,6 +166,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 7x7 -> 8x8 (offset x0 z0); clear_n 3 -> 3; time stars x1.31"
+      }
+    ]
   }
 }

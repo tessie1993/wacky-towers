@@ -5,8 +5,8 @@
   "tier": 12,
   "name": "LVL_CELESTIAL_H1_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "pieces": {
@@ -28,7 +28,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 5
+    "n": 4
   },
   "rules": [
     {
@@ -50,8 +50,8 @@
     }
   ],
   "stars": {
-    "t2": 385000,
-    "t3": 265000
+    "t2": 550000,
+    "t3": 375000
   },
   "music": "celestial_h1_tbd",
   "story": {
@@ -135,7 +135,12 @@
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
     "design_amendments": [
-      "Supersedes the pre-wave-3 H1 draft 'Meteor Storm' (celestial.md section 7): Meteor Drizzle replaced by storm_bolt meteors"
+      "Supersedes the pre-wave-3 H1 draft 'Meteor Storm' (celestial.md section 7): Meteor Drizzle replaced by storm_bolt meteors",
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 5 -> 4; time stars x1.42"
+      }
     ]
   }
 }

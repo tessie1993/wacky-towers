@@ -4,8 +4,8 @@
   "biome": "underwater",
   "tier": 6,
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 6
   },
   "pieces": {
@@ -36,20 +36,24 @@
     "target_shape": {
       "layers": {
         "0": [
-          "++++++",
-          "++++++",
-          "++..++",
-          "++..++",
-          "++++++",
-          "++++++"
+          "........",
+          ".++++++.",
+          ".++++++.",
+          ".++..++.",
+          ".++..++.",
+          ".++++++.",
+          ".++++++.",
+          "........"
         ],
         "1": [
-          "+....+",
-          "......",
-          "......",
-          "......",
-          "......",
-          "+....+"
+          "........",
+          ".+....+.",
+          "........",
+          "........",
+          "........",
+          "........",
+          ".+....+.",
+          "........"
         ]
       }
     },
@@ -149,6 +153,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1)"
+      }
+    ]
   }
 }

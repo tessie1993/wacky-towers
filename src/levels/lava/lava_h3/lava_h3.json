@@ -4,22 +4,30 @@
   "biome": "lava",
   "tier": 14,
   "board": {
-    "width": 4,
-    "depth": 4,
+    "width": 8,
+    "depth": 8,
     "h_play": 6,
     "starting_contents": {
       "layers": {
         "0": [
-          "####",
-          "#.##",
-          "##.#",
-          "####"
+          "........",
+          "........",
+          "..####..",
+          "..#.##..",
+          "..##.#..",
+          "..####..",
+          "........",
+          "........"
         ],
         "1": [
-          "....",
-          ".#..",
-          "..#.",
-          "...."
+          "........",
+          "........",
+          "........",
+          "...#....",
+          "....#...",
+          "........",
+          "........",
+          "........"
         ]
       }
     }
@@ -64,7 +72,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 2
+    "n": 1
   },
   "rules": [
     {
@@ -75,8 +83,8 @@
     }
   ],
   "stars": {
-    "t2": 130000,
-    "t3": 85000
+    "t2": 260000,
+    "t3": 170000
   },
   "music": "lava_h3",
   "name": "LVL_LAVA_H3_TITLE",
@@ -166,6 +174,12 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 4x4 -> 8x8 (offset x2 z2); clear_n 2 -> 1; time stars x2.00"
+      }
+    ]
   }
 }

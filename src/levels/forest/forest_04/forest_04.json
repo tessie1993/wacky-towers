@@ -4,21 +4,22 @@
   "biome": "forest",
   "tier": 4,
   "board": {
-    "width": 7,
-    "depth": 7,
+    "width": 8,
+    "depth": 8,
     "h_play": 10,
     "spawn_anchor": [
       3,
       2
     ],
     "mask": [
-      "##...##",
-      "##...##",
-      ".#####.",
-      "..###..",
-      "..###..",
-      "..###..",
-      "..###.."
+      "##...###",
+      "##...###",
+      ".#####.#",
+      "..###..#",
+      "..###..#",
+      "..###..#",
+      "..###..#",
+      "########"
     ]
   },
   "knobs": {
@@ -40,8 +41,8 @@
     }
   ],
   "stars": {
-    "t2": 225000,
-    "t3": 160000
+    "t2": 295000,
+    "t3": 210000
   },
   "music": "forest_04_tbd",
   "name": "LVL_FOREST_04_TITLE",
@@ -117,6 +118,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 7x7 -> 8x8 (offset x0 z0); clear_n 4 -> 4; time stars x1.31"
+      }
+    ]
   }
 }

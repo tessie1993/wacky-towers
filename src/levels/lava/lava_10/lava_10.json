@@ -5,8 +5,8 @@
   "tier": 10,
   "name": "level.lava_10.name",
   "board": {
-    "width": 7,
-    "depth": 7,
+    "width": 8,
+    "depth": 8,
     "h_play": 12
   },
   "pieces": {
@@ -60,8 +60,8 @@
     }
   ],
   "stars": {
-    "t2": 335000,
-    "t3": 235000
+    "t2": 440000,
+    "t3": 305000
   },
   "music": "lava_10",
   "story": {
@@ -183,6 +183,12 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 7x7 -> 8x8 (offset x0 z0); clear_n 3 -> 3; time stars x1.31"
+      }
+    ]
   }
 }

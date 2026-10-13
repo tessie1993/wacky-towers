@@ -5,8 +5,8 @@
   "tier": 1,
   "name": "LVL_MEADOW_01_TITLE",
   "board": {
-    "width": 4,
-    "depth": 4,
+    "width": 8,
+    "depth": 8,
     "h_play": 8,
     "down_axis": "-y"
   },
@@ -34,12 +34,12 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 4
+    "n": 2
   },
   "rules": [],
   "stars": {
-    "t2": 145000,
-    "t3": 105000
+    "t2": 290000,
+    "t3": 210000
   },
   "story": {
     "title_key": "LVL_MEADOW_01_TITLE",
@@ -105,6 +105,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 4x4 -> 8x8 (offset x2 z2); clear_n 4 -> 2; time stars x2.00"
+      }
+    ]
   }
 }

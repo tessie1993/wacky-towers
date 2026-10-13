@@ -4,12 +4,12 @@
   "biome": "cave",
   "tier": 6,
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10,
     "spawn_anchor": [
-      1,
-      2
+      2,
+      3
     ]
   },
   "knobs": {
@@ -30,8 +30,8 @@
     }
   ],
   "stars": {
-    "t2": 195000,
-    "t3": 140000
+    "t2": 345000,
+    "t3": 250000
   },
   "music": "cave_06_tbd",
   "name": "LVL_CAVE_06_TITLE",
@@ -102,6 +102,12 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 4 -> 4; time stars x1.78"
+      }
+    ]
   }
 }

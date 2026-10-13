@@ -5,17 +5,35 @@
   "tier": 12,
   "name": "LVL_ICE_H1_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10,
     "starting_contents": {
       "layers": {
-        "0": ["......", ".....n", "......", "......", ".....n", "......"]
+        "0": [
+          "........",
+          "........",
+          "......n.",
+          "........",
+          "........",
+          "......n.",
+          "........",
+          "........"
+        ]
       }
     }
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
   },
   "knobs": {
     "fall.g0": 1.05,
@@ -23,7 +41,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 5
+    "n": 4
   },
   "rules": [
     {
@@ -55,8 +73,8 @@
     }
   ],
   "stars": {
-    "t2": 375000,
-    "t3": 265000
+    "t2": 535000,
+    "t3": 375000
   },
   "music": "ice_h1",
   "story": {
@@ -80,18 +98,58 @@
         "h_play": 10,
         "starting_contents": {
           "layers": {
-            "0": ["......", ".....m", "......", "......", ".....m", "......"]
+            "0": [
+              "......",
+              ".....m",
+              "......",
+              "......",
+              ".....m",
+              "......"
+            ]
           }
         }
       },
-      "knobs": { "fall.g0": 1.05, "goal.warnings_max": 1 },
-      "goal": { "type": "clear_n", "n": 5 },
+      "knobs": {
+        "fall.g0": 1.05,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 5
+      },
       "rules": [
-        { "id": "snowball", "params": { "slope_dir": "-x", "roll_locks": 1, "snow_max": 3, "balls_max": 4, "respawn_locks": 5 } },
-        { "id": "gust", "params": { "wind_dir": "+z", "wind_mode": "fixed", "wind_interval_ms": 10000, "wind_jitter_ms": 2000, "wind_strength": 1, "wind_warn_ms": 1000 } },
-        { "id": "rusty_hinge", "params": { "max_turns": 2 } }
+        {
+          "id": "snowball",
+          "params": {
+            "slope_dir": "-x",
+            "roll_locks": 1,
+            "snow_max": 3,
+            "balls_max": 4,
+            "respawn_locks": 5
+          }
+        },
+        {
+          "id": "gust",
+          "params": {
+            "wind_dir": "+z",
+            "wind_mode": "fixed",
+            "wind_interval_ms": 10000,
+            "wind_jitter_ms": 2000,
+            "wind_strength": 1,
+            "wind_warn_ms": 1000
+          }
+        },
+        {
+          "id": "rusty_hinge",
+          "params": {
+            "max_turns": 2
+          }
+        }
       ],
-      "stars": { "t2": 375000, "t3": 265000 },
+      "stars": {
+        "t2": 375000,
+        "t3": 265000
+      },
       "music": "ice_h1"
     },
     "unsupported": [],
@@ -101,6 +159,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = 5 x 96 s",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 5 -> 4; time stars x1.42"
+      }
+    ]
   }
 }

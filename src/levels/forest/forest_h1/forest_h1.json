@@ -5,12 +5,21 @@
   "tier": 12,
   "name": "LVL_FOREST_H1_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
   },
   "knobs": {
     "fall.g0": 1.25,
@@ -18,7 +27,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 5
+    "n": 4
   },
   "rules": [
     {
@@ -49,8 +58,8 @@
     }
   ],
   "stars": {
-    "t2": 375000,
-    "t3": 265000
+    "t2": 535000,
+    "t3": 375000
   },
   "music": "forest_h1",
   "story": {
@@ -68,15 +77,51 @@
       "id": "forest_h1",
       "biome": "forest",
       "tier": 12,
-      "board": { "width": 6, "depth": 6, "h_play": 10 },
-      "knobs": { "fall.g0": 1.25, "goal.warnings_max": 1 },
-      "goal": { "type": "clear_n", "n": 5 },
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "knobs": {
+        "fall.g0": 1.25,
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 5
+      },
       "rules": [
-        { "id": "fog", "params": { "visible_ms": 4000, "fade_ms": 1000, "invisible_alpha": 0.12, "reveal_ms": 600 } },
-        { "id": "gust", "params": { "wind_mode": "rotating", "wind_interval_ms": 10000, "wind_jitter_ms": 2500, "wind_strength": 1, "wind_warn_ms": 1000 } },
-        { "id": "anvil_drop", "params": { "every": 6, "max_crush": 3 } }
+        {
+          "id": "fog",
+          "params": {
+            "visible_ms": 4000,
+            "fade_ms": 1000,
+            "invisible_alpha": 0.12,
+            "reveal_ms": 600
+          }
+        },
+        {
+          "id": "gust",
+          "params": {
+            "wind_mode": "rotating",
+            "wind_interval_ms": 10000,
+            "wind_jitter_ms": 2500,
+            "wind_strength": 1,
+            "wind_warn_ms": 1000
+          }
+        },
+        {
+          "id": "anvil_drop",
+          "params": {
+            "every": 6,
+            "max_crush": 3
+          }
+        }
       ],
-      "stars": { "t2": 375000, "t3": 265000 },
+      "stars": {
+        "t2": 375000,
+        "t3": 265000
+      },
       "music": "forest_h1"
     },
     "unsupported": [],
@@ -86,6 +131,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = 5 x 96 s",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 5 -> 4; time stars x1.42"
+      }
+    ]
   }
 }

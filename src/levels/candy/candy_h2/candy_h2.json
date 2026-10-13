@@ -5,15 +5,19 @@
   "tier": 13,
   "board": {
     "width": 8,
-    "depth": 4,
+    "depth": 8,
     "h_play": 10,
     "starting_contents": {
       "layers": {
         "0": [
+          "........",
+          "........",
           "#.2#.3.#",
           "#2..#.3#",
           "##.3#.#.",
-          ".#2.##.#"
+          ".#2.##.#",
+          "........",
+          "........"
         ]
       }
     }
@@ -32,8 +36,8 @@
       "id": "syrup_band",
       "params": {
         "band_rows": [
-          1,
-          2
+          3,
+          4
         ],
         "syrup_slow": 0.5,
         "syrup_dir": "+x",
@@ -156,6 +160,12 @@
         "params": {}
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 8x4 -> 8x8 (offset x0 z2)"
+      }
+    ]
   }
 }

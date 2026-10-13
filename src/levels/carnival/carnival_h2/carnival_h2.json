@@ -5,12 +5,21 @@
   "tier": 13,
   "name": "LVL_CARNIVAL_H2_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
   },
   "knobs": {
     "fall.g0": 1.55,
@@ -22,12 +31,22 @@
     "n": 4
   },
   "rules": [
-    { "id": "mystery_piece", "params": { "every": 4 } },
-    { "id": "echo_drop", "params": { "every": 4 } }
+    {
+      "id": "mystery_piece",
+      "params": {
+        "every": 4
+      }
+    },
+    {
+      "id": "echo_drop",
+      "params": {
+        "every": 4
+      }
+    }
   ],
   "stars": {
-    "t2": 305000,
-    "t3": 210000
+    "t2": 540000,
+    "t3": 375000
   },
   "music": "carnival_h2_tbd",
   "story": {
@@ -41,18 +60,62 @@
     "source": "design/levels/carnival.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
-      "schema": 1, "id": "carnival_h2", "biome": "carnival", "tier": 13, "name": "LVL_CARNIVAL_H2_TITLE",
-      "board": { "width": 6, "depth": 6, "h_play": 10 },
-      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r"] },
-      "knobs": { "fall.g0": 1.55, "goal.top_out": "rescue", "goal.warnings_max": 1 },
-      "goal": { "type": "clear_n", "N": 4 },
+      "schema": 1,
+      "id": "carnival_h2",
+      "biome": "carnival",
+      "tier": 13,
+      "name": "LVL_CARNIVAL_H2_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "screw_r"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.55,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
       "rules": [
-        { "id": "mystery_piece", "params": { "every": 4 } },
-        { "id": "echo_drop", "params": { "every": 4 } }
+        {
+          "id": "mystery_piece",
+          "params": {
+            "every": 4
+          }
+        },
+        {
+          "id": "echo_drop",
+          "params": {
+            "every": 4
+          }
+        }
       ],
-      "stars": { "t2": 305000, "t3": 210000 },
+      "stars": {
+        "t2": 305000,
+        "t3": 210000
+      },
       "music": "carnival_h2_tbd",
-      "story": { "title_key": "LVL_CARNIVAL_H2_TITLE", "premise_key": "LVL_CARNIVAL_H2_PREMISE", "mascot_role": "watcher", "icon": "lucky_dip" }
+      "story": {
+        "title_key": "LVL_CARNIVAL_H2_TITLE",
+        "premise_key": "LVL_CARNIVAL_H2_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "lucky_dip"
+      }
     },
     "unsupported": [],
     "blocking_gameplay": [],
@@ -62,6 +125,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 4 -> 4; time stars x1.78"
+      }
+    ]
   }
 }

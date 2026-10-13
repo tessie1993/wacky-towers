@@ -6,11 +6,11 @@
   "name": "level.lava_bonus.name",
   "board": {
     "width": 8,
-    "depth": 2,
+    "depth": 8,
     "h_play": 6,
     "spawn_anchor": [
       3,
-      0
+      3
     ]
   },
   "pieces": {
@@ -39,16 +39,34 @@
     "target_shape": {
       "layers": {
         "0": [
+          "........",
+          "........",
+          "........",
           "..++++..",
-          "..++++.."
+          "..++++..",
+          "........",
+          "........",
+          "........"
         ],
         "1": [
+          "........",
+          "........",
+          "........",
           "...++...",
-          "...++..."
+          "...++...",
+          "........",
+          "........",
+          "........"
         ],
         "2": [
+          "........",
+          "........",
+          "........",
           "++++++++",
-          "++++++++"
+          "++++++++",
+          "........",
+          "........",
+          "........"
         ]
       }
     }
@@ -160,6 +178,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 8x2 -> 8x8 (offset x0 z3)"
+      }
+    ]
   }
 }

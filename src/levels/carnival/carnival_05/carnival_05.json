@@ -5,12 +5,22 @@
   "tier": 5,
   "name": "LVL_CARNIVAL_05_TITLE",
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 12
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right", "big_cube"],
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "big_cube"
+    ],
     "weights": {
       "big_cube": 0.5
     }
@@ -25,8 +35,22 @@
     "h_target": 10
   },
   "rules": [
-    { "id": "build_race", "params": {} },
-    { "id": "magnet_pull", "params": { "magnet_col": [4, 2], "pull_interval_ms": 4000, "pull_warn_ms": 800, "pull_axis": "x" } }
+    {
+      "id": "build_race",
+      "params": {}
+    },
+    {
+      "id": "magnet_pull",
+      "params": {
+        "magnet_col": [
+          7,
+          3
+        ],
+        "pull_interval_ms": 4000,
+        "pull_warn_ms": 800,
+        "pull_axis": "x"
+      }
+    }
   ],
   "stars": {
     "t2": 240000,
@@ -44,18 +68,70 @@
     "source": "design/levels/carnival.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
-      "schema": 1, "id": "carnival_05", "biome": "carnival", "tier": 5, "name": "LVL_CARNIVAL_05_TITLE",
-      "board": { "width": 5, "depth": 5, "h_play": 12 },
-      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r","big_cube"], "weights": { "big_cube": 0.5 } },
-      "knobs": { "fall.g0": 1.38, "goal.top_out": "trim" },
-      "goal": { "type": "height", "H_target": 10, "height_coverage": 0.6 },
+      "schema": 1,
+      "id": "carnival_05",
+      "biome": "carnival",
+      "tier": 5,
+      "name": "LVL_CARNIVAL_05_TITLE",
+      "board": {
+        "width": 5,
+        "depth": 5,
+        "h_play": 12
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "screw_r",
+          "big_cube"
+        ],
+        "weights": {
+          "big_cube": 0.5
+        }
+      },
+      "knobs": {
+        "fall.g0": 1.38,
+        "goal.top_out": "trim"
+      },
+      "goal": {
+        "type": "height",
+        "H_target": 10,
+        "height_coverage": 0.6
+      },
       "rules": [
-        { "id": "build_race", "params": {} },
-        { "id": "magnet_pull", "params": { "magnet_col": [4, 2], "pull_interval_ms": 4000, "pull_warn_ms": 800, "pull_axis": "x" } }
+        {
+          "id": "build_race",
+          "params": {}
+        },
+        {
+          "id": "magnet_pull",
+          "params": {
+            "magnet_col": [
+              4,
+              2
+            ],
+            "pull_interval_ms": 4000,
+            "pull_warn_ms": 800,
+            "pull_axis": "x"
+          }
+        }
       ],
-      "stars": { "t2": 240000, "t3": 170000 },
+      "stars": {
+        "t2": 240000,
+        "t3": 170000
+      },
       "music": "carnival_05_tbd",
-      "story": { "title_key": "LVL_CARNIVAL_05_TITLE", "premise_key": "LVL_CARNIVAL_05_PREMISE", "mascot_role": "watcher", "icon": "fishing_hook" }
+      "story": {
+        "title_key": "LVL_CARNIVAL_05_TITLE",
+        "premise_key": "LVL_CARNIVAL_05_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "fishing_hook"
+      }
     },
     "unsupported": [],
     "blocking_gameplay": [],
@@ -65,6 +141,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1)"
+      }
+    ]
   }
 }

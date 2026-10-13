@@ -5,7 +5,7 @@
   "tier": 12,
   "board": {
     "width": 8,
-    "depth": 3,
+    "depth": 8,
     "h_play": 10
   },
   "knobs": {
@@ -13,7 +13,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 5
+    "n": 3
   },
   "rules": [
     {
@@ -36,8 +36,8 @@
     }
   ],
   "stars": {
-    "t2": 270000,
-    "t3": 190000
+    "t2": 430000,
+    "t3": 305000
   },
   "music": "lava_h1",
   "name": "LVL_LAVA_H1_TITLE",
@@ -124,6 +124,12 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 8x3 -> 8x8 (offset x0 z2); clear_n 5 -> 3; time stars x1.60"
+      }
+    ]
   }
 }

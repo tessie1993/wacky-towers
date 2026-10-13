@@ -4,26 +4,30 @@
   "biome": "celestial",
   "tier": 2,
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10,
     "starting_contents": {
       "layers": {
         "0": [
-          "######",
-          "#.###.",
-          "######",
-          "######",
-          "####.#",
-          "######"
+          "........",
+          ".######.",
+          ".#.###..",
+          ".######.",
+          ".######.",
+          ".####.#.",
+          ".######.",
+          "........"
         ],
         "1": [
-          "######",
-          "#..#..",
-          "#.##.#",
-          "###.##",
-          "###..#",
-          "######"
+          "........",
+          ".######.",
+          ".#..#...",
+          ".#.##.#.",
+          ".###.##.",
+          ".###..#.",
+          ".######.",
+          "........"
         ]
       }
     }
@@ -67,8 +71,8 @@
     }
   ],
   "stars": {
-    "t2": 150000,
-    "t3": 105000
+    "t2": 265000,
+    "t3": 185000
   },
   "music": "celestial_02_tbd",
   "name": "LVL_CELESTIAL_02_TITLE",
@@ -155,6 +159,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 3 -> 3; time stars x1.78"
+      }
+    ]
   }
 }

@@ -5,13 +5,25 @@
   "tier": 6,
   "name": "LVL_CARNIVAL_06_TITLE",
   "board": {
-    "width": 4,
-    "depth": 4,
+    "width": 8,
+    "depth": 8,
     "h_play": 6
   },
   "pieces": {
-    "fixed_list": ["i", "o", "i", "o", "o", "i", "o", "i"],
-    "shapes": ["i", "o"]
+    "fixed_list": [
+      "i",
+      "o",
+      "i",
+      "o",
+      "o",
+      "i",
+      "o",
+      "i"
+    ],
+    "shapes": [
+      "i",
+      "o"
+    ]
   },
   "knobs": {
     "fall.g0": 0.6,
@@ -23,14 +35,42 @@
     "piece_budget": 8,
     "target_shape": {
       "layers": {
-        "0": ["++++", "++++", "++++", "++++"],
-        "1": ["++++", "++++", "++++", "++++"]
+        "0": [
+          "........",
+          "........",
+          "..++++..",
+          "..++++..",
+          "..++++..",
+          "..++++..",
+          "........",
+          "........"
+        ],
+        "1": [
+          "........",
+          "........",
+          "..++++..",
+          "..++++..",
+          "..++++..",
+          "..++++..",
+          "........",
+          "........"
+        ]
       }
     }
   },
   "rules": [
-    { "id": "fill_shape", "params": { "topout_rule": "trim" } },
-    { "id": "jumbled_queue", "params": { "every": 3 } }
+    {
+      "id": "fill_shape",
+      "params": {
+        "topout_rule": "trim"
+      }
+    },
+    {
+      "id": "jumbled_queue",
+      "params": {
+        "every": 3
+      }
+    }
   ],
   "stars": {
     "t2": 95000,
@@ -48,19 +88,77 @@
     "source": "design/levels/carnival.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
-      "schema": 1, "id": "carnival_06", "biome": "carnival", "tier": 6, "name": "LVL_CARNIVAL_06_TITLE",
-      "board": { "width": 4, "depth": 4, "h_play": 6 },
-      "pieces": { "fixed_list": ["i","o","i","o","o","i","o","i"] },
-      "knobs": { "fall.g0": 0.60, "spawn.preview_count": 3, "goal.top_out": "out_of_pieces" },
-      "goal": { "type": "shape", "piece_budget": 8,
-                "target_shape": { "layers": { "0": ["####","####","####","####"], "1": ["####","####","####","####"] } } },
-      "rules": [ { "id": "jumbled_queue", "params": { "every": 3 } } ],
-      "stars": { "t2": 95000, "t3": 65000 },
+      "schema": 1,
+      "id": "carnival_06",
+      "biome": "carnival",
+      "tier": 6,
+      "name": "LVL_CARNIVAL_06_TITLE",
+      "board": {
+        "width": 4,
+        "depth": 4,
+        "h_play": 6
+      },
+      "pieces": {
+        "fixed_list": [
+          "i",
+          "o",
+          "i",
+          "o",
+          "o",
+          "i",
+          "o",
+          "i"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 0.6,
+        "spawn.preview_count": 3,
+        "goal.top_out": "out_of_pieces"
+      },
+      "goal": {
+        "type": "shape",
+        "piece_budget": 8,
+        "target_shape": {
+          "layers": {
+            "0": [
+              "####",
+              "####",
+              "####",
+              "####"
+            ],
+            "1": [
+              "####",
+              "####",
+              "####",
+              "####"
+            ]
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "jumbled_queue",
+          "params": {
+            "every": 3
+          }
+        }
+      ],
+      "stars": {
+        "t2": 95000,
+        "t3": 65000
+      },
       "solution": "see level notes",
       "music": "carnival_06_tbd",
-      "story": { "title_key": "LVL_CARNIVAL_06_TITLE", "premise_key": "LVL_CARNIVAL_06_PREMISE", "mascot_role": "watcher", "icon": "shell" }
+      "story": {
+        "title_key": "LVL_CARNIVAL_06_TITLE",
+        "premise_key": "LVL_CARNIVAL_06_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "shell"
+      }
     },
-    "unsupported": ["field:solution"],
+    "unsupported": [
+      "field:solution"
+    ],
     "blocking_gameplay": [],
     "nonblocking_notes": [
       "field:solution",
@@ -69,6 +167,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 4x4 -> 8x8 (offset x2 z2)"
+      }
+    ]
   }
 }

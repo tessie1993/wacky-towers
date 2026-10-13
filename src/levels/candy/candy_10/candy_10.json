@@ -5,17 +5,18 @@
   "tier": 10,
   "name": "LVL_CANDY_10_TITLE",
   "board": {
-    "width": 7,
-    "depth": 7,
+    "width": 8,
+    "depth": 8,
     "h_play": 14,
     "mask": [
-      ".#####.",
-      "#######",
-      "#######",
-      "#######",
-      "#######",
-      "#######",
-      ".#####."
+      ".#####.#",
+      "########",
+      "########",
+      "########",
+      "########",
+      "########",
+      ".#####.#",
+      "########"
     ]
   },
   "pieces": {
@@ -244,6 +245,12 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 7x7 -> 8x8 (offset x0 z0)"
+      }
+    ]
   }
 }

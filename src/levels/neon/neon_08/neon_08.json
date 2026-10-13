@@ -5,8 +5,8 @@
   "tier": 8,
   "name": "LVL_NEON_08_TITLE",
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "pieces": {
@@ -114,6 +114,11 @@
           "s3": 2
         },
         "reason": "Survive150s must rate clears per Scoring F4; time stars granted automatic clean3stars."
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1); clear stars -> 1/2"
       }
     ]
   }

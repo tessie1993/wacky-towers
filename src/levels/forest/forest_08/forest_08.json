@@ -4,8 +4,8 @@
   "biome": "forest",
   "tier": 8,
   "board": {
-    "width": 4,
-    "depth": 4,
+    "width": 8,
+    "depth": 8,
     "h_play": 12
   },
   "knobs": {
@@ -14,7 +14,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 5
+    "n": 2
   },
   "rules": [
     {
@@ -34,8 +34,8 @@
     }
   ],
   "stars": {
-    "t2": 180000,
-    "t3": 130000
+    "t2": 290000,
+    "t3": 210000
   },
   "music": "forest_08_tbd",
   "name": "LVL_FOREST_08_TITLE",
@@ -106,6 +106,11 @@
         "date": "2026-10-13",
         "source": "production/qa/campaign-difficulty-review-2026-10-10.md",
         "change": "First woodpecker knock moved to ~18-22 s with a 3 s warning and at most 2 pops, so vine protection is readable before repeated pressure."
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 4x4 -> 8x8 (offset x2 z2); clear_n 5 -> 2; time stars x1.60"
       }
     ]
   }

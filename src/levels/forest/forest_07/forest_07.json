@@ -4,8 +4,8 @@
   "biome": "forest",
   "tier": 7,
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "knobs": {
@@ -35,8 +35,8 @@
     }
   ],
   "stars": {
-    "t2": 325000,
-    "t3": 230000
+    "t2": 580000,
+    "t3": 410000
   },
   "music": "forest_07_tbd",
   "name": "LVL_FOREST_07_TITLE",
@@ -116,6 +116,12 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 4 -> 4; time stars x1.78"
+      }
+    ]
   }
 }

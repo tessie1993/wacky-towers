@@ -5,12 +5,21 @@
   "tier": 8,
   "name": "LVL_CARNIVAL_08_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
   },
   "knobs": {
     "fall.g0": 1.4,
@@ -22,12 +31,27 @@
     "n": 3
   },
   "rules": [
-    { "id": "pressure_cooker", "params": { "step": 0.08, "max_scale": 1.6 } },
-    { "id": "fog", "params": { "visible_ms": 5000, "fade_ms": 1000, "invisible_alpha": 0.15, "reveal_ms": 600, "skin": "popcorn_steam" } }
+    {
+      "id": "pressure_cooker",
+      "params": {
+        "step": 0.08,
+        "max_scale": 1.6
+      }
+    },
+    {
+      "id": "fog",
+      "params": {
+        "visible_ms": 5000,
+        "fade_ms": 1000,
+        "invisible_alpha": 0.15,
+        "reveal_ms": 600,
+        "skin": "popcorn_steam"
+      }
+    }
   ],
   "stars": {
-    "t2": 245000,
-    "t3": 175000
+    "t2": 435000,
+    "t3": 310000
   },
   "music": "carnival_08_tbd",
   "story": {
@@ -41,18 +65,67 @@
     "source": "design/levels/carnival.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
-      "schema": 1, "id": "carnival_08", "biome": "carnival", "tier": 8, "name": "LVL_CARNIVAL_08_TITLE",
-      "board": { "width": 6, "depth": 6, "h_play": 10 },
-      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r"] },
-      "knobs": { "fall.g0": 1.40, "goal.warnings_max": 1, "goal.top_out": "rescue" },
-      "goal": { "type": "clear_n", "N": 3 },
+      "schema": 1,
+      "id": "carnival_08",
+      "biome": "carnival",
+      "tier": 8,
+      "name": "LVL_CARNIVAL_08_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "screw_r"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.4,
+        "goal.warnings_max": 1,
+        "goal.top_out": "rescue"
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
       "rules": [
-        { "id": "pressure_cooker", "params": { "step": 0.08, "max_scale": 1.6 } },
-        { "id": "fog", "params": { "visible_ms": 5000, "fade_ms": 1000, "invisible_alpha": 0.15, "reveal_ms": 600, "skin": "popcorn_steam" } }
+        {
+          "id": "pressure_cooker",
+          "params": {
+            "step": 0.08,
+            "max_scale": 1.6
+          }
+        },
+        {
+          "id": "fog",
+          "params": {
+            "visible_ms": 5000,
+            "fade_ms": 1000,
+            "invisible_alpha": 0.15,
+            "reveal_ms": 600,
+            "skin": "popcorn_steam"
+          }
+        }
       ],
-      "stars": { "t2": 245000, "t3": 175000 },
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
       "music": "carnival_08_tbd",
-      "story": { "title_key": "LVL_CARNIVAL_08_TITLE", "premise_key": "LVL_CARNIVAL_08_PREMISE", "mascot_role": "watcher", "icon": "popcorn" }
+      "story": {
+        "title_key": "LVL_CARNIVAL_08_TITLE",
+        "premise_key": "LVL_CARNIVAL_08_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "popcorn"
+      }
     },
     "unsupported": [],
     "blocking_gameplay": [],
@@ -63,6 +136,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 3 -> 3; time stars x1.78"
+      }
+    ]
   }
 }
