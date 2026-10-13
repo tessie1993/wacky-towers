@@ -705,7 +705,30 @@ func _hud_snapshot() -> Dictionary:
 		"held_shape": String(_sim.held_shape()) if _sim.knobs().flag(&"spawn.hold_enabled") else "Disabled",
 		"selected_potion": String(_store.get_setting("selected_potion", "")) if _mode in [&"campaign", &"arcade"] else "",
 		"potion_count": int(_store.progress().get("inventory", {}).get("potions", {}).get(String(_store.get_setting("selected_potion", "")), 0)) if _mode in [&"campaign", &"arcade"] else 0,
-		"warning": _warning, "hint": _hint, "wobble": _wobble}
+		"warning": _warning, "hint": _hint, "wobble": _wobble,
+		"next_shapes": _preview_shapes(next_ids), "held_cells": _preview_shapes([_sim.held_shape()]) if _sim.held_shape() != &"" else [],
+		"star_pace": _star_pace(), "biome": String(_level.biome) if _level != null else "meadow"}
+
+## Cube offsets and a display tint for HUD piece previews (display only).
+func _preview_shapes(ids: Array) -> Array:
+	var tints: Array[Color] = [Color("f2c14e"), Color("5aa9e6"), Color("f07aa0"), Color("7cc86a"), Color("b48ef0"), Color("ff9f5a")]
+	var out: Array = []
+	for id: Variant in ids:
+		if not _catalog.shapes.has_shape(StringName(id)): continue
+		var shape: ShapeDef = _catalog.shapes.get_shape(StringName(id))
+		out.append({"id": String(id), "cells": shape.offsets(0), "tint": tints[absi(hash(String(id))) % tints.size()]})
+	return out
+
+## Stars the player is currently on pace for (3 = best), from the level's star targets.
+func _star_pace() -> int:
+	var stars: Dictionary = _level.stars if _level != null else {}
+	if stars.has("t3") and stars.has("t2"):
+		var elapsed: int = _sim.elapsed_ms()
+		return 3 if elapsed <= int(stars.t3) else (2 if elapsed <= int(stars.t2) else 1)
+	if stars.has("s3") and stars.has("s2"):
+		var done: int = int(_sim.progress_snapshot().get("done", 0))
+		return 1 + int(done >= int(stars.s2)) + int(done >= int(stars.s3))
+	return 3
 
 func _show_shop() -> void:
 	_paused = true
@@ -1052,7 +1075,7 @@ func _apply_character_loadout(level: LevelData, character: StringName, effects: 
 	knobs[&"fall.lock_resets_max"] = resets
 	knobs[&"goal.warnings_max"] = warnings
 	knobs[&"fall.hard_drop_grace_ms"] = int(knobs.get(&"fall.hard_drop_grace_ms", 100)) * roundi(float(effects.get("drop_grace_scale", 1.0)) * 1000) / 1000
-	knobs[&"spawn.preview_count"] = mini(3, int(knobs.get(&"spawn.preview_count", 1)) + int(effects.get("preview_add", 0)))
+	knobs[&"spawn.preview_count"] = mini(3, int(knobs.get(&"spawn.preview_count", _catalog.knob_defs.def(&"spawn.preview_count").get("default", 1))) + int(effects.get("preview_add", 0)))
 	if effects.has("randomizer"): knobs[&"spawn.randomizer"] = StringName(effects.randomizer)
 
 func _session_effects() -> Dictionary:

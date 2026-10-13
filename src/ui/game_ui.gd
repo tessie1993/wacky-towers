@@ -10,10 +10,11 @@ const Glyph := preload("res://src/ui/common/ui_glyph.gd")
 const Format := preload("res://src/ui/common/ui_format.gd")
 const StoryStage := preload("res://src/ui/wordless_story.tscn")
 const MinigameStage := preload("res://src/ui/minigame_ui.tscn")
-const CREAM := Color("fff8e7")
-const INK := Color("243b4d")
-const MUTED := Color("596d77")
-const ORANGE := Color("eaa05b")
+const Kit := preload("res://src/ui/common/wt_storybook.gd")
+const CREAM := Kit.PARCHMENT
+const INK := Kit.PLUM
+const MUTED := Kit.PLUM_SOFT
+const ORANGE := Kit.GOLD
 const MINT := Color("b8ddc7")
 const PHYSICS_VARIANTS: Array[Dictionary] = [
 	{"id":"tower_race", "name":"Tower Race", "description":"Build an eight-cell-high tower and keep it steady for a second."},
@@ -68,6 +69,7 @@ func _ready() -> void:
 
 func _make_theme() -> Theme:
 	var t := Theme.new()
+	t.default_font = Kit.font()
 	t.default_font_size = roundi(18 * _text_factor)
 	t.set_color("font_color", "Label", INK)
 	t.set_color("font_color", "Button", INK)
@@ -105,14 +107,13 @@ func _make_theme() -> Theme:
 		if state == "hover": color = Color("f4e6c9")
 		if state == "pressed": color = Color("e4d4b5")
 		if state == "disabled": color = Color("e5e4d9")
-		var style := _style(color, 14, INK, 2 if state != "focus" else 4)
-		style.content_margin_left = 18
-		style.content_margin_right = 18
-		style.content_margin_top = 11
-		style.content_margin_bottom = 11
-		if state == "focus": style.bg_color = Color(0, 0, 0, 0)
+		var style := Kit.pill(Kit.CREAM_PILL if state != "disabled" else color, Kit.WOOD, state == "pressed", 22)
+		if state == "hover": style.bg_color = Kit.CREAM_PILL.lightened(.3)
+		if state == "focus":
+			style.draw_center = false
+			style.border_color = Color.WHITE
 		t.set_stylebox(state, "Button", style)
-	t.set_stylebox("panel", "PanelContainer", _style(CREAM, 22, INK, 2))
+	t.set_stylebox("panel", "PanelContainer", Kit.panel())
 	t.set_stylebox("normal", "LineEdit", _style(Color("ffffff"), 12, INK, 2))
 	t.set_stylebox("focus", "LineEdit", _style(Color("ffffff"), 12, Color("d58443"), 3))
 	t.set_stylebox("background", "ProgressBar", _style(Color("dce2d5"), 7))
@@ -127,8 +128,12 @@ func _style(color: Color, radius: int = 12, border: Color = Color.TRANSPARENT, w
 	var s := StyleBoxFlat.new()
 	s.bg_color = color
 	s.set_corner_radius_all(radius)
-	s.border_color = border
-	s.set_border_width_all(width)
+	# Storybook frames: ink outlines become painted wood with a heavier bottom edge.
+	s.border_color = Kit.WOOD if border == INK else border
+	s.set_border_width_all(width + (1 if border == INK else 0))
+	if border == INK and width > 0:
+		s.border_width_bottom = width + 3
+	s.anti_aliasing = true
 	return s
 
 func _begin(screen: String, data: Dictionary, overlay: bool = false) -> VBoxContainer:
@@ -146,8 +151,8 @@ func _begin(screen: String, data: Dictionary, overlay: bool = false) -> VBoxCont
 	_root.add_child(_menu)
 	_menu.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	if is_instance_valid(_hud): _hud.hide()
-	var bg := ColorRect.new()
-	bg.color = Color(INK, .72) if overlay else Color("eaf1de")
+	var bg: ColorRect = ColorRect.new() if overlay else Kit.backdrop()
+	if overlay: bg.color = Color(INK, .72)
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_menu.add_child(bg)
 	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -198,9 +203,8 @@ func _button(text: String, id: StringName, args: Dictionary = {}, primary: bool 
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.pressed.connect(func() -> void: intent.emit(id, args))
 	if primary:
-		button.add_theme_stylebox_override("normal", _style(ORANGE, 14, INK, 2))
-		button.add_theme_stylebox_override("hover", _style(ORANGE.lightened(.12), 14, INK, 2))
-		button.add_theme_stylebox_override("pressed", _style(ORANGE.darkened(.08), 14, INK, 2))
+		Kit.style_button(button, true, 26)
+		button.add_theme_font_override("font", Kit.font(true))
 		_focus_default = button
 	return button
 
@@ -233,11 +237,11 @@ func _scroll(parent: Node) -> VBoxContainer:
 func _card(parent: Node, color: Color = CREAM) -> VBoxContainer:
 	var panel := PanelContainer.new()
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	panel.add_theme_stylebox_override("panel", _style(color, 20, INK, 2))
+	panel.add_theme_stylebox_override("panel", Kit.panel(color))
 	parent.add_child(panel)
 	var pad := MarginContainer.new()
 	for side in ["left", "right", "top", "bottom"]:
-		pad.add_theme_constant_override("margin_" + side, 20)
+		pad.add_theme_constant_override("margin_" + side, 16)
 	panel.add_child(pad)
 	return _vbox(pad)
 
@@ -253,62 +257,95 @@ func _time_text(value: Variant) -> String:
 
 func show_title(data: Dictionary = {}) -> void:
 	var col := _begin("title", data)
+	var vh: float = get_viewport().get_visible_rect().size.y
 	var top := _hbox(col)
 	var name := str(data.get("profile_name", "Profiles"))
-	top.add_child(_button("☁  " + name, &"open_profiles"))
+	var profile := _button("☁  " + name, &"open_profiles")
+	profile.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	top.add_child(profile)
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	top.add_child(spacer)
-	var settings := _button("Settings", &"open_settings")
+	var settings := _button("⚙", &"open_settings")
+	settings.tooltip_text = "Settings"
+	settings.custom_minimum_size = Vector2(60, 60)
+	settings.add_theme_font_size_override("font_size", 30)
 	settings.size_flags_horizontal = Control.SIZE_SHRINK_END
+	Kit.style_button(settings, false, 16)
 	top.add_child(settings)
-	var body := BoxContainer.new()
-	body.vertical = _portrait
-	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	body.add_theme_constant_override("separation", 28)
-	col.add_child(body)
-	var art := _vbox(body, 0)
-	art.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	art.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	art.add_child(_label("WACKY", 54 if _portrait else 72, INK, true))
-	art.add_child(_label("TOWERS", 54 if _portrait else 72, INK, true))
-	var diorama := Diorama.new()
-	diorama.custom_minimum_size = Vector2(0, 160 if _portrait else 260)
-	diorama.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	art.add_child(diorama)
-	art.add_child(_label("A little cloud. A lot of possibilities.", 18, MUTED, true))
-	var menu_center := CenterContainer.new()
-	menu_center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	menu_center.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	body.add_child(menu_center)
-	var actions := _card(menu_center)
-	actions.custom_minimum_size.x = 280 if _portrait else 360
-	actions.add_child(_label("Welcome to Meadow", 28, INK, true))
+	# Logo sign, then the wizard on his cloud floating above the meadow island.
+	var logo := TextureRect.new()
+	logo.texture = Kit.sprite("logo_wacky_towers")
+	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	logo.custom_minimum_size.y = vh * (0.2 if _portrait else 0.24)
+	logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	col.add_child(logo)
+	var stage := Control.new()
+	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	stage.custom_minimum_size.y = vh * 0.3
+	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	col.add_child(stage)
+	var island := WtTitleIsland.new()
+	island.turn_speed = 0.0 if _reduced_motion() else 6.0
+	stage.add_child(island)
+	island.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	island.anchor_top = 0.34
+	var wizard := TextureRect.new()
+	wizard.texture = Kit.sprite("wizard_cheer")
+	wizard.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	wizard.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	wizard.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stage.add_child(wizard)
+	wizard.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	wizard.anchor_bottom = 0.5
+	if not _reduced_motion():
+		var bob := wizard.create_tween().set_loops()
+		bob.tween_property(wizard, "position:y", -10.0, 1.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		bob.tween_property(wizard, "position:y", 6.0, 1.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	var has_profile := bool(data.get("has_profile", false))
-	if has_profile:
-		actions.add_child(_label(str(data.get("continue_level_name", "Your next little adventure")), 16, MUTED, true))
-		actions.add_child(_button("Continue  →", &"continue", {}, true, 64))
-	else:
-		actions.add_child(_label("Build, turn, drop. Make room for wonder.", 16, MUTED, true))
-		actions.add_child(_button("Let's play  →", &"play", {}, true, 64))
-	var row := _hbox(actions)
-	row.add_child(_button("Island map", &"open_map"))
-	row.add_child(_button("Arcade", &"open_arcade"))
-	row = _hbox(actions)
-	row.add_child(_button("Toy shop", &"open_shop"))
-	row.add_child(_button("Tournament", &"open_tournament"))
-	actions.add_child(_button("Physics toy box", &"open_physics"))
-	if has_profile: actions.add_child(_label("★  %d collected    ·    %d in your jar" % [int(data.get("stars", 0)), int(data.get("wallet", 0))], 16, MUTED, true))
+	var buttons := _vbox(col, 12)
+	buttons.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	buttons.custom_minimum_size.x = minf(get_viewport().get_visible_rect().size.x * 0.78, 520)
+	var play := _button("★  PLAY", &"continue" if has_profile else &"play", {}, true, 92)
+	play.add_theme_font_size_override("font_size", roundi(44 * _text_factor))
+	play.tooltip_text = str(data.get("continue_level_name", "Play"))
+	buttons.add_child(play)
+	var biomes := _button("BIOMES", &"open_map", {}, false, 70)
+	Kit.style_button(biomes, false, 26)
+	biomes.add_theme_font_override("font", Kit.font(true))
+	biomes.add_theme_font_size_override("font_size", roundi(30 * _text_factor))
+	buttons.add_child(biomes)
+	var more := _hbox(buttons, 8)
+	for entry: Array in [["Party", &"open_tournament"], ["Arcade", &"open_arcade"], ["Shop", &"open_shop"], ["Toy box", &"open_physics"]]:
+		var b := _button(entry[0], entry[1], {}, false, 48)
+		b.add_theme_font_size_override("font_size", roundi(16 * _text_factor))
+		more.add_child(b)
 	var foot := _hbox(col)
-	foot.add_child(_label("THE TOY-BOX COLLECTION  ·  %d BIOMES  ·  %d LEVELS + BONUS" % [int(data.get("biome_count", 10)), int(data.get("level_count", 100))], 13, MUTED))
+	var tally := "★  %d collected    ·    %d in your jar" % [int(data.get("stars", 0)), int(data.get("wallet", 0))] if has_profile else "Build, turn, drop. Make room for wonder."
+	foot.add_child(_label(tally, 16, INK, true))
 	var quit := _button("Quit", &"quit")
 	quit.pressed.disconnect(quit.pressed.get_connections()[0].callable)
 	quit.pressed.connect(confirm_quit)
 	quit.size_flags_horizontal = Control.SIZE_SHRINK_END
+	quit.visible = not OS.has_feature("mobile")
 	foot.add_child(quit)
 	_finish()
+
+## 12345 -> "12,345" for the score plaque.
+func _grouped(value: int) -> String:
+	var digits := str(absi(value))
+	var out := ""
+	while digits.length() > 3:
+		out = "," + digits.substr(digits.length() - 3) + out
+		digits = digits.substr(0, digits.length() - 3)
+	return ("-" if value < 0 else "") + digits + out
+
+## True when the player asked for reduced motion (setting is "on", or a legacy bool).
+func _reduced_motion() -> bool:
+	var motion: Variant = _prefs.get("reduced_motion", "system")
+	return motion if motion is bool else str(motion) == "on"
 
 func confirm_quit() -> void:
 	_confirm("Leave the toy box?", "Your saved stars will be here when you return.", &"quit")
@@ -508,23 +545,63 @@ func _build_hud() -> void:
 	var row := _hbox(col, 10)
 	var pause := _play_button("Ⅱ", &"pause", {}, false)
 	pause.tooltip_text = "Pause"
-	pause.custom_minimum_size = Vector2(52, 52)
+	pause.custom_minimum_size = Vector2(64, 64)
 	pause.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	pause.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	pause.add_theme_font_size_override("font_size", 26)
+	Kit.style_button(pause, false, 16)
 	row.add_child(pause)
-	var goal := _card(row)
-	goal.add_theme_constant_override("separation", 2)
-	_hud_labels.level = _label("Meadow", 14, MUTED)
-	goal.add_child(_hud_labels.level)
-	_hud_labels.goal = _label("0 / 1", 26)
-	goal.add_child(_hud_labels.goal)
-	var next := _card(row)
-	next.size_flags_horizontal = Control.SIZE_SHRINK_END
-	next.custom_minimum_size.x = 135 if not _portrait else 90
-	next.add_child(_label("NEXT", 12, MUTED, true))
-	_hud_labels.next = _label("—", 20, INK, true)
+	var frame: Color = Kit.biome_frame(str(_hud_data.get("biome", "meadow")))
+	# SCORE plaque: big number over three star slots (stars on pace right now).
+	var score_panel := PanelContainer.new()
+	score_panel.add_theme_stylebox_override("panel", Kit.panel(Kit.PARCHMENT, frame, 16, 5))
+	score_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(score_panel)
+	var score_col := _vbox(score_panel, 0)
+	score_col.add_child(_label("SCORE", 14, MUTED, true))
+	_hud_labels.score = _label("0", 30, INK, true)
+	_hud_labels.score.add_theme_font_override("font", Kit.font(true))
+	score_col.add_child(_hud_labels.score)
+	var star_row := _hbox(score_col, 2)
+	star_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	_hud_labels.stars = []
+	for i: int in 3:
+		var star := _label("★", 26, Kit.STAR_ON, true)
+		star.autowrap_mode = TextServer.AUTOWRAP_OFF
+		star.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		star.add_theme_color_override("font_outline_color", Kit.GOLD_DEEP)
+		star.add_theme_constant_override("outline_size", 4)
+		star_row.add_child(star)
+		_hud_labels.stars.append(star)
+	# NEXT plaque with the upcoming piece drawn as isometric toy cubes.
+	var next_panel := PanelContainer.new()
+	next_panel.add_theme_stylebox_override("panel", Kit.panel(Kit.PARCHMENT, frame, 16, 5))
+	next_panel.size_flags_horizontal = Control.SIZE_SHRINK_END
+	next_panel.custom_minimum_size.x = 132
+	row.add_child(next_panel)
+	var next := _vbox(next_panel, 0)
+	next.add_child(_label("NEXT", 14, MUTED, true))
+	_hud_labels.next_preview = WtPiecePreview.new()
+	_hud_labels.next_preview.custom_minimum_size = Vector2(96, 70)
+	_hud_labels.next_preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	next.add_child(_hud_labels.next_preview)
+	_hud_labels.next = _label("—", 12, MUTED, true)
 	next.add_child(_hud_labels.next)
-	_hud_labels.held = _label("Hold: —", 14, MUTED, true)
+	_hud_labels.held = _label("Hold: —", 12, MUTED, true)
+	_hud_labels.held.visible = false
 	next.add_child(_hud_labels.held)
+	# Goal ribbon: level name and progress.
+	var ribbon := PanelContainer.new()
+	ribbon.add_theme_stylebox_override("panel", Kit.pill(Kit.PARCHMENT, frame, false, 22))
+	col.add_child(ribbon)
+	var goal := _hbox(ribbon, 10)
+	_hud_labels.level = _label("Meadow", 15, MUTED)
+	_hud_labels.level.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_hud_labels.level.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	goal.add_child(_hud_labels.level)
+	_hud_labels.goal = _label("0 / 1", 20, INK, true)
+	_hud_labels.goal.add_theme_font_override("font", Kit.font(true))
+	goal.add_child(_hud_labels.goal)
 	_hud_labels.rules = _label("", 16, MUTED, true)
 	var rules_panel := PanelContainer.new()
 	rules_panel.add_theme_stylebox_override("panel", _style(CREAM, 10))
@@ -536,6 +613,19 @@ func _build_hud() -> void:
 	_hud_labels.rules_panel = rules_panel
 	col.add_child(rules_panel)
 	_build_item_bar(left_width, right_width)
+	var pad_layer := WtGesturePad.new()
+	pad_layer.name = "GesturePad"
+	pad_layer.step_px = 46.0 * _control_factor
+	pad_layer.gesture.connect(func(id: StringName, args: Dictionary) -> void: intent.emit(id, args))
+	_hud.add_child(pad_layer)
+	_hud.move_child(pad_layer, 0)
+	_hud_labels.gesture_pad = pad_layer
+	if _storybook_dock():
+		_build_dock()
+		_place_gesture_pad()
+		if is_instance_valid(_menu): _root.move_child(_menu, -1)
+		if is_instance_valid(_countdown): _root.move_child(_countdown, -1)
+		return
 	var left := PanelContainer.new()
 	left.name = "MoveControls"
 	left.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -572,8 +662,6 @@ func _build_hud() -> void:
 			blank.custom_minimum_size = Vector2(cell, cell)
 			blank.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			pad.add_child(blank)
-	_hud_labels.score = _label("0", 18, INK, true)
-	lcol.add_child(_hud_labels.score)
 	var hold_row := _hbox(lcol, 8)
 	hold_row.add_child(_play_button("Hold", &"hold", {}, false))
 	_hud_labels.tools = _play_button("Tools", &"open_tools", {}, false)
@@ -642,8 +730,130 @@ func _build_hud() -> void:
 		right.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 		right.offset_left = 18
 		right.offset_right = 18.0 + right_width
+	_place_gesture_pad()
 	if is_instance_valid(_menu): _root.move_child(_menu, -1)
 	if is_instance_valid(_countdown): _root.move_child(_countdown, -1)
+
+## Portrait phones use the storybook tray and gestures unless classic controls are on.
+func _storybook_dock() -> bool:
+	return _portrait and not bool(_prefs.get("classic_controls", false))
+
+## Bottom dock: small action pills, then the tray (hold slot + upcoming pieces)
+## between a round Turn button and a round Drop button.
+func _build_dock() -> void:
+	var frame: Color = Kit.biome_frame(str(_hud_data.get("biome", "meadow")))
+	var dock := VBoxContainer.new()
+	dock.name = "StorybookDock"
+	dock.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	dock.add_theme_constant_override("separation", 8)
+	_hud.add_child(dock)
+	dock.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	dock.offset_left = 14
+	dock.offset_right = -14
+	dock.offset_bottom = -14
+	dock.offset_top = -_dock_height()
+	_hud_labels.dock = dock
+	var actions := _hbox(dock, 6)
+	actions.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var small: Array[Button] = []
+	var view_left := _play_button("⟲ View", &"view", {"direction": -1}, false)
+	var view_right := _play_button("View ⟳", &"view", {"direction": 1}, false)
+	var soft := _play_button("Soft", &"noop", {}, false)
+	soft.pressed.disconnect(soft.pressed.get_connections()[0].callable)
+	soft.button_down.connect(func() -> void: intent.emit(&"soft", {"active": true}))
+	soft.button_up.connect(func() -> void: intent.emit(&"soft", {"active": false}))
+	_hud_labels.tools = _play_button("Tools", &"open_tools", {}, false)
+	_hud_labels.skill = _play_button("Skill", &"use_skill", {}, false)
+	_hud_labels.skill.tooltip_text = "Character skill"
+	_hud_labels.potion = _play_button("Potion", &"use_item", {}, false)
+	_hud_labels.potion.tooltip_text = "Selected potion"
+	for b: Button in [view_left, view_right, soft, _hud_labels.tools, _hud_labels.skill, _hud_labels.potion]:
+		b.custom_minimum_size = Vector2(0, 44)
+		b.add_theme_font_size_override("font_size", roundi(14 * _text_factor))
+		Kit.style_button(b, false, 18)
+		actions.add_child(b)
+	var extra_axes: Array[String] = []
+	if bool(_hud_data.get("can_tilt", false)): extra_axes.append("tilt")
+	if bool(_hud_data.get("can_roll", false)): extra_axes.append("roll")
+	if not extra_axes.is_empty():
+		var axes := _hbox(dock, 6)
+		for axis: String in extra_axes:
+			var title: String = {"tilt": "Flip", "roll": "Roll"}[axis]
+			for dir: int in [-1, 1]:
+				var b := _play_button(title + (" ‹" if dir < 0 else " ›"), &"rotate", {"axis": StringName(axis), "direction": dir}, true)
+				b.custom_minimum_size.y = 44
+				Kit.style_button(b, false, 18)
+				axes.add_child(b)
+	var tray_row := _hbox(dock, 8)
+	tray_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	var turn := _play_button("⟳\nTurn", &"rotate", {"axis": &"spin", "direction": 1}, true)
+	turn.custom_minimum_size = Vector2(84, 84) * _control_factor
+	turn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	turn.add_theme_font_size_override("font_size", roundi(18 * _text_factor))
+	Kit.style_button(turn, false, 42)
+	tray_row.add_child(turn)
+	var tray := PanelContainer.new()
+	tray.add_theme_stylebox_override("panel", Kit.panel(Kit.PARCHMENT, frame, 18, 7))
+	tray.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tray_row.add_child(tray)
+	var slots := _hbox(tray, 6)
+	_hud_labels.tray = []
+	for i: int in 3:
+		var slot := Button.new()
+		slot.focus_mode = Control.FOCUS_NONE
+		slot.custom_minimum_size = Vector2(0, 92) * _control_factor
+		slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		var face := Kit.panel(Kit.PARCHMENT_DEEP if i > 0 else Kit.CREAM_PILL, frame.lightened(0.35), 12, 2)
+		face.shadow_size = 0
+		for state: String in ["normal", "hover", "pressed", "disabled", "focus"]:
+			slot.add_theme_stylebox_override(state, face)
+		var preview := WtPiecePreview.new()
+		preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		slot.add_child(preview)
+		preview.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		preview.offset_top = 18
+		preview.offset_bottom = -6
+		preview.offset_left = 6
+		preview.offset_right = -6
+		var caption := _label("HOLD" if i == 0 else "THEN", 12, MUTED, true)
+		slot.add_child(caption)
+		caption.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+		if i == 0:
+			slot.tooltip_text = "Hold"
+			slot.pressed.connect(func() -> void: intent.emit(&"hold", {}))
+		else:
+			slot.disabled = true
+		slots.add_child(slot)
+		_hud_labels.tray.append(preview)
+	var drop := _play_button("DROP\n↓", &"drop", {}, false)
+	drop.custom_minimum_size = Vector2(84, 84) * _control_factor
+	drop.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	drop.add_theme_font_size_override("font_size", roundi(18 * _text_factor))
+	drop.add_theme_font_override("font", Kit.font(true))
+	Kit.style_button(drop, true, 42)
+	tray_row.add_child(drop)
+	_hud_labels.time = _label("0:00", 14, INK, true)
+	_hud_labels.time.visible = false
+	dock.add_child(_hud_labels.time)
+
+func _dock_height() -> float:
+	var rows: float = 52.0 + 8.0 + (92.0 + 34.0) * _control_factor + 24.0
+	if bool(_hud_data.get("can_tilt", false)) or bool(_hud_data.get("can_roll", false)): rows += 52.0
+	return rows
+
+## Keeps the gesture pad over the board area only, below every HUD control.
+func _place_gesture_pad() -> void:
+	var pad: Control = _hud_labels.get("gesture_pad")
+	if not is_instance_valid(pad): return
+	var area := board_area()
+	pad.anchor_left = area.position.x
+	pad.anchor_top = area.position.y
+	pad.anchor_right = area.end.x
+	pad.anchor_bottom = area.end.y
+	pad.offset_left = 0
+	pad.offset_top = 0
+	pad.offset_right = 0
+	pad.offset_bottom = 0
 
 func _build_item_bar(left_width: float, right_width: float) -> void:
 	var panel := PanelContainer.new()
@@ -755,6 +965,11 @@ func _scale_live_labels(node: Node, ratio: float) -> void:
 ## The 3D stage should reserve this normalized region for the puzzle board.
 func board_area() -> Rect2:
 	var viewport_size := get_viewport().get_visible_rect().size
+	if _storybook_dock():
+		var dock_top := 1.0 - (_dock_height() + 20.0) / viewport_size.y
+		var bar_top := (16.0 + 64.0 + 40.0 + 72.0 * _text_factor) / viewport_size.y
+		if _party_items_enabled(): bar_top = maxf(bar_top, (_party_bar_top() + _party_bar_height() + 12) / viewport_size.y)
+		return Rect2(0.0, bar_top, 1.0, maxf(.2, dock_top - bar_top))
 	if _portrait:
 		var bottom := minf(.71, 1.0 - (_control_height() + 28.0) / viewport_size.y)
 		var top := maxf(.22, (_party_bar_top() + _party_bar_height() + 12) / viewport_size.y) if _party_items_enabled() else .22
@@ -827,7 +1042,25 @@ func update_hud(data: Dictionary) -> void:
 	_hud_labels.potion.disabled = potion_count <= 0 or str(_hud_data.get("selected_potion", "")).is_empty()
 	_hud_labels.potion.text = "Potion %d" % potion_count
 	_hud_labels.potion.tooltip_text = str(_hud_data.get("selected_potion", "No potion selected")).replace("_", " ").capitalize()
-	_hud_labels.score.text = "Score  %d" % int(_hud_data.get("score", 0))
+	_hud_labels.score.text = _grouped(int(_hud_data.get("score", 0)))
+	var pace: int = int(_hud_data.get("star_pace", 3))
+	for i: int in _hud_labels.get("stars", []).size():
+		(_hud_labels.stars[i] as Label).add_theme_color_override("font_color", Kit.STAR_ON if i < pace else Kit.STAR_OFF)
+	var shapes: Array = _hud_data.get("next_shapes", [])
+	if _hud_labels.has("next_preview"):
+		var first: Dictionary = shapes[0] if not shapes.is_empty() else {}
+		_hud_labels.next_preview.cells = first.get("cells", [])
+		_hud_labels.next_preview.tint = first.get("tint", Kit.GOLD)
+	if _hud_labels.has("tray"):
+		var held: Array = _hud_data.get("held_cells", [])
+		var tray: Array = _hud_labels.tray
+		var hold_entry: Dictionary = held[0] if not held.is_empty() else {}
+		tray[0].cells = hold_entry.get("cells", [])
+		tray[0].tint = hold_entry.get("tint", Kit.GOLD)
+		for i: int in range(1, tray.size()):
+			var entry: Dictionary = shapes[i] if i < shapes.size() else {}
+			tray[i].cells = entry.get("cells", [])
+			tray[i].tint = entry.get("tint", Kit.GOLD)
 	_hud_labels.time.text = _time_text(_hud_data.get("time", 0.0))
 	_hud_labels.time.visible = bool(_prefs.get("show_clock", true))
 	var twist_names := PackedStringArray()
