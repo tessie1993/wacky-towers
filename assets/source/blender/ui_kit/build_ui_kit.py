@@ -361,7 +361,7 @@ def set_render_method(m, blended):
 
 
 def mat_painted(name, stops, tex=None, scale=1.0, rot=0.0, rough=0.6, metal=0.0, nstr=0.35,
-                coat=0.0, grad=0.0, noise=0.25, ao=0.55, alpha=1.0, spec=0.5, grain=0.0):
+                coat=0.0, grad=0.0, noise=0.25, ao=0.55, alpha=1.0, spec=0.5, grain=0.0, nscale=3.0):
     """Painted cartoon material: texture luminance + brush noise + vertical gradient -> colour ramp."""
     if name in MATS:
         return MATS[name]
@@ -380,7 +380,7 @@ def mat_painted(name, stops, tex=None, scale=1.0, rot=0.0, rough=0.6, metal=0.0,
     L.new(tc.outputs["Object"], mp.inputs["Vector"])
 
     nz = N.new("ShaderNodeTexNoise")
-    nz.inputs["Scale"].default_value = 3.0
+    nz.inputs["Scale"].default_value = nscale
     nz.inputs["Detail"].default_value = 3.0
     L.new(mp.outputs[0], nz.inputs["Vector"])
     acc = N.new("ShaderNodeMath")
@@ -516,9 +516,9 @@ def build_materials():
     M = {}
     M["outline"] = mat_emit("outline", "#2a140b", 1.0, cull=True)
     M["wood"] = mat_painted("wood", [(0.25, "#a3602a"), (0.45, "#d4943f"), (0.68, "#f4c878")],
-                            tex="fine_grained_wood", scale=1.1, rough=0.62, nstr=0.8, noise=0.1, grain=0.16)
+                            tex="fine_grained_wood", scale=1.1, rough=0.62, nstr=0.8, noise=0.1, grain=0.26)
     M["wood_dark"] = mat_painted("wood_dark", [(0.25, "#3c1f0f"), (0.45, "#6a3a1c"), (0.68, "#97592c")],
-                                 tex="fine_grained_wood", scale=1.1, rough=0.6, nstr=0.8, noise=0.1, grain=0.16)
+                                 tex="fine_grained_wood", scale=1.1, rough=0.6, nstr=0.8, noise=0.1, grain=0.26)
     M["wood_plank"] = mat_painted("wood_plank", [(0.25, "#c07a32"), (0.5, "#e2a654"), (0.8, "#f8d48c")],
                                   tex="brown_planks_05", scale=0.35, rough=0.6, nstr=0.5)
     M["wood_base"] = mat_painted("wood_base", [(0.3, "#24140c"), (0.7, "#3e271b")],
@@ -526,7 +526,8 @@ def build_materials():
     M["cream"] = mat_painted("cream", [(0.3, "#e9cf9c"), (0.6, "#f6e6c0"), (0.85, "#fff6dc")],
                              tex="white_plaster_rough_01", scale=0.6, rough=0.75, nstr=0.25, grad=0.15)
     M["parchment"] = mat_painted("parchment", [(0.25, "#d9b47a"), (0.5, "#efd6a2"), (0.8, "#faecc8")],
-                                 tex="white_plaster_rough_01", scale=0.4, rough=0.8, nstr=0.35, ao=0.7)
+                                 tex="white_plaster_rough_01", scale=0.4, rough=0.8, nstr=0.5, ao=0.7,
+                                 noise=0.3, nscale=40.0)
     M["gold"] = mat_painted("gold", [(0.2, "#d47f12"), (0.5, "#f7b733"), (0.85, "#ffe17a")],
                             rough=0.32, metal=0.25, coat=0.4, grad=0.35, noise=0.15)
     M["gold_light"] = mat_painted("gold_light", [(0.2, "#f2a42a"), (0.6, "#ffd257"), (0.9, "#fff0a8")],
