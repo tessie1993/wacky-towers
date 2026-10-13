@@ -1,0 +1,65 @@
+{
+  "id": "carnival",
+  "index": 11,
+  "art_set": "candy_toy",
+  "palette": "meadow",
+  "side_island": false,
+  "default_music": "mus_celestial_default",
+  "levels": [
+    {
+      "id": "carnival_01",
+      "json": "res://src/levels/carnival/carnival_01/carnival_01.json",
+      "scene": "res://src/levels/carnival/carnival_01/carnival_01.tscn"
+    },
+    {
+      "id": "carnival_02",
+      "json": "res://src/levels/carnival/carnival_02/carnival_02.json",
+      "scene": "res://src/levels/carnival/carnival_02/carnival_02.tscn"
+    },
+    {
+      "id": "carnival_03",
+      "json": "res://src/levels/carnival/carnival_03/carnival_03.json",
+      "scene": "res://src/levels/carnival/carnival_03/carnival_03.tscn"
+    },
+    {
+      "id": "carnival_04",
+      "json": "res://src/levels/carnival/carnival_04/carnival_04.json",
+      "scene": "res://src/levels/carnival/carnival_04/carnival_04.tscn"
+    },
+    {
+      "id": "carnival_05",
+      "json": "res://src/levels/carnival/carnival_05/carnival_05.json",
+      "scene": "res://src/levels/carnival/carnival_05/carnival_05.tscn"
+    },
+    {
+      "id": "carnival_06",
+      "json": "res://src/levels/carnival/carnival_06/carnival_06.json",
+      "scene": "res://src/levels/carnival/carnival_06/carnival_06.tscn"
+    },
+    {
+      "id": "carnival_07",
+      "json": "res://src/levels/carnival/carnival_07/carnival_07.json",
+      "scene": "res://src/levels/carnival/carnival_07/carnival_07.tscn"
+    },
+    {
+      "id": "carnival_08",
+      "json": "res://src/levels/carnival/carnival_08/carnival_08.json",
+      "scene": "res://src/levels/carnival/carnival_08/carnival_08.tscn"
+    },
+    {
+      "id": "carnival_09",
+      "json": "res://src/levels/carnival/carnival_09/carnival_09.json",
+      "scene": "res://src/levels/carnival/carnival_09/carnival_09.tscn"
+    },
+    {
+      "id": "carnival_10",
+      "json": "res://src/levels/carnival/carnival_10/carnival_10.json",
+      "scene": "res://src/levels/carnival/carnival_10/carnival_10.tscn"
+    },
+    {
+      "id": "carnival_bonus",
+      "json": "res://src/levels/carnival/carnival_bonus/carnival_bonus.json",
+      "scene": "res://src/levels/carnival/carnival_bonus/carnival_bonus.tscn"
+    }
+  ]
+}

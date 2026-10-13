@@ -69,6 +69,13 @@
 			"id": "celestial",
 			"mains": 10,
 			"smoke_passed": 10
+		},
+		{
+			"extras": 4,
+			"finite_puzzles_won": 0,
+			"id": "carnival",
+			"mains": 10,
+			"smoke_passed": 10
 		}
 	],
 	"catalog_errors": [],
@@ -8952,6 +8959,918 @@
 				}
 			],
 			"scene": "res://src/levels/celestial/celestial_h3/celestial_h3.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 14.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_01",
+			"knob_overrides": {
+				"fall.g0": 1200,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 2
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn"
+					],
+					"id": "mascot_hint"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_command"
+					],
+					"id": "angle_gem"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear"
+					],
+					"id": "golden_row"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_command",
+						"on_tick",
+						"on_lock"
+					],
+					"id": "balloon"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_01/carnival_01.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 1.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_02",
+			"knob_overrides": {
+				"fall.g0": 1250,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn"
+					],
+					"id": "mascot_hint"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_command"
+					],
+					"id": "angle_gem"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_lock",
+						"on_clear",
+						"on_resolve_end",
+						"on_tick"
+					],
+					"id": "star_coins"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "mushroom_popup"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_02/carnival_02.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 2.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_03",
+			"knob_overrides": {
+				"fall.g0": 1280,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_lock",
+						"on_clear",
+						"on_tick"
+					],
+					"id": "fever_rush"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "turntable"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_03/carnival_03.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 3.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_04",
+			"knob_overrides": {
+				"fall.g0": 1330,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 1150,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_lock"
+					],
+					"id": "chameleon_paint"
+				},
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "colour_pop"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_04/carnival_04.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 4.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"h_target": 10.0,
+				"height_coverage": 0.6,
+				"type": "height"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_05",
+			"knob_overrides": {
+				"fall.g0": 1380,
+				"goal.height_coverage": 600,
+				"goal.top_out": "trim",
+				"goal.type": "height"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				16,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "build_race"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "magnet_pull"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_05/carnival_05.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 5.0
+		},
+		{
+			"active_clear_plane": 16,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 6,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"piece_budget": 8.0,
+				"target_shape": {
+					"layers": {
+						"0": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						],
+						"1": [
+							"++++",
+							"++++",
+							"++++",
+							"++++"
+						]
+					}
+				},
+				"type": "shape"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_06",
+			"knob_overrides": {
+				"fall.g0": 600,
+				"goal.top_out": "trim",
+				"goal.type": "shape",
+				"spawn.preview_count": 3
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				4,
+				10,
+				4
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "fill_shape"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_lock"
+					],
+					"id": "jumbled_queue"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_06/carnival_06.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 6.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_07",
+			"knob_overrides": {
+				"fall.g0": 1450,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_lock"
+					],
+					"id": "echo_drop"
+				},
+				{
+					"hooks": [
+						"on_lock"
+					],
+					"id": "mirror"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_07/carnival_07.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 7.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_08",
+			"knob_overrides": {
+				"fall.g0": 1400,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_lock",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "pressure_cooker"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_08/carnival_08.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 8.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_09",
+			"knob_overrides": {
+				"fall.g0": 1550,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "storm_bolt"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_land"
+					],
+					"id": "ice_slide"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_09/carnival_09.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 9.0
+		},
+		{
+			"active_clear_plane": 49,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_10",
+			"knob_overrides": {
+				"fall.g0": 1550,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				7,
+				16,
+				7
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn"
+					],
+					"id": "mystery_piece"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "storm_bolt"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_lock",
+						"on_clear",
+						"on_tick"
+					],
+					"id": "fever_rush"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear"
+					],
+					"id": "golden_row"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_10/carnival_10.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 10.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_bonus",
+			"knob_overrides": {
+				"fall.g0": 1300,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn"
+					],
+					"id": "rusty_hinge"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "turntable"
+				},
+				{
+					"hooks": [
+						"on_lock",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "confetti_fill"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_bonus/carnival_bonus.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 11.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_h1",
+			"knob_overrides": {
+				"fall.g0": 1550,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "magnet_pull"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "storm_bolt"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_h1/carnival_h1.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 12.0
+		},
+		{
+			"active_clear_plane": 36,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_h2",
+			"knob_overrides": {
+				"fall.g0": 1550,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				6,
+				14,
+				6
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn"
+					],
+					"id": "mystery_piece"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_lock"
+					],
+					"id": "echo_drop"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_h2/carnival_h2.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 13.0
+		},
+		{
+			"active_clear_plane": 25,
+			"biome": "carnival",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 5.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "carnival_h3",
+			"knob_overrides": {
+				"fall.g0": 1450,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				5,
+				14,
+				5
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn"
+					],
+					"id": "rusty_hinge"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_lock",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "pressure_cooker"
+				}
+			],
+			"scene": "res://src/levels/carnival/carnival_h3/carnival_h3.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
 			"tier": 14.0
