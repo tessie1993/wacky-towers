@@ -1,0 +1,138 @@
+{
+ "panel_parchment": {
+  "left": 60,
+  "top": 60,
+  "right": 60,
+  "bottom": 64,
+  "w": 256,
+  "h": 256
+ },
+ "frame_purple": {
+  "left": 186,
+  "top": 186,
+  "right": 186,
+  "bottom": 186,
+  "w": 512,
+  "h": 512
+ },
+ "frame_purple_open": {
+  "left": 186,
+  "top": 186,
+  "right": 186,
+  "bottom": 186,
+  "w": 512,
+  "h": 512
+ },
+ "panel_wood": {
+  "left": 72,
+  "top": 72,
+  "right": 72,
+  "bottom": 76,
+  "w": 384,
+  "h": 384
+ },
+ "plaque_title": {
+  "left": 150,
+  "top": 64,
+  "right": 150,
+  "bottom": 64,
+  "w": 640,
+  "h": 200
+ },
+ "btn_gold": {
+  "left": 65,
+  "top": 44,
+  "right": 65,
+  "bottom": 54,
+  "w": 320,
+  "h": 128
+ },
+ "btn_cream": {
+  "left": 65,
+  "top": 44,
+  "right": 65,
+  "bottom": 54,
+  "w": 320,
+  "h": 128
+ },
+ "btn_close": {
+  "left": 48,
+  "top": 48,
+  "right": 48,
+  "bottom": 48,
+  "w": 144,
+  "h": 144
+ },
+ "chip_hud": {
+  "left": 74,
+  "top": 74,
+  "right": 74,
+  "bottom": 74,
+  "w": 256,
+  "h": 256
+ },
+ "chip_hud_ice": {
+  "left": 74,
+  "top": 74,
+  "right": 74,
+  "bottom": 74,
+  "w": 256,
+  "h": 256
+ },
+ "chip_hud_celestial": {
+  "left": 74,
+  "top": 74,
+  "right": 74,
+  "bottom": 74,
+  "w": 256,
+  "h": 256
+ },
+ "tray_slot": {
+  "left": 56,
+  "top": 56,
+  "right": 56,
+  "bottom": 56,
+  "w": 192,
+  "h": 192
+ },
+ "toggle_on": {
+  "left": 44,
+  "top": 30,
+  "right": 44,
+  "bottom": 30,
+  "w": 192,
+  "h": 96
+ },
+ "toggle_off": {
+  "left": 44,
+  "top": 30,
+  "right": 44,
+  "bottom": 30,
+  "w": 192,
+  "h": 96
+ },
+ "slider_track": {
+  "left": 40,
+  "top": 30,
+  "right": 40,
+  "bottom": 30,
+  "w": 384,
+  "h": 72
+ },
+ "slider_star_thumb": {
+  "left": 0,
+  "top": 0,
+  "right": 0,
+  "bottom": 0,
+  "w": 112,
+  "h": 112
+ },
+ "sign_heading": {
+  "left": 48,
+  "top": 34,
+  "right": 48,
+  "bottom": 36,
+  "w": 320,
+  "h": 96
+ }
+}
