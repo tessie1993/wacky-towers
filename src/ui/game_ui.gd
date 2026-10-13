@@ -278,6 +278,14 @@ func _kit_button(button: Button, kit_name: String = "btn_cream") -> void:
 		button.add_theme_color_override("font_outline_color", Kit.WOOD_DARK)
 		button.add_theme_constant_override("outline_size", 6)
 
+## Narrows the side padding of every state of a kit button (dense HUD rows).
+func _tighten(button: Button, side: float) -> void:
+	for state: String in ["normal", "hover", "pressed", "disabled"]:
+		var box := button.get_theme_stylebox(state)
+		if box != null and button.has_theme_stylebox_override(state):
+			box.content_margin_left = side
+			box.content_margin_right = side
+
 ## Gold bevelled star icon (the slider thumb render) sized for a `px`-tall button face.
 func _star_icon(px: float) -> Texture2D:
 	return _kit_icon("slider_star_thumb", clampf(px / 56.0, 0.3, 1.5))
@@ -512,7 +520,7 @@ func _card(parent: Node, color: Color = CREAM) -> VBoxContainer:
 	var face: StyleBoxTexture = _kit("panel_parchment")
 	if face != null:
 		_pad(face, 14, 12, 14, 16)
-		if color != CREAM: face.modulate_color = Color(0.86, 1.0, 0.9) if color == MINT else color.lightened(0.4)
+		if color != CREAM: face.modulate_color = Color(0.95, 1.0, 0.93) if color == MINT else color.lightened(0.4)
 	panel.add_theme_stylebox_override("panel", face if face != null else Kit.panel(color))
 	parent.add_child(panel)
 	var pad := MarginContainer.new()
@@ -1051,7 +1059,7 @@ func _build_hud() -> void:
 ## Biome HUD chip (meadow vines, ice frost, celestial gold) with trimmed content margins.
 func _chip_style(biome: String) -> StyleBox:
 	var chip: StyleBox = _kit(String(Kit.BIOME_CHIPS.get(biome, "chip_hud")))
-	return _pad(chip, 18, 12, 18, 16) if chip != null else Kit.chip_box(biome)
+	return _pad(chip, 18, 19, 18, 15) if chip != null else Kit.chip_box(biome)
 
 ## Parchment tray slot (ref 15 bottom shelf); `lit` marks the hold / selected slot in gold.
 func _slot_style(lit: bool = false) -> StyleBox:
@@ -1096,6 +1104,7 @@ func _build_dock() -> void:
 		b.custom_minimum_size = Vector2(0, 44)
 		b.add_theme_font_size_override("font_size", roundi(14 * _text_factor))
 		_kit_button(b, "btn_cream")
+		_tighten(b, 8.0)
 		actions.add_child(b)
 	var extra_axes: Array[String] = []
 	if bool(_hud_data.get("can_tilt", false)): extra_axes.append("tilt")
@@ -1135,13 +1144,15 @@ func _build_dock() -> void:
 		preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		slot.add_child(preview)
 		preview.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		preview.offset_top = 18
-		preview.offset_bottom = -6
-		preview.offset_left = 6
-		preview.offset_right = -6
+		preview.offset_top = 30
+		preview.offset_bottom = -12
+		preview.offset_left = 12
+		preview.offset_right = -12
 		var caption := _label("HOLD" if i == 0 else "THEN", 12, MUTED, true)
 		slot.add_child(caption)
 		caption.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+		caption.offset_top = 15
+		caption.offset_bottom = 33
 		if i == 0:
 			slot.tooltip_text = "Hold"
 			slot.pressed.connect(func() -> void: intent.emit(&"hold", {}))
