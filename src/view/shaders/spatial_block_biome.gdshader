@@ -232,44 +232,57 @@ void fragment() {
 		float sp = step(0.9, hash21(floor(suv * 7.0))) * star4(fract(suv * 7.0) - 0.5, vec2(0.0), 0.12);
 		emit += vec3(0.8, 0.9, 1.0) * sp * 0.6 + accent_color * 0.05;
 		refl = 0.55;
-	} else if (style == 5) { // Lava: cracked basalt plates, glowing two-tone seams.
-		vec2 v = voronoi(suv * 1.8);
-		float crack = 1.0 - smoothstep(0.025, 0.07, v.x);
-		float hot = 1.0 - smoothstep(0.0, 0.015, v.x);
-		float halo = 1.0 - smoothstep(0.06, 0.22, v.x);
-		float plate = fbm(suv * 5.0);
-		col *= (0.65 + 0.55 * plate) * (0.8 + 0.35 * v.y);
-		g += facet(v.y) * 0.6;
-		col *= mix(0.6, 1.1, smoothstep(0.08, 0.2, v.x));
-		col += glow_color * halo * 0.12;
+	} else if (style == 5) { // Lava: big chunky basalt plates, each a painted bevelled slab, wide glowing seams.
+		// Large Voronoi slabs (2-3 per face) with a noise-warped border so seams wander like paint.
+		vec2 wq = suv * 1.6 + (vec2(vnoise(suv * 2.5), vnoise(suv * 2.5 + 7.0)) - 0.5) * 0.35;
+		vec2 v = voronoi(wq);
+		float wobble = vnoise(suv * 6.0) * 0.03;               // uneven seam width (painted stroke)
+		float crack = 1.0 - smoothstep(0.035 + wobble, 0.075 + wobble, v.x);
+		float hot = 1.0 - smoothstep(0.0, 0.02 + wobble * 0.5, v.x);
+		float halo = 1.0 - smoothstep(0.07, 0.2, v.x);
+		// Slab paint: flat 2-tone with a lit upper-left rim and a dark lower lip (hand-painted bevel).
+		vec2 tilt = facet(v.y);
+		float slab_lit = smoothstep(0.08, 0.16, v.x) * (1.0 - smoothstep(0.16, 0.3, v.x));
+		col *= 0.78 + 0.3 * v.y;
+		col *= 0.9 + 0.18 * smoothstep(0.35, 0.7, fbm(suv * 2.5));
+		col = mix(col, col * 1.45 + vec3(0.04, 0.03, 0.03), slab_lit * clamp(0.5 + tilt.y - tilt.x, 0.0, 1.0) * 0.6);
+		col *= mix(0.55, 1.0, smoothstep(0.05, 0.13, v.x));
+		g += tilt * 0.45 + (rdir(tilt) * 0.0);
+		g += (hnoise(suv * 9.0) - 0.5) * 0.12;
+		col += glow_color * halo * 0.1;
 		vec3 hot_col = mix(glow_color, vec3(1.0, 0.62, 0.25), hot * 0.6);
 		col = mix(col, hot_col, crack);
-		emit += glow_color * (crack * glow * 0.8 + halo * 0.15 * glow) + vec3(1.0, 0.6, 0.2) * hot * glow * 0.35;
+		emit += glow_color * (crack * glow * 0.85 + halo * 0.12 * glow) + vec3(1.0, 0.6, 0.2) * hot * glow * 0.35;
 		rough = mix(0.85, 0.4, crack);
 		refl = 0.08;
-	} else if (style == 6) { // Forest: grooved bark, tree-ring end grain on some faces, moss patches.
+	} else if (style == 6) { // Forest: chunky bark slabs, tree-ring end grain on some faces, moss patches.
 		bool rings_face = top || (side && fseed > 0.62);
 		if (rings_face) {
-			float rr = length(uv) * 11.0 + fbm(suv * 2.0) * 0.7;
-			float ring_line = smoothstep(0.55, 0.85, fract(rr));
-			col = mix(vec3(0.84, 0.64, 0.40), vec3(0.58, 0.39, 0.22), ring_line);
-			col *= 1.06 - length(uv) * 0.3;
-			g += normalize(uv + 0.0001) * (ring_line - 0.5) * 0.15;
-			float collar = smoothstep(0.37, 0.45, face_edge);
-			col = mix(col, body_color * 0.8 * (0.8 + 0.4 * vnoise(suv * 10.0)), collar);
+			float rr = length(uv * vec2(1.0, 1.08)) * 7.5 + fbm(suv * 1.6) * 0.8;
+			float ring_line = smoothstep(0.6, 0.8, fract(rr)) * (1.0 - smoothstep(0.85, 0.98, fract(rr)));
+			col = mix(vec3(0.86, 0.66, 0.42), vec3(0.62, 0.42, 0.24), ring_line * 0.85);
+			col *= 1.05 - length(uv) * 0.3;
+			g += normalize(uv + 0.0001) * (ring_line - 0.5) * 0.12;
+			// Thick bark collar with a lit inner lip.
+			float collar = smoothstep(0.36, 0.42, face_edge);
+			col = mix(col, vec3(0.95, 0.78, 0.52), bell(0.33, 0.39, face_edge) * 0.5);
+			col = mix(col, body_color * 0.75 * (0.85 + 0.3 * vnoise(suv * 6.0)), collar);
 		} else {
-			vec2 bq = vec2(suv.x * 9.0, suv.y * 1.2);
-			float h0 = hnoise(bq);
-			float h1 = hnoise(bq + vec2(0.08, 0.0));
-			g += vec2((h1 - h0) / 0.08, 0.0) * 0.06;
-			float groove = smoothstep(0.45, 0.2, h0);
-			col *= 0.5 + 0.55 * h0;
-			col = mix(col, col * vec3(0.5, 0.42, 0.38), groove * 0.55);
-			cavity += groove * 0.15;
-			float plate = smoothstep(0.0, 0.07, abs(fract(suv.y * 2.0 + h0 * 0.3) - 0.5) * 2.0);
-			col *= 0.85 + 0.15 * plate;
+			// Bark slabs: Voronoi stretched vertically = 3-4 long plates per face, separated by deep
+			// dark fissures; each plate painted with a lit left edge and a soft shadowed right edge.
+			vec2 bq = vec2(suv.x * 4.5, suv.y * 0.75) + vec2(vnoise(suv * 3.0) * 0.35, 0.0);
+			vec2 v = voronoi(bq);
+			float fissure = 1.0 - smoothstep(0.03, 0.09, v.x);
+			vec2 tilt = facet(v.y);
+			col *= 0.8 + 0.3 * v.y;
+			col *= 0.88 + 0.2 * smoothstep(0.3, 0.7, fbm(vec2(suv.x * 4.0, suv.y * 1.2)));
+			float lip = smoothstep(0.1, 0.18, v.x) * (1.0 - smoothstep(0.18, 0.32, v.x));
+			col = mix(col, col * 1.35 + vec3(0.04, 0.03, 0.01), lip * clamp(0.4 - tilt.x * 1.5, 0.0, 1.0));
+			col = mix(col, col * vec3(0.45, 0.36, 0.32), fissure * 0.85);
+			cavity += fissure * 0.15;
+			g += vec2(tilt.x * 0.6, tilt.y * 0.2);
 		}
-		// Moss patches creeping over the bark.
+		// Moss patches creeping over the bark, from the top edge down.
 		float moss = smoothstep(0.66, 0.72, fbm(suv * 2.3 + 5.0) + (p.y - 0.2) * 0.25) * float(side);
 		col = mix(col, cap_color * (0.6 + 0.5 * vnoise(suv * 24.0)), moss * detail);
 		rough = mix(rough, 0.95, moss);

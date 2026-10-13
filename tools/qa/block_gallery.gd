@@ -41,6 +41,7 @@ func _run() -> void:
 		_font = load(FONT_PATH) as Font
 	# The project stretches canvas items from a 720px base; the sheet wants 1:1 pixels.
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+	root.content_scale_factor = 1.0
 	var mode: String = args[0] if args.size() > 0 else "sheet"
 	if mode == "tints":
 		await _sheet_tints()
@@ -155,7 +156,7 @@ func _cell(biome: StringName, title: String, cells: Array, with_ghost: bool) -> 
 	cam.fov = 30.0
 	world.add_child(cam)
 	var target := Vector3(0.05, 1.0 if not with_ghost else 1.5, 0.0)
-	cam.look_at_from_position(target + Vector3(-2.3, 2.5, 5.6) * (1.0 if not with_ghost else 1.25), target)
+	cam.look_at_from_position(target + Vector3(-2.3, 2.5, 5.6) * (1.1 if not with_ghost else 1.3), target)
 	cam.current = true
 	var label := Label.new()
 	label.text = title
