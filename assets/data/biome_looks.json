@@ -96,54 +96,71 @@
           "#76533A"
         ],
         "tile": {
-          "color": "#C2B8A8",
+          "color": "#CBC4B8",
           "grout": "#6E6258"
         },
         "rim": [
           {
             "kind": "flower_white",
-            "weight": 4
+            "weight": 4,
+            "scale": [
+              1.3,
+              1.8
+            ],
+            "spacing": 0.42
           },
           {
             "kind": "flower_lilac",
-            "weight": 2
+            "weight": 2.2,
+            "scale": [
+              1.3,
+              1.7
+            ],
+            "spacing": 0.42
           },
           {
             "kind": "clover",
             "tint": "#6CC04A",
-            "weight": 3
+            "weight": 3,
+            "scale": [
+              1.4,
+              2.0
+            ],
+            "spacing": 0.42
           },
           {
             "kind": "tuft",
             "tint": "#7BC24E",
-            "weight": 3,
+            "weight": 3.5,
             "scale": [
-              0.8,
-              1.3
-            ]
+              1.0,
+              1.6
+            ],
+            "spacing": 0.26
           },
           {
             "kind": "bush",
             "tint": "#5FA63C",
             "weight": 1.2,
             "scale": [
-              0.8,
-              1.2
+              0.9,
+              1.3
             ]
           }
         ],
-        "rim_density": 3.2,
+        "rim_density": 5.0,
         "hang": [
           {
             "kind": "root",
-            "tint": "#7A5638",
-            "count": 26
+            "tint": "#B08058",
+            "count": 28,
+            "size": 1.4
           },
           {
             "kind": "strand",
-            "tint": "#5C9E38",
-            "count": 30,
-            "size": 0.9
+            "tint": "#6CB040",
+            "count": 34,
+            "size": 1.2
           }
         ],
         "far": [
@@ -273,7 +290,7 @@
             "weight": 1
           }
         ],
-        "rim_density": 2.6,
+        "rim_density": 4.0,
         "hang": [
           {
             "kind": "stalactite",
@@ -379,7 +396,7 @@
         ],
         "strata_cover": 0.85,
         "tile": {
-          "color": "#BCD0E8",
+          "color": "#C6D6EC",
           "grout": "#7486A8"
         },
         "rim": [
@@ -388,14 +405,18 @@
             "tint": "#F4F8FF",
             "weight": 3,
             "scale": [
-              0.7,
-              1.3
+              1.1,
+              1.7
             ]
           },
           {
             "kind": "shrub",
             "tint": "#EAF2FF",
-            "weight": 2
+            "weight": 2,
+            "scale": [
+              1.1,
+              1.7
+            ]
           },
           {
             "kind": "tree_white",
@@ -408,7 +429,11 @@
           {
             "kind": "tuft",
             "tint": "#E2ECFF",
-            "weight": 2
+            "weight": 2,
+            "scale": [
+              1.1,
+              1.7
+            ]
           },
           {
             "kind": "crystal",
@@ -422,7 +447,7 @@
             ]
           }
         ],
-        "rim_density": 2.8,
+        "rim_density": 4.2,
         "hang": [
           {
             "kind": "icicle",
@@ -551,7 +576,7 @@
             "weight": 3
           }
         ],
-        "rim_density": 3.2,
+        "rim_density": 4.0,
         "hang": [
           {
             "kind": "strand",
@@ -815,7 +840,7 @@
             "weight": 1
           }
         ],
-        "rim_density": 3.2,
+        "rim_density": 4.0,
         "hang": [
           {
             "kind": "root",
@@ -1457,7 +1482,7 @@
             "weight": 2
           }
         ],
-        "rim_density": 2.6,
+        "rim_density": 4.0,
         "hang": [
           {
             "kind": "stalactite",
@@ -1577,7 +1602,7 @@
             "weight": 1
           }
         ],
-        "rim_density": 3.2,
+        "rim_density": 4.0,
         "hang": [
           {
             "kind": "stalactite",

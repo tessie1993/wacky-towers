@@ -27,9 +27,9 @@ void vertex() {
 void fragment() {
 	vec2 uv = lp.xz * 2.0 + tseed * 13.0;
 	float paint = wt_fbm(uv);
-	vec3 col = mix(tint * 0.8, tint * 1.06, mix(0.6, smoothstep(0.2, 0.8, paint), mottle));
+	vec3 col = mix(tint * 0.9, tint * 1.04, mix(0.6, smoothstep(0.2, 0.8, paint), mottle));
 	float stroke = smoothstep(0.62, 0.7, wt_vn(vec2(uv.x * 0.7 + uv.y * 1.6, 5.0 + tseed * 9.0)));
-	col *= 1.0 - stroke * 0.06 * mottle;
+	col *= 1.0 - stroke * 0.04 * mottle;
 	vec3 e3 = clamp((abs(lp) - (tile_half - vec3(tile_radius))) / tile_radius, 0.0, 1.0);
 	float edge = max(e3.x, e3.z) * step(0.0, lp.y);
 	col = mix(col, col * 1.22 + 0.03, edge * edge_light);

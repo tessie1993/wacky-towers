@@ -26,8 +26,8 @@ const DEFAULT_STRATA := [[1.0, 0.96, 1.2], [0.93, 0.83, 1.2], [0.81, 0.34, 2.1]]
 const TALL_KINDS := ["bush", "shrub", "tree", "tree_white", "pine", "pillar", "pillar_broken", "lollipop", "coral", "crystal"]
 ## Distant island layout: [x (fraction of half width), y (fraction of half height above target),
 ## scale, depth behind the board]. Index order = env.far order.
-const FAR_LAYOUT := [[-0.66, 0.6, 1.0, 34.0], [0.7, 0.46, 1.1, 30.0], [-0.08, 0.86, 0.62, 44.0],
-	[-0.95, 0.06, 0.85, 26.0], [0.95, -0.12, 0.8, 26.0], [0.4, 0.95, 0.5, 46.0]]
+const FAR_LAYOUT := [[-0.68, 0.62, 0.78, 34.0], [0.72, 0.5, 0.85, 30.0], [-0.12, 0.84, 0.5, 44.0],
+	[-0.98, 0.12, 0.7, 26.0], [0.98, -0.05, 0.66, 26.0], [0.42, 0.93, 0.42, 46.0]]
 ## Reference ortho size the far layout was composed at (portrait 8x8 board).
 const FAR_REF_SIZE := 24.0
 const ISLAND_SHADER := "res://src/view/shaders/spatial_env_island.gdshader"
@@ -206,13 +206,13 @@ func build_dressing(parent: Node3D, board: Vector3i) -> void:
 		var spec: Dictionary = _pick(specs)
 		var kind: String = String(spec.get("kind", "rock"))
 		var tall: bool = bool(spec.get("tall", kind in TALL_KINDS))
-		var p := Vector3(_rng.randf_range(-half.x + 0.2, half.x - 0.2), SLAB_TOP - 0.01, _rng.randf_range(-half.y + 0.2, half.y - 0.2))
+		var p := Vector3(_rng.randf_range(-half.x + 0.05, half.x - 0.05), SLAB_TOP - 0.01, _rng.randf_range(-half.y + 0.05, half.y - 0.05))
 		var gx: float = absf(p.x) - b.x
 		var gz: float = absf(p.z) - b.y
 		if maxf(gx, gz) < (TALL_CLEAR if tall else LOW_CLEAR): continue
-		var cx: float = maxf(0.0, absf(p.x) - (half.x - SLAB_RADIUS - 0.15))
-		var cz: float = maxf(0.0, absf(p.z) - (half.y - SLAB_RADIUS - 0.15))
-		if cx * cx + cz * cz > 0.02: continue
+		var cx: float = maxf(0.0, absf(p.x) - (half.x - SLAB_RADIUS))
+		var cz: float = maxf(0.0, absf(p.z) - (half.y - SLAB_RADIUS))
+		if cx * cx + cz * cz > SLAB_RADIUS * SLAB_RADIUS: continue
 		if _near(p, placed, float(spec.get("spacing", 0.34))): continue
 		placed.append(p)
 		var side := Vector3.ZERO
@@ -271,7 +271,7 @@ func build_far(parent: Node3D) -> Node3D:
 	rng.seed = hash(String(_biome) + "far")
 	for i: int in mini(kinds.size(), FAR_LAYOUT.size()):
 		var layout: Array = FAR_LAYOUT[i]
-		var haze: float = clampf(0.3 + (float(layout[3]) - 26.0) / 20.0 * 0.3, 0.25, 0.62)
+		var haze: float = clampf((float(layout[3]) - 28.0) / 18.0 * 0.4, 0.04, 0.4)
 		var isl := _far_island(String(kinds[i]), haze, haze_c, rng)
 		isl.set_meta(&"far_layout", layout)
 		isl.rotation.y = rng.randf_range(-0.5, 0.5)
@@ -362,21 +362,72 @@ func _far_mesh(mesh: Mesh, haze: float, haze_c: Color) -> MeshInstance3D:
 
 # ------------------------------------------------------------------ strata, hanging, tiles
 
-## Adds the strata bands under a slab of half extent `half`; returns the tip y.
+## Adds the strata under a slab of half extent `half`; returns the tip y. Each band is a dark
+## faceted core (reads as the gaps) wrapped in rows of chunky rounded rock blocks that step in
+## and out (cookbook §5.1 production upgrade), one MultiMesh per band.
 func _build_strata(parent: Node3D, half: Vector2, haze: float, scale_y: float, rng: RandomNumberGenerator) -> float:
 	var bands: Array = _env.get("strata_shape", DEFAULT_STRATA)
 	var y: float = SLAB_TOP - SLAB_DEPTH + 0.15
+	var block: Mesh = _cached("rock_block", func() -> Mesh: return rounded_box(Vector3.ONE, 0.14, 3))
 	for i: int in bands.size():
 		var b: Array = bands[i]
 		var h: float = float(b[2]) * scale_y
-		var m := MeshInstance3D.new()
-		m.name = "Stratum%d" % i
-		m.mesh = chunk_mesh(float(b[0]), float(b[1]), h, 24, 0.035 + i * 0.015, rng)
-		m.scale = Vector3(half.x, 1.0, half.y)
-		m.position = Vector3(0, y, 0)
-		m.material_override = _rock_material(i, haze, Color.WHITE, 1.0)
-		m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		parent.add_child(m)
+		var core := MeshInstance3D.new()
+		core.name = "Stratum%d" % i
+		core.mesh = chunk_mesh(float(b[0]) * 0.94, float(b[1]) * 0.9, h, 24, 0.035 + i * 0.015, rng)
+		core.scale = Vector3(half.x, 1.0, half.y)
+		core.position = Vector3(0, y, 0)
+		core.material_override = _rock_material(i, haze, Color.WHITE, 1.0)
+		(core.material_override as ShaderMaterial).set_shader_parameter(&"seam", 0.0)
+		var cc: Color = (core.material_override as ShaderMaterial).get_shader_parameter(&"body_color")
+		(core.material_override as ShaderMaterial).set_shader_parameter(&"body_color", cc.darkened(0.45))
+		core.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		parent.add_child(core)
+		# Rows of blocks: radius follows the band taper, each row offset and jittered.
+		var rows: int = maxi(1, int(round(h / 0.6)))
+		var row_h: float = h / rows
+		var xf: Array[Transform3D] = []
+		var cols: Array[Color] = []
+		for r: int in rows:
+			var t: float = (r + 0.5) / rows
+			var rad: float = lerpf(float(b[0]), float(b[1]), t)
+			var yy: float = y - (r + 0.5) * row_h
+			var perim: float = 2.0 * PI * rad * (half.x + half.y) * 0.5 * 1.1
+			var n: int = maxi(6, int(perim / rng.randf_range(1.0, 1.25)))
+			var phase: float = rng.randf()
+			for k: int in n:
+				var a: float = TAU * (k + phase + rng.randf_range(-0.12, 0.12)) / n
+				var c: float = cos(a)
+				var sn: float = sin(a)
+				var sq: float = 1.0 / pow(pow(absf(c), 4.0) + pow(absf(sn), 4.0), 0.25)
+				var px: float = c * sq * rad * half.x
+				var pz: float = sn * sq * rad * half.y
+				var nrm := Vector3(signf(px) * pow(absf(px) / half.x, 3.0), 0, signf(pz) * pow(absf(pz) / half.y, 3.0)).normalized()
+				var out: float = rng.randf_range(-0.1, 0.14)
+				var w: float = perim / n * rng.randf_range(0.82, 0.98)
+				var bh: float = row_h * rng.randf_range(0.86, 1.0)
+				var basis := Basis(nrm.cross(Vector3.UP).normalized(), Vector3.UP, nrm)
+				basis = basis * Basis.from_euler(Vector3(rng.randf_range(-0.06, 0.06), rng.randf_range(-0.08, 0.08), rng.randf_range(-0.05, 0.05)))
+				var d: float = rng.randf_range(0.55, 0.8)
+				var pos := Vector3(px, yy + rng.randf_range(-0.04, 0.04), pz) + nrm * (out - d * 0.35)
+				xf.append(Transform3D(basis.scaled_local(Vector3(w, bh, d)), pos))
+				var v: float = rng.randf_range(0.82, 1.08)
+				cols.append(Color(v, v, v, 1.0))
+		var mm := MultiMesh.new()
+		mm.transform_format = MultiMesh.TRANSFORM_3D
+		mm.use_colors = true
+		mm.mesh = block
+		mm.instance_count = xf.size()
+		for k: int in xf.size():
+			mm.set_instance_transform(k, xf[k])
+			mm.set_instance_color(k, cols[k])
+		var blocks := MultiMeshInstance3D.new()
+		blocks.name = "StratumBlocks%d" % i
+		blocks.multimesh = mm
+		blocks.material_override = _rock_material(i, haze, Color.WHITE, 1.0)
+		(blocks.material_override as ShaderMaterial).set_shader_parameter(&"seam", 0.25)
+		blocks.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		parent.add_child(blocks)
 		y -= h - 0.15
 	return y + 0.15 - float(bands[bands.size() - 1][2]) * scale_y * 0.3
 
@@ -557,10 +608,14 @@ func _mmi(node_name: String, mesh: Mesh, transforms: Array[Transform3D], customs
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	mm.use_custom_data = true
+	# Instance colours must be on (white): without them COLOR reaches the shader as zero on
+	# Compatibility and every prop renders black.
+	mm.use_colors = true
 	mm.mesh = mesh
 	mm.instance_count = transforms.size()
 	for i: int in transforms.size():
 		mm.set_instance_transform(i, transforms[i])
+		mm.set_instance_color(i, Color.WHITE)
 		mm.set_instance_custom_data(i, customs[i] if i < customs.size() else Color(1, 1, 1, 1))
 	var node := MultiMeshInstance3D.new()
 	node.name = node_name

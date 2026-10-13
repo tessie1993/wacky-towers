@@ -67,15 +67,15 @@ void fragment() {
 	}
 	// Two hazy mountain ridges at the horizon (far = paler).
 	if (mountain_amount > 0.0) {
-		float r1 = 0.5 - 0.13 * fbm(vec2(p.x * 1.6, 1.7)) - 0.07 * pow(abs(sin(p.x * 3.1 + 1.0)), 3.0);
-		float r2 = 0.58 - 0.09 * fbm(vec2(p.x * 2.3 + 7.0, 3.1)) - 0.06 * pow(abs(sin(p.x * 4.3 + 2.0)), 4.0);
+		float r1 = 0.36 - 0.13 * fbm(vec2(p.x * 1.6, 1.7)) - 0.07 * pow(abs(sin(p.x * 3.1 + 1.0)), 3.0);
+		float r2 = 0.45 - 0.09 * fbm(vec2(p.x * 2.3 + 7.0, 3.1)) - 0.06 * pow(abs(sin(p.x * 4.3 + 2.0)), 4.0);
 		vec3 far_c = mix(mountains.rgb, horizon.rgb, 0.62);
 		vec3 near_c = mix(mountains.rgb, horizon.rgb, 0.38);
 		float m1 = smoothstep(r1, r1 + 0.003, uv.y);
 		float m2 = smoothstep(r2, r2 + 0.003, uv.y);
 		col = mix(col, far_c * (0.96 + 0.08 * fbm(p * 9.0)), m1 * mountain_amount);
 		col = mix(col, near_c * (0.94 + 0.1 * fbm(p * 7.0 + 3.0)), m2 * mountain_amount);
-		col = mix(col, low.rgb, smoothstep(0.55, 0.85, uv.y) * 0.55 * m1);
+		col = mix(col, mix(horizon.rgb, low.rgb, 0.5), smoothstep(0.4, 0.8, uv.y) * 0.6 * m1);
 	}
 	// Cloud wisps: billowy soft threshold, lit top / shaded underside from an offset sample.
 	vec2 cp = vec2(p.x * 2.0 + t * 0.006, uv.y * 6.0);

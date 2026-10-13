@@ -1,6 +1,7 @@
 // spatial_env_rock: island strata bands, distant island undersides and hanging rock.
 // Paints chunky stacked rock blocks (offset rows, dark seams, per-block value jitter, lit top
 // lip), a cover dusting on upward faces (snow, moss, frosting) and optional lava cracks.
+// COLOR (instance colour on the block MultiMesh, white elsewhere) = per-block value jitter.
 // Coordinates are world-relative to the node origin, so non-uniform node scale is fine.
 // Recipe: design/art/style-techniques.md §5.1 (production upgrade: rock blocks). ~5 noise taps.
 shader_type spatial;
@@ -32,7 +33,7 @@ void fragment() {
 	float arc = atan(rel.z, rel.x) * max(length(rel.xz), 0.6);
 	vec2 uv = vec2(arc, rel.y);
 	float paint = wt_fbm(uv * 1.3 + seed);
-	vec3 col = mix(body_dark, body_color, smoothstep(0.25, 0.75, paint));
+	vec3 col = mix(body_dark, body_color, smoothstep(0.25, 0.75, paint)) * COLOR.rgb;
 	float row = floor(rel.y / block.y + seed);
 	float cx = arc / block.x + wt_h21(vec2(row, seed + 1.0)) * 3.0 + paint * 0.3;
 	vec2 g = vec2(fract(cx), fract(rel.y / block.y + seed));

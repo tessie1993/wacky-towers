@@ -36,7 +36,7 @@ BAKE_SIZE = 1024
 PAL = {
     "skin": "f7c9a8", "blush": "f29a9a", "nose": "f5ae98",
     "beard": "fff6f0", "lilac": "9d8cc8", "cloud_line": "d9ccef",
-    "robe": "7a52b0", "hat": "5c2f86", "trim": "f2cf6a",
+    "robe": "7a52b0", "hat": "4a2270", "trim": "f2cf6a",
     "gold": "f8c840", "glint": "fff3b0", "wood": "8a5a34", "boot": "5a3a2a",
     "eye": "1c1222", "mouth": "7a2f3c", "tongue": "e0707a",
 }
@@ -304,6 +304,37 @@ def ring_on_surface(name, target, center, axis, tube, mat, n=36, push=0.003, fro
     return sweep(name, pts, [tube] * len(pts), ring=12, mat=mat, closed=True)
 
 
+def trim_ring(name, target, center, axis, tube, mat, n=36, slab=0.012, push=0.002):
+    """Closed trim tube hugging a surface: per angular bin, the outermost vertex of `target`
+    inside a thin slab across `axis` (raycasts hit the torso from inside the sleeves)."""
+    axis = Vector(axis).normalized()
+    u = axis.orthogonal().normalized()
+    v = axis.cross(u)
+    nv = len(target.data.vertices)
+    co = np.empty(nv * 3, dtype=np.float32)
+    target.data.vertices.foreach_get("co", co)
+    Q = co.reshape(-1, 3) - np.array(center)
+    h = Q @ np.array(axis)
+    Q = Q[np.abs(h) < slab]
+    if len(Q) < 16:
+        return None
+    x, y = Q @ np.array(u), Q @ np.array(v)
+    ang = np.arctan2(y, x)
+    rad = np.hypot(x, y)
+    bins = ((ang + math.pi) / (2 * math.pi) * n).astype(int) % n
+    pts = []
+    for i in range(n):
+        sel = rad[bins == i]
+        if len(sel) == 0:
+            continue
+        a = (i + 0.5) / n * 2 * math.pi - math.pi
+        r = float(sel.max()) + push
+        pts.append(Vector(center) + r * (math.cos(a) * u + math.sin(a) * v))
+    if len(pts) < 8:
+        return None
+    return sweep(name, pts, [tube] * len(pts), ring=12, mat=mat, closed=True)
+
+
 def skin_limb(name, pts, radii):
     """Recipe step 2: polyline skeleton + Skin modifier + Subdivision 2."""
     me = bpy.data.meshes.new(name)
@@ -365,7 +396,7 @@ def plush(name, base, shade, dist):
     ao.inputs["Distance"].default_value = dist
     ao.samples = 8
     ramp = nt.nodes.new("ShaderNodeMapRange")
-    ramp.inputs["From Min"].default_value = 0.35
+    ramp.inputs["From Min"].default_value = 0.68
     ramp.inputs["From Max"].default_value = 1.0
     nt.links.new(ao.outputs["AO"], ramp.inputs["Value"])
     nt.links.new(mix_rgb(nt, ramp.outputs[0], lin(shade), lin(base)), b.inputs["Base Color"])
@@ -411,7 +442,7 @@ def materials():
         "cloud": plush("cloud", "beard", "lilac", 0.35),
         "cloud_line": plush("cloud_line", "cloud_line", "lilac", 0.2),
         "robe": felt("robe", "robe", rough=0.85, sheen=0.55, bump=0.03),
-        "hat": felt("hat", "hat", rough=0.9, sheen=0.6, bump=0.05),
+        "hat": felt("hat", "hat", rough=0.9, sheen=0.25, bump=0.05),
         "trim": principled("trim", "trim", rough=0.38, metal=0.55),
         "gold": principled("gold", "gold", rough=0.25, metal=0.8,
                            Emission_Color=lin("gold"), Emission_Strength=0.25),
@@ -433,7 +464,7 @@ POSES = {
     "idle": {
         "R": [(-0.19, 0.02, 0.79), (-0.30, -0.04, 0.67), (-0.31, -0.18, 0.66)], "R_hand": "fist",
         "L": [(0.19, 0.02, 0.79), (0.30, -0.04, 0.65), (0.27, -0.18, 0.58)], "L_hand": "rest",
-        "wand": (-0.30, -0.15, 1.0), "eyes": "closed", "mouth": False,
+        "wand": (-0.6, -0.12, 1.0), "eyes": "closed", "mouth": False,
     },
     "cheer": {
         "R": [(-0.19, 0.02, 0.81), (-0.33, -0.03, 0.95), (-0.40, -0.07, 1.11)], "R_hand": "fist",
@@ -469,12 +500,13 @@ def build(pose_name, M):
     for co, semi in puffs:
         g = bmesh.ops.create_uvsphere(bm, u_segments=32, v_segments=16, radius=1.0)
         bmesh.ops.transform(bm, matrix=Matrix.Translation(co) @ Matrix.Diagonal((*semi, 1.0)), verts=g["verts"])
+    bm.transform(Matrix.Diagonal((1.12, 1.05, 1.0, 1.0)))
     cloud = mesh_obj("C_cloud", bm, M["cloud"])
     add_mods(cloud, remesh=0.012, smooth=(0.6, 14))
     cloud = realize(cloud)
     C.append(cloud)
     # spiral swirls on the front puffs
-    for k, (x, z, r0, turn) in enumerate([(-0.42, 0.22, 0.075, 1), (0.05, 0.16, 0.065, -1), (0.52, 0.24, 0.07, -1)]):
+    for k, (x, z, r0, turn) in enumerate([(-0.45, 0.24, 0.11, 1), (0.02, 0.2, 0.10, -1), (0.55, 0.26, 0.10, -1)]):
         loc, nrm = cast(cloud, (x, -2, z), (0, 1, 0))
         if loc is None:
             continue
@@ -488,7 +520,7 @@ def build(pose_name, M):
             q = loc + rr * (math.cos(ang) * u + math.sin(ang) * v)
             h, _ = cast(cloud, q + nrm * 0.15, -nrm)
             pts.append((h if h is not None else q) + nrm * 0.002)
-            rad.append(0.009 * (1 - 0.6 * t))
+            rad.append(0.012 * (1 - 0.6 * t))
         C.append(sweep(f"C_swirl{k}", pts, rad, ring=8, n=60, mat=M["cloud_line"]))
 
     # ---- head (skin metaball) + blush vertex colours
@@ -540,7 +572,7 @@ def build(pose_name, M):
         rr = 0.065 * (1 - 0.75 * t)
         els.append(B((cx + rr * math.cos(phi), -0.235 + 0.01 * t, cz + rr * math.sin(phi)), 0.064 - 0.036 * t))
     beard = realize(metaball("mb_beard", els, res=0.011), "W_beard", M["beard"])
-    add_mods(beard, remesh=0.008, smooth=(0.5, 10), displace=(0.05, 0.006))
+    add_mods(beard, remesh=0.008, smooth=(0.6, 14))
     beard = realize(beard)
     W.append(beard)
 
@@ -578,12 +610,16 @@ def build(pose_name, M):
         E((0, 0.02, 0.80), (0.19, 0.15, 0.08)), B((-0.15, -0.2, 0.52), 0.11), B((0.15, -0.2, 0.52), 0.11)],
         res=0.014), "W_robe")
     sleeves = []
+    sleeve_only = {}
     arm_dirs = {}
     for side in ("R", "L"):
         S, El, Wr = (Vector(p) for p in pose[side])
         d = (Wr - El).normalized()
         arm_dirs[side] = (Wr, d)
-        sleeves.append(skin_limb(f"W_sleeve{side}", [S, El, Wr, Wr + d * 0.035], [0.075, 0.085, 0.105, 0.118]))
+        sl = skin_limb(f"W_sleeve{side}", [S, El, Wr, Wr + d * 0.035], [0.085, 0.095, 0.12, 0.135])
+        sleeve_only[side] = sl.copy()
+        sleeve_only[side].data = sl.data.copy()
+        sleeves.append(sl)
     robe = join([torso] + sleeves, "W_robe")
     robe.data.materials.clear()
     robe.data.materials.append(M["robe"])
@@ -594,10 +630,13 @@ def build(pose_name, M):
     # gold trim: cuffs and hem
     for side in ("R", "L"):
         Wr, d = arm_dirs[side]
-        cuff = ring_on_surface(f"W_cuff{side}", robe, Wr + d * 0.02, d, 0.02, M["trim"], maxd=0.15, fallback=0.1)
+        cuff = trim_ring(f"W_cuff{side}", robe.copy(), Wr + d * 0.02, d, 0.016, M["trim"], n=28, slab=0.01) if False else \
+            trim_ring(f"W_cuff{side}", sleeve_only[side], Wr + d * 0.02, d, 0.016, M["trim"], n=28, slab=0.01)
         if cuff:
             W.append(cuff)
-    hem = ring_on_surface("W_hem", robe, (0, -0.05, 0.47), (0, 0, 1), 0.022, M["trim"], n=48, from_inside=False)
+    for sl in sleeve_only.values():
+        bpy.data.meshes.remove(sl.data)
+    hem = trim_ring("W_hem", robe, (0, -0.05, 0.49), (0, 0, 1), 0.016, M["trim"], n=56, slab=0.008)
     if hem:
         W.append(hem)
 
@@ -620,14 +659,14 @@ def build(pose_name, M):
             side_v = Vector((1, 0, 0))
         side_v.normalize()
         up = side_v.cross(d).normalized()
-        pc = Wr + d * 0.07
+        pc = Wr + d * 0.055
         if kind == "fist":
-            els = [B(pc, 0.06), B(pc + d * 0.03 - up * 0.01, 0.052), B(pc + up * 0.045 - side_v * 0.02, 0.028)]
+            els = [B(pc, 0.046), B(pc + d * 0.022 - up * 0.008, 0.042), B(pc + up * 0.036 - side_v * 0.016, 0.021)]
         elif kind == "open":
-            els = [E(pc + d * 0.01, (0.06, 0.06, 0.06)), B(pc + d * 0.06, 0.045),
-                   B(pc + d * 0.03 + up * 0.055, 0.026)]
+            els = [E(pc + d * 0.01, (0.05, 0.05, 0.035)), B(pc + d * 0.05, 0.036),
+                   B(pc + d * 0.02 + up * 0.045, 0.021)]
         else:  # rest: mitten resting on the lap
-            els = [B(pc, 0.058), B(pc + d * 0.035, 0.048), B(pc - side_v * 0.045 * (1 if side == "L" else -1) + up * 0.02, 0.026)]
+            els = [B(pc, 0.046), B(pc + d * 0.028, 0.038), B(pc - side_v * 0.045 * (1 if side == "L" else -1) + up * 0.02, 0.026)]
         W.append(realize(metaball(f"mb_hand{side}", els, res=0.008), f"W_hand{side}", M["skin"]))
         if side == "R":
             wd = Vector(pose["wand"]).normalized()
@@ -672,7 +711,7 @@ def build(pose_name, M):
         s = decal_star(f"W_hatstar{k}", hat_parts[0], (x * 3, -2, z), (-x * 3, 2, 0), 0.026, 0.004, M["gold"])
         if s:
             hat_parts.append(s)
-    tilt = Matrix.Translation((0, 0.02, 1.08)) @ Matrix.Rotation(math.radians(-9), 4, "X") @ \
+    tilt = Matrix.Translation((0, 0.02, 1.115)) @ Matrix.Rotation(math.radians(-14), 4, "X") @ \
         Matrix.Rotation(math.radians(6), 4, "Y") @ Matrix.Translation((0, -0.02, -1.08))
     for o in hat_parts:
         o.data.transform(tilt)
@@ -714,6 +753,7 @@ def reset(samples):
     sc.render.image_settings.color_mode = "RGBA"
     sc.view_settings.view_transform = "Standard"
     sc.view_settings.look = "None"
+    sc.view_settings.exposure = -0.2
     world = bpy.data.worlds.new("w")
     sc.world = world
     try:
@@ -727,7 +767,7 @@ def reset(samples):
     cam.data.lens = 35
     cam.data.sensor_width = 36
     sc.camera = cam
-    for nm, col, energy, size in (("key", "fff0d6", 620, 3.0), ("fill", "b8c4ff", 170, 4.0), ("rim", "ffe0a8", 520, 1.6)):
+    for nm, col, energy, size in (("key", "fff0d6", 480, 3.0), ("fill", "b8c4ff", 150, 4.0), ("rim", "ffe0a8", 600, 1.6)):
         ld = bpy.data.lights.new(nm, "AREA")
         ld.color = lin(col)[:3]
         ld.energy = energy
