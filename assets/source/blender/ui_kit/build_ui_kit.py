@@ -33,7 +33,8 @@ TP = os.path.join(REPO, "assets", "third_party")
 SHEET = os.path.join(REPO, "production", "qa", "evidence", "ui-kit", "contact_sheet.png")
 CHEST_BLEND = os.path.join(TP, "blendkit", "stylised_treasure_chest", "stylised_treasure_chest.blend")
 
-PPU = 100.0          # output pixels per Blender unit
+PPU = 100.0          # output pixels per Blender unit (before PAD)
+PAD = 1.07           # camera framing slack so bevels + ink lines never clip
 OUTLINE_PX = 3.0     # ink outline width for panels / buttons
 ICON_OUTLINE_PX = 2.5
 
@@ -105,25 +106,24 @@ def build_contact_sheet():
     put(load("plaque_wood"), x, y, "plaque_wood", 1.0)
     put(load("ribbon_red"), x, y + 290, "ribbon_red")
     put(load("ribbon_gold"), x + 540, y + 290, "ribbon_gold", 0.9)
-    put(load("bunting"), x + 540, y, "bunting", 0.9)
-    put(load("timer_gear"), x + 560, y + 120, "", 0.55)
+    put(load("bunting"), x + 540, y + 40, "bunting", 0.9)
 
     # Row 2: buttons
     y = 590
     x = 40
     btn = load("btn_wood_square")
-    for n in ["btn_wood_square", "btn_wood_square_pressed"]:
-        put(load(n), x, y, n, 0.8)
-        x += 190
+    for n, lab in [("btn_wood_square", "btn_wood_square"), ("btn_wood_square_pressed", "..._pressed")]:
+        put(load(n), x, y, lab, 0.8)
+        x += 200
     # usage demo: cog icon on wood button
     demo = load("btn_wood_square").copy()
     cog = load("icon_cog")
     demo.alpha_composite(cog, ((demo.width - 128) // 2, (demo.height - 128) // 2 - 4))
-    put(demo, x, y, "button + icon_cog", 0.8)
-    x += 190
+    put(demo, x, y, "btn + icon_cog", 0.8)
+    x += 200
     for n in ["btn_green_play", "btn_gold_pill", "btn_cream_pill"]:
-        put(load(n), x, y + 10, n, 0.85)
-        x += 350
+        put(load(n), x, y + 10, n, 0.8)
+        x += 330
     put(load("timer_gear"), x + 20, y - 20, "timer_gear", 0.75)
 
     # Row 3: HUD elements
@@ -150,7 +150,7 @@ def build_contact_sheet():
     tube = load("meter_tube")
     put(tube, x, y - 20, "meter_tube")
     mask = load("meter_fill_mask")
-    put(mask, x + 120, y - 20, "fill_mask")
+    put(mask, x + 130, y - 20, "fill_mask")
     # meter demo: gradient fill clipped to 60% from bottom
     grad = Image.new("RGBA", mask.size)
     gd = ImageDraw.Draw(grad)
@@ -169,7 +169,7 @@ def build_contact_sheet():
     meter = Image.new("RGBA", mask.size)
     meter.alpha_composite(grad)
     meter.alpha_composite(tube)
-    put(meter, x + 240, y - 20, "meter demo")
+    put(meter, x + 260, y - 20, "meter demo")
 
     # Row 4: icons
     y = 1330
@@ -361,7 +361,7 @@ def set_render_method(m, blended):
 
 
 def mat_painted(name, stops, tex=None, scale=1.0, rot=0.0, rough=0.6, metal=0.0, nstr=0.35,
-                coat=0.0, grad=0.0, noise=0.25, ao=0.55, alpha=1.0, spec=0.5):
+                coat=0.0, grad=0.0, noise=0.25, ao=0.55, alpha=1.0, spec=0.5, grain=0.0):
     """Painted cartoon material: texture luminance + brush noise + vertical gradient -> colour ramp."""
     if name in MATS:
         return MATS[name]
@@ -388,7 +388,22 @@ def mat_painted(name, stops, tex=None, scale=1.0, rot=0.0, rough=0.6, metal=0.0,
     L.new(nz.outputs["Fac"], acc.inputs[0])
     acc.inputs[1].default_value = noise
     cur = acc.outputs[0]
-    base_w = 1.0 - noise - grad
+    base_w = 1.0 - noise - grad - grain
+    if grain > 0:  # painted cartoon grain streaks running along X
+        wv = N.new("ShaderNodeTexWave")
+        wv.wave_type = "BANDS"
+        wv.bands_direction = "Y"
+        wv.inputs["Scale"].default_value = 0.9
+        wv.inputs["Distortion"].default_value = 4.0
+        wv.inputs["Detail"].default_value = 2.5
+        wv.inputs["Detail Scale"].default_value = 1.5
+        L.new(mp.outputs[0], wv.inputs["Vector"])
+        gm = N.new("ShaderNodeMath")
+        gm.operation = "MULTIPLY_ADD"
+        L.new(wv.outputs["Fac"], gm.inputs[0])
+        gm.inputs[1].default_value = grain
+        L.new(cur, gm.inputs[2])
+        cur = gm.outputs[0]
     if tex:
         it = N.new("ShaderNodeTexImage")
         it.image = load_img(tex_path(tex, "diff"))
@@ -500,10 +515,10 @@ def mat_emit(name, hexcol, strength=1.0, cull=False, alpha=1.0):
 def build_materials():
     M = {}
     M["outline"] = mat_emit("outline", "#2a140b", 1.0, cull=True)
-    M["wood"] = mat_painted("wood", [(0.30, "#b06f2c"), (0.55, "#d99a48"), (0.80, "#f3c578")],
-                            tex="fine_grained_wood", scale=0.55, rough=0.62, nstr=0.6)
-    M["wood_dark"] = mat_painted("wood_dark", [(0.25, "#3a2216"), (0.55, "#58382a"), (0.85, "#7a5540")],
-                                 tex="fine_grained_wood", scale=0.55, rough=0.6, nstr=0.6)
+    M["wood"] = mat_painted("wood", [(0.25, "#a3602a"), (0.45, "#d4943f"), (0.68, "#f4c878")],
+                            tex="fine_grained_wood", scale=1.1, rough=0.62, nstr=0.8, noise=0.1, grain=0.16)
+    M["wood_dark"] = mat_painted("wood_dark", [(0.25, "#3c1f0f"), (0.45, "#6a3a1c"), (0.68, "#97592c")],
+                                 tex="fine_grained_wood", scale=1.1, rough=0.6, nstr=0.8, noise=0.1, grain=0.16)
     M["wood_plank"] = mat_painted("wood_plank", [(0.25, "#c07a32"), (0.5, "#e2a654"), (0.8, "#f8d48c")],
                                   tex="brown_planks_05", scale=0.35, rough=0.6, nstr=0.5)
     M["wood_base"] = mat_painted("wood_base", [(0.3, "#24140c"), (0.7, "#3e271b")],
@@ -744,7 +759,7 @@ def hide(o):
 def render(name, W, H):
     SC.render.resolution_x = W
     SC.render.resolution_y = H
-    CAM.data.ortho_scale = max(W, H) / PPU
+    CAM.data.ortho_scale = max(W, H) / PPU * PAD
     SC.render.filepath = os.path.join(OUT, name + ".png")
     bpy.ops.render.render(write_still=True)
     print("rendered", name, W, H)
@@ -761,7 +776,7 @@ def el_panel(kind):
     if kind == "wood":
         # painted plank seams (thin dark grooves) for a carpentered look
         for x in (-96, 0, 96):
-            slab(f"seam{x}", [rrect(5, 380, 2, 2, x, 0)], M["wood_base"], depth=1, bevel=1, z=7, outline=0)
+            slab(f"seam{x}", [rrect(5, 380, 2, 2, x, 0)], M["wood_base"], depth=1, bevel=1.5, z=11, outline=0)
     for sx in (-1, 1):
         for sy in (-1, 1):
             dome(f"nail{sx}{sy}", 13, sx * 220, sy * 220, M["brass"], z=44)
@@ -786,7 +801,8 @@ def leaf(name, x, y, ang, size, z):
     pts = []
     for i in range(24):
         t = i / 24 * 2 * math.pi
-        pts.append((size * math.cos(t), size * 0.48 * math.sin(t) * (1.0 - 0.35 * math.cos(t))))
+        x_ = size * math.cos(t)
+        pts.append((x_, size * 0.46 * math.copysign(1.0, math.sin(t)) * (1 - (x_ / size) ** 2) * (1 - 0.25 * x_ / size)))
     pts = offset_pts(rot_pts(pts, ang), x, y)
     slab(name, [pts], MATS["leaf"], depth=4, bevel=3, z=z, outline=2)
     vein = offset_pts(rot_pts(rrect(size * 1.3, 2.5, 1.2), ang), x, y)
@@ -904,12 +920,12 @@ def el_meter():
 
 def el_bar():
     M = MATS
-    frame = ring("frame", rrect(380, 60, 30), rrect(340, 26, 13), M["wood"], depth=16, bevel=7, z=16)
+    frame = ring("frame", rrect(380, 60, 30), rrect(348, 46, 23), M["wood"], depth=16, bevel=5, z=16)
     trough = slab("trough", [rrect(352, 40, 20)], M["trough"], depth=4, bevel=3, z=0, outline=0)
     render("bar_frame", 384, 64)
     hide(frame)
     hide(trough)
-    slab("fill", [rrect(346, 34, 17)], M["fill_white"], depth=6, bevel=5, z=4, outline=0)
+    slab("fill", [rrect(346, 38, 19)], M["fill_white"], depth=6, bevel=5, z=4, outline=0)
     slab("gloss", [rrect(320, 7, 3.5, cy=7)], M["gloss"], depth=1, bevel=1, z=20, outline=0)
     render("bar_fill", 384, 64)
 
