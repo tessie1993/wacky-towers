@@ -473,9 +473,9 @@ POSES = {
         "wand": (-0.18, -0.08, 1.0), "eyes": "closed", "mouth": True,
     },
     "point": {
-        "R": [(-0.19, 0.02, 0.80), (-0.31, -0.10, 0.74), (-0.40, -0.27, 0.80)], "R_hand": "fist",
+        "R": [(-0.19, 0.02, 0.80), (-0.34, -0.06, 0.76), (-0.50, -0.16, 0.84)], "R_hand": "fist",
         "L": [(0.19, 0.02, 0.79), (0.30, -0.04, 0.65), (0.27, -0.18, 0.58)], "L_hand": "rest",
-        "wand": (-0.55, -0.80, 0.35), "eyes": "open", "mouth": False,
+        "wand": (-0.85, -0.45, 0.35), "eyes": "open", "mouth": False,
     },
 }
 
@@ -548,9 +548,9 @@ def build(pose_name, M):
         ex, ez = sx * 0.064, 1.008
         ey = fy(ex, ez)
         if pose["eyes"] == "open":
-            W.append(ellipsoid(f"W_eye{sx}", (ex, ey + 0.004, ez), (0.019, 0.012, 0.027), M["eye"]))
-            W.append(ellipsoid(f"W_glint{sx}a", (ex - 0.006, ey - 0.006, ez + 0.010), (0.0065,) * 3, M["glint"], seg=12))
-            W.append(ellipsoid(f"W_glint{sx}b", (ex + 0.006, ey - 0.005, ez - 0.010), (0.0035,) * 3, M["glint"], seg=10))
+            W.append(ellipsoid(f"W_eye{sx}", (ex, ey + 0.005, ez), (0.024, 0.014, 0.034), M["eye"]))
+            W.append(ellipsoid(f"W_glint{sx}a", (ex - 0.007, ey - 0.008, ez + 0.012), (0.008,) * 3, M["glint"], seg=12))
+            W.append(ellipsoid(f"W_glint{sx}b", (ex + 0.007, ey - 0.007, ez - 0.012), (0.0042,) * 3, M["glint"], seg=10))
         else:
             pts = []
             for i in range(9):
@@ -631,7 +631,7 @@ def build(pose_name, M):
     # gold trim: cuffs and hem
     for side in ("R", "L"):
         Wr, d = arm_dirs[side]
-        cuff = trim_ring(f"W_cuff{side}", robe, Wr + d * 0.01, d, 0.015, M["trim"], n=28, slab=0.008, maxr=0.13)
+        cuff = trim_ring(f"W_cuff{side}", robe, Wr + d * 0.01, d, 0.015, M["trim"], n=28, slab=0.008, maxr=0.1)
         if cuff:
             W.append(cuff)
     for sl in sleeve_only.values():

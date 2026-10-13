@@ -685,7 +685,7 @@
         "rim": [
           {
             "kind": "basalt",
-            "tint": "#4A4044",
+            "tint": "#7A6A70",
             "weight": 3
           },
           {
@@ -695,7 +695,7 @@
           },
           {
             "kind": "rock",
-            "tint": "#5A5054",
+            "tint": "#8A7A80",
             "weight": 2
           },
           {

@@ -480,6 +480,8 @@ func _build_tiles(parent: Node3D, board: Vector3i, active: Callable) -> void:
 	(grout.material_override as ShaderMaterial).set_shader_parameter(&"body_color", gcol)
 	(grout.material_override as ShaderMaterial).set_shader_parameter(&"body_dark", gcol.darkened(0.2))
 	(grout.material_override as ShaderMaterial).set_shader_parameter(&"seam", 0.0)
+	# The grout is never emissive: a glowing grid would compete with the pieces.
+	(grout.material_override as ShaderMaterial).set_shader_parameter(&"glow", 0.0)
 	parent.add_child(grout)
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D

@@ -289,6 +289,62 @@ func _tighten(button: Button, side: float) -> void:
 			box.content_margin_left = side
 			box.content_margin_right = side
 
+## `earned` of `total` gold bevelled stars; unearned ones are greyed and dimmed (ref 02).
+func _star_row(earned: int, total: int = 3, px: float = 64.0) -> HBoxContainer:
+	var row := _hbox(null, 6)
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var icon := _star_icon(px)
+	for i: int in total:
+		if icon == null:
+			row.add_child(_label("★" if i < earned else "☆", roundi(px * 0.8), Kit.STAR_ON if i < earned else Kit.STAR_OFF, true))
+			continue
+		var star := TextureRect.new()
+		star.texture = icon
+		star.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		star.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+		star.custom_minimum_size = Vector2(px, px)
+		if i >= earned: star.modulate = Color(0.55, 0.5, 0.5, 0.55)
+		row.add_child(star)
+	row.set("accessibility_name", "%d of %d stars" % [earned, total])
+	return row
+
+## Small parchment chip: caption over a big value (SCORE 1,250 / TIME 0:42).
+func _stat_chip(caption: String, value: String) -> PanelContainer:
+	var chip := PanelContainer.new()
+	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	chip.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	chip.custom_minimum_size.x = 160
+	chip.add_theme_stylebox_override("panel", _chip_style("meadow"))
+	var col := _vbox(chip, 0)
+	var top := _label(caption, 14, Kit.WOOD_DARK, true)
+	top.add_theme_font_override("font", Kit.font(true))
+	col.add_child(top)
+	var big := _label(value, 28, INK, true)
+	big.autowrap_mode = TextServer.AUTOWRAP_OFF
+	big.add_theme_font_override("font", Kit.font(true))
+	col.add_child(big)
+	return chip
+
+## One standings line on parchment: place sign, name, wins as gold stars (leader in gold frame).
+func _standing_row(place: int, player_name: String, wins: int, top_wins: int) -> PanelContainer:
+	var panel := PanelContainer.new()
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	panel.custom_minimum_size.x = 420
+	panel.add_theme_stylebox_override("panel", _chip_style("celestial" if wins == top_wins and wins > 0 else "meadow"))
+	var row := _hbox(panel, 14)
+	row.add_child(_sign(str(place), 20))
+	var who := _label(player_name, 24, INK)
+	who.add_theme_font_override("font", Kit.font(true))
+	who.autowrap_mode = TextServer.AUTOWRAP_OFF
+	row.add_child(who)
+	row.add_child(_star_row(mini(wins, 5), mini(maxi(top_wins, 1), 5), 32.0))
+	var count := _label("%d wins" % wins, 18, MUTED)
+	count.autowrap_mode = TextServer.AUTOWRAP_OFF
+	count.size_flags_horizontal = Control.SIZE_SHRINK_END
+	row.add_child(count)
+	return panel
+
 ## Gold bevelled star icon (the slider thumb render) sized for a `px`-tall button face.
 func _star_icon(px: float) -> Texture2D:
 	return _kit_icon("slider_star_thumb", clampf(px / 56.0, 0.3, 1.5))
@@ -570,12 +626,12 @@ func show_title(data: Dictionary = {}) -> void:
 	logo.texture = Kit.sprite("logo_wacky_towers")
 	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	logo.custom_minimum_size.y = vh * (0.2 if _portrait else 0.2)
+	logo.custom_minimum_size.y = vh * (0.2 if _portrait else 0.17)
 	logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	col.add_child(logo)
 	var stage := Control.new()
 	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	stage.custom_minimum_size.y = vh * (0.3 if _portrait else 0.12)
+	stage.custom_minimum_size.y = vh * (0.3 if _portrait else 0.17)
 	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	col.add_child(stage)
 	var island := WtTitleIsland.new()
@@ -593,7 +649,12 @@ func show_title(data: Dictionary = {}) -> void:
 	wizard.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	stage.add_child(wizard)
 	wizard.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	wizard.anchor_bottom = 0.5
+	if _portrait: wizard.anchor_bottom = 0.5
+	else:
+		# Landscape: the wizard floats on his cloud to the left of the island, at full stage height.
+		wizard.anchor_left = 0.22
+		wizard.anchor_right = 0.47
+		wizard.anchor_top = -0.35
 	if wizard_art != null and not _reduced_motion():
 		var bob := wizard.create_tween().set_loops()
 		bob.tween_property(wizard, "position:y", -10.0, 1.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
@@ -802,10 +863,13 @@ func show_map(data: Dictionary = {}) -> void:
 		island.offset_top = 10
 		island.offset_bottom = 78
 		arc.add_child(b)
-	var footer := _hbox(col)
-	footer.add_child(_button("Toy shop", &"open_shop"))
-	footer.add_child(_button("Arcade", &"open_arcade"))
-	footer.add_child(_button("Tournament", &"open_tournament"))
+	var footer := _hbox(col, 16)
+	for entry: Array in [["Toy shop", &"open_shop"], ["Arcade", &"open_arcade"], ["Tournament", &"open_tournament"]]:
+		var sign := _button(entry[0], entry[1], {}, false, 56)
+		sign.custom_minimum_size.x = 180
+		sign.add_theme_font_override("font", Kit.font(true))
+		_kit_button(sign, "sign_heading")
+		footer.add_child(sign)
 	_finish()
 
 func show_intro(data: Dictionary = {}) -> void:
@@ -852,6 +916,17 @@ func _build_hud() -> void:
 	_hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(_hud)
 	_hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	# Biome-tinted screen frame (ref 15): the HUD chip's rim (vines, frost or gold) as an open
+	# nine-patch around the whole screen. Centre not drawn, input ignored, board stays clear.
+	var rim: StyleBoxTexture = _kit(String(Kit.BIOME_CHIPS.get(str(_hud_data.get("biome", "meadow")), "chip_hud")), 1.3)
+	if rim != null:
+		rim.draw_center = false
+		var screen_frame := Panel.new()
+		screen_frame.name = "BiomeFrame"
+		screen_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		screen_frame.add_theme_stylebox_override("panel", rim)
+		_hud.add_child(screen_frame)
+		screen_frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var top := MarginContainer.new()
 	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_hud.add_child(top)
@@ -1279,6 +1354,9 @@ func _play_button(text: String, id: StringName, args: Dictionary, repeats: bool)
 	var b := _button(text, id, args, false, maxf(56.0, 56.0 * _control_factor))
 	b.custom_minimum_size.x = 0
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	# In-level controls are compact wood planks with cream lettering (ref 15 / ref 08 SWIPE).
+	_kit_button(b, "sign_heading")
+	_tighten(b, 10.0)
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 	b.focus_mode = Control.FOCUS_NONE
 	if repeats:
@@ -1560,15 +1638,12 @@ func show_results(data: Dictionary = {}) -> void:
 	var col := _begin("results", data, true)
 	_header(col, "Beautifully built!" if bool(data.get("won", false)) else "One more little try?", str(data.get("level_name", "Meadow adventure")))
 	var content := _scroll(col)
-	var card := _card(content, MINT if bool(data.get("won", false)) else CREAM)
-	var star_line := _label(Format.stars(int(data.get("stars", 0))), 64, Kit.STAR_ON, true)
-	star_line.add_theme_color_override("font_outline_color", Kit.GOLD_DEEP)
-	star_line.add_theme_constant_override("outline_size", 8)
-	card.add_child(star_line)
+	var card := _card(content)
+	card.add_child(_star_row(int(data.get("stars", 0)), 3, 72.0))
 	card.add_child(_label(str(data.get("message", "Every tower teaches you something.")), 22, INK, true))
-	var row := _hbox(card)
-	row.add_child(_label("SCORE\n%d" % int(data.get("score", 0)), 24, INK, true))
-	row.add_child(_label("TIME\n" + _time_text(data.get("time", 0)), 24, INK, true))
+	var row := _hbox(card, 16)
+	row.add_child(_stat_chip("SCORE", _grouped(int(data.get("score", 0)))))
+	row.add_child(_stat_chip("TIME", _time_text(data.get("time", 0))))
 	for player in data.get("standings", []):
 		card.add_child(_label("%s   ·   %s wins" % [str(player.get("name", "Player")), str(player.get("wins", 0))], 20))
 	if bool(data.get("next_available", false)): card.add_child(_button("Next adventure  →", &"next", {}, true, 64))
@@ -2069,9 +2144,13 @@ func show_round_results(data: Dictionary = {}) -> void:
 	var col := _begin("round_results",data)
 	_header(col,"A round of applause!" if not bool(data.get("tournament_done",false)) else "Our toy-box champion",str(data.get("round_name","")),false)
 	var content := _scroll(col)
-	var card := _card(content,MINT)
-	for player: Dictionary in data.get("standings",[]):
-		card.add_child(_label("%s   ·   %d wins"%[str(player.get("name",player.get("id","Friend"))),int(player.get("wins",0))],26,INK,true))
+	var card := _card(content)
+	var standings: Array = data.get("standings",[])
+	var top_wins := 1
+	for player: Dictionary in standings: top_wins = maxi(top_wins, int(player.get("wins",0)))
+	for index: int in standings.size():
+		var player: Dictionary = standings[index]
+		card.add_child(_standing_row(index + 1, str(player.get("name",player.get("id","Friend"))), int(player.get("wins",0)), top_wins))
 	for award: Dictionary in data.get("awards",[]): card.add_child(_label("%s · %s"%[str(award.get("name","Little triumph")),str(award.get("player_name",""))],20,INK,true))
 	for result: Dictionary in data.get("results",[]):
 		card.add_child(_label("%s   %s"%[str(result.get("name",result.get("id","Friend"))),str(result.get("standing_value",result.get("score",0)))],20))
