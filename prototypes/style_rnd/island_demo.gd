@@ -27,7 +27,7 @@ func _run() -> void:
 	# ---- island chunk: rim slab with biome cap + 3 painted strata bands, tapering down
 	var rim := MeshInstance3D.new(); rim.mesh = Kit.rounded_box(Vector3(10.6, 0.8, 10.6), 0.35, 12)
 	rim.position = Vector3(0, -0.4, 0)
-	rim.material_override = Kit.painted_material({"half_size": Vector3(5.3, 0.4, 5.3), "cap_y": 0.12, "cap_drip": 0.12, "cap_lip": 0.0,
+	rim.material_override = Kit.painted_material({"half_size": Vector3(5.3, 0.4, 5.3), "edge_width": 0.35, "cap_y": 0.12, "cap_drip": 0.12, "cap_lip": 0.0,
 		"pebbles": 0.0, "paint_scale": 1.2, "edge_light": 0.2, "ao_strength": 0.0,
 		"cap_color": Color("eef4ff") if ice else Color("5c9e38"), "cap_light": Color("ffffff") if ice else Color("9bd65e"),
 		"cap_dark": Color("b9c8e8") if ice else Color("2f6a24")})
@@ -48,7 +48,7 @@ func _run() -> void:
 			t.position = Vector3(x - 3.5, 0.05, z - 3.5)
 			var base := Color("b9cbe2") if ice else Color("bdb2a2")
 			var v := rng.randf_range(-0.04, 0.04)
-			t.material_override = Kit.prop_material(base.lightened(v), base.darkened(0.25 - v), {"half_size": Vector3(0.48, 0.15, 0.48), "paint_scale": 2.0, "edge_light": 0.45, "gloss": 0.2, "seed": float(x * 8 + z)})
+			t.material_override = Kit.prop_material(base.lightened(v), base.darkened(0.25 - v), {"half_size": Vector3(0.48, 0.15, 0.48), "edge_width": 0.07, "paint_scale": 2.0, "edge_light": 0.45, "gloss": 0.2, "seed": float(x * 8 + z)})
 			world.add_child(t)
 	# ---- rim dressing: flowers, clover, bushes (never on the grid)
 	for k in 70:
