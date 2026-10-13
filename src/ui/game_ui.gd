@@ -85,20 +85,53 @@ func _make_theme() -> Theme:
 		t.set_color("font_pressed_color", type_name, INK)
 		t.set_color("font_focus_color", type_name, INK)
 		t.set_font_size("font_size", type_name, roundi(18 * _text_factor))
-	for state in ["tab_selected", "tab_unselected", "tab_hovered", "tab_disabled"]:
-		var tab := _style(ORANGE if state == "tab_selected" else CREAM, 8, INK, 1)
-		tab.content_margin_left = 14
-		tab.content_margin_right = 14
-		tab.content_margin_top = 12
-		tab.content_margin_bottom = 12
+	for state in ["tab_selected", "tab_unselected", "tab_hovered", "tab_disabled", "tab_focus"]:
+		# Tabs are kit pills: gold for the open page, cream for the rest.
+		var tab: StyleBox = _kit("btn_gold" if state == "tab_selected" else "btn_cream", 0.85)
+		if tab == null:
+			tab = _style(ORANGE if state == "tab_selected" else CREAM, 8, INK, 1)
+		if state == "tab_focus": tab = StyleBoxEmpty.new()
+		elif tab is StyleBoxTexture and state == "tab_hovered": (tab as StyleBoxTexture).modulate_color = Color(1.06, 1.06, 1.06)
+		elif tab is StyleBoxTexture and state == "tab_disabled": (tab as StyleBoxTexture).modulate_color = Color(0.78, 0.75, 0.72, 0.8)
+		_pad(tab, 18, 8, 18, 13)
 		t.set_stylebox(state, "TabBar", tab)
 		t.set_stylebox(state, "TabContainer", tab)
-	t.set_stylebox("panel", "TabContainer", _style(CREAM, 14, INK, 2))
-	for part in ["slider", "grabber_area", "grabber_area_highlight"]:
-		var rail := _style(Color("d7dcd0") if part == "slider" else ORANGE, 5)
-		rail.content_margin_top = 4
-		rail.content_margin_bottom = 4
-		t.set_stylebox(part, "HSlider", rail)
+	var page: StyleBox = _kit("panel_parchment")
+	t.set_stylebox("panel", "TabContainer", _pad(page, 10, 12, 10, 14) if page != null else _style(CREAM, 14, INK, 2))
+	t.set_stylebox("tabbar_background", "TabContainer", StyleBoxEmpty.new())
+	# Settings controls (refs 08, 04): wooden track with a gold star thumb; star-knob toggles.
+	var track: StyleBox = _kit("slider_track", 0.8)
+	if track != null:
+		t.set_stylebox("slider", "HSlider", _pad(track, 0, 14, 0, 14))
+		for part in ["grabber_area", "grabber_area_highlight"]: t.set_stylebox(part, "HSlider", _pad(StyleBoxEmpty.new(), 0, 14, 0, 14))
+	else:
+		for part in ["slider", "grabber_area", "grabber_area_highlight"]:
+			var rail := _style(Color("d7dcd0") if part == "slider" else ORANGE, 5)
+			rail.content_margin_top = 4
+			rail.content_margin_bottom = 4
+			t.set_stylebox(part, "HSlider", rail)
+	var thumb := _kit_icon("slider_star_thumb", 0.8 * clampf(_control_factor, 1.0, 1.4))
+	if thumb != null:
+		for icon_name in ["grabber", "grabber_highlight", "grabber_disabled"]: t.set_icon(icon_name, "HSlider", thumb)
+	var toggle_scale := 0.75 * clampf(_control_factor, 1.0, 1.4)
+	var on := _kit_icon("toggle_on", toggle_scale)
+	var off := _kit_icon("toggle_off", toggle_scale)
+	if on != null and off != null:
+		for suffix in ["", "_mirrored"]:
+			t.set_icon("checked" + suffix, "CheckButton", on)
+			t.set_icon("unchecked" + suffix, "CheckButton", off)
+			t.set_icon("checked_disabled" + suffix, "CheckButton", on)
+			t.set_icon("unchecked_disabled" + suffix, "CheckButton", off)
+		for state in ["normal", "hover", "pressed", "disabled", "hover_pressed", "focus"]:
+			t.set_stylebox(state, "CheckButton", _pad(StyleBoxEmpty.new(), 6, 4, 6, 4))
+		t.set_color("font_hover_color", "CheckButton", INK)
+		t.set_color("font_hover_pressed_color", "CheckButton", INK)
+		t.set_color("font_disabled_color", "CheckButton", MUTED)
+	t.set_stylebox("panel", "PopupMenu", _pad(_kit("panel_parchment"), 12, 12, 12, 12) if _kit("panel_parchment") != null else _style(CREAM, 14, INK, 2))
+	t.set_stylebox("hover", "PopupMenu", _style(Kit.GOLD_GLINT, 10))
+	for key in ["font_color", "font_hover_color", "font_accelerator_color"]: t.set_color(key, "PopupMenu", INK)
+	t.set_color("font_disabled_color", "PopupMenu", MUTED)
+	t.set_font_size("font_size", "PopupMenu", roundi(18 * _text_factor))
 	for state in ["normal", "hover", "pressed", "disabled", "focus"]:
 		var color := CREAM
 		if state == "hover": color = Color("f4e6c9")
@@ -109,17 +142,25 @@ func _make_theme() -> Theme:
 		if state == "focus":
 			style.draw_center = false
 			style.border_color = Color.WHITE
-		var kit_style: StyleBoxTexture = Kit.kit_box("btn_cream_pill", 10.0)
-		if kit_style != null and state != "focus":
-			if state == "hover": kit_style.modulate_color = Color(1.06, 1.06, 1.06)
-			if state == "pressed": kit_style.modulate_color = Color(0.9, 0.88, 0.85)
-			if state == "disabled": kit_style.modulate_color = Color(0.78, 0.75, 0.72, 0.8)
-			t.set_stylebox(state, "Button", kit_style)
-		elif state == "focus" and kit_style != null:
-			t.set_stylebox(state, "Button", StyleBoxEmpty.new())
-		else:
-			t.set_stylebox(state, "Button", style)
-	t.set_stylebox("panel", "PanelContainer", Kit.panel_box())
+		var kit_style: StyleBoxTexture = _kit("btn_cream")
+		for type_name in ["Button", "OptionButton"]:
+			if kit_style != null and state != "focus":
+				var face := _pad(kit_style.duplicate(), 22, 8, 22 if type_name == "Button" else 40, 14) as StyleBoxTexture
+				if state == "hover": face.modulate_color = Color(1.06, 1.06, 1.06)
+				if state == "pressed":
+					face.modulate_color = Color(0.9, 0.88, 0.85)
+					face.content_margin_top += 3.0
+					face.content_margin_bottom -= 3.0
+				if state == "disabled": face.modulate_color = Color(0.78, 0.75, 0.72, 0.8)
+				t.set_stylebox(state, type_name, face)
+			elif state == "focus" and kit_style != null:
+				t.set_stylebox(state, type_name, StyleBoxEmpty.new())
+			else:
+				t.set_stylebox(state, type_name, style)
+	for key in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]: t.set_color(key, "OptionButton", INK)
+	t.set_color("font_disabled_color", "OptionButton", MUTED)
+	var parchment: StyleBox = _kit("panel_parchment")
+	t.set_stylebox("panel", "PanelContainer", _pad(parchment, 14, 12, 14, 16) if parchment != null else Kit.panel_box())
 	t.set_stylebox("normal", "LineEdit", _style(Color("ffffff"), 12, INK, 2))
 	t.set_stylebox("focus", "LineEdit", _style(Color("ffffff"), 12, Color("d58443"), 3))
 	t.set_stylebox("background", "ProgressBar", _style(Color("dce2d5"), 7))
@@ -141,6 +182,184 @@ func _style(color: Color, radius: int = 12, border: Color = Color.TRANSPARENT, w
 		s.border_width_bottom = width + 3
 	s.anti_aliasing = true
 	return s
+
+## Alpha below this (0-255) is render haze in the Blender kit PNGs, not art. See _clean_texture.
+const KIT_ALPHA_FLOOR := 24.0
+## Outer pixels faded to zero so a shadow cut by the canvas edge never draws a hard line.
+const KIT_EDGE_FADE := 3
+## Screens drawn inside the purple-wood frame with a plaque title (refs 05, 06, 04, 08).
+const UNFRAMED_SCREENS: Array[String] = ["title", "minigame"]
+static var _kit_cache: Dictionary = {}
+
+## Kit PNGs as Blender renders them never reach alpha 0: a soft shadow haze (alpha 1-22,
+## near-black) fills the whole canvas, edge pixels included. Stretched as a nine-patch, that
+## haze became a hard-edged grey box the size of every button (the "pale rectangle" behind
+## PLAY and Pause on the lavender sky). This remaps alpha so the haze is 0, fades the outer
+## KIT_EDGE_FADE pixels, and optionally rescales. Cached per texture and scale.
+static func _clean_texture(texture: Texture2D, scale: float = 1.0) -> Texture2D:
+	if texture == null: return null
+	var key := "%s@%.3f" % [texture.resource_path, scale]
+	if _kit_cache.has(key): return _kit_cache[key]
+	var image: Image = texture.get_image()
+	if image == null:
+		_kit_cache[key] = texture
+		return texture
+	image = image.duplicate() as Image
+	if image.is_compressed(): image.decompress()
+	image.convert(Image.FORMAT_RGBA8)
+	if not is_equal_approx(scale, 1.0):
+		image.resize(maxi(1, roundi(image.get_width() * scale)), maxi(1, roundi(image.get_height() * scale)), Image.INTERPOLATE_LANCZOS)
+	var w := image.get_width()
+	var h := image.get_height()
+	var data := image.get_data()
+	var gain := 255.0 / (255.0 - KIT_ALPHA_FLOOR)
+	for y: int in h:
+		var edge_y := mini(y, h - 1 - y)
+		for x: int in w:
+			var i := (y * w + x) * 4 + 3
+			var a := clampf((float(data[i]) - KIT_ALPHA_FLOOR) * gain, 0.0, 255.0)
+			var edge := mini(edge_y, mini(x, w - 1 - x))
+			if edge < KIT_EDGE_FADE: a *= float(edge) / KIT_EDGE_FADE
+			data[i] = roundi(a)
+	var cleaned := ImageTexture.create_from_image(Image.create_from_data(w, h, false, Image.FORMAT_RGBA8, data))
+	_kit_cache[key] = cleaned
+	return cleaned
+
+## A kit nine-patch (btn_gold, chip_hud, frame_purple...) with cleaned alpha, scaled by `scale`.
+## Content margins default to the texture margins; callers trim them with _pad().
+func _kit(name: String, scale: float = 1.0) -> StyleBoxTexture:
+	var box: StyleBoxTexture = Kit.kit_box(name, 0.0)
+	if box == null: return null
+	box.texture = _clean_texture(box.texture, scale)
+	for side: int in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
+		var margin := roundf(box.get_texture_margin(side) * scale)
+		box.set_texture_margin(side, margin)
+		box.set_content_margin(side, margin)
+	return box
+
+## Sets content margins (left, top, right, bottom) on a stylebox and returns it.
+func _pad(box: StyleBox, left: float, top: float, right: float, bottom: float) -> StyleBox:
+	if box == null: return null
+	box.content_margin_left = left
+	box.content_margin_top = top
+	box.content_margin_right = right
+	box.content_margin_bottom = bottom
+	return box
+
+## Cleaned kit texture (btn_close, toggle_on, slider_star_thumb...) scaled to `scale`.
+func _kit_icon(name: String, scale: float = 1.0) -> Texture2D:
+	return _clean_texture(Kit.kit_texture(name), scale)
+
+## Gold (btn_gold), cream (btn_cream), wood sign (sign_heading) or slot (tray_slot) button
+## states from the cleaned kit. Falls back to WtStorybook's flat pills if the kit is missing.
+func _kit_button(button: Button, kit_name: String = "btn_cream") -> void:
+	var normal: StyleBoxTexture = _kit(kit_name)
+	if normal == null:
+		Kit.style_button(button, kit_name == "btn_gold", 26)
+		return
+	_pad(normal, 24, 8, 24, 14)
+	var hover := normal.duplicate() as StyleBoxTexture
+	hover.modulate_color = Color(1.08, 1.08, 1.08)
+	var pressed := normal.duplicate() as StyleBoxTexture
+	pressed.modulate_color = Color(0.88, 0.85, 0.82)
+	pressed.content_margin_top += 3.0
+	pressed.content_margin_bottom -= 3.0
+	var disabled := normal.duplicate() as StyleBoxTexture
+	disabled.modulate_color = Color(0.75, 0.72, 0.7, 0.8)
+	button.add_theme_stylebox_override("normal", normal)
+	button.add_theme_stylebox_override("hover", hover)
+	button.add_theme_stylebox_override("pressed", pressed)
+	button.add_theme_stylebox_override("disabled", disabled)
+	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	var ink: Color = Kit.CREAM_PILL if kit_name == "sign_heading" else INK
+	for key: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
+		button.add_theme_color_override(key, ink)
+	if kit_name == "sign_heading":
+		button.add_theme_color_override("font_outline_color", Kit.WOOD_DARK)
+		button.add_theme_constant_override("outline_size", 6)
+
+## Gold bevelled star icon (the slider thumb render) sized for a `px`-tall button face.
+func _star_icon(px: float) -> Texture2D:
+	return _kit_icon("slider_star_thumb", clampf(px / 56.0, 0.3, 1.5))
+
+## Wooden signboard heading ("AUDIO", "PLAY WITH FRIENDS"): cream text, brown outline.
+func _sign(text: String, font_size: int = 20) -> PanelContainer:
+	var panel := PanelContainer.new()
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var box: StyleBox = _kit("sign_heading")
+	panel.add_theme_stylebox_override("panel", _pad(box, 26, 6, 26, 10) if box != null else Kit.sign_box())
+	var label := _label(text, font_size, Kit.CREAM_PILL, true)
+	label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	label.add_theme_font_override("font", Kit.font(true))
+	label.add_theme_color_override("font_outline_color", Kit.WOOD_DARK)
+	label.add_theme_constant_override("outline_size", 6)
+	panel.add_child(label)
+	return panel
+
+## Multicolour display title (refs 05/06/08): one candy colour per glyph cycling TITLE_COLORS,
+## thick dark-brown outline and a plum drop shadow. One RichTextLabel, so screen readers read
+## the whole word; the source text is translated first, then split into coloured glyphs.
+func _rainbow(text: String, font_size: int = 34) -> RichTextLabel:
+	var px := roundi(font_size * _text_factor)
+	var rich := RichTextLabel.new()
+	rich.name = "Title"
+	rich.bbcode_enabled = true
+	rich.fit_content = true
+	rich.scroll_active = false
+	rich.autowrap_mode = TextServer.AUTOWRAP_OFF
+	rich.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	rich.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	rich.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var bb := "[center]"
+	var glyph := 0
+	for ch: String in tr(text).to_upper():
+		if ch.strip_edges().is_empty():
+			bb += ch
+			continue
+		var tint: Color = Kit.TITLE_COLORS[glyph % Kit.TITLE_COLORS.size()]
+		bb += "[color=#%s]%s[/color]" % [tint.to_html(false), "[lb]" if ch == "[" else ch]
+		glyph += 1
+	rich.text = bb + "[/center]"
+	rich.add_theme_font_override("normal_font", Kit.font(true))
+	rich.add_theme_font_size_override("normal_font_size", px)
+	rich.add_theme_color_override("font_outline_color", Kit.WOOD_DARK)
+	rich.add_theme_constant_override("outline_size", maxi(6, px / 5))
+	rich.add_theme_color_override("font_shadow_color", Color(0.15, 0.06, 0.2, 0.6))
+	rich.add_theme_constant_override("shadow_offset_x", 0)
+	rich.add_theme_constant_override("shadow_offset_y", maxi(3, px / 10))
+	rich.add_theme_constant_override("shadow_outline_size", maxi(6, px / 5))
+	return rich
+
+## Red gem close button (btn_close) that emits `back`. Icon-only, so it carries a tooltip and
+## an accessibility name.
+func _close_button() -> Button:
+	var b := Button.new()
+	b.name = "Close"
+	b.tooltip_text = "Back"
+	b.set("accessibility_name", "Back")
+	var side := maxf(56.0, 56.0 * minf(_control_factor, 1.4))
+	b.custom_minimum_size = Vector2(side, side)
+	var face: StyleBoxTexture = _kit("btn_close")
+	if face == null:
+		b.text = "✕"
+		_kit_button(b, "btn_cream")
+	else:
+		_pad(face, 0, 0, 0, 0)
+		var hover := face.duplicate() as StyleBoxTexture
+		hover.modulate_color = Color(1.1, 1.1, 1.1)
+		var pressed := face.duplicate() as StyleBoxTexture
+		pressed.modulate_color = Color(0.85, 0.82, 0.82)
+		b.add_theme_stylebox_override("normal", face)
+		b.add_theme_stylebox_override("hover", hover)
+		b.add_theme_stylebox_override("pressed", pressed)
+		b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	b.pressed.connect(func() -> void: intent.emit(&"back", {}))
+	return b
+
+## Frame scale: the 1x purple frame (118 px corners) is too heavy for a 720 px screen.
+func _frame_scale() -> float:
+	return 0.62 if _portrait else 0.7
 
 func _begin(screen: String, data: Dictionary, overlay: bool = false) -> VBoxContainer:
 	current_screen = screen
@@ -169,8 +388,28 @@ func _begin(screen: String, data: Dictionary, overlay: bool = false) -> VBoxCont
 	for side in ["left", "right", "top", "bottom"]:
 		margin.add_theme_constant_override("margin_" + side, pad)
 	var col := _vbox()
-	margin.add_child(col)
+	if screen in UNFRAMED_SCREENS:
+		margin.add_child(col)
+		return col
+	# Purple-wood frame with a parchment centre; the plaque from _header() overlaps its top rail.
+	var frame := PanelContainer.new()
+	frame.name = "Frame"
+	frame.mouse_filter = Control.MOUSE_FILTER_PASS
+	var scale := _frame_scale()
+	var box: StyleBox = _kit("frame_purple", scale)
+	var side_pad := 66.0 * scale
+	var top_pad := maxf(side_pad, _plaque_bottom(pad) - pad + 6.0)
+	frame.add_theme_stylebox_override("panel", _pad(box, side_pad, top_pad, side_pad, side_pad) if box != null else Kit.frame_box())
+	margin.add_child(frame)
+	frame.add_child(col)
 	return col
+
+## Plaque height scales with the title font; it hangs from just above the frame's top rail.
+func _plaque_top(pad: int) -> float:
+	return pad - (16.0 if _portrait else 22.0)
+
+func _plaque_bottom(pad: int) -> float:
+	return _plaque_top(pad) + 44.0 + (30.0 if _portrait else 34.0) * _text_factor + 12.0
 
 func _vbox(parent: Node = null, separation: int = 12) -> VBoxContainer:
 	var col := VBoxContainer.new()
@@ -208,26 +447,54 @@ func _button(text: String, id: StringName, args: Dictionary = {}, primary: bool 
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.pressed.connect(func() -> void: intent.emit(id, args))
 	if primary:
-		Kit.style_button(button, true, 26)
+		_kit_button(button, "btn_gold")
 		button.add_theme_font_override("font", Kit.font(true))
+		# Call-to-action pills carry the bevelled gold star on the left (refs 05, 06, 15).
+		if height >= 56.0: button.icon = _star_icon(minf(height * 0.5, 44.0))
 		_focus_default = button
 	return button
 
+## Screen chrome: multicolour title on the purple plaque over the frame's top rail, the red gem
+## close (emits `back`) on the top-right corner, then a subtitle + Settings row inside the frame.
 func _header(parent: Node, title: String, subtitle: String = "", back: bool = true) -> void:
-	var row := _hbox(parent)
+	var pad := 18 if _portrait else 28
+	var hang := CenterContainer.new()
+	hang.name = "Plaque"
+	hang.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_menu.add_child(hang)
+	hang.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	hang.offset_top = _plaque_top(pad)
+	hang.offset_bottom = _plaque_bottom(pad)
+	hang.offset_left = pad + 70
+	hang.offset_right = -(pad + 70)
+	var plaque := PanelContainer.new()
+	plaque.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var box: StyleBox = _kit("plaque_title", 0.85)
+	plaque.add_theme_stylebox_override("panel", _pad(box, 58, 10, 58, 14) if box != null else Kit.plaque_box())
+	plaque.custom_minimum_size.y = _plaque_bottom(pad) - _plaque_top(pad)
+	hang.add_child(plaque)
+	var word := _rainbow(title, 30 if _portrait else 34)
+	word.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	plaque.add_child(word)
 	if back:
-		var b := _button("‹", &"back")
-		b.custom_minimum_size.x = 52
-		b.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-		b.tooltip_text = "Back"
-		row.add_child(b)
-	var col := _vbox(row, 2)
-	col.add_child(_label(title, 30 if _portrait else 34, CREAM if _is_overlay else INK))
-	if not subtitle.is_empty(): col.add_child(_label(subtitle, 16, CREAM if _is_overlay else MUTED))
+		var close := _close_button()
+		_menu.add_child(close)
+		close.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+		close.offset_right = -(pad - 6)
+		close.offset_left = close.offset_right - close.custom_minimum_size.x
+		close.offset_top = pad - 12
+		close.offset_bottom = close.offset_top + close.custom_minimum_size.y
+	var row := _hbox(parent)
+	var sub := _label(subtitle, 16, MUTED, true)
+	sub.visible = not subtitle.is_empty()
+	row.add_child(sub)
 	var settings := _button("Settings", &"open_settings")
 	settings.size_flags_horizontal = Control.SIZE_SHRINK_END
+	settings.custom_minimum_size.y = 44
+	settings.add_theme_font_size_override("font_size", roundi(15 * _text_factor))
 	settings.visible = current_screen != "settings"
 	row.add_child(settings)
+	row.visible = sub.visible or settings.visible
 
 func _scroll(parent: Node) -> VBoxContainer:
 	var scroll := ScrollContainer.new()
@@ -242,7 +509,11 @@ func _scroll(parent: Node) -> VBoxContainer:
 func _card(parent: Node, color: Color = CREAM) -> VBoxContainer:
 	var panel := PanelContainer.new()
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	panel.add_theme_stylebox_override("panel", Kit.panel_box() if color == CREAM else Kit.panel(color))
+	var face: StyleBoxTexture = _kit("panel_parchment")
+	if face != null:
+		_pad(face, 14, 12, 14, 16)
+		if color != CREAM: face.modulate_color = Color(0.86, 1.0, 0.9) if color == MINT else color.lightened(0.4)
+	panel.add_theme_stylebox_override("panel", face if face != null else Kit.panel(color))
 	parent.add_child(panel)
 	var pad := MarginContainer.new()
 	for side in ["left", "right", "top", "bottom"]:
@@ -277,19 +548,19 @@ func show_title(data: Dictionary = {}) -> void:
 	settings.custom_minimum_size = Vector2(60, 60)
 	settings.add_theme_font_size_override("font_size", 30)
 	settings.size_flags_horizontal = Control.SIZE_SHRINK_END
-	Kit.style_button(settings, false, 16)
+	_kit_button(settings, "btn_cream")
 	top.add_child(settings)
 	# Logo sign, then the wizard on his cloud floating above the meadow island.
 	var logo := TextureRect.new()
 	logo.texture = Kit.sprite("logo_wacky_towers")
 	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	logo.custom_minimum_size.y = vh * (0.2 if _portrait else 0.24)
+	logo.custom_minimum_size.y = vh * (0.2 if _portrait else 0.2)
 	logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	col.add_child(logo)
 	var stage := Control.new()
 	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	stage.custom_minimum_size.y = vh * 0.3
+	stage.custom_minimum_size.y = vh * (0.3 if _portrait else 0.12)
 	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	col.add_child(stage)
 	var island := WtTitleIsland.new()
@@ -297,15 +568,18 @@ func show_title(data: Dictionary = {}) -> void:
 	stage.add_child(island)
 	island.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	island.anchor_top = 0.34
+	# The wizard sprite is optional art: without it the island stands alone.
+	var wizard_art: Texture2D = Kit.sprite("wizard_cheer")
 	var wizard := TextureRect.new()
-	wizard.texture = Kit.sprite("wizard_cheer")
+	wizard.texture = wizard_art
+	wizard.visible = wizard_art != null
 	wizard.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	wizard.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	wizard.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	stage.add_child(wizard)
 	wizard.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	wizard.anchor_bottom = 0.5
-	if not _reduced_motion():
+	if wizard_art != null and not _reduced_motion():
 		var bob := wizard.create_tween().set_loops()
 		bob.tween_property(wizard, "position:y", -10.0, 1.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		bob.tween_property(wizard, "position:y", 6.0, 1.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
@@ -313,18 +587,24 @@ func show_title(data: Dictionary = {}) -> void:
 	var buttons := _vbox(col, 12)
 	buttons.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	buttons.custom_minimum_size.x = minf(get_viewport().get_visible_rect().size.x * 0.78, 520)
-	var play := _button("★  PLAY", &"continue" if has_profile else &"play", {}, true, 92)
+	var play := _button("★  PLAY", &"continue" if has_profile else &"play", {}, true, 84 if not _portrait else 92)
 	play.add_theme_font_size_override("font_size", roundi(44 * _text_factor))
+	# Hero pill (ref 15): the star is the bevelled gold icon, so the label text drops its glyph.
+	if play.icon != null: play.text = "PLAY"
+	play.icon = _star_icon(60)
 	play.tooltip_text = str(data.get("continue_level_name", "Play"))
 	buttons.add_child(play)
-	var biomes := _button("BIOMES", &"open_map", {}, false, 70)
-	Kit.style_button(biomes, false, 26)
+	var biomes := _button("BIOMES", &"open_map", {}, false, 62)
+	# Wooden signboard (ref 15 BIOMES), narrower than PLAY and centred under it.
+	_kit_button(biomes, "sign_heading")
+	biomes.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	biomes.custom_minimum_size.x = 300
 	biomes.add_theme_font_override("font", Kit.font(true))
 	biomes.add_theme_font_size_override("font_size", roundi(30 * _text_factor))
 	buttons.add_child(biomes)
 	var more := _hbox(buttons, 8)
 	for entry: Array in [["Party", &"open_tournament"], ["Arcade", &"open_arcade"], ["Shop", &"open_shop"], ["Toy box", &"open_physics"]]:
-		var b := _button(entry[0], entry[1], {}, false, 48)
+		var b := _button(entry[0], entry[1], {}, false, 46)
 		b.add_theme_font_size_override("font_size", roundi(16 * _text_factor))
 		more.add_child(b)
 	var foot := _hbox(col)
@@ -548,68 +828,92 @@ func _build_hud() -> void:
 	_hud_labels.top = top
 	var col := _vbox(top, 8)
 	var row := _hbox(col, 10)
+	var biome := str(_hud_data.get("biome", "meadow"))
 	var pause := _play_button("Ⅱ", &"pause", {}, false)
 	pause.tooltip_text = "Pause"
 	pause.custom_minimum_size = Vector2(64, 64)
 	pause.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	pause.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	pause.add_theme_font_size_override("font_size", 26)
-	Kit.style_button(pause, false, 16)
+	pause.add_theme_font_override("font", Kit.font(true))
+	_kit_button(pause, "btn_cream")
+	_pad(pause.get_theme_stylebox("normal"), 0, 4, 0, 10)
 	row.add_child(pause)
-	var frame: Color = Kit.biome_frame(str(_hud_data.get("biome", "meadow")))
-	# SCORE plaque: big number over three star slots (stars on pace right now).
+	# Goal sign: level name and progress on a wooden board (beside the pause gem in landscape).
+	var ribbon := PanelContainer.new()
+	var sign: StyleBox = _kit("sign_heading")
+	ribbon.add_theme_stylebox_override("panel", _pad(sign, 22, 6, 22, 10) if sign != null else Kit.sign_box())
+	ribbon.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	ribbon.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	var goal := _hbox(ribbon, 10)
+	_hud_labels.level = _label("Meadow", 15, Kit.PARCHMENT)
+	_hud_labels.goal = _label("0 / 1", 19, Kit.CREAM_PILL, true)
+	_hud_labels.goal.add_theme_font_override("font", Kit.font(true))
+	for l: Label in [_hud_labels.level, _hud_labels.goal]:
+		l.autowrap_mode = TextServer.AUTOWRAP_OFF
+		l.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		l.add_theme_color_override("font_outline_color", Kit.WOOD_DARK)
+		l.add_theme_constant_override("outline_size", 5)
+		goal.add_child(l)
+	if _portrait: col.add_child(ribbon)
+	else: row.add_child(ribbon)
+	var spacer := Control.new()
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(spacer)
+	# SCORE chip in the level's biome frame (ref 15): label, big number, three pace stars.
 	var score_panel := PanelContainer.new()
-	score_panel.add_theme_stylebox_override("panel", Kit.panel(Kit.PARCHMENT, frame, 16, 5))
-	score_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	score_panel.name = "ScoreChip"
+	score_panel.add_theme_stylebox_override("panel", _chip_style(biome))
+	score_panel.custom_minimum_size.x = 168
+	score_panel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	row.add_child(score_panel)
 	var score_col := _vbox(score_panel, 0)
-	score_col.add_child(_label("SCORE", 14, MUTED, true))
-	_hud_labels.score = _label("0", 30, INK, true)
+	var score_caption := _label("SCORE", 14, Kit.WOOD_DARK, true)
+	score_caption.add_theme_font_override("font", Kit.font(true))
+	score_col.add_child(score_caption)
+	_hud_labels.score = _label("0", 28, INK, true)
+	_hud_labels.score.autowrap_mode = TextServer.AUTOWRAP_OFF
 	_hud_labels.score.add_theme_font_override("font", Kit.font(true))
 	score_col.add_child(_hud_labels.score)
 	var star_row := _hbox(score_col, 2)
 	star_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	_hud_labels.stars = []
 	for i: int in 3:
-		var star := _label("★", 26, Kit.STAR_ON, true)
+		var star := _label("★", 24, Kit.STAR_ON, true)
 		star.autowrap_mode = TextServer.AUTOWRAP_OFF
 		star.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		star.add_theme_color_override("font_outline_color", Kit.GOLD_DEEP)
 		star.add_theme_constant_override("outline_size", 4)
 		star_row.add_child(star)
 		_hud_labels.stars.append(star)
-	# NEXT plaque with the upcoming piece drawn as isometric toy cubes.
+	# NEXT chip: same biome frame, the upcoming piece drawn as isometric toy cubes.
 	var next_panel := PanelContainer.new()
-	next_panel.add_theme_stylebox_override("panel", Kit.panel(Kit.PARCHMENT, frame, 16, 5))
+	next_panel.name = "NextChip"
+	next_panel.add_theme_stylebox_override("panel", _chip_style(biome))
 	next_panel.size_flags_horizontal = Control.SIZE_SHRINK_END
-	next_panel.custom_minimum_size.x = 132
+	next_panel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	next_panel.custom_minimum_size.x = 118
 	row.add_child(next_panel)
 	var next := _vbox(next_panel, 0)
-	next.add_child(_label("NEXT", 14, MUTED, true))
+	var next_caption := _label("NEXT", 14, Kit.WOOD_DARK, true)
+	next_caption.add_theme_font_override("font", Kit.font(true))
+	next.add_child(next_caption)
 	_hud_labels.next_preview = WtPiecePreview.new()
-	_hud_labels.next_preview.custom_minimum_size = Vector2(96, 70)
+	_hud_labels.next_preview.custom_minimum_size = Vector2(84, 56)
 	_hud_labels.next_preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	next.add_child(_hud_labels.next_preview)
 	_hud_labels.next = _label("—", 12, MUTED, true)
+	_hud_labels.next.autowrap_mode = TextServer.AUTOWRAP_OFF
 	next.add_child(_hud_labels.next)
 	_hud_labels.held = _label("Hold: —", 12, MUTED, true)
 	_hud_labels.held.visible = false
 	next.add_child(_hud_labels.held)
-	# Goal ribbon: level name and progress.
-	var ribbon := PanelContainer.new()
-	ribbon.add_theme_stylebox_override("panel", Kit.pill(Kit.PARCHMENT, frame, false, 22))
-	col.add_child(ribbon)
-	var goal := _hbox(ribbon, 10)
-	_hud_labels.level = _label("Meadow", 15, MUTED)
-	_hud_labels.level.autowrap_mode = TextServer.AUTOWRAP_OFF
-	_hud_labels.level.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	goal.add_child(_hud_labels.level)
-	_hud_labels.goal = _label("0 / 1", 20, INK, true)
-	_hud_labels.goal.add_theme_font_override("font", Kit.font(true))
-	goal.add_child(_hud_labels.goal)
 	_hud_labels.rules = _label("", 16, MUTED, true)
 	var rules_panel := PanelContainer.new()
-	rules_panel.add_theme_stylebox_override("panel", _style(CREAM, 10))
+	rules_panel.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var rules_face: StyleBox = _kit("panel_parchment")
+	rules_panel.add_theme_stylebox_override("panel", _pad(rules_face, 6, 2, 6, 4) if rules_face != null else _style(CREAM, 10))
 	var rules_margin := MarginContainer.new()
 	for side in ["left", "right"]: rules_margin.add_theme_constant_override("margin_" + side, 12)
 	for side in ["top", "bottom"]: rules_margin.add_theme_constant_override("margin_" + side, 6)
@@ -709,7 +1013,8 @@ func _build_hud() -> void:
 	drop_row.add_child(soft)
 	var drop := _play_button("DROP ↓", &"drop", {}, false)
 	drop.custom_minimum_size.y = maxf(64.0, 64.0 * _control_factor)
-	drop.add_theme_stylebox_override("normal", _style(ORANGE, 14, INK, 2))
+	drop.add_theme_font_override("font", Kit.font(true))
+	_kit_button(drop, "btn_gold")
 	drop_row.add_child(drop)
 	_hud_labels.time = _label("0:00", 18, MUTED, true)
 	rcol.add_child(_hud_labels.time)
@@ -738,6 +1043,18 @@ func _build_hud() -> void:
 	_place_gesture_pad()
 	if is_instance_valid(_menu): _root.move_child(_menu, -1)
 	if is_instance_valid(_countdown): _root.move_child(_countdown, -1)
+
+## Biome HUD chip (meadow vines, ice frost, celestial gold) with trimmed content margins.
+func _chip_style(biome: String) -> StyleBox:
+	var chip: StyleBox = _kit(String(Kit.BIOME_CHIPS.get(biome, "chip_hud")))
+	return _pad(chip, 18, 12, 18, 16) if chip != null else Kit.chip_box(biome)
+
+## Parchment tray slot (ref 15 bottom shelf); `lit` marks the hold / selected slot in gold.
+func _slot_style(lit: bool = false) -> StyleBox:
+	var slot: StyleBoxTexture = _kit("tray_slot")
+	if slot == null: return Kit.panel(Kit.PARCHMENT_DEEP if not lit else Kit.CREAM_PILL, Kit.WOOD, 12, 2)
+	if lit: slot.modulate_color = Color(1.12, 1.02, 0.78)
+	return _pad(slot, 12, 8, 12, 10)
 
 ## Portrait phones use the storybook tray and gestures unless classic controls are on.
 func _storybook_dock() -> bool:
@@ -775,7 +1092,7 @@ func _build_dock() -> void:
 	for b: Button in [view_left, view_right, soft, _hud_labels.tools, _hud_labels.skill, _hud_labels.potion]:
 		b.custom_minimum_size = Vector2(0, 44)
 		b.add_theme_font_size_override("font_size", roundi(14 * _text_factor))
-		Kit.style_button(b, false, 18)
+		_kit_button(b, "btn_cream")
 		actions.add_child(b)
 	var extra_axes: Array[String] = []
 	if bool(_hud_data.get("can_tilt", false)): extra_axes.append("tilt")
@@ -787,7 +1104,7 @@ func _build_dock() -> void:
 			for dir: int in [-1, 1]:
 				var b := _play_button(title + (" ‹" if dir < 0 else " ›"), &"rotate", {"axis": StringName(axis), "direction": dir}, true)
 				b.custom_minimum_size.y = 44
-				Kit.style_button(b, false, 18)
+				_kit_button(b, "btn_cream")
 				axes.add_child(b)
 	var tray_row := _hbox(dock, 8)
 	tray_row.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -795,10 +1112,10 @@ func _build_dock() -> void:
 	turn.custom_minimum_size = Vector2(84, 84) * _control_factor
 	turn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	turn.add_theme_font_size_override("font_size", roundi(18 * _text_factor))
-	Kit.style_button(turn, false, 42)
+	_kit_button(turn, "btn_cream")
 	tray_row.add_child(turn)
 	var tray := PanelContainer.new()
-	tray.add_theme_stylebox_override("panel", Kit.panel(Kit.PARCHMENT, frame, 18, 7))
+	tray.add_theme_stylebox_override("panel", _chip_style(str(_hud_data.get("biome", "meadow"))))
 	tray.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tray_row.add_child(tray)
 	var slots := _hbox(tray, 6)
@@ -808,8 +1125,7 @@ func _build_dock() -> void:
 		slot.focus_mode = Control.FOCUS_NONE
 		slot.custom_minimum_size = Vector2(0, 92) * _control_factor
 		slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var face := Kit.panel(Kit.PARCHMENT_DEEP if i > 0 else Kit.CREAM_PILL, frame.lightened(0.35), 12, 2)
-		face.shadow_size = 0
+		var face := _slot_style(i == 0)
 		for state: String in ["normal", "hover", "pressed", "disabled", "focus"]:
 			slot.add_theme_stylebox_override(state, face)
 		var preview := WtPiecePreview.new()
@@ -835,7 +1151,7 @@ func _build_dock() -> void:
 	drop.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	drop.add_theme_font_size_override("font_size", roundi(18 * _text_factor))
 	drop.add_theme_font_override("font", Kit.font(true))
-	Kit.style_button(drop, true, 42)
+	_kit_button(drop, "btn_gold")
 	tray_row.add_child(drop)
 	_hud_labels.time = _label("0:00", 14, INK, true)
 	_hud_labels.time.visible = false
@@ -871,9 +1187,9 @@ func _build_item_bar(left_width: float, right_width: float) -> void:
 	panel.offset_right = -18 if _portrait else -((left_width if mirrored else right_width) + 28)
 	panel.offset_top = _party_bar_top()
 	panel.offset_bottom = panel.offset_top + _party_bar_height()
-	panel.add_theme_stylebox_override("panel", _style(CREAM, 14, INK, 2))
+	panel.add_theme_stylebox_override("panel", _pad(_chip_style(str(_hud_data.get("biome", "meadow"))), 12, 8, 12, 10))
 	var margin := MarginContainer.new()
-	for side in ["left", "right", "top", "bottom"]: margin.add_theme_constant_override("margin_" + side, 6)
+	for side in ["left", "right", "top", "bottom"]: margin.add_theme_constant_override("margin_" + side, 2)
 	panel.add_child(margin)
 	var col := _vbox(margin, 4)
 	var row := _hbox(col, 6)
@@ -1099,7 +1415,8 @@ func _update_item_bar() -> void:
 		button.text = "%d · %s" % [slot + 1, "Empty" if id.is_empty() else _item_name(id).replace(" ", "\n")]
 		if bool(item.get("pending", false)): button.text = "%d · Waiting" % (slot + 1)
 		button.tooltip_text = "Empty item slot" if id.is_empty() else _item_name(id) + (" · refunded" if bool(item.get("refunded", false)) else "")
-		button.add_theme_stylebox_override("normal", _style(MINT if slot == selected else CREAM, 12, INK, 2))
+		var face := _slot_style(slot == selected)
+		for state: String in ["normal", "hover", "pressed"]: button.add_theme_stylebox_override(state, face)
 	var item: Dictionary = slots[selected] if selected < slots.size() and slots[selected] is Dictionary else {}
 	var id := str(item.get("id", ""))
 	var target_missing := id in ["junk_rain", "fog", "speed_up", "spin_lock"] and not bool(_hud_data.get("item_target_available", false))

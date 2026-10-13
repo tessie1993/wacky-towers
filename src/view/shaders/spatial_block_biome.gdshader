@@ -196,11 +196,11 @@ void fragment() {
 		vec2 v = voronoi(suv * 2.6);
 		vec2 v2 = voronoi((suv - vt * 0.16) * 1.8 + 4.0);
 		float inner_crack = 1.0 - smoothstep(0.0, 0.05, v2.x);
-		col = mix(col * 0.86, col * 1.14 + vec3(0.03, 0.06, 0.1), inner);
+		col = mix(col * 0.8, col * 1.08 + vec3(0.02, 0.04, 0.08), inner);
 		col = mix(col, vec3(0.85, 0.95, 1.0), inner_crack * 0.35 * detail);
 		col = mix(col, vec3(0.95, 0.99, 1.0), (1.0 - smoothstep(0.0, 0.035, v.x)) * 0.25 * detail);
 		float frost = smoothstep(0.3, 0.48, face_edge) * (0.5 + 0.5 * vnoise(suv * 14.0));
-		col = mix(col, vec3(0.93, 0.98, 1.0), frost * 0.55);
+		col = mix(col, vec3(0.9, 0.96, 1.0), frost * 0.35);
 		g += facet(v.y) * 0.25;
 		if (side && fseed > 0.5) {
 			float sf = snowflake(uv - vec2(0.0, -0.04), 0.2) * detail;
@@ -214,7 +214,7 @@ void fragment() {
 		refl = 0.55;
 	} else if (style == 4) { // Underwater: faceted deep blue/violet glass, bubbles inside, sparkles.
 		vec2 fv = voronoi(suv * 1.9 + 11.0);
-		col = mix(col, col * vec3(1.35, 0.75, 1.25), smoothstep(0.3, 0.9, fv.y) * 0.7);
+		col = mix(col, col.r * vec3(2.2, 0.9, 1.0) + col.b * vec3(0.35, 0.1, 0.75), step(0.5, fv.y) * (0.55 + 0.4 * fv.y));
 		col = mix(col * 0.65, col * 1.15, inner * 0.6 + fbm(suv * 3.0) * 0.4);
 		col *= mix(0.8, 1.08, smoothstep(0.0, 0.08, fv.x));
 		col += vec3(0.25, 0.35, 0.6) * (1.0 - smoothstep(0.0, 0.03, fv.x)) * 0.5;
@@ -235,16 +235,16 @@ void fragment() {
 	} else if (style == 5) { // Lava: cracked basalt plates, glowing two-tone seams.
 		vec2 v = voronoi(suv * 1.8);
 		float crack = 1.0 - smoothstep(0.025, 0.07, v.x);
-		float hot = 1.0 - smoothstep(0.0, 0.025, v.x);
+		float hot = 1.0 - smoothstep(0.0, 0.015, v.x);
 		float halo = 1.0 - smoothstep(0.06, 0.22, v.x);
 		float plate = fbm(suv * 5.0);
 		col *= (0.65 + 0.55 * plate) * (0.8 + 0.35 * v.y);
 		g += facet(v.y) * 0.6;
 		col *= mix(0.6, 1.1, smoothstep(0.08, 0.2, v.x));
 		col += glow_color * halo * 0.12;
-		vec3 hot_col = mix(glow_color, vec3(1.0, 0.9, 0.45), hot);
+		vec3 hot_col = mix(glow_color, vec3(1.0, 0.62, 0.25), hot * 0.6);
 		col = mix(col, hot_col, crack);
-		emit += glow_color * (crack * glow * 1.2 + halo * 0.25 * glow) + vec3(1.0, 0.85, 0.4) * hot * glow * 0.6;
+		emit += glow_color * (crack * glow * 0.8 + halo * 0.15 * glow) + vec3(1.0, 0.6, 0.2) * hot * glow * 0.35;
 		rough = mix(0.85, 0.4, crack);
 		refl = 0.08;
 	} else if (style == 6) { // Forest: grooved bark, tree-ring end grain on some faces, moss patches.
@@ -263,15 +263,15 @@ void fragment() {
 			float h1 = hnoise(bq + vec2(0.08, 0.0));
 			g += vec2((h1 - h0) / 0.08, 0.0) * 0.06;
 			float groove = smoothstep(0.45, 0.2, h0);
-			col *= 0.7 + 0.55 * h0;
+			col *= 0.5 + 0.55 * h0;
 			col = mix(col, col * vec3(0.5, 0.42, 0.38), groove * 0.55);
 			cavity += groove * 0.15;
 			float plate = smoothstep(0.0, 0.07, abs(fract(suv.y * 2.0 + h0 * 0.3) - 0.5) * 2.0);
 			col *= 0.85 + 0.15 * plate;
 		}
 		// Moss patches creeping over the bark.
-		float moss = smoothstep(0.62, 0.7, fbm(suv * 2.3 + 5.0)) * float(side);
-		col = mix(col, cap_color * (0.75 + 0.45 * vnoise(suv * 20.0)), moss * detail);
+		float moss = smoothstep(0.66, 0.72, fbm(suv * 2.3 + 5.0) + (p.y - 0.2) * 0.25) * float(side);
+		col = mix(col, cap_color * (0.6 + 0.5 * vnoise(suv * 24.0)), moss * detail);
 		rough = mix(rough, 0.95, moss);
 	} else if (style == 7) { // Crystal cave: chunky stone plates with embedded purple crystals.
 		vec2 v = voronoi(suv * 2.4);
@@ -297,7 +297,7 @@ void fragment() {
 		g += rdir(uv) * (bell(0.31, 0.35, face_edge) * 0.9 - bell(0.45, 0.5, face_edge) * 0.4);
 		g += (q - vec2(0.415)) * 14.0 * rivet * sign(uv);
 		vec3 brass = accent_color * (0.85 + 0.35 * hnoise(suv * 8.0));
-		brass = mix(brass, brass * 1.35 + 0.06, bell(0.33, 0.38, face_edge));
+		brass = mix(brass, brass * 1.25 + 0.04, bell(0.33, 0.38, face_edge));
 		col *= mix(0.7, 1.08, inner);
 		col += vec3(0.05, 0.06, 0.1) * smoothstep(0.1, -0.25, uv.x - uv.y);
 		col *= 0.92 + 0.12 * fbm(suv * 6.0);
@@ -361,7 +361,8 @@ void fragment() {
 	} else if (style == 12) { // Dune Bazaar: grainy sandstone, teal scalloped band, fleur inlay.
 		float grain = hnoise(suv * 22.0);
 		col *= 0.88 + 0.22 * fbm(suv * 6.0);
-		col = mix(col, glow_color * 0.8, step(0.88, hash21(floor(suv * 12.0))) * 0.6);
+		vec2 spk = fract(suv * 9.0) - 0.5;
+		col = mix(col, glow_color * 0.75, step(0.75, hash21(floor(suv * 9.0))) * circle(spk, vec2(0.0), 0.12 + 0.12 * hash21(floor(suv * 9.0) + 2.0)) * 0.7);
 		g += vec2(hnoise((suv + vec2(0.02, 0.0)) * 22.0) - grain, hnoise((suv + vec2(0.0, 0.02)) * 22.0) - grain) * 0.6;
 		if (side) {
 			float wave = p.y - 0.2 + abs(sin(uv.x * 7.85)) * 0.06;
@@ -400,7 +401,7 @@ void fragment() {
 		vec3 cc = cap_color;
 		if (style == 1 || style == 6) {
 			vec3 dark = cap_color * vec3(0.5, 0.68, 0.5);
-			vec3 light = cap_color * vec3(1.35, 1.25, 1.0) + vec3(0.04, 0.05, 0.0);
+			vec3 light = cap_color * vec3(1.25, 1.2, 1.0) + vec3(0.02, 0.03, 0.0);
 			cc = mix(dark, cap_color, smoothstep(0.2, 0.6, tuft));
 			cc = mix(cc, light, smoothstep(0.55, 0.8, tuft));
 			cc = mix(cc, dark, cap_edge * 0.5);
@@ -487,7 +488,7 @@ void fragment() {
 	ALBEDO = col * brightness;
 	ROUGHNESS = rough;
 	SPECULAR = 0.5;
-	EMISSION = emit + refl_col * 0.45 + rim_col + trans * brightness;
+	EMISSION = emit + refl_col * 0.3 + rim_col * 0.35 + trans * brightness;
 }
 
 #include "res://src/view/shaders/painted_light.gdshaderinc"

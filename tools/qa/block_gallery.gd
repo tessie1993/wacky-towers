@@ -39,6 +39,8 @@ func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT_DIR))
 	if ResourceLoader.exists(FONT_PATH):
 		_font = load(FONT_PATH) as Font
+	# The project stretches canvas items from a 720px base; the sheet wants 1:1 pixels.
+	root.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
 	var mode: String = args[0] if args.size() > 0 else "sheet"
 	if mode == "tints":
 		await _sheet_tints()

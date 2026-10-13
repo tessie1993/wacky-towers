@@ -20,15 +20,15 @@
     "meadow": {
       "block": {
         "style": "meadow",
-        "cap_color": "#6DB33F",
+        "cap_color": "#4E9232",
         "cap_depth": 0.2,
         "cap_drip": 0.07,
         "cap_lip": 0.03,
-        "body_color": "#8C5B35",
-        "body_mix": 0.6,
+        "body_color": "#8E623E",
+        "body_mix": 0.5,
         "gloss": 0.2,
         "rim": 0.12,
-        "brightness": 1.15,
+        "brightness": 0.95,
         "topper": "sprout",
         "topper_rate": 0.2
       },
@@ -120,8 +120,8 @@
         "body_mix": 0.25,
         "gloss": 0.85,
         "rim": 0.3,
-        "translucency": 0.45,
-        "brightness": 1.05,
+        "translucency": 0.35,
+        "brightness": 0.9,
         "topper": "heart",
         "topper_rate": 0.15
       },
@@ -205,13 +205,14 @@
         "cap_depth": 0.1,
         "cap_drip": 0.06,
         "cap_lip": 0.025,
-        "body_color": "#9FD0F4",
+        "body_color": "#7DB6EA",
         "body_mix": 0.45,
         "gloss": 0.8,
         "rim": 0.4,
-        "translucency": 0.35,
+        "translucency": 0.2,
         "topper": "",
-        "topper_rate": 0.0
+        "topper_rate": 0.0,
+        "brightness": 0.85
       },
       "sky": [
         "#8FB7E6",
@@ -287,14 +288,15 @@
       "block": {
         "style": "underwater",
         "cap_depth": 0.0,
-        "body_color": "#3446C8",
+        "body_color": "#2C33A0",
         "body_mix": 0.55,
         "accent_color": "#7FD8FF",
         "gloss": 0.8,
         "rim": 0.4,
         "translucency": 0.25,
         "topper": "coral",
-        "topper_rate": 0.15
+        "topper_rate": 0.15,
+        "brightness": 0.9
       },
       "sky": [
         "#1E4C86",
@@ -373,12 +375,13 @@
         "cap_depth": 0.0,
         "body_color": "#4A3E3E",
         "body_mix": 0.8,
-        "glow_color": "#FF6A1A",
+        "glow_color": "#FF5A14",
         "glow": 1.3,
         "gloss": 0.2,
         "rim": 0.08,
         "topper": "spike",
-        "topper_rate": 0.12
+        "topper_rate": 0.12,
+        "brightness": 0.9
       },
       "sky": [
         "#4B3A55",
@@ -448,14 +451,14 @@
     "forest": {
       "block": {
         "style": "forest",
-        "cap_color": "#6E9E3A",
+        "cap_color": "#5E8E30",
         "cap_depth": 0.0,
         "cap_drip": 0.12,
-        "body_color": "#8A5E3A",
+        "body_color": "#7A5232",
         "body_mix": 0.7,
         "gloss": 0.12,
         "rim": 0.08,
-        "brightness": 1.15,
+        "brightness": 0.95,
         "topper": "leaf",
         "topper_rate": 0.15
       },
@@ -538,14 +541,15 @@
       "block": {
         "style": "cave",
         "cap_depth": 0.0,
-        "body_color": "#77718A",
+        "body_color": "#686277",
         "body_mix": 0.6,
         "accent_color": "#B07CF0",
         "glow": 0.6,
         "gloss": 0.3,
         "rim": 0.12,
         "topper": "crystal",
-        "topper_rate": 0.15
+        "topper_rate": 0.15,
+        "brightness": 0.85
       },
       "sky": [
         "#2E2943",
@@ -614,11 +618,12 @@
         "cap_depth": 0.0,
         "body_color": "#2E4170",
         "body_mix": 0.55,
-        "accent_color": "#D8A548",
+        "accent_color": "#A8792C",
         "gloss": 0.55,
         "rim": 0.15,
         "topper": "gear",
-        "topper_rate": 0.12
+        "topper_rate": 0.12,
+        "brightness": 0.9
       },
       "sky": [
         "#C9A57A",
@@ -689,14 +694,15 @@
       "block": {
         "style": "neon",
         "cap_depth": 0.0,
-        "body_color": "#3A2C8C",
+        "body_color": "#2A1E78",
         "body_mix": 0.55,
         "glow_color": "#3FF2E0",
         "glow": 1.6,
         "gloss": 0.75,
         "rim": 0.3,
         "topper": "",
-        "topper_rate": 0.0
+        "topper_rate": 0.0,
+        "brightness": 0.9
       },
       "sky": [
         "#140F33",
@@ -775,7 +781,8 @@
         "gloss": 0.6,
         "rim": 0.35,
         "topper": "star",
-        "topper_rate": 0.15
+        "topper_rate": 0.15,
+        "brightness": 0.9
       },
       "sky": [
         "#1A1240",
@@ -857,11 +864,12 @@
         "cap_depth": 0.0,
         "body_color": "#F06E96",
         "body_mix": 0.6,
-        "accent_color": "#FBF1DE",
+        "accent_color": "#F7E8CF",
         "gloss": 0.6,
         "rim": 0.2,
         "topper": "ticket",
-        "topper_rate": 0.12
+        "topper_rate": 0.12,
+        "brightness": 0.9
       },
       "sky": [
         "#F7A97A",
@@ -929,14 +937,15 @@
       "block": {
         "style": "dune",
         "cap_depth": 0.0,
-        "body_color": "#E6CC9E",
+        "body_color": "#D7A468",
         "body_mix": 0.6,
-        "accent_color": "#2E9C99",
+        "accent_color": "#2A9A96",
         "glow_color": "#C8722E",
         "gloss": 0.3,
         "rim": 0.1,
         "topper": "dome",
-        "topper_rate": 0.12
+        "topper_rate": 0.12,
+        "brightness": 0.85
       },
       "sky": [
         "#E9A86A",

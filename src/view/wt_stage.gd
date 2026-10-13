@@ -54,6 +54,7 @@ var _key_stamp: Dictionary = {}
 var _key_uid: int = -1
 var _keyholes: Dictionary = {}
 var _content_views: Dictionary = {}
+var _toppers: MultiMeshInstance3D ## Biome toppers on some exposed block tops (WtBlockToppers).
 var _content_cells: Dictionary = {}
 var _hazard_view: MultiMeshInstance3D
 var _hazard_cells: Dictionary = {}
@@ -491,7 +492,7 @@ func _build_board() -> void:
 	if cube == null: cube = BoxMesh.new()
 	_active = _multimesh(cube, 64, _block_material())
 	_apply_biome_block_material()
-	_ghost = _multimesh(BoxMesh.new(), 64, _ghost_material())
+	_ghost = _multimesh(WtBlockMesh.cube(), 64, WtBlockMaterials.ghost_material())
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(0.88, 0.88)
 	_landing = _multimesh(plane, 64, _mat(Color("#F3D784"), true))
@@ -531,6 +532,9 @@ func _refresh_content_views() -> void:
 		if not records.has(kind):(_content_views[kind] as MultiMeshInstance3D).multimesh.visible_instance_count=0
 	_content_cells=records
 	_refresh_status_views()
+	if _toppers!=null:_toppers.queue_free()
+	_toppers=WtBlockToppers.build_for_cells(_biome,WtBlockToppers.exposed_tops(_board))
+	if _toppers!=null:add_child(_toppers)
 
 
 func _refresh_content_visibility() -> void:
