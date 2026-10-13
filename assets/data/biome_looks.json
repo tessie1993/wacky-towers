@@ -75,8 +75,13 @@
         "sky": {
           "cloud": "#FFFBF4",
           "cloud_shade": "#D4DAF2",
-          "mountains": "#7FAE96",
-          "mountain_amount": 0.75
+          "mountains": "#6E9FC0",
+          "mountain_amount": 0.8,
+          "mesa_amount": 1.0,
+          "mesa_top": "#6FB447",
+          "mesa_rock": "#B08560",
+          "mesa_falls": 0.55,
+          "cloud_bank": 0.9
         },
         "haze": "#D6E4F8",
         "cap": {
@@ -104,48 +109,80 @@
             "kind": "flower_white",
             "weight": 4,
             "scale": [
-              1.3,
-              1.8
+              1.6,
+              2.2
             ],
-            "spacing": 0.42
+            "spacing": 0.5
           },
           {
             "kind": "flower_lilac",
-            "weight": 2.2,
+            "weight": 2.4,
             "scale": [
-              1.3,
-              1.7
+              1.5,
+              2.0
             ],
-            "spacing": 0.42
+            "spacing": 0.5
           },
           {
             "kind": "clover",
             "tint": "#6CC04A",
             "weight": 3,
             "scale": [
-              1.4,
-              2.0
+              1.8,
+              2.5
             ],
-            "spacing": 0.42
+            "spacing": 0.5
           },
           {
             "kind": "tuft",
             "tint": "#7BC24E",
-            "weight": 3.5,
+            "weight": 3,
             "scale": [
-              1.0,
-              1.6
+              1.2,
+              1.8
             ],
-            "spacing": 0.26
+            "spacing": 0.28
           },
           {
             "kind": "bush",
             "tint": "#5FA63C",
             "weight": 1.2,
             "scale": [
-              0.9,
-              1.3
+              1.0,
+              1.4
             ]
+          },
+          {
+            "kind": "clover",
+            "tint": "#5FB43E",
+            "weight": 2.2,
+            "scale": [
+              2.0,
+              2.6
+            ],
+            "edge": true,
+            "spacing": 0.45
+          },
+          {
+            "kind": "flower_white",
+            "weight": 1.6,
+            "scale": [
+              1.8,
+              2.3
+            ],
+            "edge": true,
+            "spacing": 0.5
+          },
+          {
+            "kind": "tuft",
+            "tint": "#6CB843",
+            "weight": 2,
+            "scale": [
+              1.4,
+              2.0
+            ],
+            "edge": true,
+            "spacing": 0.3
           }
         ],
         "rim_density": 5.0,
@@ -239,7 +276,12 @@
           "cloud": "#FFF8FC",
           "cloud_shade": "#F0C4DC",
           "mountains": "#F2B8D4",
-          "mountain_amount": 0.6
+          "mountain_amount": 0.6,
+          "mesa_amount": 0.8,
+          "mesa_top": "#FFF2F7",
+          "mesa_rock": "#E89AB8",
+          "cloud_bank": 0.8,
+          "mesa_falls": 0.3
         },
         "haze": "#FCE1EA",
         "cap": {
@@ -373,8 +415,13 @@
         "sky": {
           "cloud": "#FFFFFF",
           "cloud_shade": "#C9D4F0",
-          "mountains": "#A9BDE6",
-          "mountain_amount": 0.85
+          "mountains": "#9FB2E4",
+          "mountain_amount": 0.9,
+          "mesa_amount": 1.0,
+          "mesa_top": "#F6FAFF",
+          "mesa_rock": "#93A8D2",
+          "mesa_falls": 0.35,
+          "cloud_bank": 0.9
         },
         "haze": "#DCE6FA",
         "cap": {
@@ -445,6 +492,28 @@
               0.5,
               0.7
             ]
+          },
+          {
+            "kind": "mound",
+            "tint": "#F6FAFF",
+            "weight": 2,
+            "scale": [
+              1.6,
+              2.2
+            ],
+            "edge": true,
+            "spacing": 0.5
+          },
+          {
+            "kind": "shrub",
+            "tint": "#E6F0FF",
+            "weight": 1,
+            "scale": [
+              1.2,
+              1.6
+            ],
+            "edge": true,
+            "tall": false
           }
         ],
         "rim_density": 4.2,
@@ -531,7 +600,12 @@
           "cloud_shade": "#4A88B8",
           "mountains": "#2E5E8E",
           "mountain_amount": 0.7,
-          "sun": 0.3
+          "sun": 0.3,
+          "mesa_amount": 0.8,
+          "cloud_bank": 0.7,
+          "mesa_top": "#7FB59A",
+          "mesa_rock": "#5A5A8E",
+          "mesa_falls": 0.0
         },
         "haze": "#3D7DB3",
         "cap": {
@@ -791,7 +865,11 @@
           "cloud": "#FFFBF4",
           "cloud_shade": "#D4DAF2",
           "mountains": "#7FAE96",
-          "mountain_amount": 0.75
+          "mountain_amount": 0.75,
+          "mesa_amount": 0.8,
+          "cloud_bank": 0.7,
+          "mesa_top": "#4F8A34",
+          "mesa_rock": "#8A6444"
         },
         "haze": "#D6E4F8",
         "cap": {
@@ -1433,7 +1511,11 @@
           "cloud": "#FFF8F0",
           "cloud_shade": "#F2C8B0",
           "mountains": "#F0B890",
-          "mountain_amount": 0.5
+          "mountain_amount": 0.5,
+          "mesa_amount": 0.8,
+          "cloud_bank": 0.7,
+          "mesa_top": "#8CC860",
+          "mesa_rock": "#C99A7A"
         },
         "haze": "#F9CFA6",
         "cap": {
@@ -1562,7 +1644,12 @@
           "cloud": "#FFF8EC",
           "cloud_shade": "#EAC8A0",
           "mountains": "#D7A46A",
-          "mountain_amount": 0.75
+          "mountain_amount": 0.75,
+          "mesa_amount": 0.8,
+          "cloud_bank": 0.7,
+          "mesa_top": "#E8CFA0",
+          "mesa_rock": "#C49464",
+          "mesa_falls": 0.0
         },
         "haze": "#F4CF9C",
         "cap": {
@@ -1626,5 +1713,5 @@
       }
     }
   },
-  "env_notes": "biomes.*.env (WtIslandBuilder, design/art/style-techniques.md §2/§5): light = cookbook preset (key/fill/back colour+energy, ambient, saturation/contrast/brightness, shadow_tint); sky = backdrop shader extras (cloud, cloud_shade, mountains, mountain_amount, stars, nebula, nebula_a/b, sun); haze = horizon colour for distant props; cap/body/strata/tile = island paint; inlay = gold ring round the board; rock_glow/glow_color = lava cracks; rim = [{kind, tint, weight, scale, glow, tall}] kinds: tuft clover flower_white|lilac|pink|yellow bush mound shrub tree tree_white pine rock rubble pillar pillar_broken star blob gumdrop lollipop basalt lava_pool crystal mushroom coral shell gear; hang = [{kind, tint, count, size, glow}] kinds: root strand icicle stalactite lava_drip crystal_down; far = up to 6 landmarks: trees waterfall pine castle arch pillars planet mountain volcano candy crystals basalt; far_cap/far_rock/far_accent/far_stone/planet = landmark colours; falls = waterfall colours. `sky` (top, horizon, low) and `frame` stay at biome level."
+  "env_notes": "biomes.*.env (WtIslandBuilder, design/art/style-techniques.md §2/§5): light = cookbook preset (key/fill/back colour+energy, ambient, saturation/contrast/brightness, shadow_tint); sky = backdrop shader extras (cloud, cloud_shade, mountains, mountain_amount, mesa_amount, mesa_top, mesa_rock, mesa_falls, cloud_bank, stars, nebula, nebula_a/b, sun); haze = horizon colour for distant props; cap/body/strata/tile = island paint; inlay = gold ring round the board; rock_glow/glow_color = lava cracks; rim = [{kind, tint, weight, scale, glow, tall, edge (spill over the rim), spacing}] kinds: tuft clover flower_white|lilac|pink|yellow bush mound shrub tree tree_white pine rock rubble pillar pillar_broken star blob gumdrop lollipop basalt lava_pool crystal mushroom coral shell gear; hang = [{kind, tint, count, size, glow}] kinds: root strand icicle stalactite lava_drip crystal_down; far = up to 6 landmarks: trees waterfall pine castle arch pillars planet mountain volcano candy crystals basalt; far_cap/far_rock/far_accent/far_stone/planet = landmark colours; falls = waterfall colours. `sky` (top, horizon, low) and `frame` stay at biome level."
 }

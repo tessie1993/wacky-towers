@@ -21,6 +21,15 @@ uniform float sea_line : hint_range(0.5, 1.0) = 0.8;
 group_uniforms ridge;
 uniform vec4 mountains : source_color = vec4(0.56, 0.72, 0.66, 1.0);
 uniform float mountain_amount : hint_range(0.0, 1.0) = 0.6;
+group_uniforms layers;
+/** Painted mesa-cliff layers (far + mid) with grass/snow tops and thin waterfalls (§5.4). */
+uniform float mesa_amount : hint_range(0.0, 1.0) = 0.0;
+uniform vec4 mesa_top : source_color = vec4(0.42, 0.68, 0.29, 1.0);
+uniform vec4 mesa_rock : source_color = vec4(0.66, 0.5, 0.35, 1.0);
+/** Chance a mesa carries a waterfall streak (0 = none). */
+uniform float mesa_falls : hint_range(0.0, 1.0) = 0.6;
+/** Near puffy cloud bank in front of the mesas (0 = none). */
+uniform float cloud_bank : hint_range(0.0, 1.0) = 0.0;
 group_uniforms night;
 uniform float stars : hint_range(0.0, 1.0) = 0.0;
 uniform float nebula : hint_range(0.0, 1.0) = 0.0;
@@ -67,8 +76,8 @@ void fragment() {
 	}
 	// Two hazy mountain ridges at the horizon (far = paler).
 	if (mountain_amount > 0.0) {
-		float r1 = 0.36 - 0.13 * fbm(vec2(p.x * 1.6, 1.7)) - 0.07 * pow(abs(sin(p.x * 3.1 + 1.0)), 3.0);
-		float r2 = 0.45 - 0.09 * fbm(vec2(p.x * 2.3 + 7.0, 3.1)) - 0.06 * pow(abs(sin(p.x * 4.3 + 2.0)), 4.0);
+		float r1 = 0.3 - 0.11 * fbm(vec2(p.x * 1.6, 1.7)) - 0.07 * pow(abs(sin(p.x * 3.1 + 1.0)), 3.0);
+		float r2 = 0.37 - 0.08 * fbm(vec2(p.x * 2.3 + 7.0, 3.1)) - 0.06 * pow(abs(sin(p.x * 4.3 + 2.0)), 4.0);
 		vec3 far_c = mix(mountains.rgb, horizon.rgb, 0.62);
 		vec3 near_c = mix(mountains.rgb, horizon.rgb, 0.38);
 		float m1 = smoothstep(r1, r1 + 0.003, uv.y);
@@ -76,6 +85,40 @@ void fragment() {
 		col = mix(col, far_c * (0.96 + 0.08 * fbm(p * 9.0)), m1 * mountain_amount);
 		col = mix(col, near_c * (0.94 + 0.1 * fbm(p * 7.0 + 3.0)), m2 * mountain_amount);
 		col = mix(col, mix(horizon.rgb, low.rgb, 0.5), smoothstep(0.4, 0.8, uv.y) * 0.6 * m1);
+	}
+	// Painted mesa cliffs, two layers: far = hazier/smaller, mid = saturated. Each cell of the
+	// strip may hold a flat-topped cliff (cap + striated rock, shade side right) with an optional
+	// waterfall streak; everything fades into the horizon haze toward its foot.
+	if (mesa_amount > 0.0) {
+		for (int layer = 0; layer < 2; layer++) {
+			float fl = float(layer);
+			float sc = mix(16.0, 10.0, fl);
+			float qx = p.x * sc + fl * 7.3;
+			float cell = floor(qx);
+			float fx = fract(qx);
+			float present = step(0.3, h21(vec2(cell, 3.0 + fl)));
+			float topy = mix(0.27, 0.42, h21(vec2(cell, 7.0 + fl))) + fl * 0.06;
+			float half_w = mix(0.2, 0.34, h21(vec2(cell, 11.0 + fl)));
+			float edge = abs(fx - 0.5) - half_w - (uv.y - topy) * 1.4 - 0.06 * vn(vec2(uv.y * 60.0, cell));
+			float inside = present * step(edge, 0.0) * step(topy, uv.y);
+			float cap = 1.0 - step(topy + 0.016 + 0.012 * vn(vec2(fx * 18.0, cell)), uv.y);
+			vec3 rockc = mesa_rock.rgb * (0.82 + 0.3 * vn(vec2(fx * 16.0 + cell, uv.y * 20.0)));
+			rockc *= mix(1.0, 0.74, smoothstep(0.48, 0.62, fx));
+			vec3 mc = mix(rockc, mesa_top.rgb * mix(1.08, 0.86, smoothstep(0.45, 0.65, fx)), cap);
+			float fall_x = 0.5 + 0.18 * (h21(vec2(cell, 23.0 + fl)) - 0.5);
+			float fall = step(1.0 - mesa_falls, h21(vec2(cell, 19.0 + fl))) * (1.0 - smoothstep(0.05, 0.09, abs(fx - fall_x))) * step(topy + 0.012, uv.y);
+			mc = mix(mc, vec3(0.92, 0.97, 1.0) * (0.9 + 0.1 * vn(vec2(fx * 30.0, uv.y * 80.0 - t * 2.0))), fall * 0.9);
+			float hz = mix(0.38, 0.06, fl) + smoothstep(topy + 0.08, topy + 0.32, uv.y) * 0.4;
+			mc = mix(mc, horizon.rgb, clamp(hz, 0.0, 1.0));
+			col = mix(col, mc, inside * mesa_amount);
+		}
+	}
+	// Near puffy cloud bank in front of the cliffs: scalloped top, lit crown, shaded belly.
+	if (cloud_bank > 0.0) {
+		float bl = 0.54 - 0.04 * fbm(vec2(p.x * 2.0 + 4.0, 1.0)) - 0.03 * abs(sin(p.x * 9.0 + fbm(vec2(p.x * 2.5, 9.0)) * 4.0));
+		float bank = smoothstep(bl, bl + 0.006, uv.y) * (1.0 - smoothstep(0.66, 0.72, uv.y));
+		vec3 bc = mix(cloud.rgb, cloud_shade.rgb, clamp((uv.y - bl) * 9.0, 0.0, 1.0) * 0.7);
+		col = mix(col, bc, bank * cloud_bank);
 	}
 	// Cloud wisps: billowy soft threshold, lit top / shaded underside from an offset sample.
 	vec2 cp = vec2(p.x * 2.0 + t * 0.006, uv.y * 6.0);

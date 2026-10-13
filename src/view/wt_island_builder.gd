@@ -161,7 +161,9 @@ func build_sky(owner: Node, environment: Environment) -> CanvasLayer:
 	mat.set_shader_parameter(&"low", Color(String(sky[2])))
 	for key: String in ["cloud", "cloud_shade", "mountains", "nebula_a", "nebula_b"]:
 		if spec.has(key): mat.set_shader_parameter(StringName(key), Color(String(spec[key])))
-	for key: String in ["cloud_amount", "mountain_amount", "stars", "nebula", "sun", "sea_line"]:
+	for key: String in ["mesa_top", "mesa_rock"]:
+		if spec.has(key): mat.set_shader_parameter(StringName(key), Color(String(spec[key])))
+	for key: String in ["cloud_amount", "mountain_amount", "stars", "nebula", "sun", "sea_line", "mesa_amount", "mesa_falls", "cloud_bank"]:
 		if spec.has(key): mat.set_shader_parameter(StringName(key), float(spec[key]))
 	mat.set_shader_parameter(&"motion", motion)
 	rect.material = mat
@@ -207,9 +209,16 @@ func build_dressing(parent: Node3D, board: Vector3i) -> void:
 		var kind: String = String(spec.get("kind", "rock"))
 		var tall: bool = bool(spec.get("tall", kind in TALL_KINDS))
 		var p := Vector3(_rng.randf_range(-half.x + 0.05, half.x - 0.05), SLAB_TOP - 0.01, _rng.randf_range(-half.y + 0.05, half.y - 0.05))
+		var sr: Array = spec.get("scale", [0.8, 1.2])
+		var s: float = _rng.randf_range(float(sr[0]), float(sr[1]))
+		var edge: bool = bool(spec.get("edge", false))
+		if edge:
+			# Spill over the rim: snap to the slab edge (dominant axis) so the prop overhangs.
+			if absf(p.x) / half.x > absf(p.z) / half.y: p.x = signf(p.x) * (half.x - 0.06)
+			else: p.z = signf(p.z) * (half.y - 0.06)
 		var gx: float = absf(p.x) - b.x
 		var gz: float = absf(p.z) - b.y
-		if maxf(gx, gz) < (TALL_CLEAR if tall else LOW_CLEAR): continue
+		if maxf(gx, gz) < (TALL_CLEAR if tall else LOW_CLEAR + 0.12 * s): continue
 		var cx: float = maxf(0.0, absf(p.x) - (half.x - SLAB_RADIUS))
 		var cz: float = maxf(0.0, absf(p.z) - (half.y - SLAB_RADIUS))
 		if cx * cx + cz * cz > SLAB_RADIUS * SLAB_RADIUS: continue
@@ -219,9 +228,10 @@ func build_dressing(parent: Node3D, board: Vector3i) -> void:
 		if tall: side = Vector3(signf(p.x), 0, 0) if gx > gz else Vector3(0, 0, signf(p.z))
 		var key: String = kind + "|" + String(spec.get("tint", "")) + "|" + str(side)
 		if not groups.has(key): groups[key] = {"spec": spec, "side": side, "xf": [] as Array[Transform3D], "custom": [] as Array[Color]}
-		var sr: Array = spec.get("scale", [0.8, 1.2])
-		var s: float = _rng.randf_range(float(sr[0]), float(sr[1]))
 		var basis := Basis(Vector3.UP, _rng.randf() * TAU).scaled_local(Vector3(s, s * _rng.randf_range(0.9, 1.15), s))
+		if edge:
+			var out := Vector3(signf(p.x), 0, 0) if gx > gz else Vector3(0, 0, signf(p.z))
+			basis = Basis(out.cross(Vector3.UP).normalized(), -0.35) * basis
 		(groups[key].xf as Array[Transform3D]).append(Transform3D(basis, p))
 		(groups[key].custom as Array[Color]).append(_instance_tint(spec))
 	for key: String in groups:

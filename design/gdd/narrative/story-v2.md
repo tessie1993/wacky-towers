@@ -50,7 +50,7 @@
 4. **Nobody is hurt.** Goblins, guardians and krakens are bonked, doused, tickled or put to sleep. Block-cannons fire blocks at **walls, towers and bosses' gadgets, never at people**.
 5. Story is a **mode**, optional, skippable, and never gates the Campaign, Tournament or Arcade (the anti-pillar "NOT a story-driven game" now reads: story is available and free, never forced).
 
-**Player relevance**: the Story mode card opens the six-chapter quest (section 2.2 of the structure below); Campaign biomes borrow its places and characters; the Tournament uses the cast as contestants.
+**Player relevance**: the Story mode card opens the six-chapter quest (sections 4 and 7); Campaign biomes borrow its places and characters; the Tournament uses the cast as contestants.
 
 ### 1.2 Premise in three sentences
 
@@ -248,7 +248,6 @@ Common rule: a level gets one intro and one payoff at most; a mid beat is a **[3
 |---|---|---|
 | Intro | The star stairs rise; the wizard's cloud floats alongside the cart; the astronaut points at the portal | **[P] S08 The Cosmic Gateway** |
 | Mid | **Angry Wind Cloud** blows across the sky climb; the span rides the cloud to safety | **[P] S12 Angry Wind Cloud** + module |
-
 | Boss | The Sleepy Moon yawns the tower; the nine bosses on the brim hold their ribbons; the Miller waves first (`[B-story]`) | **[3D]** hat-reveal pull-back |
 | Payoff | The Cosmic Nexus opens (portals, astronaut, robot on glowing plates); then the towers rise one by one; the treasure chest on the floating island | **[P] S09 Cosmic Nexus**, **[P] S10 Story Victory!** |
 
@@ -258,13 +257,13 @@ Not on board 13; art-director designs the block set from the pirate/tiki/fruit b
 |---|---|---|
 | Intro | The cart rolls onto a golden beach; the pirate is home; Tiki giggles at the cart; the explorer unrolls a map | **[P] S15 Pirate Island arrival** |
 | Mid | Monkey steals the fruit stack; the Parrot repeats it; a rickety rope bridge to sort | **[3D]** |
-| Boss | **Rainbow Kraken** rises in the cove | **[P] S16 Rainbow Kraken** + Blockade module |
+| Boss | **Rainbow Kraken** rises in the cove | **[P] S14 Rainbow Kraken** + Blockade module |
 | Payoff | The wall becomes a rainbow bridge; the Pirate Island Tome sits at its end; Tiki, Monkey and Parrot join the roster | **[SK]** + unlock cards |
 
 ### 4.12 Side islands (post-MVP)
 | Island | Intro | Mid | Boss/Finale | Payoff | Delivery |
 |---|---|---|---|---|---|
-| **Tumble Fair** | Baron Balloon inflates over the fairground; Bounce bounces in | Wheel and ring-toss round | Baron deflates into a bouncy castle | Baron is reinflated as **ringmaster**: he now hosts the tournament | **[P] T02**, **[3D]** |
+| **Tumble Fair** | Baron Balloon inflates over the fairground; Bounce bounces in | Wheel and ring-toss round | Baron deflates into a bouncy castle | Baron is reinflated as **ringmaster**: he now hosts the tournament | **[P] S16**, **[3D]** |
 | **Dune Bazaar** | A bazaar of awnings and lanterns; the explorer and elf | Mirage and riddle runs | Madame Sphinx's riddles | She naps; a lantern charm | **[3D]** + **[SK]** |
 
 ---

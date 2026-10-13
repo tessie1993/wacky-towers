@@ -1,7 +1,7 @@
 extends Node
 ## QA capture for the in-level environment (islands v2). Instances the real main scene, starts
 ## <biome>_01 for each biome through main's own _start_level (smoke flag bypasses unlocks),
-## freezes the sim, and saves in-game shots + side-by-sides with ref 15.
+## freezes the sim (optionally --pieces: a few locked pieces, like the stage demo), and saves in-game shots + side-by-sides with ref 15.
 ## Run: timeout 240 xvfb-run -a -s "-screen 0 1280x1280x24" godot --path . --rendering-driver opengl3 \
 ##   --resolution 720x1280 res://tools/qa/island_capture.tscn -- [--biomes=meadow,ice] [--tag=v1]
 const OUT := "res://production/qa/evidence/islands-v2/"
@@ -17,9 +17,11 @@ func _frames(n: int) -> void:
 func _run() -> void:
 	var biomes: PackedStringArray = PackedStringArray(["meadow", "ice", "celestial", "candy", "lava"])
 	var tag: String = ""
+	var pieces: bool = false
 	for a: String in OS.get_cmdline_user_args():
 		if a.begins_with("--biomes="): biomes = a.trim_prefix("--biomes=").split(",")
 		if a.begins_with("--tag="): tag = "_" + a.trim_prefix("--tag=")
+		if a == "--pieces": pieces = true
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	var vs: Vector2 = get_viewport().get_visible_rect().size
 	var res: String = "%dx%d" % [int(vs.x), int(vs.y)]
@@ -35,6 +37,7 @@ func _run() -> void:
 		if b == "notitle": continue
 		main.call("_start_level", StringName(b + "_01"))
 		main.set_physics_process(false)
+		if pieces: _place_pieces(main)
 		await _frames(30)
 		await _snap(OUT + "%s_%s%s.png" % [b, res, tag], b if vs.y > vs.x else "")
 	get_tree().quit()
@@ -55,3 +58,18 @@ func _snap(path: String, biome: String) -> void:
 	out.blit_rect(panel, Rect2i(Vector2i.ZERO, panel.get_size()), Vector2i.ZERO)
 	out.blit_rect(img, Rect2i(Vector2i.ZERO, img.get_size()), Vector2i(panel.get_width() + 16, 0))
 	out.save_png(path.replace(".png", "_vs_ref15.png"))
+
+## Locks a small staircase of coloured cells (QA fixture, mirrors wt_stage_demo) and refreshes
+## the board view so the biome blocks show on the island.
+func _place_pieces(main: Node) -> void:
+	var sim: BoardSim = main.get("_sim") as BoardSim
+	var stage: Node = main.get("_stage")
+	if sim == null or stage == null: return
+	var b: BoardState = sim.board()
+	var cells: Array = [[2, 0, 3, 1], [3, 0, 3, 1], [3, 1, 3, 1], [3, 0, 4, 2], [4, 0, 4, 2], [4, 0, 5, 2],
+		[2, 0, 4, 3], [2, 0, 5, 3], [2, 1, 5, 3], [4, 1, 4, 4], [4, 2, 4, 4], [5, 0, 3, 5], [5, 0, 4, 5]]
+	for c: Array in cells:
+		var cell := Vector3i(int(c[0]), int(c[1]), int(c[2]))
+		if b.in_bounds(cell): b.place(b.index(cell), 1, int(c[3]), 99)
+	var view: Object = stage.get("_locked")
+	if view != null and view.has_method("refresh"): view.call("refresh")
