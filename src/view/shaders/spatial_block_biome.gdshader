@@ -148,7 +148,7 @@ void fragment() {
 	} else if (style == 2) { // Candy: glossy jelly, deep inner glow, soft wobble highlights.
 		float inner = 1.0 - smoothstep(0.12, 0.48, face_edge);
 		col = mix(col * 0.78, col * 1.2 + 0.07, inner);
-		emit += piece * 0.22 * inner;
+		emit += piece * 0.4 * inner;
 		// Wobbly lumps in the jelly surface: broad soft normals that move the highlight.
 		float w = vnoise(suv * 2.2);
 		g += vec2(vnoise((suv + vec2(0.05, 0.0)) * 2.2) - w, vnoise((suv + vec2(0.0, 0.05)) * 2.2) - w) / 0.05 * 0.05;
@@ -249,9 +249,9 @@ void fragment() {
 		g += facet(v.y) * 0.6 * sculpt + (hnoise(suv * 16.0) - 0.5) * 0.12;
 		cavity += (1.0 - crease) * 0.3;
 		// Amethyst: a diamond-cut gem with two shaded halves and a bright tip.
-		vec2 gc = fract(suv * 6.0) - 0.5;
-		float gid = step(0.88, hash21(floor(suv * 6.0)));
-		float gem = (1.0 - smoothstep(0.2, 0.24, abs(gc.x) * 1.5 + abs(gc.y) * 0.8)) * gid;
+		vec2 gc = fract(suv * 4.0) - 0.5;
+		float gid = step(0.8, hash21(floor(suv * 4.0)));
+		float gem = (1.0 - smoothstep(0.26, 0.3, abs(gc.x) * 1.4 + abs(gc.y) * 0.8)) * gid;
 		vec3 gcol = accent_color * (gc.x < 0.0 ? 1.15 : 0.7);
 		col = mix(col, gcol, gem);
 		g += vec2(-sign(gc.x), 0.0) * 0.5 * gem;
