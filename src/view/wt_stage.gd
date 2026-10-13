@@ -422,32 +422,51 @@ func _occlusion_mode() -> String:
 
 
 func _build_light() -> void:
+	# Warm soft key, sky-coloured fill, ambient from the biome sky (biome_looks.json `sky`),
+	# and glow tuned so only emission above ~1 (lava, neon, crystals, falls) blooms.
 	var look: Array = BIOME_LOOKS.get(str(_biome), BIOME_LOOKS["meadow"])
+	var sky: Array = WtBlockMaterials.look(_biome).get("sky", ["#8EC9F0", "#D9EEF8", "#F7F1DE"])
+	var sky_top := Color(String(sky[0]))
+	var sky_mid := Color(String(sky[1]))
+	var sky_low := Color(String(sky[2]))
 	var env := Environment.new()
 	_environment=env
 	env.background_mode = Environment.BG_COLOR
 	env.background_color = Color(look[0])
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color("#E6ECFF")
-	env.ambient_light_energy = 0.4
+	env.ambient_light_color = sky_mid.lerp(sky_low, 0.35).lerp(Color("#FFF6E8"), 0.25)
+	env.ambient_light_energy = 0.5
 	env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
-	WtIslandBuilder.new(_biome).build_sky(self, env)
+	env.glow_enabled = true
+	env.glow_normalized = false
+	env.glow_intensity = 0.7
+	env.glow_strength = 1.0
+	env.glow_bloom = 0.0
+	env.glow_hdr_threshold = 1.0
+	env.glow_hdr_scale = 2.0
+	env.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
+	for level: int in 7:
+		env.set_glow_level(level, 1.0 if level in [1, 2, 3] else 0.0)
+	var builder := WtIslandBuilder.new(_biome)
+	builder.motion = 0.0 if _reduced() else 1.0
+	builder.build_sky(self, env)
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
 	var key := DirectionalLight3D.new()
 	_key_light=key
-	key.rotation_degrees = Vector3(-52, -32, 0)
-	key.light_color = Color("#FFF4DA")
-	key.light_energy = 0.85
+	key.rotation_degrees = Vector3(-50, -32, 0)
+	key.light_color = Color("#FFE7C2")
+	key.light_energy = 0.95
 	key.shadow_enabled = true
+	key.shadow_blur = 1.5
 	key.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
-	key.directional_shadow_max_distance = 45.0
+	key.directional_shadow_max_distance = 30.0
 	add_child(key)
 	var fill := DirectionalLight3D.new()
 	fill.rotation_degrees = Vector3(-30, 145, 0)
-	fill.light_color = Color("#DCE6FF")
-	fill.light_energy = 0.12
+	fill.light_color = sky_top.lerp(Color.WHITE, 0.35)
+	fill.light_energy = 0.28
 	fill.shadow_enabled = false
 	fill.light_specular = 0.0
 	add_child(fill)
@@ -455,6 +474,7 @@ func _build_light() -> void:
 
 func _build_island() -> void:
 	var builder := WtIslandBuilder.new(_biome)
+	builder.motion = 0.0 if _reduced() else 1.0
 	builder.build_island(_world, _size, func(x: int, z: int) -> bool: return _board.is_active(_board.index(Vector3i(x, 0, z))))
 	builder.build_dressing(_world, _size)
 
@@ -971,36 +991,11 @@ func _syrup_band(data: Dictionary) -> void:
 
 
 func _build_props() -> void:
-	var look: Array = BIOME_LOOKS.get(str(_biome), BIOME_LOOKS["meadow"])
-	var z: float = -_size.z * .5 - .9
-	for i: int in 5:
-		var x: float = -_size.x * .5 - .5 + i * (_size.x + 1.0) / 4.0
-		var p: Vector3 = Vector3(x, .02, z)
-		match _biome:
-			&"meadow", &"forest":
-				_cylinder(_world, p + Vector3(0,.3,0), .07,.1,.65,Color("#8B7455"),7)
-				_sphere(_world, p + Vector3(0,.85,0), .53, Color(look[3]), Vector3(.8,1.2,.8))
-			&"candy":
-				_cylinder(_world,p+Vector3(0,.5,0),.04,.04,1,Color("#E9DECA"),7)
-				_sphere(_world,p+Vector3(0,1.1,0),.43,Color(look[3]).lightened(.15),Vector3(1,1,.5))
-			&"ice", &"cave", &"neon", &"celestial":
-				var crystal := _cylinder(_world,p+Vector3(0,.65,0),0,.32,1.3+(i%2)*.3,Color(look[3]).lightened(.18),5)
-				crystal.rotation.z = -.12 + .06 * i
-			&"lava":
-				_cylinder(_world,p+Vector3(0,.32,0),.22,.5,.7,Color(look[2]),7)
-				_sphere(_world,p+Vector3(0,.69,0),.19,Color("#DDA178"),Vector3(1,.3,1))
-			&"underwater":
-				for branch: int in 3:
-					var coral := _cylinder(_world,p+Vector3((branch-1)*.17,.35,0),.07,.1,.7,Color(look[3]).lightened(.2),7)
-					coral.rotation.z = (branch-1)*.35
-			&"carnival":
-				if i % 2 == 0: _carnival_tent(p, i)
-				else: _carnival_balloon_stall(p, i)
-			&"clockwork":
-				var gear := TorusMesh.new()
-				gear.inner_radius=.23;gear.outer_radius=.5;gear.rings=12;gear.ring_segments=6
-				var node: MeshInstance3D = _mesh(_world,gear,p+Vector3(0,.55,0),_mat(Color(look[3])))
-				node.rotation.x=PI*.5
+	# Backdrop dressing (trees, crystals, gears, pillars...) comes from the GLB kit as one
+	# MultiMesh per kind (WtIslandBuilder.build_backdrop, biome_looks.json `env.backdrop`).
+	var builder := WtIslandBuilder.new(_biome)
+	builder.motion = 0.0 if _reduced() else 1.0
+	builder.build_backdrop(_world, _size)
 	if _biome == &"meadow":
 		var mill := Node3D.new()
 		mill.position = Vector3(_size.x*.5+1.1,0,-_size.z*.5-.4)
@@ -1014,11 +1009,12 @@ func _build_props() -> void:
 			blade.rotation.z=-i*PI*.5
 		_sphere(_windmill,Vector3.ZERO,.13,Color("#94795E"))
 	if _biome == &"carnival":
+		var z: float = -_size.z * .5 - .9
+		for i: int in 5:
+			var p := Vector3(-_size.x * .5 - .5 + i * (_size.x + 1.0) / 4.0, .02, z)
+			if i % 2 == 0: _carnival_tent(p, i)
+			else: _carnival_balloon_stall(p, i)
 		_build_carnival_rides()
-	# Quiet clouds and pebble clusters are outside the active grid.
-	for i: int in 6:
-		var a: float = i * 1.04
-		_sphere(_world,Vector3(cos(a)*(_size.x*.55+.9),-.14,sin(a)*(_size.z*.55+.9)),.2,Color(look[3]).lightened(.18),Vector3(1.4,.65,1))
 
 
 ## Striped big-top tent: cream drum, alternating pink panels, cone roof and pennant.
