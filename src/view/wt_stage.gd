@@ -43,6 +43,8 @@ var _character_root: Node3D
 var _story_context: Dictionary = {}
 var _environment: Environment
 var _key_light: DirectionalLight3D
+var _rig: Array[DirectionalLight3D] = []
+var _far: Node3D
 var _syrup_preview: Array[Vector3i] = []
 var _syrup_root: Node3D
 var _story_props: Node3D
@@ -423,54 +425,19 @@ func _occlusion_mode() -> String:
 
 
 func _build_light() -> void:
-	# Warm soft key, sky-coloured fill, ambient from the biome sky (biome_looks.json `sky`),
-	# and glow tuned so only emission above ~1 (lava, neon, crystals, falls) blooms.
-	var look: Array = BIOME_LOOKS.get(str(_biome), BIOME_LOOKS["meadow"])
-	var sky: Array = WtBlockMaterials.look(_biome).get("sky", ["#8EC9F0", "#D9EEF8", "#F7F1DE"])
-	var sky_top := Color(String(sky[0]))
-	var sky_mid := Color(String(sky[1]))
-	var sky_low := Color(String(sky[2]))
-	var env := Environment.new()
-	_environment=env
-	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color(look[0])
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = sky_mid.lerp(sky_low, 0.35).lerp(Color("#FFF6E8"), 0.25)
-	env.ambient_light_energy = 0.5
-	env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
-	env.glow_enabled = true
-	env.glow_normalized = false
-	env.glow_intensity = 0.7
-	env.glow_strength = 1.0
-	env.glow_bloom = 0.0
-	env.glow_hdr_threshold = 1.0
-	env.glow_hdr_scale = 2.0
-	env.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
-	for level: int in 7:
-		env.set_glow_level(level, 1.0 if level in [1, 2, 3] else 0.0)
+	# Cookbook preset + rig (design/art/style-techniques.md §2): painted canvas backdrop (BG_CANVAS),
+	# flat lilac ambient, AgX, soft-light glow for emissives only, no global fog, and the
+	# camera-relative warm key / cool fill / warm back lights (re-aimed in _update_camera).
 	var builder := WtIslandBuilder.new(_biome)
 	builder.motion = 0.0 if _reduced() else 1.0
+	var env := builder.make_environment()
+	_environment = env
 	builder.build_sky(self, env)
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
-	var key := DirectionalLight3D.new()
-	_key_light=key
-	key.rotation_degrees = Vector3(-50, -32, 0)
-	key.light_color = Color("#FFE7C2")
-	key.light_energy = 0.95
-	key.shadow_enabled = true
-	key.shadow_blur = 1.5
-	key.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
-	key.directional_shadow_max_distance = 30.0
-	add_child(key)
-	var fill := DirectionalLight3D.new()
-	fill.rotation_degrees = Vector3(-30, 145, 0)
-	fill.light_color = sky_top.lerp(Color.WHITE, 0.35)
-	fill.light_energy = 0.28
-	fill.shadow_enabled = false
-	fill.light_specular = 0.0
-	add_child(fill)
+	_rig = builder.add_light_rig(self, _yaw)
+	_key_light = _rig[0]
 
 
 func _build_island() -> void:
@@ -478,6 +445,7 @@ func _build_island() -> void:
 	builder.motion = 0.0 if _reduced() else 1.0
 	builder.build_island(_world, _size, func(x: int, z: int) -> bool: return _board.is_active(_board.index(Vector3i(x, 0, z))))
 	builder.build_dressing(_world, _size)
+	_far = builder.build_far(_world)
 
 
 func _build_board() -> void:
@@ -742,6 +710,10 @@ func _update_camera() -> void:
 	var elev: float = deg_to_rad(_elevation)
 	_camera.position = target + Vector3(sin(yaw) * cos(elev), sin(elev), cos(yaw) * cos(elev)) * 35.0
 	_camera.look_at(target, Vector3.UP)
+	WtIslandBuilder.orient_rig(_rig, _yaw)
+	WtIslandBuilder.update_facing(_world, _yaw)
+	if _far != null and is_inside_tree():
+		WtIslandBuilder.layout_far(_far, target, _yaw, _elevation, _camera.size, get_viewport().get_visible_rect().size.aspect())
 	_update_status_orientation()
 	var quadrant := Vector2i(-1 if sin(yaw)>=0 else 1,-1 if cos(yaw)>=0 else 1)
 	if quadrant != _guide_quadrant:
@@ -761,10 +733,12 @@ func set_story_context(context: Dictionary) -> void:
 	_build_story_props()
 	var lighting: Dictionary=WtStoryData.lighting(StringName(context.get("level_id","")))
 	if not lighting.is_empty():
+		# Authored time of day scales the cookbook preset (0.65 key / 0.32 ambient = neutral day).
+		var base: Dictionary=WtIslandBuilder.new(_biome).preset()
 		_environment.background_color=Color(lighting.sky)
-		_environment.ambient_light_energy=float(lighting.ambient)
+		_environment.ambient_light_energy=float(base.ambient_energy)*float(lighting.ambient)/.32
 		_key_light.light_color=Color(lighting.key)
-		_key_light.light_energy=float(lighting.key_energy)
+		_key_light.light_energy=float(base.key_energy)*float(lighting.key_energy)/.65
 		set_meta("authored_time_of_day",lighting.time)
 
 
