@@ -81,7 +81,7 @@ static func add_light_rig(parent: Node3D, biome := "meadow", cam_yaw_deg := 45.0
 	key.shadow_enabled = true
 	key.shadow_opacity = 0.7          # shadows stay coloured, never black
 	key.shadow_blur = 1.5
-	key.shadow_bias = 0.08          # rounded tiles show diagonal acne at the default bias
+	key.shadow_bias = 0.08          # precaution for rounded tiles (the X artefact was the paint UV, not acne)
 	key.shadow_normal_bias = 2.5
 	key.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	key.directional_shadow_max_distance = 40.0

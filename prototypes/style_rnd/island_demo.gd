@@ -20,8 +20,8 @@ func _run() -> void:
 	var we := WorldEnvironment.new(); we.environment = Kit.make_environment(biome); world.add_child(we)
 	Kit.add_backdrop(root, biome)
 	var cam := Camera3D.new(); cam.fov = 42.0; world.add_child(cam)
-	var cam_pos := Vector3(15.5, 15.0, 15.5)
-	cam.look_at_from_position(cam_pos, Vector3(0, -2.4, 0)); cam.current = true
+	var cam_pos := Vector3(19.0, 17.5, 19.0)
+	cam.look_at_from_position(cam_pos, Vector3(0, -2.2, 0)); cam.current = true
 	Kit.add_light_rig(world, biome, rad_to_deg(atan2(cam_pos.x, cam_pos.z)))
 
 	var ice := biome == "ice"
@@ -129,11 +129,11 @@ func _flower(parent: Node3D, at: Vector3, petal_col: Color) -> void:
 	var petal := Kit.prop_material(petal_col, petal_col.darkened(0.15), {"gloss": 0.4})
 	for k in 5:
 		var p := MeshInstance3D.new(); var sm := SphereMesh.new(); sm.radius = 0.5; sm.height = 1.0; sm.radial_segments = 8; sm.rings = 4
-		p.mesh = sm; p.scale = Vector3(0.14, 0.05, 0.09)
+		p.mesh = sm; p.scale = Vector3(0.26, 0.08, 0.17)
 		var a := TAU * k / 5.0
-		p.position = at + Vector3(cos(a) * 0.09, 0, sin(a) * 0.09); p.rotation.y = -a
+		p.position = at + Vector3(cos(a) * 0.16, 0, sin(a) * 0.16); p.rotation.y = -a
 		p.material_override = petal; parent.add_child(p)
-	var c := MeshInstance3D.new(); var cs := SphereMesh.new(); cs.radius = 0.05; cs.height = 0.07
+	var c := MeshInstance3D.new(); var cs := SphereMesh.new(); cs.radius = 0.09; cs.height = 0.12
 	c.mesh = cs; c.position = at + Vector3(0, 0.02, 0)
 	c.material_override = Kit.prop_material(Color("ffd34d"), Color("e09a20")); parent.add_child(c)
 
@@ -141,9 +141,9 @@ func _clover(parent: Node3D, at: Vector3) -> void:
 	var mat := Kit.prop_material(Color("6cc04a"), Color("2f7a2a"), {"gloss": 0.5, "edge_light": 0.5})
 	for k in 3:
 		var l := MeshInstance3D.new(); var sm := SphereMesh.new(); sm.radius = 0.5; sm.height = 1.0; sm.radial_segments = 8; sm.rings = 4
-		l.mesh = sm; l.scale = Vector3(0.16, 0.05, 0.16)
+		l.mesh = sm; l.scale = Vector3(0.28, 0.07, 0.28)
 		var a := TAU * k / 3.0
-		l.position = at + Vector3(cos(a) * 0.08, 0.0, sin(a) * 0.08); l.material_override = mat; parent.add_child(l)
+		l.position = at + Vector3(cos(a) * 0.14, 0.0, sin(a) * 0.14); l.material_override = mat; parent.add_child(l)
 
 func _hud() -> void:
 	var lilita := Kit.load_font("res://prototypes/style_rnd/fonts/LilitaOne-Regular.ttf")
