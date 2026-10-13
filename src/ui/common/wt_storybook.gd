@@ -18,6 +18,12 @@ const FONT_PATH := "res://assets/fonts/fredoka/fredoka-600.woff2"
 const FONT_BOLD_PATH := "res://assets/fonts/fredoka/fredoka-700.woff2"
 const SKY_SHADER := "res://src/view/shaders/canvas_env_sky.gdshader"
 const SPRITES := "res://assets/art/ui/"
+## Blender-rendered nine-patch kit (2x renders; margins in ninepatch.json).
+const KIT_JSON := "res://assets/art/ui/kit/x1/ninepatch_x1.json"
+## Kit textures are rendered at 2x; drawn at half size for crisp 1x layouts.
+const KIT_SCALE := 0.5
+
+static var _kit: Dictionary = {}
 
 static var _fonts: Dictionary = {}
 
@@ -32,6 +38,39 @@ static func font(bold: bool = false) -> Font:
 			(loaded as FontFile).fallbacks = [ThemeDB.fallback_font]
 		_fonts[path] = loaded if loaded != null else ThemeDB.fallback_font
 	return _fonts[path]
+
+
+## Nine-patch StyleBoxTexture for a kit piece (panel_wood, btn_gold_pill...), or null if missing.
+static func kit_box(name: String, content: float = 12.0) -> StyleBoxTexture:
+	if _kit.is_empty() and FileAccess.file_exists(KIT_JSON):
+		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(KIT_JSON))
+		if parsed is Dictionary: _kit = (parsed as Dictionary).get("patches", {})
+	var entry: Dictionary = _kit.get(name, {})
+	var path: String = String(entry.get("file", "res://assets/art/ui/kit/x1/%s.png" % name))
+	if not ResourceLoader.exists(path): return null
+	var box := StyleBoxTexture.new()
+	box.texture = load(path) as Texture2D
+	box.texture_margin_left = float(entry.get("left", 48))
+	box.texture_margin_top = float(entry.get("top", 48))
+	box.texture_margin_right = float(entry.get("right", 48))
+	box.texture_margin_bottom = float(entry.get("bottom", 48))
+	box.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_STRETCH
+	box.axis_stretch_vertical = StyleBoxTexture.AXIS_STRETCH_MODE_STRETCH
+	for side: int in [SIDE_LEFT, SIDE_RIGHT, SIDE_TOP, SIDE_BOTTOM]:
+		box.set_content_margin(side, maxf(content, box.get_texture_margin(side) * 0.8))
+	return box
+
+
+## A kit texture by name (icons, timer, slot), or null.
+static func kit_texture(name: String) -> Texture2D:
+	var path: String = "res://assets/art/ui/kit/%s.png" % name
+	return load(path) as Texture2D if ResourceLoader.exists(path) else null
+
+
+## Parchment panel inside a painted-wood frame (Blender kit), flat fallback otherwise.
+static func panel_box(wood: bool = false) -> StyleBox:
+	var box: StyleBoxTexture = kit_box("panel_wood" if wood else "panel_parchment", 16.0)
+	return box if box != null else panel()
 
 
 ## Parchment panel inside a painted-wood frame, with a soft drop shadow.
@@ -72,6 +111,25 @@ static func pill(fill: Color, lip: Color, pressed: bool = false, radius: int = 4
 
 ## Applies gold (primary) or cream (secondary) pill styles to a button.
 static func style_button(button: Button, primary: bool, radius: int = 40) -> void:
+	var kit_name: String = "btn_gold_pill" if primary else ("btn_cream_pill" if radius >= 22 else "btn_wood_square")
+	var normal: StyleBoxTexture = kit_box(kit_name, 10.0)
+	if normal != null:
+		var pressed: StyleBoxTexture = kit_box("btn_wood_square_pressed" if kit_name == "btn_wood_square" else kit_name, 10.0)
+		if kit_name != "btn_wood_square": pressed.modulate_color = Color(0.9, 0.88, 0.85)
+		var hover: StyleBoxTexture = normal.duplicate()
+		hover.modulate_color = Color(1.08, 1.08, 1.08)
+		var disabled: StyleBoxTexture = normal.duplicate()
+		disabled.modulate_color = Color(0.75, 0.72, 0.7, 0.8)
+		button.add_theme_stylebox_override("normal", normal)
+		button.add_theme_stylebox_override("hover", hover)
+		button.add_theme_stylebox_override("pressed", pressed)
+		button.add_theme_stylebox_override("disabled", disabled)
+		var ring := StyleBoxEmpty.new()
+		button.add_theme_stylebox_override("focus", ring)
+		button.add_theme_color_override("font_color", PLUM)
+		button.add_theme_color_override("font_pressed_color", PLUM)
+		button.add_theme_color_override("font_hover_color", PLUM)
+		return
 	var fill: Color = GOLD if primary else CREAM_PILL
 	var lip: Color = GOLD_DEEP if primary else WOOD
 	button.add_theme_stylebox_override("normal", pill(fill, lip, false, radius))

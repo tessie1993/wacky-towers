@@ -77,3 +77,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# UI kit 1x copies are made by downscaling assets/art/ui/kit/*.png (2x Blender renders):
+# see assets/art/ui/kit/x1/ninepatch_x1.json; regenerate by halving size and margins.

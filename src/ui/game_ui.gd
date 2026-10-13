@@ -112,8 +112,17 @@ func _make_theme() -> Theme:
 		if state == "focus":
 			style.draw_center = false
 			style.border_color = Color.WHITE
-		t.set_stylebox(state, "Button", style)
-	t.set_stylebox("panel", "PanelContainer", Kit.panel())
+		var kit_style: StyleBoxTexture = Kit.kit_box("btn_cream_pill", 10.0)
+		if kit_style != null and state != "focus":
+			if state == "hover": kit_style.modulate_color = Color(1.06, 1.06, 1.06)
+			if state == "pressed": kit_style.modulate_color = Color(0.9, 0.88, 0.85)
+			if state == "disabled": kit_style.modulate_color = Color(0.78, 0.75, 0.72, 0.8)
+			t.set_stylebox(state, "Button", kit_style)
+		elif state == "focus" and kit_style != null:
+			t.set_stylebox(state, "Button", StyleBoxEmpty.new())
+		else:
+			t.set_stylebox(state, "Button", style)
+	t.set_stylebox("panel", "PanelContainer", Kit.panel_box())
 	t.set_stylebox("normal", "LineEdit", _style(Color("ffffff"), 12, INK, 2))
 	t.set_stylebox("focus", "LineEdit", _style(Color("ffffff"), 12, Color("d58443"), 3))
 	t.set_stylebox("background", "ProgressBar", _style(Color("dce2d5"), 7))
@@ -237,7 +246,7 @@ func _scroll(parent: Node) -> VBoxContainer:
 func _card(parent: Node, color: Color = CREAM) -> VBoxContainer:
 	var panel := PanelContainer.new()
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	panel.add_theme_stylebox_override("panel", Kit.panel(color))
+	panel.add_theme_stylebox_override("panel", Kit.panel_box() if color == CREAM else Kit.panel(color))
 	parent.add_child(panel)
 	var pad := MarginContainer.new()
 	for side in ["left", "right", "top", "bottom"]:
