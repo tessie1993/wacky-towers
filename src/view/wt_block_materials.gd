@@ -29,10 +29,24 @@ static func for_biome(biome: StringName) -> ShaderMaterial:
 	for key: String in ["cap_color", "body_color", "accent_color", "glow_color"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), Color(String(record[key])))
-	for key: String in ["cap_depth", "cap_drip", "body_mix", "glow", "gloss", "rim", "detail", "brightness"]:
+	for key: String in ["cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), float(record[key]))
+	# Sky-tinted rim and fake reflection: the biome's horizon colour, lifted toward white.
+	var sky: Array = look(biome).get("sky", [])
+	if record.has("rim_color"):
+		material.set_shader_parameter(&"rim_color", Color(String(record["rim_color"])))
+	elif sky.size() >= 2:
+		material.set_shader_parameter(&"rim_color", Color(String(sky[1])).lerp(Color.WHITE, 0.25))
 	return material
+
+
+## Opt-in chunky rounded cube (300 tris, rounded bevel) for the board MultiMeshes.
+## The block shader reads object-space VERTEX/NORMAL, so it works with this mesh and with the
+## GLB cube. Unit size (edge 1.0), so no cube_scale() correction is needed.
+## Usage: var cube: Mesh = WtBlockMaterials.cube_mesh()
+static func cube_mesh() -> Mesh:
+	return WtBlockMesh.cube()
 
 
 static func _table() -> Dictionary:

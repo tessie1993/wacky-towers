@@ -24,7 +24,7 @@
         "cap_depth": 0.13,
         "cap_drip": 0.09,
         "body_color": "#8A5A36",
-        "body_mix": 0.12,
+        "body_mix": 0.7,
         "gloss": 0.25,
         "rim": 0.12
       },
@@ -57,10 +57,10 @@
       "block": {
         "style": "candy",
         "cap_color": "#FFF1F4",
-        "cap_depth": 0.14,
-        "cap_drip": 0.12,
+        "cap_depth": 0.17,
+        "cap_drip": 0.14,
         "body_color": "#FF7FA3",
-        "body_mix": 0.15,
+        "body_mix": 0.3,
         "gloss": 0.85,
         "rim": 0.3
       },
@@ -91,8 +91,8 @@
       "block": {
         "style": "ice",
         "cap_color": "#F4FAFF",
-        "cap_depth": 0.13,
-        "cap_drip": 0.1,
+        "cap_depth": 0.15,
+        "cap_drip": 0.12,
         "body_color": "#9DD3F2",
         "body_mix": 0.45,
         "gloss": 0.85,
@@ -196,7 +196,7 @@
         "cap_depth": 0.08,
         "cap_drip": 0.12,
         "body_color": "#8A5E3A",
-        "body_mix": 0.55,
+        "body_mix": 0.75,
         "gloss": 0.15,
         "rim": 0.08
       },
@@ -363,7 +363,7 @@
         "style": "carnival",
         "cap_depth": 0.0,
         "body_color": "#F07A9C",
-        "body_mix": 0.5,
+        "body_mix": 0.75,
         "accent_color": "#FBF1DE",
         "gloss": 0.6,
         "rim": 0.2

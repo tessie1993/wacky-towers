@@ -4,6 +4,7 @@ extends SceneTree
 ## The bot is weaker than a human: a level it never finishes needs review; that does not prove it is impossible.
 const SEEDS: Array[int] = [1729, 4242, 90001]
 const HARD_CAP_MS := 600000          ## 10 simulated minutes
+const WALL_BUDGET_MS := 20000     ## per-attempt real-time budget; exceeded = "wall_budget" timeout (slow rule/sim)
 const STALL_TICKS := 60 * 30         ## 30 s of ticks with no level-clock progress = stall
 const ASSESSED_GOALS := ["clear_n", "height", "survive"]
 const ASSESSED_VERBS := ["piece"]
@@ -64,7 +65,10 @@ func _play_level(entry: Dictionary, attempts: int) -> Dictionary:
 		var last_ms: int = -1; var still: int = 0; var ticks: int = 0
 		var outcome: String = "timeout"; var reason: String = ""
 		var tick_cap: int = int(cap / 1000.0 * BoardSim.SIM_HZ * 2.0) + 60 * 60
+		var wall0: int = Time.get_ticks_msec()
 		while ticks < tick_cap:
+			if ticks % 600 == 0 and Time.get_ticks_msec() - wall0 > WALL_BUDGET_MS:
+				reason = "wall_budget: sim too slow (%d ticks in %d ms)" % [ticks, Time.get_ticks_msec() - wall0]; break
 			if sim.result() != null: break
 			if sim.get_phase() == BoardSim.Phase.SELECTING:
 				var choices: Array[Dictionary] = sim.kit_choices()
