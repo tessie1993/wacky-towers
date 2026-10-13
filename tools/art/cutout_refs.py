@@ -12,7 +12,7 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parents[2]
 REF = ROOT / "assets/art/reference"
 OUT = ROOT / "assets/art/ui"
-MAX_SIDE = 768
+MAX_SIDE = 1024
 STEP = 12
 
 CUTS = [
@@ -20,7 +20,7 @@ CUTS = [
     ("wizard_turnaround_ref.png", (60, 515, 470, 932), "wizard_idle.png", 9),
     ("wizard_turnaround_ref.png", (485, 518, 905, 932), "wizard_cheer.png", 9),
     ("wizard_turnaround_ref.png", (912, 518, 1305, 932), "wizard_oops.png", 9),
-    ("logo_ref.jpg", None, "logo_wacky_towers.png", 40),
+    ("logo_master.jpg", None, "logo_wacky_towers.png", 14),
 ]
 
 
