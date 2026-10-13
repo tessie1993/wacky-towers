@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "id": "defend_core",
+  "name_key": "RULE_DEFEND_CORE",
+  "layer": "mechanic",
+  "icon": "defend_core",
+  "behaviour": "defend_core",
+  "params": {
+    "core": {"type": "structure", "default": []},
+    "core_hp": {"type": "number", "default": 3, "min": 1, "max": 10},
+    "core_damage": {"type": "number", "default": 1, "min": 1, "max": 5},
+    "attack_every_ms": {"type": "number", "default": 12000, "min": 3000, "max": 60000},
+    "warn_ms": {"type": "number", "default": 2000, "min": 0, "max": 10000}
+  },
+  "incompatible_with": []
+}

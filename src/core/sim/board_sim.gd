@@ -84,6 +84,7 @@ var _result: LevelResult
 var _level_ticks: int = 0
 var _started: bool = false
 var _pending_outcome: int = GoalState.RESULT_RUNNING
+var _rule_fail_reason: StringName = &""  # set by RuleApi.request_fail, consumed at the end of step()
 var _resolve_ms: int = 0
 var _warning_until: int = NO_DEADLINE
 var _held_shape: StringName = &""
@@ -178,6 +179,11 @@ func step() -> Array[SimEvent]:
 		_flush_rule_writes()
 		_collect_api(_api, true)
 		_collect_api(_ability_api, true, 2)
+		if _rule_fail_reason != &"":
+			var fail_reason: StringName = _rule_fail_reason
+			_rule_fail_reason = &""
+			if _pending_outcome == GoalState.RESULT_RUNNING:
+				_finish(GoalState.RESULT_LOST, fail_reason)
 		_emit_delta()
 	if _abilities != null and _abilities.has_method("observe"):
 		_runtime.execute(_abilities, &"observe", [_events])
@@ -1041,6 +1047,7 @@ func _create_rule(entry: Dictionary, force_twist: bool = false) -> Dictionary:
 	var api: RuleApi = RuleApi.new(_board, _knobs, params)
 	api.configure(_catalog, _seed, id)
 	api.bind_goal(_goal_state, _level.goal)
+	api.bind_goal_progress(Callable(self, &"goal_progress"))
 	api.bind_spawner(_spawner)
 	api.bind_item_context(_item_context)
 	api.bind_piece_uid(_piece_uid)
@@ -1279,6 +1286,9 @@ func _collect_api(api: RuleApi, flush: bool, rank: int = 4) -> bool:
 				else:
 					_knobs.set_effective(id, request["value"])
 					if id == &"spawn.randomizer": _spawner.configure(_knobs.snapshot())
+			&"fail":
+				if _rule_fail_reason == &"":
+					_rule_fail_reason = StringName(request.get("reason", &"rule_fail"))
 			_: _structural.append(request)
 	return dirty
 
