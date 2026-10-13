@@ -18,6 +18,7 @@ func _run() -> void:
 	DisplayServer.window_set_size(Vector2i(720, 1280))
 	var world := Node3D.new(); root.add_child(world)
 	var we := WorldEnvironment.new(); we.environment = Kit.make_environment(biome); world.add_child(we)
+	Kit.add_backdrop(root, biome)
 	var cam := Camera3D.new(); cam.fov = 42.0; world.add_child(cam)
 	var cam_pos := Vector3(15.5, 15.0, 15.5)
 	cam.look_at_from_position(cam_pos, Vector3(0, -2.4, 0)); cam.current = true
@@ -32,10 +33,10 @@ func _run() -> void:
 		"cap_color": Color("eef4ff") if ice else Color("5c9e38"), "cap_light": Color("ffffff") if ice else Color("9bd65e"),
 		"cap_dark": Color("b9c8e8") if ice else Color("2f6a24")})
 	world.add_child(rim)
-	var bands := [[5.3, 4.9, -0.8, 1.3], [4.9, 4.0, -2.1, 1.4], [4.0, 2.4, -3.5, 1.6]]
+	var bands := [[5.35, 5.2, -0.75, 1.5], [5.15, 4.7, -2.2, 1.5], [4.7, 2.2, -3.65, 2.4]]
 	for i in bands.size():
 		var b: Array = bands[i]
-		var m := MeshInstance3D.new(); m.mesh = _chunk(b[0], b[1], b[3], 20, 0.09)
+		var m := MeshInstance3D.new(); m.mesh = _chunk(b[0], b[1], b[3], 24, 0.07 + i * 0.03)
 		m.position = Vector3(0, b[2], 0)
 		var c1 := Color("9aa6c4") if ice else Color("a07650").darkened(i * 0.12)
 		m.material_override = Kit.prop_material(c1, c1.darkened(0.35), {"strata": 1.0, "paint_scale": 1.5, "edge_light": 0.15, "ao_strength": 0.0})
@@ -82,10 +83,10 @@ func _run() -> void:
 	# ---- distant islands (fog turns them into the hazy background layer)
 	for d in [[Vector3(-26, -4, -34), 4.0], [Vector3(14, 2, -46), 5.5], [Vector3(-46, 4, -20), 6.0], [Vector3(30, -10, -24), 3.5]]:
 		var top := MeshInstance3D.new(); top.mesh = _chunk(d[1], d[1] * 0.92, 0.7, 16, 0.12)
-		top.position = d[0]; top.material_override = Kit.prop_material(Color("e9f1ff") if ice else Color("6aa84a"), Color("b9c8e8") if ice else Color("3d7a30"))
+		top.position = d[0]; top.material_override = Kit.prop_material(Color("e9f1ff") if ice else Color("6aa84a"), Color("b9c8e8") if ice else Color("3d7a30"), {"haze": 0.55, "haze_color": Color("d6e4f8")})
 		world.add_child(top)
 		var bot := MeshInstance3D.new(); bot.mesh = _chunk(d[1] * 0.92, d[1] * 0.3, d[1] * 1.2, 16, 0.15)
-		bot.position = d[0] + Vector3(0, -d[1] * 1.2, 0); bot.material_override = Kit.prop_material(Color("a07650"), Color("6b4a33"), {"strata": 1.0})
+		bot.position = d[0] + Vector3(0, -d[1] * 1.2, 0); bot.material_override = Kit.prop_material(Color("a07650"), Color("6b4a33"), {"strata": 1.0, "haze": 0.6, "haze_color": Color("d6e4f8")})
 		world.add_child(bot)
 
 	_hud()

@@ -16,7 +16,6 @@ func _run() -> void:
 	# close-up sheet look (ref 13): parchment backdrop instead of sky
 	env.background_mode = Environment.BG_COLOR
 	env.background_color = Color("f3e6c8")
-	env.fog_enabled = false
 	we.environment = env; world.add_child(we)
 	Kit.add_light_rig(world, "meadow", -30.0)
 

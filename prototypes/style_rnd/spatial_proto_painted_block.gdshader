@@ -27,7 +27,10 @@ uniform float rim_power = 3.0;
 uniform float rim_strength = 0.45;
 uniform float edge_light = 0.3;   // painted lit bevel on rounded edges
 uniform float gloss = 0.35;
-uniform float ao_strength = 0.45;  // painted contact darkening at the bottom
+uniform float ao_strength = 0.45;
+// aerial perspective for far props (global fog is off, see style_kit.gd)
+uniform vec3 haze_color : source_color = vec3(0.87, 0.90, 0.96);
+uniform float haze : hint_range(0.0, 1.0) = 0.0;  // painted contact darkening at the bottom
 
 varying vec3 lp;
 uniform vec3 half_size = vec3(0.5);
@@ -94,6 +97,7 @@ void fragment() {
 	ALBEDO = col;
 	ROUGHNESS = 1.0 - gloss;
 	SPECULAR = 0.3;
+	FOG = vec4(haze_color, haze);
 }
 
 void light() {

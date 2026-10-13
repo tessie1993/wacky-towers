@@ -4,7 +4,7 @@ extends RefCounted
 ## Values are mirrored in design/art/style-techniques.md §2 (keep them in sync).
 
 const BLOCK_SHADER := preload("res://prototypes/style_rnd/spatial_proto_painted_block.gdshader")
-const SKY_SHADER := preload("res://prototypes/style_rnd/sky_proto_painted.gdshader")
+const BACKDROP_SHADER := preload("res://prototypes/style_rnd/canvas_proto_backdrop.gdshader")
 
 ## Biome presets: key light colour/energy, fill, ambient, sky and fog colours.
 const PRESETS := {
@@ -18,22 +18,16 @@ const PRESETS := {
 		"fog": Color("e6ecfa"), "fog_d": 0.014, "sat": 1.18, "con": 1.04, "bri": 1.03},
 	"celestial": {"key": Color("e9dcff"), "key_e": 0.85, "fill": Color("8a7cff"), "fill_e": 0.35,
 		"back": Color("ffd890"), "back_e": 0.45, "amb": Color("6a5a9e"), "amb_e": 0.5,
-		"sky_top": Color("140f3a"), "sky_hor": Color("4b2f86"), "sky_low": Color("23184f"),
+		"sky_top": Color("140f3a"), "sky_hor": Color("4b2f86"), "sky_low": Color("6a3f9e"),
 		"fog": Color("3a2a6e"), "fog_d": 0.01, "sat": 1.25, "con": 1.08, "bri": 1.0},
 }
 
 static func make_environment(biome := "meadow", tonemap := Environment.TONE_MAPPER_AGX) -> Environment:
 	var p: Dictionary = PRESETS[biome]
 	var env := Environment.new()
-	var sky_mat := ShaderMaterial.new()
-	sky_mat.shader = SKY_SHADER
-	sky_mat.set_shader_parameter("top", p.sky_top)
-	sky_mat.set_shader_parameter("horizon", p.sky_hor)
-	sky_mat.set_shader_parameter("low", p.sky_low)
-	var sky := Sky.new(); sky.sky_material = sky_mat
-	sky.radiance_size = Sky.RADIANCE_SIZE_32
-	env.background_mode = Environment.BG_SKY
-	env.sky = sky
+	# Painted 2D backdrop behind 3D (see add_backdrop); no Sky resource at all.
+	env.background_mode = Environment.BG_CANVAS
+	env.background_canvas_max_layer = -1
 	# Ambient: flat art-directed colour (deterministic, identical on every renderer).
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.ambient_light_color = p.amb
@@ -52,14 +46,9 @@ static func make_environment(biome := "meadow", tonemap := Environment.TONE_MAPP
 	env.set_glow_level(0, 0.0); env.set_glow_level(1, 0.0); env.set_glow_level(2, 1.0)
 	env.set_glow_level(3, 1.0); env.set_glow_level(4, 0.6)
 	# Aerial perspective: distant islands melt into a lavender-blue haze.
-	# DEPTH fog (not exponential): the board stays crisp, only far islands haze out.
-	env.fog_enabled = true
-	env.fog_mode = Environment.FOG_MODE_DEPTH
-	env.fog_light_color = p.fog
-	env.fog_density = 1.0
-	env.fog_depth_begin = 28.0
-	env.fog_depth_end = 110.0
-	env.fog_depth_curve = 1.0
+	# NO global fog: under Compatibility it also tints the background. Aerial haze is a
+	# per-material FOG write instead (painted shader uniform `haze`, used on far islands only).
+	env.fog_enabled = false
 	env.fog_sky_affect = 0.0
 	env.fog_aerial_perspective = 0.0
 	# Grading: a touch more saturation and contrast = the "premium mobile" punch.
@@ -68,6 +57,18 @@ static func make_environment(biome := "meadow", tonemap := Environment.TONE_MAPP
 	env.adjustment_contrast = p.con
 	env.adjustment_brightness = p.bri
 	return env
+
+## Painted backdrop: a CanvasLayer below 0 that BG_CANVAS draws behind the 3D world.
+static func add_backdrop(parent: Node, biome := "meadow", size := Vector2(720, 1280)) -> CanvasLayer:
+	var p: Dictionary = PRESETS[biome]
+	var layer := CanvasLayer.new(); layer.layer = -10
+	var rect := ColorRect.new(); rect.size = size
+	var m := ShaderMaterial.new(); m.shader = BACKDROP_SHADER
+	m.set_shader_parameter("top", p.sky_top); m.set_shader_parameter("horizon", p.sky_hor)
+	m.set_shader_parameter("low", p.sky_low); m.set_shader_parameter("aspect", size.x / size.y)
+	m.set_shader_parameter("stars", 1.0 if biome == "celestial" else 0.0)
+	rect.material = m; layer.add_child(rect); parent.add_child(layer)
+	return layer
 
 ## Three-light rig: warm key (top-left-front, shadows), cool fill (opposite, no shadow),
 ## warm back/rim (behind, no shadow). Angles are relative to the camera yaw so every screen
@@ -80,6 +81,8 @@ static func add_light_rig(parent: Node3D, biome := "meadow", cam_yaw_deg := 45.0
 	key.shadow_enabled = true
 	key.shadow_opacity = 0.7          # shadows stay coloured, never black
 	key.shadow_blur = 1.5
+	key.shadow_bias = 0.08          # rounded tiles show diagonal acne at the default bias
+	key.shadow_normal_bias = 2.5
 	key.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	key.directional_shadow_max_distance = 40.0
 	key.light_angular_distance = 1.5
