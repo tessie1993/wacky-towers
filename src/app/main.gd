@@ -420,7 +420,7 @@ func _start_minigame_round(draw: Dictionary) -> void:
 	var players: Array = []
 	for player: Dictionary in _modes.tournament_snapshot().get("players", []): players.append({"name": player.get("name", "Builder"), "is_bot": int(player.get("index", 0)) > 0})
 	_minigame = WtMinigameRound.new()
-	if not _minigame.setup(draw.get("template", {}), int(draw.get("round_seed", 20261010)), _catalog, players):
+	if not _minigame.setup(draw.get("template", {}), int(draw.get("round_seed", _fresh_seed())), _catalog, players):
 		# Unsupported template: score the round as a draw at zero so the tournament can continue.
 		var rows: Array[Dictionary] = []
 		for index: int in players.size(): rows.append({"id": str(index), "won": false, "score": 0, "ms": 0, "active": true})
