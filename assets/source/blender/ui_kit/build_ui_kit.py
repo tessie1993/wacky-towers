@@ -47,9 +47,9 @@ NINEPATCH = {
     "ribbon_gold": (124, 52, 124, 60),
     "btn_wood_square": (52, 52, 52, 56),
     "btn_wood_square_pressed": (52, 52, 52, 56),
-    "btn_green_play": (76, 56, 76, 60),
-    "btn_gold_pill": (76, 56, 76, 60),
-    "btn_cream_pill": (76, 56, 76, 60),
+    "btn_green_play": (76, 68, 76, 72),
+    "btn_gold_pill": (76, 68, 76, 72),
+    "btn_cream_pill": (76, 68, 76, 72),
     "slot_next_block": (48, 48, 48, 48),
     "card_player": (40, 40, 120, 40),
     "meter_tube": (36, 56, 36, 132),
@@ -862,7 +862,7 @@ def el_pill(name, body, rim, base):
     ring("rim", rrect(372, 122, 61, cy=0), rrect(330, 82, 41, cy=2), rim, depth=18, bevel=8, z=14)
     slab("body", [rrect(344, 96, 48, cy=2)], body, depth=14, bevel=10, z=8, outline=0)
     slab("gloss", [rrect(290, 22, 11, cy=26)], M["gloss"], depth=1, bevel=2, z=40, outline=0)
-    render(name, 384, 144)
+    render(name, 384, 168)
 
 
 def el_slot():
@@ -1156,7 +1156,7 @@ def write_ninepatch():
                     "(tint with tint_progress) with meter_tube as texture_over and bar_frame as texture_under.",
             "scale": 2,
             "landscape_hud": "Target 1280x720 landscape. At 1x (texture scale 0.5): score card 192x64, "
-                             "Next Block slot 96x96, timer 128x128, square buttons 96x96, pills 192x72, "
+                             "Next Block slot 96x96, timer 128x128, square buttons 96x96, pills 192x84, "
                              "meter 48x192, bar 192x32, counter 128x40, icons 64x64; panels stretch to any size "
                              "above their margins (min 84x84 at 1x).",
             "patches": {}}

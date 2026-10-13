@@ -1,7 +1,7 @@
 {
   "_doc": "Patch margins in pixels (left, top, right, bottom) for StyleBoxTexture / NinePatchRect. Textures are rendered at 2x; set StyleBoxTexture texture_margin_* to these values and scale the node by 0.5 (or use content margins) for 1x layouts. meter_fill_mask and bar_fill share their frame's canvas and margins: use them as TextureProgressBar texture_progress (tint with tint_progress) with meter_tube as texture_over and bar_frame as texture_under.",
   "scale": 2,
-  "landscape_hud": "Target 1280x720 landscape. At 1x (texture scale 0.5): score card 192x64, Next Block slot 96x96, timer 128x128, square buttons 96x96, pills 192x72, meter 48x192, bar 192x32, counter 128x40, icons 64x64; panels stretch to any size above their margins (min 84x84 at 1x).",
+  "landscape_hud": "Target 1280x720 landscape. At 1x (texture scale 0.5): score card 192x64, Next Block slot 96x96, timer 128x128, square buttons 96x96, pills 192x84, meter 48x192, bar 192x32, counter 128x40, icons 64x64; panels stretch to any size above their margins (min 84x84 at 1x).",
   "patches": {
     "panel_wood": {
       "file": "res://assets/art/ui/kit/panel_wood.png",
@@ -55,23 +55,23 @@
     "btn_green_play": {
       "file": "res://assets/art/ui/kit/btn_green_play.png",
       "left": 76,
-      "top": 56,
+      "top": 68,
       "right": 76,
-      "bottom": 60
+      "bottom": 72
     },
     "btn_gold_pill": {
       "file": "res://assets/art/ui/kit/btn_gold_pill.png",
       "left": 76,
-      "top": 56,
+      "top": 68,
       "right": 76,
-      "bottom": 60
+      "bottom": 72
     },
     "btn_cream_pill": {
       "file": "res://assets/art/ui/kit/btn_cream_pill.png",
       "left": 76,
-      "top": 56,
+      "top": 68,
       "right": 76,
-      "bottom": 60
+      "bottom": 72
     },
     "slot_next_block": {
       "file": "res://assets/art/ui/kit/slot_next_block.png",
