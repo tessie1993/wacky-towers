@@ -1,7 +1,14 @@
 # Wacky Towers — Art Bible
 
-Version 2 · 2026-10-13. This replaces the v1 bible. The user decided: "delete the old art, make it
-look like the reference style".
+Version 2.1 · 2026-10-13. This replaces the v1 bible. The user decided: "delete the old art, make it
+look like the reference style". v2.1 adds the full cast, bosses, party-mode HUD, the Party Quest hub,
+mode-select picture cards and story-beat composition after a study of every board (see
+`assets/art/reference/index.md`). Gap list: `design/art/art-gap-review-2026-10-13.md`. Asset list:
+`design/art/asset-list-v2.md`.
+
+**Logo rule:** boards 09-12 mockups carry the logos "TETRO PARTY DIMENSIONS", "WACKY PARTY" and "PARTY
+QUEST". We use those boards for layout and content only. Never copy, redraw or ship those logos. Our
+logo is `assets/art/reference/logo_master.jpg`. Avoid "Tetris" naming anywhere.
 
 **References** (in `assets/art/reference/style/`) are the source of truth. When this document
 and a reference disagree, the reference wins.
@@ -16,6 +23,11 @@ and a reference disagree, the reference wins.
 | `01/02/07_story_*.jpg` | Story beats (wizard's library, tutorial, boss, finale) |
 | `09`–`12_minigames_*.jpg` | Party minigames and their HUD |
 | `logo_master.jpg` | The logo. Use as-is. Never redraw it. |
+| `16_settings_wizard_peek.jpg` | Settings with the wizard peeking in, rope borders, gear ornaments |
+| `minigame_mockups/mockup_06, 12, 14` | Party HUD, 4-player split screens (layout only, logos banned) |
+| `minigame_mockups/mockup_15.jpg` | Portrait party battle: P1-P4 cards with lives, goal chips |
+| `minigame_mockups/mockup_16.jpg` | Party Quest hub: central fort, bridges to minigame islands |
+| `minigame_mockups/mockup_17.jpg` | Quantum Spire: sci-fi hex board, holo HUD |
 
 ---
 
@@ -118,6 +130,11 @@ used as nine-patches. They must match these specs.
 | **Player tag** | Dark rounded tag: portrait, name, score (refs 09–12) |
 | **Meter** | Vertical thermometer (heat, balance, altitude) with a red→green gradient and a bulb (refs 09–12) |
 | **Timer** | Dark rounded lozenge, cream digits (refs 09–12) |
+
+See section 5b for the full party HUD language (cards, hearts, slots, meters, boss bar, goal chips).
+Settings extras (ref 08, 16): rope borders, gear ornaments on the lower corners, star corner caps,
+branch-stick slider tracks, a tiny wizard hat on a corner, a segmented control (gold selected, brown
+unselected), and a green "link account" pill. The wizard peeks around the frame edge, holding his wand.
 
 **Banned:** light-yellow flat bars, hairline borders, flat rectangles, default Godot theme,
 and unstyled text buttons.

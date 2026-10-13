@@ -304,7 +304,7 @@ def ring_on_surface(name, target, center, axis, tube, mat, n=36, push=0.003, fro
     return sweep(name, pts, [tube] * len(pts), ring=12, mat=mat, closed=True)
 
 
-def trim_ring(name, target, center, axis, tube, mat, n=36, slab=0.012, push=0.002):
+def trim_ring(name, target, center, axis, tube, mat, n=36, slab=0.012, push=0.002, maxr=9.0):
     """Closed trim tube hugging a surface: per angular bin, the outermost vertex of `target`
     inside a thin slab across `axis` (raycasts hit the torso from inside the sleeves)."""
     axis = Vector(axis).normalized()
@@ -316,6 +316,7 @@ def trim_ring(name, target, center, axis, tube, mat, n=36, slab=0.012, push=0.00
     Q = co.reshape(-1, 3) - np.array(center)
     h = Q @ np.array(axis)
     Q = Q[np.abs(h) < slab]
+    Q = Q[np.linalg.norm(Q - np.outer(Q @ np.array(axis), np.array(axis)), axis=1) < maxr]
     if len(Q) < 16:
         return None
     x, y = Q @ np.array(u), Q @ np.array(v)
@@ -502,7 +503,7 @@ def build(pose_name, M):
         bmesh.ops.transform(bm, matrix=Matrix.Translation(co) @ Matrix.Diagonal((*semi, 1.0)), verts=g["verts"])
     bm.transform(Matrix.Diagonal((1.12, 1.05, 1.0, 1.0)))
     cloud = mesh_obj("C_cloud", bm, M["cloud"])
-    add_mods(cloud, remesh=0.012, smooth=(0.6, 14))
+    add_mods(cloud, remesh=0.012, smooth=(0.8, 30))
     cloud = realize(cloud)
     C.append(cloud)
     # spiral swirls on the front puffs
@@ -630,13 +631,12 @@ def build(pose_name, M):
     # gold trim: cuffs and hem
     for side in ("R", "L"):
         Wr, d = arm_dirs[side]
-        cuff = trim_ring(f"W_cuff{side}", robe.copy(), Wr + d * 0.02, d, 0.016, M["trim"], n=28, slab=0.01) if False else \
-            trim_ring(f"W_cuff{side}", sleeve_only[side], Wr + d * 0.02, d, 0.016, M["trim"], n=28, slab=0.01)
+        cuff = trim_ring(f"W_cuff{side}", robe, Wr + d * 0.01, d, 0.015, M["trim"], n=28, slab=0.008, maxr=0.13)
         if cuff:
             W.append(cuff)
     for sl in sleeve_only.values():
         bpy.data.meshes.remove(sl.data)
-    hem = trim_ring("W_hem", robe, (0, -0.05, 0.49), (0, 0, 1), 0.016, M["trim"], n=56, slab=0.008)
+    hem = trim_ring("W_hem", robe, (0, -0.05, 0.49), (0, 0, 1), 0.013, M["trim"], n=56, slab=0.008)
     if hem:
         W.append(hem)
 
@@ -965,7 +965,7 @@ def main():
         parts = build("idle", materials())
         bake_and_export(parts, None, a.root, 16)
         sc.cycles.samples = max(12, a.samples // 2)
-        P = sample_points(parts["cloud"][:1] if False else [o for o in bpy.data.objects if o.type == "MESH"])
+        P = sample_points([o for o in bpy.data.objects if o.type == "MESH"])
         place_view(sc, P, -32, 12, 0.04, 640, 640)
         render(sc, os.path.join(ev, "glb_lowpoly_preview.png"))
 

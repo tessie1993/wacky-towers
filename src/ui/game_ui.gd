@@ -188,6 +188,8 @@ const KIT_ALPHA_FLOOR := 24.0
 ## Outer pixels faded to zero so a shadow cut by the canvas edge never draws a hard line.
 const KIT_EDGE_FADE := 3
 ## Screens drawn inside the purple-wood frame with a plaque title (refs 05, 06, 04, 08).
+## Narrowest menu pill; wider labels grow the pill, nothing stretches it across the screen.
+const MENU_BUTTON_MIN_WIDTH := 220.0
 const UNFRAMED_SCREENS: Array[String] = ["title", "minigame"]
 static var _kit_cache: Dictionary = {}
 
@@ -257,7 +259,8 @@ func _kit_button(button: Button, kit_name: String = "btn_cream") -> void:
 	if normal == null:
 		Kit.style_button(button, kit_name == "btn_gold", 26)
 		return
-	_pad(normal, 24, 8, 24, 14)
+	if kit_name.begins_with("btn_") or kit_name == "sign_heading": _pad(normal, 24, 8, 24, 14)
+	else: _pad(normal, 16, 12, 16, 14)
 	var hover := normal.duplicate() as StyleBoxTexture
 	hover.modulate_color = Color(1.08, 1.08, 1.08)
 	var pressed := normal.duplicate() as StyleBoxTexture
@@ -432,6 +435,7 @@ func _hbox(parent: Node = null, separation: int = 12) -> HBoxContainer:
 	row.mouse_filter = Control.MOUSE_FILTER_PASS
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_theme_constant_override("separation", separation)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	if parent != null: parent.add_child(row)
 	return row
 
@@ -451,8 +455,10 @@ func _button(text: String, id: StringName, args: Dictionary = {}, primary: bool 
 	button.text = text
 	button.tooltip_text = text
 	button.add_theme_font_size_override("font_size", maxi(14, roundi(18 * _text_factor)))
-	button.custom_minimum_size.y = height
-	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.custom_minimum_size = Vector2(MENU_BUTTON_MIN_WIDTH, maxf(height, 48.0))
+	# Pills keep their painted proportions: sized to content and centred, never stretched
+	# edge to edge (the user rejected long light-yellow bars). HUD buttons opt back in to fill.
+	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	button.pressed.connect(func() -> void: intent.emit(id, args))
 	if primary:
 		_kit_button(button, "btn_gold")
@@ -498,7 +504,7 @@ func _header(parent: Node, title: String, subtitle: String = "", back: bool = tr
 	row.add_child(sub)
 	var settings := _button("Settings", &"open_settings")
 	settings.size_flags_horizontal = Control.SIZE_SHRINK_END
-	settings.custom_minimum_size.y = 44
+	settings.custom_minimum_size = Vector2(0, 48)
 	settings.add_theme_font_size_override("font_size", roundi(15 * _text_factor))
 	settings.visible = current_screen != "settings"
 	row.add_child(settings)
@@ -551,6 +557,7 @@ func show_title(data: Dictionary = {}) -> void:
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	top.add_child(spacer)
+	profile.custom_minimum_size.x = 0
 	var settings := _button("⚙", &"open_settings")
 	settings.tooltip_text = "Settings"
 	settings.custom_minimum_size = Vector2(60, 60)
@@ -601,6 +608,7 @@ func show_title(data: Dictionary = {}) -> void:
 	if play.icon != null: play.text = "PLAY"
 	play.icon = _star_icon(60)
 	play.tooltip_text = str(data.get("continue_level_name", "Play"))
+	play.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	buttons.add_child(play)
 	var biomes := _button("BIOMES", &"open_map", {}, false, 62)
 	# Wooden signboard (ref 15 BIOMES), narrower than PLAY and centred under it.
@@ -612,7 +620,8 @@ func show_title(data: Dictionary = {}) -> void:
 	buttons.add_child(biomes)
 	var more := _hbox(buttons, 8)
 	for entry: Array in [["Party", &"open_tournament"], ["Arcade", &"open_arcade"], ["Shop", &"open_shop"], ["Toy box", &"open_physics"]]:
-		var b := _button(entry[0], entry[1], {}, false, 46)
+		var b := _button(entry[0], entry[1], {}, false, 48)
+		b.custom_minimum_size.x = 112
 		b.add_theme_font_size_override("font_size", roundi(16 * _text_factor))
 		more.add_child(b)
 	var foot := _hbox(col)
@@ -622,6 +631,7 @@ func show_title(data: Dictionary = {}) -> void:
 	quit.pressed.disconnect(quit.pressed.get_connections()[0].callable)
 	quit.pressed.connect(confirm_quit)
 	quit.size_flags_horizontal = Control.SIZE_SHRINK_END
+	quit.custom_minimum_size.x = 0
 	quit.visible = not OS.has_feature("mobile")
 	foot.add_child(quit)
 	_finish()
@@ -722,8 +732,14 @@ func show_map(data: Dictionary = {}) -> void:
 	var col := _begin("map", data)
 	_header(col, str(data.get("biome_name", "The toy-box islands")), "A fresh surprise around every corner.")
 	var info := _hbox(col)
-	info.add_child(_button("☁  " + str(data.get("profile_name", "Your profile")), &"open_profiles"))
-	info.add_child(_label("★  %d collected   ·   Jar %d" % [int(data.get("stars", 0)), int(data.get("wallet", 0))], 18, MUTED, true))
+	var badge := _button("☁  " + str(data.get("profile_name", "Your profile")), &"open_profiles")
+	badge.custom_minimum_size.x = 0
+	_kit_button(badge, "chip_hud")
+	info.add_child(badge)
+	var tally := _label("★  %d collected   ·   Jar %d" % [int(data.get("stars", 0)), int(data.get("wallet", 0))], 18, MUTED, true)
+	tally.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	tally.autowrap_mode = TextServer.AUTOWRAP_OFF
+	info.add_child(tally)
 	var biomes: Array = data.get("biomes", [])
 	if not biomes.is_empty():
 		var select := OptionButton.new()
@@ -734,6 +750,11 @@ func show_map(data: Dictionary = {}) -> void:
 			select.set_item_disabled(i, not bool(biome.get("unlocked", false)))
 			if str(biome.get("id", "")) == str(data.get("selected_biome", "meadow")): select.select(i)
 		select.item_selected.connect(func(index: int) -> void: intent.emit(&"select_biome", {"biome_id": str(biomes[index].get("id", "meadow"))}))
+		# Biome picker reads as a wooden heading sign, centred over the level tiles.
+		_kit_button(select, "sign_heading")
+		select.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		select.custom_minimum_size.x = 260
+		select.add_theme_font_override("font", Kit.font(true))
 		col.add_child(select)
 	var content := _scroll(col)
 	var flow := HFlowContainer.new()
@@ -849,26 +870,29 @@ func _build_hud() -> void:
 	pause.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	pause.add_theme_font_size_override("font_size", 26)
 	pause.add_theme_font_override("font", Kit.font(true))
-	_kit_button(pause, "btn_cream")
-	_pad(pause.get_theme_stylebox("normal"), 0, 4, 0, 10)
+	# Square wood gem (ref 15): the parchment tile in its wooden rim.
+	_kit_button(pause, "tray_slot")
+	pause.custom_minimum_size.x = 64
+	pause.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	for state: String in ["normal", "hover", "pressed", "disabled"]: _pad(pause.get_theme_stylebox(state), 0, 0, 0, 2)
 	row.add_child(pause)
 	# Goal sign: level name and progress on a wooden board (beside the pause gem in landscape).
 	var ribbon := PanelContainer.new()
-	var sign: StyleBox = _kit("sign_heading")
-	ribbon.add_theme_stylebox_override("panel", _pad(sign, 22, 6, 22, 10) if sign != null else Kit.sign_box())
+	var goal_face: StyleBox = _kit("panel_parchment", 0.6)
+	ribbon.add_theme_stylebox_override("panel", _pad(goal_face, 16, 8, 16, 10) if goal_face != null else Kit.panel())
 	ribbon.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	ribbon.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	var goal := _hbox(ribbon, 10)
-	_hud_labels.level = _label("Meadow", 15, Kit.PARCHMENT)
-	_hud_labels.goal = _label("0 / 1", 19, Kit.CREAM_PILL, true)
+	_hud_labels.level = _label("Meadow", 15, MUTED)
+	_hud_labels.goal = _label("0 / 1", 19, INK, true)
 	_hud_labels.goal.add_theme_font_override("font", Kit.font(true))
 	for l: Label in [_hud_labels.level, _hud_labels.goal]:
 		l.autowrap_mode = TextServer.AUTOWRAP_OFF
 		l.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-		l.add_theme_color_override("font_outline_color", Kit.WOOD_DARK)
-		l.add_theme_constant_override("outline_size", 5)
 		goal.add_child(l)
-	if _portrait: col.add_child(ribbon)
+	if _portrait:
+		ribbon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		col.add_child(ribbon)
 	else: row.add_child(ribbon)
 	var spacer := Control.new()
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -923,9 +947,11 @@ func _build_hud() -> void:
 	_hud_labels.held.visible = false
 	next.add_child(_hud_labels.held)
 	_hud_labels.rules = _label("", 16, MUTED, true)
+	_hud_labels.rules.autowrap_mode = TextServer.AUTOWRAP_OFF
 	var rules_panel := PanelContainer.new()
+	rules_panel.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	var rules_face: StyleBox = _kit("panel_parchment")
-	rules_panel.add_theme_stylebox_override("panel", _pad(rules_face, 6, 2, 6, 4) if rules_face != null else _style(CREAM, 10))
+	rules_panel.add_theme_stylebox_override("panel", _pad(rules_face, 10, 6, 10, 8) if rules_face != null else _style(CREAM, 10))
 	var rules_margin := MarginContainer.new()
 	for side in ["left", "right"]: rules_margin.add_theme_constant_override("margin_" + side, 12)
 	for side in ["top", "bottom"]: rules_margin.add_theme_constant_override("margin_" + side, 6)
@@ -1101,7 +1127,7 @@ func _build_dock() -> void:
 	_hud_labels.potion = _play_button("Potion", &"use_item", {}, false)
 	_hud_labels.potion.tooltip_text = "Selected potion"
 	for b: Button in [view_left, view_right, soft, _hud_labels.tools, _hud_labels.skill, _hud_labels.potion]:
-		b.custom_minimum_size = Vector2(0, 44)
+		b.custom_minimum_size = Vector2(0, 48)
 		b.add_theme_font_size_override("font_size", roundi(14 * _text_factor))
 		_kit_button(b, "btn_cream")
 		_tighten(b, 8.0)
@@ -1115,7 +1141,7 @@ func _build_dock() -> void:
 			var title: String = {"tilt": "Flip", "roll": "Roll"}[axis]
 			for dir: int in [-1, 1]:
 				var b := _play_button(title + (" ‹" if dir < 0 else " ›"), &"rotate", {"axis": StringName(axis), "direction": dir}, true)
-				b.custom_minimum_size.y = 44
+				b.custom_minimum_size.y = 48
 				_kit_button(b, "btn_cream")
 				axes.add_child(b)
 	var tray_row := _hbox(dock, 8)
@@ -1251,6 +1277,8 @@ func _item_name(id: String) -> String:
 
 func _play_button(text: String, id: StringName, args: Dictionary, repeats: bool) -> Button:
 	var b := _button(text, id, args, false, maxf(56.0, 56.0 * _control_factor))
+	b.custom_minimum_size.x = 0
+	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 	b.focus_mode = Control.FOCUS_NONE
 	if repeats:
@@ -2064,7 +2092,8 @@ func show_physics(data: Dictionary = {}) -> void:
 	var variants: Array = data.get("variants", PHYSICS_VARIANTS)
 	card.add_child(_sign("PICK A CHALLENGE"))
 	var picker := OptionButton.new()
-	picker.custom_minimum_size.y = 60
+	picker.custom_minimum_size = Vector2(320, 56)
+	picker.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	var selected: int = 0
 	for index: int in variants.size():
 		picker.add_item(str(variants[index].get("name", "Toy challenge")))
