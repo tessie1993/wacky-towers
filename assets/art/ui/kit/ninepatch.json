@@ -1,0 +1,126 @@
+{
+  "_doc": "Patch margins in pixels (left, top, right, bottom) for StyleBoxTexture / NinePatchRect. Textures are rendered at 2x; set StyleBoxTexture texture_margin_* to these values and scale the node by 0.5 (or use content margins) for 1x layouts. meter_fill_mask and bar_fill share their frame's canvas and margins: use them as TextureProgressBar texture_progress (tint with tint_progress) with meter_tube as texture_over and bar_frame as texture_under.",
+  "scale": 2,
+  "landscape_hud": "Target 1280x720 landscape. At 1x (texture scale 0.5): score card 192x64, Next Block slot 96x96, timer 128x128, square buttons 96x96, pills 192x72, meter 48x192, bar 192x32, counter 128x40, icons 64x64; panels stretch to any size above their margins (min 84x84 at 1x).",
+  "patches": {
+    "panel_wood": {
+      "file": "res://assets/art/ui/kit/panel_wood.png",
+      "left": 84,
+      "top": 84,
+      "right": 84,
+      "bottom": 84
+    },
+    "panel_parchment": {
+      "file": "res://assets/art/ui/kit/panel_parchment.png",
+      "left": 84,
+      "top": 84,
+      "right": 84,
+      "bottom": 84
+    },
+    "plaque_wood": {
+      "file": "res://assets/art/ui/kit/plaque_wood.png",
+      "left": 76,
+      "top": 64,
+      "right": 76,
+      "bottom": 64
+    },
+    "ribbon_red": {
+      "file": "res://assets/art/ui/kit/ribbon_red.png",
+      "left": 124,
+      "top": 52,
+      "right": 124,
+      "bottom": 60
+    },
+    "ribbon_gold": {
+      "file": "res://assets/art/ui/kit/ribbon_gold.png",
+      "left": 124,
+      "top": 52,
+      "right": 124,
+      "bottom": 60
+    },
+    "btn_wood_square": {
+      "file": "res://assets/art/ui/kit/btn_wood_square.png",
+      "left": 52,
+      "top": 52,
+      "right": 52,
+      "bottom": 56
+    },
+    "btn_wood_square_pressed": {
+      "file": "res://assets/art/ui/kit/btn_wood_square_pressed.png",
+      "left": 52,
+      "top": 52,
+      "right": 52,
+      "bottom": 56
+    },
+    "btn_green_play": {
+      "file": "res://assets/art/ui/kit/btn_green_play.png",
+      "left": 76,
+      "top": 56,
+      "right": 76,
+      "bottom": 60
+    },
+    "btn_gold_pill": {
+      "file": "res://assets/art/ui/kit/btn_gold_pill.png",
+      "left": 76,
+      "top": 56,
+      "right": 76,
+      "bottom": 60
+    },
+    "btn_cream_pill": {
+      "file": "res://assets/art/ui/kit/btn_cream_pill.png",
+      "left": 76,
+      "top": 56,
+      "right": 76,
+      "bottom": 60
+    },
+    "slot_next_block": {
+      "file": "res://assets/art/ui/kit/slot_next_block.png",
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    },
+    "card_player": {
+      "file": "res://assets/art/ui/kit/card_player.png",
+      "left": 40,
+      "top": 40,
+      "right": 120,
+      "bottom": 40
+    },
+    "meter_tube": {
+      "file": "res://assets/art/ui/kit/meter_tube.png",
+      "left": 36,
+      "top": 56,
+      "right": 36,
+      "bottom": 132
+    },
+    "meter_fill_mask": {
+      "file": "res://assets/art/ui/kit/meter_fill_mask.png",
+      "left": 36,
+      "top": 56,
+      "right": 36,
+      "bottom": 132
+    },
+    "bar_frame": {
+      "file": "res://assets/art/ui/kit/bar_frame.png",
+      "left": 36,
+      "top": 26,
+      "right": 36,
+      "bottom": 26
+    },
+    "bar_fill": {
+      "file": "res://assets/art/ui/kit/bar_fill.png",
+      "left": 36,
+      "top": 26,
+      "right": 36,
+      "bottom": 26
+    },
+    "counter_pill": {
+      "file": "res://assets/art/ui/kit/counter_pill.png",
+      "left": 44,
+      "top": 34,
+      "right": 84,
+      "bottom": 34
+    }
+  }
+}
