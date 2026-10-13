@@ -38,6 +38,14 @@
       "params": {
         "where": "under_island"
       }
+    },
+    {
+      "id": "race_rival",
+      "params": {
+        "rival_rate": 0.3,
+        "rubber_band": 0.5,
+        "rival_warn_pct": 80
+      }
     }
   ],
   "stars": {
@@ -107,6 +115,14 @@
           "params": {
             "where": "under_island"
           }
+        },
+        {
+          "id": "race_rival",
+          "params": {
+            "rival_rate": 0.3,
+            "rubber_band": 0.5,
+            "rival_warn_pct": 80
+          }
         }
       ],
       "stars": {
@@ -136,6 +152,11 @@
         "date": "2026-10-13",
         "source": "user request: no standard rules; level type mix",
         "change": "Added stopwatch (freeze every 18000 ms, gentler than clockwork_07) and goal.time_limit_ms 360000 (t2 290000 x ~1.25); level_type race"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: race / balance / defender levels",
+        "change": "Race level: ghost rival at 0.3 %/s finishes about 15% after the 2-star time."
       }
     ],
     "level_type": "race"

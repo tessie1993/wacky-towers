@@ -2174,6 +2174,13 @@
 						"on_command"
 					],
 					"id": "angle_gem"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "race_rival"
 				}
 			],
 			"scene": "res://src/levels/ice/ice_01/ice_01.tscn",
@@ -3208,6 +3215,12 @@
 						"on_tick"
 					],
 					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "tilt_plate"
 				}
 			],
 			"scene": "res://src/levels/underwater/underwater_03/underwater_03.tscn",
@@ -4094,6 +4107,13 @@
 						"on_resolve_end"
 					],
 					"id": "lava_rise"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "defend_core"
 				}
 			],
 			"scene": "res://src/levels/lava/lava_03/lava_03.tscn",
@@ -5005,6 +5025,13 @@
 						"on_resolve_end"
 					],
 					"id": "squirrel_heist"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "defend_core"
 				}
 			],
 			"scene": "res://src/levels/forest/forest_04/forest_04.tscn",
@@ -5203,6 +5230,12 @@
 						"on_lock"
 					],
 					"id": "dandelion_puff"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "tilt_plate"
 				}
 			],
 			"scene": "res://src/levels/forest/forest_07/forest_07.tscn",
@@ -6758,6 +6791,13 @@
 						"on_resolve_end"
 					],
 					"id": "piston_punch"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "defend_core"
 				}
 			],
 			"scene": "res://src/levels/clockwork/clockwork_04/clockwork_04.tscn",
@@ -6968,6 +7008,13 @@
 						"on_tick"
 					],
 					"id": "stopwatch"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "race_rival"
 				}
 			],
 			"scene": "res://src/levels/clockwork/clockwork_07/clockwork_07.tscn",
@@ -7578,6 +7625,13 @@
 						"on_tick"
 					],
 					"id": "stopwatch"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "race_rival"
 				}
 			],
 			"scene": "res://src/levels/neon/neon_02/neon_02.tscn",
@@ -8473,6 +8527,13 @@
 						"on_command"
 					],
 					"id": "angle_gem"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "race_rival"
 				}
 			],
 			"scene": "res://src/levels/celestial/celestial_02/celestial_02.tscn",
@@ -8526,6 +8587,12 @@
 						"on_tick"
 					],
 					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "tilt_plate"
 				}
 			],
 			"scene": "res://src/levels/celestial/celestial_03/celestial_03.tscn",
@@ -8847,6 +8914,13 @@
 						"on_tick"
 					],
 					"id": "storm_bolt"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "defend_core"
 				}
 			],
 			"scene": "res://src/levels/celestial/celestial_08/celestial_08.tscn",

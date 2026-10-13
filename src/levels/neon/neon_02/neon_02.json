@@ -35,6 +35,14 @@
     {
       "id": "stopwatch",
       "params": {}
+    },
+    {
+      "id": "race_rival",
+      "params": {
+        "rival_rate": 0.26,
+        "rubber_band": 0.5,
+        "rival_warn_pct": 80
+      }
     }
   ],
   "stars": {
@@ -89,6 +97,14 @@
         {
           "id": "stopwatch",
           "params": {}
+        },
+        {
+          "id": "race_rival",
+          "params": {
+            "rival_rate": 0.26,
+            "rubber_band": 0.5,
+            "rival_warn_pct": 80
+          }
         }
       ],
       "stars": {
@@ -112,6 +128,11 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 5x5 -> 8x8 (offset x1 z1); clear_n 4 -> 2; time stars x1.28"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: race / balance / defender levels",
+        "change": "Race level: ghost rival at 0.26 %/s finishes about 15% after the 2-star time."
       }
     ]
   }

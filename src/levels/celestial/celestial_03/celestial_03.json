@@ -27,6 +27,14 @@
         "wind_strength": 1,
         "wind_warn_ms": 1000
       }
+    },
+    {
+      "id": "tilt_plate",
+      "params": {
+        "slip_threshold": 0.65,
+        "slip_count": 1,
+        "slip_after_resolves": 2
+      }
     }
   ],
   "stars": {
@@ -81,6 +89,14 @@
             "wind_strength": 1,
             "wind_warn_ms": 1000
           }
+        },
+        {
+          "id": "tilt_plate",
+          "params": {
+            "slip_threshold": 0.65,
+            "slip_count": 1,
+            "slip_after_resolves": 2
+          }
         }
       ],
       "stars": {
@@ -99,6 +115,11 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 8x4 -> 8x8 (offset x0 z2); clear_n 5 -> 4; time stars x1.60"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: race / balance / defender levels",
+        "change": "Balance level: tilting plate (gentle threshold 0.65, one placement of grace)."
       }
     ]
   }

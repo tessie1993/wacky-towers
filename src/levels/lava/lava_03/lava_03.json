@@ -41,6 +41,14 @@
         "melt_max": 3,
         "melt_warn_ms": 3000
       }
+    },
+    {
+      "id": "defend_core",
+      "params": {
+        "core_hp": 3,
+        "attack_every_ms": 18000,
+        "warn_ms": 2500
+      }
     }
   ],
   "stars": {
@@ -109,6 +117,14 @@
             "melt_max": 3,
             "melt_warn_ms": 3000
           }
+        },
+        {
+          "id": "defend_core",
+          "params": {
+            "core_hp": 3,
+            "attack_every_ms": 18000,
+            "warn_ms": 2500
+          }
         }
       ],
       "stars": {
@@ -148,6 +164,11 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 8x3 -> 8x8 (offset x0 z2); clear_n 4 -> 2; time stars x1.33"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: race / balance / defender levels",
+        "change": "Defender level: protect the centre core (3 HP, telegraphed shot every 18 s)."
       }
     ]
   }

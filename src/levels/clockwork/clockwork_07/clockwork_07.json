@@ -27,6 +27,14 @@
         "catchup_scale": 1600,
         "catchup_ms": 2500
       }
+    },
+    {
+      "id": "race_rival",
+      "params": {
+        "rival_rate": 0.2,
+        "rubber_band": 0.5,
+        "rival_warn_pct": 80
+      }
     }
   ],
   "stars": {
@@ -81,6 +89,14 @@
             "catchup_scale": 1600,
             "catchup_ms": 2500
           }
+        },
+        {
+          "id": "race_rival",
+          "params": {
+            "rival_rate": 0.2,
+            "rubber_band": 0.5,
+            "rival_warn_pct": 80
+          }
         }
       ],
       "stars": {
@@ -99,6 +115,11 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 4 -> 4; time stars x1.78"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: race / balance / defender levels",
+        "change": "Race level: ghost rival at 0.2 %/s finishes about 15% after the 2-star time."
       }
     ]
   }

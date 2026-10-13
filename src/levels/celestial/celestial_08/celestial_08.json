@@ -51,6 +51,14 @@
         "bolt_warn_ms": 2000,
         "bolt_jitter_ms": 2000
       }
+    },
+    {
+      "id": "defend_core",
+      "params": {
+        "core_hp": 3,
+        "attack_every_ms": 14000,
+        "warn_ms": 2500
+      }
     }
   ],
   "metadata": {
@@ -103,6 +111,11 @@
         "date": "2026-10-13",
         "source": "user request: no standard rules; level type mix (celestial needed a defender level)",
         "change": "Added storm_bolt (12000 ms, warn 2000, jitter 2000) as falling meteors. design_spec has no rules array, so nothing mirrored; level_type defender"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: race / balance / defender levels",
+        "change": "Defender level: protect the centre core (3 HP, telegraphed shot every 14 s)."
       }
     ],
     "level_type": "defender"

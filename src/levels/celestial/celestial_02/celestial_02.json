@@ -80,6 +80,14 @@
       "params": {
         "skin": "duck_constellation"
       }
+    },
+    {
+      "id": "race_rival",
+      "params": {
+        "rival_rate": 0.33,
+        "rubber_band": 0.5,
+        "rival_warn_pct": 80
+      }
     }
   ],
   "stars": {
@@ -169,6 +177,14 @@
           "params": {
             "skin": "duck_constellation"
           }
+        },
+        {
+          "id": "race_rival",
+          "params": {
+            "rival_rate": 0.33,
+            "rubber_band": 0.5,
+            "rival_warn_pct": 80
+          }
         }
       ],
       "stars": {
@@ -192,6 +208,11 @@
         "date": "2026-10-13",
         "source": "user request: no standard rules; level type mix",
         "change": "Added stopwatch (freeze every 16000 ms, as clockwork_10) and goal.time_limit_ms 330000 (t2 265000 x ~1.25) as a comet countdown; level_type race"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: race / balance / defender levels",
+        "change": "Race level: ghost rival at 0.33 %/s finishes about 15% after the 2-star time."
       }
     ],
     "level_type": "race"
