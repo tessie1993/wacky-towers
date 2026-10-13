@@ -4,19 +4,22 @@
   "biome": "forest",
   "tier": 1,
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 8,
     "mask": [
-      ".###.",
-      "#####",
-      "#####",
-      "#####",
-      ".###."
+      "########",
+      "#.###.##",
+      "########",
+      "########",
+      "########",
+      "#.###.##",
+      "########",
+      "########"
     ],
     "spawn_anchor": [
-      2,
-      2
+      3,
+      3
     ]
   },
   "pieces": {
@@ -44,12 +47,19 @@
   "goal": {
     "type": "clear_n",
     "T_level": 180,
-    "n": 3
+    "n": 2
   },
-  "rules": [],
+  "rules": [
+    {
+      "id": "jumbled_queue",
+      "params": {
+        "every": 6
+      }
+    }
+  ],
   "stars": {
-    "t2": 145000,
-    "t3": 100000
+    "t2": 245000,
+    "t3": 170000
   },
   "music": "forest_01_tbd",
   "story": {
@@ -117,6 +127,12 @@
         {
           "id": "wo09_watcher",
           "params": {}
+        },
+        {
+          "id": "jumbled_queue",
+          "params": {
+            "every": 6
+          }
         }
       ],
       "stars": {
@@ -140,6 +156,18 @@
         "presentation_only": true
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1); clear_n 3 -> 2; time stars x1.71"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix (forest needed a funny level)",
+        "change": "Added jumbled_queue (every 6; gentler than forest_h3 every 5) as squirrels shuffling the queue; level_type funny"
+      }
+    ],
+    "level_type": "funny"
   }
 }

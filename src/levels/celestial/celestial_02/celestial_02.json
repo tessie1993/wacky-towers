@@ -4,26 +4,30 @@
   "biome": "celestial",
   "tier": 2,
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10,
     "starting_contents": {
       "layers": {
         "0": [
-          "######",
-          "#.###.",
-          "######",
-          "######",
-          "####.#",
-          "######"
+          "........",
+          ".######.",
+          ".#.###..",
+          ".######.",
+          ".######.",
+          ".####.#.",
+          ".######.",
+          "........"
         ],
         "1": [
-          "######",
-          "#..#..",
-          "#.##.#",
-          "###.##",
-          "###..#",
-          "######"
+          "........",
+          ".######.",
+          ".#..#...",
+          ".#.##.#.",
+          ".###.##.",
+          ".###..#.",
+          ".######.",
+          "........"
         ]
       }
     }
@@ -52,7 +56,8 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 3
+    "n": 3,
+    "time_limit_ms": 330000
   },
   "rules": [
     {
@@ -60,15 +65,34 @@
       "params": {}
     },
     {
+      "id": "stopwatch",
+      "params": {
+        "stop_every_ms": 16000,
+        "stop_jitter_ms": 3000,
+        "stop_warn_ms": 1500,
+        "stop_ms": 2000,
+        "catchup_scale": 1500,
+        "catchup_ms": 2000
+      }
+    },
+    {
       "id": "angle_gem",
       "params": {
         "skin": "duck_constellation"
       }
+    },
+    {
+      "id": "race_rival",
+      "params": {
+        "rival_rate": 0.33,
+        "rubber_band": 0.5,
+        "rival_warn_pct": 80
+      }
     }
   ],
   "stars": {
-    "t2": 150000,
-    "t3": 105000
+    "t2": 265000,
+    "t3": 185000
   },
   "music": "celestial_02_tbd",
   "name": "LVL_CELESTIAL_02_TITLE",
@@ -138,9 +162,28 @@
           "params": {}
         },
         {
+          "id": "stopwatch",
+          "params": {
+            "stop_every_ms": 16000,
+            "stop_jitter_ms": 3000,
+            "stop_warn_ms": 1500,
+            "stop_ms": 2000,
+            "catchup_scale": 1500,
+            "catchup_ms": 2000
+          }
+        },
+        {
           "id": "angle_gem",
           "params": {
             "skin": "duck_constellation"
+          }
+        },
+        {
+          "id": "race_rival",
+          "params": {
+            "rival_rate": 0.33,
+            "rubber_band": 0.5,
+            "rival_warn_pct": 80
           }
         }
       ],
@@ -155,6 +198,23 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 3 -> 3; time stars x1.78"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix",
+        "change": "Added stopwatch (freeze every 16000 ms, as clockwork_10) and goal.time_limit_ms 330000 (t2 265000 x ~1.25) as a comet countdown; level_type race"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: race / balance / defender levels",
+        "change": "Race level: ghost rival at 0.33 %/s finishes about 15% after the 2-star time."
+      }
+    ],
+    "level_type": "race"
   }
 }

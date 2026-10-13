@@ -4,8 +4,8 @@
   "biome": "celestial",
   "tier": 11,
   "board": {
-    "width": 4,
-    "depth": 4,
+    "width": 8,
+    "depth": 8,
     "h_play": 6
   },
   "pieces": {
@@ -33,22 +33,34 @@
     "target_shape": {
       "layers": {
         "0": [
-          "++++",
-          "++++",
-          "++++",
-          "++++"
+          "........",
+          "........",
+          "..++++..",
+          "..++++..",
+          "..++++..",
+          "..++++..",
+          "........",
+          "........"
         ],
         "1": [
-          "....",
-          ".++.",
-          ".++.",
-          "...."
+          "........",
+          "........",
+          "........",
+          "...++...",
+          "...++...",
+          "........",
+          "........",
+          "........"
         ],
         "2": [
-          "....",
-          ".++.",
-          ".++.",
-          "...."
+          "........",
+          "........",
+          "........",
+          "...++...",
+          "...++...",
+          "........",
+          "........",
+          "........"
         ]
       }
     }
@@ -73,6 +85,7 @@
   "name": "LVL_CELESTIAL_BONUS_TITLE",
   "seed": null,
   "metadata": {
+    "level_type": "completing",
     "source": "design/levels/celestial.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -153,6 +166,12 @@
         "params": {}
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 4x4 -> 8x8 (offset x2 z2)"
+      }
+    ]
   }
 }

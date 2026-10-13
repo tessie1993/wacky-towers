@@ -4,8 +4,8 @@
   "biome": "celestial",
   "tier": 1,
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 9
   },
   "pieces": {
@@ -33,7 +33,7 @@
   "goal": {
     "type": "clear_n",
     "T_level": 200,
-    "n": 3
+    "n": 2
   },
   "rules": [
     {
@@ -45,11 +45,17 @@
       "params": {
         "skin": "duck_constellation"
       }
+    },
+    {
+      "id": "mystery_piece",
+      "params": {
+        "every": 6
+      }
     }
   ],
   "stars": {
-    "t2": 170000,
-    "t3": 120000
+    "t2": 290000,
+    "t3": 205000
   },
   "music": "celestial_01_tbd",
   "story": {
@@ -108,6 +114,12 @@
           "params": {
             "skin": "duck_constellation"
           }
+        },
+        {
+          "id": "mystery_piece",
+          "params": {
+            "every": 6
+          }
         }
       ],
       "stars": {
@@ -125,6 +137,18 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1); clear_n 3 -> 2; time stars x1.71"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix",
+        "change": "Added mystery_piece (every 6; gentler than carnival_10 every 5) as a shooting-star surprise piece; level_type funny"
+      }
+    ],
+    "level_type": "funny"
   }
 }

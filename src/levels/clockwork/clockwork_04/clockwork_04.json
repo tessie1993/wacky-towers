@@ -4,8 +4,8 @@
   "biome": "clockwork",
   "tier": 4,
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "knobs": {
@@ -44,11 +44,19 @@
           }
         ]
       }
+    },
+    {
+      "id": "defend_core",
+      "params": {
+        "core_hp": 3,
+        "attack_every_ms": 15000,
+        "warn_ms": 2500
+      }
     }
   ],
   "stars": {
-    "t2": 245000,
-    "t3": 175000
+    "t2": 435000,
+    "t3": 310000
   },
   "music": "clockwork_04_tbd",
   "name": "LVL_CLOCKWORK_04_TITLE",
@@ -66,6 +74,7 @@
     ]
   },
   "metadata": {
+    "level_type": "defender",
     "source": "design/levels/clockwork.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -114,6 +123,14 @@
               }
             ]
           }
+        },
+        {
+          "id": "defend_core",
+          "params": {
+            "core_hp": 3,
+            "attack_every_ms": 15000,
+            "warn_ms": 2500
+          }
         }
       ],
       "stars": {
@@ -157,6 +174,17 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 3 -> 3; time stars x1.78"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: race / balance / defender levels",
+        "change": "Defender level: protect the centre core (3 HP, telegraphed shot every 15 s)."
+      }
+    ]
   }
 }

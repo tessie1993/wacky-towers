@@ -99,3 +99,13 @@ Fifteen behaviours live in `src/mechanics/wave3/` (spec: `design/gdd/mechanics-w
 | `quicksand` | mechanic | Every Nth lock the floor cube under each quicksand tile sinks and the column slides down. |
 | `fever_rush` | twist | Quick clears build a combo; Fever slows gravity and pays `bonus x layers` per clear. |
 | `golden_row` | mechanic | Clearing the gold layer pays a bonus and goal counter, then gold moves up (wrapping to `start_layer`). |
+
+## Wave 4
+
+Three behaviours live in `src/mechanics/wave4/` (spec: `design/gdd/minigame-mechanics-wave4.md`; race and defender follow the wave-4 brief). They end a run through `RuleApi.request_fail(reason)`. Tests: `tests/unit/mechanics/wave4_rules_test.gd`.
+
+| ID | Layer | Runtime effect |
+|---|---|---|
+| `race_rival` | mechanic | A ghost rival fills a progress bar at `rival_rate` %/s with an optional head start and rubber band. It warns at `rival_warn_pct`, and the run fails if the rival reaches 100 % before the goal is met. |
+| `tilt_plate` | twist | After each resolve: τ = the centre-of-mass offset (A2 formula), with a warning at `warn_at`·threshold. At the threshold, the `slip_count` top cubes on the heavy side slide off. |
+| `defend_core` | mechanic | A telegraphed seeded edge shot travels inward: it removes the first column's top cube, or damages an exposed core tile. The run fails at 0 hp. |

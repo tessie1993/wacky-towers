@@ -4,8 +4,8 @@
   "biome": "forest",
   "tier": 8,
   "board": {
-    "width": 4,
-    "depth": 4,
+    "width": 8,
+    "depth": 8,
     "h_play": 12
   },
   "knobs": {
@@ -14,16 +14,16 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 5
+    "n": 2
   },
   "rules": [
     {
       "id": "woodpecker_knock",
       "params": {
-        "knock_interval_ms": 13000,
-        "knock_jitter_ms": 3000,
-        "knock_warn_ms": 1500,
-        "knock_pop_max": 4
+        "knock_interval_ms": 20000,
+        "knock_jitter_ms": 2000,
+        "knock_warn_ms": 3000,
+        "knock_pop_max": 2
       }
     },
     {
@@ -34,8 +34,8 @@
     }
   ],
   "stars": {
-    "t2": 180000,
-    "t3": 130000
+    "t2": 290000,
+    "t3": 210000
   },
   "music": "forest_08_tbd",
   "name": "LVL_FOREST_08_TITLE",
@@ -53,6 +53,7 @@
     ]
   },
   "metadata": {
+    "level_type": "defender",
     "source": "design/levels/forest.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -77,10 +78,10 @@
         {
           "id": "woodpecker_knock",
           "params": {
-            "knock_interval_ms": 13000,
-            "knock_jitter_ms": 3000,
-            "knock_warn_ms": 1500,
-            "knock_pop_max": 4
+            "knock_interval_ms": 20000,
+            "knock_jitter_ms": 2000,
+            "knock_warn_ms": 3000,
+            "knock_pop_max": 2
           }
         },
         {
@@ -101,6 +102,17 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "production/qa/campaign-difficulty-review-2026-10-10.md",
+        "change": "First woodpecker knock moved to ~18-22 s with a 3 s warning and at most 2 pops, so vine protection is readable before repeated pressure."
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 4x4 -> 8x8 (offset x2 z2); clear_n 5 -> 2; time stars x1.60"
+      }
+    ]
   }
 }

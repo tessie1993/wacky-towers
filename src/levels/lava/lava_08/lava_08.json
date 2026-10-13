@@ -5,8 +5,8 @@
   "tier": 8,
   "name": "level.lava_08.name",
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "pieces": {
@@ -53,6 +53,7 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "balance",
     "source": "design/levels/lava.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -124,6 +125,12 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1); clear stars -> 1/2"
+      }
+    ]
   }
 }

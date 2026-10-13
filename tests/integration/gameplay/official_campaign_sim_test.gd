@@ -72,13 +72,15 @@ func test_meadow_four_cell_beam_fits_default_even_width_anchor() -> void:
 		return
 	assert_int(sim.get_piece().cells().size()).is_equal(4)
 	assert_bool(sim.board().can_place(sim.get_piece().cells())).is_true()
-	var minimum_x: int = 4
+	var width: int = sim.board().size().x
+	var minimum_x: int = width
 	var maximum_x: int = -1
 	for cell: Vector3i in sim.get_piece().cells():
 		minimum_x = mini(minimum_x, cell.x)
 		maximum_x = maxi(maximum_x, cell.x)
-	assert_int(minimum_x).is_equal(0)
-	assert_int(maximum_x).is_equal(3)
+	# The beam spawns centred on the even-width default anchor.
+	assert_int(minimum_x).is_equal(width / 2 - 2)
+	assert_int(maximum_x).is_equal(width / 2 + 1)
 
 
 func test_every_official_campaign_entry_loads_and_spawns_a_real_shape() -> void:

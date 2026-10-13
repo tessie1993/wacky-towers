@@ -1,8 +1,8 @@
 class_name WtStoryData extends RefCounted
 ## Wordless campaign staging, separate from rules, unlocks and save transactions.
 const SOURCE: String = "res://assets/data/story/campaign_skits.json"
-const MASCOTS := {"meadow":"pip","candy":"mallow","ice":"pebble","underwater":"puff","lava":"cinder","forest":"chip","cave":"nugget","clockwork":"tock","neon":"glitch","celestial":"comet"}
-const BOSSES := {"meadow":"miller","candy":"meringue","ice":"sniffles","underwater":"crab","lava":"smolder","forest":"oak","cave":"geode","clockwork":"cuckoo","neon":"mirrorball","celestial":"moon"}
+const MASCOTS := {"meadow":"pip","candy":"mallow","ice":"pebble","underwater":"puff","lava":"cinder","forest":"chip","cave":"nugget","clockwork":"tock","neon":"glitch","celestial":"comet","carnival":"bounce"}
+const BOSSES := {"meadow":"miller","candy":"meringue","ice":"sniffles","underwater":"crab","lava":"smolder","forest":"oak","cave":"geode","clockwork":"cuckoo","neon":"mirrorball","celestial":"moon","carnival":"baron"}
 static var _data: Dictionary = {}
 
 

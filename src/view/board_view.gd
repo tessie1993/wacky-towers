@@ -15,6 +15,7 @@ var _mmi: MultiMeshInstance3D
 var _mm: MultiMesh
 var _slots: SlotMap = SlotMap.new()
 var _pattern_material: ShaderMaterial
+var _biome_material: ShaderMaterial
 var _plain_material: StandardMaterial3D
 var _patterns: bool = false
 var _contrast: bool = false
@@ -188,8 +189,20 @@ func set_occlusion(mode: String, focus: Vector3, eye: Vector3) -> void:
 	_update_presentation_material()
 
 
+## Uses a biome block material (same uniform contract as the pattern material) for every state.
+func set_biome_material(material: ShaderMaterial) -> void:
+	_biome_material = material
+	_update_presentation_material()
+
+
 func _update_presentation_material() -> void:
 	if _mmi == null:
+		return
+	if _biome_material != null:
+		for pair: Array in [[&"patterns", _patterns], [&"high_contrast", _contrast], [&"occlusion", _occlusion], [&"focus", _focus],
+				[&"eye", _eye], [&"visibility", _visibility], [&"stickers", _stickers]]:
+			_biome_material.set_shader_parameter(pair[0], pair[1])
+		_mmi.material_override = _biome_material
 		return
 	if not _patterns and _occlusion == 0 and _visibility >= .999 and _stickers==0 and _cell_visibility.is_empty() and _item_hidden.is_empty():
 		_mmi.material_override = _plain_material

@@ -27,8 +27,14 @@ func handle(hook: StringName, ctx: HookContext, api: RuleApi) -> void:
 		_warned = true
 		api.emit(&"flip_warning", {"due_ms": _next_ms, "mode": api.param(&"flip_mode", "stack")})
 	var clears: int = int(ctx.data.get("clear_count", 0))
-	var by_time: bool = every_ms > 0 and _next_ms >= 0 and now >= _next_ms
-	if not _pending and (clears >= _next_clear or by_time):
+	# A layer-count trigger is never instant: it schedules the flip one warning
+	# window ahead so every flip is announced (twist-library rule 11).
+	if not _pending and not _warned and clears >= _next_clear:
+		_warned = true
+		_next_ms = now + maxi(0, int(api.param(&"flip_warn_ms", 2000)))
+		api.emit(&"flip_warning", {"due_ms": _next_ms, "mode": api.param(&"flip_mode", "stack")})
+	var by_time: bool = _next_ms >= 0 and now >= _next_ms
+	if not _pending and by_time:
 		_pending = true
 		_flips += 1
 		var mode: String = String(api.param(&"flip_mode", "stack"))
@@ -39,7 +45,7 @@ func handle(hook: StringName, ctx: HookContext, api: RuleApi) -> void:
 				api.request_settle()
 		else:
 			api.request_stack_flip()
-		api.emit(&"gravity_flip", {"mode": mode, "flip": _flips, "trigger": "time" if by_time else "layers"})
+		api.emit(&"gravity_flip", {"mode": mode, "flip": _flips, "trigger": "layers" if clears >= _next_clear else "time"})
 	if hook == &"on_resolve_end" and _pending:
 		_next_clear = clears + every_clear
 		_next_ms = now + every_ms if every_ms > 0 else -1

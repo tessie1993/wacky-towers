@@ -5,8 +5,8 @@
   "tier": 1,
   "name": "LVL_MEADOW_01_TITLE",
   "board": {
-    "width": 4,
-    "depth": 4,
+    "width": 8,
+    "depth": 8,
     "h_play": 8,
     "down_axis": "-y"
   },
@@ -34,12 +34,21 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 4
+    "n": 2
   },
-  "rules": [],
+  "rules": [
+    {
+      "id": "balloon",
+      "params": {
+        "balloon_per_bag": 1,
+        "balloon_g_mult": 0.7,
+        "balloon_drift_ms": 4000
+      }
+    }
+  ],
   "stars": {
-    "t2": 145000,
-    "t3": 105000
+    "t2": 290000,
+    "t3": 210000
   },
   "story": {
     "title_key": "LVL_MEADOW_01_TITLE",
@@ -88,7 +97,16 @@
         "type": "clear_n",
         "n": 4
       },
-      "rules": [],
+      "rules": [
+        {
+          "id": "balloon",
+          "params": {
+            "balloon_per_bag": 1,
+            "balloon_g_mult": 0.7,
+            "balloon_drift_ms": 4000
+          }
+        }
+      ],
       "stars": {
         "t2": 145000,
         "t3": 105000
@@ -105,6 +123,18 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 4x4 -> 8x8 (offset x2 z2); clear_n 4 -> 2; time stars x2.00"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix",
+        "change": "Added gentle balloon twist (1 per bag, g x0.7, drift 4000 ms); level_type funny"
+      }
+    ],
+    "level_type": "funny"
   }
 }

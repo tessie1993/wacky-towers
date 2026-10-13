@@ -5,12 +5,21 @@
   "tier": 7,
   "name": "LVL_CARNIVAL_07_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
   },
   "knobs": {
     "fall.g0": 1.45,
@@ -22,12 +31,23 @@
     "n": 4
   },
   "rules": [
-    { "id": "echo_drop", "params": { "every": 4 } },
-    { "id": "mirror", "params": { "mirror_axis": "x", "skin": "funhouse" } }
+    {
+      "id": "echo_drop",
+      "params": {
+        "every": 4
+      }
+    },
+    {
+      "id": "mirror",
+      "params": {
+        "mirror_axis": "x",
+        "skin": "funhouse"
+      }
+    }
   ],
   "stars": {
-    "t2": 325000,
-    "t3": 230000
+    "t2": 580000,
+    "t3": 410000
   },
   "music": "carnival_07_tbd",
   "story": {
@@ -38,21 +58,67 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "funny",
     "source": "design/levels/carnival.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
-      "schema": 1, "id": "carnival_07", "biome": "carnival", "tier": 7, "name": "LVL_CARNIVAL_07_TITLE",
-      "board": { "width": 6, "depth": 6, "h_play": 10 },
-      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r"] },
-      "knobs": { "fall.g0": 1.45, "goal.warnings_max": 1, "goal.top_out": "rescue" },
-      "goal": { "type": "clear_n", "N": 4 },
+      "schema": 1,
+      "id": "carnival_07",
+      "biome": "carnival",
+      "tier": 7,
+      "name": "LVL_CARNIVAL_07_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "screw_r"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.45,
+        "goal.warnings_max": 1,
+        "goal.top_out": "rescue"
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 4
+      },
       "rules": [
-        { "id": "echo_drop", "params": { "every": 4 } },
-        { "id": "mirror", "params": { "mirror_axis": "x", "skin": "funhouse" } }
+        {
+          "id": "echo_drop",
+          "params": {
+            "every": 4
+          }
+        },
+        {
+          "id": "mirror",
+          "params": {
+            "mirror_axis": "x",
+            "skin": "funhouse"
+          }
+        }
       ],
-      "stars": { "t2": 325000, "t3": 230000 },
+      "stars": {
+        "t2": 325000,
+        "t3": 230000
+      },
       "music": "carnival_07_tbd",
-      "story": { "title_key": "LVL_CARNIVAL_07_TITLE", "premise_key": "LVL_CARNIVAL_07_PREMISE", "mascot_role": "watcher", "icon": "mirror" }
+      "story": {
+        "title_key": "LVL_CARNIVAL_07_TITLE",
+        "premise_key": "LVL_CARNIVAL_07_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "mirror"
+      }
     },
     "unsupported": [],
     "blocking_gameplay": [],
@@ -62,6 +128,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 4 -> 4; time stars x1.78"
+      }
+    ]
   }
 }

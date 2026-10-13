@@ -4,8 +4,8 @@
   "biome": "clockwork",
   "tier": 8,
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "knobs": {
@@ -18,22 +18,22 @@
     "keyholes": [
       {
         "wall": "-x",
-        "row": 2,
+        "row": 3,
         "y": 1
       },
       {
         "wall": "+x",
-        "row": 2,
+        "row": 3,
         "y": 2
       },
       {
         "wall": "-z",
-        "row": 2,
+        "row": 3,
         "y": 3
       },
       {
         "wall": "+z",
-        "row": 2,
+        "row": 3,
         "y": 1
       }
     ]
@@ -66,6 +66,7 @@
     ]
   },
   "metadata": {
+    "level_type": "twist",
     "source": "design/levels/clockwork.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -127,6 +128,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1)"
+      }
+    ]
   }
 }

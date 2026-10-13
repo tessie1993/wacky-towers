@@ -4,17 +4,18 @@
   "biome": "underwater",
   "tier": 7,
   "board": {
-    "width": 7,
-    "depth": 7,
+    "width": 8,
+    "depth": 8,
     "h_play": 10,
     "mask": [
-      "#######",
-      "#######",
-      "#.###.#",
-      "#######",
-      "#.###.#",
-      "#######",
-      "#######"
+      "########",
+      "########",
+      "#.###.##",
+      "########",
+      "#.###.##",
+      "########",
+      "########",
+      "########"
     ]
   },
   "knobs": {
@@ -36,8 +37,8 @@
     }
   ],
   "stars": {
-    "t2": 305000,
-    "t3": 215000
+    "t2": 400000,
+    "t3": 280000
   },
   "music": "underwater_07",
   "name": "LVL_UNDERWATER_07_TITLE",
@@ -55,6 +56,7 @@
     ]
   },
   "metadata": {
+    "level_type": "twist",
     "source": "design/levels/underwater.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -107,6 +109,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 7x7 -> 8x8 (offset x0 z0); clear_n 3 -> 3; time stars x1.31"
+      }
+    ]
   }
 }

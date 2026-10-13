@@ -4,8 +4,8 @@
   "biome": "clockwork",
   "tier": 5,
   "board": {
-    "width": 4,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 12
   },
   "knobs": {
@@ -43,6 +43,7 @@
     ]
   },
   "metadata": {
+    "level_type": "race",
     "source": "design/levels/clockwork.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -91,6 +92,11 @@
           "H_target": 8
         },
         "reason": "User requested every level to differ in gameplay. Forest05 and Clockwork05 had identical geometry, objective, pool and rules. A 4x5 tower shaft at height8 preserves the intended no-fail breather and nominal coverage work96 while changing the packing problem."
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 4x5 -> 8x8 (offset x2 z1)"
       }
     ]
   }

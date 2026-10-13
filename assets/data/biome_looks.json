@@ -1,0 +1,978 @@
+{
+  "schema": 1,
+  "source": "assets/art/reference/biome_block_materials_ref.png, screens_flow_ref.png, underwater/volcanic biome sheets",
+  "styles": {
+    "plain": 0,
+    "meadow": 1,
+    "candy": 2,
+    "ice": 3,
+    "underwater": 4,
+    "lava": 5,
+    "forest": 6,
+    "cave": 7,
+    "clockwork": 8,
+    "neon": 9,
+    "celestial": 10,
+    "carnival": 11,
+    "dune": 12
+  },
+  "biomes": {
+    "meadow": {
+      "block": {
+        "style": "meadow",
+        "cap_color": "#5FA03A",
+        "cap_depth": 0.13,
+        "cap_drip": 0.09,
+        "body_color": "#8A5A36",
+        "body_mix": 0.7,
+        "gloss": 0.25,
+        "rim": 0.12,
+        "brightness": 1.25
+      },
+      "sky": [
+        "#8EC9F0",
+        "#D9EEF8",
+        "#F7F1DE"
+      ],
+      "cloud": "#FFFFFF",
+      "far_island": "#9FC79A",
+      "island": {
+        "top": "#86C060",
+        "rim": "#6FA94D",
+        "cliff": "#8C6A4A",
+        "cliff_dark": "#5E4630",
+        "tile": "#E9DFC8",
+        "tile_alt": "#DDD1B6"
+      },
+      "props": [
+        "flower",
+        "clover",
+        "bush",
+        "rock",
+        "tree"
+      ],
+      "accent": "#F2E35C",
+      "frame": "#6E9A4A",
+      "env": {
+        "lip": "grass",
+        "lip_color": "#78B84E",
+        "falls": {
+          "kind": "water",
+          "count": 1,
+          "deep": "#3C9AD8",
+          "light": "#A9E2FF",
+          "foam": "#FFFFFF",
+          "emission": 0.0,
+          "speed": 0.7
+        },
+        "under": [
+          "roots"
+        ],
+        "dressing": [
+          {
+            "kind": "flowers",
+            "weight": 5,
+            "tint": "top"
+          },
+          {
+            "kind": "bush",
+            "weight": 3,
+            "tint": "rim"
+          },
+          {
+            "kind": "rock",
+            "weight": 1,
+            "tint": "cliff"
+          },
+          {
+            "kind": "tree",
+            "weight": 1,
+            "tint": "rim",
+            "sway": 0.03
+          }
+        ],
+        "backdrop": [
+          {
+            "kind": "tree",
+            "weight": 3,
+            "tint": "rim",
+            "sway": 0.03
+          },
+          {
+            "kind": "bush",
+            "weight": 2,
+            "tint": "rim"
+          }
+        ]
+      }
+    },
+    "candy": {
+      "block": {
+        "style": "candy",
+        "cap_color": "#FFF1F4",
+        "cap_depth": 0.17,
+        "cap_drip": 0.14,
+        "body_color": "#FF7FA3",
+        "body_mix": 0.3,
+        "gloss": 0.85,
+        "rim": 0.3,
+        "brightness": 1.1
+      },
+      "sky": [
+        "#F6B6CF",
+        "#FCE1EA",
+        "#FFF4E6"
+      ],
+      "cloud": "#FFF6FA",
+      "far_island": "#F4BFD3",
+      "island": {
+        "top": "#F7C4D6",
+        "rim": "#F09DBB",
+        "cliff": "#C98A6E",
+        "cliff_dark": "#9C624D",
+        "tile": "#FFF0E4",
+        "tile_alt": "#F8E1D3"
+      },
+      "props": [
+        "lollipop",
+        "candy",
+        "bush"
+      ],
+      "accent": "#FF7FA3",
+      "frame": "#E58FA8",
+      "env": {
+        "lip": "grass",
+        "lip_color": "#FFE6EE",
+        "falls": {
+          "kind": "syrup",
+          "count": 1,
+          "deep": "#E9668F",
+          "light": "#FFB3C9",
+          "foam": "#FFF4F7",
+          "emission": 0.0,
+          "speed": 0.4
+        },
+        "under": [
+          "roots"
+        ],
+        "dressing": [
+          {
+            "kind": "lollipop",
+            "weight": 2,
+            "tint": "white"
+          },
+          {
+            "kind": "bush",
+            "weight": 2,
+            "tint": "#F7A8C4"
+          },
+          {
+            "kind": "flowers",
+            "weight": 3,
+            "tint": "#F7C4D6"
+          },
+          {
+            "kind": "mushroom",
+            "weight": 1,
+            "tint": "#FF8FB1"
+          }
+        ],
+        "backdrop": [
+          {
+            "kind": "lollipop",
+            "weight": 3,
+            "tint": "white"
+          },
+          {
+            "kind": "bush",
+            "weight": 2,
+            "tint": "#F7A8C4"
+          }
+        ]
+      }
+    },
+    "ice": {
+      "block": {
+        "style": "ice",
+        "cap_color": "#F4FAFF",
+        "cap_depth": 0.15,
+        "cap_drip": 0.12,
+        "body_color": "#9DD3F2",
+        "body_mix": 0.45,
+        "gloss": 0.85,
+        "rim": 0.45
+      },
+      "sky": [
+        "#8FB7E6",
+        "#C9DDF4",
+        "#EEF4FB"
+      ],
+      "cloud": "#FFFFFF",
+      "far_island": "#C2D6EA",
+      "island": {
+        "top": "#F1F7FC",
+        "rim": "#DCEAF6",
+        "cliff": "#8EA6BE",
+        "cliff_dark": "#647E98",
+        "tile": "#BFD9EE",
+        "tile_alt": "#AFCDE6"
+      },
+      "props": [
+        "pine_snow",
+        "ice_crystal",
+        "rock_snow"
+      ],
+      "accent": "#BFE7FF",
+      "frame": "#7FB2D9",
+      "env": {
+        "lip": "snow",
+        "lip_color": "#F6FAFF",
+        "falls": {
+          "kind": "water",
+          "count": 1,
+          "deep": "#6FB7E6",
+          "light": "#DDF3FF",
+          "foam": "#FFFFFF",
+          "emission": 0.0,
+          "speed": 0.5
+        },
+        "under": [
+          "icicles"
+        ],
+        "dressing": [
+          {
+            "kind": "pine_snow",
+            "weight": 3,
+            "tint": "white"
+          },
+          {
+            "kind": "crystal",
+            "weight": 2,
+            "tint": "#BFE7FF",
+            "glow": 0.35
+          },
+          {
+            "kind": "rock",
+            "weight": 2,
+            "tint": "#C9DCEC"
+          }
+        ],
+        "backdrop": [
+          {
+            "kind": "pine_snow",
+            "weight": 4,
+            "tint": "white"
+          },
+          {
+            "kind": "crystal",
+            "weight": 1,
+            "tint": "#BFE7FF",
+            "glow": 0.35
+          }
+        ]
+      }
+    },
+    "underwater": {
+      "block": {
+        "style": "underwater",
+        "cap_depth": 0.0,
+        "body_color": "#3B4FC9",
+        "body_mix": 0.55,
+        "accent_color": "#7FD8FF",
+        "gloss": 0.8,
+        "rim": 0.4
+      },
+      "sky": [
+        "#1E4C86",
+        "#3D7DB3",
+        "#7FC0D8"
+      ],
+      "cloud": "#A8E0F0",
+      "far_island": "#2E6496",
+      "island": {
+        "top": "#E8D9B5",
+        "rim": "#7FB59A",
+        "cliff": "#6C6A9A",
+        "cliff_dark": "#474576",
+        "tile": "#EFE3C6",
+        "tile_alt": "#E2D3B2"
+      },
+      "props": [
+        "coral",
+        "shell",
+        "kelp",
+        "rock"
+      ],
+      "accent": "#F2B6D8",
+      "frame": "#4D7F8C",
+      "env": {
+        "lip": "grass",
+        "lip_color": "#6FA88E",
+        "falls": {
+          "kind": "none",
+          "count": 0
+        },
+        "under": [
+          "kelp"
+        ],
+        "dressing": [
+          {
+            "kind": "coral",
+            "weight": 3,
+            "tint": "#C46FB8"
+          },
+          {
+            "kind": "kelp",
+            "weight": 3,
+            "tint": "white",
+            "sway": 0.08
+          },
+          {
+            "kind": "shell",
+            "weight": 2,
+            "tint": "white"
+          },
+          {
+            "kind": "rock",
+            "weight": 1,
+            "tint": "#8A86A8"
+          }
+        ],
+        "backdrop": [
+          {
+            "kind": "coral",
+            "weight": 3,
+            "tint": "#E07A9A"
+          },
+          {
+            "kind": "kelp",
+            "weight": 2,
+            "tint": "white",
+            "sway": 0.08
+          }
+        ]
+      }
+    },
+    "lava": {
+      "block": {
+        "style": "lava",
+        "cap_depth": 0.0,
+        "body_color": "#3E3434",
+        "body_mix": 0.75,
+        "glow_color": "#FF7A1F",
+        "glow": 1.0,
+        "gloss": 0.2,
+        "rim": 0.08
+      },
+      "sky": [
+        "#4B3A55",
+        "#8A6A78",
+        "#D9A88C"
+      ],
+      "cloud": "#9C8A90",
+      "far_island": "#5A4652",
+      "island": {
+        "top": "#4E4448",
+        "rim": "#3A3236",
+        "cliff": "#2F2729",
+        "cliff_dark": "#1E1819",
+        "tile": "#6B6064",
+        "tile_alt": "#5C5256"
+      },
+      "props": [
+        "obsidian",
+        "vent",
+        "rock"
+      ],
+      "accent": "#FF8A3D",
+      "frame": "#5B3D35",
+      "env": {
+        "lip": "rock",
+        "lip_color": "#4A3E44",
+        "falls": {
+          "kind": "lava",
+          "count": 2,
+          "deep": "#E8420E",
+          "light": "#FFB21E",
+          "foam": "#FFE9A0",
+          "emission": 2.4,
+          "speed": 0.25
+        },
+        "under": [
+          "shards"
+        ],
+        "dressing": [
+          {
+            "kind": "rock",
+            "weight": 3,
+            "tint": "#4A4046"
+          },
+          {
+            "kind": "crystal",
+            "weight": 2,
+            "tint": "#8A5AD6",
+            "glow": 1.2
+          }
+        ],
+        "backdrop": [
+          {
+            "kind": "crystal",
+            "weight": 3,
+            "tint": "#7A4FC4",
+            "glow": 1.2
+          },
+          {
+            "kind": "rock",
+            "weight": 2,
+            "tint": "#3A3236"
+          }
+        ]
+      }
+    },
+    "forest": {
+      "block": {
+        "style": "forest",
+        "cap_color": "#6E9E3A",
+        "cap_depth": 0.08,
+        "cap_drip": 0.12,
+        "body_color": "#8A5E3A",
+        "body_mix": 0.75,
+        "gloss": 0.15,
+        "rim": 0.08,
+        "brightness": 1.2
+      },
+      "sky": [
+        "#9CC8A8",
+        "#D6E9D0",
+        "#F4EFD8"
+      ],
+      "cloud": "#F6FBF2",
+      "far_island": "#7FAF83",
+      "island": {
+        "top": "#6FA84E",
+        "rim": "#5A8F3E",
+        "cliff": "#7A5B3E",
+        "cliff_dark": "#4F3A27",
+        "tile": "#E3D8BC",
+        "tile_alt": "#D6C9A9"
+      },
+      "props": [
+        "tree",
+        "mushroom",
+        "bush",
+        "stump"
+      ],
+      "accent": "#E9C46A",
+      "frame": "#5E7D3A",
+      "env": {
+        "lip": "grass",
+        "lip_color": "#66A048",
+        "falls": {
+          "kind": "water",
+          "count": 1,
+          "deep": "#3C9AD8",
+          "light": "#A9E2FF",
+          "foam": "#FFFFFF",
+          "emission": 0.0,
+          "speed": 0.7
+        },
+        "under": [
+          "roots"
+        ],
+        "dressing": [
+          {
+            "kind": "mushroom",
+            "weight": 3,
+            "tint": "white"
+          },
+          {
+            "kind": "bush",
+            "weight": 3,
+            "tint": "rim"
+          },
+          {
+            "kind": "flowers",
+            "weight": 2,
+            "tint": "top"
+          },
+          {
+            "kind": "rock",
+            "weight": 1,
+            "tint": "cliff"
+          }
+        ],
+        "backdrop": [
+          {
+            "kind": "tree",
+            "weight": 4,
+            "tint": "rim",
+            "sway": 0.03
+          },
+          {
+            "kind": "mushroom",
+            "weight": 1,
+            "tint": "white"
+          }
+        ]
+      }
+    },
+    "cave": {
+      "block": {
+        "style": "cave",
+        "cap_depth": 0.0,
+        "body_color": "#7A7488",
+        "body_mix": 0.6,
+        "accent_color": "#B783F2",
+        "glow": 0.6,
+        "gloss": 0.3,
+        "rim": 0.12
+      },
+      "sky": [
+        "#2E2943",
+        "#4A4166",
+        "#7A6C93"
+      ],
+      "cloud": "#6E6488",
+      "far_island": "#3D3657",
+      "island": {
+        "top": "#6E6880",
+        "rim": "#5A5470",
+        "cliff": "#4A4560",
+        "cliff_dark": "#302C42",
+        "tile": "#9C93B8",
+        "tile_alt": "#8C84A8"
+      },
+      "props": [
+        "crystal",
+        "rock",
+        "mushroom_glow"
+      ],
+      "accent": "#B783F2",
+      "frame": "#5A4E78",
+      "env": {
+        "lip": "rock",
+        "lip_color": "#6E6880",
+        "falls": {
+          "kind": "none",
+          "count": 0
+        },
+        "under": [
+          "shards"
+        ],
+        "dressing": [
+          {
+            "kind": "crystal",
+            "weight": 3,
+            "tint": "accent",
+            "glow": 1.4
+          },
+          {
+            "kind": "mushroom",
+            "weight": 2,
+            "tint": "#7FE0D0",
+            "glow": 1.0
+          },
+          {
+            "kind": "rock",
+            "weight": 2,
+            "tint": "#6E6880"
+          }
+        ],
+        "backdrop": [
+          {
+            "kind": "crystal",
+            "weight": 4,
+            "tint": "accent",
+            "glow": 1.4
+          }
+        ]
+      }
+    },
+    "clockwork": {
+      "block": {
+        "style": "clockwork",
+        "cap_depth": 0.0,
+        "body_color": "#2E3F6E",
+        "body_mix": 0.55,
+        "accent_color": "#D4A645",
+        "gloss": 0.55,
+        "rim": 0.15
+      },
+      "sky": [
+        "#C9A57A",
+        "#E8CFA7",
+        "#F7EBD3"
+      ],
+      "cloud": "#FFF5E3",
+      "far_island": "#B79A74",
+      "island": {
+        "top": "#9C8A6A",
+        "rim": "#B08F55",
+        "cliff": "#6E5A44",
+        "cliff_dark": "#4A3B2C",
+        "tile": "#E6D7B8",
+        "tile_alt": "#D7C5A1"
+      },
+      "props": [
+        "gear",
+        "pipe",
+        "rock"
+      ],
+      "accent": "#D4A645",
+      "frame": "#8C6A3A",
+      "env": {
+        "lip": "rock",
+        "lip_color": "#B08F55",
+        "falls": {
+          "kind": "none",
+          "count": 0
+        },
+        "under": [
+          "gears"
+        ],
+        "dressing": [
+          {
+            "kind": "gear",
+            "weight": 2,
+            "tint": "white",
+            "spin": 0.6
+          },
+          {
+            "kind": "rock",
+            "weight": 2,
+            "tint": "#9C8A6A"
+          },
+          {
+            "kind": "pillar",
+            "weight": 1,
+            "tint": "#C9A46A"
+          }
+        ],
+        "backdrop": [
+          {
+            "kind": "gear",
+            "weight": 3,
+            "tint": "white",
+            "spin": 0.4
+          },
+          {
+            "kind": "pillar",
+            "weight": 2,
+            "tint": "#C9A46A"
+          }
+        ]
+      }
+    },
+    "neon": {
+      "block": {
+        "style": "neon",
+        "cap_depth": 0.0,
+        "body_color": "#3A2C8C",
+        "body_mix": 0.55,
+        "glow_color": "#3FF2E0",
+        "glow": 1.6,
+        "gloss": 0.75,
+        "rim": 0.3
+      },
+      "sky": [
+        "#140F33",
+        "#2C1E5E",
+        "#5A3A8E"
+      ],
+      "cloud": "#3A2A70",
+      "far_island": "#24195A",
+      "island": {
+        "top": "#2C2560",
+        "rim": "#3D3480",
+        "cliff": "#1F1A45",
+        "cliff_dark": "#120F2B",
+        "tile": "#4A3C96",
+        "tile_alt": "#3E3284"
+      },
+      "props": [
+        "neon_pillar",
+        "neon_ring"
+      ],
+      "accent": "#3FF2E0",
+      "frame": "#5B3FB0",
+      "env": {
+        "lip": "rock",
+        "lip_color": "#3D3480",
+        "falls": {
+          "kind": "neon",
+          "count": 1,
+          "deep": "#2E7BFF",
+          "light": "#5FF2FF",
+          "foam": "#E8FFFF",
+          "emission": 2.2,
+          "speed": 0.6,
+          "sparkle": 0.4
+        },
+        "under": [
+          "shards"
+        ],
+        "dressing": [
+          {
+            "kind": "crystal",
+            "weight": 2,
+            "tint": "#5FF2FF",
+            "glow": 1.8
+          },
+          {
+            "kind": "pillar",
+            "weight": 2,
+            "tint": "#3E3284"
+          }
+        ],
+        "backdrop": [
+          {
+            "kind": "pillar",
+            "weight": 3,
+            "tint": "#3E3284"
+          },
+          {
+            "kind": "crystal",
+            "weight": 2,
+            "tint": "#FF5FD8",
+            "glow": 1.8
+          }
+        ],
+        "tile_glow": "#5FF2FF"
+      }
+    },
+    "celestial": {
+      "block": {
+        "style": "celestial",
+        "cap_depth": 0.0,
+        "body_color": "#3B2A9E",
+        "body_mix": 0.6,
+        "accent_color": "#B486F0",
+        "glow": 1.2,
+        "gloss": 0.6,
+        "rim": 0.35
+      },
+      "sky": [
+        "#1A1240",
+        "#3B2A78",
+        "#7A5AB0"
+      ],
+      "cloud": "#5A4A9A",
+      "far_island": "#DAD3C3",
+      "island": {
+        "top": "#E7E1D3",
+        "rim": "#E2C26A",
+        "cliff": "#CFC7B8",
+        "cliff_dark": "#9E9686",
+        "tile": "#B9A6E0",
+        "tile_alt": "#A893D6"
+      },
+      "props": [
+        "pillar",
+        "star",
+        "arch"
+      ],
+      "accent": "#F2D27A",
+      "frame": "#6A4AB0",
+      "env": {
+        "lip": "rock",
+        "lip_color": "#E2C26A",
+        "falls": {
+          "kind": "stardust",
+          "count": 1,
+          "deep": "#8A6AE0",
+          "light": "#E6D9FF",
+          "foam": "#FFF6D8",
+          "emission": 1.4,
+          "speed": 0.35,
+          "sparkle": 0.6
+        },
+        "under": [
+          "shards"
+        ],
+        "dressing": [
+          {
+            "kind": "star",
+            "weight": 2,
+            "tint": "white",
+            "glow": 1.2,
+            "spin": 0.3
+          },
+          {
+            "kind": "pillar",
+            "weight": 2,
+            "tint": "white"
+          },
+          {
+            "kind": "crystal",
+            "weight": 1,
+            "tint": "#B9A6E0",
+            "glow": 1.0
+          }
+        ],
+        "backdrop": [
+          {
+            "kind": "pillar",
+            "weight": 4,
+            "tint": "white"
+          },
+          {
+            "kind": "star",
+            "weight": 1,
+            "tint": "white",
+            "glow": 1.2,
+            "spin": 0.3
+          }
+        ]
+      }
+    },
+    "carnival": {
+      "block": {
+        "style": "carnival",
+        "cap_depth": 0.0,
+        "body_color": "#F07A9C",
+        "body_mix": 0.75,
+        "accent_color": "#FBF1DE",
+        "gloss": 0.6,
+        "rim": 0.2
+      },
+      "sky": [
+        "#F7A97A",
+        "#F9CFA6",
+        "#FCEBD2"
+      ],
+      "cloud": "#FFF3E6",
+      "far_island": "#E7B5A2",
+      "island": {
+        "top": "#E9D7B7",
+        "rim": "#E98AA6",
+        "cliff": "#B9937A",
+        "cliff_dark": "#8A6A55",
+        "tile": "#FBF1DE",
+        "tile_alt": "#F3E2C8"
+      },
+      "props": [
+        "tent",
+        "balloon",
+        "flag"
+      ],
+      "accent": "#EDC873",
+      "frame": "#C25A7A",
+      "env": {
+        "lip": "grass",
+        "lip_color": "#F5B3C6",
+        "falls": {
+          "kind": "syrup",
+          "count": 1,
+          "deep": "#E98AA6",
+          "light": "#FFD0DC",
+          "foam": "#FFF8F0",
+          "emission": 0.0,
+          "speed": 0.4
+        },
+        "under": [
+          "roots"
+        ],
+        "dressing": [
+          {
+            "kind": "balloon",
+            "weight": 2,
+            "tint": "white"
+          },
+          {
+            "kind": "flowers",
+            "weight": 3,
+            "tint": "top"
+          },
+          {
+            "kind": "bush",
+            "weight": 2,
+            "tint": "#9CC79A"
+          },
+          {
+            "kind": "lollipop",
+            "weight": 1,
+            "tint": "white"
+          }
+        ],
+        "backdrop": []
+      }
+    },
+    "dune": {
+      "block": {
+        "style": "dune",
+        "cap_depth": 0.0,
+        "body_color": "#E3C79A",
+        "body_mix": 0.6,
+        "accent_color": "#2E9C99",
+        "glow_color": "#C8722E",
+        "gloss": 0.3,
+        "rim": 0.1
+      },
+      "sky": [
+        "#E9A86A",
+        "#F4CF9C",
+        "#FBEBD0"
+      ],
+      "cloud": "#FFF2DE",
+      "far_island": "#D9A877",
+      "island": {
+        "top": "#E8CFA0",
+        "rim": "#D7B27A",
+        "cliff": "#B98A5A",
+        "cliff_dark": "#8A5F3A",
+        "tile": "#F4E5C6",
+        "tile_alt": "#EAD7B2"
+      },
+      "props": [
+        "palm",
+        "pot",
+        "rock"
+      ],
+      "accent": "#2E9C99",
+      "frame": "#B97A3E",
+      "env": {
+        "lip": "grass",
+        "lip_color": "#E2C48E",
+        "falls": {
+          "kind": "none",
+          "count": 0
+        },
+        "under": [
+          "roots"
+        ],
+        "dressing": [
+          {
+            "kind": "palm",
+            "weight": 2,
+            "tint": "white",
+            "sway": 0.02
+          },
+          {
+            "kind": "pot",
+            "weight": 2,
+            "tint": "white"
+          },
+          {
+            "kind": "rock",
+            "weight": 2,
+            "tint": "#C9A06E"
+          }
+        ],
+        "backdrop": [
+          {
+            "kind": "palm",
+            "weight": 3,
+            "tint": "white",
+            "sway": 0.02
+          },
+          {
+            "kind": "pot",
+            "weight": 1,
+            "tint": "white"
+          }
+        ]
+      }
+    }
+  },
+  "env_notes": "biomes.*.env: lip = grass|snow|rock; falls.kind = water|syrup|lava|neon|stardust|none; under = roots|gears|shards|icicles|kelp; dressing/backdrop kinds = assets/models/env/prop_<kind>.glb, tint = white|top|rim|cliff|accent|#hex (WtIslandBuilder)."
+}

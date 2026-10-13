@@ -4,17 +4,20 @@
   "biome": "ice",
   "tier": 4,
   "board": {
-    "width": 7,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 10,
     "starting_contents": {
       "layers": {
         "0": [
-          ".......",
-          "......n",
-          ".......",
-          "......n",
-          "......."
+          "........",
+          "........",
+          "......n.",
+          "........",
+          "......n.",
+          "........",
+          "........",
+          "........"
         ]
       }
     }
@@ -39,8 +42,8 @@
     }
   ],
   "stars": {
-    "t2": 240000,
-    "t3": 170000
+    "t2": 440000,
+    "t3": 310000
   },
   "music": "ice_04",
   "name": "LVL_ICE_04_TITLE",
@@ -58,6 +61,7 @@
     ]
   },
   "metadata": {
+    "level_type": "defender",
     "source": "design/levels/ice.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -132,6 +136,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 7x5 -> 8x8 (offset x0 z1); clear_n 3 -> 3; time stars x1.83"
+      }
+    ]
   }
 }

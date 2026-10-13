@@ -4,8 +4,8 @@
   "biome": "celestial",
   "tier": 10,
   "board": {
-    "width": 7,
-    "depth": 7,
+    "width": 8,
+    "depth": 8,
     "h_play": 12
   },
   "pieces": {
@@ -32,7 +32,7 @@
     {
       "id": "event_card",
       "params": {
-        "event_card_locks": 6,
+        "event_card_locks": 8,
         "no_repeat": true,
         "pool": [
           {
@@ -88,17 +88,17 @@
       "id": "lava_lid",
       "params": {
         "mode": "lid",
-        "lid_first_s": 90,
+        "lid_first_s": 150,
         "lid_every_s": 40,
         "lid_max": 2,
-        "lid_warn_ms": 3000,
+        "lid_warn_ms": 5000,
         "lid_push_per_clear": 1
       }
     }
   ],
   "stars": {
-    "t2": 335000,
-    "t3": 235000
+    "t2": 440000,
+    "t3": 305000
   },
   "music": "celestial_10_tbd",
   "story": {
@@ -108,6 +108,7 @@
   "name": "LVL_CELESTIAL_10_TITLE",
   "seed": null,
   "metadata": {
+    "level_type": "twist",
     "source": "design/levels/celestial.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -144,7 +145,7 @@
         {
           "id": "event_card*",
           "params": {
-            "event_card_locks": 6,
+            "event_card_locks": 8,
             "no_repeat": true,
             "pool": [
               {
@@ -200,10 +201,10 @@
           "id": "lava_lid*",
           "params": {
             "mode": "lid",
-            "lid_first_s": 90,
+            "lid_first_s": 150,
             "lid_every_s": 40,
             "lid_max": 2,
-            "lid_warn_ms": 3000,
+            "lid_warn_ms": 5000,
             "lid_push_per_clear": 1
           }
         }
@@ -227,7 +228,7 @@
         "source": "event_card*",
         "runtime": "event_card",
         "params": {
-          "event_card_locks": 6,
+          "event_card_locks": 8,
           "no_repeat": true,
           "pool": [
             {
@@ -284,14 +285,25 @@
         "runtime": "lava_lid",
         "params": {
           "mode": "lid",
-          "lid_first_s": 90,
+          "lid_first_s": 150,
           "lid_every_s": 40,
           "lid_max": 2,
-          "lid_warn_ms": 3000,
+          "lid_warn_ms": 5000,
           "lid_push_per_clear": 1
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "production/qa/campaign-difficulty-review-2026-10-10.md",
+        "change": "Event card (lock 8, ~60-70 s) and lava lid (150 s, 5 s warning) are now introduced separately."
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 7x7 -> 8x8 (offset x0 z0); clear_n 3 -> 3; time stars x1.31"
+      }
+    ]
   }
 }

@@ -5,18 +5,19 @@
   "tier": 4,
   "name": "LVL_MEADOW_04_TITLE",
   "board": {
-    "width": 7,
-    "depth": 7,
+    "width": 8,
+    "depth": 8,
     "h_play": 10,
     "down_axis": "-y",
     "mask": [
-      "#######",
-      "#######",
-      "##...##",
-      "##...##",
-      "##...##",
-      "#######",
-      "#######"
+      "########",
+      "########",
+      "##...###",
+      "##...###",
+      "##...###",
+      "########",
+      "########",
+      "########"
     ],
     "spawn_anchor": {
       "x": 3,
@@ -54,8 +55,8 @@
     }
   ],
   "stars": {
-    "t2": 270000,
-    "t3": 190000
+    "t2": 355000,
+    "t3": 250000
   },
   "story": {
     "title_key": "LVL_MEADOW_04_TITLE",
@@ -64,6 +65,7 @@
     "icon": "mushroom"
   },
   "metadata": {
+    "level_type": "twist",
     "source": "production/levels/meadow/data/meadow_04.json",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -137,6 +139,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 7x7 -> 8x8 (offset x0 z0); clear_n 3 -> 3; time stars x1.31"
+      }
+    ]
   }
 }

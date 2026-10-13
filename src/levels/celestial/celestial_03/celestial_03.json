@@ -5,7 +5,7 @@
   "tier": 3,
   "board": {
     "width": 8,
-    "depth": 4,
+    "depth": 8,
     "h_play": 10
   },
   "knobs": {
@@ -14,7 +14,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 5
+    "n": 4
   },
   "rules": [
     {
@@ -27,11 +27,19 @@
         "wind_strength": 1,
         "wind_warn_ms": 1000
       }
+    },
+    {
+      "id": "tilt_plate",
+      "params": {
+        "slip_threshold": 0.65,
+        "slip_count": 1,
+        "slip_after_resolves": 2
+      }
     }
   ],
   "stars": {
-    "t2": 365000,
-    "t3": 255000
+    "t2": 585000,
+    "t3": 410000
   },
   "music": "celestial_03_tbd",
   "name": "LVL_CELESTIAL_03_TITLE",
@@ -49,6 +57,7 @@
     ]
   },
   "metadata": {
+    "level_type": "balance",
     "source": "design/levels/celestial.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -80,6 +89,14 @@
             "wind_strength": 1,
             "wind_warn_ms": 1000
           }
+        },
+        {
+          "id": "tilt_plate",
+          "params": {
+            "slip_threshold": 0.65,
+            "slip_count": 1,
+            "slip_after_resolves": 2
+          }
         }
       ],
       "stars": {
@@ -93,6 +110,17 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 8x4 -> 8x8 (offset x0 z2); clear_n 5 -> 4; time stars x1.60"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: race / balance / defender levels",
+        "change": "Balance level: tilting plate (gentle threshold 0.65, one placement of grace)."
+      }
+    ]
   }
 }

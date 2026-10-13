@@ -5,8 +5,8 @@
   "tier": 14,
   "name": "LVL_CLOCKWORK_H3_TITLE",
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "pieces": {
@@ -32,27 +32,27 @@
     "keyholes": [
       {
         "wall": "-x",
-        "row": 2,
+        "row": 3,
         "y": 1
       },
       {
         "wall": "+x",
-        "row": 2,
+        "row": 3,
         "y": 2
       },
       {
         "wall": "-z",
-        "row": 2,
+        "row": 3,
         "y": 3
       },
       {
         "wall": "+z",
-        "row": 2,
+        "row": 3,
         "y": 1
       },
       {
         "wall": "-x",
-        "row": 4,
+        "row": 5,
         "y": 3
       }
     ]
@@ -86,8 +86,8 @@
       "id": "magnet_pull",
       "params": {
         "magnet_col": [
-          4,
-          2
+          7,
+          3
         ],
         "pull_interval_ms": 4000,
         "pull_warn_ms": 800,
@@ -108,6 +108,7 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "twist",
     "source": "design/levels/clockwork.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -228,7 +229,12 @@
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
     "design_amendments": [
-      "Supersedes the pre-wave-3 H3 draft 'Frozen Turntable' (clockwork.md section 7); keeps the H2 draft's Piston Keys layout"
+      "Supersedes the pre-wave-3 H3 draft 'Frozen Turntable' (clockwork.md section 7); keeps the H2 draft's Piston Keys layout",
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1)"
+      }
     ]
   }
 }

@@ -5,24 +5,30 @@
   "tier": 2,
   "name": "level.lava_02.name",
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 10,
     "starting_contents": {
       "layers": {
         "0": [
-          "#####",
-          "#.###",
-          "###.#",
-          "##.##",
-          "#####"
+          "........",
+          ".#####..",
+          ".#.###..",
+          ".###.#..",
+          ".##.##..",
+          ".#####..",
+          "........",
+          "........"
         ],
         "1": [
-          ".....",
-          ".#...",
-          "...#.",
-          "..#..",
-          "....."
+          "........",
+          "........",
+          "..#.....",
+          "....#...",
+          "...#....",
+          "........",
+          "........",
+          "........"
         ]
       }
     }
@@ -54,7 +60,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 3
+    "n": 2
   },
   "rules": [
     {
@@ -65,8 +71,8 @@
     }
   ],
   "stars": {
-    "t2": 150000,
-    "t3": 105000
+    "t2": 255000,
+    "t3": 180000
   },
   "music": "lava_02",
   "story": {
@@ -75,6 +81,7 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "twist",
     "source": "design/levels/lava.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -172,6 +179,12 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1); clear_n 3 -> 2; time stars x1.71"
+      }
+    ]
   }
 }

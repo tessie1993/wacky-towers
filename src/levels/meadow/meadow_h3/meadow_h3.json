@@ -5,18 +5,45 @@
   "tier": 14,
   "name": "LVL_MEADOW_H3_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10,
     "starting_contents": {
       "layers": {
-        "0": ["#.####", "####.#", "######", ".#####", "###.##", "##.###"],
-        "1": ["###.#.", ".#####", "##.###", "####.#", "#.##.#", "######"]
+        "0": [
+          "........",
+          ".#.####.",
+          ".####.#.",
+          ".######.",
+          "..#####.",
+          ".###.##.",
+          ".##.###.",
+          "........"
+        ],
+        "1": [
+          "........",
+          ".###.#..",
+          "..#####.",
+          ".##.###.",
+          ".####.#.",
+          ".#.##.#.",
+          ".######.",
+          "........"
+        ]
       }
     }
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"],
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
     "tags": {
       "fog_ghost": {
         "per_bag": 1
@@ -55,8 +82,8 @@
     }
   ],
   "stars": {
-    "t2": 180000,
-    "t3": 125000
+    "t2": 320000,
+    "t3": 220000
   },
   "music": "meadow_h3",
   "story": {
@@ -67,6 +94,7 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "funny",
     "source": "design/levels/meadow.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -80,19 +108,60 @@
         "h_play": 10,
         "starting_contents": {
           "layers": {
-            "0": ["#.####", "####.#", "######", ".#####", "###.##", "##.###"],
-            "1": ["###.#.", ".#####", "##.###", "####.#", "#.##.#", "######"]
+            "0": [
+              "#.####",
+              "####.#",
+              "######",
+              ".#####",
+              "###.##",
+              "##.###"
+            ],
+            "1": [
+              "###.#.",
+              ".#####",
+              "##.###",
+              "####.#",
+              "#.##.#",
+              "######"
+            ]
           }
         }
       },
-      "knobs": { "fall.g0": 0.95, "goal.top_out": "rescue", "goal.warnings_max": 1, "control.fog_ghost_preview": "faint" },
-      "goal": { "type": "clear_n", "n": 4 },
+      "knobs": {
+        "fall.g0": 0.95,
+        "goal.top_out": "rescue",
+        "goal.warnings_max": 1,
+        "control.fog_ghost_preview": "faint"
+      },
+      "goal": {
+        "type": "clear_n",
+        "n": 4
+      },
       "rules": [
-        { "id": "fog", "params": { "visible_ms": 4000, "fade_ms": 1000, "invisible_alpha": 0.1, "reveal_ms": 600 } },
-        { "id": "fog_ghost", "params": {} },
-        { "id": "mystery_piece", "params": { "every": 4 } }
+        {
+          "id": "fog",
+          "params": {
+            "visible_ms": 4000,
+            "fade_ms": 1000,
+            "invisible_alpha": 0.1,
+            "reveal_ms": 600
+          }
+        },
+        {
+          "id": "fog_ghost",
+          "params": {}
+        },
+        {
+          "id": "mystery_piece",
+          "params": {
+            "every": 4
+          }
+        }
       ],
-      "stars": { "t2": 180000, "t3": 125000 },
+      "stars": {
+        "t2": 180000,
+        "t3": 125000
+      },
       "music": "meadow_h3"
     },
     "unsupported": [],
@@ -102,6 +171,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians. Hand-set stars (two starter layers make F1 overestimate): meadow_07's 195 / 140 s tightened by about 8%",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 4 -> 4; time stars x1.78"
+      }
+    ]
   }
 }

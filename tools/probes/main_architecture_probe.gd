@@ -17,10 +17,6 @@ func _run() -> void:
 	var authored: LevelStage = main.get("_official_stage")
 	_check(authored != null and stage == authored.get_node("World"), "Main reuses authored World")
 	_check(store.progress().get("encountered_levels",[]).has("meadow_01"), "Campaign encounter persisted")
-	if String(main.get("_story_phase")) == "pre":
-		_check(bool(main.get("_paused")), "Pre-story pauses gameplay")
-		main.call("_on_intent", &"story_done", {"story_key":"meadow_01_pre"})
-		_check(not bool(main.get("_paused")), "Story dismissal resumes countdown")
 	var architecture: WtArchitecture = main.get("_architecture")
 	_check(architecture.snapshot().domains.get(&"progression",0) >= 1, "Native graph routes progression")
 	main.call("_on_intent", &"open_physics", {})

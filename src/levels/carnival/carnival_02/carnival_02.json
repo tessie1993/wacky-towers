@@ -5,12 +5,21 @@
   "tier": 2,
   "name": "LVL_CARNIVAL_02_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
   },
   "knobs": {
     "fall.g0": 1.25,
@@ -22,14 +31,43 @@
     "n": 3
   },
   "rules": [
-    { "id": "mascot_hint", "params": {} },
-    { "id": "angle_gem", "params": { "skin": "duck_prize" } },
-    { "id": "star_coins", "params": { "coins": 5, "min_layer": 1, "score": 50, "goal_counter": "coins" } },
-    { "id": "mushroom_popup", "params": { "spawn_every_locks": 4, "objects_max": 4, "skin": "coconut" } }
+    {
+      "id": "mascot_hint",
+      "params": {}
+    },
+    {
+      "id": "angle_gem",
+      "params": {
+        "skin": "duck_prize"
+      }
+    },
+    {
+      "id": "star_coins",
+      "params": {
+        "coins": 5,
+        "min_layer": 1,
+        "score": 50,
+        "goal_counter": "coins"
+      }
+    },
+    {
+      "id": "mushroom_popup",
+      "params": {
+        "spawn_every_locks": 4,
+        "objects_max": 4,
+        "skin": "coconut"
+      }
+    },
+    {
+      "id": "wobble",
+      "params": {
+        "wobble_max": 7
+      }
+    }
   ],
   "stars": {
-    "t2": 245000,
-    "t3": 175000
+    "t2": 435000,
+    "t3": 310000
   },
   "music": "carnival_02_tbd",
   "story": {
@@ -43,20 +81,83 @@
     "source": "design/levels/carnival.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
-      "schema": 1, "id": "carnival_02", "biome": "carnival", "tier": 2, "name": "LVL_CARNIVAL_02_TITLE",
-      "board": { "width": 6, "depth": 6, "h_play": 10 },
-      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r"] },
-      "knobs": { "fall.g0": 1.25, "goal.warnings_max": 1, "goal.top_out": "rescue" },
-      "goal": { "type": "clear_n", "N": 3 },
+      "schema": 1,
+      "id": "carnival_02",
+      "biome": "carnival",
+      "tier": 2,
+      "name": "LVL_CARNIVAL_02_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "screw_r"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.25,
+        "goal.warnings_max": 1,
+        "goal.top_out": "rescue"
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 3
+      },
       "rules": [
-        { "id": "mascot_hint", "params": {} },
-        { "id": "angle_gem", "params": { "skin": "duck_prize" } },
-        { "id": "star_coins", "params": { "coins": 5, "min_layer": 1, "score": 50, "goal_counter": "coins" } },
-        { "id": "mushroom_popup", "params": { "spawn_every_locks": 4, "objects_max": 4, "skin": "coconut" } }
+        {
+          "id": "mascot_hint",
+          "params": {}
+        },
+        {
+          "id": "angle_gem",
+          "params": {
+            "skin": "duck_prize"
+          }
+        },
+        {
+          "id": "star_coins",
+          "params": {
+            "coins": 5,
+            "min_layer": 1,
+            "score": 50,
+            "goal_counter": "coins"
+          }
+        },
+        {
+          "id": "mushroom_popup",
+          "params": {
+            "spawn_every_locks": 4,
+            "objects_max": 4,
+            "skin": "coconut"
+          }
+        },
+        {
+          "id": "wobble",
+          "params": {
+            "wobble_max": 7
+          }
+        }
       ],
-      "stars": { "t2": 245000, "t3": 175000 },
+      "stars": {
+        "t2": 245000,
+        "t3": 175000
+      },
       "music": "carnival_02_tbd",
-      "story": { "title_key": "LVL_CARNIVAL_02_TITLE", "premise_key": "LVL_CARNIVAL_02_PREMISE", "mascot_role": "helper", "icon": "coconut" }
+      "story": {
+        "title_key": "LVL_CARNIVAL_02_TITLE",
+        "premise_key": "LVL_CARNIVAL_02_PREMISE",
+        "mascot_role": "helper",
+        "icon": "coconut"
+      }
     },
     "unsupported": [],
     "blocking_gameplay": [],
@@ -66,6 +167,18 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 3 -> 3; time stars x1.78"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: level type mix (carnival needed a balance level)",
+        "change": "Added wobble (wobble_max 7) as a wobbly coconut-shy stack; level_type balance"
+      }
+    ],
+    "level_type": "balance"
   }
 }

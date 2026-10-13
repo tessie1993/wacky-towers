@@ -4,8 +4,8 @@
   "biome": "ice",
   "tier": 1,
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 9
   },
   "knobs": {
@@ -14,7 +14,8 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 3
+    "n": 2,
+    "time_limit_ms": 360000
   },
   "rules": [
     {
@@ -22,15 +23,34 @@
       "params": {}
     },
     {
+      "id": "stopwatch",
+      "params": {
+        "stop_every_ms": 18000,
+        "stop_jitter_ms": 3000,
+        "stop_warn_ms": 1500,
+        "stop_ms": 2000,
+        "catchup_scale": 1400,
+        "catchup_ms": 2000
+      }
+    },
+    {
       "id": "angle_gem",
       "params": {
         "where": "under_island"
       }
+    },
+    {
+      "id": "race_rival",
+      "params": {
+        "rival_rate": 0.3,
+        "rubber_band": 0.5,
+        "rival_warn_pct": 80
+      }
     }
   ],
   "stars": {
-    "t2": 170000,
-    "t3": 120000
+    "t2": 290000,
+    "t3": 205000
   },
   "music": "ice_01",
   "story": {
@@ -80,9 +100,28 @@
           "params": {}
         },
         {
+          "id": "stopwatch",
+          "params": {
+            "stop_every_ms": 18000,
+            "stop_jitter_ms": 3000,
+            "stop_warn_ms": 1500,
+            "stop_ms": 2000,
+            "catchup_scale": 1400,
+            "catchup_ms": 2000
+          }
+        },
+        {
           "id": "angle_gem",
           "params": {
             "where": "under_island"
+          }
+        },
+        {
+          "id": "race_rival",
+          "params": {
+            "rival_rate": 0.3,
+            "rubber_band": 0.5,
+            "rival_warn_pct": 80
           }
         }
       ],
@@ -103,6 +142,23 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1); clear_n 3 -> 2; time stars x1.71"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix",
+        "change": "Added stopwatch (freeze every 18000 ms, gentler than clockwork_07) and goal.time_limit_ms 360000 (t2 290000 x ~1.25); level_type race"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: race / balance / defender levels",
+        "change": "Race level: ghost rival at 0.3 %/s finishes about 15% after the 2-star time."
+      }
+    ],
+    "level_type": "race"
   }
 }

@@ -4,8 +4,8 @@
   "biome": "cave",
   "tier": 9,
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "knobs": {
@@ -14,7 +14,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 6
+    "n": 5
   },
   "rules": [
     {
@@ -38,8 +38,8 @@
     }
   ],
   "stars": {
-    "t2": 295000,
-    "t3": 205000
+    "t2": 435000,
+    "t3": 305000
   },
   "music": "cave_09_tbd",
   "name": "LVL_CAVE_09_TITLE",
@@ -57,6 +57,7 @@
     ]
   },
   "metadata": {
+    "level_type": "twist",
     "source": "design/levels/cave.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -117,6 +118,12 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 6 -> 5; time stars x1.48"
+      }
+    ]
   }
 }

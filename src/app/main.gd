@@ -33,7 +33,6 @@ var _warning: String = ""
 var _hint: String = ""
 var _wobble: Dictionary = {}
 var _preview_level: bool = false
-var _story_phase: String = ""
 var _pending_results: Dictionary = {}
 var _architecture: WtArchitecture
 var _physics: WtPhysicsChallenge
@@ -42,6 +41,9 @@ var _practice_loadouts: Array[Dictionary] = []
 var _selected_item_slot: int = 0
 var _arcade: WtArcadeDirector
 var _minigame: WtMinigameRound
+## Rolls a fresh seed per attempt so the next block is never the same fixed order.
+## Level JSON seeds remain only for tests, replays and the campaign verifier.
+var _attempt_rng := RandomNumberGenerator.new()
 
 func _ready() -> void:
 	WtPlayerInput.install_actions()
@@ -68,6 +70,8 @@ func _ready() -> void:
 	_apply_preferences()
 	_input.setup(get_tree(),_settings())
 	_smoke = OS.get_cmdline_user_args().has("--smoke-game")
+	if _smoke: _attempt_rng.seed = 1729
+	else: _attempt_rng.randomize()
 	if _smoke:
 		if _store.active_profile() == null: _store.create("QA Builder")
 		_start_level(DEFAULT_LEVEL)
@@ -176,19 +180,6 @@ func _execute_intent(id: StringName, args: Dictionary) -> void:
 			_show_map()
 		&"open_level": _show_intro(StringName(args.get("level_id", DEFAULT_LEVEL)))
 		&"start_level": _start_level(StringName(args.get("level_id", _level_id)))
-		&"story_done":
-			if String(args.get("story_key", "")) != String(_level_id) + "_" + _story_phase: return
-			if _story_phase == "pre" and _sim != null:
-				_story_phase = ""
-				_paused = false
-				_store.set_playing(true)
-				_input.reset()
-				_architecture.lifecycle(&"session_countdown" if _sim.get_phase() == BoardSim.Phase.COUNTDOWN else &"session_begin")
-				_ui.show_hud(_hud_snapshot())
-				_stage.set_board_area(_ui.board_area())
-			elif _story_phase == "post":
-				_story_phase = ""
-				_ui.show_results(_pending_results)
 		&"open_tools": _show_tools()
 		&"pick_shape", &"choose_down", &"flick", &"undo", &"reset":
 			_puzzle_intent(id, args)
@@ -300,7 +291,7 @@ func _execute_intent(id: StringName, args: Dictionary) -> void:
 			var pool: Array = args.get("modes", [])
 			if pool.is_empty(): pool = _modes.round_modes()
 			pool = pool.filter(func(mode: Variant) -> bool: return not WtMinigameRound.UNSUPPORTED.has(str(mode)))
-			var configured: Dictionary = _modes.start_tournament(players, int(args.get("rounds", 3)), 20261010, pool)
+			var configured: Dictionary = _modes.start_tournament(players, int(args.get("rounds", 3)), _fresh_seed(), pool)
 			if not configured.get("ok", false):
 				_ui.show_toast("Choose two to four players and a valid round pool.")
 				return
@@ -379,7 +370,7 @@ func _start_arcade(biome: StringName) -> void:
 	_selected_biome = biome
 	_mode = &"arcade"
 	_level_id = &"arcade"
-	_begin_session(_modes.arcade_level(biome, 20261010))
+	_begin_session(_modes.arcade_level(biome, _fresh_seed()))
 
 func _start_round() -> void:
 	_mode = &"tournament"
@@ -415,7 +406,7 @@ func _start_minigame_round(draw: Dictionary) -> void:
 	var players: Array = []
 	for player: Dictionary in _modes.tournament_snapshot().get("players", []): players.append({"name": player.get("name", "Builder"), "is_bot": int(player.get("index", 0)) > 0})
 	_minigame = WtMinigameRound.new()
-	if not _minigame.setup(draw.get("template", {}), int(draw.get("round_seed", 20261010)), _catalog, players):
+	if not _minigame.setup(draw.get("template", {}), int(draw.get("round_seed", _fresh_seed())), _catalog, players):
 		# Unsupported template: score the round as a draw at zero so the tournament can continue.
 		var rows: Array[Dictionary] = []
 		for index: int in players.size(): rows.append({"id": str(index), "won": false, "score": 0, "ms": 0, "active": true})
@@ -456,7 +447,10 @@ func _begin_session(level: LevelData) -> void:
 		for key: String in ["t2", "t3"]:
 			if _level.stars.has(key): _level.stars[key] = int(_level.stars[key]) * 3 / 2
 	_apply_loadout(level)
-	_sim = BoardSim.new(level, level.seed if level.seed != LevelData.NO_SEED else 20261010, _catalog)
+	# Campaign attempts reshuffle every time; party rounds keep the round's shared seed so
+	# every player (and bot) faces the same random sequence.
+	var shared: bool = _mode in [&"tournament", &"lan"] and level.seed != LevelData.NO_SEED
+	_sim = BoardSim.new(level, level.seed if shared else _fresh_seed(), _catalog)
 	_abilities = WtAbilities.new()
 	_abilities.setup(level, _catalog, _sim.get_api(), _ability_character(), (&"tournament" if _mode == &"lan" else _mode))
 	_abilities.set_charge_perks(_session_effects())
@@ -488,15 +482,6 @@ func _begin_session(level: LevelData) -> void:
 	_architecture.lifecycle(&"session_countdown" if _sim.get_phase() == BoardSim.Phase.COUNTDOWN else &"session_begin", {"mode": _mode, "level_id": level.id})
 	_ui.show_hud(_hud_snapshot())
 	_stage.set_board_area(_ui.board_area())
-	if _mode == &"campaign" and not _smoke:
-		var story: Dictionary = WtStoryData.snapshot(level.id, "pre", _saved_stars(level.id)>0)
-		if not story.get("beats", []).is_empty():
-			_story_phase = "pre"
-			_paused = true
-			_store.set_playing(false)
-			_architecture.lifecycle(&"intro", {"level_id":level.id, "story":"pre"})
-			story["skippable"] = true
-			_ui.show_story(story)
 
 func _clear_session() -> void:
 	_stop_physics()
@@ -510,7 +495,6 @@ func _clear_session() -> void:
 		_official_stage = null
 	_pending_item = ""
 	_selected_item_slot = 0
-	_story_phase = ""
 	_pending_results.clear()
 	_warning = ""
 	_hint = ""
@@ -624,7 +608,6 @@ func _finish_level() -> void:
 	if result == null: return
 	_architecture.lifecycle(&"session_end", {"mode": _mode, "won": result.is_won()})
 	var earned: Dictionary = {}
-	var replay: bool = _saved_stars(_level_id) > 0
 	_store.set_playing(false)
 	if _store.has_method("commit_inventory"): _store.call("commit_inventory")
 	if _mode == &"campaign" and result.is_won() and not _preview_level:
@@ -635,12 +618,6 @@ func _finish_level() -> void:
 		"level_id": _level_id, "level_name": _level_name(_level_id) if _mode == &"campaign" else "Arcade run",
 		"next_available": _mode == &"campaign" and result.is_won() and _next_level() != &"",
 		"message": "Design preview: omitted mechanics remain in the coverage report; this run grants no stars." if _preview_level and _mode == &"campaign" else "+%d points" % int(earned.get("award", 0)) if result.is_won() else "Every attempt teaches you something. Try a new angle!", "mode": _mode}
-	if _mode == &"campaign" and result.is_won() and not _preview_level:
-		var story: Dictionary = WtStoryData.snapshot(_level_id,"post",replay)
-		if not story.get("beats",[]).is_empty():
-			_story_phase = "post"
-			_ui.show_story(story)
-			return
 	_ui.show_results(_pending_results)
 
 func _check_round() -> void:
@@ -671,9 +648,6 @@ func _refresh_hud() -> void:
 	if _architecture.snapshot().state == &"countdown" and _sim.get_phase() != BoardSim.Phase.COUNTDOWN:
 		_architecture.lifecycle(&"session_begin", {"mode": _mode})
 	_ui.update_hud(_hud_snapshot())
-	if _story_phase != "":
-		_ui.hide_countdown()
-		return
 	if _sim.get_phase() == BoardSim.Phase.SELECTING and _ui.current_screen != "tools":
 		_show_tools()
 		return
@@ -705,7 +679,30 @@ func _hud_snapshot() -> Dictionary:
 		"held_shape": String(_sim.held_shape()) if _sim.knobs().flag(&"spawn.hold_enabled") else "Disabled",
 		"selected_potion": String(_store.get_setting("selected_potion", "")) if _mode in [&"campaign", &"arcade"] else "",
 		"potion_count": int(_store.progress().get("inventory", {}).get("potions", {}).get(String(_store.get_setting("selected_potion", "")), 0)) if _mode in [&"campaign", &"arcade"] else 0,
-		"warning": _warning, "hint": _hint, "wobble": _wobble}
+		"warning": _warning, "hint": _hint, "wobble": _wobble,
+		"next_shapes": _preview_shapes(next_ids), "held_cells": _preview_shapes([_sim.held_shape()]) if _sim.held_shape() != &"" else [],
+		"star_pace": _star_pace(), "biome": String(_level.biome) if _level != null else "meadow"}
+
+## Cube offsets and a display tint for HUD piece previews (display only).
+func _preview_shapes(ids: Array) -> Array:
+	var tints: Array[Color] = [Color("f2c14e"), Color("5aa9e6"), Color("f07aa0"), Color("7cc86a"), Color("b48ef0"), Color("ff9f5a")]
+	var out: Array = []
+	for id: Variant in ids:
+		if not _catalog.shapes.has_shape(StringName(id)): continue
+		var shape: ShapeDef = _catalog.shapes.get_shape(StringName(id))
+		out.append({"id": String(id), "cells": shape.offsets(0), "tint": tints[absi(hash(String(id))) % tints.size()]})
+	return out
+
+## Stars the player is currently on pace for (3 = best), from the level's star targets.
+func _star_pace() -> int:
+	var stars: Dictionary = _level.stars if _level != null else {}
+	if stars.has("t3") and stars.has("t2"):
+		var elapsed: int = _sim.elapsed_ms()
+		return 3 if elapsed <= int(stars.t3) else (2 if elapsed <= int(stars.t2) else 1)
+	if stars.has("s3") and stars.has("s2"):
+		var done: int = int(_sim.progress_snapshot().get("done", 0))
+		return 1 + int(done >= int(stars.s2)) + int(done >= int(stars.s3))
+	return 3
 
 func _show_shop() -> void:
 	_paused = true
@@ -843,6 +840,10 @@ func _goal_text(goal: Dictionary) -> String:
 		"endless": return "Keep building — beat your best score"
 		_: return "Clear %d full layers" % int(goal.get("n", 4))
 
+## A new non-negative seed for one attempt or one party round.
+func _fresh_seed() -> int:
+	return int(_attempt_rng.randi() & 0x7fffffff)
+
 static func _format_ms(ms: int) -> String:
 	if ms <= 0: return "—"
 	return "%d:%02d" % [ms / 60000, (ms / 1000) % 60]
@@ -871,7 +872,7 @@ func _start_lan_round() -> void:
 		var players: Array = []
 		for player: Dictionary in _lan.snapshot().players:
 			players.append({"id": str(player.id), "name": player.name, "character": player.character})
-		_network_state = _modes.start_tournament(players, _lan.rounds, 20261010)
+		_network_state = _modes.start_tournament(players, _lan.rounds, _fresh_seed())
 	var level: LevelData = _modes.next_round_level()
 	if level == null: return
 	_network_state = _modes.tournament_snapshot()
@@ -1052,7 +1053,7 @@ func _apply_character_loadout(level: LevelData, character: StringName, effects: 
 	knobs[&"fall.lock_resets_max"] = resets
 	knobs[&"goal.warnings_max"] = warnings
 	knobs[&"fall.hard_drop_grace_ms"] = int(knobs.get(&"fall.hard_drop_grace_ms", 100)) * roundi(float(effects.get("drop_grace_scale", 1.0)) * 1000) / 1000
-	knobs[&"spawn.preview_count"] = mini(3, int(knobs.get(&"spawn.preview_count", 1)) + int(effects.get("preview_add", 0)))
+	knobs[&"spawn.preview_count"] = mini(3, int(knobs.get(&"spawn.preview_count", _catalog.knob_defs.def(&"spawn.preview_count").get("default", 1))) + int(effects.get("preview_add", 0)))
 	if effects.has("randomizer"): knobs[&"spawn.randomizer"] = StringName(effects.randomizer)
 
 func _session_effects() -> Dictionary:

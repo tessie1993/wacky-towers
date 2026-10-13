@@ -51,11 +51,11 @@ func shape_scene(shape_id: StringName) -> PackedScene:
 	return load(p) as PackedScene
 
 
-## Shared cube mesh, or null if the set has none.
+## Shared cube mesh: the set's authored cube if present, else the procedural rounded cube.
 func cube_mesh() -> Mesh:
 	var p: String = "%s%s/blk_%s_cube.res" % [BLOCKS_DIR, _set_id, _set_id]
 	if not ResourceLoader.exists(p):
-		return null
+		return WtBlockMesh.cube()
 	return load(p) as Mesh
 
 

@@ -5,8 +5,8 @@
   "tier": 5,
   "name": "LVL_MEADOW_05_TITLE",
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 12,
     "down_axis": "-y"
   },
@@ -59,6 +59,7 @@
     "icon": "tower"
   },
   "metadata": {
+    "level_type": "race",
     "source": "production/levels/meadow/data/meadow_05.json",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -127,6 +128,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1)"
+      }
+    ]
   }
 }

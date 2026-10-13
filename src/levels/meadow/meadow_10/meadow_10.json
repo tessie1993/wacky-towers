@@ -6,7 +6,7 @@
   "name": "LVL_MEADOW_10_TITLE",
   "board": {
     "width": 8,
-    "depth": 6,
+    "depth": 8,
     "h_play": 12,
     "down_axis": "-y"
   },
@@ -61,8 +61,8 @@
     }
   ],
   "stars": {
-    "t2": 315000,
-    "t3": 225000
+    "t2": 420000,
+    "t3": 300000
   },
   "story": {
     "title_key": "LVL_MEADOW_10_TITLE",
@@ -71,6 +71,7 @@
     "icon": "windmill"
   },
   "metadata": {
+    "level_type": "twist",
     "source": "production/levels/meadow/data/meadow_10.json",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -151,6 +152,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 8x6 -> 8x8 (offset x0 z1); clear_n 3 -> 3; time stars x1.33"
+      }
+    ]
   }
 }

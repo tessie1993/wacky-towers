@@ -4,8 +4,8 @@
   "biome": "clockwork",
   "tier": 11,
   "board": {
-    "width": 4,
-    "depth": 4,
+    "width": 8,
+    "depth": 8,
     "h_play": 6
   },
   "pieces": {
@@ -35,16 +35,24 @@
     "target_shape": {
       "layers": {
         "0": [
-          "++++",
-          "++++",
-          "++++",
-          "++++"
+          "........",
+          "........",
+          "..++++..",
+          "..++++..",
+          "..++++..",
+          "..++++..",
+          "........",
+          "........"
         ],
         "1": [
-          "++++",
-          "+..+",
-          "+..+",
-          "++++"
+          "........",
+          "........",
+          "..++++..",
+          "..+..+..",
+          "..+..+..",
+          "..++++..",
+          "........",
+          "........"
         ]
       }
     }
@@ -73,6 +81,7 @@
   "name": "LVL_CLOCKWORK_BONUS_TITLE",
   "seed": null,
   "metadata": {
+    "level_type": "completing",
     "source": "design/levels/clockwork.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -150,6 +159,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 4x4 -> 8x8 (offset x2 z2)"
+      }
+    ]
   }
 }

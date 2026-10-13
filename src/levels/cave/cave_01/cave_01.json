@@ -4,8 +4,8 @@
   "biome": "cave",
   "tier": 1,
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 8
   },
   "pieces": {
@@ -33,12 +33,19 @@
   "goal": {
     "type": "clear_n",
     "T_level": 200,
-    "n": 3
+    "n": 2
   },
-  "rules": [],
+  "rules": [
+    {
+      "id": "wobble",
+      "params": {
+        "wobble_max": 8
+      }
+    }
+  ],
   "stars": {
-    "t2": 170000,
-    "t3": 120000
+    "t2": 290000,
+    "t3": 205000
   },
   "music": "cave_01_tbd",
   "story": {
@@ -91,6 +98,12 @@
         {
           "id": "wo09_watcher",
           "params": {}
+        },
+        {
+          "id": "wobble",
+          "params": {
+            "wobble_max": 8
+          }
         }
       ],
       "secrets": [
@@ -127,6 +140,18 @@
         "presentation_only": true
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1); clear_n 3 -> 2; time stars x1.71"
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user request: no standard rules; level type mix (cave needed a balance level)",
+        "change": "Added wobble (wobble_max 8, gentler than default 6) as an unsteady cave floor; level_type balance"
+      }
+    ],
+    "level_type": "balance"
   }
 }

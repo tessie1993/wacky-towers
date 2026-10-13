@@ -5,8 +5,8 @@
   "tier": 11,
   "name": "LVL_NEON_BONUS_TITLE",
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 9,
+    "depth": 9,
     "h_play": 10
   },
   "pieces": {
@@ -28,7 +28,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 5
+    "n": 2
   },
   "rules": [
     {
@@ -54,8 +54,8 @@
     }
   ],
   "stars": {
-    "t2": 265000,
-    "t3": 185000
+    "t2": 345000,
+    "t3": 240000
   },
   "music": "neon_bonus_tbd",
   "story": {
@@ -66,6 +66,7 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "twist",
     "source": "design/levels/neon.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -143,6 +144,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 9x9 (offset x2 z2); clear_n 5 -> 2; time stars x1.30"
+      }
+    ]
   }
 }

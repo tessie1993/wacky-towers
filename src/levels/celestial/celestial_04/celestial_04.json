@@ -4,8 +4,8 @@
   "biome": "celestial",
   "tier": 4,
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "knobs": {
@@ -27,8 +27,8 @@
     }
   ],
   "stars": {
-    "t2": 245000,
-    "t3": 175000
+    "t2": 435000,
+    "t3": 310000
   },
   "music": "celestial_04_tbd",
   "name": "LVL_CELESTIAL_04_TITLE",
@@ -46,6 +46,7 @@
     ]
   },
   "metadata": {
+    "level_type": "twist",
     "source": "design/levels/celestial.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -87,6 +88,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 3 -> 3; time stars x1.78"
+      }
+    ]
   }
 }

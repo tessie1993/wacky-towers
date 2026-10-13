@@ -5,8 +5,8 @@
   "tier": 9,
   "name": "LVL_NEON_09_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 12
   },
   "pieces": {
@@ -29,7 +29,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 5
+    "n": 4
   },
   "rules": [
     {
@@ -42,8 +42,8 @@
     }
   ],
   "stars": {
-    "t2": 410000,
-    "t3": 290000
+    "t2": 585000,
+    "t3": 410000
   },
   "story": {
     "title_key": "LVL_NEON_09_TITLE",
@@ -53,6 +53,7 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "twist",
     "source": "design/levels/neon.md",
     "status": "Proposed",
     "design_spec": {
@@ -114,6 +115,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 5 -> 4; time stars x1.42"
+      }
+    ]
   }
 }

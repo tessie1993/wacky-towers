@@ -24,6 +24,7 @@ var _item_context: Dictionary = {"players": 1, "rank": 1, "mode": "solo", "owner
 var _modifier_probe: Callable
 var _active_rules: PackedStringArray = PackedStringArray()
 var _piece_uid: int = 0
+var _goal_progress_probe: Callable = Callable()
 
 func _init(p_board: BoardState = null, p_knobs: KnobRegistry = null, p_params: Dictionary = {}) -> void:
 	_board = p_board
@@ -122,6 +123,23 @@ func add_goal_counter(name: StringName, amount: int = 1) -> void:
 
 func request_goal(config: Dictionary) -> void:
 	_requests.append({"op": &"goal", "config": config.duplicate(true)})
+
+## Engine-only: bind the session's read-only goal progress source. Example: api.bind_goal_progress(sim.goal_progress).
+func bind_goal_progress(probe: Callable) -> void:
+	_goal_progress_probe = probe
+
+## Read-only goal progress ({"done", "target", "unit"}); {} when unbound. Example: api.goal_progress().get("done", 0).
+func goal_progress() -> Dictionary:
+	return _goal_progress_probe.call() as Dictionary if _goal_progress_probe.is_valid() else {}
+
+## Playing clock (excludes countdown, pause and top-out warnings); time_ms() when no goal state is bound.
+func level_ms() -> int:
+	return _goal_state.level_ms if _goal_state != null else _time
+
+## Ask the session to end the run as a loss with `reason`; ignored once the run is already won or ended.
+## Consumed at the end of the sim step. Example: api.request_fail(&"core_destroyed").
+func request_fail(reason: StringName) -> void:
+	_requests.append({"op": &"fail", "reason": reason})
 
 func request_piece_hue(hue: int) -> void:
 	_requests.append({"op": &"piece_hue", "hue": hue})

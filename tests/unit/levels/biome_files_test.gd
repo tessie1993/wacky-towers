@@ -34,7 +34,7 @@ func test_level_json_exists() -> void:
 		assert_str(r["data"].get("id", "")).is_equal(listed["id"])
 
 
-## The biome's art_set names an existing block model folder.
-func test_art_set_dir_exists() -> void:
+## The biome's art_set names an existing block palette (block meshes are procedural, WtBlockMesh).
+func test_art_set_palette_exists() -> void:
 	var art_set: String = _biome()["art_set"]
-	assert_bool(DirAccess.dir_exists_absolute("res://assets/models/blocks/" + art_set)).is_true()
+	assert_bool(FileAccess.file_exists("res://assets/data/palettes/%s.json" % art_set)).is_true()

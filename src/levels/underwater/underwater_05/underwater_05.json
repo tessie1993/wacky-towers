@@ -4,8 +4,8 @@
   "biome": "underwater",
   "tier": 5,
   "board": {
-    "width": 5,
-    "depth": 5,
+    "width": 8,
+    "depth": 8,
     "h_play": 12
   },
   "pieces": {
@@ -55,6 +55,7 @@
   "name": "LVL_UNDERWATER_05_TITLE",
   "seed": null,
   "metadata": {
+    "level_type": "race",
     "source": "design/levels/underwater.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -117,6 +118,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 5x5 -> 8x8 (offset x1 z1)"
+      }
+    ]
   }
 }

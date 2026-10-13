@@ -5,19 +5,21 @@
   "tier": 9,
   "name": "LVL_CANDY_09_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 6,
     "down_axis": "-y",
     "starting_contents": {
       "layers": {
         "0": [
-          "#.#l.#",
-          "#g#.##",
-          "..l#..",
-          "#.#l#.",
-          "#g..l#",
-          "#.####"
+          "........",
+          ".#.#l.#.",
+          ".#g#.##.",
+          "...l#...",
+          ".#.#l#..",
+          ".#g..l#.",
+          ".#.####.",
+          "........"
         ]
       }
     }
@@ -44,7 +46,7 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 6
+    "n": 5
   },
   "rules": [
     {
@@ -71,9 +73,9 @@
       "params": {
         "flip_mode": "axis",
         "flip_to_axis": "-x",
-        "flip_every_layers": 2,
-        "flip_every_ms": 50000,
-        "flip_warn_ms": 2000,
+        "flip_every_layers": 10,
+        "flip_every_ms": 120000,
+        "flip_warn_ms": 4000,
         "flip_max": 1
       }
     },
@@ -85,8 +87,8 @@
     }
   ],
   "stars": {
-    "t2": 380000,
-    "t3": 270000
+    "t2": 565000,
+    "t3": 400000
   },
   "music": "mus_candy_09",
   "story": {
@@ -97,6 +99,7 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "funny",
     "source": "design/levels/candy.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -172,9 +175,9 @@
           "params": {
             "flip_mode": "axis",
             "flip_to_axis": "-x",
-            "flip_every_layers": 2,
-            "flip_every_ms": 50000,
-            "flip_warn_ms": 2000,
+            "flip_every_layers": 10,
+            "flip_every_ms": 120000,
+            "flip_warn_ms": 4000,
             "flip_max": 1
           }
         },
@@ -208,6 +211,17 @@
         "params": {}
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "production/qa/campaign-difficulty-review-2026-10-10.md",
+        "change": "Staged introduction: the single axis flip now arrives by time (~120 s, 4 s warning) so goo and licorice locking are learned under normal gravity first."
+      },
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 6 -> 5; time stars x1.48"
+      }
+    ]
   }
 }

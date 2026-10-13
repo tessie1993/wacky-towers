@@ -4,20 +4,20 @@
   "biome": "ice",
   "tier": 6,
   "board": {
-    "width": 7,
+    "width": 8,
     "depth": 8,
     "h_play": 8,
     "starting_contents": {
       "layers": {
         "0": [
-          ".n...n.",
-          ".......",
-          ".......",
-          ".......",
-          ".......",
-          ".......",
-          ".......",
-          "......."
+          ".n...n..",
+          "........",
+          "........",
+          "........",
+          "........",
+          "........",
+          "........",
+          "........"
         ]
       }
     }
@@ -31,24 +31,24 @@
     "target_shape": {
       "layers": {
         "0": [
-          "...+...",
-          "..+++..",
-          "..+++..",
-          "..+++..",
-          ".+++++.",
-          ".+++++.",
-          "+++++++",
-          "+++++++"
+          "...+....",
+          "..+++...",
+          "..+++...",
+          "..+++...",
+          ".+++++..",
+          ".+++++..",
+          "+++++++.",
+          "+++++++."
         ],
         "1": [
-          ".......",
-          ".......",
-          ".......",
-          "..+++..",
-          ".......",
-          "...+...",
-          "...+...",
-          "......."
+          "........",
+          "........",
+          "........",
+          "..+++...",
+          "........",
+          "...+....",
+          "...+....",
+          "........"
         ]
       }
     }
@@ -89,6 +89,7 @@
   "name": "LVL_ICE_06_TITLE",
   "seed": null,
   "metadata": {
+    "level_type": "completing",
     "source": "design/levels/ice.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -185,6 +186,12 @@
     "nonblocking_notes": [],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 7x8 -> 8x8 (offset x0 z0)"
+      }
+    ]
   }
 }

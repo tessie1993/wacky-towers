@@ -4,55 +4,60 @@
   "biome": "candy",
   "tier": 14,
   "board": {
-    "width": 7,
-    "depth": 7,
+    "width": 8,
+    "depth": 8,
     "h_play": 14,
     "mask": [
-      ".#####.",
-      "#######",
-      "#######",
-      "#######",
-      "#######",
-      "#######",
-      ".#####."
+      ".#####.#",
+      "########",
+      "########",
+      "########",
+      "########",
+      "########",
+      ".#####.#",
+      "########"
     ],
     "starting_contents": {
       "layers": {
         "0": [
-          ".sssss.",
-          "sssssss",
-          "sssssss",
-          "sssssss",
-          "sssssss",
-          "sssssss",
-          ".sssss."
+          ".sssss..",
+          "sssssss.",
+          "sssssss.",
+          "sssssss.",
+          "sssssss.",
+          "sssssss.",
+          ".sssss..",
+          "........"
         ],
         "1": [
-          ".sssss.",
-          "sssssss",
-          "sssssss",
-          "sssssss",
-          "sssssss",
-          "sssssss",
-          ".sssss."
+          ".sssss..",
+          "sssssss.",
+          "sssssss.",
+          "sssssss.",
+          "sssssss.",
+          "sssssss.",
+          ".sssss..",
+          "........"
         ],
         "2": [
-          ".sssss.",
-          "sssssss",
-          "sssssss",
-          "sssssss",
-          "sssssss",
-          "sssssss",
-          ".sssss."
+          ".sssss..",
+          "sssssss.",
+          "sssssss.",
+          "sssssss.",
+          "sssssss.",
+          "sssssss.",
+          ".sssss..",
+          "........"
         ],
         "3": [
-          ".sssss.",
-          "sssssss",
-          "sssssss",
-          "sssssss",
-          "sssssss",
-          "sssssss",
-          ".sssss."
+          ".sssss..",
+          "sssssss.",
+          "sssssss.",
+          "sssssss.",
+          "sssssss.",
+          "sssssss.",
+          ".sssss..",
+          "........"
         ]
       }
     }
@@ -114,6 +119,7 @@
     ]
   },
   "metadata": {
+    "level_type": "defender",
     "source": "design/levels/candy.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
@@ -220,6 +226,12 @@
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 7x7 -> 8x8 (offset x0 z0)"
+      }
+    ]
   }
 }

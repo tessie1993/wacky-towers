@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
 ## Runtime coverage of campaign data, earned-star gates, economy bounds and crash-safe profiles.
 
-func test_all_official_levels_validate_and_main_path_has_one_hundred() -> void:
+func test_all_official_levels_validate_and_main_path_has_one_hundred_ten() -> void:
 	var content: WtContent = WtContent.new()
 	content.load_catalog()
 	assert_array(content.errors).is_empty()
@@ -9,7 +9,8 @@ func test_all_official_levels_validate_and_main_path_has_one_hundred() -> void:
 	for entry: Dictionary in content.all_levels():
 		if int(entry.tier) <= 10: mains += 1
 		assert_object(content.level(str(entry.id))).is_not_null()
-	assert_int(mains).is_equal(100)
+	# Eleven biomes (Tumble Fair after Celestial) x ten main levels.
+	assert_int(mains).is_equal(110)
 
 func test_next_biome_requires_finale_and_fifteen_earned_stars() -> void:
 	var records: Dictionary = {"meadow_10": {"stars": 1}}

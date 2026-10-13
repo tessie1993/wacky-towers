@@ -5,12 +5,21 @@
   "tier": 3,
   "name": "LVL_CARNIVAL_03_TITLE",
   "board": {
-    "width": 6,
-    "depth": 6,
+    "width": 8,
+    "depth": 8,
     "h_play": 10
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
   },
   "knobs": {
     "fall.g0": 1.28,
@@ -19,15 +28,31 @@
   },
   "goal": {
     "type": "clear_n",
-    "n": 5
+    "n": 4
   },
   "rules": [
-    { "id": "fever_rush", "params": { "window_ms": 7000, "clears_needed": 2, "fever_ms": 8000, "bonus": 100, "gravity_scale": 0.6 } },
-    { "id": "turntable", "params": { "turn_every_locks": 6, "turn_dir": "cw", "turn_warn_locks": 1 } }
+    {
+      "id": "fever_rush",
+      "params": {
+        "window_ms": 7000,
+        "clears_needed": 2,
+        "fever_ms": 8000,
+        "bonus": 100,
+        "gravity_scale": 0.6
+      }
+    },
+    {
+      "id": "turntable",
+      "params": {
+        "turn_warn_locks": 1,
+        "turn_locks": 6,
+        "clockwise": true
+      }
+    }
   ],
   "stars": {
-    "t2": 410000,
-    "t3": 290000
+    "t2": 585000,
+    "t3": 410000
   },
   "music": "carnival_03_tbd",
   "story": {
@@ -38,21 +63,72 @@
   },
   "seed": null,
   "metadata": {
+    "level_type": "twist",
     "source": "design/levels/carnival.md",
     "status": "Authored; awaiting playtest",
     "design_spec": {
-      "schema": 1, "id": "carnival_03", "biome": "carnival", "tier": 3, "name": "LVL_CARNIVAL_03_TITLE",
-      "board": { "width": 6, "depth": 6, "h_play": 10 },
-      "pieces": { "shapes": ["i","o","t","l","s","tripod","screw_l","screw_r"] },
-      "knobs": { "fall.g0": 1.28, "goal.warnings_max": 1, "goal.top_out": "rescue" },
-      "goal": { "type": "clear_n", "N": 5 },
+      "schema": 1,
+      "id": "carnival_03",
+      "biome": "carnival",
+      "tier": 3,
+      "name": "LVL_CARNIVAL_03_TITLE",
+      "board": {
+        "width": 6,
+        "depth": 6,
+        "h_play": 10
+      },
+      "pieces": {
+        "shapes": [
+          "i",
+          "o",
+          "t",
+          "l",
+          "s",
+          "tripod",
+          "screw_l",
+          "screw_r"
+        ]
+      },
+      "knobs": {
+        "fall.g0": 1.28,
+        "goal.warnings_max": 1,
+        "goal.top_out": "rescue"
+      },
+      "goal": {
+        "type": "clear_n",
+        "N": 5
+      },
       "rules": [
-        { "id": "fever_rush", "params": { "window_ms": 7000, "clears_needed": 2, "fever_ms": 8000, "bonus": 100, "gravity_scale": 0.6 } },
-        { "id": "turntable", "params": { "turn_every_locks": 6, "turn_dir": "cw", "turn_warn_locks": 1 } }
+        {
+          "id": "fever_rush",
+          "params": {
+            "window_ms": 7000,
+            "clears_needed": 2,
+            "fever_ms": 8000,
+            "bonus": 100,
+            "gravity_scale": 0.6
+          }
+        },
+        {
+          "id": "turntable",
+          "params": {
+            "turn_every_locks": 6,
+            "turn_dir": "cw",
+            "turn_warn_locks": 1
+          }
+        }
       ],
-      "stars": { "t2": 410000, "t3": 290000 },
+      "stars": {
+        "t2": 410000,
+        "t3": 290000
+      },
       "music": "carnival_03_tbd",
-      "story": { "title_key": "LVL_CARNIVAL_03_TITLE", "premise_key": "LVL_CARNIVAL_03_PREMISE", "mascot_role": "watcher", "icon": "carousel" }
+      "story": {
+        "title_key": "LVL_CARNIVAL_03_TITLE",
+        "premise_key": "LVL_CARNIVAL_03_PREMISE",
+        "mascot_role": "watcher",
+        "icon": "carousel"
+      }
     },
     "unsupported": [],
     "blocking_gameplay": [],
@@ -62,6 +138,12 @@
     ],
     "tuning": "Initial estimates; no playtest medians",
     "canonical_rule_mapping": [],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "user decision: single-board levels are 8x8 or bigger",
+        "change": "Board 6x6 -> 8x8 (offset x1 z1); clear_n 5 -> 4; time stars x1.42"
+      }
+    ]
   }
 }
