@@ -8,21 +8,21 @@ const SKY_SHADER := preload("res://prototypes/style_rnd/sky_proto_painted.gdshad
 
 ## Biome presets: key light colour/energy, fill, ambient, sky and fog colours.
 const PRESETS := {
-	"meadow": {"key": Color("fff0d6"), "key_e": 1.35, "fill": Color("b8c4ff"), "fill_e": 0.35,
-		"back": Color("ffe0a8"), "back_e": 0.55, "amb": Color("c9c3e6"), "amb_e": 0.55,
+	"meadow": {"key": Color("fff0d6"), "key_e": 0.9, "fill": Color("b8c4ff"), "fill_e": 0.2,
+		"back": Color("ffe0a8"), "back_e": 0.3, "amb": Color("c9c3e6"), "amb_e": 0.42,
 		"sky_top": Color("6fa8ea"), "sky_hor": Color("fde8cc"), "sky_low": Color("d9e4f7"),
 		"fog": Color("dfe6f6"), "fog_d": 0.012, "sat": 1.12, "con": 1.06, "bri": 1.02},
-	"ice": {"key": Color("f2f6ff"), "key_e": 1.25, "fill": Color("a9c8ff"), "fill_e": 0.45,
-		"back": Color("e8d8ff"), "back_e": 0.5, "amb": Color("c4d2f2"), "amb_e": 0.6,
+	"ice": {"key": Color("f2f6ff"), "key_e": 0.95, "fill": Color("a9c8ff"), "fill_e": 0.3,
+		"back": Color("e8d8ff"), "back_e": 0.3, "amb": Color("c4d2f2"), "amb_e": 0.5,
 		"sky_top": Color("8fb2e8"), "sky_hor": Color("eef0ff"), "sky_low": Color("dfe8fb"),
 		"fog": Color("e6ecfa"), "fog_d": 0.014, "sat": 1.05, "con": 1.04, "bri": 1.03},
-	"celestial": {"key": Color("e9dcff"), "key_e": 1.1, "fill": Color("8a7cff"), "fill_e": 0.5,
-		"back": Color("ffd890"), "back_e": 0.7, "amb": Color("6a5a9e"), "amb_e": 0.6,
+	"celestial": {"key": Color("e9dcff"), "key_e": 0.85, "fill": Color("8a7cff"), "fill_e": 0.35,
+		"back": Color("ffd890"), "back_e": 0.45, "amb": Color("6a5a9e"), "amb_e": 0.5,
 		"sky_top": Color("140f3a"), "sky_hor": Color("4b2f86"), "sky_low": Color("23184f"),
 		"fog": Color("3a2a6e"), "fog_d": 0.01, "sat": 1.15, "con": 1.08, "bri": 1.0},
 }
 
-static func make_environment(biome := "meadow", tonemap := Environment.TONE_MAPPER_FILMIC) -> Environment:
+static func make_environment(biome := "meadow", tonemap := Environment.TONE_MAPPER_AGX) -> Environment:
 	var p: Dictionary = PRESETS[biome]
 	var env := Environment.new()
 	var sky_mat := ShaderMaterial.new()
@@ -71,7 +71,7 @@ static func add_light_rig(parent: Node3D, biome := "meadow", cam_yaw_deg := 45.0
 	var p: Dictionary = PRESETS[biome]
 	var key := DirectionalLight3D.new(); key.name = "Key"
 	key.light_color = p.key; key.light_energy = p.key_e
-	key.rotation_degrees = Vector3(-52.0, cam_yaw_deg - 40.0, 0.0)
+	key.rotation_degrees = Vector3(-50.0, cam_yaw_deg - 75.0, 0.0)
 	key.shadow_enabled = true
 	key.shadow_opacity = 0.7          # shadows stay coloured, never black
 	key.shadow_blur = 1.5
@@ -80,13 +80,14 @@ static func add_light_rig(parent: Node3D, biome := "meadow", cam_yaw_deg := 45.0
 	key.light_angular_distance = 1.5
 	var fill := DirectionalLight3D.new(); fill.name = "Fill"
 	fill.light_color = p.fill; fill.light_energy = p.fill_e
-	fill.rotation_degrees = Vector3(-25.0, cam_yaw_deg + 140.0, 0.0)
+	fill.rotation_degrees = Vector3(-20.0, cam_yaw_deg + 105.0, 0.0)
 	var back := DirectionalLight3D.new(); back.name = "Back"
 	back.light_color = p.back; back.light_energy = p.back_e
 	back.rotation_degrees = Vector3(-20.0, cam_yaw_deg + 180.0 + 10.0, 0.0)
 	for l in [key, fill, back]: parent.add_child(l)
 	return [key, fill, back]
 
+## cam_yaw_deg = rad_to_deg(atan2(cam.x - target.x, cam.z - target.z)).
 ## Rounded box ("chunky") mesh: cube grid pushed onto a box with radius r. Smooth normals.
 static func rounded_box(size := Vector3.ONE, r := 0.12, n := 14) -> ArrayMesh:
 	var st := SurfaceTool.new()

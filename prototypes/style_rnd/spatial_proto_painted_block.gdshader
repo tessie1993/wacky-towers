@@ -6,9 +6,9 @@ shader_type spatial;
 render_mode cull_back;
 
 // --- paint ---
-uniform vec3 body_color : source_color = vec3(0.54, 0.35, 0.20);   // dirt #8a5a34
-uniform vec3 body_dark : source_color = vec3(0.31, 0.18, 0.10);    // #4e2f1a
-uniform vec3 cap_color : source_color = vec3(0.37, 0.68, 0.24);    // grass
+uniform vec3 body_color : source_color = vec3(0.60, 0.43, 0.29);   // dirt #9a6e4a
+uniform vec3 body_dark : source_color = vec3(0.42, 0.29, 0.20);    // #6b4a33
+uniform vec3 cap_color : source_color = vec3(0.36, 0.62, 0.22);    // grass
 uniform vec3 cap_light : source_color = vec3(0.62, 0.86, 0.36);    // #8fd05a-ish
 uniform vec3 cap_dark : source_color = vec3(0.18, 0.42, 0.14);
 uniform float cap_y : hint_range(-0.6, 2.0) = 0.18;  // local Y where the cap starts (>0.5 = no cap)
@@ -25,7 +25,7 @@ uniform float band_soft : hint_range(0.01, 1.0) = 0.35;           // soft 2-tone
 uniform vec3 rim_color : source_color = vec3(1.0, 0.93, 0.78);
 uniform float rim_power = 3.0;
 uniform float rim_strength = 0.45;
-uniform float edge_light = 0.35;   // painted lit bevel on rounded edges
+uniform float edge_light = 0.3;   // painted lit bevel on rounded edges
 uniform float gloss = 0.35;
 uniform float ao_strength = 0.45;  // painted contact darkening at the bottom
 
@@ -85,7 +85,7 @@ void fragment() {
 		col = mix(col, grass, cap);
 	}
 	// painted lit bevel: edges facing up/key get lighter, like a highlight stroke
-	col = mix(col, col * 1.35 + vec3(0.05), edge * edge_light * clamp(wn.y * 0.7 + 0.3, 0.0, 1.0));
+	col = mix(col, col * 1.25 + vec3(0.03), edge * edge_light * clamp(wn.y * 0.7 + 0.3, 0.0, 1.0));
 	// painted AO toward the bottom (contact) - not physical, art-directed
 	col *= mix(1.0, smoothstep(-0.55, -0.15, p.y), ao_strength);
 	ALBEDO = col;
@@ -97,10 +97,11 @@ void light() {
 	float ndl = dot(NORMAL, LIGHT);
 	// wrap + soft 2-tone band = painted form shading
 	float w = (ndl + wrap) / (1.0 + wrap);
-	float band = smoothstep(0.0, band_soft, w) * 0.7 + clamp(w, 0.0, 1.0) * 0.3;
+	// half soft 2-tone band (painted plane change) + half true lambert (keeps faces distinct)
+	float band = smoothstep(0.0, band_soft, w) * 0.5 + clamp(ndl, 0.0, 1.0) * 0.5;
 	float lit = band * ATTENUATION;
 	// shadow side is tinted (cool purple), lit side keeps light colour
-	vec3 diff = mix(shadow_tint * 0.35, vec3(1.0), lit);
+	vec3 diff = mix(shadow_tint * 0.18, vec3(1.0), lit);
 	DIFFUSE_LIGHT += diff * LIGHT_COLOR / PI;
 	// soft painted highlight blob
 	vec3 hv = normalize(LIGHT + VIEW);

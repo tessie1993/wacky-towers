@@ -8,18 +8,18 @@
   "h": 256
  },
  "frame_purple": {
-  "left": 186,
-  "top": 186,
-  "right": 186,
-  "bottom": 186,
+  "left": 236,
+  "top": 236,
+  "right": 236,
+  "bottom": 236,
   "w": 512,
   "h": 512
  },
  "frame_purple_open": {
-  "left": 186,
-  "top": 186,
-  "right": 186,
-  "bottom": 186,
+  "left": 236,
+  "top": 236,
+  "right": 236,
+  "bottom": 236,
   "w": 512,
   "h": 512
  },

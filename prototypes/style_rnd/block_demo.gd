@@ -24,7 +24,7 @@ func _run() -> void:
 	var ground := MeshInstance3D.new()
 	ground.mesh = Kit.rounded_box(Vector3(14, 0.2, 14), 0.05, 4)
 	ground.position = Vector3(0, -0.1, 0)
-	ground.material_override = Kit.prop_material(Color("f3e6c8"), Color("e9d6ae"), {"edge_light": 0.0, "ao_strength": 0.0, "rim_strength": 0.0, "gloss": 0.0, "paint_scale": 0.6})
+	ground.material_override = Kit.prop_material(Color("e6d4ae"), Color("dcc79c"), {"edge_light": 0.0, "ao_strength": 0.0, "rim_strength": 0.0, "gloss": 0.0, "paint_scale": 0.6})
 	world.add_child(ground)
 
 	var box := Kit.rounded_box(Vector3.ONE * 0.98, 0.13, 14)
