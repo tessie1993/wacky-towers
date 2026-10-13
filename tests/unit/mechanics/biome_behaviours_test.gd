@@ -128,10 +128,30 @@ func test_flip_max_one_prevents_second_axis_change() -> void:
 	var api: RuleApi = F.api(F.board(), {"flip_every_layers": 2, "flip_every_ms": 0, "flip_max": 1, "flip_mode": "axis", "flip_to_axis": "-x"})
 	var rule := FlipRule.new()
 	F.handle(rule, &"on_clear", api, {"clear_count": 2})
+	# The layer trigger only warns; the flip lands once the warning window passes.
+	assert_int(api.take_requests().size()).is_equal(0)
+	api.set_time(2000)
+	F.handle(rule, &"on_tick", api, {"clear_count": 2})
 	assert_int(api.take_requests().size()).is_equal(2)
 	F.handle(rule, &"on_resolve_end", api, {"clear_count": 2})
 	F.handle(rule, &"on_clear", api, {"clear_count": 4})
+	api.set_time(10000)
+	F.handle(rule, &"on_tick", api, {"clear_count": 4})
 	assert_int(api.take_requests().size()).is_equal(0)
+
+
+func test_layer_triggered_flip_warns_before_it_lands() -> void:
+	var api: RuleApi = F.api(F.board(), {"flip_every_layers": 1, "flip_every_ms": 0, "flip_warn_ms": 3000, "flip_mode": "stack"})
+	var rule := FlipRule.new()
+	F.handle(rule, &"on_clear", api, {"clear_count": 1})
+	assert_bool(rule.snapshot().warned).is_true()
+	assert_bool(rule.snapshot().pending).is_false()
+	api.set_time(2999)
+	F.handle(rule, &"on_tick", api, {"clear_count": 1})
+	assert_bool(rule.snapshot().pending).is_false()
+	api.set_time(3000)
+	F.handle(rule, &"on_tick", api, {"clear_count": 1})
+	assert_bool(rule.snapshot().pending).is_true()
 
 
 func test_top_arrival_honours_anchor_and_spawn_layer_in_six_axes() -> void:

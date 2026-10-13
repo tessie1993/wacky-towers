@@ -71,9 +71,9 @@
       "params": {
         "flip_mode": "axis",
         "flip_to_axis": "-x",
-        "flip_every_layers": 2,
-        "flip_every_ms": 50000,
-        "flip_warn_ms": 2000,
+        "flip_every_layers": 10,
+        "flip_every_ms": 120000,
+        "flip_warn_ms": 4000,
         "flip_max": 1
       }
     },
@@ -172,9 +172,9 @@
           "params": {
             "flip_mode": "axis",
             "flip_to_axis": "-x",
-            "flip_every_layers": 2,
-            "flip_every_ms": 50000,
-            "flip_warn_ms": 2000,
+            "flip_every_layers": 10,
+            "flip_every_ms": 120000,
+            "flip_warn_ms": 4000,
             "flip_max": 1
           }
         },
@@ -208,6 +208,12 @@
         "params": {}
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "production/qa/campaign-difficulty-review-2026-10-10.md",
+        "change": "Staged introduction: the single axis flip now arrives by time (~120 s, 4 s warning) so goo and licorice locking are learned under normal gravity first."
+      }
+    ]
   }
 }

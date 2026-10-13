@@ -32,7 +32,7 @@
     {
       "id": "event_card",
       "params": {
-        "event_card_locks": 6,
+        "event_card_locks": 8,
         "no_repeat": true,
         "pool": [
           {
@@ -88,10 +88,10 @@
       "id": "lava_lid",
       "params": {
         "mode": "lid",
-        "lid_first_s": 90,
+        "lid_first_s": 150,
         "lid_every_s": 40,
         "lid_max": 2,
-        "lid_warn_ms": 3000,
+        "lid_warn_ms": 5000,
         "lid_push_per_clear": 1
       }
     }
@@ -144,7 +144,7 @@
         {
           "id": "event_card*",
           "params": {
-            "event_card_locks": 6,
+            "event_card_locks": 8,
             "no_repeat": true,
             "pool": [
               {
@@ -200,10 +200,10 @@
           "id": "lava_lid*",
           "params": {
             "mode": "lid",
-            "lid_first_s": 90,
+            "lid_first_s": 150,
             "lid_every_s": 40,
             "lid_max": 2,
-            "lid_warn_ms": 3000,
+            "lid_warn_ms": 5000,
             "lid_push_per_clear": 1
           }
         }
@@ -227,7 +227,7 @@
         "source": "event_card*",
         "runtime": "event_card",
         "params": {
-          "event_card_locks": 6,
+          "event_card_locks": 8,
           "no_repeat": true,
           "pool": [
             {
@@ -284,14 +284,20 @@
         "runtime": "lava_lid",
         "params": {
           "mode": "lid",
-          "lid_first_s": 90,
+          "lid_first_s": 150,
           "lid_every_s": 40,
           "lid_max": 2,
-          "lid_warn_ms": 3000,
+          "lid_warn_ms": 5000,
           "lid_push_per_clear": 1
         }
       }
     ],
-    "design_amendments": []
+    "design_amendments": [
+      {
+        "date": "2026-10-13",
+        "source": "production/qa/campaign-difficulty-review-2026-10-10.md",
+        "change": "Event card (lock 8, ~60-70 s) and lava lid (150 s, 5 s warning) are now introduced separately."
+      }
+    ]
   }
 }
