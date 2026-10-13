@@ -1,14 +1,15 @@
 class_name WtBlockMesh extends RefCounted
 ## Procedural chunky "toy" cube: a unit cube (edge 1.0, centred on the origin) with rounded
-## edges and corners and smooth normals. 300 triangles versus 1728 for the candy_toy GLB.
+## edges and corners and smooth normals. 588 triangles (7x7 quads per face) versus 1728 for the
+## candy_toy GLB; three bevel rings give the chunky round edge of ref 13.
 ## Used by the block shader (spatial_block_biome.gdshader), which reads VERTEX/NORMAL in
 ## object space, so it works with both this mesh and the GLB cube.
 ## Usage: var mesh: ArrayMesh = WtBlockMesh.cube()   # cached, shared
 
 ## Bevel radius in cube units. Matches the look of the reference toy cubes.
-const BEVEL := 0.11
+const BEVEL := 0.13
 ## Normalised offsets inside the bevel where extra rings are placed (0 = flat face, 1 = 45 deg).
-const RING_STEPS: Array[float] = [1.0, 0.42]
+const RING_STEPS: Array[float] = [1.0, 0.62, 0.26]
 
 static var _cached: ArrayMesh = null
 
@@ -20,7 +21,7 @@ static func cube() -> ArrayMesh:
 	return _cached
 
 
-## Builds a rounded cube. Per face a 5x5 quad grid: bevel, half-bevel, flat middle, half-bevel, bevel.
+## Builds a rounded cube. Per face a 7x7 quad grid: three bevel rings, flat middle, three bevel rings.
 static func build(bevel: float) -> ArrayMesh:
 	var half: float = 0.5 - bevel
 	# Grid stops along one face axis, in "cube surface" coordinates (-0.5 .. 0.5).

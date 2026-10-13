@@ -5,6 +5,7 @@ class_name WtBlockMaterials extends RefCounted
 
 const LOOKS_PATH := "res://assets/data/biome_looks.json"
 const SHADER_PATH := "res://src/view/shaders/spatial_block_biome.gdshader"
+const GHOST_SHADER_PATH := "res://src/view/shaders/spatial_block_ghost.gdshader"
 
 static var _looks: Dictionary = {}
 
@@ -29,7 +30,7 @@ static func for_biome(biome: StringName) -> ShaderMaterial:
 	for key: String in ["cap_color", "body_color", "accent_color", "glow_color"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), Color(String(record[key])))
-	for key: String in ["cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt"]:
+	for key: String in ["cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt", "translucency"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), float(record[key]))
 	# Sky-tinted rim and fake reflection: the biome's horizon colour, lifted toward white.
@@ -38,6 +39,14 @@ static func for_biome(biome: StringName) -> ShaderMaterial:
 		material.set_shader_parameter(&"rim_color", Color(String(record["rim_color"])))
 	elif sky.size() >= 2:
 		material.set_shader_parameter(&"rim_color", Color(String(sky[1])).lerp(Color.WHITE, 0.25))
+	return material
+
+
+## Glassy landing-ghost material: translucent body, fresnel sheen and a glowing edge in the
+## piece colour (instance COLOR). Usage: mmi.material_override = WtBlockMaterials.ghost_material()
+static func ghost_material() -> ShaderMaterial:
+	var material := ShaderMaterial.new()
+	material.shader = load(GHOST_SHADER_PATH) as Shader
 	return material
 
 
