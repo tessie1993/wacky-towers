@@ -148,7 +148,7 @@ func _play_level(id: String, first: bool) -> Dictionary:
 		row.method = "CRASHED"
 		return row
 	for attempt: int in 2:
-		if _screen() == "story" or String(_main.get("_story_phase")) == "pre":
+		if _screen() == "story":
 			row.pre_story = true
 			if attempt == 1: row.issues.append("pre-level story replays on Retry")
 			if attempt == 0: await _story(row, "%s_%s_story_pre" % [n, id])

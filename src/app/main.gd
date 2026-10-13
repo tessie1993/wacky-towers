@@ -33,7 +33,6 @@ var _warning: String = ""
 var _hint: String = ""
 var _wobble: Dictionary = {}
 var _preview_level: bool = false
-var _story_phase: String = ""
 var _pending_results: Dictionary = {}
 var _architecture: WtArchitecture
 var _physics: WtPhysicsChallenge
@@ -181,19 +180,6 @@ func _execute_intent(id: StringName, args: Dictionary) -> void:
 			_show_map()
 		&"open_level": _show_intro(StringName(args.get("level_id", DEFAULT_LEVEL)))
 		&"start_level": _start_level(StringName(args.get("level_id", _level_id)))
-		&"story_done":
-			if String(args.get("story_key", "")) != String(_level_id) + "_" + _story_phase: return
-			if _story_phase == "pre" and _sim != null:
-				_story_phase = ""
-				_paused = false
-				_store.set_playing(true)
-				_input.reset()
-				_architecture.lifecycle(&"session_countdown" if _sim.get_phase() == BoardSim.Phase.COUNTDOWN else &"session_begin")
-				_ui.show_hud(_hud_snapshot())
-				_stage.set_board_area(_ui.board_area())
-			elif _story_phase == "post":
-				_story_phase = ""
-				_ui.show_results(_pending_results)
 		&"open_tools": _show_tools()
 		&"pick_shape", &"choose_down", &"flick", &"undo", &"reset":
 			_puzzle_intent(id, args)
@@ -496,15 +482,6 @@ func _begin_session(level: LevelData) -> void:
 	_architecture.lifecycle(&"session_countdown" if _sim.get_phase() == BoardSim.Phase.COUNTDOWN else &"session_begin", {"mode": _mode, "level_id": level.id})
 	_ui.show_hud(_hud_snapshot())
 	_stage.set_board_area(_ui.board_area())
-	if _mode == &"campaign" and not _smoke:
-		var story: Dictionary = WtStoryData.snapshot(level.id, "pre", _saved_stars(level.id)>0)
-		if not story.get("beats", []).is_empty():
-			_story_phase = "pre"
-			_paused = true
-			_store.set_playing(false)
-			_architecture.lifecycle(&"intro", {"level_id":level.id, "story":"pre"})
-			story["skippable"] = true
-			_ui.show_story(story)
 
 func _clear_session() -> void:
 	_stop_physics()
@@ -518,7 +495,6 @@ func _clear_session() -> void:
 		_official_stage = null
 	_pending_item = ""
 	_selected_item_slot = 0
-	_story_phase = ""
 	_pending_results.clear()
 	_warning = ""
 	_hint = ""
@@ -632,7 +608,6 @@ func _finish_level() -> void:
 	if result == null: return
 	_architecture.lifecycle(&"session_end", {"mode": _mode, "won": result.is_won()})
 	var earned: Dictionary = {}
-	var replay: bool = _saved_stars(_level_id) > 0
 	_store.set_playing(false)
 	if _store.has_method("commit_inventory"): _store.call("commit_inventory")
 	if _mode == &"campaign" and result.is_won() and not _preview_level:
@@ -643,12 +618,6 @@ func _finish_level() -> void:
 		"level_id": _level_id, "level_name": _level_name(_level_id) if _mode == &"campaign" else "Arcade run",
 		"next_available": _mode == &"campaign" and result.is_won() and _next_level() != &"",
 		"message": "Design preview: omitted mechanics remain in the coverage report; this run grants no stars." if _preview_level and _mode == &"campaign" else "+%d points" % int(earned.get("award", 0)) if result.is_won() else "Every attempt teaches you something. Try a new angle!", "mode": _mode}
-	if _mode == &"campaign" and result.is_won() and not _preview_level:
-		var story: Dictionary = WtStoryData.snapshot(_level_id,"post",replay)
-		if not story.get("beats",[]).is_empty():
-			_story_phase = "post"
-			_ui.show_story(story)
-			return
 	_ui.show_results(_pending_results)
 
 func _check_round() -> void:
@@ -679,9 +648,6 @@ func _refresh_hud() -> void:
 	if _architecture.snapshot().state == &"countdown" and _sim.get_phase() != BoardSim.Phase.COUNTDOWN:
 		_architecture.lifecycle(&"session_begin", {"mode": _mode})
 	_ui.update_hud(_hud_snapshot())
-	if _story_phase != "":
-		_ui.hide_countdown()
-		return
 	if _sim.get_phase() == BoardSim.Phase.SELECTING and _ui.current_screen != "tools":
 		_show_tools()
 		return

@@ -69,17 +69,6 @@ func _run():
     assert(seen[-1].id==&"undo")
     press(ui,"Reset this puzzle  ↻")
     assert(seen[-1].id==&"reset")
-    ui.show_story({"story_key":"meadow_01","phase":"post","beats":[{"left":"cloud","right":"pip","emote_left":"sparkle","emote_right":"heart","symbol":"basket","pose_left":"wave","pose_right":"give","duration":.15}]})
-    assert(ui.current_screen=="story")
-    await create_timer(.2).timeout
-    assert(seen[-1].id==&"story_done" and seen[-1].args.story_key=="meadow_01")
-    ui.show_story({"story_key":"meadow_02","phase":"post","beats":[{"duration":1}]})
-    press(ui,"→")
-    assert(seen[-1].id==&"story_done" and seen[-1].args.story_key=="meadow_02")
-    ui.show_story({"story_key":"intro","phase":"pre","beats":[{"duration":.15}]})
-    assert(ui.handle_back() and ui.current_screen=="story")
-    await create_timer(.2).timeout
-    assert(seen[-1].id==&"story_done" and seen[-1].args.phase=="pre")
     ui.show_pause()
     press(ui,"Restart…")
     assert(ui.current_screen=="confirm")
