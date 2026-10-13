@@ -17,10 +17,14 @@ float fbm(vec2 p) { return vn(p) * 0.5 + vn(p * 2.1) * 0.3 + vn(p * 4.3) * 0.2; 
 
 void sky() {
 	float y = EYEDIR.y;
-	vec3 c = y > 0.0 ? mix(horizon, top, smoothstep(0.0, 0.6, y)) : mix(horizon, low, smoothstep(0.0, -0.3, y));
+	// Painted backdrop: gradient by SCREEN position (a camera looking down still gets blue
+	// sky at the top of the phone screen and a warm horizon/cloud sea at the bottom).
+	float sy = AT_CUBEMAP_PASS ? 0.5 - y * 0.5 : SCREEN_UV.y;
+	vec3 c = mix(top, horizon, smoothstep(0.05, 0.75, sy));
+	c = mix(c, low, smoothstep(0.75, 1.0, sy));
 	// Cumulus band near the horizon: puffy because the noise is thresholded softly.
 	vec2 uv = EYEDIR.xz / max(abs(y) + 0.25, 0.05) * 1.6;
-	float cl = smoothstep(0.45, 0.75, fbm(uv + vec2(3.0, 1.0))) * smoothstep(0.55, 0.02, abs(y + 0.05)) * cloud_amount;
+	float cl = smoothstep(0.42, 0.7, fbm(uv + vec2(3.0, 1.0))) * (smoothstep(0.35, 0.9, sy) + 0.35 * smoothstep(0.4, 0.0, sy)) * cloud_amount;
 	vec3 cloud_col = mix(vec3(1.0, 0.97, 0.94), horizon, 0.25) * (0.92 + 0.12 * fbm(uv * 3.0));
 	c = mix(c, cloud_col, cl);
 	float s = step(0.996, h21(floor(EYEDIR.xy * 300.0 + EYEDIR.z * 91.0))) * stars * smoothstep(0.0, 0.3, y);

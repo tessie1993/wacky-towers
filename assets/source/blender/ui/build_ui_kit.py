@@ -264,7 +264,8 @@ class NT:
         return self.m
 
 
-def mat_wood(name, palette=("wood_purple_dark", "wood_purple", "wood_purple_light"), grain="X", seed=0.0, grain_scale=1.0):
+def mat_wood(name, palette=("wood_purple_dark", "wood_purple", "wood_purple_light"), grain="X", seed=0.0, grain_scale=1.0,
+             groove=0.35, wear=None):
     t = NT(name)
     sc = (0.35 * grain_scale, 4.0 * grain_scale, 1) if grain == "X" else (4.0 * grain_scale, 0.35 * grain_scale, 1)
     co = t.obj_coords(sc)
@@ -278,8 +279,8 @@ def mat_wood(name, palette=("wood_purple_dark", "wood_purple", "wood_purple_ligh
     g = t.math("MULTIPLY", (wave, "Fac"), (noise, "Fac"))
     g = t.math("ADD", g, 0.25)
     base = t.ramp(g, [(0.15, palette[0]), (0.42, palette[1]), (0.7, palette[1]), (0.95, palette[2])])
-    colr = t.painted_edges(base, palette[2], palette[0])
-    return t.finish(colr, rough=0.6, bump=(wave, "Fac"), bump_strength=0.35)
+    colr = t.painted_edges(base, wear or palette[2], palette[0], strength=1.0 if wear is None else 1.6)
+    return t.finish(colr, rough=0.6, bump=g, bump_strength=groove)
 
 
 def mat_gold(name="gold", face="gold", deep="gold_deep", glint="gold_glint", coat=0.7):
@@ -333,6 +334,57 @@ def mat_parchment(name, hw, hh, r, burn_w=0.10):
     c = t.mix(t.math("POWER", burn_f, 1.3), c, col("burn"))
     c = t.painted_edges(c, "fff8e6", "b88a52", strength=0.6)
     return t.finish(c, rough=0.85, spec=0.15, bump=(noise, "Fac"), bump_strength=0.08)
+
+
+def mat_gold_face(hh):
+    """Gold pill face: light gold at the top to deeper amber at the bottom, faint mottling."""
+    t = NT("gold_face")
+    co = t.obj_coords()
+    sep = t.n("ShaderNodeSeparateXYZ")
+    t.l(co[0], 0, sep, 0)
+    fy = t.math("ADD", t.math("MULTIPLY", (sep, 1), 0.5 / hh), 0.5, clamp=True)
+    noise = t.n("ShaderNodeTexNoise", in_Scale=3.0, in_Detail=2.0)
+    t.l(co[0], 0, noise, "Vector")
+    grad = t.ramp(t.math("ADD", fy, t.math("MULTIPLY", (noise, "Fac"), 0.08)),
+                  [(0.0, "e08a12"), (0.45, "f5b22c"), (0.8, "ffd451"), (1.0, "ffe27a")])
+    colr = t.painted_edges(grad, "fff0a8", "b86e0a", strength=1.1)
+    return t.finish(colr, rough=0.28, coat=0.8, spec=0.6)
+
+
+def mat_gloss(hw, hh, peak=0.75):
+    """Soft glossy highlight: alpha fades toward the ends (|x|^3) and toward the bottom."""
+    m = bpy.data.materials.new("gloss")
+    m.use_nodes = True
+    t = m.node_tree
+    t.nodes.clear()
+    def node(kind, **kw):
+        n = t.nodes.new(kind)
+        for k, v in kw.items(): setattr(n, k, v)
+        return n
+    def mth(op, a, b):
+        n = node("ShaderNodeMath", operation=op, use_clamp=True)
+        for i, v in enumerate((a, b)):
+            if isinstance(v, (int, float)): n.inputs[i].default_value = v
+            else: t.links.new(v, n.inputs[i])
+        return n.outputs[0]
+    tc = node("ShaderNodeTexCoord")
+    sep = node("ShaderNodeSeparateXYZ")
+    t.links.new(tc.outputs["Object"], sep.inputs[0])
+    ax = mth("DIVIDE", mth("ABSOLUTE", sep.outputs[0], 0), hw)
+    fx = mth("SUBTRACT", 1.0, mth("POWER", ax, 3.0))
+    fy = mth("POWER", mth("ADD", mth("DIVIDE", sep.outputs[1], 2 * hh), 0.5), 1.6)
+    fac = mth("MULTIPLY", mth("MULTIPLY", fx, fy), peak)
+    out = node("ShaderNodeOutputMaterial")
+    em = node("ShaderNodeEmission")
+    em.inputs[0].default_value = col("fffbe8")
+    em.inputs[1].default_value = 1.0
+    tr = node("ShaderNodeBsdfTransparent")
+    mx = node("ShaderNodeMixShader")
+    t.links.new(fac, mx.inputs[0])
+    t.links.new(tr.outputs[0], mx.inputs[1])
+    t.links.new(em.outputs[0], mx.inputs[2])
+    t.links.new(mx.outputs[0], out.inputs[0])
+    return m
 
 
 def mat_streak():
@@ -453,21 +505,23 @@ def build_frame_purple(open_center=False):
         hw = S / 2 - T + 0.12
         rslab("parch", hw * 2, hw * 2, 0.18, 0.06, 0.03, z, mat_parchment("parch_in", hw, hw, 0.18, 0.12))
     # Dark inner bevel ring under the planks (frame reads raised over the content).
-    inner = rr_pts(S - 2 * T + 0.04, S - 2 * T + 0.04, 0.1)
-    outer = rr_pts(S - 2 * T + 0.32, S - 2 * T + 0.32, 0.2)
-    slab("bevel", [outer, inner], 0.16, 0.05, z, mat_plain("bev", "wood_purple_dark", "6b4a8a", "1f1430", rough=0.7))
+    inner = rr_pts(S - 2 * T - 0.1, S - 2 * T - 0.1, 0.12)
+    outer = rr_pts(S - 2 * T + 0.4, S - 2 * T + 0.4, 0.22)
+    slab("bevel", [outer, inner], 0.2, 0.07, z, mat_plain("bev", "2e1d40", "4a3266", "140b20", rough=0.7))
     # Four planks: top/bottom rails overhang the side posts with rounded ends.
-    wh = mat_wood("wood_h", grain="X", seed=1.3, grain_scale=0.6)
-    wv = mat_wood("wood_v", grain="Y", seed=4.1, grain_scale=0.6)
+    wh = mat_wood("wood_h", grain="X", seed=1.3, grain_scale=0.6, groove=0.9, wear="c9ace6")
+    wv = mat_wood("wood_v", grain="Y", seed=4.1, grain_scale=0.6, groove=0.9, wear="c9ace6")
     rail_w = S
     for sy in (1, -1):
         cy = sy * (S / 2 - T / 2)
         rslab("rail", rail_w, T, 0.3, 0.4, 0.13, z + 0.06, wh, cy=cy)
         # plank seam
-        rslab("seam", rail_w - 0.5, 0.025, 0.012, 0.02, 0.008, z + 0.39, mat_plain("seam", "3f2a55", "3f2a55", "2a1b3a"), cy=cy + sy * 0.05)
+        for off in (-0.2, 0.18):
+            rslab("seam", rail_w - 0.6, 0.045, 0.02, 0.03, 0.012, z + 0.45, mat_plain("seam", "2a1b3a", "3f2a55", "160e22", rough=0.9), cy=cy + off)
     for sx in (1, -1):
         cx = sx * (S / 2 - T / 2 - 0.1)
         rslab("post", T - 0.14, S - 2 * T + 0.3, 0.14, 0.34, 0.11, z + 0.04, wv, cx=cx)
+        rslab("pseam", 0.045, S - 2 * T - 0.2, 0.02, 0.03, 0.012, z + 0.37, mat_plain("pseam", "2a1b3a", "3f2a55", "160e22", rough=0.9), cx=cx + 0.08 * sx)
     # Corner caps: steel bracket + gold star + rivets.
     for sx in (1, -1):
         for sy in (1, -1):
@@ -476,21 +530,17 @@ def build_frame_purple(open_center=False):
             gold_star(cx, cy, z + 0.58, 0.3, M["gold"], depth=0.12)
             for (rx, ry) in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
                 rivet(cx + rx * T * 0.32, cy + ry * T * 0.32, z + 0.6, 0.05, M["gold"])
-    # Vines from the top-left and bottom-right corners, blossoms near the corners only.
+    # Vines wrap each corner: along the rail, over the inner plank edge, down the post.
     e = S / 2
-    vz = z + 0.66
-    vine(lerp_path([(-e + 0.75, e - 0.15), (-e + 1.2, e - 0.35), (-e + 1.65, e - 0.12)], 26, 0.05, 1.5), vz, M, radius=0.055, leaf_size=0.17,
-         leaves=6, flowers=[(-e + 1.05, e - 0.12, 0.17), (-e + 1.5, e - 0.4, 0.14)], seed=3)
-    vine(lerp_path([(-e + 0.15, e - 0.75), (-e + 0.35, e - 1.2), (-e + 0.12, e - 1.65)], 26, 0.05, 1.5), vz, M, radius=0.055, leaf_size=0.17,
-         leaves=6, flowers=[(-e + 0.4, e - 1.05, 0.15)], seed=4)
-    vine(lerp_path([(e - 0.75, -e + 0.15), (e - 1.2, -e + 0.35), (e - 1.65, -e + 0.12)], 26, 0.05, 1.5), vz, M, radius=0.055, leaf_size=0.17,
-         leaves=6, flowers=[(e - 1.1, -e + 0.12, 0.17), (e - 1.45, -e + 0.42, 0.14)], seed=5)
-    vine(lerp_path([(e - 0.15, -e + 0.75), (e - 0.35, -e + 1.2), (e - 0.12, -e + 1.65)], 26, 0.05, 1.5), vz, M, radius=0.055, leaf_size=0.17,
-         leaves=6, flowers=[(e - 0.4, -e + 1.1, 0.15)], seed=6)
-    vine(lerp_path([(e - 0.75, e - 0.15), (e - 1.2, e - 0.3), (e - 1.5, e - 0.12)], 22, 0.04, 1.2), vz, M, radius=0.05, leaf_size=0.16,
-         leaves=5, flowers=[(e - 1.1, e - 0.1, 0.15)], seed=7)
-    vine(lerp_path([(-e + 0.75, -e + 0.15), (-e + 1.2, -e + 0.3), (-e + 1.5, -e + 0.12)], 22, 0.04, 1.2), vz, M, radius=0.05, leaf_size=0.16,
-         leaves=5, flowers=[(-e + 1.1, -e + 0.1, 0.15)], seed=8)
+    vz = z + 0.7
+    for k, (sx, sy) in enumerate(((-1, 1), (1, -1), (1, 1), (-1, -1))):
+        big = k < 2
+        P = lambda a, b: (sx * (e - a), sy * (e - b))
+        path = [P(2.05, 0.28), P(1.45, 0.62), P(0.95, 1.02), P(0.62, 0.62), P(0.95, 0.4), P(1.1, 1.0), P(0.66, 1.5), P(0.3, 2.05)]
+        if not big: path = path[2:7]
+        fl = [P(1.4, 0.55) + (0.17,), P(0.98, 1.0) + (0.19,), P(0.5, 1.6) + (0.15,)] if big else [P(0.9, 0.95) + (0.16,)]
+        vine(lerp_path(path, 60 if big else 40, 0.06, 2.0), vz, M, radius=0.075 if big else 0.06, leaf_size=0.19,
+             leaves=11 if big else 6, flowers=fl, seed=20 + k)
     m = 236  # 2x px: plank + caps + vines stay in the fixed corners
     return render("frame_purple_open" if open_center else "frame_purple", (m, m, m, m))
 
@@ -569,15 +619,15 @@ def build_plaque_title():
 
 def build_pill(name, face, lip, rim, w_px=320, h_px=128, star=False):
     reset(w_px, h_px)
-    face, lip, rim = face(), lip(), rim()  # factories: materials must be made after reset()
     W, H = (w_px - 20) / 100, (h_px - 22) / 100
-    lip_h = 0.11
+    lip_h = 0.17
+    fh = H - 0.1 - lip_h
+    face, lip, rim = face(fh / 2), lip(), rim()  # factories: materials must be made after reset()
     rslab("rim", W, H, H / 2, 0.16, 0.05, 0.0, rim)
     rslab("lip", W - 0.08, H - 0.08, (H - 0.08) / 2, 0.26, 0.07, 0.03, lip)
-    fh = H - 0.1 - lip_h
     rslab("face", W - 0.12, fh, fh / 2, 0.24, 0.09, 0.14, face, cy=lip_h / 2 + 0.01)
-    sw, sh = W - fh * 1.3, fh * 0.15
-    rslab("streak", sw, sh, sh / 2, 0.01, 0.004, 0.39, mat_streak(), cy=lip_h / 2 + fh * 0.26)
+    sw, sh = W - fh * 0.75, fh * 0.42
+    g = rslab("gloss", sw, sh, sh / 2, 0.01, 0.004, 0.39, mat_gloss(sw / 2, sh / 2), cy=lip_h / 2 + fh * 0.2)
     lr = int(round(H * 100 / 2 + 12))
     return render(name, (lr, 44, lr, 54))
 
@@ -704,9 +754,9 @@ PIECES = {
     "panel_parchment": build_panel_parchment,
     "panel_wood": build_panel_wood,
     "plaque_title": build_plaque_title,
-    "btn_gold": lambda: build_pill("btn_gold", lambda: mat_gold("btn_gold_face"), lambda: mat_plain("glip", "gold_deep", "e0a030", "8a5410", rough=0.4, coat=0.4),
+    "btn_gold": lambda: build_pill("btn_gold", lambda hh: mat_gold_face(hh), lambda: mat_plain("glip", "d27a08", "f0a020", "8e4a04", rough=0.35, coat=0.5),
                                    lambda: mat_plain("grim", "6a3a14", "8a5a34", "3a1e0a")),
-    "btn_cream": lambda: build_pill("btn_cream", lambda: mat_plain("cface", "cream", "ffffff", "e2c995", rough=0.4, coat=0.4, edge=0.8),
+    "btn_cream": lambda: build_pill("btn_cream", lambda hh: mat_plain("cface", "cream", "ffffff", "e2c995", rough=0.4, coat=0.4, edge=0.8),
                                     lambda: mat_plain("clip", "8a5a34", "b07a48", "4e2f1a", rough=0.5), lambda: mat_plain("crim", "4e2f1a", "6a4024", "2a160a")),
     "btn_close": build_btn_close,
     "chip_hud": lambda: build_chip("meadow", "chip_hud"),

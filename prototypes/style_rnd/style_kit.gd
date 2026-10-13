@@ -10,16 +10,16 @@ const SKY_SHADER := preload("res://prototypes/style_rnd/sky_proto_painted.gdshad
 const PRESETS := {
 	"meadow": {"key": Color("fff0d6"), "key_e": 0.9, "fill": Color("b8c4ff"), "fill_e": 0.2,
 		"back": Color("ffe0a8"), "back_e": 0.3, "amb": Color("c9c3e6"), "amb_e": 0.42,
-		"sky_top": Color("6fa8ea"), "sky_hor": Color("fde8cc"), "sky_low": Color("d9e4f7"),
-		"fog": Color("dfe6f6"), "fog_d": 0.012, "sat": 1.12, "con": 1.06, "bri": 1.02},
+		"sky_top": Color("4f94e6"), "sky_hor": Color("cfe6fb"), "sky_low": Color("fff4e6"),
+		"fog": Color("dfe6f6"), "fog_d": 0.012, "sat": 1.28, "con": 1.06, "bri": 1.02},
 	"ice": {"key": Color("f2f6ff"), "key_e": 0.95, "fill": Color("a9c8ff"), "fill_e": 0.3,
 		"back": Color("e8d8ff"), "back_e": 0.3, "amb": Color("c4d2f2"), "amb_e": 0.5,
-		"sky_top": Color("8fb2e8"), "sky_hor": Color("eef0ff"), "sky_low": Color("dfe8fb"),
-		"fog": Color("e6ecfa"), "fog_d": 0.014, "sat": 1.05, "con": 1.04, "bri": 1.03},
+		"sky_top": Color("7f9fe0"), "sky_hor": Color("d9e2fb"), "sky_low": Color("f4f6ff"),
+		"fog": Color("e6ecfa"), "fog_d": 0.014, "sat": 1.18, "con": 1.04, "bri": 1.03},
 	"celestial": {"key": Color("e9dcff"), "key_e": 0.85, "fill": Color("8a7cff"), "fill_e": 0.35,
 		"back": Color("ffd890"), "back_e": 0.45, "amb": Color("6a5a9e"), "amb_e": 0.5,
 		"sky_top": Color("140f3a"), "sky_hor": Color("4b2f86"), "sky_low": Color("23184f"),
-		"fog": Color("3a2a6e"), "fog_d": 0.01, "sat": 1.15, "con": 1.08, "bri": 1.0},
+		"fog": Color("3a2a6e"), "fog_d": 0.01, "sat": 1.25, "con": 1.08, "bri": 1.0},
 }
 
 static func make_environment(biome := "meadow", tonemap := Environment.TONE_MAPPER_AGX) -> Environment:
@@ -52,9 +52,14 @@ static func make_environment(biome := "meadow", tonemap := Environment.TONE_MAPP
 	env.set_glow_level(0, 0.0); env.set_glow_level(1, 0.0); env.set_glow_level(2, 1.0)
 	env.set_glow_level(3, 1.0); env.set_glow_level(4, 0.6)
 	# Aerial perspective: distant islands melt into a lavender-blue haze.
+	# DEPTH fog (not exponential): the board stays crisp, only far islands haze out.
 	env.fog_enabled = true
+	env.fog_mode = Environment.FOG_MODE_DEPTH
 	env.fog_light_color = p.fog
-	env.fog_density = p.fog_d
+	env.fog_density = 1.0
+	env.fog_depth_begin = 28.0
+	env.fog_depth_end = 110.0
+	env.fog_depth_curve = 1.0
 	env.fog_sky_affect = 0.0
 	env.fog_aerial_perspective = 0.0
 	# Grading: a touch more saturation and contrast = the "premium mobile" punch.

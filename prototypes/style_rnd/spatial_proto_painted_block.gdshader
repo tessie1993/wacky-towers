@@ -30,7 +30,7 @@ uniform float gloss = 0.35;
 uniform float ao_strength = 0.45;  // painted contact darkening at the bottom
 
 varying vec3 lp;
-varying float edge;
+uniform vec3 half_size = vec3(0.5); // mesh half extents (edge mask in fragment, no tri artifacts)
 
 float h21(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float vn(vec2 p) {
@@ -45,10 +45,6 @@ float around(vec3 p) { return p.x + p.z + (abs(p.x) > abs(p.z) ? 0.0 : 3.0); }
 void vertex() {
 	lp = VERTEX;
 	// edge = how close the vertex is to a rounded edge (second-largest |axis| -> 0.5)
-	vec3 a = abs(VERTEX);
-	float mx = max(a.x, max(a.y, a.z));
-	float mid = a.x + a.y + a.z - mx - min(a.x, min(a.y, a.z));
-	edge = smoothstep(0.36, 0.5, mid);
 	if (cap_y < 0.5) {
 		float band = smoothstep(cap_y - 0.06, cap_y + 0.10, VERTEX.y);
 		float rag = 0.6 + 0.8 * vn(vec2(around(VERTEX) * 6.0 + seed, 0.0));
@@ -59,6 +55,11 @@ void vertex() {
 
 void fragment() {
 	vec3 p = lp;
+	// rounded-edge mask per pixel: second-largest normalised axis approaching the box surface
+	vec3 a = abs(p) / half_size;
+	float amx = max(a.x, max(a.y, a.z));
+	float amid = a.x + a.y + a.z - amx - min(a.x, min(a.y, a.z));
+	float edge = smoothstep(0.72, 1.0, amid);
 	vec2 side_uv = vec2(around(p), p.y);
 	vec3 wn = (INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz;
 	// ---- body: dirt with painted strata and pebbles

@@ -19,15 +19,15 @@ func _run() -> void:
 	var world := Node3D.new(); root.add_child(world)
 	var we := WorldEnvironment.new(); we.environment = Kit.make_environment(biome); world.add_child(we)
 	var cam := Camera3D.new(); cam.fov = 42.0; world.add_child(cam)
-	var cam_pos := Vector3(11.5, 12.5, 11.5)
-	cam.look_at_from_position(cam_pos, Vector3(0, -0.6, 0)); cam.current = true
+	var cam_pos := Vector3(15.5, 15.0, 15.5)
+	cam.look_at_from_position(cam_pos, Vector3(0, -2.4, 0)); cam.current = true
 	Kit.add_light_rig(world, biome, rad_to_deg(atan2(cam_pos.x, cam_pos.z)))
 
 	var ice := biome == "ice"
 	# ---- island chunk: rim slab with biome cap + 3 painted strata bands, tapering down
 	var rim := MeshInstance3D.new(); rim.mesh = Kit.rounded_box(Vector3(10.6, 0.8, 10.6), 0.35, 12)
 	rim.position = Vector3(0, -0.4, 0)
-	rim.material_override = Kit.painted_material({"cap_y": 0.12, "cap_drip": 0.12, "cap_lip": 0.0,
+	rim.material_override = Kit.painted_material({"half_size": Vector3(5.3, 0.4, 5.3), "cap_y": 0.12, "cap_drip": 0.12, "cap_lip": 0.0,
 		"pebbles": 0.0, "paint_scale": 1.2, "edge_light": 0.2, "ao_strength": 0.0,
 		"cap_color": Color("eef4ff") if ice else Color("5c9e38"), "cap_light": Color("ffffff") if ice else Color("9bd65e"),
 		"cap_dark": Color("b9c8e8") if ice else Color("2f6a24")})
@@ -46,9 +46,9 @@ func _run() -> void:
 		for z in 8:
 			var t := MeshInstance3D.new(); t.mesh = tile
 			t.position = Vector3(x - 3.5, 0.05, z - 3.5)
-			var base := Color("cfe0f2") if ice else Color("d6cbbb")
+			var base := Color("b9cbe2") if ice else Color("bdb2a2")
 			var v := rng.randf_range(-0.04, 0.04)
-			t.material_override = Kit.prop_material(base.lightened(v), base.darkened(0.25 - v), {"paint_scale": 2.0, "edge_light": 0.45, "gloss": 0.2, "seed": float(x * 8 + z)})
+			t.material_override = Kit.prop_material(base.lightened(v), base.darkened(0.25 - v), {"half_size": Vector3(0.48, 0.15, 0.48), "paint_scale": 2.0, "edge_light": 0.45, "gloss": 0.2, "seed": float(x * 8 + z)})
 			world.add_child(t)
 	# ---- rim dressing: flowers, clover, bushes (never on the grid)
 	for k in 70:
@@ -115,7 +115,12 @@ func _chunk(rt: float, rb: float, h: float, n: int, jit: float) -> ArrayMesh:
 	for i in n:
 		var k := (i + 1) % n
 		for tri in [[top[i], top[k], bot[k]], [top[i], bot[k], bot[i]], [c_top, top[k], top[i]], [c_bot, bot[i], bot[k]]]:
-			var nrm: Vector3 = (tri[2] - tri[0]).cross(tri[1] - tri[0]).normalized()
+			# force outward normals and Godot's clockwise front faces
+			var cen: Vector3 = (tri[0] + tri[1] + tri[2]) / 3.0
+			var outward: Vector3 = cen - Vector3(0, -h * 0.5, 0)
+			var cr: Vector3 = (tri[1] - tri[0]).cross(tri[2] - tri[0])
+			if cr.dot(outward) > 0.0: tri = [tri[0], tri[2], tri[1]]; cr = -cr
+			var nrm: Vector3 = -cr.normalized()
 			for v in tri: st.set_normal(nrm); st.add_vertex(v)
 	return st.commit()
 
@@ -148,10 +153,10 @@ func _hud() -> void:
 	var chip_meta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(chip_path)) if FileAccess.file_exists(chip_path) else frame_meta
 	var chip_tex := Kit.load_tex("res://prototypes/style_rnd/renders/" + str(chip_meta.texture), 256)
 	# screen frame: centre NOT drawn, so the 3D board shows through
-	var frame := Kit.frame_patch(Kit.load_tex("res://prototypes/style_rnd/renders/frame_purple_vine.png", 384), int(frame_meta.margin_left), 1024, false)
+	var frame := Kit.frame_patch(Kit.load_tex("res://prototypes/style_rnd/renders/frame_purple_screen.png", 384), int(frame_meta.margin_left), 1024, false)
 	frame.position = Vector2(-14, -14); frame.size = Vector2(748, 1308); layer.add_child(frame)
 	# top chips
-	for spec in [[Vector2(250, 70), Vector2(210, 150), "SCORE", "1,250"], [Vector2(480, 70), Vector2(170, 150), "NEXT", ""]]:
+	for spec in [[Vector2(235, 62), Vector2(220, 150), "SCORE", "1,250"], [Vector2(475, 62), Vector2(170, 150), "NEXT", ""]]:
 		var chip := Kit.frame_patch(chip_tex, int(chip_meta.margin_left), 1024)
 		chip.position = spec[0]; chip.size = spec[1]; layer.add_child(chip)
 		var l := Kit.label(spec[2], fredoka, 22); l.position = spec[0] + Vector2(spec[1].x / 2 - 30, 28); layer.add_child(l)
