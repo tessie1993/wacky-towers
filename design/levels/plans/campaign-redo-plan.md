@@ -93,3 +93,7 @@ owner revises and the gate re-runs. No phase starts before the one it depends on
   (`design/levels/plans/mechanics-handbook.md`) explaining every rule and goal a player meets.
 - 2026-10-14: no "clear N layers" goals, at least 4 non-obvious endings per biome, never mundane
   (user). See level-identity-spec.md § User rules.
+- 2026-10-14: **peril tone is real tension** in Lava and Neon. These are darker moments with a real sense
+  of loss before the comeback. They stay kid-safe, with no on-screen harm (user).
+- 2026-10-14: **the ending** is the Carnival boss plus a bonus celebration. The hard levels (h1–h3) in
+  each biome are an optional epilogue, "the villain strikes back" (user).
