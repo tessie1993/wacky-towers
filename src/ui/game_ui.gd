@@ -1363,8 +1363,9 @@ func _build_hud() -> void:
 	meter.color = Kit.biome_rim(biome)[1].lerp(Kit.LEAF_LIGHT, 0.4)
 	meter.custom_minimum_size = Vector2(200 if _portrait else 240, 48)
 	meter.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	meter.visible = _hud_has("meter")
 	var meter_def: Dictionary = (_hud_data.get("hud", {}) as Dictionary).get("meter", {}) if _hud_data.get("hud", {}) is Dictionary else {}
+	# A meter needs a level-defined label; levels with no `hud.meter` never show one.
+	meter.visible = _hud_has("meter") and not meter_def.is_empty()
 	var meter_key := str(meter_def.get("label_key", ""))
 	var meter_label := str(meter_def.get("label", "Progress"))
 	meter.caption = meter_label if meter_key.is_empty() or tr(meter_key) == meter_key else tr(meter_key)
