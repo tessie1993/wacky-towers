@@ -37,6 +37,13 @@ Reviewers had scored it higher, which was too lenient.
 - 9.7 means a screenshot could sit next to the reference boards in `assets/art/reference/` and pass as the same game.
   "Better than before" is not a score.
 
+**Second anchor (user, 2026-10-14):** "Scene variety should not have gotten 9.0 out of 10 but 3. All scenes were square grids. Not varied at all."
+**Scene variety as it stands scores 3/10.** The data backs this up: 163 of 168 levels use the same 8×8 square board, and only 9 have a mask.
+
+- A scene variety score above 3 must name what changed: the board footprint (not square), the set pieces and what the camera shows.
+- A plan cannot score higher than the build that carries it out. Good writing about variety is not variety.
+- Two levels on the same square footprint with only a reskin count as the same scene.
+
 ## How work is judged: reviewers instruct, makers fix
 
 1. Makers (UI, world, blocks, characters, levels, audio agents) change things and capture

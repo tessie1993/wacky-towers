@@ -117,6 +117,15 @@ owner revises and the gate re-runs. No phase starts before the one it depends on
   (`reference-study-defence.md`). `reference-study-mockups.md` is an input to phase 4.
 - 2026-10-14 (user): the party island board is relevant except for its Nintendo figurines (`assets/art/reference/index.md`).
 
+- 2026-10-14 (user): **"Minigames are the level."** Every campaign level is a minigame and follows the
+  minigame principles in `minigame-party-rules.md`: one clear goal, taught in 3 seconds, short and
+  intense, a themed meter, a story payoff. **A game mechanic is the base of each level** (one or two per level).
+  The level spec starts from its mechanic, not from a board.
+- 2026-10-14 (user): scene variety scores **3/10**. Every scene was a square grid (163 of 168 levels are 8×8).
+  New hard rule: **no two levels in a biome share a board footprint.** Each level has its own `mask`
+  shape (ring, bridge, stair, island chain, hull, L, cross, crescent and so on) or its own size. A plain
+  square is allowed at most once per biome. Phase 3 uniqueness script checks footprint, mechanic and goal.
+
 ## Extra tasks
 - Phase 3: `tools/qa/check_level_uniqueness.gd`, owned by tools-programmer (about 2 days). It reads the
   `level_table` blocks and reports observations only.
