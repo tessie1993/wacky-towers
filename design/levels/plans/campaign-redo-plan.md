@@ -91,3 +91,5 @@ owner revises and the gate re-runs. No phase starts before the one it depends on
   each mechanic works. (3) Only then make the level art and the level code. Step 2 has two outputs:
   the per-level specs (phase 4) and a plain-words **mechanics handbook**
   (`design/levels/plans/mechanics-handbook.md`) explaining every rule and goal a player meets.
+- 2026-10-14: no "clear N layers" goals, at least 4 non-obvious endings per biome, never mundane
+  (user). See level-identity-spec.md § User rules.

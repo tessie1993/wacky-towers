@@ -53,3 +53,30 @@ biome repeats the same tier template. This spec sets the rules every level must 
 Owners:
 - Engine and view (`look` support, presets, set pieces, weather): src/view and the new data files.
 - Level data (all `board`, `goal`, `rules`, `look` and `metadata.signature` values): level JSONs.
+
+## User rules, 2026-10-14 (later): no mundane "clear N layers", endings that surprise
+
+User: "Also levels must never be 'clear so many layers'. Level end must not be obvious from the start
+sometimes. And so mundane."
+
+- **No plain layer-count goals.** `clear_n` is no longer a level's headline goal. Clearing layers can
+  serve another goal (it charges the beacon, bonks the boss, drains the flood), but the goal the player
+  reads is always a **story objective**: raise the lookout high enough to spot the ship, fill the dam
+  shape before the tide, keep the wizard's cloud from popping, rescue the stranded critters, and so on.
+  The HUD shows the story objective, never "Clear N full layers".
+- **Endings that are not obvious from the start:** at least 4 of the 14 levels in each biome end in a
+  way the player can't predict from the first frame. Patterns:
+  - **Twist:** the goal changes mid-level. The tower is finished, then the storm arrives and you
+    must survive it.
+  - **Reveal:** the real objective is hidden at first and revealed by a story moment. The "lookout" is
+    really bait for the kraken.
+  - **Surprise guest:** the boss or ally arrives partway through and changes the rules.
+  - **Secret ending:** an optional hidden condition gives an alternate ending and an extra star.
+  - **Story-resolved end:** the level ends when the story beat resolves (the critter is home), not
+    when a counter fills.
+  These patterns must stay fair: telegraph them, and never punish a player for not knowing a hidden
+  rule. Mark each one in `metadata.ending` as plain, twist, reveal, guest, secret or story.
+- **Never mundane:** every level has a moment, an event in the first 10 seconds and a payoff on the
+  win. The swap test from the vision (P1) applies.
+- **Engine needs** (phase 3 or the build): goal phases (goal A, then goal B), hidden or revealed
+  goals, story-objective HUD text, and ending events. The systems designer specifies these.
