@@ -612,3 +612,13 @@ Each has a recommended option first.
   rights it.
 - **Cargo rides on top of your build.** The basket (or picnic hamper) sits on the highest block. You must build a
   stable, level seat for it. It wobbles and warns before it falls, so you get a chance to save it.
+
+## 9. User decisions on the moving platform, round 3 (2026-10-14, after the G8 r2 panel)
+
+- **No clock, limited tries.** The moving-platform levels drop the time limit. You get 3 tries (hearts) per run. A loss
+  (topple past the limit, or the cargo is lost) costs a heart and returns you to the last post. Losing all 3 fails the
+  level. This replaces the time limit from section 8.
+- **Taller means more stars.** Any build can finish. Stars come from how tall your cart or basket stack is at the
+  finish line (fewer hearts lost may also count). This is the reward for risk against the lean danger.
+- **Updrafts lift to reach rings.** On the kite race, updrafts lift the basket towards high rings the player must pass
+  through. A light build rises more, and a heavy build stays low and misses the ring.

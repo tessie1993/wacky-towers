@@ -1359,33 +1359,43 @@ Rows: **MSH** mushroom, hail, geyser spawn; **GOO** goo spread; **SPR** sprout g
 
 **Explicit rules.**
 - **R-1 Bounce on plain.** The pad fires when any piece cube sits directly on it (`bounce_pad.gd:26-30`). Rise is `rise = min(bounce_h, free cells above)` then one cell in the last move direction.
-- **R-2 One displacement.** Only the first of bounce, jelly, ice acts per piece. NEW, 0.5 day, gameplay-programmer.
-- **R-3 Bounce or slide meets a critter.** Critters are not cells that pieces can overlap. A displacement that would put a piece cube on a critter cell is blocked, as any blocked step is (`try_translate` returns blocked).
-- **R-4 Goo spreads into free cells only.** It never replaces a cube. A goo cell in a full layer clears with the layer like any cell.
-- **R-5 Goo meets a critter.** Goo does not spread onto a critter. A critter next to goo is not stuck. There is no sticky-critter rule, to keep the read simple.
-- **R-6 Ice slide on plain.** The slide direction is the last move (`ice_slide.gd` uses a fixed `slide_dir`; the ice CUBE variant BK-35 uses last move and is NEW).
-- **R-7 Blasts do not chain.** Blast removal uses `Cause.DAMAGE`. Clear hooks run on clears, so a blast removing another bomb does not detonate it. If the blast completes a layer, that layer clears in the one allowed extra clear pass and any bomb cleared there then detonates (once). `ART-CHECK` that `remove_cell(..., DAMAGE)` does not fire `on_clear`. This bounds every chain to 2 blasts per lock. Knob `bomb_chain_passes` (default 1).
-- **R-8 Blast meets a critter or gem or key.** Protected objects carry `anchored` while a goal needs them (`gem_safe`, `critter_safe` flags set by the level). Unprotected ones are removed and a gem is lost. A mole removed this way is NOT rescued (`dig_rescue_goal.gd:2`).
-- **R-9 Fixed meets critter.** A critter never walks into an anchored cell. A critter on a cell that becomes anchored (a hung cube dropping beside it) is unaffected.
-- **R-10 Pest meets non-plain.** A pest eats only `block` and `starter` kinds (`pest.gd:49`). It never eats a special, a critter, a gem, a key cube or an anchored cell.
+- **R-1b Flight tie-break.** [G 1] Gust before magnet, fixed in the plugin registry. NEW, 0.25 day.
+- **R-2 One displacement (landing arbiter).** [G 2] NEW. Only the first of bounce, jelly, ice slide, ice cube acts per piece. A `braced` piece (SH-06) cancels one push first. The arbiter reads and writes shared piece flags, so it is a core-adjacent change in `board_sim` hook order, not a single plugin edit. See 3.7 GAP-2 for the size.
+- **R-3 Displacement meets a critter.** A critter that is an actor (lamb, herd animal) is not a cell, so a piece cannot overlap it: the walker steps aside before the lock (OB-27). A critter that is a cube (egg, chick, mole, gem) is a cell, so a displacement into it is blocked like any occupied cell (`try_translate` returns blocked, `bounce_pad.gd:35`).
+- **R-4 Goo spreads into free cells only.** [C] `goo_spread.gd:27`. It never replaces a cube. Under the r2 redesign a goo cell blocks its layer and is washed by an adjacent clear (BK-07).
+- **R-5 Goo meets a critter.** [C] Goo does not spread onto an occupied cell. A critter next to goo is not stuck. No sticky-critter rule.
+- **R-6 Ice slide direction.** [C] `ice_slide.gd` uses a fixed `slide_dir` param (`:18`). The ice CUBE BK-35 is NEW and slides along the last move [G 2].
+- **R-7 Blasts do not chain.** [C] (resolved from code, not `ART-CHECK`). A blast removes cells with cause DAMAGE through `remove_cell`, which only queues a write (`rule_api.gd:278-282`). The `on_clear` hook is fired only from the clear loop (`board_sim.gd:1422`). So a blast that removes another candy bomb does NOT detonate it, and a blast does not defuse a countdown bomb (`countdown_bomb.gd:9-15` runs on `on_clear`). If the blast completes a layer, that layer clears in the one allowed extra clear pass (README lines 55-57), and a candy bomb cleared there detonates once. So a chain is at most 2 blasts per lock. Knob `bomb_chain_passes` (default 1).
+- **R-8 Blast meets a gem, key target, critter or cargo.** [T] A blast uses cause DAMAGE. `anchored` does NOT protect a cell from DAMAGE (`board_state.gd:687`), so the r1 text "protected objects carry `anchored`" was wrong and is removed. Protection is the NEW `blast_safe` flag (a level sets `goal_object` while a goal needs the object, 3.1b, GAP-3). An unprotected gem is lost with no points. A mole removed this way is NOT rescued (`dig_rescue_goal.gd:2`).
+- **R-9 Fixed meets critter.** A critter walker never steps into an anchored or fixed cell (they are not free). A critter on a cell that gains `hung` is unaffected.
+- **R-10 Pest meets non-plain.** [C] A pest eats only `block` and `starter` kinds (`pest.gd:49`). It never bites a special kind, a critter cube, a gem, or any cell whose kind is not block or starter. It does bite a plain cube that is `hung`, because `hung` does not block DAMAGE.
+- **R-12 Sticky vetoes displacement.** [G 3] NEW. See Order rule 3.
+- **R-13 Goo needs support.** [G 6] NEW, 0.25 day. A goo target cell must have a cube or the floor directly below it, as `mushroom_popup.gd:30` requires. Today `goo_spread.gd:25-27` has no such check, so goo can float.
 
 **Notes for specials not in the grid.**
-- **Frosting, locked cube, licorice, sponge:** these react to adjacent clears, not to piece-flight. A blast removes frosting at once (it is not anchored) and removes locked cubes at once. `ART-CHECK` whether blast damage respects `clear_protected`. Design intent proposed: blast damage peels 1 coat from frosting and removes everything else except `anchored`.
+- **Frosting, locked cube, licorice, sponge:** these react to adjacent clears, not to piece-flight (their `on_clear` hooks, 3.1b note 5). Resolved from `can_remove`: a blast removes frosting at once (`clear_protected` blocks only CLEAR) and removes locked cubes at once. Licorice and the climber boss are removed by a blast (anchored allows DAMAGE). The sponge is `fixed`, so a blast never touches it. The design choice is to keep this behaviour; protecting the boss uses `blast_safe`.
 - **Status shells (7):** a cube holds one at a time (`block-status-effects.md` rule 1). A new status replaces the old one unless the old one's rule ranks higher.
 - **Fog:** hides visuals only. Collision is unchanged, so every row above is the same with fog on.
 - **Sprout:** grows into a free cell above its tip. It never pushes a piece. Blasts remove sprout cells. Pests do not eat them (a pest eats `block` and `starter` only, `pest.gd:49`).
-- **Wobble and tilt:** both ignore anchored and fixed kinds (`tilt_plate.gd:26` excludes `fixed_kinds`, default rock). Heavy pieces count double (SH-10, F7).
-- **Belt, turntable, piston, flip:** move cells and keep identity and status through the move (README). Specials ride with them. Anchored cells are not allowed with a belt that would move them (validator, `obstacles.md` rule 10).
-- **Items and skills:** Smash and bomb never remove `fixed` or `static_geometry` cells. Stitch vetoes `stack.shift` and `stack.remove` but is beaten by level mechanics (`skills.md` rule 14).
+- **Tilt:** `tilt_plate` excludes the kinds in `fixed_kinds` (default rock) from the weight sum (`tilt_plate.gd:26`). It removes the heavy-half top cubes with cause TRIM, so anchored, fixed and `hung` cells resist the slip (3.1b). Heavy pieces count double (SH-10, F7). [C] for the exclusion, [G 5] for weights.
+- **Wobble:** `wobble.gd` slips the latest piece's cubes with a move; `fixed`, `locked` and `anchored` cells cannot move (`can_move`, `board_state.gd:677-679`). [T]
+- **Belt, turntable, piston, flip:** move cells with `move_cells`, which keeps identity and status (README line 59). `can_move` blocks fixed, locked and anchored cells, so a belt that meets one jams or the validator rejects the level (`obstacles.md` rule 10). [T]
+- **Fire and burning (NEW):** [G 4]. Cause DAMAGE; the status-by-cause table decides who survives.
+- **Rescue:** [T] row "Rescue wipe" in Matrix B. A rescue is not a clear and fires no `on_clear` hooks.
+- **Honey (BK-23b) and goo:** sticky, [G 3].
+- **Items and skills:** Smash skips `fixed` and `locked` cells only (`wt_abilities.gd:202`), so it removes anchored licorice and the climber boss unless `blast_safe`. The bomb item uses DAMAGE as well. Stitch vetoes `stack.shift` and `stack.remove` but is beaten by level mechanics (`skills.md` rule 14).
 
 **Banned combinations (validator rejects the level).**
 | Combination | Reason |
 |---|---|
 | goo + countdown bomb + pest in one level | three pressure sources with no cap |
-| ice cube + bounce pad + wind in one level | three displacement sources, unreadable landing |
+| any two of bounce pad, jelly piece, ice slide, ice cube in one level, until the arbiter R-2 is built | Matrix A: the plugins would stack (GAP-2) |
+| goo or honey with bounce pad, jelly or ice in one level, until R-12 is built | Matrix A: no sticky veto exists (GAP-2) |
 | fog + ghost piece + fog item with no landing marker | a landing the player can never see |
-| more than 2 timed hazards (E less than 5 locks) at once | pressure ratio check F3 |
+| more than 2 hazards from different families at once (F3 pressure ratio above 1 for any) | pressure check F3 and F3b |
+| a hazard whose warning is shorter than `T_warn_min` (F3b) | unreadable hidden-timer hazard |
 | any hazard that can only be answered by a special the level does not spawn | unfair by construction |
+| a hollow piece in the bag with no peg goal and no `pocket_ok` | SH-01 pocket blocks its layer |
 
 ## 4. Formulas
 
