@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "meadow_brook_run",
+  "tick_ms": 50,
+  "preview_window_mm": 12000,
+  "on_loss": "checkpoint",
+  "segments": [
+    {"id": "footpath", "length_mm": 20000, "speed_mm_s": 1000},
+    {"id": "bridge", "length_mm": 20000, "speed_mm_s": 1200},
+    {"id": "lawn_run", "length_mm": 20000, "speed_mm_s": 1400}
+  ],
+  "checkpoints": [
+    {"id": "halfway_post", "at_mm": 30000}
+  ],
+  "cargo": {"id": "picnic_basket", "x": 1, "z": 1, "height_layers": 1, "max_drop_layers": 2},
+  "events": [
+    {"kind": "bump", "at_mm": 6000, "force": 1},
+    {"kind": "arch", "at_mm": 12000, "gap_layers": 7},
+    {"kind": "bump", "at_mm": 18000, "force": 2},
+    {"kind": "bump", "at_mm": 26000, "force": 1},
+    {"kind": "arch", "at_mm": 34000, "gap_layers": 6},
+    {"kind": "bump", "at_mm": 42000, "force": 2},
+    {"kind": "arch", "at_mm": 50000, "gap_layers": 6}
+  ],
+  "effects": {
+    "bump": {"loose_pct_per_force": 30, "tall_layer": 6, "tall_pct_per_force": 10},
+    "cloud_bump": {"loose_pct_per_force": 30, "tall_layer": 6, "tall_pct_per_force": 10},
+    "arch": {},
+    "crosswind": {"slide_pct": 60, "blow_off_edge": true},
+    "updraft": {"lift_pct": 30, "height_pct_per_layer": 3}
+  },
+  "path": [[0, 0, 0], [0, 0, -40], [20, 0, -80], [20, 0, -120]]
+}

@@ -39,6 +39,7 @@ var _ghost: MultiMeshInstance3D
 var _landing: MultiMeshInstance3D
 var _camera: Camera3D
 var _world: Node3D
+var _track_follower: WtTrackFollower
 var _wizard: WtToyActor
 var _mascot: WtToyActor
 var _boss: WtToyActor
@@ -1390,3 +1391,18 @@ func _cylinder(parent: Node3D, pos: Vector3, top: float, bottom: float, height: 
 func _box(parent: Node3D, pos: Vector3, size: Vector3, color: Color) -> MeshInstance3D:
 	var mesh := BoxMesh.new();mesh.size=size
 	return _mesh(parent,mesh,pos,_mat(color))
+
+
+## G8 view hook: shows the placeholder track for `def` under the board. Usage: stage.attach_track(def).
+func attach_track(def: TrackDef) -> void:
+	if _track_follower == null:
+		_track_follower = WtTrackFollower.new()
+		_track_follower.name = "MovingPlatformTrack"
+		add_child(_track_follower)
+	_track_follower.setup(def)
+
+
+## G8 view hook: feeds the platform's track distance (TrackRunner.position_mm) so the track scrolls by.
+func set_track_progress(mm: int) -> void:
+	if _track_follower != null:
+		_track_follower.set_progress(mm)
