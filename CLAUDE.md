@@ -54,6 +54,12 @@ User rule (2026-10-14): **every question for the user goes through the AskUserQu
 with clickable options and the recommended option first. Never end a reply with plain "?" questions.
 This is enforced by `.claude/hooks/clickable-questions.sh` (Stop).
 
+## Godot Master Consult
+
+User rule (2026-10-14): subagents **ask the Godot master (the main session) before guessing** on Godot,
+architecture, cross-owner or design-ambiguity decisions. If messaging is unavailable, end the turn
+with a `QUESTIONS FOR GODOT MASTER` section. See `.claude/docs/godot-master-consult.md`.
+
 ## Coordination Rules
 
 @.claude/docs/coordination-rules.md
