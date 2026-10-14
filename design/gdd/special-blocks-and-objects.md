@@ -804,12 +804,12 @@ A note on clocks. Several rules below run on wall-clock milliseconds (`lava_rise
 **OB-05 rival marker (`race_rival`)**
 - **What.** A rival with its own pace. It fills a hidden bar and wins if it gets to 100 percent first.
 - **Rule.** `rival_rate` percent per second, optional head start and rubber band, warning at `rival_warn_pct`. A tie goes to the player (`race_rival.gd:1-8`). Fail through `request_fail`. Events: `race_progress`, `race_rival_warning`, `race_won`, `race_rival_finished`.
-- **Look.** A second kite or cart marker on a progress strip; Gert cheers when she overtakes.
+- **Look.** A second kite or cart marker on a progress strip.
 - **Audio.** Proposed `SFX_EV_RIVAL_PASS`.
-- **Fits.** meadow_bonus Kite Day (rival 0.9 to 1.1, `levels.md:408`), meadow_03, candy rails, jungle bridge.
-- **Intro and teach.** Bonus. The strip is the teacher.
-- **Fairness.** Rubber band, second place still passes with one star.
-- **Engine.** EXISTS (`src/mechanics/wave4/race_rival.gd:9`). Gap G9 wiring with a kite view, 4 days shared.
+- **Fits (r2).** NOT used in the Meadow. The user ruled "no rival speed race in this round" (`levels.md:607-609`, section 8), so the old `levels.md:408` rival (0.9 to 1.1 pace) is superseded and meadow_bonus has no rival. This rule stays available for versus and tournament race rounds and for later biomes (candy rails, jungle bridge).
+- **Intro and teach.** First tournament race round. The strip is the teacher.
+- **Fairness.** Rubber band; second place still passes with one star.
+- **Engine.** EXISTS (`src/mechanics/wave4/race_rival.gd:9`). The wiring work of gap G9 for the kite is no longer needed in the Meadow.
 - **Source.** Rival racers on `party_minigames_ref.jpg` (Block Bridge Dash) and `mockup_03.jpg` (Rolling Rumble).
 
 **OB-06 fog bank (`fog`)**
@@ -869,13 +869,13 @@ A note on clocks. Several rules below run on wall-clock milliseconds (`lava_rise
 
 **OB-13 lava floor rise, OB-14 lava lid, OB-15 quake, OB-16 geyser vent**
 - **What.** Four lava-biome pressures: the floor melts up, a soft ceiling lowers, overhangs shake loose, and a geyser pops a rock or pad.
-- **Rule.** Floor rise: every `melt_every_s` (35) the floor rises one layer, up to `melt_max` (3), with a 3 s warning (`lava_rise.gd:13-37`). Lid: lowers up to `lid_max` (2) layers; clears lift it by `lid_push_per_clear` (1) and cancel a pending drop (`lava_lid.gd:14-40`). Quake: outlines up to `quake_max_cubes` (6) unsupported overhangs 2 s ahead and removes them (`quake.gd:13-40`). Geyser: marks a free supported cell, then pops a 2-hit rock or a bounce pad (`lava_rock_spawn.gd:13-38`). Fill: cubes lost in a rise are not clears. Rescue: ties with the floor (the rescue wipe and the floor use the same bottom planes; `ART-CHECK`).
+- **Rule.** Floor rise: every `melt_every_s` (35) the floor rises one layer, up to `melt_max` (3), with a 3 s warning (`lava_rise.gd:13-37`). Lid: lowers up to `lid_max` (2) layers; clears lift it by `lid_push_per_clear` (1) and cancel a pending drop (`lava_lid.gd:14-40`). Quake: outlines up to `quake_max_cubes` (6) unsupported overhangs 2 s ahead and removes them (`quake.gd:13-40`). Geyser: marks a free supported cell, then pops a 2-hit rock or a bounce pad (`lava_rock_spawn.gd:13-38`). Fill: cubes lost in a rise are not clears. Rescue: resolved from the code. A floor rise calls `request_floor`, which removes the bottom planes with `Cause.MASKED` (`board_state.gd:709-717`), and MASKED removes everything, even `fixed` cells (`:683-684`). A rescue wipe uses `Cause.RESCUE` and skips `fixed` and `anchored` cells (`:685-688`). So a rise and a rescue are different: a rise takes rocks and shelves in the bottom planes, a rescue does not. A rescue after a rise wipes `rescue_wipe_layers` above the new floor. The two never run in the same resolve (the rescue is a top-out outcome, the rise is a timer event at `on_resolve_end`).
 - **Look.** Glowing orange lava seams that brighten before action; a rim glow; a lid shown as a dim ceiling; dotted outlines on quake targets; a vent with smoke and a ring.
 - **Audio.** `lava_warning` rumble; proposed `SFX_EV_LAVA_RISE`, `SFX_EV_QUAKE`, `SFX_EV_GEYSER`.
 - **Fits.** Lava biome and celestial (the lid's "Moon's pillow" message).
 - **Intro and teach.** Lava 01 to 05, one per level.
-- **Fairness.** Time-based; see the clock note above. Counterplay: clears cancel or relieve. Proposed `schedule_mode: locks` for Tetris variants.
-- **Engine.** EXISTS (`lava_rise.gd`, `lava_lid.gd`, `quake.gd`, `lava_rock_spawn.gd`). Gap: lock-count mode, 1 day, gameplay-programmer.
+- **Fairness.** Millisecond schedules with a hidden clock (Appendix E). The actor tell plus a sound warn before every one: rise 3000 ms (`melt_warn_ms`), lid 3000 ms (`lid_warn_ms`), quake 2000 ms (`quake_warn_ms`) with the targets outlined, geyser 1 lock with a marked cell. F3b checks each warning against reaction time and each interval against piece time. Counterplay: clears relieve or cancel (the lid lifts per clear, `lava_lid.gd:19-30`; the quake and rise do not cancel, so their intervals are long).
+- **Engine.** EXISTS (`lava_rise.gd`, `lava_lid.gd`, `quake.gd`, `lava_rock_spawn.gd`). No lock-count mode is built (removed by Appendix E). The "Slower hazards" assist multiplier is NEW (0.5 day, gameplay-programmer).
 - **Source.** Lava Escape and Volcano Dash in `mockup_13.jpg`, `mockup_16.jpg`; volcanic sheet.
 
 **OB-17 crumble tile, OB-18 quicksand tile**
