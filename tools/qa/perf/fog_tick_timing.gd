@@ -25,7 +25,7 @@ func _run() -> void:
 	var worst: int = 0
 	var failures: int = 0
 	for id: String in ids:
-		var level: LevelData = content.level(StringName(id))
+		var level: LevelData = content.level(id)
 		if level == null:
 			print("FOGPERF %s LOAD_FAIL" % id)
 			failures += 1
