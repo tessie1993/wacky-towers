@@ -1147,11 +1147,217 @@ Considered and not proposed: Water Cannon, Boxing Glove, Boots and Gravity Flip 
 The following items from the references are not yet written up because they duplicate an item above or need a user ruling: plank pieces (a skin of the plank shape, `shape_bank.tres:607`), pipe-connector pieces (a connection goal that is new and needs a game-designer ruling), rune and mud floor tiles (skins of switch plate and honey). See Open Questions.
 
 ### 3.3 Interaction matrix
-TODO
+
+**How to read it.** The row is the special that ACTS. The column is the thing it MEETS. The cell says what happens. Codes: `-` nothing happens; `W` the row wins and the column is overridden; `L` the row loses, the column wins; `O` both act, in the order given by the Order rules below; `X(n)` an explicit rule R-n below. "Plain" means a normal block. Only specials that can actually meet are listed. Specials not in the grid (shells, status effects, items) follow the notes under the grid.
+
+Columns, left to right: **PLN** plain block, **BNC** bounce pad or jelly hop, **GOO** goo or honey (sticky), **ICE** ice cube or ice slide, **BMB** any bomb blast, **GHO** ghost piece, **MAG** magnet pull, **WND** wind or gust, **ANC** anchored or fixed (rock, shelf, pillar, licorice, hung cube, climber), **CRT** critter (egg, chick, mole, lamb, herd animal, gem, key).
+
+| ACTS \ MEETS | PLN | BNC | GOO | ICE | BMB | GHO | MAG | WND | ANC | CRT |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **BNC** (hop) | X(1) lands, hops once | - | L sticky wins, no hop | O one displacement only, X(2) | - | - | O pulled before landing | O gust before landing | W (a hop never moves an anchored cube) | X(3) |
+| **GOO** (spread, sticky) | X(4) spreads into free cells only | W cancels the hop | - | W cancels the slide | L goo cell is removed | - | - | - | L goo never spreads into anchored cells | X(5) |
+| **ICE** (slide) | X(6) slides one cell | O one displacement only, X(2) | L sticky wins | - | - | - | - | O gust first | W stops at anchored | X(3) |
+| **BMB** (blast, 3x3x3) | W removes | - | W removes | W removes | X(7) no chain by blast | W ghost cells are not solid until solid | - | - | L anchored survives (`earned_specials.gd:18`) | X(8) |
+| **GHO** (ghost, intangible) | - passes through | - | - | - | - | - | L ignores pull | O wind still pushes it | - passes through | - passes through |
+| **MAG** (pull, one cell) | O pulls the falling piece | O pull before bounce | - | - | - | L ignored | - | O wind first, then pull | L pulled piece stops at anchored | - |
+| **WND** (gust, one cell) | O pushes the falling piece | O gust then bounce | - | O gust then slide | - | O still acts | O see MAG | - | L stops at anchored | - |
+| **ANC** (fixed) | W never moves | W | W | W | W (blast-proof) | W | L | L | - | X(9) |
+| **CRT** (critter) | X(10) pest only eats PLN | - | X(5) | - | X(8) | - | - | - | - | - |
+
+**Order rules (O).** Within one lock, the order is fixed, so replays are deterministic.
+1. **Flight order.** Gust push, then magnet pull, then landing detection. Both are one cell and both are skipped if blocked (`magnet_pull.gd:30`, README line 28).
+2. **Landing order.** On landing, at most ONE displacement fires, chosen by priority bounce hop, then jelly hop, then ice slide. This is a NEW rule (R-2). The engine today lets `bounce_pad`, `jelly_piece` and `ice_slide` each fire once per piece and they would stack to 4 cells of travel. R-2 caps total landing travel at `bounce_h + 1` cells (5 at most).
+3. **Sticky beats motion.** A sticky landing (honey, `sticky_landing`, goo under the piece) cancels every displacement above, and the piece locks at once.
+4. **Lock to clear.** After the lock: item `bomb` blast (before the clear check, `buffs-debuffs.md` rule 6), then clear detection, then clear hooks (frosting peel, licorice untie, locked cube unlock, pest shoo, countdown defuse, candy bomb blast, egg bonus, gem collect), then collapse, then `on_resolve_end` hooks in plugin order (sprouts, eggs, goo spread, mushroom or hail or geyser spawn, countdown tick, wobble, tilt, belt). The README states that content writes flush at hook boundaries and that a write after the first clear pass may cause ONE more clear pass and the resolve hook does not recurse (README lines 55 to 57).
+
+**Explicit rules.**
+- **R-1 Bounce on plain.** The pad fires when any piece cube sits directly on it (`bounce_pad.gd:26-30`). Rise is `rise = min(bounce_h, free cells above)` then one cell in the last move direction.
+- **R-2 One displacement.** Only the first of bounce, jelly, ice acts per piece. NEW, 0.5 day, gameplay-programmer.
+- **R-3 Bounce or slide meets a critter.** Critters are not cells that pieces can overlap. A displacement that would put a piece cube on a critter cell is blocked, as any blocked step is (`try_translate` returns blocked).
+- **R-4 Goo spreads into free cells only.** It never replaces a cube. A goo cell in a full layer clears with the layer like any cell.
+- **R-5 Goo meets a critter.** Goo does not spread onto a critter. A critter next to goo is not stuck. There is no sticky-critter rule, to keep the read simple.
+- **R-6 Ice slide on plain.** The slide direction is the last move (`ice_slide.gd` uses a fixed `slide_dir`; the ice CUBE variant BK-35 uses last move and is NEW).
+- **R-7 Blasts do not chain.** Blast removal uses `Cause.DAMAGE`. Clear hooks run on clears, so a blast removing another bomb does not detonate it. If the blast completes a layer, that layer clears in the one allowed extra clear pass and any bomb cleared there then detonates (once). `ART-CHECK` that `remove_cell(..., DAMAGE)` does not fire `on_clear`. This bounds every chain to 2 blasts per lock. Knob `bomb_chain_passes` (default 1).
+- **R-8 Blast meets a critter or gem or key.** Protected objects carry `anchored` while a goal needs them (`gem_safe`, `critter_safe` flags set by the level). Unprotected ones are removed and a gem is lost. A mole removed this way is NOT rescued (`dig_rescue_goal.gd:2`).
+- **R-9 Fixed meets critter.** A critter never walks into an anchored cell. A critter on a cell that becomes anchored (a hung cube dropping beside it) is unaffected.
+- **R-10 Pest meets non-plain.** A pest eats only `block` and `starter` kinds (`pest.gd:49`). It never eats a special, a critter, a gem, a key cube or an anchored cell.
+
+**Notes for specials not in the grid.**
+- **Frosting, locked cube, licorice, sponge:** these react to adjacent clears, not to piece-flight. A blast removes frosting at once (it is not anchored) and removes locked cubes at once. `ART-CHECK` whether blast damage respects `clear_protected`. Design intent proposed: blast damage peels 1 coat from frosting and removes everything else except `anchored`.
+- **Status shells (7):** a cube holds one at a time (`block-status-effects.md` rule 1). A new status replaces the old one unless the old one's rule ranks higher.
+- **Fog:** hides visuals only. Collision is unchanged, so every row above is the same with fog on.
+- **Sprout:** grows into a free cell above its tip. It never pushes a piece. Blasts remove sprout cells. Pests do not eat them (a pest eats `block` and `starter` only, `pest.gd:49`).
+- **Wobble and tilt:** both ignore anchored and fixed kinds (`tilt_plate.gd:26` excludes `fixed_kinds`, default rock). Heavy pieces count double (SH-10, F7).
+- **Belt, turntable, piston, flip:** move cells and keep identity and status through the move (README). Specials ride with them. Anchored cells are not allowed with a belt that would move them (validator, `obstacles.md` rule 10).
+- **Items and skills:** Smash and bomb never remove `fixed` or `static_geometry` cells. Stitch vetoes `stack.shift` and `stack.remove` but is beaten by level mechanics (`skills.md` rule 14).
+
+**Banned combinations (validator rejects the level).**
+| Combination | Reason |
+|---|---|
+| goo + countdown bomb + pest in one level | three pressure sources with no cap |
+| ice cube + bounce pad + wind in one level | three displacement sources, unreadable landing |
+| fog + ghost piece + fog item with no landing marker | a landing the player can never see |
+| more than 2 timed hazards (E less than 5 locks) at once | pressure ratio check F3 |
+| any hazard that can only be answered by a special the level does not spawn | unfair by construction |
 
 ## 4. Formulas
 
-TODO
+All values are starting defaults. Each knob lives in a data file (section 7). Table headers use: Symbol, Type, Range, Description.
+
+### F1. Active specials cap per level
+
+`A_max(n) = min(A_cap, 1 + floor((n - 1) / 3))`, and `new_specials(n) <= 1`
+
+| Symbol | Type | Range | Description |
+|---|---|---|---|
+| n | int | 1 to 13 | Level index in its biome (01 to 10 = 1 to 10, bonus = 11, h1 = 12, h2 = 13; h3 = 14 uses the same cap as h2) |
+| A_cap | int | 1 to 4 | Most special kinds or objects active at once; default 3 |
+| A_max | int | 1 to A_cap | Allowed active specials in level n (the level's own goal rule counts as one) |
+| new_specials | int | 0 to 1 | Specials that appear for the first time in this level |
+
+**Output range.** 1 to 3. n = 1 to 3 gives 1, n = 4 to 6 gives 2, n = 7 to 14 gives 3. Boss levels (n = 10) recall earlier specials in phases and count each phase on its own. **Why.** `levels.md:453` states "no two levels share verb, mechanic and goal", and its Mechanics ladder shows exactly one new thing per level. **Example.** meadow_05 (n = 5): at most 2 active. Its stone throw plus its hedge wall is 2. Correct. meadow_09 (n = 9): at most 3. Tilt plate plus wind plus heavy shapes is 3. Correct.
+
+### F2. Timed hazard interval by level and biome
+
+`E(b, n) = clamp( round(E0 - d_lvl * (n - 1) - d_bio * (b - 1)), E_min, E0 )`, hazard spawns every `E` locks.
+
+| Symbol | Type | Range | Description |
+|---|---|---|---|
+| b | int | 1 to 12 | Biome index in chapter order (meadow 1 ... carnival 12) |
+| n | int | 1 to 14 | Level index as F1 |
+| E0 | int | 4 to 10 | Interval in locks at the first level of the first biome; default 6 |
+| d_lvl | float | 0 to 0.8 | Locks removed per level step; default 0.4 |
+| d_bio | float | 0 to 0.5 | Locks removed per biome step; default 0.25 |
+| E_min | int | 2 to 5 | Hard floor; default 3 |
+| E | int | E_min to E0 | Locks between spawns (used as `spawn_every_locks`, `ant_every_locks`, `every_locks`, `thrown_every_locks`) |
+
+**Output range.** 3 to 6 at defaults. The warning always comes one lock before the spawn, so E of 3 still leaves 2 free locks (`mushroom_popup.gd:26`: spawn happens when `locks % every == every - 1` marks, `== 0` fires; the engine clamps E to at least 2). **Example.** Biome 1 (meadow), level 5: 6 - 0.4 x 4 - 0 = 4.4, so E = 4. Biome 5 (lava), level 5: 6 - 1.6 - 1.0 = 3.4, so E = 3. Biome 12, level 10: 6 - 3.6 - 2.75 = -0.35, clamped to 3. **Note.** `countdown_bomb` already ships `thrown_every_locks` 8 and `cd_start` 8 (`countdown_bomb.gd:22,25`). Those are calm starter values and stay as the Candy defaults. F2 applies to hazards without a stated default.
+
+### F3. Cap-reach fairness check
+
+`T_cap = objects_max * E`, and the level passes only if `T_cap >= k_fair * P_eff`.
+
+| Symbol | Type | Range | Description |
+|---|---|---|---|
+| objects_max | int | 1 to 8 | Cap on live hazard objects (mushroom default 4, hail 6, geyser 3) |
+| E | int | 2 to 10 | Locks between spawns (F2) |
+| P_eff | float | 6 to 24 | Pieces to fill one layer for the level's piece set and footprint (`piece-set.md` table; 12 on 6x6 with the 8 standard shapes, about 9.7 with specials) |
+| k_fair | float | 1 to 2 | Layers of work the player must get before the board can fill with hazards; default 1.5 |
+| T_cap | int | 2 to 80 | Locks needed to reach the cap |
+
+**Output range.** `T_cap` 2 to 80. The check is a validator rule. **Example.** Mushrooms: 4 x 5 = 20 locks. P_eff 12 gives 1.5 x 12 = 18. 20 >= 18 passes. With E = 3 and the same cap of 4: 12 < 18 fails. The level must raise `objects_max` to 6 (6 x 3 = 18, passes) or raise P_eff. Raising the cap here means more hazards may sit on the board, which is fair only because they arrive slowly enough to answer.
+
+### F4. Bounce travel
+
+`D_b = rise + 1`, `rise = min(bounce_h, free_up)`, `bounce_h(n) = clamp(2 + floor((n - 1) / 4), 1, 4)`
+
+| Symbol | Type | Range | Description |
+|---|---|---|---|
+| bounce_h | int | 1 to 4 | Pad rise strength (engine clamps 1 to 4, `bounce_pad.gd:34`) |
+| free_up | int | 0 to 4 | Free cells above the piece before a block or ceiling |
+| rise | int | 0 to 4 | Cells actually lifted |
+| D_b | int | 1 to 5 | Total cells moved: rise plus one sideways. The sideways step is also blocked when the cell is taken, so D_b can be rise only |
+| n | int | 1 to 14 | Level index |
+
+**Output range.** 1 to 5 cells; the lamb flung by a pad uses the same `bounce_h` as its flight length. Never negative. **Why.** `levels.md:311`: meadow_08 gets "stronger bounces" as it goes. **Example.** meadow_08 is n = 8: 2 + floor(7/4) = 3, so a pad lifts a piece 3 cells and moves it 1 sideways (4 cells of travel). The first pad of the level is set to `bounce_h` 2 for teaching (level data override).
+
+### F5. Goo expected growth
+
+`G(k) = min(G_max, G0 + (1 - c) * g * k)`, where `c` is the chance a lock includes a clear.
+
+| Symbol | Type | Range | Description |
+|---|---|---|---|
+| G0 | int | 1 to 6 | Goo cells at level start |
+| g | int | 1 to 2 | `per_lock`, new goo cells per quiet lock (default 1) |
+| c | float | 0 to 0.5 | Clear chance per lock. About 1 / P_eff for steady play: 0.083 at P_eff = 12 |
+| k | int | 0 to 100 | Locks played |
+| G_max | int | 4 to 20 | NEW cap `goo_max` (the engine has none today); default 12 |
+| G | float | G0 to G_max | Expected goo count |
+
+**Output range.** G0 to G_max. **Example.** G0 = 2, g = 1, c = 0.083: after 40 locks, 2 + 0.917 x 40 = 38.7, capped at 12. Without the cap the goo fills the board in about 2.5 layers of play. This is why the cap is a required knob. A player who clears twice as often (c = 0.167) still sees 2 + 0.833 x 40 = 35, capped at 12. The cap, not the cancel, is what bounds goo. Clear cancel is a bonus.
+
+### F6. Countdown defuse chance and frosting peel time
+
+`p_def = 1 - (1 - c_adj)^cd_start`, and `L_peel = coats / c_adj`
+
+| Symbol | Type | Range | Description |
+|---|---|---|---|
+| cd_start | int | 3 to 12 | Locks on the bomb (default 8) |
+| c_adj | float | 0.02 to 0.2 | Chance a lock produces a clear on or touching the object. At most `c`, and about half of it for a random cell: 0.042 at c = 0.083 |
+| p_def | float | 0 to 1 | Chance of a natural defuse with no aiming |
+| coats | int | 1 to 3 | Frosting coats (2 or 3, `frosting.gd:10`) |
+| L_peel | float | 5 to 150 | Expected locks to peel with no aiming |
+
+**Output range.** p_def 0 to 1; L_peel unbounded as c_adj goes to 0 (a hazard that can never clear is banned by the validator: c_adj must be at least 0.02). **Example.** cd_start 8, c = 0.083: p_def (any clear) = 1 - 0.917^8 = 0.50. With the adjacency factor, c_adj = 0.042: p_def = 1 - 0.958^8 = 0.29. So about 7 of 10 bombs need the player to aim a clear at them. That is the intended skill test. A 3-coat frosting at c_adj 0.042 needs 3 / 0.042 = 71 locks unaimed, so frosting is only fair when the player aims (and it ships with a visible coat count).
+
+### F7. Weighted tilt with heavy pieces
+
+`tau = 1000 * max( |M_x| / (N_w * (W - 1)), |M_z| / (N_w * (D - 1)) )`, `M_x = sum_i w_i * (2 x_i - (W - 1))`, `N_w = sum_i w_i`
+
+| Symbol | Type | Range | Description |
+|---|---|---|---|
+| x_i, z_i | int | 0 to W-1, 0 to D-1 | Cube column on the plate |
+| W, D | int | 2 to 12 | Plate width and depth in cells |
+| w_i | int | 1 to 2 | Cube weight. 1 normal, `heavy_weight` (2) for a heavy shape or anvil cube. NEW. The engine counts every cube as 1 today (`tilt_plate.gd:78-83`) |
+| N_w | int | 1 and up | Total weight |
+| tau | int | 0 to 1000 | Tilt in permille |
+
+**Output range.** 0 to 1000, never negative. The doubled-offset form `2 x_i - (W - 1)` is the engine's own (`tilt_plate.gd:79`), so tau spans 0 to 1000 and the default `slip_threshold` 0.6 (600) is reachable. **Slip rule.** At tau of at least `warn_at` x threshold (0.7 x 600 = 420) a warning shows. At the threshold for `slip_after_resolves` resolves, `slip_count` top cubes of the heavy half are removed. **Example.** W = 6, one row, 5 normal cubes at x = 1,1,2,3,3 and one heavy cube (w = 2) at x = 5. Offsets (2x - 5): -3,-3,-1,1,1 and +5. M_x = (-3-3-1+1+1) + 2 x 5 = -5 + 10 = 5. N_w = 5 + 2 = 7. tau = 1000 x 5 / (7 x 5) = 143, no warning. Replace the heavy cube at x = 5 by two more heavy cubes at x = 5 (3 heavy): M_x = -5 + 3 x 2 x 5 = 25, N_w = 5 + 6 = 11, tau = 1000 x 25 / 55 = 455. That is above the 420 warning. This shows why a heavy piece on the high side is decisive.
+
+### F8. Item yield in the campaign (solo)
+
+`E_items = pieces * p_item * p_collect`, solo table probability `P_i = w_i / sum(w_buff)`
+
+| Symbol | Type | Range | Description |
+|---|---|---|---|
+| pieces | int | 20 to 120 | Pieces placed in the level |
+| p_item | float | 0 to 0.5 | Item cube chance per spawn; 0.12 (`items.gd:115`, clamp `items.gd:56`) |
+| p_collect | float | 0 to 1 | Share collected by a clear; placeholder 0.6 (`items.md` F1) |
+| w_i | float | 8 to 10 | Buff weight in `starter.json` |
+| E_items | float | 0 and up | Expected items per level |
+| P_i | float | 0 to 1 | Chance of item i in solo (debuffs excluded, `items.gd:62-64`) |
+
+**Output range.** E_items about 0 to 43 (120 pieces at the 0.5 clamp is unreachable at the default). **Example.** 60 pieces: 60 x 0.12 x 0.6 = 4.3. Solo buff weights: slow_time 10, bomb 8, helper_drop 10, preview_peek 10 = 38. So slow_time, helper_drop and preview_peek are each 26.3 percent, bomb is 21.1 percent. In solo there is no standing bias (`P = 1`), so bias is ignored. **Campaign default:** items off (`items.md` rule 12); levels turn them on in the first 12 only if the user rules so (Open Question 4).
+
+### F9. Gem and pickup count
+
+`Gems(n) = min(Gem_cap, g0 + floor(n / 2))`, placed only in layers `1 .. gem_max_layer`, `gem_max_layer = floor(f * H_play)`
+
+| Symbol | Type | Range | Description |
+|---|---|---|---|
+| g0 | int | 1 to 5 | Gems at n = 1; default 3 |
+| Gem_cap | int | 3 to 12 | Cap; default 8 |
+| H_play | int | 6 to 12 | Playable layers (`piece-set.md` F3) |
+| f | float | 0.3 to 0.7 | Share of the stack height where gems may sit; default 0.5 |
+| gem_max_layer | int | 2 to 8 | Highest layer index a gem may occupy |
+| Gems | int | 3 to 8 | Gems in the level |
+
+**Output range.** 3 to 8. **Example.** n = 7, H_play = 8: 3 + 3 = 6 gems in layers 1 to 4. A gem in layer 6 would need a full 6 layers of stack to reach, so it is never placed there.
+
+### F10. Special-shape bag weight
+
+`share_s = w_s * gate_s / sum_i(w_i * gate_i)`
+
+| Symbol | Type | Range | Description |
+|---|---|---|---|
+| w_s | float | 0 to 2 | Spawn weight of a special shape in the level's pool (Spawner owns weights, default 1) |
+| gate_s | int | 0 or 1 | 1 if the spawn gate passes (stack height at or below `giant_max_height_frac`, free layers at least the shape's extent, a peg or hang point exists for hollow or hook shapes) |
+| share_s | float | 0 to 1 | Chance the next bag draw is this shape |
+
+**Output range.** 0 to 1. **Example.** 8 standard shapes at weight 1 plus a ring at weight 0.5: share = 0.5 / 8.5 = 5.9 percent. A giant ring at weight 0.25 with the stack at 70 percent height and `giant_max_height_frac` 0.5: gate 0, share 0 until the stack drops.
+
+### F11. Sprout growth schedule (h1)
+
+`cells_grown(k) = min(grow_max, floor(k_a / E_a) + floor(k_b / E_b))`, `E_a = 2`, `E_b = 1` after the first half of the lambs
+
+| Symbol | Type | Range | Description |
+|---|---|---|---|
+| k_a, k_b | int | 0 and up | Locks in phase A (first half of lambs) and phase B |
+| E_a, E_b | int | 1 to 4 | `grow_locks` per phase; `levels.md:438`: every two locks, then every lock |
+| grow_max | int | 0 to 6 | Cap per stalk; 0 means uncapped (`sprouts.gd:45`). Use at least 4 |
+| cells_grown | int | 0 to grow_max | Added cells on a stalk |
+
+**Output range.** 0 to `grow_max`. **Example.** 6 locks in phase A and 4 in phase B: 3 + 4 = 7, capped at 4. The engine today has one `grow_locks` value per level (`sprouts.gd:17`), so a phase switch is a small NEW gap (0.5 day).
 
 ## 5. Edge Cases
 
