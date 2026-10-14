@@ -2,7 +2,7 @@ extends Node
 ## QA capture for the per-level `look` block. Starts <biome>_01 through main, freezes the sim, places a few
 ## locked pieces, applies each look via WtStage.apply_level_look and saves 720x1280 shots.
 ## Run: timeout 300 xvfb-run -a -s "-screen 0 1280x1280x24" godot --path . --rendering-driver opengl3 \
-##   --resolution 720x1280 res://tools/qa/level_look_capture.tscn -- [--set=meadow|night|all_pieces] [--biome=meadow]
+##   --resolution 720x1280 res://tools/qa/level_look_capture.tscn -- [--set=meadow|night|biomes|weather|all_pieces] [--biome=meadow]
 const OUT := "res://production/qa/evidence/level-look-v1/"
 const MEADOW: Array[Dictionary] = [
 	{"time_of_day": "dawn", "weather": "mist", "set_piece": "meadow_windmill", "set_piece_side": "left", "accent": "#FF8FB0", "camera": "low", "dressing": "lush"},
@@ -29,6 +29,9 @@ func _run() -> void:
 	if which == "night":
 		for b: String in ["neon", "celestial"]:
 			jobs.append({"biome": b, "name": b + "_night", "look": {"time_of_day": "night", "weather": "stars", "set_piece": WtSetPieceBuilder.ids_for_biome(b)[0], "set_piece_side": "right", "camera": "default"}})
+	elif which == "biomes":
+		for b: String in ["meadow", "candy", "ice", "underwater", "pirate", "lava", "forest", "cave", "clockwork", "neon", "celestial", "carnival"]:
+			jobs.append({"biome": b, "name": "biome_" + b, "look": {"set_piece": WtSetPieceBuilder.ids_for_biome(b)[0], "set_piece_side": "right", "time_of_day": "day"}})
 	elif which == "weather":
 		for kind: String in ["mist", "drizzle", "snow", "embers", "bubbles", "petals", "stars", "confetti"]:
 			jobs.append({"biome": biome, "name": "weather_" + kind, "look": {"time_of_day": "day", "weather": kind}})

@@ -8,7 +8,8 @@
 r5: global ids, corridor rule. r6: defence flavour. r7 (rulings A and B): mechanic and verb first, footprints,
 U18, U19. r8: glossary, `extra_control`, recognisers, engine gaps, build ceiling. r9 (this revision): recogniser
 priority, sized gap tail, 25 rules, exemplar fixes, contents and changelog, rules in numeric order. The
-build-ceiling wording is held for the user's ruling on how plan gates are scored.
+build-ceiling paragraph is rewritten to the user's ruling "mark each thing for what it is" (plan gates score the
+plan; screenshot ceilings and the paper-only cap apply only at build gates, phases 7-8).
 
 Author: studio game director. 2026-10-14. Revised after the r1-r9 plan-vision reviews in
 `production/qa/quality-review/`. Inputs: the redo plan, quality bar, art bible, reference boards, `catalog.json`,
@@ -461,11 +462,19 @@ lower = a structural fix is needed. Reviewers list ranked defects with owner and
   not a 9). A mundane or counter-based level caps N4, M3 and L3 at 8.0; a spec with an empty required `scene`
   field (terrain, set_piece_action, cast_on_stage) caps L6 at 8.0; a built level that is only a grid on a
   floating square caps A-build and C5 at 8.0.
-- **Build ceiling.** Scene-variety items (L6, A1, A-build, C4, C5) are judged on evidence: a plan is scored on
-  its rules and a spec on its fields, but no item may be scored above what the retained screenshots show of
-  the build. While a built biome still has more than one plain square or any two levels with the same
-  footprint, L6, A-build and C4 for that biome are capped at 3. A phase gate may not claim scene variety passes
-  on the plan alone.
+- **Mark each thing for what it is (user ruling; `reference-quality-bar.md`, "Three blind experts per
+  review").** Every review is done by three blind, fresh experts in that field (level and campaign plans: level
+  designer, game designer, systems designer), who do not see each other's scores or earlier rounds.
+  - **Plan gates (phases 1-5)** score the document as a plan: clear, complete, testable, consistent, buildable.
+    No paper-only cap and no screenshot ceiling applies. L6, A1 and A-spec score the rules, fields and
+    recogniser results, and are not held down by the state of the current build.
+  - **Build gates (phases 7-8)** score the build from retained captures against the reference boards. The
+    paper-only cap and the screenshot ceiling apply only here: no item scores above what the screenshots show,
+    and while a built biome has more than one plain square or any two levels with the same footprint, A-build and
+    C4 for that biome are capped at 3 (ruling B).
+  - **No borrowed credit.** A plan may not claim visual or feel qualities the build does not show yet. Its
+    scene-variety and feel statements are worded as requirements ("each level must..."), and a reviewer scores
+    the build, not the plan, on whether the game looks varied.
 - **Each item below uses these anchors unless a "9.7 means" is given.**
 
 **V (phase 1, this vision).** 9.7 means no structural fix is needed. V1 fantasy is clear in a pitch and a
