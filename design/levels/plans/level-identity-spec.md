@@ -107,3 +107,14 @@ Every level is a **diorama** built around its story beat:
   look fingerprint plus camera preset).
 - **Phase 4 specs** list each level's `scene` (terrain kind, set piece and its action, cast on
   stage). **Phase 6** builds a scene kit: terrain modules, animated cast, and set-piece actors.
+
+## User rule, 2026-10-14: every level has its own platform, made from its description
+
+User: "Each level has their own. And it can be more diverse forms, shapes and game modes than square, moving or 2. We
+write each level out. And from that level description make the platform."
+
+- Every level gets its own platform, and there is no shared default. Examples include a square, a 3D track that moves
+  with the player (races), two platforms, a growing pit, a tilting plate, a raft and a spiral. The list is open.
+- Order: write the level out first (mechanics, then story). The platform's form, shape and mode are derived from that
+  written description, never picked from a menu up front.
+- The art then builds that platform.

@@ -484,3 +484,10 @@ Three questions. Each has a recommended option first.
    - New terrain `stump_top` and new rule action `grip_release` (Recommended): honest, because the action removes blocks and counts as a rule.
    - Reuse terrain `floating_island` (as in the beat) with the new action: scores 0 on the "same floating island" test (P1b).
    - Treat the root and stone moves as cosmetic `root_whip`: not allowed, because they remove blocks.
+
+## User decisions (2026-10-14, round 4)
+
+- **The platform is derived from this description** (user rule: every level has its own platform, made from its
+  written description). For level 1 that is the stump-top pit caged by roots and stones, which grows as the stump
+  shakes loose each grip: 4x4, then 6x4, then 8x4, and the whole round stump is revealed on the win.
+- **Meter name: "Stump Grip"** (three bark knots that let go).
