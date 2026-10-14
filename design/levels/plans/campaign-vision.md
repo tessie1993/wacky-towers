@@ -1,6 +1,6 @@
-# Campaign vision: Wacky Towers (phase 1 brief, revision 4)
+# Campaign vision: Wacky Towers (phase 1 brief, revision 5)
 
-Author: studio game director. 2026-10-14. Revised after the r1-r3 plan-vision reviews in
+Author: studio game director. 2026-10-14. Revised after the r1-r6 plan-vision reviews in
 `production/qa/quality-review/`. Inputs: the redo plan, quality bar, art bible, reference boards, `catalog.json`,
 `progression.md`, `minigames.md`, `minigame-party-rules.md` (user decision), `level-identity-spec.md` (with its
 later user rules), `exemplars.md`, `scene-vocabulary.md`, the 4.8/10 level review
@@ -77,6 +77,8 @@ reveals, and the world visibly changes when it is done.
 - *P3c rule budget (spec-time):* the level adds at most one new rule (U10).
 - *P3d winnable (build-time):* a solver (or a bot with unlimited time) wins at least 98% of 500 seeded runs;
   a loss counts against the level only if no legal winning line existed (otherwise it is a bot failure).
+- *P3e strike telegraph (spec-time):* every strike lane is warned by an actor (a rising tentacle, a cranking
+  catapult arm) at least 2 s ahead, and at least 4 s in biomes of intensity 1-2.
 - Peril (Lava, Neon) is comic and reversible. Every cue is shape plus colour plus sound; reduced motion is safe.
 
 ## 3. Emotional arc, stakes and ending
@@ -164,7 +166,7 @@ and **look** (start-frame silhouette).
   `level_table` is a Markdown table with the columns `id`, `goal_type` (a list in play order, e.g. `span>survive`),
   `main_rule`, `mask` (canonical string), `terrain`, `set_piece`, `set_piece_action`, `cast_pose`, `time_of_day`,
   `weather`, `camera`, `opening_event`, `ending_pattern`, `headline_objective`, `role`, `callback_of`, and the
-  computed `min_spawn_width` and `min_dead_end_width`.
+  `flavour` (`D1`-`D4` or `none`), and the computed `min_spawn_width` and `min_dead_end_width`.
 
 **Rules.**
 - **U1 Beat first.** Every spec starts from its beat id and has a reason to stack.
@@ -187,7 +189,10 @@ and **look** (start-frame silhouette).
   supersedes the identity spec's "at most 5 `clear_n` levels". **Corridor width** (a mask property, computed
   by the phase 4 script into the `level_table` columns `min_spawn_width` and `min_dead_end_width`): the
   *spawn region* is the floor cells of the top 3 mask rows across the spawn columns and must offer a
-  landing area at least 4 wide (a piece that spawns flat needs 4); a *dead-end channel* is a void-bounded
+  landing area at least 4 wide (a piece that spawns flat needs 4). Pieces spawn in the **centre 4 columns of
+  the mask's bounding width** unless the spec sets `spawn_cols`; a level whose spawn columns hold void in the
+  top 3 rows must set `spawn_cols` to a floor run at least 4 wide, which the script reports as
+  `min_spawn_width`. A *dead-end channel* is a void-bounded
   vertical run of floor open at one end only, and must be at least 3 wide (a 3-cell-extent piece cannot
   rotate inside a 2-wide shaft). Phase 3 restates the minimums if the piece set changes them.
 - **U8 Opening event.** One distinct `opening_event` id per level (same field as the beat's). **Phase 2 assigns
@@ -285,8 +290,10 @@ and earns the Carnival payoff. Borrow C's beacon-light as a win reward.
    dependency graph. The systems designer owns the function-to-rule mapping for the narrative beats.
 3. **Goal vocabulary as story objectives.** Define every goal's HUD wording; `goal_type` is a list in play
    order for goal phases (U3 compares the whole list). Allowed goals: `height`, `shape`,
-   `survive`, `bonk_boss`, `rescue_all`, `dig_rescue`, `wind_keys`, `bake_oven` and the minigame goals. `clear_n`
-   is a means only (U15). Define the ending patterns as engine features (goal phases, reveal, guest, secret).
+   `survive`, `bonk_boss`, `rescue_all`, `dig_rescue`, `wind_keys`, `bake_oven`, the new `seal_breaches` and
+   the minigame goals. `clear_n` is a means only (U15). **Defence mapping:** D1 = `survive`, D2 =
+   `seal_breaches`, D3 = `bonk_boss`, D4 = `rescue_all` inside a goal sequence; the new rules `breach_plug`
+   and the row-clear cannon count toward U10 (at most 2 new rules per biome) and need handbook entries. Define the ending patterns as engine features (goal phases, reveal, guest, secret).
 4. **Minigames.** Follow `design/levels/plans/minigame-party-rules.md` (short and intense, taught in 3
    seconds, standard controls plus one extra verb, built on stacking, a scene not a grid, fair shared seeds).
    The 16 modules each have a debut, a recall, the motivating beat and a tournament use; at most 2 debuts per
@@ -299,8 +306,11 @@ and earns the Carnival payoff. Borrow C's beacon-light as a win reward.
    building. A boss adds no new rule: it combines rules already taught in tiers 03-09. An *idea* is a variant
    of a rule already taught (a second lane, a higher speed, a new target), and each phase adds at most one.
    **Defence flavour:** `reference-study-defence.md` D1-D4 (hold the wall, plug the breach, shield and strike,
-   shelter the guest) is one level flavour among many: at most 2 full defence levels per biome. A D3 level
-   names its boss in the headline, never a row count (rows are ammo).
+   shelter the guest) is one level flavour among many: **each biome has at least 1 and at most 2 full defence
+   levels** (the `flavour` column in `level_table`; the U7 script counts them). A D3 level names its boss in
+   the headline, never a row count (rows are ammo). An attacker's set-piece action that removes blocks is a
+   rule, never cosmetic. The idea names in `reference-study-defence.md` are working titles only; every real
+   name passes the title script and the paraphrase check (N5, L1).
 7. **Hero perks.** How Stitch, Smash and Redraw work as pre-level tools (proposed: Ada Stitch, Bram Smash, Sif
    Redraw) and how they interact with each biome's rules.
 8. **Difficulty and unlocks.** Formulas for `g0`, goal size and stars by tier and biome index: `g0` rises within
@@ -318,7 +328,8 @@ artist owns `assets/data/set_pieces.json` and flags art cost per piece (the file
 2. **Required fields per level:** `id`, `headline_objective`, `ending_pattern` (written to `metadata.ending`),
    `metadata.signature`, `main_rule` (and extras, each linked to its handbook entry), `goal_type` (a list in
    play order), goal parameters `n` (phase 3 formula), `target_visible` (yes or no, with where), board mask
-   (ASCII: `#` floor, `.` void), minigame block, full `look` block, **`scene.terrain`,
+   (ASCII: `#` floor, `.` void) with `spawn_cols` (default: the centre 4 columns), `flavour` (D1-D4 or
+   none), minigame block, full `look` block, **`scene.terrain`,
    `scene.set_piece_action` (cosmetic or rule), `scene.cast_on_stage` with `cast_pose` (and optional
    `scene.hud_meter`)**, `g0` and stars from the phase 3 formula,
    role, `opening_event`, world change on win, comic fail reaction, `callback_of` if any.
