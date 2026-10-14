@@ -1,4 +1,4 @@
-# Calibration exemplars (game director, 2026-10-14, revision 3)
+# Calibration exemplars (game director, 2026-10-14, revision 4)
 
 Anchors for the panel (`campaign-vision.md` section 9). Written by the game director, not the makers.
 
@@ -6,8 +6,8 @@ Anchors for the panel (`campaign-vision.md` section 9). Written by the game dire
 - **Form, not content.** The exemplars teach structure and level of detail. No real level may reuse an
   exemplar's set piece, terrain, mask, ending or character. Exemplar ids carry the `ex_` prefix
   (`ex_forest_05`) so they never collide with real ids; the real levels must still differ from them. The 9.7
-  exemplars (`ex_forest_02`, `ex_forest_05`, `ex_forest_h1`, `ex_pirate_03`, `ex_pirate_10`, `ex_meadow_01`) are
-  included in the U3, U14 and U17 checks. The `ex_near_*` and `ex_weak_*` samples are excluded: they fail on
+  exemplars (`ex_forest_02`, `ex_forest_05`, `ex_forest_h1`, `ex_pirate_03`, `ex_pirate_10`, `ex_meadow_01`,
+  `ex_underwater_09`) are included in the U3, U14 and U17 checks. The `ex_near_*` and `ex_weak_*` samples are excluded: they fail on
   purpose and exist only for human scoring.
 - **Exemption.** Fields derived from phase 3 formulas (`g0`, stars, goal numbers) are written `by formula`.
   Handbook links point to entries phase 3 will write (`handbook#<rule>`).
@@ -60,7 +60,9 @@ mask: |
   ##############
   ##############
 canonical_mask: "8x14:########/########/########/########/#####.../#####.../#####.../#####.../#####.../#####.../########/########/########/########"
-corridor_check: min_spawn_width 4 (the top 3 rows are 4-wide pillars); min_dead_end_width n/a (no dead-end channel)
+spawn_cols: 0-3                  # the centre 4 columns (5-8) are void in the top rows, so the spec names the left pillar
+flavour: none
+corridor_check: min_spawn_width 4 (the left pillar, columns 0-3, is a 4-wide floor run); min_dead_end_width n/a
 minigame_block: gap_runner (phase 1 of 2), recall of its Meadow debut
 look: { time_of_day: golden, weather: petals, set_piece: rotten_plank_bridge, set_piece_side: back,
         accent: "#7BD36B", camera: low, dressing: lush }
@@ -75,8 +77,21 @@ opening_event: goat_bell_rings
 world_change: the bridge holds, Nanny Tuft crosses, fireflies light the gully
 comic_fail: Nanny Tuft slides down on her bottom, the bell rings once, and Sif covers her eyes; retry in 1.5 s
 callback_of: none
-level_table_row: ex_forest_05 | span>survive | vines | 8x14:... | ravine_ledges | rotten_plank_bridge | root_whip | haul,react | golden | petals | low | goat_bell_rings | twist | Help Nanny Tuft cross the gully | twist | none
+level_table_row: ex_forest_05 | span>survive | vines | 8x14:... | ravine_ledges | rotten_plank_bridge | root_whip | haul,react | golden | petals | low | goat_bell_rings | twist | Help Nanny Tuft cross the gully | twist | none | none | 4 | n/a
 ```
+
+Abridged `level_table` rows for the two teach-level exemplars (columns as in the vision: id | goal_type | main_rule
+| mask | terrain | set_piece | set_piece_action | cast_pose | time_of_day | weather | camera | opening_event |
+ending_pattern | headline_objective | role | callback_of | flavour | min_spawn_width | min_dead_end_width):
+
+```
+ex_forest_02 | height | vines | 8x8:########/########/########/########/########/########/########/######## | treetop_platform | hollow_oak | bell_ring | build,react | day | petals | default | squirrel_scampers | plain | Lift the nest above the vines | teach | none | none | 8 | n/a
+ex_pirate_03 | height | cannon_volley | 8x8:########/########/########/########/########/########/########/######## | dock_pier | harbour_cannon | cannon_volley | brace,point | day | clear | low | gull_lands | plain | Wall the dock from the gull gun | teach | none | none | 8 | n/a
+```
+
+`ex_forest_02` teaches `vines` alone; `ex_pirate_03` teaches `cannon_volley` alone with a single lane. They sit in
+different biomes and differ in `main_rule`, so each `(goal, rule, mask)` triple is unique (U3); each biome
+uses at most 4 plain squares, in different sizes (U7, U14).
 
 Rule budget: this level adds no rule. `vines` debuts in `ex_forest_02` (abridged: a teach level, one rule, an
 opening set, `goal_type: [height]`, plain ending). The gale is `gust`, known from biome 1. `root_whip` is cosmetic,
@@ -228,6 +243,38 @@ comic_fail: the lookout wobbles and Ada sits down with a thump, then waves; retr
 g0: by formula (the gentlest in the campaign)
 world_change: Ada sees the sheep and they trot into the pen
 ```
+
+## 7b. Defence exemplar (9.7), flavour D3, a telegraph and a themed meter
+
+**Abridged:** the fields that teach the defence flavour are shown; the signature, `look`, `target_visible` and
+`comic_fail` are present in the real spec.
+
+```yaml
+id: ex_underwater_09
+name: Squidge at the Reef        # a working name; it passes the title script
+role: combine
+flavour: D3                      # shield and strike
+headline_objective: Hold the reef wall against Squidge    # the boss is named; no row count
+ending_pattern: reveal           # Squidge is reaching for its lost baby behind the wall; telegraph: a small cry and a baby's eye behind the coral
+main_rule: tentacle_grab         # a RULE: a tentacle pulls a block off the wall (taught alone in underwater_06)
+extras: [row_cannon]             # complete rows load the reef cannon (taught alone in underwater_05); the level adds no new rule
+goal_type: [bonk_boss]           # the number of hits is by formula; rows are only ammo
+mask: "10x8, bottom corners notched"
+canonical_mask: "8x10:######../#######./########/########/########/########/########/########/#######./######.."
+spawn_cols: default (centre 4 columns; the top rows are full floor)
+corridor_check: min_spawn_width 10, min_dead_end_width n/a
+scene:
+  terrain: reef_wall
+  set_piece_action: tentacle_grab        # a rule-kind action; never cosmetic
+  cast_on_stage: Bram loads the reef cannon (haul); Sif points at the next lane (point); Squidge looms behind the wall (react)
+  hud_meter: Reef HP, themed purple wood, plus a Squidge calm bar
+telegraph: a tentacle rises from the water 3 s before every grab (P3e: at least 2 s in an intensity-3 biome)
+world_change: Squidge's baby swims out, Squidge calms, and the reef glows
+```
+
+Why: the threat is a character on stage, the thing defended is a landmark wall, the blocks have a name (wall and
+ammo), the telegraph is an actor, the meter is named for the fiction, and the headline names the boss. The level
+adds no rule (both rules are taught earlier), so it passes U10.
 
 ## 8. Anchors for the non-level rubrics
 

@@ -231,28 +231,30 @@
  "set_piece_layout": {
   "notes": "Camera-relative layout (screen right u, away from camera v), in cells of an 8x8 board; scaled by board size/8. The piece always keeps its screen side while the view rotates.",
   "islet_y": 0.5,
-  "side_v_fraction": 0.4,
-  "back_gap": 1.1,
-  "face_yaw_deg": 22.0
+  "side_v_fraction": 0.75,
+  "face_yaw_deg": 22.0,
+  "piece_scale_mult": 0.72,
+  "side_u_fraction": 0.55,
+  "back_v_fraction": 0.95
  },
  "weather": {
   "clear": {},
   "mist": {
-   "amount": 18,
+   "amount": 12,
    "lifetime": 12.0,
    "mesh": [
     1.0,
     1.0
    ],
    "size": [
-    6.0,
-    10.0
+    3.0,
+    5.0
    ],
-   "texture": "soft",
+   "texture": "puff",
    "colors": [
-    "#F4F6FF"
+    "#F2F5FF"
    ],
-   "alpha": 0.22,
+   "alpha": 1.0,
    "gravity": [
     0.0,
     0.0,
@@ -282,7 +284,7 @@
     0.0,
     0.0
    ],
-   "fog_add": 0.003
+   "fog_add": 0.005
   },
   "drizzle": {
    "amount": 110,
@@ -299,7 +301,7 @@
    "colors": [
     "#C9DFFF"
    ],
-   "alpha": 0.6,
+   "alpha": 1.0,
    "gravity": [
     0.8,
     -14.0,
@@ -342,11 +344,11 @@
     0.2,
     0.42
    ],
-   "texture": "soft",
+   "texture": "puff",
    "colors": [
     "#FFFFFF"
    ],
-   "alpha": 0.95,
+   "alpha": 1.0,
    "gravity": [
     0.2,
     -0.2,
@@ -388,7 +390,7 @@
     0.16,
     0.36
    ],
-   "texture": "soft",
+   "texture": "puff",
    "colors": [
     "#FFD27A",
     "#FF8A2A",
@@ -440,7 +442,7 @@
    "colors": [
     "#E6FAFF"
    ],
-   "alpha": 0.7,
+   "alpha": 1.0,
    "gravity": [
     0.0,
     0.1,
@@ -488,7 +490,7 @@
     "#FFF1F5",
     "@accent"
    ],
-   "alpha": 0.95,
+   "alpha": 1.0,
    "gravity": [
     0.15,
     -0.3,

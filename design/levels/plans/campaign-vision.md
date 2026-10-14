@@ -18,9 +18,11 @@ Art-bible changes: a Pirate block row, Dune Bazaar dropped, section 5 rows for L
 (done 2026-10-14) section 1 pillar 3 and section 7 amended: a board sits in a level-specific terrain and the
 floating island is one terrain among many.
 
-**Open decisions (anything marked "proposed" below is not decided):** (1) concept A is a recommendation only;
-(2) `tumble-fair.md` replaced by the 14-level Carnival biome; (3) comic peril in Lava and Neon (proposed:
-comic, reversible, no hero shown hurt); (4) the plan task list needs a phase 3 task for the uniqueness script.
+**Decided by the user:** the story premise is "The Twelve Keystones" (Huffle, the baby cloud, topples the
+Wizard's tower; logged in `campaign-redo-plan.md`), which is concept A below. **Open (anything marked "proposed"
+is not decided):** (1) `tumble-fair.md` replaced by the 14-level Carnival biome; (2) comic peril in Lava and
+Neon (proposed: comic, reversible, no hero shown hurt); (3) the plan task list needs a phase 3 task for the
+uniqueness script.
 
 ## 1. Campaign fantasy
 
@@ -41,7 +43,7 @@ player feels clever, a bit mischievous, and rooted for: someone always cheers wh
 
 Each test scores 0 fail, 1 partial or 2 pass; a level passes at 2. Tests come in two sets.
 - **Spec-time tests:** phases 2-3 apply P1a, P2a, P2c; phases 4-5 apply the full set P1a, P1b, P2a, P2b, P2c,
-  P3b, P3c, plus the `target_visible` field for P3a.
+  P3b, P3c, P3e (defence levels), plus the `target_visible` field for P3a.
 - **Build-time tests (phases 7-8), on the built level, JSON and screenshots:** all of the above plus P1c, P3a, P3d.
 
 **P1. Every level is a scene, not a grid.** One place, one problem, one reason to stack, and the board lives
@@ -259,7 +261,8 @@ one YAML front-matter block per beat: `id` (= level id), `role`, `place`, `who`,
 8. Resolve the `tumble-fair.md` conflict (proposed: the 14-level Carnival biome replaces the side island).
 9. Freshness: borrow nothing from old level names or story-v2 beats.
 
-**Three candidate high concepts** (proposed; pending the user's choice):
+**Three candidate high concepts** (the user chose the premise "The Twelve Keystones", i.e. A; B and C remain
+as sources of ideas):
 - **A. "The Wobbling World."** The Wizard's sneeze topples the Great Tower that pins the islands, scattering
   twelve Keystones; each island sags or drifts and the trio rebuilds it. *A cosy island-hopper, and also the
   world is held up by what you build.* Strength: stacking is the plot. Risk: a generic accident; the Wizard
@@ -271,8 +274,8 @@ one YAML front-matter block per beat: `id` (= level id), `role`, `place`, `who`,
   building a base tall enough to reach the light line. *A stacking puzzler, and also a quest to bring the
   light back.* Strength: a visual payoff per win. Risk: an item quest; the Neon low needs a reason.
 
-**Recommendation: A** (the narrative lead's call). It makes P2 the plot, gives each biome a simple problem
-and earns the Carnival payoff. Borrow C's beacon-light as a win reward.
+**Chosen: A.** It makes P2 the plot, gives each biome a simple problem and earns the Carnival payoff. The
+narrative lead may borrow C's beacon-light as a win reward.
 
 ## 7. Brief for the systems designer (phase 3)
 

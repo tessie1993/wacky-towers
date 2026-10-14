@@ -323,7 +323,7 @@ func _hide_builtin(id: String) -> void:
 func _place_piece(yaw_deg: float) -> void:
 	var layout: Dictionary = presets().get("set_piece_layout", {})
 	var board_scale: float = float(maxi(_size.x, _size.z)) / 8.0
-	var s: float = board_scale * float(_piece.get_meta(&"piece_scale", 1.0))
+	var s: float = board_scale * float(_piece.get_meta(&"piece_scale", 1.0)) * float(layout.get("piece_scale_mult", 1.0))
 	var r: float = float(_piece.get_meta(&"radius", 2.4)) * s
 	var reach: float = float(_size.x + _size.z) * 0.5 * 0.7071 + ISLAND_RING * DIAMOND
 	var yaw: float = deg_to_rad(yaw_deg)
@@ -333,10 +333,10 @@ func _place_piece(yaw_deg: float) -> void:
 	var u: float = 0.0
 	var v: float = 0.0
 	if _piece_side == "back":
-		v = reach + r * float(layout.get("back_gap", 1.1))
+		v = reach * float(layout.get("back_v_fraction", 0.95))
 	else:
-		v = reach * float(layout.get("side_v_fraction", 0.4))
-		u = sign_side * (reach - v + r * DIAMOND + 0.3)
+		v = reach * float(layout.get("side_v_fraction", 0.75))
+		u = sign_side * reach * float(layout.get("side_u_fraction", 0.55))
 		if _camera != null and is_inside_tree():
 			var half_w: float = _camera.size * get_viewport().get_visible_rect().size.aspect() * 0.5
 			if half_w > r * 2.2:
@@ -420,9 +420,10 @@ func _build_weather() -> void:
 	quad.size = Vector2(float(dims[0]), float(dims[1]))
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	# Dithered alpha stays in the opaque pass: the shared post-process quad (priority 127) is drawn last and would
-	# paint over alpha-blended particles. Hash gives soft edges without a blend pass (Compatibility-safe).
-	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_HASH
+	# Alpha-scissor keeps the sprites in the opaque pass: the shared post-process quad (priority 127) is drawn last on
+	# Compatibility and paints over alpha-blended particles, and ALPHA_HASH is not supported there.
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
+	mat.alpha_scissor_threshold = float(cfg.get("threshold", 0.5))
 	mat.vertex_color_use_as_albedo = true
 	mat.albedo_texture = _texture(String(cfg["texture"]))
 	mat.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
@@ -444,7 +445,7 @@ static func _vec(a: Variant) -> Vector3:
 	return Vector3(float(arr[0]), float(arr[1]), float(arr[2]))
 
 
-## Soft procedural particle sprites (white + alpha, cached): soft, bubble, streak, star, petal, rect.
+## Soft procedural particle sprites (white + alpha, cached): puff, soft, bubble, streak, star, petal, rect.
 static func _texture(kind: String) -> Texture2D:
 	if _textures.has(kind): return _textures[kind]
 	var n: int = 64
@@ -456,6 +457,8 @@ static func _texture(kind: String) -> Texture2D:
 			var d: float = sqrt(nx * nx + ny * ny)
 			var a: float = 0.0
 			match kind:
+				"puff":
+					a = 1.0 - smoothstep(0.8, 1.0, d)
 				"soft":
 					a = pow(clampf(1.0 - d, 0.0, 1.0), 1.6)
 				"bubble":

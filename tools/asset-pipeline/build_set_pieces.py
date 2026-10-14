@@ -95,7 +95,7 @@ def _(p):
 
 @piece("meadow", "giant_sunflower", "Giant sunflower", "#FFCF3D")
 def _(p):
-    p.cyl([0, 2.15, 0], .1, .16, 4.3, "#5FA33C", 8); p.cyl([0, 4.5, .3], .85, .85, .3, "#5A3A28", 16, [90, 0, 0])
+    p.cyl([0, 2.15, 0], .1, .16, 4.3, "#5FA33C", 8); p.cyl([0, 4.5, .3], .85, .85, .3, "#7A4E30", 16, [90, 0, 0])
     for k in range(16):
         a = k * 22.5; x, y = pol(0, 4.5, 1.25, a)
         p.sph([x, y, .3], [.3, .65, .1], "#FFCF3D" if k % 2 else "#FFB82E", rot=[0, 0, a - 90])
