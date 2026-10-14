@@ -33,7 +33,7 @@ static func for_biome(biome: StringName) -> ShaderMaterial:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), Color(String(record[key])))
 	for key: String in ["top_tint", "glyph_strength", "seam_dark", "layer_dark", "cap_tint", "active_boost", "cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt", "translucency",
-			"piece_sat", "piece_value", "piece_linear", "cap_hue_min_sat", "stone_value", "stone_sat", "stone_crack", "cap_body_mix", "side_shade", "shade_side_extra"]:
+			"piece_sat", "piece_value", "piece_linear", "cap_hue_min_sat", "stone_value", "stone_sat", "stone_crack", "cap_body_mix", "side_shade", "shade_side_extra", "blob", "edge_glint", "vein_width"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), float(record[key]))
 	if record.has("piece_hue_range"):
@@ -75,9 +75,9 @@ static func ghost_material() -> ShaderMaterial:
 	return material
 
 
-## Opt-in chunky rounded cube (300 tris, rounded bevel) for the board MultiMeshes.
-## The block shader reads object-space VERTEX/NORMAL, so it works with this mesh and with the
-## GLB cube. Unit size (edge 1.0), so no cube_scale() correction is needed.
+## Chunky rounded cube (9% bevel, 300 body tris + 274 cap-shell tris in ONE surface) for the board
+## MultiMeshes. The block shader reads object-space VERTEX/NORMAL/UV2, so it works with this mesh
+## (cap shell) and with the GLB cube (no shell). Unit size (edge 1.0), so no cube_scale() correction.
 ## Usage: var cube: Mesh = WtBlockMaterials.cube_mesh()
 static func cube_mesh() -> Mesh:
 	return WtBlockMesh.cube()

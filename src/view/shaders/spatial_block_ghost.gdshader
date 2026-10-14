@@ -14,7 +14,8 @@ uniform float edge_width : hint_range(0.01, 0.3) = 0.16;
 
 varying vec3 lp;
 
-void vertex() { lp = VERTEX; }
+// WtBlockMesh carries cap-shell tris (UV2.x = 1) that lie ON the body: collapse them for the ghost.
+void vertex() { lp = VERTEX; if (UV2.x > 0.5) VERTEX = vec3(0.0); }
 
 void fragment() {
 	// Edge band: second-largest |axis| close to the cube surface = along an edge.

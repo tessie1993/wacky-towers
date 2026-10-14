@@ -12,8 +12,20 @@
 // COLOR is used), .b = seam mask (bits 0-5, neighbour in -x,+x,-y,+y,-z,+z is ANOTHER piece) + 64 * depth layer.
 // Palette hue per piece, a per-variant glyph (colour-blind cue), piece seams, depth-layer darkening, an
 // active-piece boost (use_cell_alpha = false marks the falling piece) and a new pirate driftwood style (13).
+// v5 (2026-10-14, blocks-v3, art research gap 4): 9% bevel mesh with a real cap SHELL (UV2 flag, one draw
+// call), toon wrap-and-ramp light() from toon_light.gdshaderinc (warm key, cool violet shadow, spec blob,
+// bevel edge glints, back-light translucency), coloured (violet-tinted, never black) AO and curvature,
+// organic Voronoi lava veins. Instance data layout (COLOR, INSTANCE_CUSTOM) is unchanged.
 shader_type spatial;
 render_mode cull_back;
+#include "res://src/view/shaders/toon_light.gdshaderinc"
+
+// Bevel radius of WtBlockMesh (cube units). Must equal WtBlockMesh.BEVEL.
+const float BEVEL = 0.09;
+// Violet multiplier of occluded colour: AO is a coloured crease, never grey or black.
+const vec3 AO_TINT = vec3(0.80, 0.64, 1.0);
+// World direction TOWARD the key light of the house rig (WtStage key: -50 deg pitch, -32 deg yaw).
+const vec3 KEY_DIR = vec3(-0.341, 0.766, 0.545);
 
 // Biome style: 0 plain, 1 meadow, 2 candy, 3 ice, 4 underwater, 5 lava, 6 forest,
 // 7 cave, 8 clockwork, 9 neon, 10 celestial, 11 carnival, 12 dune bazaar.
@@ -43,10 +55,12 @@ uniform vec3 rim_color : source_color = vec3(0.70, 0.85, 1.0);
 uniform float bevel_light : hint_range(0.0, 1.0) = 0.45;
 // How strongly procedural normals sculpt the faces.
 uniform float sculpt : hint_range(0.0, 2.0) = 1.0;
-// Painted light response (prototype values): shadows go purple, never grey.
-uniform vec3 shadow_tint : source_color = vec3(0.42, 0.36, 0.62);
-uniform float wrap : hint_range(0.0, 1.0) = 0.3;
-uniform float band_soft : hint_range(0.01, 1.0) = 0.35;
+/** Soft specular window highlight painted on each glossy face (candy, ice, glass, neon), 0 = off. */
+uniform float blob : hint_range(0.0, 1.0) = 0.5;
+/** Strength of the bevel-edge curvature lift + glint line (0 = off). */
+uniform float edge_glint : hint_range(0.0, 1.5) = 1.0;
+/** Lava vein width multiplier (organic Voronoi cracks). */
+uniform float vein_width : hint_range(0.3, 2.0) = 1.0;
 // Fake translucency: light glowing through the body (jelly, ice, glass).
 uniform float translucency : hint_range(0.0, 1.0) = 0.0;
 group_uniforms piece_colour;
@@ -126,6 +140,7 @@ varying vec3 pcol;       // authored (sRGB) piece colour: palette entry or insta
 varying float v_variant; // palette index, -1 = none
 varying float v_mask;    // seam bitmask
 varying float v_layer;   // depth layer (0 = floor)
+varying float v_shell;   // 1 on the cap-shell tris (UV2.x), 0 on the body
 
 vec3 rgb2hsv(vec3 c) {
 	vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
@@ -194,7 +209,33 @@ float cap_keep(vec3 c) {
 	float inside = step(cap_hue_range.x, h.x) * step(h.x, cap_hue_range.y);
 	return max(inside, 1.0 - step(cap_hue_min_sat, h.y));
 }
+// Lowest the cap's drips can reach below the cap depth (the shell skirt is built that long).
+float cap_max_drip() { return cap_drip * (style == 3 ? 2.9 : ((style == 1 || style == 6) ? 1.6 : 2.2)); }
 float around(vec3 p) { return abs(p.x) > abs(p.z) ? (p.x > 0.0 ? 1.0 + p.z : 3.0 - p.z) : (p.z > 0.0 ? 2.0 - p.x : p.x); }
+// Y of the cap's lower edge at this spot (ragged grass, round icing drips, icicles). Shared by the
+// vertex stage (shell slide) and the fragment stage (body/shell split + cap colouring).
+float cap_limit(vec3 p, float seed) {
+	float along = around(p);
+	float drip;
+	if (style == 3) { // icicles: sharp triangles of random length
+		float k = along * 6.0 + seed * 3.0;
+		float tri = abs(fract(k) - 0.5) * 2.0;
+		float len = 0.3 + 0.9 * hash21(vec2(floor(k), seed));
+		drip = cap_drip * 2.4 * len * pow(1.0 - tri, 2.0);
+	} else if (style == 1 || style == 6) { // grass: hanging strands
+		drip = cap_drip * (0.35 + 0.65 * vnoise(vec2(along * 28.0 + seed * 9.0, 0.0))) + cap_drip * 0.6 * fbm(vec2(along * 5.0 + seed, 1.0));
+	} else { // frosting: round blobby drips
+		float ph = along * 9.0 + seed * 9.0;
+		drip = cap_drip * pow(max(0.0, sin(ph)), 3.0) * (0.6 + 0.6 * hash21(vec2(floor(ph / 6.2832), seed))) * 1.8;
+	}
+	return 0.5 - cap_depth - drip;
+}
+// Coloured ambient occlusion: occluded colour goes deeper and violet-tinted, never grey or black.
+// d = intended fractional darkening (0..0.5 maps to none..full).
+vec3 occl(vec3 c, float d) {
+	vec3 deep = mix(c * 0.5, c * c * 0.9, 0.5) * AO_TINT;
+	return mix(c, deep, clamp(d * 2.0, 0.0, 1.0));
+}
 
 // Glyph SDFs (unit space, negative inside): one silhouette per palette index so every hue has a shape cue.
 float glyph_sd(int id, vec2 q) {
@@ -213,7 +254,6 @@ float seam_bit(int mask, vec3 d) {
 }
 
 void vertex() {
-	lp = VERTEX; ln = NORMAL;
 	motif = INSTANCE_CUSTOM.r; cell_alpha = use_cell_alpha ? INSTANCE_CUSTOM.a : 1.0;
 	center = (MODEL_MATRIX * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
 	int vi = int(floor(INSTANCE_CUSTOM.g * 16.0 + 0.5)) - 1;
@@ -224,14 +264,20 @@ void vertex() {
 	v_mask = float(pk % 64);
 	v_layer = float(pk / 64);
 	keep_cap = cap_keep(pcol);
-	if (cap_depth > 0.0 && keep_cap > 0.5) {
-		// Overhanging cap: the top band swells outward with a ragged lip (grass, icing, snow).
-		float sd = hash31(floor(center * 1.01 + 0.5));
-		float band = smoothstep(0.5 - cap_depth - 0.1, 0.5 - cap_depth * 0.4, VERTEX.y);
-		float rag = 0.65 + 0.7 * vnoise(vec2(around(VERTEX) * 7.0 + sd * 9.0, 0.0));
-		VERTEX.xz *= 1.0 + band * cap_lip * 2.0 * rag;
-		VERTEX.y += band * cap_lip * 0.8;
+	v_shell = UV2.x;
+	vec3 vp = VERTEX;
+	if (UV2.x > 0.5) {
+		if (cap_depth <= 0.0 || keep_cap < 0.5) {
+			VERTEX = vec3(0.0); // no cap on this biome / piece: the shell tris collapse to nothing
+		} else {
+			// Cap shell: the skirt rows slide down the side to the deepest drip, and the whole shell
+			// swells outward into a thick overhanging lip that thins toward the bottom.
+			float t = UV2.y;
+			if (t > 0.0) vp.y = mix(0.5 - BEVEL, 0.5 - cap_depth - cap_max_drip(), t);
+			VERTEX = vp + NORMAL * cap_lip * (1.0 - 0.75 * t * t);
+		}
 	}
+	lp = vp; ln = NORMAL;
 }
 
 void fragment() {
@@ -252,6 +298,12 @@ void fragment() {
 	vec3 tu = normalize((VIEW_MATRIX * (MODEL_MATRIX * vec4(axu, 0.0))).xyz);
 	vec3 tv = normalize((VIEW_MATRIX * (MODEL_MATRIX * vec4(axv, 0.0))).xyz);
 	float seed = hash31(floor(center * 1.01 + 0.5));
+	// Cap shell vs body: the shell owns everything above the drip line, the body everything below it,
+	// so no pixel is shaded twice (the body above the line is hidden under the shell anyway).
+	if (cap_depth > 0.0 && keep_cap > 0.5) {
+		bool in_cap = top || p.y >= cap_limit(p, seed);
+		if ((v_shell > 0.5) != in_cap) discard;
+	}
 	// Per-face seed so two faces of one cube do not carry the same motif placement.
 	float fseed = hash21(vec2(seed * 31.0, dot(sign(ln) * step(0.5, an), vec3(1.0, 2.0, 3.0))));
 	vec2 suv = uv + seed * 7.0 + fseed * 3.0;
@@ -328,6 +380,10 @@ void fragment() {
 	} else if (style == 2) { // Candy: translucent jelly with a bright core and a glossy window sheen.
 		col = mix(col * 0.82, col * 1.18 + 0.06, inner);
 		emit += col * 0.22 * inner;
+		// Jelly depth: a cloudy core drifting with the view (parallax) and deeper colour toward the thin edges.
+		float core_n = fbm((suv - vt * 0.35) * 2.2 + 3.0);
+		col = mix(col, col * 1.28 + vec3(0.05, 0.02, 0.03), smoothstep(0.35, 0.8, core_n) * 0.4 * inner);
+		col = mix(col, col * col * 1.7, (1.0 - inner) * 0.4);
 		float w = vnoise(suv * 2.0);
 		g += vec2(vnoise((suv + vec2(0.05, 0.0)) * 2.0) - w, vnoise((suv + vec2(0.0, 0.05)) * 2.0) - w) * 1.2;
 		vec2 q = (uv - vec2(-0.16, 0.14)) * vec2(1.0, 1.8);
@@ -374,29 +430,33 @@ void fragment() {
 		float sp = step(0.9, hash21(floor(suv * 7.0))) * star4(fract(suv * 7.0) - 0.5, vec2(0.0), 0.12);
 		emit += vec3(0.8, 0.9, 1.0) * sp * 0.6 + acc * 0.05;
 		refl = 0.55;
-	} else if (style == 5) { // Lava: big chunky basalt plates, each a painted bevelled slab, wide glowing seams.
-		// Large Voronoi slabs (2-3 per face) with a noise-warped border so seams wander like paint.
-		vec2 wq = suv * 1.6 + (vec2(vnoise(suv * 2.5), vnoise(suv * 2.5 + 7.0)) - 0.5) * 0.35;
-		vec2 v = voronoi(wq);
-		float wobble = vnoise(suv * 6.0) * 0.03;               // uneven seam width (painted stroke)
-		float crack = 1.0 - smoothstep(0.035 + wobble, 0.075 + wobble, v.x);
-		float hot = 1.0 - smoothstep(0.0, 0.02 + wobble * 0.5, v.x);
-		float halo = 1.0 - smoothstep(0.07, 0.2, v.x);
-		// Slab paint: flat 2-tone with a lit upper-left rim and a dark lower lip (hand-painted bevel).
+	} else if (style == 5) { // Lava: organic basalt plates cracked by wandering, tapering, emissive veins.
+		// Domain-warped Voronoi: seams wander like cooled flow instead of a brick grid.
+		vec2 w1 = vec2(vnoise(suv * 1.7), vnoise(suv * 1.7 + 5.2)) - 0.5;
+		vec2 v = voronoi(suv * 1.1 + w1 * 0.6);                  // x = distance to the plate border, y = plate id
+		// Vein width swells and pinches along its length: hairline <-> fat flow.
+		float flow = vnoise(suv * 4.0 + seed * 3.0);
+		float vw = vein_width * (0.008 + 0.03 * flow * flow + 0.006);
+		float core = 1.0 - smoothstep(0.0, vw, v.x);              // white-hot centre
+		float vein = 1.0 - smoothstep(vw * 0.7, vw * 2.3, v.x);   // orange body of the vein
+		float halo = 1.0 - smoothstep(0.0, 0.32, v.x);            // heat bleeding onto the plate edge
+		// Branch hairlines: a finer Voronoi, only some borders, fading out before the plates' centres.
+		vec2 v2 = voronoi(suv * 4.4 + 9.0 + w1 * 0.9);
+		float br = (1.0 - smoothstep(0.0, 0.016 * vein_width + 0.006, v2.x)) * step(0.66, hash21(vec2(v2.y, seed + v.y))) * (1.0 - vein) * (0.4 + 0.6 * halo);
+		// Plate: domed (lit middle, rolled darker rim), painted two-tone, piece hue as basalt tint.
 		vec2 tilt = facet(v.y);
-		float slab_lit = smoothstep(0.08, 0.16, v.x) * (1.0 - smoothstep(0.16, 0.3, v.x));
-		col *= 0.78 + 0.3 * v.y;
-		col *= 0.9 + 0.18 * smoothstep(0.35, 0.7, fbm(suv * 2.5));
-		col = mix(col, col * 1.45 + vec3(0.04, 0.03, 0.03), slab_lit * clamp(0.5 + tilt.y - tilt.x, 0.0, 1.0) * 0.6);
-		col *= mix(0.55, 1.0, smoothstep(0.05, 0.13, v.x));
-		g += tilt * 0.45 + (rdir(tilt) * 0.0);
-		g += (hnoise(suv * 9.0) - 0.5) * 0.12;
-		col += glw * halo * 0.1;
-		vec3 hot_col = mix(glw, vec3(1.0, 0.62, 0.25), hot * 0.6);
-		col = mix(col, hot_col, crack);
-		emit += glw * (crack * glow * 0.85 + halo * 0.12 * glow) + vec3(1.0, 0.6, 0.2) * hot * glow * 0.35;
-		rough = mix(0.85, 0.4, crack);
-		refl = 0.08;
+		float dome = smoothstep(0.02, 0.3, v.x);
+		col *= (0.4 + 0.3 * v.y) * (0.86 + 0.24 * smoothstep(0.3, 0.75, fbm(suv * 3.0 + v.y * 9.0)));
+		col = mix(col * 0.6, col * 1.2, dome);
+		col += glw * halo * halo * 0.3 * (1.0 - vein);            // crust underlit by the vein
+		vec3 hot = mix(glw, vec3(1.0, 0.88, 0.5), core);
+		col = mix(col, hot, clamp(vein + br * 0.85, 0.0, 1.0));
+		g += tilt * 0.5 * dome + (hnoise(suv * 10.0) - 0.5) * 0.14;
+		g -= normalize(tilt + 0.001) * (1.0 - dome) * 0.4;       // plate edges roll down into the vein
+		emit += glw * (vein * glow * 0.75 + br * glow * 0.4 + halo * halo * glow * 0.12) + vec3(1.0, 0.78, 0.38) * core * glow * 0.55;
+		cavity += (1.0 - dome) * 0.18 * (1.0 - vein);
+		rough = mix(0.9, 0.35, vein);
+		refl = 0.05;
 	} else if (style == 6) { // Forest: chunky bark slabs, tree-ring end grain on some faces, moss patches.
 		bool rings_face = top || (side && fseed > 0.62);
 		if (rings_face) {
@@ -568,23 +628,11 @@ void fragment() {
 	// Biome cap: top face plus a ragged band down the sides (grass, frosting, snow).
 	if (cap_depth > 0.0 && keep_cap > 0.5) {
 		float along = around(p);
-		float drip;
-		if (style == 3) { // icicles: sharp triangles of random length
-			float k = along * 6.0 + seed * 3.0;
-			float tri = abs(fract(k) - 0.5) * 2.0;
-			float len = 0.3 + 0.9 * hash21(vec2(floor(k), seed));
-			drip = cap_drip * 2.4 * len * pow(1.0 - tri, 2.0);
-		} else if (style == 1 || style == 6) { // grass: hanging strands
-			drip = cap_drip * (0.35 + 0.65 * vnoise(vec2(along * 28.0 + seed * 9.0, 0.0))) + cap_drip * 0.6 * fbm(vec2(along * 5.0 + seed, 1.0));
-		} else { // frosting: round blobby drips
-			float ph = along * 9.0 + seed * 9.0;
-			drip = cap_drip * pow(max(0.0, sin(ph)), 3.0) * (0.6 + 0.6 * hash21(vec2(floor(ph / 6.2832), seed))) * 1.8;
-		}
-		float limit = 0.5 - cap_depth - drip;
+		float limit = cap_limit(p, seed);
 		float sd = (style == 3) ? 0.006 : 0.012;
 		float cap = top ? 1.0 : (bottom ? 0.0 : smoothstep(limit - sd, limit + sd, p.y));
 		float cap_edge = side ? (1.0 - smoothstep(0.0, 0.06, p.y - limit)) * cap : 0.0;
-		float tuft = fbm(p.xz * 9.0 + seed * 5.0) * 0.6 + fbm(vec2(along * 14.0, p.y * 3.0)) * 0.4;
+		float tuft = fbm(p.xz * 5.5 + seed * 5.0) * 0.6 + fbm(vec2(along * 14.0, p.y * 3.0)) * 0.4;
 		vec3 capc = cap_color;
 		if (cap_palette_on > 0.5 && vid >= 0) capc = pow(clamp(cap_palette[vid].rgb, 0.0, 1.0), vec3(2.2));
 		vec3 cc = capc;
@@ -597,7 +645,7 @@ void fragment() {
 			float blade = vnoise(vec2(along * 60.0, p.y * 4.0));
 			if (side) g += vec2(blade - 0.5, 0.0) * 1.2 * cap;
 			if (top) {
-				g += vec2(hnoise(suv * 22.0 + 1.0) - 0.5, hnoise(suv * 22.0 + 9.0) - 0.5) * 0.8;
+				g += vec2(hnoise(suv * 10.0 + 1.0) - 0.5, hnoise(suv * 10.0 + 9.0) - 0.5) * 0.4;
 				if (style == 1) {
 					vec2 fc = fract(suv * 3.0) - 0.5;
 					float fl = step(0.85, hash21(floor(suv * 3.0)));
@@ -627,7 +675,7 @@ void fragment() {
 			if (top) g += vec2(hnoise(suv * 6.0) - 0.5, hnoise(suv * 6.0 + 3.0) - 0.5) * 0.5;
 		}
 		float below = (1.0 - cap) * (1.0 - smoothstep(0.0, 0.08, limit - p.y)) * float(side);
-		col *= 1.0 - below * 0.45;
+		col = occl(col, below * 0.4);
 		col = mix(col, cc, cap);
 		emit *= 1.0 - cap;
 		cc = mix(cc, piece * 1.25 + vec3(0.04), cap_tint * (style == 1 || style == 6 ? 0.0 : 1.0));
@@ -660,19 +708,18 @@ void fragment() {
 	if (side) {
 		vec3 wn0 = normalize((MODEL_MATRIX * vec4(ln, 0.0)).xyz);
 		vec3 vn0 = normalize((VIEW_MATRIX * vec4(wn0, 0.0)).xyz);
-		col *= side_shade * (1.0 - shade_side_extra * smoothstep(-0.2, 0.6, vn0.x));
+		col = occl(col, 1.0 - side_shade * (1.0 - shade_side_extra * smoothstep(-0.2, 0.6, vn0.x)));
 	}
 	// Painted AO: dark toward the foot, creases on bevels between neighbours.
 	float foot = 1.0 - smoothstep(-0.5, -0.15, p.y);
-	float ao = 1.0 - 0.35 * foot - cavity;
-	col *= clamp(ao, 0.35, 1.0);
+	col = occl(col, clamp(0.35 * foot + cavity, 0.0, 0.65));
 	// Edge/corner AO: the second-largest axis reaching the cube edge darkens vertical creases and
 	// the lower edges where blocks meet; upward-facing edges stay lit (painted lit bevel).
 	vec3 eap = abs(p) * 2.0;
 	float e_hi = max(eap.x, max(eap.y, eap.z));
 	float e_mid = eap.x + eap.y + eap.z - e_hi - min(eap.x, min(eap.y, eap.z));
 	float crease_ao = smoothstep(0.8, 1.0, e_mid) * (1.0 - 0.7 * smoothstep(0.0, 0.5, p.y) * step(0.0, ln.y + 0.5));
-	col *= (1.0 - edge_ao * 0.5 * crease_ao * (1.0 + 0.8 * foot));
+	col = occl(col, edge_ao * 0.5 * crease_ao * (1.0 + 0.8 * foot));
 
 	// Piece seams: a thin dark line on the edges shared with a different piece, plus a gentle per-layer
 	// darkening toward the floor so stacked layers separate. The falling piece skips both.
@@ -683,10 +730,10 @@ void fragment() {
 		sm = max(sm, seam_bit(smask, -axu) * (1.0 - smoothstep(0.0, (top ? 0.13 : 0.09), 0.5 + uv.x)));
 		sm = max(sm, seam_bit(smask, axv) * (1.0 - smoothstep(0.0, (top ? 0.13 : 0.09), 0.5 - uv.y)));
 		sm = max(sm, seam_bit(smask, -axv) * (1.0 - smoothstep(0.0, (top ? 0.13 : 0.09), 0.5 + uv.y)));
-		col *= 1.0 - min(seam_dark * (top ? 1.5 : 1.0), 0.85) * sm;
+		col = occl(col, min(seam_dark * (top ? 1.5 : 1.0), 0.85) * sm * 0.6);
 	}
 	float layer_t = clamp(v_layer / max(layer_span - 1.0, 1.0), 0.0, 1.0);
-	col *= mix(1.0 - layer_dark, 1.0, mix(layer_t, 1.0, is_active));
+	col = occl(col, layer_dark * (1.0 - mix(layer_t, 1.0, is_active)) * 1.1);
 
 	float stripe = 0.0;
 	int code = int(floor(motif * 16.0 + 0.1));
@@ -708,16 +755,27 @@ void fragment() {
 
 	vec3 nw = normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
 	float up = clamp(nw.y * 0.7 + 0.3, 0.0, 1.0);
-	// Painted lit bevel: rounded edges facing up catch a highlight stroke.
-	col = mix(col, col * 1.3 + vec3(0.04), bevel * bevel_light * up);
+	float key_f = clamp(dot(nw, KEY_DIR), 0.0, 1.0);
+	// Curvature: the bevel ring catches a warm lift and a thin glint line (toon_edge_v, drawn by light()).
+	float mxn = max(an.x, max(an.y, an.z));
+	float edge_line = (1.0 - smoothstep(0.78, 0.9, mxn)) * smoothstep(0.62, 0.72, mxn);
+	col = mix(col, col * 1.12 + vec3(0.02, 0.015, 0.0), bevel * bevel_light * up * edge_glint);
+	toon_edge_v = edge_line * edge_glint;
 	float ndv = clamp(dot(NORMAL, VIEW), 0.0, 1.0);
 	float fres = pow(1.0 - ndv, 3.0);
 	vec3 R = (INV_VIEW_MATRIX * vec4(reflect(-VIEW, NORMAL), 0.0)).xyz;
 	vec3 env = mix(rim_color * 0.3, rim_color * 1.05 + vec3(0.1), smoothstep(-0.2, 0.8, R.y));
 	vec3 refl_col = env * refl * mix(0.2, 1.0, fres);
 	vec3 rim_col = rim_color * fres * rim * (0.35 + 0.65 * up);
-	// Fake translucency: the body glows with its own colour, strongest in the face centre.
+	// Soft specular window on glossy faces: a painted blob high on the key side of each face.
+	float gl_amt = 1.0 - rough;
+	vec2 bq = (uv - (top ? vec2(-0.13, 0.11) : vec2(-0.15, 0.17))) * vec2(1.0, top ? 1.3 : 1.9);
+	float blob_m = exp(-dot(bq, bq) * 11.0) * blob * gl_amt * gl_amt * smoothstep(0.2, 0.7, key_f);
+	emit += mix(vec3(1.0), rim_color, 0.25) * blob_m * 0.6;
+	// Fake translucency: the body glows with its own colour (strongest mid-face) and light() adds the
+	// back-lit transmission (toon_trans_v), brighter toward the thin silhouette edges.
 	vec3 trans = col * translucency * (0.25 + 0.35 * inner);
+	toon_trans_v = vec3(translucency * (0.55 + 0.9 * fres + 0.4 * (1.0 - inner)));
 
 	// Falling piece: brighter body, pulsing emission and a strong sky-tinted rim so it never hides in the stack.
 	float pulse = 0.85 + 0.15 * sin(TIME * 5.0);
@@ -727,7 +785,5 @@ void fragment() {
 	ALBEDO = col * brightness;
 	ROUGHNESS = rough;
 	SPECULAR = 0.5;
-	EMISSION = emit + refl_col * 0.3 + rim_col * 0.35 + trans * brightness;
+	EMISSION = emit + refl_col * 0.3 + rim_col * 0.35 + trans * brightness * 0.7;
 }
-
-#include "res://src/view/shaders/painted_light.gdshaderinc"
