@@ -75,3 +75,10 @@ func test_scene_contains_phantom_camera_and_host() -> void:
 		elif n is PhantomCameraHost:
 			kinds.append("host")
 	assert_array(kinds).contains_exactly_in_any_order(["pcam", "host"])
+
+
+func test_reduced_motion_turn_cuts_instantly_from_data() -> void:
+	var r := _rig()
+	r.reduced_motion = true
+	r.rotate_view(1)
+	assert_float(r.rotation.y).is_equal_approx(deg_to_rad(75 - 90), 0.0001)

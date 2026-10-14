@@ -1,0 +1,625 @@
+{
+ "schema": 1,
+ "notes": "Per-level `look` presets (design/levels/plans/level-identity-spec.md). Read by WtLevelLook (src/view/wt_level_look.gd). time_of_day entries are OVERRIDES or MULTIPLIERS on the biome look: *_mix blends the preset colour over the biome colour (0 = biome untouched), *_mult scales the biome value. sun_pitch_deg is the key light elevation below the horizon (biome rig = 50), sun_yaw_deg offsets the key light azimuth from the biome rig (0 = biome). `biome` holds per-biome tweaks merged over the preset (neon and celestial keep their own dark sky and glow so night still reads). `biome_scale.sky_mix` scales sky_mix for biomes whose own sky is already dark or special.",
+ "time_of_day": {
+  "day": {
+   "sky_mix": 0.0,
+   "sky_top": "#4F94E6",
+   "sky_horizon": "#CFE6FB",
+   "sky_low": "#FFF4E6",
+   "sun_pitch_deg": 50.0,
+   "sun_yaw_deg": 0.0,
+   "sun_color": "#FFF0D6",
+   "sun_color_mix": 0.0,
+   "sun_energy_mult": 1.0,
+   "fill_color": "#B8C4FF",
+   "fill_color_mix": 0.0,
+   "fill_energy_mult": 1.0,
+   "back_energy_mult": 1.0,
+   "ambient_color": "#C9C3E6",
+   "ambient_mix": 0.0,
+   "ambient_energy_mult": 1.0,
+   "fog_color": "#D6E4F8",
+   "fog_density": 0.0,
+   "saturation_mult": 1.0,
+   "brightness_mult": 1.0,
+   "glow_mult": 1.0,
+   "stars": 0.0,
+   "nebula": 0.0,
+   "sun_disc": 1.0,
+   "lit_mult": 0.35
+  },
+  "dawn": {
+   "sky_mix": 0.85,
+   "sky_top": "#7C8FD8",
+   "sky_horizon": "#FFC2A8",
+   "sky_low": "#FFE3C2",
+   "sun_pitch_deg": 20.0,
+   "sun_yaw_deg": -35.0,
+   "sun_color": "#FFC9A0",
+   "sun_color_mix": 0.75,
+   "sun_energy_mult": 0.95,
+   "fill_color": "#C9B8FF",
+   "fill_color_mix": 0.5,
+   "fill_energy_mult": 1.15,
+   "back_energy_mult": 1.1,
+   "ambient_color": "#D9B8D0",
+   "ambient_mix": 0.5,
+   "ambient_energy_mult": 1.05,
+   "fog_color": "#FFD3C4",
+   "fog_density": 0.004,
+   "saturation_mult": 1.03,
+   "brightness_mult": 1.0,
+   "glow_mult": 1.05,
+   "stars": 0.0,
+   "nebula": 0.0,
+   "sun_disc": 1.0,
+   "lit_mult": 0.6
+  },
+  "golden": {
+   "sky_mix": 0.8,
+   "sky_top": "#E89A62",
+   "sky_horizon": "#FFD28A",
+   "sky_low": "#FFEBC0",
+   "sun_pitch_deg": 27.0,
+   "sun_yaw_deg": 28.0,
+   "sun_color": "#FFB868",
+   "sun_color_mix": 0.85,
+   "sun_energy_mult": 1.1,
+   "fill_color": "#FFD9A8",
+   "fill_color_mix": 0.4,
+   "fill_energy_mult": 1.0,
+   "back_energy_mult": 1.2,
+   "ambient_color": "#E8B890",
+   "ambient_mix": 0.5,
+   "ambient_energy_mult": 0.98,
+   "fog_color": "#FFD9A0",
+   "fog_density": 0.003,
+   "saturation_mult": 1.08,
+   "brightness_mult": 1.0,
+   "glow_mult": 1.1,
+   "stars": 0.0,
+   "nebula": 0.0,
+   "sun_disc": 1.0,
+   "lit_mult": 0.6
+  },
+  "dusk": {
+   "sky_mix": 0.9,
+   "sky_top": "#47318F",
+   "sky_horizon": "#F0709A",
+   "sky_low": "#FFB27A",
+   "sun_pitch_deg": 22.0,
+   "sun_yaw_deg": 55.0,
+   "sun_color": "#FF9AA8",
+   "sun_color_mix": 0.8,
+   "sun_energy_mult": 0.9,
+   "fill_color": "#8E7CFF",
+   "fill_color_mix": 0.7,
+   "fill_energy_mult": 1.6,
+   "back_energy_mult": 1.3,
+   "ambient_color": "#9A74C4",
+   "ambient_mix": 0.65,
+   "ambient_energy_mult": 1.1,
+   "fog_color": "#B07AC0",
+   "fog_density": 0.004,
+   "saturation_mult": 1.06,
+   "brightness_mult": 1.0,
+   "glow_mult": 1.25,
+   "stars": 0.35,
+   "nebula": 0.0,
+   "sun_disc": 0.6,
+   "lit_mult": 1.3,
+   "biome": {
+    "underwater": {
+     "stars": 0.0
+    },
+    "cave": {
+     "stars": 0.0
+    }
+   }
+  },
+  "night": {
+   "sky_mix": 0.95,
+   "sky_top": "#0C1236",
+   "sky_horizon": "#27357A",
+   "sky_low": "#4A5BA6",
+   "sun_pitch_deg": 40.0,
+   "sun_yaw_deg": -20.0,
+   "sun_color": "#B8CCFF",
+   "sun_color_mix": 0.9,
+   "sun_energy_mult": 0.82,
+   "fill_color": "#8A96FF",
+   "fill_color_mix": 0.8,
+   "fill_energy_mult": 1.7,
+   "back_energy_mult": 1.4,
+   "ambient_color": "#7683D4",
+   "ambient_mix": 0.85,
+   "ambient_energy_mult": 1.35,
+   "fog_color": "#2A3578",
+   "fog_density": 0.003,
+   "saturation_mult": 1.05,
+   "brightness_mult": 1.0,
+   "glow_mult": 1.7,
+   "stars": 1.0,
+   "nebula": 0.25,
+   "sun_disc": 0.0,
+   "lit_mult": 2.8,
+   "biome": {
+    "neon": {
+     "sky_mix": 0.45,
+     "sun_energy_mult": 0.95,
+     "ambient_mix": 0.4,
+     "ambient_energy_mult": 1.2,
+     "glow_mult": 1.35,
+     "nebula": 0.7,
+     "fog_density": 0.0015
+    },
+    "celestial": {
+     "sky_mix": 0.4,
+     "sun_energy_mult": 0.95,
+     "ambient_mix": 0.45,
+     "ambient_energy_mult": 1.2,
+     "glow_mult": 1.5,
+     "nebula": 0.8,
+     "fog_density": 0.0015
+    },
+    "underwater": {
+     "stars": 0.0,
+     "nebula": 0.0,
+     "sky_mix": 0.7
+    },
+    "cave": {
+     "stars": 0.0,
+     "nebula": 0.0,
+     "sky_mix": 0.55
+    },
+    "lava": {
+     "sky_mix": 0.8,
+     "glow_mult": 1.4
+    }
+   }
+  }
+ },
+ "biome_scale": {
+  "sky_mix": {
+   "neon": 0.55,
+   "celestial": 0.55,
+   "cave": 0.65,
+   "underwater": 0.75,
+   "lava": 0.85
+  }
+ },
+ "camera": {
+  "default": {
+   "elevation_deg": 32.0,
+   "zoom": 1.0
+  },
+  "low": {
+   "elevation_deg": 25.0,
+   "zoom": 1.0
+  },
+  "high": {
+   "elevation_deg": 46.0,
+   "zoom": 1.0
+  },
+  "wide": {
+   "elevation_deg": 32.0,
+   "zoom": 1.16
+  },
+  "close": {
+   "elevation_deg": 32.0,
+   "zoom": 0.93
+  }
+ },
+ "dressing": {
+  "sparse": {
+   "rim_fraction": 0.4,
+   "weather_mult": 0.7,
+   "islet_dressing": 0
+  },
+  "normal": {
+   "rim_fraction": 1.0,
+   "weather_mult": 1.0,
+   "islet_dressing": 4
+  },
+  "lush": {
+   "rim_fraction": 1.0,
+   "weather_mult": 1.35,
+   "islet_dressing": 14
+  }
+ },
+ "set_piece_layout": {
+  "notes": "Camera-relative layout (screen right u, away from camera v), in cells of an 8x8 board; scaled by board size/8. The piece always keeps its screen side while the view rotates.",
+  "islet_y": 0.5,
+  "side_v_fraction": 0.75,
+  "face_yaw_deg": 22.0,
+  "piece_scale_mult": 0.72,
+  "side_u_fraction": 0.55,
+  "back_v_fraction": 0.8
+ },
+ "weather": {
+  "clear": {},
+  "mist": {
+   "amount": 30,
+   "lifetime": 10.0,
+   "mesh": [
+    1.0,
+    1.0
+   ],
+   "size": [
+    0.45,
+    0.9
+   ],
+   "texture": "puff",
+   "colors": [
+    "#F2F5FF"
+   ],
+   "alpha": 1.0,
+   "gravity": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "speed": [
+    0.2,
+    0.5
+   ],
+   "direction": [
+    1.0,
+    0.0,
+    0.25
+   ],
+   "spread": 40.0,
+   "box": [
+    13.0,
+    1.2,
+    13.0
+   ],
+   "center": [
+    0.0,
+    1.4,
+    0.0
+   ],
+   "spin": [
+    0.0,
+    0.0
+   ],
+   "fog_add": 0.006
+  },
+  "drizzle": {
+   "amount": 110,
+   "lifetime": 1.5,
+   "mesh": [
+    0.06,
+    1.0
+   ],
+   "size": [
+    0.8,
+    1.3
+   ],
+   "texture": "streak",
+   "colors": [
+    "#C9DFFF"
+   ],
+   "alpha": 1.0,
+   "gravity": [
+    0.8,
+    -14.0,
+    0.0
+   ],
+   "speed": [
+    3.0,
+    5.0
+   ],
+   "direction": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "spread": 4.0,
+   "box": [
+    13.0,
+    0.5,
+    13.0
+   ],
+   "center": [
+    0.0,
+    12.0,
+    0.0
+   ],
+   "spin": [
+    0.0,
+    0.0
+   ],
+   "fog_add": 0.002
+  },
+  "snow": {
+   "amount": 130,
+   "lifetime": 8.0,
+   "mesh": [
+    1.0,
+    1.0
+   ],
+   "size": [
+    0.2,
+    0.42
+   ],
+   "texture": "puff",
+   "colors": [
+    "#FFFFFF"
+   ],
+   "alpha": 1.0,
+   "gravity": [
+    0.2,
+    -0.2,
+    0.1
+   ],
+   "speed": [
+    1.0,
+    1.5
+   ],
+   "direction": [
+    0.2,
+    -1.0,
+    0.1
+   ],
+   "spread": 30.0,
+   "box": [
+    13.0,
+    0.5,
+    13.0
+   ],
+   "center": [
+    0.0,
+    11.0,
+    0.0
+   ],
+   "spin": [
+    0.0,
+    0.0
+   ]
+  },
+  "embers": {
+   "amount": 60,
+   "lifetime": 5.5,
+   "mesh": [
+    1.0,
+    1.0
+   ],
+   "size": [
+    0.16,
+    0.36
+   ],
+   "texture": "puff",
+   "colors": [
+    "#FFD27A",
+    "#FF8A2A",
+    "#FF5A1F"
+   ],
+   "alpha": 1.0,
+   "gravity": [
+    0.15,
+    0.5,
+    0.0
+   ],
+   "speed": [
+    0.8,
+    1.6
+   ],
+   "direction": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "spread": 25.0,
+   "box": [
+    12.0,
+    0.5,
+    12.0
+   ],
+   "center": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "spin": [
+    0.0,
+    0.0
+   ]
+  },
+  "bubbles": {
+   "amount": 45,
+   "lifetime": 9.0,
+   "mesh": [
+    1.0,
+    1.0
+   ],
+   "size": [
+    0.35,
+    0.85
+   ],
+   "texture": "bubble",
+   "colors": [
+    "#E6FAFF"
+   ],
+   "alpha": 1.0,
+   "gravity": [
+    0.0,
+    0.1,
+    0.0
+   ],
+   "speed": [
+    0.6,
+    1.1
+   ],
+   "direction": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "spread": 12.0,
+   "box": [
+    12.0,
+    0.5,
+    12.0
+   ],
+   "center": [
+    0.0,
+    -3.0,
+    0.0
+   ],
+   "spin": [
+    0.0,
+    0.0
+   ]
+  },
+  "petals": {
+   "amount": 42,
+   "lifetime": 10.0,
+   "mesh": [
+    1.0,
+    1.0
+   ],
+   "size": [
+    0.4,
+    0.65
+   ],
+   "texture": "petal",
+   "colors": [
+    "#FFC0D3",
+    "#FFF1F5",
+    "@accent"
+   ],
+   "alpha": 1.0,
+   "gravity": [
+    0.15,
+    -0.3,
+    0.1
+   ],
+   "speed": [
+    0.4,
+    0.8
+   ],
+   "direction": [
+    0.3,
+    -1.0,
+    0.1
+   ],
+   "spread": 30.0,
+   "box": [
+    13.0,
+    0.5,
+    13.0
+   ],
+   "center": [
+    0.0,
+    10.0,
+    0.0
+   ],
+   "spin": [
+    -120.0,
+    120.0
+   ]
+  },
+  "stars": {
+   "amount": 55,
+   "lifetime": 4.5,
+   "mesh": [
+    1.0,
+    1.0
+   ],
+   "size": [
+    0.5,
+    1.0
+   ],
+   "texture": "star",
+   "colors": [
+    "#FFF2B0",
+    "#FFFFFF",
+    "#BCE0FF"
+   ],
+   "alpha": 1.0,
+   "gravity": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "speed": [
+    0.05,
+    0.25
+   ],
+   "direction": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "spread": 180.0,
+   "box": [
+    12.0,
+    7.0,
+    12.0
+   ],
+   "center": [
+    0.0,
+    5.0,
+    0.0
+   ],
+   "spin": [
+    -20.0,
+    20.0
+   ],
+   "twinkle": true
+  },
+  "confetti": {
+   "amount": 80,
+   "lifetime": 6.5,
+   "mesh": [
+    0.3,
+    0.5
+   ],
+   "size": [
+    0.8,
+    1.3
+   ],
+   "texture": "rect",
+   "colors": [
+    "#FF7AA8",
+    "#FFD84A",
+    "#7DE0B5",
+    "#6EC1FF",
+    "#A98BFF"
+   ],
+   "alpha": 1.0,
+   "gravity": [
+    0.0,
+    -0.8,
+    0.0
+   ],
+   "speed": [
+    0.8,
+    1.4
+   ],
+   "direction": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "spread": 25.0,
+   "box": [
+    13.0,
+    0.5,
+    13.0
+   ],
+   "center": [
+    0.0,
+    11.0,
+    0.0
+   ],
+   "spin": [
+    -320.0,
+    320.0
+   ],
+   "discrete_colors": true
+  }
+ }
+}

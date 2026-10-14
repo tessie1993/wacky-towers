@@ -307,6 +307,8 @@ func _execute_intent(id: StringName, args: Dictionary) -> void:
 		&"move", &"rotate", &"drop", &"soft", &"hold", &"use_skill", &"use_item", &"tap": _play_intent(id, args)
 		&"view":
 			if _stage != null and not _paused: _stage.rotate_view(int(args.get("direction", 1)))
+		&"camera_orbit", &"camera_zoom", &"camera_release":
+			if _stage != null and not _paused: _stage.camera_intent(id, args)
 		&"back": _back()
 		&"quit": get_tree().quit()
 
@@ -489,7 +491,7 @@ func _begin_session(level: LevelData, attempt_seed: int = -1) -> void:
 	_stage.setup(_sim, level.biome, _settings())
 	_stage.apply_cosmetics(_store.progress().get("cosmetics", {}))
 	_stage.set_story_context({"level_id":level.id,"character":_ability_character(),"keepsakes":_store.progress().get("keepsakes",[]),"mizzle_redeemed":_saved_stars(&"celestial_10")>0})
-	if _stage.has_signal("secret_tapped"): _stage.connect("secret_tapped", _on_secret_tapped)
+	if not _stage.secret_tapped.is_connected(_on_secret_tapped): _stage.secret_tapped.connect(_on_secret_tapped)
 	_stage.set_goal(level.goal)
 	_stage.set_board_area(Rect2(0.22, 0.08, 0.60, 0.66))
 	_input.reset()
@@ -685,7 +687,7 @@ func _hud_snapshot() -> Dictionary:
 		target /= 1000
 	var next_ids: Array[StringName] = _sim.preview(clampi(_sim.knobs().int_value(&"spawn.preview_count"), 1, PREVIEW_COUNT))
 	return {"level_name": _level_name(_level_id) if _mode == &"campaign" else "Arcade" if _mode == &"arcade" else "Party practice",
-		"goal": _goal_text(goal), "progress": progress, "target": target, "score": _sim.score(), "time": _format_ms(_sim.elapsed_ms()),
+		"goal": _goal_text(goal), "objective": String(_level.story.get("objective", "")) if _level != null and _mode == &"campaign" else "", "progress": progress, "target": target, "score": _sim.score(), "time": _format_ms(_sim.elapsed_ms()),
 		"next_piece": ", ".join(next_ids), "twists": _rule_labels(_arcade.snapshot().rules if _arcade != null else _level.rules),
 		"danger": _sim.board().stack_height() >= _sim.board().limit_layer() - 2,
 		"can_tilt": _level.knobs.get(&"control.rotation_axes_enabled", []).has("tilt"),
@@ -699,7 +701,7 @@ func _hud_snapshot() -> Dictionary:
 		"potion_count": int(_store.progress().get("inventory", {}).get("potions", {}).get(String(_store.get_setting("selected_potion", "")), 0)) if _mode in [&"campaign", &"arcade"] else 0,
 		"warning": _warning, "hint": _hint, "wobble": _wobble,
 		"next_shapes": _preview_shapes(next_ids), "held_cells": _preview_shapes([_sim.held_shape()]) if _sim.held_shape() != &"" else [],
-		"star_pace": _star_pace(), "biome": String(_level.biome) if _level != null else "meadow"}
+		"hud": _level.hud if _level != null and _mode == &"campaign" else {}, "star_pace": _star_pace(), "biome": String(_level.biome) if _level != null else "meadow"}
 
 ## Cube offsets and a display tint for HUD piece previews (display only).
 func _preview_shapes(ids: Array) -> Array:

@@ -1,0 +1,200 @@
+{
+ "schema": 2,
+ "id": "meadow_kite_day",
+ "tick_ms": 50,
+ "time_limit_ms": 175000,
+ "restart_penalty_ms": 8000,
+ "preview_window_mm": 14000,
+ "preview_min_lead_ms": 8000,
+ "on_loss": "checkpoint",
+ "_notes": "124 s drive across the gorge. No arches and no road bumps: updrafts reward a tall LIGHT build with speed, gusts punish tall HEAVY builds, cloud bumps shake the hamper (cargo stress) more than they tip the lean. The kite lean limit is lower than the cart's.",
+ "segments": [
+  {
+   "id": "lift_off",
+   "length_mm": 30000,
+   "speed_mm_s": 1000,
+   "fall_pct": 95
+  },
+  {
+   "id": "gorge",
+   "length_mm": 40000,
+   "speed_mm_s": 1100,
+   "fall_pct": 105
+  },
+  {
+   "id": "thermals",
+   "length_mm": 40000,
+   "speed_mm_s": 1200,
+   "fall_pct": 115
+  },
+  {
+   "id": "far_rim",
+   "length_mm": 32000,
+   "speed_mm_s": 1300,
+   "fall_pct": 125
+  }
+ ],
+ "checkpoints": [
+  {
+   "id": "cloud_post",
+   "at_mm": 70000
+  }
+ ],
+ "lean": {
+  "danger_pm": 500,
+  "limit_pm": 750,
+  "relax_pm_per_s": 60,
+  "spill_cells": 4,
+  "spill_relief_pm": 300,
+  "hysteresis_pm": 80
+ },
+ "cargo": {
+  "id": "picnic_hamper",
+  "height_layers": 1,
+  "min_support_cells": 5,
+  "level_tolerance_layers": 1,
+  "wobble_pm": 300,
+  "slip_pm": 650,
+  "rise_pm_per_s": 170,
+  "recover_pm_per_s": 220,
+  "lean_stress_pm_per_s": 160,
+  "drop_stress_pm_per_layer": 200,
+  "top_out_stress_pm_per_s": 300
+ },
+ "events": [
+  {
+   "kind": "updraft",
+   "at_mm": 14000,
+   "duration_ms": 5000
+  },
+  {
+   "kind": "cloud_bump",
+   "at_mm": 24000,
+   "force": 1,
+   "dir": "-x"
+  },
+  {
+   "kind": "gust",
+   "at_mm": 38000,
+   "dir": "+x",
+   "strength": 1
+  },
+  {
+   "kind": "updraft",
+   "at_mm": 46000,
+   "duration_ms": 5000
+  },
+  {
+   "kind": "cloud_bump",
+   "at_mm": 56000,
+   "force": 2,
+   "dir": "+z"
+  },
+  {
+   "kind": "gust",
+   "at_mm": 64000,
+   "dir": "-x",
+   "strength": 2
+  },
+  {
+   "kind": "cloud_bump",
+   "at_mm": 76000,
+   "force": 1,
+   "dir": "-x"
+  },
+  {
+   "kind": "gust",
+   "at_mm": 82000,
+   "dir": "+z",
+   "strength": 1
+  },
+  {
+   "kind": "updraft",
+   "at_mm": 90000,
+   "duration_ms": 5000
+  },
+  {
+   "kind": "cloud_bump",
+   "at_mm": 98000,
+   "force": 2,
+   "dir": "+x"
+  },
+  {
+   "kind": "gust",
+   "at_mm": 104000,
+   "dir": "-z",
+   "strength": 2
+  },
+  {
+   "kind": "gust",
+   "at_mm": 118000,
+   "dir": "+x",
+   "strength": 2
+  },
+  {
+   "kind": "cloud_bump",
+   "at_mm": 119500,
+   "force": 2,
+   "dir": "-x"
+  },
+  {
+   "kind": "updraft",
+   "at_mm": 128000,
+   "duration_ms": 5000
+  },
+  {
+   "kind": "gust",
+   "at_mm": 134000,
+   "dir": "-z",
+   "strength": 3
+  },
+  {
+   "kind": "cloud_bump",
+   "at_mm": 135000,
+   "force": 3,
+   "dir": "+x"
+  }
+ ],
+ "effects": {
+  "updraft": {
+   "lift_pct": 10,
+   "height_pct_per_layer": 12,
+   "mass_pct_per_cell": 1
+  },
+  "gust": {
+   "impulse_pm_per_100_layer_cells": 60,
+   "cargo_stress_pm_per_strength": 80
+  },
+  "cloud_bump": {
+   "impulse_pm_per_force": 70,
+   "cargo_stress_pm_per_force": 160
+  }
+ },
+ "path": [
+  [
+   0,
+   6,
+   0
+  ],
+  [
+   0,
+   8,
+   -50
+  ],
+  [
+   -20,
+   10,
+   -100
+  ],
+  [
+   -20,
+   8,
+   -150
+  ],
+  [
+   0,
+   6,
+   -200
+  ]
+ ]
+}

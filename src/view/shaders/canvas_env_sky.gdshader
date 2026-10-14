@@ -53,6 +53,8 @@ uniform vec4 nebula_b : source_color = vec4(0.29, 0.42, 0.85, 1.0);
 group_uniforms;
 /** 0 under reduced motion: clouds and stars hold still. */
 uniform float motion : hint_range(0.0, 1.0) = 1.0;
+/** Camera-turn parallax: horizontal shift of the painted layers in aspect-scaled screen widths (0 at rest). */
+uniform float view_shift = 0.0;
 
 /** Castle silhouette size relative to its authored proportions. */
 const float CASTLE_SCALE = 0.55;
@@ -66,7 +68,7 @@ float fbm(vec2 p) { return vn(p) * 0.5 + vn(p * 2.1) * 0.3 + vn(p * 4.3) * 0.2; 
 void fragment() {
 	vec2 uv = UV;
 	float aspect = SCREEN_PIXEL_SIZE.y / max(SCREEN_PIXEL_SIZE.x, 1e-6);
-	vec2 p = vec2((uv.x - 0.5) * aspect, uv.y);
+	vec2 p = vec2((uv.x - 0.5) * aspect + view_shift, uv.y);
 	float t = TIME * motion;
 	vec3 col = mix(top.rgb, horizon.rgb, smoothstep(0.0, 0.62, uv.y));
 	col = mix(col, low.rgb, smoothstep(0.62, 1.0, uv.y));
@@ -128,7 +130,7 @@ void fragment() {
 	}
 	// Castle silhouette: wall + five towers with cone roofs, painted pale like distant ice.
 	if (castle > 0.0) {
-		vec2 cq = vec2((uv.x - castle_pos.x) * aspect, castle_pos.y - uv.y) / CASTLE_SCALE;
+		vec2 cq = vec2((uv.x - castle_pos.x) * aspect + view_shift, castle_pos.y - uv.y) / CASTLE_SCALE;
 		float body = step(abs(cq.x), 0.085) * step(cq.y, 0.045) * step(-0.06, cq.y);
 		float roof = 0.0;
 		float shade_c = 0.0;
@@ -205,7 +207,7 @@ void fragment() {
 	// Near puffy cloud bank in front of the cliffs: scalloped top, lit crown, shaded belly.
 	if (cloud_bank > 0.0) {
 		float bl = 0.54 - 0.04 * fbm(vec2(p.x * 2.0 + 4.0, 1.0)) - 0.03 * abs(sin(p.x * 9.0 + fbm(vec2(p.x * 2.5, 9.0)) * 4.0));
-		float bank = smoothstep(bl, bl + 0.006, uv.y) * (1.0 - smoothstep(0.66, 0.72, uv.y));
+		float bank = smoothstep(bl, bl + 0.006, uv.y) ;  // runs to the bottom edge: the old fade-out at y 0.66-0.72 left a hard seam above the cloud sea
 		vec3 bc = mix(cloud.rgb, cloud_shade.rgb, clamp((uv.y - bl) * 9.0, 0.0, 1.0) * 0.7);
 		col = mix(col, bc, bank * cloud_bank);
 	}

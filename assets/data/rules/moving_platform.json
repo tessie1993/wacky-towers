@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "moving_platform",
+  "name_key": "RULE_MOVING_PLATFORM",
+  "layer": "mechanic",
+  "icon": "moving_platform",
+  "behaviour": "moving_platform",
+  "params": {
+    "track": {
+      "type": "string"
+    }
+  },
+  "incompatible_with": []
+}

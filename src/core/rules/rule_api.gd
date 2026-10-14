@@ -281,6 +281,11 @@ func clear_cell(c: Vector3i, cause: int = BoardState.Cause.CLEAR) -> void:
 func remove_cell(c: Vector3i, cause: int = BoardState.Cause.CLEAR) -> void:
 	clear_cell(c, cause)
 
+## Queue a wipe of every block, applied in write order at the hook boundary, so it also clears blocks that
+## earlier queued writes moved or placed. Example: api.request_wipe(BoardState.Cause.CLEAR).
+func request_wipe(cause: int = BoardState.Cause.CLEAR) -> void:
+	_writes.append({"op": &"wipe", "cause": cause})
+
 func move_cell(src: Vector3i, dst: Vector3i, force: bool = false) -> void:
 	_writes.append({"op": &"move", "cell": src, "to": dst, "force": force})
 
@@ -453,10 +458,15 @@ func flush_writes(protect_stack: bool = false) -> bool:
 	for write: Dictionary in _writes:
 		var op: StringName = write["op"]
 		var replaces: bool = op == &"set" and _board.in_bounds(write["cell"]) and kind_at(write["cell"]) != 0
-		if protect_stack and (op in [&"remove", &"move", &"batch"] or replaces):
+		if protect_stack and (op in [&"remove", &"move", &"batch", &"wipe"] or replaces):
 			deferred.append(write)
 			continue
 		changed = true
+		if op == &"wipe":
+			for wi: int in range(_board.size().x * _board.size().y * _board.size().z):
+				if _board.is_active(wi) and _board.get_kind(wi) != 0:
+					_board.remove(wi, write["cause"])
+			continue
 		if write["op"] == &"batch":
 			_board.move_batch(write["src"], write["dst"], bool(write.get("force", false)))
 			continue

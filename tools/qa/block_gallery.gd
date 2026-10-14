@@ -6,9 +6,10 @@ extends SceneTree
 ## Run (Compatibility):
 ##   timeout 240 xvfb-run -a -s "-screen 0 1600x1280x24" godot --path . --rendering-driver opengl3 \
 ##       -s res://tools/qa/block_gallery.gd
+## v3: `-- s13` renders the 12-biome sheet like board 13 (per-piece hues) + sheet_vs_ref13.png.
 ## Optional user args after `--`: `tints` renders the palette-tint sheet, `ghost` the ghost sheet.
 
-const OUT_DIR := "res://production/qa/evidence/blocks-v2/"
+const OUT_DIR := "res://production/qa/evidence/blocks-v4/"
 const FONT_PATH := "res://prototypes/style_rnd/fonts/LilitaOne-Regular.ttf"
 const CELL := Vector2i(400, 400)
 const BG := Color("f6ead3")
@@ -43,7 +44,11 @@ func _run() -> void:
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
 	root.content_scale_factor = 1.0
 	var mode: String = args[0] if args.size() > 0 else "sheet"
-	if mode == "tints":
+	if mode == "s13":
+		await _sheet13()
+	elif mode == "v2":
+		await _sheet_v2()
+	elif mode == "tints":
 		await _sheet_tints()
 	elif mode == "ghost":
 		await _sheet_ghost()
@@ -63,6 +68,227 @@ func _sheet_main() -> void:
 		var cells: Array = [[Vector3(-0.5, 0.5, 0), colours[0]], [Vector3(0.5, 0.5, 0), colours[1]], [Vector3(0.5, 1.5, 0), colours[2]]]
 		grid.add_child(_cell(StringName(entry[0]), entry[1], cells, false))
 	await _snap("gallery.png")
+
+
+## Block variation v2: one PNG per biome with every palette hue as its own piece, a stacked 2-cube piece, the
+## falling (active) piece and one topper. Output: blocks-v2/<biome>.png
+const V2_BIOMES := ["meadow", "candy", "ice", "underwater", "lava", "forest", "cave", "clockwork", "neon", "celestial", "carnival", "pirate"]
+
+func _sheet_v2() -> void:
+	root.size = Vector2i(640, 560)
+	for biome: String in V2_BIOMES:
+		var bg := ColorRect.new()
+		bg.color = BG
+		bg.size = Vector2(root.size)
+		root.add_child(bg)
+		var box: Control = _cell_v2(StringName(biome))
+		root.add_child(box)
+		await _snap(biome + ".png")
+		bg.queue_free()
+		box.queue_free()
+		await process_frame
+
+
+func _cell_v2(biome: StringName) -> Control:
+	var box := VBoxContainer.new()
+	box.custom_minimum_size = Vector2(640, 560)
+	var svc := SubViewportContainer.new()
+	svc.stretch = true
+	svc.custom_minimum_size = Vector2(640, 510)
+	box.add_child(svc)
+	var vp := SubViewport.new()
+	vp.own_world_3d = true
+	vp.transparent_bg = true
+	vp.msaa_3d = Viewport.MSAA_4X
+	vp.size = Vector2i(640, 510)
+	svc.add_child(vp)
+	var world := Node3D.new()
+	vp.add_child(world)
+	_rig(world)
+	var material: ShaderMaterial = WtBlockMaterials.for_biome(biome)
+	var n: int = int(material.get_shader_parameter(&"palette_size"))
+	# Cells: [pos, piece id]. Base layer 3x2 single-cube pieces, plus a 2-cube piece on top.
+	var cells: Array = []
+	var pid: int = 1
+	for z: int in 2:
+		for x: int in 3:
+			cells.append([Vector3(x - 1.0, 0.5, z - 0.5), pid])
+			pid += 1
+	cells.append([Vector3(-1.0, 1.5, -0.5), 100])
+	cells.append([Vector3(0.0, 1.5, -0.5), 100])
+	cells.append([Vector3(1.0, 1.5, 0.5), 101])
+	# Greedy variant per piece: differ from every face-neighbour piece already coloured.
+	var variant: Dictionary = {}
+	for c: Array in cells:
+		var id: int = c[1]
+		if variant.has(id):
+			continue
+		var used: Dictionary = {}
+		for o: Array in cells:
+			if variant.has(o[1]) and o[1] != id and (o[0] as Vector3).distance_to(c[0]) < 1.01:
+				used[variant[o[1]]] = true
+		var v: int = (id * 5 + id / 4) % maxi(n, 1)
+		for k: int in maxi(n, 1):
+			if not used.has((v + k) % maxi(n, 1)):
+				v = (v + k) % maxi(n, 1)
+				break
+		variant[id] = v
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
+	mm.use_custom_data = true
+	mm.mesh = WtBlockMesh.cube()
+	mm.instance_count = cells.size()
+	material.set_shader_parameter(&"layer_span", 3.0)
+	for i: int in cells.size():
+		var pos: Vector3 = cells[i][0]
+		var mask: int = 0
+		var dirs: Array[Vector3] = [Vector3.LEFT, Vector3.RIGHT, Vector3.DOWN, Vector3.UP, Vector3.FORWARD, Vector3.BACK]
+		for b: int in 6:
+			for o: Array in cells:
+				if (o[0] as Vector3).distance_to(pos + dirs[b]) < 0.1 and o[1] != cells[i][1]:
+					mask |= 1 << b
+		var layer: int = int(pos.y)
+		mm.set_instance_transform(i, Transform3D(Basis(), pos))
+		mm.set_instance_color(i, Color("#C8643C"))
+		mm.set_instance_custom_data(i, Color(0, float(int(variant[cells[i][1]]) + 1) / 16.0, float(mask + 64 * layer) / 2048.0, 1))
+	var mmi := MultiMeshInstance3D.new()
+	mmi.multimesh = mm
+	mmi.material_override = material
+	world.add_child(mmi)
+	# Active (falling) piece: its own material copy, use_cell_alpha off.
+	var falling: ShaderMaterial = WtBlockMaterials.for_biome(biome)
+	falling.set_shader_parameter(&"use_cell_alpha", false)
+	var amm := MultiMesh.new()
+	amm.transform_format = MultiMesh.TRANSFORM_3D
+	amm.use_colors = true
+	amm.use_custom_data = true
+	amm.mesh = WtBlockMesh.cube()
+	amm.instance_count = 2
+	var av: int = (n - 1) if n > 0 else 0
+	for i: int in 2:
+		amm.set_instance_transform(i, Transform3D(Basis.from_scale(Vector3.ONE * 0.97), Vector3(-1.0 + i, 3.0, 0.5)))
+		amm.set_instance_color(i, Color("#C8643C"))
+		amm.set_instance_custom_data(i, Color(0, float(av + 1) / 16.0, 0, 0))
+	var ammi := MultiMeshInstance3D.new()
+	ammi.multimesh = amm
+	ammi.material_override = falling
+	world.add_child(ammi)
+	var topper: Node3D = WtBlockToppers.build_for_cells(biome, [Vector3(1.0, 1.5, 0.5)] as Array[Vector3], 1.0)
+	if topper != null:
+		world.add_child(topper)
+	var cam := Camera3D.new()
+	cam.fov = 30.0
+	world.add_child(cam)
+	var target := Vector3(0.0, 1.35, 0.0)
+	cam.look_at_from_position(target + Vector3(-2.6, 3.4, 7.4) * 1.05, target)
+	cam.current = true
+	var label := Label.new()
+	label.text = String(biome).capitalize() + "  (" + str(n) + " hues)"
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var ls := LabelSettings.new()
+	if _font != null:
+		ls.font = _font
+	ls.font_size = 30
+	ls.font_color = INK
+	label.label_settings = ls
+	box.add_child(label)
+	return box
+
+
+const REF13 := "res://assets/art/reference/style/13_biome_blocks.png"
+## Palette variant index per cube (bottom-left, bottom-right, top) per biome, for the s13 sheet.
+const S13_VARIANTS := {
+	"meadow": [0, 3, 5], "candy": [0, 1, 4], "ice": [0, 4, 1], "underwater": [0, 1, 4], "lava": [0, 1, 3],
+	"forest": [0, 1, 4], "cave": [0, 2, 1], "clockwork": [0, 1, 2], "neon": [0, 2, 3], "celestial": [0, 1, 2],
+	"carnival": [0, 2, 3], "dune": [-1, -1, -1],
+}
+
+
+## The 12-biome sheet laid out like ref 13: an L-stack of three pieces per biome (distinct palette hues),
+## one topper, label under. Writes sheet.png and sheet_vs_ref13.png (ref left, ours right).
+func _sheet13() -> void:
+	root.size = Vector2i(CELL.x * 4, CELL.y * 3)
+	var grid := _grid(4)
+	for entry: Array in SHEET:
+		grid.add_child(_cell13(StringName(entry[0]), entry[1]))
+	await _snap("sheet.png")
+	var ours: Image = Image.load_from_file(ProjectSettings.globalize_path(OUT_DIR + "sheet.png"))
+	var ref: Image = Image.load_from_file(ProjectSettings.globalize_path(REF13))
+	ref.convert(Image.FORMAT_RGBA8)
+	ours.convert(Image.FORMAT_RGBA8)
+	var h: int = 840
+	ref.resize(int(float(ref.get_width()) * h / ref.get_height()), h, Image.INTERPOLATE_LANCZOS)
+	ours.resize(int(float(ours.get_width()) * h / ours.get_height()), h, Image.INTERPOLATE_LANCZOS)
+	var both := Image.create(ref.get_width() + ours.get_width() + 16, h, false, Image.FORMAT_RGBA8)
+	both.fill(Color("#2a1a38"))
+	both.blit_rect(ref, Rect2i(Vector2i.ZERO, ref.get_size()), Vector2i.ZERO)
+	both.blit_rect(ours, Rect2i(Vector2i.ZERO, ours.get_size()), Vector2i(ref.get_width() + 16, 0))
+	both.save_png(ProjectSettings.globalize_path(OUT_DIR + "sheet_vs_ref13.png"))
+	print("SNAP sheet_vs_ref13.png ", both.get_size())
+
+
+func _cell13(biome: StringName, title: String) -> Control:
+	var box := VBoxContainer.new()
+	box.custom_minimum_size = Vector2(CELL)
+	box.add_theme_constant_override(&"separation", 0)
+	var svc := SubViewportContainer.new()
+	svc.stretch = true
+	svc.custom_minimum_size = Vector2(CELL.x, CELL.y - 56)
+	box.add_child(svc)
+	var vp := SubViewport.new()
+	vp.own_world_3d = true
+	vp.transparent_bg = true
+	vp.msaa_3d = Viewport.MSAA_4X
+	vp.size = Vector2i(CELL.x, CELL.y - 56)
+	svc.add_child(vp)
+	var world := Node3D.new()
+	vp.add_child(world)
+	_rig(world)
+	var material: ShaderMaterial = WtBlockMaterials.for_biome(biome)
+	material.set_shader_parameter(&"layer_span", 2.0)
+	var palette_n: Variant = material.get_shader_parameter(&"palette_size")
+	var n: int = int(palette_n) if palette_n != null else 0
+	var variants: Array = S13_VARIANTS.get(String(biome), [0, 1, 2])
+	# [position, mask bits (-x,+x,-y,+y,-z,+z), layer]
+	var cells: Array = [[Vector3(-0.5, 0.5, 0.0), 2, 0], [Vector3(0.5, 0.5, 0.0), 1 | 8, 0], [Vector3(0.5, 1.5, 0.0), 4, 1]]
+	var body := Color(String(WtBlockMaterials.look(biome).get("block", {}).get("body_color", "#ffffff")))
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
+	mm.use_custom_data = true
+	mm.mesh = WtBlockMesh.cube()
+	mm.instance_count = 3
+	for i: int in 3:
+		var v: int = int(variants[i]) if n > 0 else -1
+		mm.set_instance_transform(i, Transform3D(Basis(), cells[i][0]))
+		mm.set_instance_color(i, body)
+		mm.set_instance_custom_data(i, Color(0, float(v + 1) / 16.0, float(int(cells[i][1]) + 64 * int(cells[i][2])) / 2048.0, 1))
+	var mmi := MultiMeshInstance3D.new()
+	mmi.multimesh = mm
+	mmi.material_override = material
+	world.add_child(mmi)
+	var topper: Node3D = WtBlockToppers.build_for_cells(biome, [Vector3(0.5, 1.5, 0.0)] as Array[Vector3], 1.0)
+	if topper != null:
+		world.add_child(topper)
+	var cam := Camera3D.new()
+	cam.fov = 30.0
+	world.add_child(cam)
+	var target := Vector3(0.05, 1.12, 0.0)
+	cam.look_at_from_position(target + Vector3(-2.3, 2.5, 5.6) * 0.9, target)
+	cam.current = true
+	var label := Label.new()
+	label.text = title
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.custom_minimum_size = Vector2(CELL.x, 56)
+	var ls := LabelSettings.new()
+	if _font != null:
+		ls.font = _font
+	ls.font_size = 36
+	ls.font_color = INK
+	label.label_settings = ls
+	box.add_child(label)
+	return box
 
 
 func _sheet_tints() -> void:

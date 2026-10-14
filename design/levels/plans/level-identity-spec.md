@@ -8,11 +8,13 @@ biome repeats the same tier template. This spec sets the rules every level must 
 
 ## Gameplay variety rules (per biome, 14 levels)
 
-- **Board footprint:** at most 4 of the 14 levels are plain squares. The others use `board.mask` shapes
+- **Board footprint:** ~~at most 4 of the 14 levels are plain squares~~ (superseded 2026-10-14 by user ruling B
+  and `campaign-vision.md` U18: **at most 1 plain square per biome**, and no two levels in a biome share a
+  footprint). The others use `board.mask` shapes
   (8x8 minimum bounding box, up to 12x12). Shapes include cross, ring with a hole, L, twin islands joined
   by a bridge, terraces (masks that differ per layer), diamond, U-bay, and stepping stones. The island
   art follows the mask automatically (WtIslandBuilder.build_island uses the active cells).
-- **Goals:** at most 5 `clear_n` levels per biome. Use the full set: `height`, `shape`, `survive`,
+- **Goals:** ~~at most 5 `clear_n` levels per biome~~. *Superseded by U15: no `clear_n` headline goals.* Use the full set: `height`, `shape`, `survive`,
   `bonk_boss`, `rescue_all`, `dig_rescue`, `wind_keys`, `bake_oven`, plus any goal in
   assets/data/goals.json.
 - **No two levels share the same (goal, main rule, board shape) triple**, across the whole campaign.
@@ -46,10 +48,95 @@ biome repeats the same tier template. This spec sets the rules every level must 
   reduced motion.
 - **set_piece** is one big landmark next to the board that makes the level recognisable: windmill,
   castle gate, kraken, volcano vent, clock tower, ferris wheel, crystal geode, treehouse, lighthouse,
-  observatory, gingerbread house, shipwreck, and so on. Each biome gets 4–6 set pieces. Use
+  observatory, gingerbread house, shipwreck, and so on. Each biome gets ~~4–6~~ **7–8** set pieces (superseded: U14 needs at least 7 per biome). Use
   `assets/models/env_v3` GLBs or builder primitives, and list them in `assets/data/set_pieces.json`.
 - Within a biome, no two consecutive levels share the same `time_of_day` + `set_piece`.
 
 Owners:
 - Engine and view (`look` support, presets, set pieces, weather): src/view and the new data files.
 - Level data (all `board`, `goal`, `rules`, `look` and `metadata.signature` values): level JSONs.
+
+## User rules, 2026-10-14 (later): no mundane "clear N layers", endings that surprise
+
+User: "Also levels must never be 'clear so many layers'. Level end must not be obvious from the start
+sometimes. And so mundane."
+
+- **No plain layer-count goals.** `clear_n` is no longer a level's headline goal. Clearing layers can
+  serve another goal (it charges the beacon, bonks the boss, drains the flood), but the goal the player
+  reads is always a **story objective**: raise the lookout high enough to spot the ship, fill the dam
+  shape before the tide, keep the wizard's cloud from popping, rescue the stranded critters, and so on.
+  The HUD shows the story objective, never "Clear N full layers".
+- **Endings that are not obvious from the start:** at least 4 of the 14 levels in each biome end in a
+  way the player can't predict from the first frame. Patterns:
+  - **Twist:** the goal changes mid-level. The tower is finished, then the storm arrives and you
+    must survive it.
+  - **Reveal:** the real objective is hidden at first and revealed by a story moment. The "lookout" is
+    really bait for the kraken.
+  - **Surprise guest:** the boss or ally arrives partway through and changes the rules.
+  - **Secret ending:** an optional hidden condition gives an alternate ending and an extra star.
+  - **Story-resolved end:** the level ends when the story beat resolves (the critter is home), not
+    when a counter fills.
+  These patterns must stay fair: telegraph them, and never punish a player for not knowing a hidden
+  rule. Mark each one in `metadata.ending` as plain, twist, reveal, guest, secret or story.
+- **Never mundane:** every level has a moment, an event in the first 10 seconds and a payoff on the
+  win. The swap test from the vision (P1) applies.
+- **Engine needs** (phase 3 or the build): goal phases (goal A, then goal B), hidden or revealed
+  goals, story-objective HUD text, and ending events. The systems designer specifies these.
+
+## User rule, 2026-10-14: a level is a scene, not a grid
+
+User: "I want to see more art than only the grid. Look at the references. Levels have more than just
+grids." See `assets/art/reference/style/01_story_flow.jpg` and `09–12_minigames_*.jpg`: Bridge Dash
+over a waterfall chasm, Fort Blast catapults on sea cliffs, Kraken Blockade's octopus wrapping the
+walls, Clockwork Conveyor's machine over lava, Digging Frenzy's mine shaft and Summit Scramble's
+volcano. They are layout and idea references only; no names, logos or IP are copied.
+
+Every level is a **diorama** built around its story beat:
+- **The board lives inside a place.** It might be a bridge of planks across a river, a fort wall on
+  a cliff, a raft, a mine shaft, a conveyor deck or a summit ledge. The island and terrain around the
+  board are shaped for this level: chasms, water, cliffs, machines and paths. It is not the same
+  floating square every time.
+- **Characters on stage.** The heroes, the Wizard and the chapter's NPCs or villain are posed and
+  animated in the scene: building, cheering, hauling blocks or reacting to danger. The boss is a
+  big on-scene creature or machine (tentacles, catapults, a storm cloud) that acts on the board.
+- **Set piece in action.** The landmark is part of the play: the catapult fires, the kraken grabs,
+  the conveyor moves, the lava rises. It is not just decoration.
+- **Themed HUD meters** where they fit: Heat, Fort HP, Altitude, Lava Rise, Balance or Stability.
+  They use the no-beige kit.
+- **The camera frames the scene,** with the board readable and the scene visible around it (U14
+  look fingerprint plus camera preset).
+- **Phase 4 specs** list each level's `scene` (terrain kind, set piece and its action, cast on
+  stage). **Phase 6** builds a scene kit: terrain modules, animated cast, and set-piece actors.
+
+## User rule, 2026-10-14: every level has its own platform, made from its description
+
+User: "Each level has their own. And it can be more diverse forms, shapes and game modes than square, moving or 2. We
+write each level out. And from that level description make the platform."
+
+- Every level gets its own platform, and there is no shared default. Examples include a square, a 3D track that moves
+  with the player (races), two platforms, a growing pit, a tilting plate, a raft and a spiral. The list is open.
+- Order: write the level out first (mechanics, then story). The platform's form, shape and mode are derived from that
+  written description, never picked from a menu up front.
+- The art then builds that platform.
+
+## User rules, 2026-10-14: describe levels as a game builder; speed instead of timers
+
+- **Describe each level as a game builder would.** Say plainly what the level is, which mechanic it uses and what
+  the minigame is. User example: "13 is a Tetris race. Players have to build their car as they drive and try not to
+  fall over. And foresee the race track."
+- **No countdown on Tetris-variant levels.** If a level is a variation on standard Tetris, it has no set time. The
+  pieces speed up as the level progresses. A clock is only for minigames that truly need one, such as races.
+- **Moving platforms and tracks are real.** The moving track for race levels is built as an engine feature, not
+  faked with a scrolling backdrop.
+
+## User note, 2026-10-14: use our own block set when designing
+
+The user said: "Also look at the 68-block set we made. You might want to use it in your design process." Level
+designers must pick each level's pieces from the full shape bank, not only the classic 7:
+- `assets/data/shapes/shape_bank.tres` and `families.json` hold the families standard, special, helper, pento_flat,
+  pento_3d, chunky and hollow.
+- `assets/data/content/blocks.json` holds the special cell kinds: mushroom, sprout, egg, bounce_pad, snowball, goo,
+  candy_bomb, countdown_bomb, rock, mole, locked_cube and others.
+
+Name the shapes used in each level spec, and give the reason they fit the minigame. Fairness checks (tiling and
+parity) use the chosen set.

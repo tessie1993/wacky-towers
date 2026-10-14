@@ -1,0 +1,118 @@
+{
+ "min_clearance_required_cells": 0.3,
+ "instances": [
+  {
+   "type": "tuft",
+   "x": 6.4,
+   "z": 1.601,
+   "radius": 0.4,
+   "clear_to_cells": 2.0
+  },
+  {
+   "type": "mush",
+   "x": -1.921,
+   "z": -6.088,
+   "radius": 0.4,
+   "clear_to_cells": 1.688
+  },
+  {
+   "type": "tuft",
+   "x": 6.779,
+   "z": -0.98,
+   "radius": 0.4,
+   "clear_to_cells": 2.379
+  },
+  {
+   "type": "mush",
+   "x": -0.086,
+   "z": 6.906,
+   "radius": 0.4,
+   "clear_to_cells": 2.506
+  },
+  {
+   "type": "tuft",
+   "x": -3.601,
+   "z": -5.63,
+   "radius": 0.4,
+   "clear_to_cells": 1.885
+  },
+  {
+   "type": "tuft",
+   "x": 4.025,
+   "z": -5.452,
+   "radius": 0.4,
+   "clear_to_cells": 2.092
+  },
+  {
+   "type": "shrub",
+   "x": 0.535,
+   "z": -6.641,
+   "radius": 0.55,
+   "clear_to_cells": 2.091
+  },
+  {
+   "type": "shrub",
+   "x": 2.981,
+   "z": 5.772,
+   "radius": 0.55,
+   "clear_to_cells": 1.475
+  },
+  {
+   "type": "fern",
+   "x": -6.257,
+   "z": -1.89,
+   "radius": 0.7,
+   "clear_to_cells": 1.557
+  },
+  {
+   "type": "tuft",
+   "x": -0.957,
+   "z": -6.822,
+   "radius": 0.4,
+   "clear_to_cells": 2.422
+  },
+  {
+   "type": "fern",
+   "x": -3.087,
+   "z": 5.726,
+   "radius": 0.7,
+   "clear_to_cells": 1.34
+  },
+  {
+   "type": "tuft",
+   "x": -1.308,
+   "z": 6.7,
+   "radius": 0.4,
+   "clear_to_cells": 2.3
+  },
+  {
+   "type": "tuft",
+   "x": 3.251,
+   "z": -6.071,
+   "radius": 0.4,
+   "clear_to_cells": 2.02
+  },
+  {
+   "type": "tuft",
+   "x": 5.468,
+   "z": -3.704,
+   "radius": 0.4,
+   "clear_to_cells": 1.849
+  },
+  {
+   "type": "tuft",
+   "x": -6.052,
+   "z": 3.1,
+   "radius": 0.4,
+   "clear_to_cells": 1.928
+  },
+  {
+   "type": "tuft",
+   "x": 6.791,
+   "z": 0.093,
+   "radius": 0.4,
+   "clear_to_cells": 2.391
+  }
+ ],
+ "violations": []
+}

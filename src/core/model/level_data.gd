@@ -34,6 +34,9 @@ var stars: Dictionary = {}
 var seed: int = NO_SEED
 ## Story/flavour data.
 var story: Dictionary = {}
+## Progressive-disclosure HUD: {"show": [element ids], "meter": {"label", "label_key", "source"}}.
+## Empty = the full HUD (every element shown). Element ids: see GameUi.HUD_ELEMENTS.
+var hud: Dictionary = {}
 
 ## Run-owned mutable dictionaries prevent stage transitions and undo from changing cached content.
 func duplicate_runtime() -> LevelData:

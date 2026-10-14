@@ -14,7 +14,8 @@
     "neon": 9,
     "celestial": 10,
     "carnival": 11,
-    "dune": 12
+    "dune": 12,
+    "pirate": 13
   },
   "biomes": {
     "meadow": {
@@ -22,29 +23,41 @@
         "style": "meadow",
         "cap_color": "#4E9232",
         "cap_depth": 0.13,
-        "cap_drip": 0.07,
-        "cap_lip": 0.03,
-        "body_color": "#8E623E",
+        "cap_drip": 0.08,
+        "cap_lip": 0.045,
+        "body_color": "#B07A4E",
         "body_mix": 0.1,
         "gloss": 0.2,
         "rim": 0.12,
-        "brightness": 1.0,
+        "brightness": 1.22,
         "topper": "sprout",
-        "topper_rate": 0.2,
+        "topper_rate": 0.34,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
-        "piece_sat": 1.15,
-        "piece_value": 1.12,
-        "cap_hues": [
-          [
-            0.2,
-            0.46
-          ]
-        ],
+        "piece_sat": 1.1,
+        "piece_value": 1.08,
         "stone_value": 1.22,
         "stone_sat": 0.78,
-        "cap_body_mix": 0.9,
-        "stone_crack": 0.4
+        "cap_body_mix": 0.8,
+        "stone_crack": 0.4,
+        "palette": [
+          "#C8643C",
+          "#D9A441",
+          "#5C7FB5",
+          "#8FAE7A",
+          "#8A4A78",
+          "#3E9E94"
+        ],
+        "glyph_strength": 0.8,
+        "layer_dark": 0.1,
+        "cap_palette": [
+          "#8ED63A",
+          "#E08A2A",
+          "#3FA58A",
+          "#B8E070",
+          "#A98AE8",
+          "#F07AA8"
+        ]
       },
       "sky": [
         "#4F94E6",
@@ -73,18 +86,18 @@
       "env": {
         "family": "meadow",
         "light": {
-          "key": "#FFF0D6",
-          "key_energy": 0.972,
-          "fill": "#B8C4FF",
-          "fill_energy": 0.2,
-          "back": "#FFE0A8",
-          "back_energy": 0.3,
-          "ambient": "#C9C3E6",
+          "key": "#FFEBCC",
+          "key_energy": 1.05,
+          "fill": "#A8ABFA",
+          "fill_energy": 0.28,
+          "back": "#FFDEA6",
+          "back_energy": 0.5,
+          "ambient": "#BDB5E4",
           "ambient_energy": 0.336,
           "saturation": 1.28,
           "contrast": 1.06,
           "brightness": 1.02,
-          "shadow_tint": "#6B5C9E"
+          "shadow_tint": "#6556A2"
         },
         "sky": {
           "cloud": "#FFFBF4",
@@ -116,11 +129,11 @@
           "#76533A"
         ],
         "tile": {
-          "color": "#DCD6CA",
+          "color": "#E9E3D6",
           "grout": "#6E6258",
-          "alt": "#D2C8B4",
+          "alt": "#DFD4BF",
           "jitter": 0.08,
-          "ledge": "#A89E8E"
+          "ledge": "#8D8577"
         },
         "rim": [
           {
@@ -258,17 +271,25 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#D6E8FA",
         "warm_tint": "#FFF6E2",
         "vignette_color": "#3A2A55",
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
         "haze_strength": 0.35,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "bloom_strength": 0.37,
+        "bloom_threshold": 0.78,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#8C80E6",
+        "highlight_tone": "#FFEFD1",
+        "dof_strength": 2.4
       }
     },
     "candy": {
@@ -277,19 +298,37 @@
         "cap_color": "#FFEEF2",
         "cap_depth": 0.16,
         "cap_drip": 0.13,
-        "cap_lip": 0.03,
+        "cap_lip": 0.05,
         "body_color": "#FF6E98",
-        "body_mix": 0.08,
+        "body_mix": 0.0,
         "gloss": 0.85,
         "rim": 0.3,
         "translucency": 0.35,
-        "brightness": 1.0,
+        "brightness": 1.08,
         "topper": "heart",
-        "topper_rate": 0.15,
+        "topper_rate": 0.34,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
-        "piece_sat": 1.25,
-        "piece_value": 1.08
+        "piece_sat": 1.0,
+        "piece_value": 1.0,
+        "palette": [
+          "#FF5F8F",
+          "#FF9A3C",
+          "#5FE0B0",
+          "#FFE45A",
+          "#B58CFF",
+          "#5FC8FF"
+        ],
+        "cap_tint": 0.0,
+        "glyph_strength": 0.8,
+        "cap_palette": [
+          "#FFA0C0",
+          "#FFB27A",
+          "#A0F0D0",
+          "#FFF59A",
+          "#8A5236",
+          "#7F8CFF"
+        ]
       },
       "sky": [
         "#E79AD0",
@@ -316,18 +355,18 @@
       "env": {
         "family": "candy",
         "light": {
-          "key": "#FFF0E0",
-          "key_energy": 0.9,
-          "fill": "#D8C4FF",
-          "fill_energy": 0.25,
-          "back": "#FFD0E0",
-          "back_energy": 0.35,
-          "ambient": "#E8C8E6",
+          "key": "#FFEBD2",
+          "key_energy": 0.972,
+          "fill": "#BDABFA",
+          "fill_energy": 0.28,
+          "back": "#FFD3CD",
+          "back_energy": 0.525,
+          "ambient": "#D4B9E4",
           "ambient_energy": 0.45,
           "saturation": 1.2,
           "contrast": 1.05,
           "brightness": 1.02,
-          "shadow_tint": "#9A5C9E"
+          "shadow_tint": "#8456A2"
         },
         "sky": {
           "cloud": "#FFF8FC",
@@ -359,8 +398,9 @@
           "#B9785E"
         ],
         "tile": {
-          "color": "#FBEBDD",
-          "grout": "#C99A8A"
+          "color": "#FFEFE1",
+          "grout": "#C99A8A",
+          "ledge": "#BCB0A6"
         },
         "rim": [
           {
@@ -416,44 +456,65 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#FFE0F0",
         "warm_tint": "#FFF3EA",
         "ao_tint": "#8A4A80",
-        "bloom_strength": 0.32,
+        "bloom_strength": 0.44,
         "vignette_color": "#5A2A55",
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
         "haze_strength": 0.35,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "bloom_threshold": 0.78,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#8B65B3",
+        "highlight_tone": "#FFEED5",
+        "dof_strength": 2.4
       }
     },
     "ice": {
       "block": {
         "style": "ice",
         "cap_color": "#F6FBFF",
-        "cap_depth": 0.0,
-        "cap_drip": 0.04,
-        "cap_lip": 0.025,
+        "cap_depth": 0.12,
+        "cap_drip": 0.09,
+        "cap_lip": 0.04,
         "body_color": "#7DB6EA",
-        "body_mix": 0.06,
+        "body_mix": 0.0,
         "gloss": 0.85,
         "rim": 0.4,
         "translucency": 0.6,
-        "topper": "",
-        "topper_rate": 0.0,
-        "brightness": 1.0,
+        "topper": "snowflake",
+        "topper_rate": 0.34,
+        "brightness": 1.08,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
-        "piece_hue_range": [
-          0.44,
-          0.95
+        "piece_sat": 1.0,
+        "piece_value": 1.0,
+        "palette": [
+          "#8EC8F4",
+          "#2FC4BC",
+          "#B6A2F2",
+          "#EAF4FF",
+          "#4A78D6",
+          "#F0A8CC"
         ],
-        "piece_sat": 1.3,
-        "piece_value": 1.3
+        "cap_tint": 0.0,
+        "glyph_strength": 0.8,
+        "cap_palette": [
+          "#BFE2FF",
+          "#9FEDE6",
+          "#D8CCFF",
+          "#FFFFFF",
+          "#A0BCF0",
+          "#FFD0E4"
+        ]
       },
       "sky": [
         "#8A96E4",
@@ -480,18 +541,18 @@
       "env": {
         "family": "ice",
         "light": {
-          "key": "#F2F6FF",
-          "key_energy": 1.026,
-          "fill": "#A9C8FF",
+          "key": "#F7EFE6",
+          "key_energy": 1.108,
+          "fill": "#9EADFA",
           "fill_energy": 0.3,
-          "back": "#E8D8FF",
-          "back_energy": 0.3,
-          "ambient": "#C4D2F2",
+          "back": "#EFD8E2",
+          "back_energy": 0.5,
+          "ambient": "#BAC0EE",
           "ambient_energy": 0.4,
           "saturation": 1.18,
           "contrast": 1.04,
           "brightness": 1.03,
-          "shadow_tint": "#7A86C8"
+          "shadow_tint": "#6F71BD"
         },
         "sky": {
           "cloud": "#FFFFFF",
@@ -535,11 +596,11 @@
         ],
         "strata_cover": 0.85,
         "tile": {
-          "color": "#D6E2F4",
+          "color": "#E0ECFF",
           "grout": "#7486A8",
-          "alt": "#C4D2EE",
+          "alt": "#D0DFFC",
           "jitter": 0.07,
-          "ledge": "#9EAED6"
+          "ledge": "#8592B4"
         },
         "rim": [
           {
@@ -638,37 +699,58 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#DCEBFF",
         "warm_tint": "#F4F8FF",
         "ao_tint": "#4A5E9A",
         "outline_color": "#2E3A6A",
-        "bloom_strength": 0.3,
+        "bloom_strength": 0.42,
         "vignette_color": "#2A3A6A",
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
         "haze_strength": 0.35,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "bloom_threshold": 0.78,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#6B6FC0",
+        "highlight_tone": "#FAF0E0",
+        "dof_strength": 2.4
       }
     },
     "underwater": {
       "block": {
         "style": "underwater",
-        "cap_depth": 0.0,
+        "cap_depth": 0.1,
         "body_color": "#2C33A0",
-        "body_mix": 0.55,
+        "body_mix": 0.1,
         "accent_color": "#7FD8FF",
         "gloss": 0.8,
         "rim": 0.4,
-        "translucency": 0.25,
+        "translucency": 0.35,
         "topper": "coral",
-        "topper_rate": 0.15,
-        "brightness": 0.9,
+        "topper_rate": 0.34,
+        "brightness": 1.0,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#3C6EF0",
+          "#8A4FE0",
+          "#19B8B0",
+          "#5BD6A0",
+          "#F0709A",
+          "#FFB84A"
+        ],
+        "glyph_strength": 0.8,
+        "top_tint": 0.25,
+        "cap_drip": 0.07,
+        "cap_color": "#E06AC0",
+        "cap_lip": 0.04,
+        "cap_tint": 0.35
       },
       "sky": [
         "#1E4C86",
@@ -696,13 +778,13 @@
       "env": {
         "family": "meadow",
         "light": {
-          "key": "#E8F4FF",
-          "key_energy": 0.85,
-          "fill": "#7FB8FF",
+          "key": "#F0EEE6",
+          "key_energy": 0.918,
+          "fill": "#83A3FA",
           "fill_energy": 0.35,
-          "back": "#B8F0FF",
-          "back_energy": 0.35,
-          "ambient": "#6A8AC0",
+          "back": "#CDE9E2",
+          "back_energy": 0.525,
+          "ambient": "#768AC8",
           "ambient_energy": 0.5,
           "saturation": 1.2,
           "contrast": 1.05,
@@ -739,8 +821,9 @@
           "#504E7E"
         ],
         "tile": {
-          "color": "#C2B8A8",
-          "grout": "#6E6258"
+          "color": "#CEC3B2",
+          "grout": "#6E6258",
+          "ledge": "#989084"
         },
         "rim": [
           {
@@ -788,8 +871,8 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#7FD0E0",
         "haze_strength": 0.35,
         "warm_tint": "#F2FBFF",
@@ -799,9 +882,16 @@
         "dof_strength": 2.6,
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "bloom_strength": 0.37,
+        "bloom_threshold": 0.78,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#5B65B3",
+        "highlight_tone": "#F8F2E0"
       }
     },
     "lava": {
@@ -809,16 +899,36 @@
         "style": "lava",
         "cap_depth": 0.0,
         "body_color": "#4A3E3E",
-        "body_mix": 0.8,
+        "body_mix": 0.2,
         "glow_color": "#FF5A14",
-        "glow": 1.3,
+        "glow": 1.0,
         "gloss": 0.2,
         "rim": 0.08,
         "topper": "spike",
-        "topper_rate": 0.12,
-        "brightness": 0.9,
+        "topper_rate": 0.34,
+        "brightness": 1.1,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#A8483C",
+          "#4E72B8",
+          "#8E4EAA",
+          "#4E9C5C",
+          "#C8963A",
+          "#B4B0B8"
+        ],
+        "palette_accent": [
+          "#FF5A14",
+          "#FF9A2A",
+          "#FFC22A",
+          "#FF6A3A",
+          "#FF4A1A",
+          "#FF8A3A"
+        ],
+        "glyph_strength": 0.8,
+        "layer_dark": 0.12,
+        "top_tint": 0.2,
+        "vein_width": 1.0
       },
       "sky": [
         "#2A1E3A",
@@ -845,18 +955,18 @@
       "env": {
         "family": "lava",
         "light": {
-          "key": "#FFD8B0",
-          "key_energy": 0.85,
-          "fill": "#A08CFF",
-          "fill_energy": 0.25,
-          "back": "#FF8A50",
-          "back_energy": 0.5,
-          "ambient": "#7A5A6E",
+          "key": "#FFDBB3",
+          "key_energy": 0.918,
+          "fill": "#9886FA",
+          "fill_energy": 0.28,
+          "back": "#FFA268",
+          "back_energy": 0.75,
+          "ambient": "#82668B",
           "ambient_energy": 0.45,
           "saturation": 1.15,
           "contrast": 1.08,
           "brightness": 1.0,
-          "shadow_tint": "#5A3050"
+          "shadow_tint": "#5A396F"
         },
         "sky": {
           "cloud": "#C89088",
@@ -867,9 +977,9 @@
         },
         "haze": "#8A5A60",
         "cap": {
-          "color": "#4E4448",
-          "light": "#6B6064",
-          "dark": "#2F2729",
+          "color": "#4A3A3E",
+          "light": "#665257",
+          "dark": "#2A2024",
           "depth": 0.1,
           "drip": 0.06
         },
@@ -886,8 +996,10 @@
         "rock_glow": 2.2,
         "glow_color": "#FF6A1A",
         "tile": {
-          "color": "#7A6E70",
-          "grout": "#2A2224"
+          "color": "#BBA79A",
+          "grout": "#2A1E22",
+          "alt": "#A8948A",
+          "ledge": "#3A2C30"
         },
         "rim": [
           {
@@ -942,14 +1054,14 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#7A3A30",
         "haze_strength": 0.35,
         "warm_tint": "#FFEBD0",
         "ao_tint": "#4A2A40",
         "outline_color": "#2A1020",
-        "bloom_strength": 0.55,
+        "bloom_strength": 0.67,
         "bloom_threshold": 0.7,
         "bloom_tint": "#FF9A4A",
         "vignette_color": "#2A0A14",
@@ -958,26 +1070,44 @@
         "glow_hdr_threshold": 0.85,
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#6B5593",
+        "highlight_tone": "#FFEAC8",
+        "dof_strength": 2.4
       }
     },
     "forest": {
       "block": {
         "style": "forest",
         "cap_color": "#5E8E30",
-        "cap_depth": 0.0,
-        "cap_drip": 0.12,
+        "cap_depth": 0.1,
+        "cap_drip": 0.09,
         "body_color": "#7A5232",
-        "body_mix": 0.7,
+        "body_mix": 0.35,
         "gloss": 0.12,
         "rim": 0.08,
-        "brightness": 0.95,
+        "brightness": 1.35,
         "topper": "leaf",
-        "topper_rate": 0.15,
+        "topper_rate": 0.34,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#8A5A34",
+          "#D8C8A8",
+          "#A8442E",
+          "#4A3A2C",
+          "#5E8A58",
+          "#7A5A8A"
+        ],
+        "glyph_strength": 0.8,
+        "top_tint": 0.3,
+        "cap_lip": 0.04,
+        "piece_value": 1.1
       },
       "sky": [
         "#9CC8A8",
@@ -1005,18 +1135,18 @@
       "env": {
         "family": "meadow",
         "light": {
-          "key": "#FFF0D6",
-          "key_energy": 0.9,
-          "fill": "#B8C4FF",
-          "fill_energy": 0.2,
-          "back": "#FFE0A8",
-          "back_energy": 0.3,
-          "ambient": "#C9C3E6",
+          "key": "#FFEBCC",
+          "key_energy": 0.972,
+          "fill": "#A8ABFA",
+          "fill_energy": 0.28,
+          "back": "#FFDEA6",
+          "back_energy": 0.5,
+          "ambient": "#BDB5E4",
           "ambient_energy": 0.42,
           "saturation": 1.28,
           "contrast": 1.06,
           "brightness": 1.02,
-          "shadow_tint": "#6B5C9E"
+          "shadow_tint": "#6556A2"
         },
         "sky": {
           "cloud": "#FFFBF4",
@@ -1046,8 +1176,9 @@
           "#5E4230"
         ],
         "tile": {
-          "color": "#C2B8A8",
-          "grout": "#6E6258"
+          "color": "#CEC3B2",
+          "grout": "#6E6258",
+          "ledge": "#989084"
         },
         "rim": [
           {
@@ -1106,8 +1237,8 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#BFE0C0",
         "warm_tint": "#FFF4DA",
         "ao_tint": "#3A5A50",
@@ -1115,27 +1246,58 @@
         "vignette_color": "#1E3A30",
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
         "haze_strength": 0.35,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "bloom_strength": 0.37,
+        "bloom_threshold": 0.78,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#636D9B",
+        "highlight_tone": "#FFEECD",
+        "dof_strength": 2.4
       }
     },
     "cave": {
       "block": {
         "style": "cave",
-        "cap_depth": 0.0,
+        "cap_depth": 0.1,
         "body_color": "#686277",
-        "body_mix": 0.6,
+        "body_mix": 0.25,
         "accent_color": "#B07CF0",
         "glow": 0.6,
         "gloss": 0.3,
         "rim": 0.12,
         "topper": "crystal",
-        "topper_rate": 0.15,
-        "brightness": 0.85,
+        "topper_rate": 0.34,
+        "brightness": 1.4,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#7A7490",
+          "#A88A6E",
+          "#4E8C96",
+          "#B07C94",
+          "#6E8A64",
+          "#5A5A78"
+        ],
+        "palette_accent": [
+          "#B07CF0",
+          "#FFB84A",
+          "#5FE8F0",
+          "#FF8AC8",
+          "#7CF08A",
+          "#E8E8FF"
+        ],
+        "glyph_strength": 0.8,
+        "top_tint": 0.6,
+        "cap_drip": 0.06,
+        "cap_color": "#9C92BC",
+        "cap_lip": 0.04,
+        "cap_tint": 0.3,
+        "piece_value": 1.15
       },
       "sky": [
         "#2E2943",
@@ -1162,18 +1324,18 @@
       "env": {
         "family": "lava",
         "light": {
-          "key": "#E9DCFF",
-          "key_energy": 0.85,
-          "fill": "#8A7CFF",
+          "key": "#F1DEE6",
+          "key_energy": 0.918,
+          "fill": "#8A7CFA",
           "fill_energy": 0.35,
-          "back": "#FFD890",
-          "back_energy": 0.45,
-          "ambient": "#6A5A9E",
+          "back": "#FFD895",
+          "back_energy": 0.675,
+          "ambient": "#7666AE",
           "ambient_energy": 0.5,
           "saturation": 1.25,
           "contrast": 1.08,
           "brightness": 1.0,
-          "shadow_tint": "#4A3A86"
+          "shadow_tint": "#504092"
         },
         "sky": {
           "cloud": "#7A6C93",
@@ -1185,9 +1347,9 @@
         },
         "haze": "#4A4166",
         "cap": {
-          "color": "#6E6880",
-          "light": "#8C86A0",
-          "dark": "#4A4560",
+          "color": "#4F4868",
+          "light": "#6A6288",
+          "dark": "#332E4A",
           "depth": 0.1,
           "drip": 0.06
         },
@@ -1204,8 +1366,10 @@
         "rock_glow": 0.0,
         "glow_color": "#FF6A1A",
         "tile": {
-          "color": "#A39BBE",
-          "grout": "#3A3456"
+          "color": "#CBC6C0",
+          "grout": "#2E2848",
+          "alt": "#BDB7B2",
+          "ledge": "#463E66"
         },
         "rim": [
           {
@@ -1250,20 +1414,27 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#6A5A9A",
         "haze_strength": 0.35,
         "warm_tint": "#FFF0F8",
         "ao_tint": "#3A2A6A",
-        "bloom_strength": 0.4,
+        "bloom_strength": 0.52,
         "bloom_tint": "#C8A0FF",
         "vignette_color": "#1A0E3A",
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "bloom_threshold": 0.78,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#6355A8",
+        "highlight_tone": "#FFECDC",
+        "dof_strength": 2.4
       }
     },
     "clockwork": {
@@ -1271,15 +1442,34 @@
         "style": "clockwork",
         "cap_depth": 0.0,
         "body_color": "#2E4170",
-        "body_mix": 0.55,
+        "body_mix": 0.2,
         "accent_color": "#A8792C",
         "gloss": 0.55,
         "rim": 0.15,
         "topper": "gear",
-        "topper_rate": 0.12,
-        "brightness": 0.9,
+        "topper_rate": 0.34,
+        "brightness": 1.3,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#2E4170",
+          "#1F7A7A",
+          "#7A2A4A",
+          "#2E6A4A",
+          "#5A3A8A",
+          "#6A7280"
+        ],
+        "palette_accent": [
+          "#C08A3A",
+          "#C8683C",
+          "#B8C4D0",
+          "#E8C24A",
+          "#E8A0A0",
+          "#8A6A3A"
+        ],
+        "glyph_strength": 0.8,
+        "top_tint": 0.3,
+        "piece_value": 1.1
       },
       "sky": [
         "#C9A57A",
@@ -1306,18 +1496,18 @@
       "env": {
         "family": "celestial",
         "light": {
-          "key": "#FFF0D6",
-          "key_energy": 0.9,
-          "fill": "#B8C4FF",
-          "fill_energy": 0.2,
-          "back": "#FFE0A8",
-          "back_energy": 0.3,
-          "ambient": "#C9C3E6",
+          "key": "#FFEBCC",
+          "key_energy": 0.972,
+          "fill": "#A8ABFA",
+          "fill_energy": 0.28,
+          "back": "#FFDEA6",
+          "back_energy": 0.5,
+          "ambient": "#BDB5E4",
           "ambient_energy": 0.42,
           "saturation": 1.28,
           "contrast": 1.06,
           "brightness": 1.02,
-          "shadow_tint": "#6B5C9E"
+          "shadow_tint": "#6556A2"
         },
         "sky": {
           "cloud": "#FFF6E8",
@@ -1327,9 +1517,9 @@
         },
         "haze": "#E8CFA7",
         "cap": {
-          "color": "#B9A27C",
-          "light": "#D8C49E",
-          "dark": "#7E6A4C",
+          "color": "#8E6E3C",
+          "light": "#B38D4E",
+          "dark": "#5E4626",
           "depth": 0.18,
           "drip": 0.0
         },
@@ -1344,8 +1534,10 @@
           "#5E4C3A"
         ],
         "tile": {
-          "color": "#E2D3B4",
-          "grout": "#6E5A44"
+          "color": "#EAE4D6",
+          "grout": "#5A4A38",
+          "alt": "#DDD6C6",
+          "ledge": "#7C5E34"
         },
         "inlay": "#C9A040",
         "rim": [
@@ -1384,8 +1576,8 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#D8C8A0",
         "warm_tint": "#FFF0D0",
         "ao_tint": "#4A3A50",
@@ -1393,10 +1585,18 @@
         "bloom_tint": "#FFD08A",
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
         "haze_strength": 0.35,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "bloom_strength": 0.37,
+        "bloom_threshold": 0.78,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#6B5D9B",
+        "highlight_tone": "#FFECC8",
+        "dof_strength": 2.4
       }
     },
     "neon": {
@@ -1404,16 +1604,35 @@
         "style": "neon",
         "cap_depth": 0.0,
         "body_color": "#2A1E78",
-        "body_mix": 0.55,
+        "body_mix": 0.2,
         "glow_color": "#3FF2E0",
         "glow": 1.6,
         "gloss": 0.75,
         "rim": 0.3,
-        "topper": "",
-        "topper_rate": 0.0,
-        "brightness": 0.9,
+        "topper": "chip",
+        "topper_rate": 0.34,
+        "brightness": 1.0,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#2A1E78",
+          "#5A1E6E",
+          "#1E3E78",
+          "#1E5A4A",
+          "#6A4A1E",
+          "#6E1E3A"
+        ],
+        "palette_accent": [
+          "#3FF2E0",
+          "#FF3EC8",
+          "#4A9CFF",
+          "#A6F23A",
+          "#FFB020",
+          "#FF4A5A"
+        ],
+        "glyph_strength": 0.8,
+        "top_tint": 0.25,
+        "translucency": 0.2
       },
       "sky": [
         "#140F33",
@@ -1439,18 +1658,18 @@
       "env": {
         "family": "lava",
         "light": {
-          "key": "#E9DCFF",
-          "key_energy": 0.85,
-          "fill": "#8A7CFF",
+          "key": "#F1DEE6",
+          "key_energy": 0.918,
+          "fill": "#8A7CFA",
           "fill_energy": 0.35,
-          "back": "#FFD890",
-          "back_energy": 0.45,
-          "ambient": "#6A5A9E",
+          "back": "#FFD895",
+          "back_energy": 0.675,
+          "ambient": "#7666AE",
           "ambient_energy": 0.5,
           "saturation": 1.25,
           "contrast": 1.08,
           "brightness": 1.0,
-          "shadow_tint": "#4A3A86"
+          "shadow_tint": "#504092"
         },
         "sky": {
           "cloud": "#5A3A8E",
@@ -1486,7 +1705,8 @@
         "tile": {
           "color": "#5A4CA6",
           "grout": "#1A143A",
-          "edge_glow": "#46E6FF"
+          "edge_glow": "#46E6FF",
+          "ledge": "#2A2266"
         },
         "rim": [
           {
@@ -1531,14 +1751,14 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#4A2A8A",
         "haze_strength": 0.35,
         "warm_tint": "#F8F0FF",
         "ao_tint": "#2A1A6A",
         "outline_color": "#120A2A",
-        "bloom_strength": 0.7,
+        "bloom_strength": 0.82,
         "bloom_threshold": 0.6,
         "bloom_tint": "#7AF0FF",
         "vignette_color": "#0E0630",
@@ -1547,9 +1767,15 @@
         "glow_hdr_threshold": 0.8,
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#5B4DA8",
+        "highlight_tone": "#FCECE0",
+        "dof_strength": 2.4
       }
     },
     "celestial": {
@@ -1557,16 +1783,35 @@
         "style": "celestial",
         "cap_depth": 0.0,
         "body_color": "#3B2A9E",
-        "body_mix": 0.6,
+        "body_mix": 0.15,
         "accent_color": "#B486F0",
         "glow": 1.2,
         "gloss": 0.6,
         "rim": 0.35,
         "topper": "star",
-        "topper_rate": 0.15,
-        "brightness": 0.9,
+        "topper_rate": 0.34,
+        "brightness": 1.0,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#4B3AC0",
+          "#2A6AD0",
+          "#B03AB0",
+          "#1E8F8A",
+          "#6A46E0",
+          "#C04A78"
+        ],
+        "palette_accent": [
+          "#C09CFF",
+          "#7CD8FF",
+          "#FF9CE0",
+          "#8AF0C8",
+          "#FFE08A",
+          "#FFA0B0"
+        ],
+        "glyph_strength": 0.8,
+        "top_tint": 0.6,
+        "translucency": 0.25
       },
       "sky": [
         "#140F3A",
@@ -1593,18 +1838,18 @@
       "env": {
         "family": "celestial",
         "light": {
-          "key": "#E9DCFF",
-          "key_energy": 0.85,
-          "fill": "#8A7CFF",
+          "key": "#F1DEE6",
+          "key_energy": 0.918,
+          "fill": "#8A7CFA",
           "fill_energy": 0.35,
-          "back": "#FFD890",
-          "back_energy": 0.45,
-          "ambient": "#6A5A9E",
+          "back": "#FFD895",
+          "back_energy": 0.675,
+          "ambient": "#7666AE",
           "ambient_energy": 0.5,
           "saturation": 1.25,
           "contrast": 1.08,
           "brightness": 1.0,
-          "shadow_tint": "#4A3A86"
+          "shadow_tint": "#504092"
         },
         "sky": {
           "cloud": "#B9A6E8",
@@ -1636,8 +1881,9 @@
           "#A69D8D"
         ],
         "tile": {
-          "color": "#E2DACB",
-          "grout": "#8E8575"
+          "color": "#F0E7D7",
+          "grout": "#8E8575",
+          "ledge": "#B1AB9F"
         },
         "inlay": "#E8C25A",
         "rim": [
@@ -1693,13 +1939,13 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#B8A0F0",
         "warm_tint": "#FFF2FF",
         "ao_tint": "#4A3A9A",
         "outline_color": "#2A1E5A",
-        "bloom_strength": 0.5,
+        "bloom_strength": 0.62,
         "bloom_threshold": 0.7,
         "bloom_tint": "#FFE8A0",
         "vignette_color": "#1E1050",
@@ -1707,26 +1953,46 @@
         "glow_hdr_threshold": 0.85,
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
         "haze_strength": 0.35,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#6B5DC0",
+        "highlight_tone": "#FFEDE0",
+        "dof_strength": 2.4
       }
     },
     "carnival": {
       "block": {
         "style": "carnival",
-        "cap_depth": 0.0,
+        "cap_depth": 0.14,
         "body_color": "#F06E96",
-        "body_mix": 0.6,
+        "body_mix": 0.0,
         "accent_color": "#F7E8CF",
         "gloss": 0.6,
         "rim": 0.2,
         "topper": "ticket",
-        "topper_rate": 0.12,
-        "brightness": 0.9,
+        "topper_rate": 0.34,
+        "brightness": 1.08,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#F06E96",
+          "#E8383A",
+          "#3A7AE8",
+          "#F2C230",
+          "#3AB86A",
+          "#8A4AE0"
+        ],
+        "glyph_strength": 0.8,
+        "top_tint": 0.0,
+        "cap_color": "#FFF1DC",
+        "cap_drip": 0.07,
+        "cap_lip": 0.045,
+        "translucency": 0.15
       },
       "sky": [
         "#F7A97A",
@@ -1753,18 +2019,18 @@
       "env": {
         "family": "candy",
         "light": {
-          "key": "#FFF0D6",
-          "key_energy": 0.9,
-          "fill": "#B8C4FF",
-          "fill_energy": 0.2,
-          "back": "#FFE0A8",
-          "back_energy": 0.3,
-          "ambient": "#C9C3E6",
+          "key": "#FFEBCC",
+          "key_energy": 0.972,
+          "fill": "#A8ABFA",
+          "fill_energy": 0.28,
+          "back": "#FFDEA6",
+          "back_energy": 0.5,
+          "ambient": "#BDB5E4",
           "ambient_energy": 0.42,
           "saturation": 1.28,
           "contrast": 1.06,
           "brightness": 1.02,
-          "shadow_tint": "#6B5C9E"
+          "shadow_tint": "#6556A2"
         },
         "sky": {
           "cloud": "#FFF8F0",
@@ -1795,8 +2061,9 @@
           "#B9785E"
         ],
         "tile": {
-          "color": "#FBEBDD",
-          "grout": "#C99A8A"
+          "color": "#FFEFE1",
+          "grout": "#C99A8A",
+          "ledge": "#BCB0A6"
         },
         "rim": [
           {
@@ -1848,38 +2115,63 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#FFD8C0",
         "warm_tint": "#FFF3DC",
         "ao_tint": "#7A4A70",
-        "bloom_strength": 0.35,
+        "bloom_strength": 0.47,
         "bloom_tint": "#FFC070",
         "vignette_color": "#4A2040",
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
         "haze_strength": 0.35,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "bloom_threshold": 0.78,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#8365AB",
+        "highlight_tone": "#FFEECE",
+        "dof_strength": 2.4
       }
     },
     "pirate": {
       "block": {
-        "style": "forest",
+        "style": "pirate",
         "cap_color": "#E6D3B0",
         "cap_depth": 0.0,
         "cap_drip": 0.0,
         "body_color": "#CDB48E",
-        "body_mix": 0.65,
+        "body_mix": 0.0,
         "accent_color": "#B88A4A",
         "gloss": 0.1,
         "rim": 0.08,
         "brightness": 1.0,
-        "topper": "dome",
-        "topper_rate": 0.1,
+        "topper": "rope",
+        "topper_rate": 0.34,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#C8A878",
+          "#8E9AA0",
+          "#3E7A9E",
+          "#B8483E",
+          "#3E8E78",
+          "#D8A838"
+        ],
+        "palette_accent": [
+          "#C08A3A",
+          "#C08A3A",
+          "#C08A3A",
+          "#C08A3A",
+          "#C08A3A",
+          "#C08A3A"
+        ],
+        "glyph_strength": 0.8,
+        "top_tint": 0.3
       },
       "sky": [
         "#2FB5B0",
@@ -1907,13 +2199,13 @@
       "env": {
         "family": "meadow",
         "light": {
-          "key": "#FFF2D6",
-          "key_energy": 0.95,
-          "fill": "#9FE0F0",
-          "fill_energy": 0.25,
-          "back": "#FFE0A8",
-          "back_energy": 0.35,
-          "ambient": "#B8DCDC",
+          "key": "#FFECCC",
+          "key_energy": 1.026,
+          "fill": "#98BDF0",
+          "fill_energy": 0.28,
+          "back": "#FFDEA6",
+          "back_energy": 0.525,
+          "ambient": "#B0C8DD",
           "ambient_energy": 0.45,
           "saturation": 1.25,
           "contrast": 1.05,
@@ -1950,8 +2242,9 @@
           "#6E4F34"
         ],
         "tile": {
-          "color": "#C2B8A8",
-          "grout": "#6E6258"
+          "color": "#CEC3B2",
+          "grout": "#6E6258",
+          "ledge": "#989084"
         },
         "rim": [
           {
@@ -1999,8 +2292,8 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#A8D0E0",
         "warm_tint": "#FFF2DA",
         "ao_tint": "#3A4A70",
@@ -2008,16 +2301,24 @@
         "vignette_color": "#1A2A4A",
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
         "haze_strength": 0.35,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "bloom_strength": 0.37,
+        "bloom_threshold": 0.78,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#6365AB",
+        "highlight_tone": "#FFEDCD",
+        "dof_strength": 2.4
       }
     },
     "dune": {
       "block": {
         "style": "dune",
-        "cap_depth": 0.0,
+        "cap_depth": 0.11,
         "body_color": "#D7A468",
         "body_mix": 0.6,
         "accent_color": "#2A9A96",
@@ -2025,10 +2326,14 @@
         "gloss": 0.3,
         "rim": 0.1,
         "topper": "dome",
-        "topper_rate": 0.12,
+        "topper_rate": 0.34,
         "brightness": 0.85,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "cap_drip": 0.06,
+        "cap_color": "#F3DDAE",
+        "cap_lip": 0.05,
+        "cap_tint": 0.1
       },
       "sky": [
         "#E9A86A",
@@ -2055,18 +2360,18 @@
       "env": {
         "family": "meadow",
         "light": {
-          "key": "#FFE8C8",
-          "key_energy": 0.95,
-          "fill": "#B8C4FF",
-          "fill_energy": 0.2,
-          "back": "#FFD090",
-          "back_energy": 0.35,
-          "ambient": "#D8C4C8",
+          "key": "#FFE6C2",
+          "key_energy": 1.026,
+          "fill": "#A8ABFA",
+          "fill_energy": 0.28,
+          "back": "#FFD395",
+          "back_energy": 0.525,
+          "ambient": "#C8B6CE",
           "ambient_energy": 0.42,
           "saturation": 1.2,
           "contrast": 1.05,
           "brightness": 1.02,
-          "shadow_tint": "#8A5C7E"
+          "shadow_tint": "#7A568D"
         },
         "sky": {
           "cloud": "#FFF8EC",
@@ -2097,8 +2402,9 @@
           "#8A5F3A"
         ],
         "tile": {
-          "color": "#C2B8A8",
-          "grout": "#6E6258"
+          "color": "#CEC3B2",
+          "grout": "#6E6258",
+          "ledge": "#989084"
         },
         "rim": [
           {
@@ -2141,8 +2447,8 @@
       },
       "post": {
         "outline_strength": 0.55,
-        "ao_strength": 0.6,
-        "vignette_strength": 0.4,
+        "ao_strength": 0.7,
+        "vignette_strength": 0.48,
         "haze_color": "#FFE0B0",
         "haze_strength": 0.35,
         "warm_tint": "#FFF0D0",
@@ -2152,9 +2458,17 @@
         "vignette_color": "#5A2A20",
         "outline_width": 1.6,
         "outline_threshold": 0.3,
-        "ao_radius": 9.0,
+        "ao_radius": 10.0,
         "haze_start": 14.0,
-        "shadow_lift": 0.01
+        "shadow_lift": 0.01,
+        "bloom_strength": 0.37,
+        "bloom_threshold": 0.78,
+        "vignette_radius": 0.8,
+        "tone_amount": 0.32,
+        "saturation": 1.08,
+        "shadow_tone": "#836593",
+        "highlight_tone": "#FFECC8",
+        "dof_strength": 2.4
       }
     }
   },

@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "source": "User request 2026-10-14: move the play camera with touchscreen, controller or mouse. See src/view/wt_camera_controls.gd.",
+  "mouse": {
+    "orbit_deg_per_px": 0.35,
+    "tilt_deg_per_px": 0.12,
+    "wheel_zoom_step": 0.08
+  },
+  "touch": {
+    "orbit_deg_per_px": 0.3,
+    "tilt_deg_per_px": 0.12,
+    "pinch_gain": 1.0
+  },
+  "pad": {
+    "orbit_deg_per_s": 140.0,
+    "tilt_deg_per_s": 45.0,
+    "deadzone": 0.25
+  },
+  "limits": {
+    "elevation_min": 22.0,
+    "elevation_max": 55.0,
+    "zoom_min": 0.65,
+    "zoom_max": 1.6
+  },
+  "turn_notes": {
+    "duration_ms": "length of one 30 degree snap turn in ms",
+    "overshoot": "ease-out-back s constant; 0.8 overshoots about 2.3 percent of the turn (0.7 deg of 30) then settles",
+    "reduced_duration_ms": "turn length under reduced motion; 0 = instant cut, otherwise linear with no overshoot",
+    "parallax_ratio": "backdrop (sky + far islands) drifts this fraction of the camera yaw rate, then eases back; 0 = glued",
+    "parallax_settle_per_s": "exponential rate the drifted backdrop returns to rest once the camera stops",
+    "sky_shift_per_deg": "sky shader shift (aspect-scaled screen widths) per degree of drift",
+    "max_drift_deg": "cap on backdrop drift in degrees"
+  },
+  "turn": {
+    "duration_ms": 200.0,
+    "overshoot": 0.8,
+    "reduced_duration_ms": 0.0,
+    "parallax_ratio": 0.45,
+    "parallax_settle_per_s": 5.0,
+    "sky_shift_per_deg": 0.012,
+    "max_drift_deg": 14.0
+  }
+}

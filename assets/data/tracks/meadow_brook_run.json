@@ -1,0 +1,223 @@
+{
+ "schema": 2,
+ "id": "meadow_brook_run",
+ "tick_ms": 50,
+ "time_limit_ms": 190000,
+ "restart_penalty_ms": 8000,
+ "preview_window_mm": 14000,
+ "preview_min_lead_ms": 8000,
+ "on_loss": "checkpoint",
+ "_notes": "150 s drive in 4 sections (40+40+40+30 s). Sawtooth: each section opens calm, climbs, and ends in a hard cluster. Finale combines crosswind+bump, two arches, then a final wind+bump. Limit = drive time + 40 s so a restart (8 s penalty) is affordable once or twice. Numbers: see docs/architecture/moving-platform.md tuning table.",
+ "segments": [
+  {
+   "id": "meadow_path",
+   "length_mm": 40000,
+   "speed_mm_s": 1000,
+   "fall_pct": 100
+  },
+  {
+   "id": "plank_bridge",
+   "length_mm": 44000,
+   "speed_mm_s": 1100,
+   "fall_pct": 110
+  },
+  {
+   "id": "orchard_lane",
+   "length_mm": 50000,
+   "speed_mm_s": 1250,
+   "fall_pct": 120
+  },
+  {
+   "id": "lawn_run",
+   "length_mm": 42000,
+   "speed_mm_s": 1400,
+   "fall_pct": 135
+  }
+ ],
+ "checkpoints": [
+  {
+   "id": "halfway_post",
+   "at_mm": 88000
+  },
+  {
+   "id": "lawn_gate",
+   "at_mm": 134000
+  }
+ ],
+ "lean": {
+  "danger_pm": 550,
+  "limit_pm": 800,
+  "relax_pm_per_s": 60,
+  "spill_cells": 4,
+  "spill_relief_pm": 300,
+  "hysteresis_pm": 80
+ },
+ "cargo": {
+  "id": "picnic_basket",
+  "height_layers": 1,
+  "min_support_cells": 5,
+  "level_tolerance_layers": 1,
+  "wobble_pm": 300,
+  "slip_pm": 650,
+  "rise_pm_per_s": 140,
+  "recover_pm_per_s": 220,
+  "lean_stress_pm_per_s": 160,
+  "drop_stress_pm_per_layer": 200,
+  "top_out_stress_pm_per_s": 300
+ },
+ "events": [
+  {
+   "kind": "bump",
+   "at_mm": 20000,
+   "force": 1,
+   "dir": "+x"
+  },
+  {
+   "kind": "bump",
+   "at_mm": 30000,
+   "force": 1,
+   "dir": "-x"
+  },
+  {
+   "kind": "crosswind",
+   "at_mm": 38000,
+   "dir": "+x",
+   "strength": 1
+  },
+  {
+   "kind": "bump",
+   "at_mm": 48000,
+   "force": 1,
+   "dir": "+z"
+  },
+  {
+   "kind": "crosswind",
+   "at_mm": 56000,
+   "dir": "-x",
+   "strength": 1
+  },
+  {
+   "kind": "arch",
+   "at_mm": 66000,
+   "gap_layers": 7
+  },
+  {
+   "kind": "bump",
+   "at_mm": 76000,
+   "force": 2,
+   "dir": "+x"
+  },
+  {
+   "kind": "crosswind",
+   "at_mm": 82000,
+   "dir": "+z",
+   "strength": 2
+  },
+  {
+   "kind": "bump",
+   "at_mm": 94000,
+   "force": 1,
+   "dir": "-z"
+  },
+  {
+   "kind": "arch",
+   "at_mm": 104000,
+   "gap_layers": 6
+  },
+  {
+   "kind": "crosswind",
+   "at_mm": 112000,
+   "dir": "-x",
+   "strength": 2
+  },
+  {
+   "kind": "bump",
+   "at_mm": 118000,
+   "force": 2,
+   "dir": "-x"
+  },
+  {
+   "kind": "crosswind",
+   "at_mm": 124000,
+   "dir": "+x",
+   "strength": 2
+  },
+  {
+   "kind": "arch",
+   "at_mm": 142000,
+   "gap_layers": 7
+  },
+  {
+   "kind": "crosswind",
+   "at_mm": 149000,
+   "dir": "-z",
+   "strength": 2
+  },
+  {
+   "kind": "bump",
+   "at_mm": 150000,
+   "force": 2,
+   "dir": "-z"
+  },
+  {
+   "kind": "arch",
+   "at_mm": 160000,
+   "gap_layers": 6
+  },
+  {
+   "kind": "crosswind",
+   "at_mm": 166000,
+   "dir": "+x",
+   "strength": 3
+  },
+  {
+   "kind": "bump",
+   "at_mm": 167000,
+   "force": 3,
+   "dir": "+x"
+  }
+ ],
+ "effects": {
+  "bump": {
+   "impulse_pm_per_force": 120,
+   "cargo_stress_pm_per_force": 90
+  },
+  "crosswind": {
+   "impulse_pm_per_layer_strength": 30,
+   "cargo_stress_pm_per_strength": 100
+  },
+  "arch": {}
+ },
+ "path": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   -40
+  ],
+  [
+   20,
+   0,
+   -80
+  ],
+  [
+   20,
+   0,
+   -120
+  ],
+  [
+   0,
+   0,
+   -160
+  ],
+  [
+   0,
+   0,
+   -200
+  ]
+ ]
+}

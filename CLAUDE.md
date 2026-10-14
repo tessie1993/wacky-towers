@@ -44,7 +44,7 @@ after it runs `project.yaml` holds the real values.
 ## Reference Quality Bar
 
 Every player-visible part of the game (art, UI, levels, mechanics, sound) must reach the quality of
-the reference boards in `assets/art/reference/`, scoring at least 8/10 from the strict reviewer panel.
+the reference boards in `assets/art/reference/`, scoring at least 9.7/10 from the strict reviewer panel.
 There must be no beige or parchment UI. Reviewers instruct, makers fix, and nothing is done below the bar.
 Read `.claude/docs/reference-quality-bar.md`. This is enforced by `.claude/hooks/reference-quality-gate.sh` (Stop).
 
@@ -53,6 +53,13 @@ Read `.claude/docs/reference-quality-bar.md`. This is enforced by `.claude/hooks
 User rule (2026-10-14): **every question for the user goes through the AskUserQuestion tool**,
 with clickable options and the recommended option first. Never end a reply with plain "?" questions.
 This is enforced by `.claude/hooks/clickable-questions.sh` (Stop).
+
+## Godot Master Consult
+
+User rule (2026-10-14): subagents **ask the Godot master (the main session) before guessing** on Godot,
+architecture, cross-owner or design-ambiguity decisions. If messaging is unavailable, end the turn
+with a `QUESTIONS FOR GODOT MASTER` section. See `.claude/docs/godot-master-consult.md`.
+Builder: the main session writes and applies all Godot code (agents hand back sandbox overlays and patches); every change passes `tools/build/check.sh` before commit.
 
 ## Coordination Rules
 

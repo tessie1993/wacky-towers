@@ -60,7 +60,7 @@ if [ "$VISIBLE_TS" -gt "$REVIEW_TS" ]; then
     echo "REFERENCE QUALITY GATE: player-visible files changed after the newest strict review"
     echo "(newest change $(date -d "@$VISIBLE_TS" '+%F %T' 2>/dev/null), newest review $( [ "$REVIEW_TS" -gt 0 ] && date -d "@$REVIEW_TS" '+%F %T' || echo none))."
     echo "Before calling this work done, have the reviewer panel judge it against assets/art/reference/"
-    echo "(art, UI, levels, mechanics feel, sound; bar: >= 8/10 per item, zero beige/parchment UI)."
+    echo "(art, UI, levels, mechanics feel, sound; bar: >= 9.7/10 per item, zero beige/parchment UI)."
     echo "Reviews go to production/qa/quality-review/<date>-<area>.md. Then act on their fixes."
     echo "See .claude/docs/reference-quality-bar.md."
   } >&2

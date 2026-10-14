@@ -39,6 +39,7 @@ var _ghost: MultiMeshInstance3D
 var _landing: MultiMeshInstance3D
 var _camera: Camera3D
 var _world: Node3D
+var _track_follower: WtTrackFollower
 var _wizard: WtToyActor
 var _mascot: WtToyActor
 var _boss: WtToyActor
@@ -75,6 +76,16 @@ var _yaw: float = 45.0
 var _target_yaw: float = 45.0
 var _elevation: float = 32.0
 var _dragging: bool = false
+## Player camera zoom multiplier (1 = framed default) and input translator (assets/data/camera_controls.json).
+var _user_zoom: float = 1.0
+var _mouse_orbit: bool = false
+## Seconds left before a trackpad pan settles to the nearest view.
+var _pan_settle: float = 0.0
+const PAN_SETTLE_S := 0.25
+var _cam_controls := WtCameraControls.new()
+## Snap-turn easing and backdrop parallax (assets/data/camera_controls.json "turn"); see WtCameraTurn.
+var _turn := WtCameraTurn.new()
+var _sky_mat: ShaderMaterial
 var _time: float = 0.0
 var _danger: MeshInstance3D
 var _danger_mat: StandardMaterial3D
@@ -95,6 +106,8 @@ var _guide_quadrant: Vector2i = Vector2i.ZERO
 var _telegraphs: MultiMeshInstance3D
 var _marks: Dictionary = {}
 var _secrets: Dictionary = {}
+var _look: WtLevelLook ## Optional per-level `look` (time of day, weather, set piece, camera); null when a level has none.
+var _look_zoom: float = 1.0
 
 
 ## Binds one authoritative simulation and constructs a biome's original diorama.
@@ -156,6 +169,17 @@ func sync(events: Array[SimEvent]) -> void:
 				_syrup_band(ev.data)
 			&"syrup_glide":
 				_react_toys(&"sparkle")
+			&"track_started":
+				var track_def: TrackDef = MovingPlatformRule.load_track(String(ev.data.get("track", "")))
+				if track_def != null:
+					attach_track(track_def)
+			&"track_progress":
+				set_track_progress(int(ev.data.get("at_mm", 0)))
+			&"track_restart":
+				set_track_progress(int(ev.data.get("at_mm", 0)))
+				_audio.cue(&"lose")
+			&"track_topple", &"track_cargo_lost":
+				if not _reduced(): burst(Vector3(0, _board.h_play() * 0.4, 0), Color("#F2B27A"), 30)
 			&"fog_visibility":
 				if ev.data.has("cell_alphas"):
 					_locked.set_cell_visibility(ev.data.get("cell_alphas",[]))
@@ -261,10 +285,63 @@ func predict(command: SimCommand) -> void:
 func rotate_view(dir: int) -> void:
 	_snap.step(-dir if _preference_flag("invert_view",false) else dir)
 	_target_yaw = _snap.yaw_deg()
-	if _reduced() or not _preference_flag("turn_animation",true):
-		_yaw = _target_yaw
+	_start_turn()
 	_update_camera()
 	view_changed.emit(_snap.k)
+
+
+## Orbits and tilts the play camera by degrees (touch, mouse or gamepad); settle_camera() snaps it.
+func orbit_camera(yaw_deg: float, tilt_deg: float) -> void:
+	_dragging = true
+	_yaw += -yaw_deg if _preference_flag("invert_view", false) else yaw_deg
+	_elevation = _cam_controls.clamp_elevation(_elevation + tilt_deg)
+	_update_camera()
+
+
+## Multiplies the player zoom (factor < 1 zooms in), clamped by the data limits.
+func zoom_camera(factor: float) -> void:
+	_user_zoom = _cam_controls.clamp_zoom(_user_zoom * factor)
+	_frame_camera()
+
+
+## Ends a free orbit: snaps to the nearest of the twelve views so moves stay camera-relative.
+func settle_camera() -> void:
+	if not _dragging: return
+	_dragging = false
+	_snap.settle(_yaw)
+	_target_yaw = _snap.yaw_deg()
+	_start_turn()
+	view_changed.emit(_snap.k)
+
+
+## Applies a camera intent from the gesture pad: camera_orbit {relative, source},
+## camera_zoom {wheel: +1/-1 | pinch: new/old finger distance}, camera_release {}.
+func camera_intent(id: StringName, args: Dictionary) -> void:
+	match id:
+		&"camera_orbit":
+			var rel: Vector2 = args.get("relative", Vector2.ZERO)
+			var d: Vector2 = _cam_controls.drag_delta(rel, StringName(args.get("source", &"mouse")))
+			orbit_camera(d.x, d.y)
+		&"camera_zoom":
+			if args.has("wheel"): zoom_camera(_cam_controls.wheel_factor(int(args["wheel"])))
+			elif args.has("pinch"): zoom_camera(_cam_controls.pinch_factor(float(args["pinch"])))
+		&"camera_release":
+			settle_camera()
+
+
+## Starts the eased turn from the current yaw to `_target_yaw`; reduced motion or the turn_animation
+## preference off gives the data-driven instant cut (or short linear turn), never an overshoot.
+func _start_turn() -> void:
+	_turn.set_reduced(_reduced())
+	if not _preference_flag("turn_animation", true):
+		_yaw = _target_yaw
+		_turn.begin(_yaw, _yaw)
+		_turn.sync_yaw(_yaw)
+		return
+	_target_yaw = _turn.begin(_yaw, _target_yaw)
+	if not _turn.is_active():
+		_yaw = _target_yaw
+		_turn.sync_yaw(_yaw)
 
 
 ## Returns the logical settled camera view (0..11).
@@ -360,6 +437,7 @@ func apply_settings(settings: Dictionary) -> void:
 		(status_view.material_override as ShaderMaterial).set_shader_parameter(&"reduced",_reduced())
 	for actor: WtToyActor in [_wizard,_mascot,_boss]:
 		if actor!=null:actor.set_reduced_motion(_reduced())
+	if _look != null: _look.set_reduced(_reduced())
 	set_process(true)
 
 
@@ -377,10 +455,20 @@ func burst(origin: Vector3, tint: Color, count: int = 30) -> void:
 
 func _process(delta: float) -> void:
 	_time += delta
-	if not _dragging:
-		var d: float = angle_difference(deg_to_rad(_yaw), deg_to_rad(_target_yaw))
-		_yaw += rad_to_deg(d) * minf(1.0, delta * 10.0)
+	var pad: Vector2 = _cam_controls.pad_delta(delta)
+	var pad_released: bool = _cam_controls.pad_released(pad)
+	if pad != Vector2.ZERO:
+		orbit_camera(pad.x, pad.y)
+	elif pad_released:
+		settle_camera()
+	if _pan_settle > 0.0:
+		_pan_settle -= delta
+		if _pan_settle <= 0.0: settle_camera()
+	if not _dragging and _turn.is_active():
+		_yaw = _turn.step(delta)
 		_update_camera()
+	elif _turn.drift() != 0.0:
+		_update_camera()  # the backdrop eases back to rest after the camera stops
 	if _windmill != null and not _reduced():
 		_windmill.rotation.z += delta * 0.35
 	if _carousel != null and not _reduced():
@@ -405,17 +493,23 @@ func _unhandled_input(event: InputEvent) -> void:
 			secret_tapped.emit(StringName(hit["collider"].get_meta("secret_id")))
 			get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
-		_dragging = event.pressed
-		if not _dragging:
-			_snap.settle(_yaw)
-			_target_yaw = _snap.yaw_deg()
-			if _reduced() or not _preference_flag("turn_animation",true): _yaw = _target_yaw
-			view_changed.emit(_snap.k)
+		_mouse_orbit = event.pressed
+		if not _mouse_orbit: settle_camera()
 		get_viewport().set_input_as_handled()
-	elif event is InputEventMouseMotion and _dragging:
-		_yaw -= event.relative.x * 0.35
-		_elevation = clampf(_elevation + event.relative.y * 0.12, 24.0, 50.0)
-		_update_camera()
+	elif event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
+		zoom_camera(_cam_controls.wheel_factor(1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else -1))
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMouseMotion and _mouse_orbit:
+		var d: Vector2 = _cam_controls.drag_delta(event.relative, &"mouse")
+		orbit_camera(d.x, d.y)
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMagnifyGesture:
+		zoom_camera(_cam_controls.pinch_factor(event.factor))
+		get_viewport().set_input_as_handled()
+	elif event is InputEventPanGesture:
+		var p: Vector2 = _cam_controls.drag_delta(event.delta * 8.0, &"touch")
+		orbit_camera(p.x, p.y)
+		_pan_settle = PAN_SETTLE_S
 		get_viewport().set_input_as_handled()
 
 
@@ -442,7 +536,9 @@ func _build_light() -> void:
 	builder.motion = 0.0 if _reduced() else 1.0
 	var env := builder.make_environment()
 	_environment = env
-	builder.build_sky(self, env)
+	var sky: CanvasLayer = builder.build_sky(self, env)
+	for c: Node in sky.get_children():
+		if c is ColorRect and (c as ColorRect).material is ShaderMaterial: _sky_mat = (c as ColorRect).material as ShaderMaterial
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
@@ -453,7 +549,7 @@ func _build_light() -> void:
 ## Shared painted post-process quad on the camera + per-biome glow (biome_looks.json `post`).
 func _build_post() -> void:
 	_post = WtPostProcess.new()
-	_post.attach(_camera, _environment, _biome, _preference_flag("post", true))
+	_post.attach(_camera, _environment, _biome, _preference_flag("post", true), {"low": 0, "medium": 1}.get(str(_prefs.get("quality", "high")), 2))
 	_post.set_focus(CAMERA_DISTANCE)
 
 
@@ -657,15 +753,19 @@ func _update_piece(predicted: ActivePiece = null) -> void:
 	var piece_hue: int = p.hue_id
 	var hue: Color = _palette.color(piece_hue)
 	var cells: Array[Vector3i] = p.cells()
+	var ghost: Array[Vector3i] = _syrup_preview if not _syrup_preview.is_empty() else _sim.ghost_cells()
+	if predicted != null:
+		ghost = p.cells_at(p.orient, p.pivot + _board.down_vector() * Movement.drop_distance(p, _board))
+	# Biome palette variant (same one the piece keeps once locked); the ghost wears the same colour.
+	var variant: int = _locked.variant_for_active(_sim.get_piece_uid(), ghost if not ghost.is_empty() else cells)
+	if variant >= 0:
+		hue = _locked.variant_color(variant)
 	var scale_cube: float = _art.cube_scale() * 0.97
 	for i: int in mini(64, cells.size()):
 		_active.multimesh.set_instance_transform(i, Transform3D(Basis.from_scale(Vector3.ONE * scale_cube), BoardGeom.cell_center(cells[i], _size)))
 		_active.multimesh.set_instance_color(i, hue)
-		_active.multimesh.set_instance_custom_data(i, Color(float(_palette.pattern_code(piece_hue))/16.0, 0, 0, 0))
+		_active.multimesh.set_instance_custom_data(i, Color(float(_palette.pattern_code(piece_hue))/16.0, float(variant + 1)/16.0, 0, 0))
 	_active.multimesh.visible_instance_count = mini(64, cells.size())
-	var ghost: Array[Vector3i] = _syrup_preview if not _syrup_preview.is_empty() else _sim.ghost_cells()
-	if predicted != null:
-		ghost = p.cells_at(p.orient, p.pivot + _board.down_vector() * Movement.drop_distance(p, _board))
 	var columns: Dictionary = {}
 	for i: int in mini(64, ghost.size()):
 		_ghost.multimesh.set_instance_transform(i, Transform3D(Basis.from_scale(Vector3.ONE * .93), BoardGeom.cell_center(ghost[i], _size)))
@@ -717,21 +817,24 @@ func _frame_camera() -> void:
 	var tall: float = widest * sin(elev) + (_board.h_play() + 1.0) * cos(elev)
 	var by_width: float = widest / (aspect * usable_w)
 	var by_height: float = tall / usable_h
-	_camera.size = maxf(by_width, by_height)
+	_camera.size = maxf(by_width, by_height) * _look_zoom * _user_zoom
 	_update_camera()
 
 
 func _update_camera() -> void:
 	if _camera == null: return
 	var target := Vector3(0, _board.h_play() * .36, 0)
+	var drift: float = _turn.update_drift(_yaw, get_process_delta_time() if is_inside_tree() else 0.0)
+	if _sky_mat != null: _sky_mat.set_shader_parameter(&"view_shift", _turn.sky_shift())
 	var yaw: float = deg_to_rad(_yaw)
 	var elev: float = deg_to_rad(_elevation)
 	_camera.position = target + Vector3(sin(yaw) * cos(elev), sin(elev), cos(yaw) * cos(elev)) * CAMERA_DISTANCE
 	_camera.look_at(target, Vector3.UP)
 	WtIslandBuilder.orient_rig(_rig, _yaw)
+	if _look != null: _look.update_view(_rig, _yaw, _camera)
 	WtIslandBuilder.update_facing(_world, _yaw)
 	if _far != null and is_inside_tree():
-		WtIslandBuilder.layout_far(_far, target, _yaw, _elevation, _camera.size, get_viewport().get_visible_rect().size.aspect())
+		WtIslandBuilder.layout_far(_far, target, _yaw - drift, _elevation, _camera.size, get_viewport().get_visible_rect().size.aspect())
 	_update_status_orientation()
 	var quadrant := Vector2i(-1 if sin(yaw)>=0 else 1,-1 if cos(yaw)>=0 else 1)
 	if quadrant != _guide_quadrant:
@@ -758,6 +861,25 @@ func set_story_context(context: Dictionary) -> void:
 		_key_light.light_color=Color(lighting.key)
 		_key_light.light_energy=float(base.key_energy)*float(lighting.key_energy)/.65
 		set_meta("authored_time_of_day",lighting.time)
+	apply_level_look(WtLevelLook.read_level_look(_biome, str(context.get("level_id", ""))))
+
+
+## Applies the optional level `look` block over the biome look (see WtLevelLook). A level without
+## one leaves the stage exactly as built; an empty block after a look restores the biome look.
+func apply_level_look(look: Dictionary) -> void:
+	if look.is_empty() and _look == null: return
+	if _look == null:
+		_look = WtLevelLook.new()
+		_look.name = "LevelLook"
+		add_child(_look)
+		_look.bind({"environment": _environment, "rig": _rig, "camera": _camera, "world": _world, "sky_parent": self, "size": _size,
+			"biome": String(_biome), "reduced": _reduced(), "elevation": _elevation,
+			"hide": {"windmill": _windmill.get_parent() if _windmill != null else null, "carousel": _carousel.get_parent() if _carousel != null else null,
+				"ferris": _ferris.get_parent() if _ferris != null else null}})
+	var cam: Dictionary = _look.apply(look)
+	_elevation = float(cam["elevation"])
+	_look_zoom = float(cam["zoom"])
+	_frame_camera()
 
 
 ## Auto applies a deterministic owned theme per category; purchases remain profile owned.
@@ -1208,7 +1330,9 @@ func _apply_biome_block_material() -> void:
 	var material: Material = _biome_block_material()
 	if not material is ShaderMaterial: return
 	# The falling piece never fades, so it gets its own copy without occlusion state.
-	var falling: ShaderMaterial = material.duplicate() as ShaderMaterial
+	# A fresh material, not duplicate(): the copy drops the palette arrays (the piece rendered black).
+	var falling: ShaderMaterial = _biome_block_material() as ShaderMaterial
+	if falling == null: falling = material.duplicate() as ShaderMaterial
 	falling.set_shader_parameter(&"use_cell_alpha", false)
 	_active.material_override = falling
 	if _locked != null: _locked.set_biome_material(material as ShaderMaterial)
@@ -1278,3 +1402,18 @@ func _cylinder(parent: Node3D, pos: Vector3, top: float, bottom: float, height: 
 func _box(parent: Node3D, pos: Vector3, size: Vector3, color: Color) -> MeshInstance3D:
 	var mesh := BoxMesh.new();mesh.size=size
 	return _mesh(parent,mesh,pos,_mat(color))
+
+
+## G8 view hook: shows the placeholder track for `def` under the board. Usage: stage.attach_track(def).
+func attach_track(def: TrackDef) -> void:
+	if _track_follower == null:
+		_track_follower = WtTrackFollower.new()
+		_track_follower.name = "MovingPlatformTrack"
+		add_child(_track_follower)
+	_track_follower.setup(def)
+
+
+## G8 view hook: feeds the platform's track distance (TrackRunner.position_mm) so the track scrolls by.
+func set_track_progress(mm: int) -> void:
+	if _track_follower != null:
+		_track_follower.set_progress(mm)

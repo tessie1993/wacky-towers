@@ -1,13 +1,122 @@
 {
   "schema_version": 1,
   "items": [
-    {"name": "gdUnit4", "author": "Mike Schulze", "licence": "MIT", "source": "https://github.com/MikeSchulze/gdUnit4", "files": ["addons/gdUnit4/"]},
-    {"name": "TileMapLayer3D", "author": "DanTrz", "licence": "MIT", "source": "https://github.com/DanTrz/TileMapLayer3D", "files": ["addons/TileMapLayer3D/"]},
-    {"name": "Godot AI", "author": "Godot AI contributors", "licence": "MIT", "source": "", "files": ["addons/godot_ai/"]},
-    {"name": "Godot MCP Toolkit", "author": "NPGameDev", "licence": "MIT", "source": "", "files": ["addons/godot_mcp_toolkit/"]},
-    {"name": "G.U.I.D.E", "author": "Jan Thomä", "licence": "MIT", "source": "https://github.com/godotneers/G.U.I.D.E", "files": ["addons/guide/"]},
-    {"name": "Phantom Camera", "author": "Marcus Skov", "licence": "MIT", "source": "https://github.com/ramokz/phantom-camera", "files": ["addons/phantom_camera/"]},
-    {"name": "Expose Them Properties!", "author": "Guillem Chesa", "licence": "MIT", "source": "", "files": ["addons/xesa/"]},
-    {"name": "Script-IDE", "author": "Marius Hanl", "licence": "MIT", "source": "https://github.com/Maran23/script-ide", "files": ["addons/script-ide/"]}
+    {
+      "name": "gdUnit4",
+      "author": "Mike Schulze",
+      "licence": "MIT",
+      "source": "https://github.com/MikeSchulze/gdUnit4",
+      "files": [
+        "addons/gdUnit4/"
+      ]
+    },
+    {
+      "name": "TileMapLayer3D",
+      "author": "DanTrz",
+      "licence": "MIT",
+      "source": "https://github.com/DanTrz/TileMapLayer3D",
+      "files": [
+        "addons/TileMapLayer3D/"
+      ]
+    },
+    {
+      "name": "Godot AI",
+      "author": "Godot AI contributors",
+      "licence": "MIT",
+      "source": "",
+      "files": [
+        "addons/godot_ai/"
+      ]
+    },
+    {
+      "name": "Godot MCP Toolkit",
+      "author": "NPGameDev",
+      "licence": "MIT",
+      "source": "",
+      "files": [
+        "addons/godot_mcp_toolkit/"
+      ]
+    },
+    {
+      "name": "G.U.I.D.E",
+      "author": "Jan Thom\u00e4",
+      "licence": "MIT",
+      "source": "https://github.com/godotneers/G.U.I.D.E",
+      "files": [
+        "addons/guide/"
+      ]
+    },
+    {
+      "name": "Phantom Camera",
+      "author": "Marcus Skov",
+      "licence": "MIT",
+      "source": "https://github.com/ramokz/phantom-camera",
+      "files": [
+        "addons/phantom_camera/"
+      ]
+    },
+    {
+      "name": "Expose Them Properties!",
+      "author": "Guillem Chesa",
+      "licence": "MIT",
+      "source": "",
+      "files": [
+        "addons/xesa/"
+      ]
+    },
+    {
+      "name": "Script-IDE",
+      "author": "Marius Hanl",
+      "licence": "MIT",
+      "source": "https://github.com/Maran23/script-ide",
+      "files": [
+        "addons/script-ide/"
+      ]
+    },
+    {
+      "name": "PolyHaven bark_brown_02",
+      "author": "Rob Tuytel",
+      "licence": "CC0",
+      "source": "https://polyhaven.com/a/bark_brown_02",
+      "files": [
+        "assets/models/levels/l01_meadow_01/"
+      ]
+    },
+    {
+      "name": "PolyHaven mossy_rock",
+      "author": "Rob Tuytel",
+      "licence": "CC0",
+      "source": "https://polyhaven.com/a/mossy_rock",
+      "files": [
+        "assets/models/levels/l01_meadow_01/"
+      ]
+    },
+    {
+      "name": "PolyHaven aerial_grass_rock",
+      "author": "Rob Tuytel",
+      "licence": "CC0",
+      "source": "https://polyhaven.com/a/aerial_grass_rock",
+      "files": [
+        "assets/models/levels/l01_meadow_01/"
+      ]
+    },
+    {
+      "name": "PolyHaven forrest_ground_01",
+      "author": "Rob Tuytel",
+      "licence": "CC0",
+      "source": "https://polyhaven.com/a/forrest_ground_01",
+      "files": [
+        "assets/models/levels/l01_meadow_01/"
+      ]
+    },
+    {
+      "name": "PolyHaven rock_moss_set_01",
+      "author": "Kless Gyzen",
+      "licence": "CC0",
+      "source": "https://polyhaven.com/a/rock_moss_set_01",
+      "files": [
+        "assets/models/levels/l01_meadow_01/"
+      ]
+    }
   ]
 }
