@@ -601,7 +601,7 @@ def build(pose_name, M):
         for i in range(6):
             t = i / 5
             x = sx * (0.035 + 0.1 * t)
-            z = 1.078 + 0.012 * math.sin(math.pi * t) - 0.026 * t ** 2
+            z = 1.098 + 0.012 * math.sin(math.pi * t) - 0.01 * t ** 2
             els.append(B((x, fy(x, z) - 0.008, z), 0.033 - 0.01 * t))
     W.append(realize(metaball("mb_brows", els, res=0.006), "W_brows", M["beard"]))
 
@@ -626,7 +626,7 @@ def build(pose_name, M):
         S, El, Wr = (Vector(p) for p in pose[side])
         d = (Wr - El).normalized()
         arm_dirs[side] = (Wr, d)
-        sl = skin_limb(f"W_sleeve{side}", [S, El, Wr, Wr + d * 0.035], [0.085, 0.10, 0.13, 0.148])
+        sl = skin_limb(f"W_sleeve{side}", [S, El, Wr, Wr + d * 0.035], [0.085, 0.10, 0.12, 0.128])
         sleeve_only[side] = sl.copy()
         sleeve_only[side].data = sl.data.copy()
         sleeves.append(sl)
@@ -640,7 +640,7 @@ def build(pose_name, M):
     # gold trim: cuffs and hem
     for side in ("R", "L"):
         Wr, d = arm_dirs[side]
-        cuff = trim_ring(f"W_cuff{side}", robe, Wr + d * 0.012, d, 0.018, M["band"], n=32, slab=0.008, maxr=0.12)
+        cuff = trim_ring(f"W_cuff{side}", robe, Wr + d * 0.004, d, 0.013, M["band"], n=32, slab=0.008, maxr=0.11)
         if cuff:
             W.append(cuff)
     for sl in sleeve_only.values():

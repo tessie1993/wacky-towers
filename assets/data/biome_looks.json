@@ -34,7 +34,15 @@
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
         "piece_sat": 1.15,
-        "piece_value": 1.12
+        "piece_value": 1.12,
+        "cap_hues": [
+          [
+            0.2,
+            0.46
+          ]
+        ],
+        "stone_value": 1.22,
+        "stone_sat": 0.78
       },
       "sky": [
         "#4F94E6",

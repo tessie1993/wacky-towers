@@ -58,6 +58,16 @@ uniform float side_shade : hint_range(0.3, 1.0) = 1.0;
 uniform float shade_side_extra : hint_range(0.0, 0.6) = 0.0;
 /** 1 = treat COLOR as sRGB and linearise it (correct); 0 = legacy raw use (washed out). */
 uniform float piece_linear : hint_range(0.0, 1.0) = 1.0;
+/** Cap-keeping hue band (HSV hue 0..1 of the authored piece colour). x < y enables it: pieces outside
+ *  the band render as painted coloured stone (no grass/frosting cap, no dirt). x >= y = every piece keeps it. */
+uniform vec2 cap_hue_range = vec2(0.0, 0.0);
+/** Min saturation for a colour to count as hued (greys/whites keep the cap). */
+uniform float cap_hue_min_sat : hint_range(0.0, 1.0) = 0.15;
+/** Value/saturation multipliers applied only to the stone (cap-less) pieces, on top of piece_value/sat. */
+uniform float stone_value : hint_range(0.5, 1.8) = 1.0;
+uniform float stone_sat : hint_range(0.3, 1.5) = 1.0;
+/** Strength of the faint painted cracks on stone pieces. */
+uniform float stone_crack : hint_range(0.0, 1.0) = 0.22;
 group_uniforms;
 // Shared with the stage/BoardView accessibility and occlusion contract.
 uniform int stickers = 0;
@@ -75,6 +85,8 @@ varying vec3 ln;
 varying float motif;
 varying float cell_alpha;
 varying vec3 center;
+// 1 = this piece keeps the biome cap/dirt style, 0 = painted coloured stone (see cap_hue_range).
+varying float keep_cap;
 
 vec3 rgb2hsv(vec3 c) {
 	vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
@@ -137,13 +149,20 @@ float snowflake(vec2 q, float r) {
 float bell(float a, float b, float x) { float t = smoothstep(a, b, x); return 4.0 * t * (1.0 - t); }
 vec2 rdir(vec2 q) { return abs(q.x) > abs(q.y) ? vec2(sign(q.x), 0.0) : vec2(0.0, sign(q.y)); }
 // Coordinate that wraps continuously around the four sides (for ragged cap edges).
+float cap_keep(vec3 c) {
+	if (cap_hue_range.x >= cap_hue_range.y) return 1.0;
+	vec3 h = rgb2hsv(clamp(c, 0.0, 1.0));
+	float inside = step(cap_hue_range.x, h.x) * step(h.x, cap_hue_range.y);
+	return max(inside, 1.0 - step(cap_hue_min_sat, h.y));
+}
 float around(vec3 p) { return abs(p.x) > abs(p.z) ? (p.x > 0.0 ? 1.0 + p.z : 3.0 - p.z) : (p.z > 0.0 ? 2.0 - p.x : p.x); }
 
 void vertex() {
 	lp = VERTEX; ln = NORMAL;
 	motif = INSTANCE_CUSTOM.r; cell_alpha = use_cell_alpha ? INSTANCE_CUSTOM.a : 1.0;
 	center = (MODEL_MATRIX * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
-	if (cap_depth > 0.0) {
+	keep_cap = cap_keep(COLOR.rgb);
+	if (cap_depth > 0.0 && keep_cap > 0.5) {
 		// Overhanging cap: the top band swells outward with a ragged lip (grass, icing, snow).
 		float sd = hash31(floor(center * 1.01 + 0.5));
 		float band = smoothstep(0.5 - cap_depth - 0.1, 0.5 - cap_depth * 0.4, VERTEX.y);
@@ -188,7 +207,15 @@ void fragment() {
 	phsv.z = clamp(phsv.z * piece_value, 0.0, 1.0);
 	vec3 prgb = hsv2rgb(phsv);
 	vec3 piece = mix(prgb, pow(prgb, vec3(2.2)), piece_linear);
-	vec3 col = mix(piece, body_color, body_mix);
+	float stone = 1.0 - keep_cap;
+	if (stone > 0.5) { // stone pieces: own value/saturation push, then back to linear
+		vec3 shsv = rgb2hsv(clamp(prgb, 0.0, 1.0));
+		shsv.y = clamp(shsv.y * stone_sat, 0.0, 1.0);
+		shsv.z = clamp(shsv.z * stone_value, 0.0, 1.0);
+		vec3 srgb = hsv2rgb(shsv);
+		piece = mix(srgb, pow(srgb, vec3(2.2)), piece_linear);
+	}
+	vec3 col = mix(piece, body_color, body_mix * keep_cap);
 	vec3 emit = vec3(0.0);
 	float rough = 1.0 - gloss;
 	vec2 g = vec2(0.0);
@@ -196,7 +223,7 @@ void fragment() {
 	float cavity = 0.0;
 	float inner = 1.0 - smoothstep(0.08, 0.5, face_edge);   // face centre -> rim
 
-	if (style == 1) { // Meadow: layered dirt, pebbles, clover leaves on the dirt.
+	if (style == 1 && keep_cap > 0.5) { // Meadow: layered dirt, pebbles, clover leaves on the dirt.
 		float paint = fbm(suv * 3.0);
 		col *= mix(0.78, 1.08, smoothstep(0.25, 0.75, paint));
 		float layer = smoothstep(0.45, 0.55, fract(p.y * 2.6 + paint * 0.5));
@@ -216,6 +243,17 @@ void fragment() {
 			float cl = max(circle(cq, vec2(0.0, 0.045), 0.045), max(circle(cq, vec2(-0.042, -0.02), 0.045), circle(cq, vec2(0.042, -0.02), 0.045)));
 			col = mix(col, vec3(0.32, 0.62, 0.22) * (0.9 + 0.3 * step(0.0, cq.y)), cl * detail);
 		}
+	} else if (style == 1) { // Meadow stone piece (ref 15): painted bevelled coloured block, faint cracks.
+		float paint = fbm(suv * 2.5);
+		col *= mix(0.94, 1.06, smoothstep(0.25, 0.75, paint));
+		if (top) col *= 1.1;
+		vec2 sv = voronoi(suv * 1.7 + 3.0);
+		float crack = (1.0 - smoothstep(0.0, 0.035, sv.x)) * step(0.45, hash21(vec2(sv.y, seed)));
+		col *= 1.0 - crack * stone_crack * detail;
+		col += vec3(0.05) * crack * stone_crack * (1.0 - smoothstep(0.0, 0.02, sv.x));
+		g += vec2(hnoise(suv * 9.0) - 0.5) * 0.08;
+		cavity += crack * 0.05;
+		rough = 0.65;
 	} else if (style == 2) { // Candy: translucent jelly with a bright core and a glossy window sheen.
 		col = mix(col * 0.82, col * 1.18 + 0.06, inner);
 		emit += col * 0.22 * inner;
@@ -425,7 +463,7 @@ void fragment() {
 	}
 
 	// Biome cap: top face plus a ragged band down the sides (grass, frosting, snow).
-	if (cap_depth > 0.0) {
+	if (cap_depth > 0.0 && keep_cap > 0.5) {
 		float along = around(p);
 		float drip;
 		if (style == 3) { // icicles: sharp triangles of random length
