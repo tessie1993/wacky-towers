@@ -23,6 +23,7 @@ var _ghost_valid: bool = false
 var _next_change_ms: int = NO_DEADLINE
 var _last_alphas: PackedFloat32Array = PackedFloat32Array()
 var _emitted_once: bool = false
+var _last_emit_revision: int = -1
 
 const NO_DEADLINE := -1
 
@@ -115,11 +116,15 @@ func _recompute(api: RuleApi, now: int, radius: int) -> void:
 		packed.append(alpha)
 	_next_change_ms = next_change
 	_alpha_milli = int(roundf(dimmest * 1000.0))
-	if _emitted_once and packed == _last_alphas and _visibility_key.begins_with("%d:" % _seen_revision):
+	if _emitted_once and packed == _last_alphas and _last_emit_revision == _seen_revision:
 		return
 	_emitted_once = true
 	_last_alphas = packed
-	_visibility_key = "%d:%d" % [_seen_revision, packed.to_byte_array().hex_encode().hash()]
+	_last_emit_revision = _seen_revision
+	var key: String = str(alphas) # same key as before the cache, so snapshots and replay hashes stay identical
+	if key == _visibility_key:
+		return
+	_visibility_key = key
 	api.emit(&"fog_visibility", {"alpha_milli": _alpha_milli, "alpha": dimmest, "cell_alphas": alphas, "lantern_cells": lantern})
 
 ## Next clock value at which a fade that is not yet finished changes alpha: the fade start, or every tick while fading.

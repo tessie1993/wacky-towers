@@ -60,15 +60,6 @@ const KIT_JSON := "res://assets/art/ui/kit/x1/ninepatch_x1.json"
 ## 2x masters live in kit/x2; the x1 files are already downscaled, so they draw 1:1.
 const KIT_SCALE := 0.5
 
-## Compatibility aliases for screens not yet migrated off the retired parchment palette.
-## They map to the no-beige palette (art bible, user rule 2026-10-14), so old call sites compile
-## without drawing beige. Remove once game_ui.gd no longer references them.
-const PARCHMENT := GLASS
-const PARCHMENT_DEEP := PLUM_RAMP_DARK
-const CREAM_PILL := WOOD_PURPLE
-const STAR_OFF := STAR_DIM
-const BIOME_CHIPS := {}
-
 static var _kit: Dictionary = {}
 
 static var _fonts: Dictionary = {}
