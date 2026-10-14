@@ -1,0 +1,50 @@
+{
+ "schema": 1,
+ "id": "test_brook_run",
+ "biome": "meadow",
+ "tier": 3,
+ "name": "LVL_MEADOW_03_TITLE",
+ "board": {
+  "width": 8,
+  "depth": 8,
+  "h_play": 10,
+  "down_axis": "-y"
+ },
+ "pieces": {
+  "shapes": [
+   "i",
+   "o",
+   "t",
+   "l",
+   "s",
+   "tripod",
+   "screw_left",
+   "screw_right"
+  ]
+ },
+ "knobs": {
+  "goal.top_out": "rescue",
+  "goal.countdown_ms": 0
+ },
+ "goal": {
+  "type": "track_race"
+ },
+ "rules": [
+  {
+   "id": "moving_platform",
+   "params": {
+    "track": "meadow_brook_run"
+   }
+  }
+ ],
+ "stars": {
+  "t2": 585000,
+  "t3": 410000
+ },
+ "story": {
+  "title_key": "LVL_MEADOW_03_TITLE",
+  "premise_key": "LVL_MEADOW_03_PREMISE",
+  "mascot_role": "helper",
+  "icon": "dandelion"
+ }
+}

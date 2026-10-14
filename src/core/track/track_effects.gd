@@ -1,7 +1,6 @@
 class_name TrackEffects extends RefCounted
-## Reads the stack and applies track events to it through the RuleApi write facade (gap G8). Deterministic and
-## dice-free: events add lean impulses and cargo stress; only arches and topples remove blocks, always the
-## same ones in the same order. Only boards whose down direction is -y are supported (layer == y).
+## Reads the stack and turns track events into lean impulses, cargo stress and lift (gap G8). Deterministic and
+## dice-free. The only board write is clear_all() for a restart. Only boards whose down direction is -y are supported (layer == y).
 ## Writes queue until the hook boundary, so this class keeps an overlay of its own pending removals.
 ## Usage: var fx := TrackEffects.new(api, def); var lean: Vector2i = fx.com_pm().
 
@@ -17,31 +16,42 @@ func _init(api: RuleApi, def: TrackDef) -> void:
 	_def = def
 
 
-## Applies event `e` and returns {"mutated": bool, "removed": int, "impulse": Vector2i, "stress_pm": int,
-## "gap_layers": int, "lift_pct": int}; keys appear only for kinds that use them.
+## Applies event `e` and returns {"impulse": Vector2i, "stress_pm": int, "gap_layers": int, "lift_pm_per_s": int};
+## keys appear only for kinds that use them. Impulses are normalised for the board (crosswind by height, gust by
+## height times fill of the footprint) and capped by the kind's impulse_cap_pm. Nothing here changes the board:
+## the arch is a pure height gate (the runner charges the heart) and the platform topples as a whole.
 func apply(e: Dictionary) -> Dictionary:
 	var cfg: Dictionary = _def.effects[String(e["kind"])] as Dictionary
 	var layers: int = stack_layers()
+	var size: Vector3i = _api.board_size()
+	var cap: int = int(cfg.get("impulse_cap_pm", 0))
 	match e["kind"]:
 		TrackDef.KIND_BUMP:
-			var amp: int = int(cfg["impulse_pm_per_force"]) * int(e["force"])
-			return {"mutated": false, "impulse": _toward_heavy(e, amp), "stress_pm": int(cfg["cargo_stress_pm_per_force"]) * int(e["force"])}
+			var amp: int = mini(cap, int(cfg["impulse_pm_per_force"]) * int(e["force"]))
+			return {"impulse": _toward_heavy(e, amp), "stress_pm": int(cfg["cargo_stress_pm_per_force"]) * int(e["force"])}
 		TrackDef.KIND_CLOUD_BUMP:
-			var amp: int = int(cfg["impulse_pm_per_force"]) * int(e["force"])
-			return {"mutated": false, "impulse": TrackDef.DIRS[String(e["dir"])] * amp, "stress_pm": int(cfg["cargo_stress_pm_per_force"]) * int(e["force"])}
+			var amp: int = mini(cap, int(cfg["impulse_pm_per_force"]) * int(e["force"]))
+			return {"impulse": TrackDef.DIRS[String(e["dir"])] * amp, "stress_pm": int(cfg["cargo_stress_pm_per_force"]) * int(e["force"])}
 		TrackDef.KIND_CROSSWIND:
-			var amp: int = int(cfg["impulse_pm_per_layer_strength"]) * layers * int(e["strength"])
-			return {"mutated": false, "impulse": TrackDef.DIRS[String(e["dir"])] * amp, "stress_pm": int(cfg["cargo_stress_pm_per_strength"]) * int(e["strength"])}
+			var amp: int = mini(cap, int(cfg["impulse_pm_per_layer_strength"]) * layers * int(e["strength"]))
+			return {"impulse": TrackDef.DIRS[String(e["dir"])] * amp, "stress_pm": int(cfg["cargo_stress_pm_per_strength"]) * int(e["strength"])}
 		TrackDef.KIND_GUST:
-			var amp: int = layers * cell_count() * int(e["strength"]) * int(cfg["impulse_pm_per_100_layer_cells"]) / 100
-			return {"mutated": false, "impulse": TrackDef.DIRS[String(e["dir"])] * amp, "stress_pm": int(cfg["cargo_stress_pm_per_strength"]) * int(e["strength"])}
+			var amp: int = mini(cap, int(cfg["impulse_pm_per_layer_fill"]) * int(e["strength"]) * layers * cell_count() / maxi(1, size.x * size.z))
+			return {"impulse": TrackDef.DIRS[String(e["dir"])] * amp, "stress_pm": int(cfg["cargo_stress_pm_per_strength"]) * int(e["strength"])}
 		TrackDef.KIND_UPDRAFT:
-			var lift: int = int(cfg["lift_pct"]) + int(cfg["height_pct_per_layer"]) * layers - int(cfg["mass_pct_per_cell"]) * cell_count()
-			return {"mutated": false, "lift_pct": maxi(0, lift)}
+			return {"lift_pm_per_s": int(cfg["lift_pm_per_s"]) * lightness_pct() / 100}
 		TrackDef.KIND_ARCH:
-			var removed: int = _arch(int(e["gap_layers"]))
-			return {"mutated": removed > 0, "removed": removed, "gap_layers": int(e["gap_layers"])}
-	return {"mutated": false}
+			return {"gap_layers": int(e["gap_layers"])}
+	return {}
+
+
+## How light the build is for the kite, 100 for an empty deck down to min_lightness_pct at heavy_cells or more.
+func lightness_pct() -> int:
+	var cfg: Dictionary = _def.effects.get("updraft", {}) as Dictionary
+	if cfg.is_empty():
+		return 100
+	var lightness: int = 100 - cell_count() * 100 / maxi(1, int(cfg["heavy_cells"]))
+	return clampi(lightness, int(cfg["min_lightness_pct"]), 100)
 
 
 ## Surface height per column: Vector2i(x, z) -> highest occupied layer + 1 (0 when empty), for active columns.
@@ -112,55 +122,12 @@ func seat_is_stable(s: Dictionary) -> bool:
 	return int(s["support"]) >= int(_def.cargo["min_support_cells"])
 
 
-## Removes the spill_cells top blocks on the heavy side of `lean`, highest layer first, then furthest out, then
-## lowest z, then lowest x. Only column tops are taken, so nothing is left floating. Returns the number removed.
-func spill(lean: Vector2i) -> int:
-	var removed: int = 0
-	for _i: int in int(_def.lean["spill_cells"]):
-		var top: Vector3i = _heaviest_top(lean)
-		if top.y < 0:
-			break
-		_drop(top, BoardState.Cause.DISPLACED)
-		removed += 1
-	return removed
-
-
-## The column-top cell to spill next on the heavy side of `lean`; y = -1 when that side is empty.
-func _heaviest_top(lean: Vector2i) -> Vector3i:
-	var axis_x: bool = absi(lean.x) >= absi(lean.y)
-	var sign_v: int = signi(lean.x if axis_x else lean.y)
-	var size: Vector3i = _api.board_size()
-	var best := Vector3i(0, -1, 0)
-	var best_off: int = 0
-	var hs: Dictionary = heights()
-	for z: int in size.z:
-		for x: int in size.x:
-			var h: int = int(hs[Vector2i(x, z)])
-			var off: int = (2 * x + 1 - size.x) if axis_x else (2 * z + 1 - size.z)
-			if h == 0 or off * sign_v <= 0:
-				continue
-			# Highest layer first, then furthest out; scan order (z, then x ascending) breaks remaining ties.
-			if h - 1 > best.y or (h - 1 == best.y and absi(off) > best_off):
-				best = Vector3i(x, h - 1, z)
-				best_off = absi(off)
-	return best
-
-
 ## Wipes the whole board in write order (after anything already queued) and forgets the overlay.
 func clear_all() -> void:
 	_api.request_wipe(BoardState.Cause.CLEAR)
 	_overlay.clear()
 	for c: Vector3i in _all_cells():
 		_overlay[c] = false
-
-
-func _arch(gap: int) -> int:
-	var removed: int = 0
-	for c: Vector3i in _cells():
-		if c.y >= gap:
-			_drop(c, BoardState.Cause.TRIM)
-			removed += 1
-	return removed
 
 
 ## Bump direction: pushes the existing heavy side further; a centred stack takes the event's dir if it has one.

@@ -19,4 +19,5 @@ func evaluate(state: GoalState, _api: RuleApi) -> int:
 
 func progress(state: GoalState) -> Dictionary:
 	var pm: int = int(state.metrics.get(TrackRunner.METRIC_PROGRESS_PM, 0))
-	return {"done": pm, "target": 1000, "unit": "pm", "time_left_ms": int(state.metrics.get(TrackRunner.METRIC_TIME_LEFT_MS, 0))}
+	return {"done": pm, "target": 1000, "unit": "pm", "hearts": int(state.metrics.get(TrackRunner.METRIC_HEARTS, 0)),
+		"stars": int(state.metrics.get(TrackRunner.METRIC_STARS, 0))}

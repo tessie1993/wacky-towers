@@ -19,28 +19,26 @@ const EVENT_PARAMS: Dictionary = {
 	&"bump": ["force"], &"cloud_bump": ["force", "dir"], &"arch": ["gap_layers"],
 	&"crosswind": ["dir", "strength"], &"gust": ["dir", "strength"], &"updraft": ["duration_ms"]}
 const EFFECT_KEYS: Dictionary = {
-	&"bump": ["impulse_pm_per_force", "cargo_stress_pm_per_force"],
-	&"cloud_bump": ["impulse_pm_per_force", "cargo_stress_pm_per_force"],
+	&"bump": ["impulse_pm_per_force", "impulse_cap_pm", "cargo_stress_pm_per_force"],
+	&"cloud_bump": ["impulse_pm_per_force", "impulse_cap_pm", "cargo_stress_pm_per_force"],
 	&"arch": [],
-	&"crosswind": ["impulse_pm_per_layer_strength", "cargo_stress_pm_per_strength"],
-	&"gust": ["impulse_pm_per_100_layer_cells", "cargo_stress_pm_per_strength"],
-	&"updraft": ["lift_pct", "height_pct_per_layer", "mass_pct_per_cell"]}
-const LEAN_KEYS: Array[String] = ["danger_pm", "limit_pm", "relax_pm_per_s", "spill_cells", "spill_relief_pm", "hysteresis_pm"]
+	&"crosswind": ["impulse_pm_per_layer_strength", "impulse_cap_pm", "cargo_stress_pm_per_strength"],
+	&"gust": ["impulse_pm_per_layer_fill", "impulse_cap_pm", "cargo_stress_pm_per_strength"],
+	&"updraft": ["lift_pm_per_s", "heavy_cells", "min_lightness_pct"]}
+const LEAN_KEYS: Array[String] = ["danger_pm", "limit_pm", "relax_pm_per_s", "dwell_ms", "hysteresis_pm"]
 const CARGO_KEYS: Array[String] = ["height_layers", "min_support_cells", "level_tolerance_layers", "wobble_pm", "slip_pm",
 	"rise_pm_per_s", "recover_pm_per_s", "lean_stress_pm_per_s", "drop_stress_pm_per_layer", "top_out_stress_pm_per_s"]
+const STARS_KEYS: Array[String] = ["height_2", "height_3", "max_hearts_lost_for_3"]
+const ALTITUDE_KEYS: Array[String] = ["start_pm", "sink_pm_per_s"]
 
 var id: StringName = &""
-## Fixed sim tick of the platform in milliseconds.
+## Fixed sim tick of the platform in milliseconds (10..1000).
 var tick_ms: int = 50
-## Win condition: reach the end within this much play time (ms).
-var time_limit_ms: int = 0
-## Time added to the clock when the platform returns to a post (ms).
-var restart_penalty_ms: int = 0
+## Tries per run. A topple or a lost cargo (or a missed ring) costs one and returns to the last post; 0 fails the run.
+var hearts: int = 0
 ## How far ahead the preview strip looks (mm), and the least warning time it must give at any event (ms).
 var preview_window_mm: int = 0
 var preview_min_lead_ms: int = 0
-## What a lost cargo does: &"checkpoint" or &"fail".
-var on_loss: StringName = &"checkpoint"
 ## Segments: {id, length_mm, speed_mm_s, fall_pct, start_mm}. fall_pct is the piece fall speed in percent.
 var segments: Array[Dictionary] = []
 ## Events sorted by at_mm (ties keep file order): {kind, at_mm, ...params}.
@@ -49,6 +47,12 @@ var events: Array[Dictionary] = []
 var checkpoints: Array[Dictionary] = []
 var cargo: Dictionary = {}
 var lean: Dictionary = {}
+## Star rule: {height_2, height_3, max_hearts_lost_for_3}; the finish height in layers decides the stars.
+var stars: Dictionary = {}
+## Kite altitude: {start_pm, sink_pm_per_s}, required when the track has rings or updrafts.
+var altitude: Dictionary = {}
+## Ring gates sorted by at_mm: {id, at_mm, min_pm, max_pm}. Missing one costs a heart.
+var rings: Array[Dictionary] = []
 var effects: Dictionary = {}
 var path: PackedVector3Array = PackedVector3Array()
 var errors: PackedStringArray = PackedStringArray()
@@ -72,17 +76,17 @@ static func from_dict(d: Dictionary) -> TrackDef:
 	var def := TrackDef.new()
 	def.id = StringName(String(d.get("id", "")))
 	def.tick_ms = int(d.get("tick_ms", 50))
-	def.time_limit_ms = int(d.get("time_limit_ms", 0))
-	def.restart_penalty_ms = int(d.get("restart_penalty_ms", 0))
+	def.hearts = int(d.get("hearts", 0))
 	def.preview_window_mm = int(d.get("preview_window_mm", 0))
 	def.preview_min_lead_ms = int(d.get("preview_min_lead_ms", 0))
-	def.on_loss = StringName(String(d.get("on_loss", "checkpoint")))
-	def.effects = (d.get("effects", {}) as Dictionary).duplicate(true)
-	def.cargo = (d.get("cargo", {}) as Dictionary).duplicate(true)
-	def.lean = (d.get("lean", {}) as Dictionary).duplicate(true)
-	def._parse_segments(d.get("segments", []) as Array)
+	def.effects = def._dict_of(d, "effects")
+	def.cargo = def._dict_of(d, "cargo")
+	def.lean = def._dict_of(d, "lean")
+	def.stars = def._dict_of(d, "stars")
+	def.altitude = def._dict_of(d, "altitude")
+	def._parse_segments(def._array_of(d, "segments"))
 	def._parse_marks(d)
-	def._parse_path(d.get("path", []) as Array)
+	def._parse_path(def._array_of(d, "path"))
 	def._validate()
 	return def
 
@@ -133,23 +137,45 @@ func fall_pct_at(mm: int) -> int:
 	return int(segment_at(mm).get("fall_pct", 100))
 
 
-## Preview strip feed for [from_mm, from_mm + window): events and posts with ahead_mm, ahead_ms, severity and what
-## the player can do about it (safe_height_layers for arches, impulse_pm for bumps, lift_pct for updrafts).
+## Preview strip feed for [from_mm, from_mm + window): events, rings and posts, sorted by position. Every row has
+## ahead_mm, ahead_ms and one severity scale (1 mild, 2 hard, 3 severe: the share of the lean danger the event can
+## add). Extra fields by kind: safe_height_layers (arch, crosswind), push ("heavy_side" or the dir) for bumps,
+## impulse_pm, lift. `footprint` (board W*D) and `cells` (current stack) let gust rows give a safe height; pass 0 to skip.
 ## window < 0 uses preview_window_mm. Usage: strip.show(def.preview(runner.position_mm())).
-func preview(from_mm: int, window_mm: int = -1) -> Array[Dictionary]:
+func preview(from_mm: int, window_mm: int = -1, footprint: int = 0, cells: int = 0) -> Array[Dictionary]:
 	var span: int = preview_window_mm if window_mm < 0 else window_mm
 	var out: Array[Dictionary] = []
 	for e: Dictionary in events:
 		var at: int = int(e["at_mm"])
 		if at >= from_mm and at < from_mm + span:
-			out.append(_preview_row(e, from_mm))
+			out.append(_preview_row(e, from_mm, footprint, cells))
 	for cp: Dictionary in checkpoints:
 		var at: int = int(cp["at_mm"])
 		if at >= from_mm and at < from_mm + span:
 			out.append({"kind": &"checkpoint", "id": cp.get("id", ""), "at_mm": at, "ahead_mm": at - from_mm,
-				"ahead_ms": time_between_ms(from_mm, at), "severity": 0})
+				"ahead_ms": time_between_ms(from_mm, at), "severity": 1})
+	for ring: Dictionary in rings:
+		var at: int = int(ring["at_mm"])
+		if at >= from_mm and at < from_mm + span:
+			var row: Dictionary = ring.duplicate()
+			row["kind"] = &"ring"
+			row["ahead_mm"] = at - from_mm
+			row["ahead_ms"] = time_between_ms(from_mm, at)
+			row["severity"] = 3
+			out.append(row)
 	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a["at_mm"]) < int(b["at_mm"]))
 	return out
+
+
+## Stars for a finish: 1 for finishing; 2 at height_2 layers; 3 at height_3 layers with at most
+## max_hearts_lost_for_3 hearts lost (more hearts lost caps the run at 2 stars).
+func stars_for(height_layers: int, hearts_lost: int) -> int:
+	var n: int = 1
+	if height_layers >= int(stars["height_2"]):
+		n = 2
+	if height_layers >= int(stars["height_3"]) and hearts_lost <= int(stars["max_hearts_lost_for_3"]):
+		n = 3
+	return n
 
 
 ## The last checkpoint at or before mm; {} before the first (the start is the implicit post).
@@ -184,35 +210,47 @@ func path_heading(mm: int) -> Vector3:
 	return (b - a).normalized() if b.distance_squared_to(a) > 0.0 else Vector3.FORWARD
 
 
-func _preview_row(e: Dictionary, from_mm: int) -> Dictionary:
+func _preview_row(e: Dictionary, from_mm: int, footprint: int, cells: int) -> Dictionary:
 	var row: Dictionary = e.duplicate()
 	var at: int = int(e["at_mm"])
 	row["ahead_mm"] = at - from_mm
 	row["ahead_ms"] = time_between_ms(from_mm, at)
 	var cfg: Dictionary = effects.get(String(e["kind"]), {}) as Dictionary
+	var danger: int = maxi(1, int(lean.get("danger_pm", 1)))
+	var cap: int = int(cfg.get("impulse_cap_pm", 0))
+	var est: int = 0
 	match e["kind"]:
 		KIND_ARCH:
 			row["severity"] = 3
 			row["safe_height_layers"] = int(e["gap_layers"]) - int(cargo.get("height_layers", 1))
-		KIND_BUMP, KIND_CLOUD_BUMP:
-			row["severity"] = int(e["force"])
-			row["impulse_pm"] = int(cfg.get("impulse_pm_per_force", 0)) * int(e["force"])
-		KIND_CROSSWIND:
-			row["severity"] = int(e["strength"])
-			row["impulse_pm_per_layer"] = int(cfg.get("impulse_pm_per_layer_strength", 0)) * int(e["strength"])
-		KIND_GUST:
-			row["severity"] = int(e["strength"])
-			row["impulse_pm_per_100_layer_cells"] = int(cfg.get("impulse_pm_per_100_layer_cells", 0)) * int(e["strength"])
+			return row
 		KIND_UPDRAFT:
 			row["severity"] = 1
-			row["lift_pct"] = int(cfg.get("lift_pct", 0))
+			return row
+		KIND_BUMP, KIND_CLOUD_BUMP:
+			est = int(cfg.get("impulse_pm_per_force", 0)) * int(e["force"])
+			row["push"] = String(e["dir"]) if e["kind"] == KIND_CLOUD_BUMP else "heavy_side"
+			row["fallback_dir"] = e.get("dir", "")
+		KIND_CROSSWIND:
+			var per: int = int(cfg.get("impulse_pm_per_layer_strength", 0)) * int(e["strength"])
+			est = per * 10
+			row["push"] = String(e["dir"])
+			row["safe_height_layers"] = (danger - 1) / maxi(1, per)
+		KIND_GUST:
+			var per: int = int(cfg.get("impulse_pm_per_layer_fill", 0)) * int(e["strength"])
+			est = per * 10
+			row["push"] = String(e["dir"])
+			if footprint > 0 and cells > 0:
+				row["safe_height_layers"] = (danger - 1) * footprint / maxi(1, per * cells)
+	est = mini(est, cap) if cap > 0 else est
+	row["impulse_pm"] = est
+	row["severity"] = clampi(1 + est * 3 / danger, 1, 3)
 	return row
 
 
 func _parse_segments(rows: Array) -> void:
 	var at: int = 0
-	for row: Variant in rows:
-		var seg: Dictionary = (row as Dictionary).duplicate()
+	for seg: Dictionary in _rows(rows, "segments"):
 		seg["length_mm"] = int(seg.get("length_mm", 0))
 		seg["speed_mm_s"] = int(seg.get("speed_mm_s", 0))
 		seg["fall_pct"] = int(seg.get("fall_pct", 0))
@@ -224,28 +262,37 @@ func _parse_segments(rows: Array) -> void:
 
 func _parse_marks(d: Dictionary) -> void:
 	var seq: int = 0
-	for row: Variant in d.get("events", []) as Array:
-		var e: Dictionary = (row as Dictionary).duplicate()
+	for e: Dictionary in _rows(_array_of(d, "events"), "events"):
 		e["kind"] = StringName(String(e.get("kind", "")))
 		e["at_mm"] = int(e.get("at_mm", -1))
 		e["_seq"] = seq
 		seq += 1
 		events.append(e)
-	for row: Variant in d.get("checkpoints", []) as Array:
-		var cp: Dictionary = (row as Dictionary).duplicate()
+	for cp: Dictionary in _rows(_array_of(d, "checkpoints"), "checkpoints"):
 		cp["at_mm"] = int(cp.get("at_mm", -1))
 		cp["_seq"] = seq
 		seq += 1
 		checkpoints.append(cp)
+	for ring: Dictionary in _rows(_array_of(d, "rings"), "rings"):
+		ring["at_mm"] = int(ring.get("at_mm", -1))
+		ring["min_pm"] = int(ring.get("min_pm", -1))
+		ring["max_pm"] = int(ring.get("max_pm", -1))
+		ring["_seq"] = seq
+		seq += 1
+		rings.append(ring)
 	var by_pos: Callable = func(a: Dictionary, b: Dictionary) -> bool:
 		return int(a["at_mm"]) < int(b["at_mm"]) or (int(a["at_mm"]) == int(b["at_mm"]) and int(a["_seq"]) < int(b["_seq"]))
 	events.sort_custom(by_pos)
 	checkpoints.sort_custom(by_pos)
+	rings.sort_custom(by_pos)
 
 
 func _parse_path(rows: Array) -> void:
 	var acc: float = 0.0
 	for row: Variant in rows:
+		if not (row is Array and (row as Array).size() == 3):
+			errors.append("path points must be [x, y, z]")
+			continue
 		var p: Array = row as Array
 		path.append(Vector3(float(p[0]), float(p[1]), float(p[2])))
 		if path.size() > 1:
@@ -256,31 +303,15 @@ func _parse_path(rows: Array) -> void:
 func _validate() -> void:
 	if id == &"":
 		errors.append("track has no id")
-	if tick_ms <= 0:
-		errors.append("tick_ms must be positive")
+	if tick_ms < 10 or tick_ms > 1000:
+		errors.append("tick_ms must be 10..1000")
+	if hearts < 1 or hearts > 9:
+		errors.append("hearts must be 1..9")
 	if segments.is_empty() or _length_mm <= 0:
 		errors.append("track needs at least one segment with length")
-	if on_loss != &"checkpoint" and on_loss != &"fail":
-		errors.append("on_loss must be 'checkpoint' or 'fail'")
 	for seg: Dictionary in segments:
 		if int(seg["speed_mm_s"]) <= 0 or int(seg["length_mm"]) <= 0 or int(seg["fall_pct"]) <= 0:
 			errors.append("segment '%s' needs positive length_mm, speed_mm_s and fall_pct" % seg.get("id", "?"))
-	_validate_clock()
-	_require_keys(lean, LEAN_KEYS, "lean")
-	_require_keys(cargo, CARGO_KEYS, "cargo")
-	_validate_ranges()
-	for e: Dictionary in events:
-		_validate_event(e)
-	for cp: Dictionary in checkpoints:
-		if int(cp["at_mm"]) <= 0 or int(cp["at_mm"]) >= _length_mm:
-			errors.append("checkpoint '%s' must lie inside the track" % cp.get("id", "?"))
-
-
-func _validate_clock() -> void:
-	if time_limit_ms <= 0:
-		errors.append("time_limit_ms is required")
-	elif _length_mm > 0 and not segments.is_empty() and time_limit_ms < base_duration_ms():
-		errors.append("time_limit_ms %d is shorter than the base drive time %d" % [time_limit_ms, base_duration_ms()])
 	if preview_window_mm <= 0 or preview_min_lead_ms <= 0:
 		errors.append("preview_window_mm and preview_min_lead_ms are required")
 	for e: Dictionary in events:
@@ -288,19 +319,49 @@ func _validate_clock() -> void:
 		if speed > 0 and preview_window_mm * 1000 / speed < preview_min_lead_ms:
 			errors.append("event '%s' at %d is previewed less than %d ms ahead" % [e["kind"], int(e["at_mm"]), preview_min_lead_ms])
 			break
+	_require_keys(lean, LEAN_KEYS, "lean")
+	_require_keys(cargo, CARGO_KEYS, "cargo")
+	_require_keys(stars, STARS_KEYS, "stars")
+	_validate_ranges()
+	for e: Dictionary in events:
+		_validate_event(e)
+	for cp: Dictionary in checkpoints:
+		if int(cp["at_mm"]) <= 0 or int(cp["at_mm"]) >= _length_mm:
+			errors.append("checkpoint '%s' must lie inside the track" % cp.get("id", "?"))
+	_validate_rings()
+
+
+func _validate_rings() -> void:
+	var needs_altitude: bool = not rings.is_empty()
+	for e: Dictionary in events:
+		needs_altitude = needs_altitude or e["kind"] == KIND_UPDRAFT
+	if needs_altitude:
+		_require_keys(altitude, ALTITUDE_KEYS, "altitude")
+	for ring: Dictionary in rings:
+		if int(ring["at_mm"]) <= 0 or int(ring["at_mm"]) >= _length_mm:
+			errors.append("ring '%s' must lie inside the track" % ring.get("id", "?"))
+		if not (0 <= int(ring["min_pm"]) and int(ring["min_pm"]) <= int(ring["max_pm"]) and int(ring["max_pm"]) <= 1000):
+			errors.append("ring '%s' needs 0 <= min_pm <= max_pm <= 1000" % ring.get("id", "?"))
 
 
 func _validate_ranges() -> void:
-	if lean.size() < LEAN_KEYS.size() or cargo.size() < CARGO_KEYS.size():
+	if lean.size() < LEAN_KEYS.size() or cargo.size() < CARGO_KEYS.size() or stars.size() < STARS_KEYS.size():
 		return
 	if not (0 < int(lean["danger_pm"]) and int(lean["danger_pm"]) < int(lean["limit_pm"]) and int(lean["limit_pm"]) <= 1000):
 		errors.append("lean needs 0 < danger_pm < limit_pm <= 1000")
-	if int(lean["spill_cells"]) < 1:
-		errors.append("lean.spill_cells must be at least 1")
+	if int(lean["dwell_ms"]) < 0 or int(lean["relax_pm_per_s"]) < 0 or int(lean["hysteresis_pm"]) < 0:
+		errors.append("lean dwell_ms, relax_pm_per_s and hysteresis_pm must not be negative")
 	if not (0 < int(cargo["wobble_pm"]) and int(cargo["wobble_pm"]) < int(cargo["slip_pm"]) and int(cargo["slip_pm"]) < 1000):
 		errors.append("cargo needs 0 < wobble_pm < slip_pm < 1000")
 	if int(cargo["min_support_cells"]) < 1 or int(cargo["min_support_cells"]) > 9 or int(cargo["height_layers"]) < 1:
 		errors.append("cargo needs 1 <= min_support_cells <= 9 and height_layers >= 1")
+	for key: String in ["rise_pm_per_s", "recover_pm_per_s", "lean_stress_pm_per_s", "drop_stress_pm_per_layer", "top_out_stress_pm_per_s"]:
+		if int(cargo[key]) < 0:
+			errors.append("cargo.%s must not be negative" % key)
+	if not (1 <= int(stars["height_2"]) and int(stars["height_2"]) <= int(stars["height_3"])):
+		errors.append("stars needs 1 <= height_2 <= height_3")
+	if int(stars["max_hearts_lost_for_3"]) < 0:
+		errors.append("stars.max_hearts_lost_for_3 must not be negative")
 
 
 func _require_keys(dict: Dictionary, keys: Array[String], what: String) -> void:
@@ -309,6 +370,32 @@ func _require_keys(dict: Dictionary, keys: Array[String], what: String) -> void:
 			errors.append("%s is missing '%s'" % [what, key])
 		elif not (dict[key] is float or dict[key] is int):
 			errors.append("%s.%s must be a number" % [what, key])
+
+
+func _dict_of(d: Dictionary, key: String) -> Dictionary:
+	var v: Variant = d.get(key, {})
+	if v is Dictionary:
+		return (v as Dictionary).duplicate(true)
+	errors.append("'%s' must be an object" % key)
+	return {}
+
+
+func _array_of(d: Dictionary, key: String) -> Array:
+	var v: Variant = d.get(key, [])
+	if v is Array:
+		return v as Array
+	errors.append("'%s' must be an array" % key)
+	return []
+
+
+func _rows(rows: Array, what: String) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for row: Variant in rows:
+		if row is Dictionary:
+			out.append((row as Dictionary).duplicate())
+		else:
+			errors.append("%s entries must be objects" % what)
+	return out
 
 
 func _validate_event(e: Dictionary) -> void:
@@ -325,11 +412,11 @@ func _validate_event(e: Dictionary) -> void:
 			errors.append("event '%s' needs %s > 0" % [kind, key])
 	if e.has("dir") and not DIRS.has(String(e["dir"])):
 		errors.append("event '%s' has bad dir '%s'" % [kind, e["dir"]])
-	var cfg: Dictionary = effects.get(String(kind), {}) as Dictionary
-	if not effects.has(String(kind)):
-		errors.append("no effects entry for event kind '%s'" % kind)
+	var cfg: Variant = effects.get(String(kind))
+	if not cfg is Dictionary:
+		errors.append("effects.%s must be an object" % kind)
 	else:
-		_require_keys(cfg, _typed(EFFECT_KEYS[kind] as Array), "effects.%s" % kind)
+		_require_keys(cfg as Dictionary, _typed(EFFECT_KEYS[kind] as Array), "effects.%s" % kind)
 
 
 func _typed(a: Array) -> Array[String]:

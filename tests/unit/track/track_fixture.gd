@@ -1,22 +1,26 @@
 class_name TrackFixture extends RefCounted
-## Shared builders for the G8 track tests: a small valid 10 s track and boards to run it on.
+## Shared builders for the G8 track tests. The fixture track reuses the shipped tracks' lean, cargo, star and effect
+## tuning and runs on the real meadow_03 board size (8x8x10), so the tests exercise the numbers that ship.
 const F := preload("res://tests/unit/mechanics/mechanics_fixture.gd")
+const DIR := "res://assets/data/tracks/"
+const W := 8
+const D := 8
+const H := 10
+
+
+static func shipped(id: String) -> Dictionary:
+	return JSON.parse_string(FileAccess.get_file_as_string(DIR + id + ".json")) as Dictionary
 
 
 static func dict(events: Array = [], checkpoints: Array = [], over: Dictionary = {}) -> Dictionary:
-	var d: Dictionary = {"schema": 2, "id": "t", "tick_ms": 50, "time_limit_ms": 12000, "restart_penalty_ms": 1000,
-		"preview_window_mm": 4000, "preview_min_lead_ms": 2000, "on_loss": "checkpoint",
+	var brook: Dictionary = shipped("meadow_brook_run")
+	var kite: Dictionary = shipped("meadow_kite_day")
+	var effects: Dictionary = (kite["effects"] as Dictionary).duplicate(true)
+	effects.merge((brook["effects"] as Dictionary).duplicate(true), true)
+	var d: Dictionary = {"schema": 3, "id": "t", "tick_ms": 50, "hearts": 3, "preview_window_mm": 4000, "preview_min_lead_ms": 2000,
 		"segments": [{"id": "s", "length_mm": 10000, "speed_mm_s": 1000, "fall_pct": 100}],
-		"events": events, "checkpoints": checkpoints,
-		"lean": {"danger_pm": 550, "limit_pm": 800, "relax_pm_per_s": 60, "spill_cells": 2, "spill_relief_pm": 300, "hysteresis_pm": 80},
-		"cargo": {"height_layers": 1, "min_support_cells": 5, "level_tolerance_layers": 1, "wobble_pm": 300, "slip_pm": 650,
-			"rise_pm_per_s": 140, "recover_pm_per_s": 220, "lean_stress_pm_per_s": 160, "drop_stress_pm_per_layer": 200,
-			"top_out_stress_pm_per_s": 300},
-		"effects": {"bump": {"impulse_pm_per_force": 120, "cargo_stress_pm_per_force": 90},
-			"cloud_bump": {"impulse_pm_per_force": 70, "cargo_stress_pm_per_force": 160},
-			"crosswind": {"impulse_pm_per_layer_strength": 30, "cargo_stress_pm_per_strength": 100},
-			"gust": {"impulse_pm_per_100_layer_cells": 60, "cargo_stress_pm_per_strength": 80},
-			"updraft": {"lift_pct": 10, "height_pct_per_layer": 12, "mass_pct_per_cell": 1}, "arch": {}}}
+		"events": events, "checkpoints": checkpoints, "lean": brook["lean"], "cargo": brook["cargo"], "stars": brook["stars"],
+		"altitude": kite["altitude"], "effects": effects}
 	d.merge(over, true)
 	return d
 
@@ -25,29 +29,30 @@ static func def(events: Array = [], checkpoints: Array = [], over: Dictionary = 
 	return TrackDef.from_dict(dict(events, checkpoints, over))
 
 
-## columns: Vector2i(x, z) -> height; solid stacks from the floor on a 4x4x10 board.
+## columns: Vector2i(x, z) -> height; solid stacks from the floor on an 8x8x10 board.
 static func board(columns: Dictionary = {}) -> BoardState:
-	var b: BoardState = F.board(4, 4, 10)
+	var b: BoardState = F.board(W, D, H)
 	for col: Vector2i in columns:
 		for y: int in int(columns[col]):
 			b.place(b.index(Vector3i(col.x, y, col.y)), 1, 0, 1)
 	return b
 
 
-## A flat 3x3 block of `layers` layers around (1,1): a stable seat.
-static func flat(layers: int) -> Dictionary:
+## A centred plateau of size x size columns (even size keeps the centre of mass at zero), `layers` high.
+static func plateau(layers: int, size: int = 4) -> Dictionary:
 	var cols: Dictionary = {}
-	for z: int in 3:
-		for x: int in 3:
+	var start: int = (W - size) / 2
+	for z: int in range(start, start + size):
+		for x: int in range(start, start + size):
 			cols[Vector2i(x, z)] = layers
 	return cols
 
 
 static func count(b: BoardState) -> int:
 	var n: int = 0
-	for y: int in 10:
-		for z: int in 4:
-			for x: int in 4:
+	for y: int in H:
+		for z: int in D:
+			for x: int in W:
 				n += 1 if b.get_kind(b.index(Vector3i(x, y, z))) != 0 else 0
 	return n
 
@@ -66,3 +71,7 @@ static func run(runner: TrackRunner, api: RuleApi, ms: int, dt: int = 50) -> Arr
 
 static func kinds(records: Array[Dictionary]) -> Array:
 	return records.map(func(r: Dictionary) -> StringName: return r["kind"])
+
+
+static func of_kind(records: Array[Dictionary], kind: StringName) -> Array[Dictionary]:
+	return records.filter(func(r: Dictionary) -> bool: return r["kind"] == kind)

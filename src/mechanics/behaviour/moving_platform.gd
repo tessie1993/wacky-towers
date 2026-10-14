@@ -8,6 +8,7 @@ const TRACK_DIR := "res://assets/data/tracks/"
 var _runner: TrackRunner
 var _track_id: String = ""
 var _last_ms: int = -1
+var _reannounce: bool = false
 
 
 func subscribed_hooks() -> Array[StringName]:
@@ -18,6 +19,9 @@ func handle(hook: StringName, _ctx: HookContext, api: RuleApi) -> void:
 	if hook == &"on_level_start":
 		_start(String(api.param(&"track", "")), api)
 	elif _runner != null:
+		if _reannounce:
+			_reannounce = false
+			_runner.announce(api)
 		var now: int = api.level_ms()
 		var dt: int = 0 if _last_ms < 0 else maxi(0, now - _last_ms)
 		_last_ms = now
@@ -55,11 +59,14 @@ func restore(state: Dictionary) -> void:
 		return
 	_runner = TrackRunner.new(def)
 	_runner.restore(saved)
+	_reannounce = true  # the view lost its track on a restore; the next tick re-emits track_started
 
 
 func _start(track_id: String, api: RuleApi) -> void:
 	var def: TrackDef = load_track(track_id)
 	if def == null:
+		api.goal_metric(TrackRunner.METRIC_FAILED, 1)
+		api.request_fail(&"bad_track")
 		return
 	_track_id = track_id
 	_runner = TrackRunner.new(def)
