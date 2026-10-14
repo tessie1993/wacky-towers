@@ -10,10 +10,19 @@
     "h_play": 8
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
   },
   "knobs": {
-    "fall.g0": 1.05,
+    "fall.g0": 1.1,
     "fall.ramp_per_min": 0.1
   },
   "goal": {
@@ -47,10 +56,12 @@
       "premise": "The tide floods the leaky deck from below; keep stacking above the waterline until the rescue boat arrives.",
       "intended_modules": [],
       "stand_in": "rising_silt reskinned as rising tide water (params from underwater_08)",
-      "skin_needed": ["seawater layer skin for rising_silt"]
+      "skin_needed": [
+        "seawater layer skin for rising_silt"
+      ]
     },
     "unsupported": [],
     "blocking_gameplay": [],
-    "tuning": "Initial estimates copied from underwater_08; no playtest medians"
+    "tuning": "Initial estimates copied from underwater_08; no playtest medians; 2026-10-14 balance pass: Pirate g0 curve 0.80->1.20, clear-count stars at ~145 s/103 s per clear"
   }
 }

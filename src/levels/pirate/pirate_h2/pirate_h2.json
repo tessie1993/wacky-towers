@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "id": "pirate_h2",
+  "biome": "pirate",
+  "tier": 13,
+  "name": "LVL_PIRATE_H2_TITLE",
+  "board": {
+    "width": 8,
+    "depth": 8,
+    "h_play": 10,
+    "starting_contents": {
+      "layers": {
+        "0": [
+          "........",
+          ".##..##.",
+          "........",
+          "........",
+          "........",
+          "........",
+          ".##..##.",
+          "........"
+        ]
+      }
+    }
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.15,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "race_rival",
+      "params": {
+        "rival_rate": 0.22,
+        "rubber_band": 0.5,
+        "rival_warn_pct": 80
+      }
+    },
+    {
+      "id": "gumdrop_hail",
+      "params": {
+        "object": "gumdrop",
+        "sticky": true,
+        "spawn_every_locks": 4,
+        "objects_max": 6,
+        "hail_after_locks": 4
+      }
+    }
+  ],
+  "stars": {
+    "t2": 400000,
+    "t3": 285000
+  },
+  "music": "mus_underwater_default",
+  "story": {
+    "title_key": "LVL_PIRATE_H2_TITLE",
+    "mascot_role": "watcher",
+    "icon": "cannon"
+  },
+  "seed": null,
+  "metadata": {
+    "level_type": "twist",
+    "theme": "cannonballs",
+    "display_name": "Fort Blast: Broadside",
+    "source": "design/levels/mockup-alignment.md (Pirate Cove hard track)",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "premise": "Out-build the rival fort while practice cannonballs stick to your walls."
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = n x 171 s (underwater_h formula on 8x8)"
+  }
+}

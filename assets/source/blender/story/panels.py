@@ -259,13 +259,13 @@ def M(name):
         "cork": lambda: paint("p_cork", "b98a5a", noise=8.0, ao=0.1),
         "candle": lambda: paint("p_candle", "fff0d8", noise=3.0, var=0.05, ao=0.1, emit=0.3, emit_col="ffd890"),
         "flame": lambda: emit_mat("p_flame", "ffb040", 18.0),
-        "mote_gold": lambda: emit_mat("p_mote_gold", "ffd870", 10.0),
-        "mote_white": lambda: emit_mat("p_mote_white", "fff6e0", 12.0),
-        "mote_pink": lambda: emit_mat("p_mote_pink", "ff9ad8", 9.0),
+        "mote_gold": lambda: emit_mat("p_mote_gold", "ffc850", 4.0),
+        "mote_white": lambda: emit_mat("p_mote_white", "fff2d0", 5.0),
+        "mote_pink": lambda: emit_mat("p_mote_pink", "ff8ad0", 4.0),
         "mote_cyan": lambda: emit_mat("p_mote_cyan", "8ef0ff", 9.0),
         "window": lambda: emit_mat("p_window", "cdd8ff", 1.6),
         "lava": lambda: emit_mat("p_lava", "ff7a1a", 7.0),
-        "smoke": lambda: wz.plush("p_smoke", "b9a8c8", "5a4a6a", 0.6),
+        "smoke": lambda: wz.plush("p_smoke", "9c8ea8", "4a3a5a", 0.8),
         "ocean": lambda: globe_mat(),
         "red_cloth": lambda: paint("p_red_cloth", "c8352e", noise=4.0, ao=0.2, sheen=0.4),
         "path": lambda: paint("p_path", "e2c48a", shade="8a5a4a", noise=3.0, var=0.2, ao=0.4, rough=0.9),
@@ -767,7 +767,8 @@ def volcano(name, loc, s=1.0):
         objs.append(wz.sweep(f"{name}_flow{i}", pts, [0.07 * s, 0.06 * s, 0.05 * s, 0.04 * s, 0.03 * s, 0.02 * s], ring=8,
                              mat=M("lava")))
     for i in range(4):
-        objs.append(cloud(f"{name}_smoke{i}", (0.15 * s * i, 0.1 * s, (2.0 + 0.55 * i) * s), (0.4 + 0.15 * i) * s, 30 + i, n=5))
+        objs.append(cloud(f"{name}_smoke{i}", ((0.1 + 0.45 * i) * s, (0.1 + 0.2 * i) * s, (1.95 + 0.42 * i) * s),
+                          (0.32 + 0.14 * i) * s, 30 + i, n=5, stretch=0.8))
         objs[-1].data.materials.clear()
         objs[-1].data.materials.append(M("smoke"))
     objs.append(point_light(name + "_glow", (0, -0.2 * s, 1.9 * s), "ff7a20", 400 * s * s, 0.4 * s))
@@ -875,7 +876,7 @@ def firework(name, center, radius, col, seed, rays=22):
         for t in np.linspace(0.35, 1.0, 7):
             pts.append(Vector(center) + d.normalized() * radius * t)
             rad.append(0.035 * radius * (0.4 + t))
-    motes(name, pts, rad, emit_mat("fw_" + col, col, 12.0))
+    motes(name, pts, rad, emit_mat("fw_" + col, col, 3.5))
     motes(name + "_c", [Vector(center)], [0.08 * radius], M("mote_white"), 2)
 
 
@@ -887,7 +888,7 @@ SKY_GOLD = [(0.0, "fff0c8"), (0.5, "ffd8a0"), (1.0, "f0a07a")]
 
 def s01(a):
     sc = scene(a.samples, [(0.0, "2a1630"), (1.0, "3b2346")], amb="ffd8b0", amb_str=0.25, exposure=-0.1)
-    f, r = camera(sc, (0.15, -6.9, 2.1), (0.15, 0.8, 1.5), 36)
+    f, r = camera(sc, (0.1, -4.6, 1.65), (0.1, 0.8, 1.0), 34)
     rig(f, r, key=("ffe2b8", 2.0), fill=("b8c4ff", 0.35), rim=("ffe0a8", 1.2))
     rbox("floor", (14, 9, 0.2), (0, 1.5, -0.1), M("planks"), 0)
     rbox("wall", (14, 0.4, 7.5), (0, 4.0, 3.6), M("wall"), 0)
@@ -919,46 +920,54 @@ def s01(a):
         o.location.z += 0.05
     group("lec_g", top, (-0.55, 0.6, 0.97), rot=(18, 0, 0))
     star("lec_star", (-0.55, 0.42, 0.5), 0.09, (0, -1, 0), M("gold"))
-    point_light("book_glow", (-0.55, 0.45, 1.4), "ffd890", 140, 0.25)
-    pts = spiral((-0.55, 0.62, 1.15), 0.12, 0.95, 2.6, 2.4, 70)
+    point_light("book_glow", (-0.55, 0.45, 1.4), "ffd890", 220, 0.25)
+    pts = spiral((-0.55, 0.62, 1.15), 0.12, 0.85, 2.4, 2.4, 160)
     rnd = random.Random(4)
-    motes("book_motes", pts, [0.025 + 0.02 * rnd.random() for _ in pts], M("mote_gold"))
-    pts2 = spiral((-0.55, 0.62, 1.2), 0.2, 1.2, 2.3, 2.0, 40, phase=2.5)
-    motes("book_motes2", pts2, [0.018 + 0.015 * rnd.random() for _ in pts2], M("mote_white"))
-    for i, p in enumerate(pts[18::12][:4]):
-        block(f"spirit{i}", p + Vector((0, 0, 0.1)), "toy", TOY_ORDER[i], 0.15, rot=(20 * i, 30, 15 * i))
-    sparkle_field("dust", (0, 1.0, 2.6), (3.0, 1.2, 1.6), 40, 9)
+    pts = [p + Vector((rnd.uniform(-1, 1), rnd.uniform(-1, 1), rnd.uniform(-1, 1))) * 0.06 for p in pts]
+    motes("book_motes", pts, [0.008 + 0.014 * rnd.random() for _ in pts], M("mote_gold"))
+    pts2 = spiral((-0.55, 0.62, 1.2), 0.2, 1.1, 2.2, 2.0, 90, phase=2.5)
+    motes("book_motes2", pts2, [0.006 + 0.01 * rnd.random() for _ in pts2], M("mote_white"))
+    for i, p in enumerate(pts[40::26][:5]):
+        block(f"spirit{i}", p + Vector((0, 0, 0.05)), "toy", TOY_ORDER[i], 0.16, rot=(20 * i, 30, 15 * i))
+    sparkle_field("dust", (0, 1.0, 2.2), (2.6, 1.0, 1.2), 30, 9)
     # cast: wizard points from the right, elf gasps left, knight bottom right
-    cast_member("wizard", "point", (1.15, 0.75, 0.12), -30)
-    cast_member("elf", "idle", (-2.05, 0.15, 0), 32)
-    cast_member("knight", "idle", (2.35, -0.25, 0), -32)
-    globe("globe", (-3.0, 0.9, 0.0), 0.32)
-    bottle("floor_pot", 0.5, "b48ad8", (-2.9, -0.35, 0))
+    cast_member("wizard", "point", (0.95, 0.75, 0.12), -30)
+    cast_member("elf", "idle", (-1.75, 0.05, 0), 32)
+    cast_member("knight", "idle", (2.05, -0.15, 0), -32)
+    globe("globe", (-2.75, 1.0, 0.0), 0.32)
+    bottle("floor_pot", 0.45, "b48ad8", (-2.45, -0.3, 0))
     for i in range(3):
-        rbox(f"stack{i}", (0.55 - i * 0.05, 0.4, 0.1), (3.1, 0.6, 0.05 + i * 0.1), paint("book_s" + str(i), ["4a6fb0", "c8352e", "4f9a3a"][i],
+        rbox(f"stack{i}", (0.55 - i * 0.05, 0.4, 0.1), (2.85, 0.75, 0.05 + i * 0.1), paint("book_s" + str(i), ["4a6fb0", "c8352e", "4f9a3a"][i],
                                                                                          ao=0.2), 0.2, rot=(0, 0, i * 12))
     return sc
 
 
 def s02(a):
     sc = scene(a.samples, SKY_DUSK, amb="e8dcff", amb_str=0.6, exposure=-0.25)
-    f, r = camera(sc, (0, -10, 2.2), (0.5, 3, 1.6), 30)
+    f, r = camera(sc, (0.3, -7.6, 2.3), (0.7, 3, 1.9), 32)
     rig(f, r, key=("ffe6c4", 3.0), fill=("b8c4ff", 0.8), rim=("ffd8a8", 2.6))
     island("isA", (1.0, 3.0, 0), 2.1, 2.6, seed=1)
-    island("isB", (-3.6, 7.5, 1.6), 1.4, 2.0, seed=2)
+    island("isB", (-2.4, 9.5, 2.4), 1.4, 2.0, seed=2)
     island("isC", (5.2, 10, 3.0), 1.2, 1.8, seed=3)
     rnd = random.Random(2)
     kinds = [("meadow", "")] + [("toy", c) for c in TOY_ORDER]
-    tower_stack("tA", (1.0, 3.0, 0.21), kinds[:4], 0.5, lean=10, seed=1)
-    # broken upper half tumbling right and down
-    for i in range(6):
-        p = (1.9 + i * 0.55 + rnd.uniform(-0.2, 0.2), 3.0 + rnd.uniform(-0.4, 0.4), 2.6 - i * 0.75 + rnd.uniform(-0.2, 0.2))
-        block(f"fallA{i}", p, "toy", TOY_ORDER[(i + 3) % 8], 0.5, rot=(rnd.uniform(-60, 60), rnd.uniform(-60, 60), rnd.uniform(0, 90)))
-        cloud(f"dustA{i}", Vector(p) + Vector((-0.35, 0.2, 0.25)), 0.18, 50 + i, n=4)
-    tower_stack("tB", (-3.6, 7.5, 1.74), [("meadow", "")] + [("toy", c) for c in ("pink", "yellow", "green", "blue")], 0.45,
+    tower_stack("tA", (1.0, 3.0, 0.21), kinds[:4], 0.5, lean=4, seed=1)
+    # the upper column topples right around a hinge, gaps opening as it breaks apart
+    hinge = Vector((1.05, 3.0, 0.21 + 4 * 0.505))
+    for j in range(6):
+        th = math.radians(24 + j * 9)
+        dist = 0.27 + j * 0.6 + 0.04 * j * j
+        p = hinge + Vector((math.sin(th) * dist, rnd.uniform(-0.1, 0.1), math.cos(th) * dist))
+        block(f"topA{j}", p, "toy", TOY_ORDER[(j + 4) % 8], 0.5, rot=(rnd.uniform(-12, 12), math.degrees(th) + rnd.uniform(-10, 10) * j, rnd.uniform(-8, 8) * j))
+        if j > 2:
+            cloud(f"dustA{j}", p + Vector((-0.3, 0.15, -0.25)), 0.16, 50 + j, n=4)
+    for i in range(4):
+        p = (3.4 + i * 0.35 + rnd.uniform(-0.2, 0.2), 3.0 + rnd.uniform(-0.4, 0.4), 1.0 - i * 0.9)
+        block(f"fallA{i}", p, "toy", TOY_ORDER[(i + 2) % 8], 0.5, rot=(rnd.uniform(-60, 60), rnd.uniform(-60, 60), rnd.uniform(0, 90)))
+    tower_stack("tB", (-2.4, 9.5, 2.54), [("meadow", "")] + [("toy", c) for c in ("pink", "yellow", "green", "blue")], 0.45,
                 lean=-28, drift=(-0.9, 0), seed=2)
     for i in range(4):
-        block(f"fallB{i}", (-4.8 - i * 0.4, 7.2, 2.6 - i * 1.0), "toy", TOY_ORDER[(i + 5) % 8], 0.45,
+        block(f"fallB{i}", (-3.7 - i * 0.45, 9.2, 3.6 - i * 1.0), "toy", TOY_ORDER[(i + 5) % 8], 0.45,
               rot=(rnd.uniform(-60, 60), rnd.uniform(-60, 60), rnd.uniform(0, 90)))
     tower_stack("tC", (5.2, 10, 3.12), [("meadow", ""), ("toy", "red")], 0.45, lean=6, seed=3)
     for i in range(3):
@@ -968,15 +977,13 @@ def s02(a):
     for i in range(9):
         cloud(f"sea{i}", (-7 + i * 1.8, 5 + (i % 3) * 2.5, -2.6 - (i % 2) * 0.4), 1.4, 10 + i, n=7, stretch=1.4)
     sky_clouds([((-6, 16, 6), 2.0, 1), ((7, 18, 7), 2.4, 2)])
-    cast_member("wizard", "oops", (-2.6, -0.5, 1.75), 22, 0.95)
-    for i in range(2):
-        cloud(f"poof{i}", (-2.5 + i * 0.5, -0.4, 1.7), 0.35, 70 + i, n=4)
+    cast_member("wizard", "oops", (-2.35, 0.2, 2.15), 24, 1.0)
     return sc
 
 
 def s03(a):
     sc = scene(a.samples, SKY_GOLD, amb="ffe2c8", amb_str=0.55, exposure=-0.25)
-    f, r = camera(sc, (0, -9.5, 2.3), (0.9, 3.5, 2.0), 30)
+    f, r = camera(sc, (0.2, -7.4, 2.2), (0.9, 3.5, 2.0), 32)
     rig(f, r, key=("ffd8a8", 3.2), fill=("c4b8ff", 0.7), rim=("ffe0a8", 2.8))
     island("isA", (2.6, 8, 2.6), 1.3, 1.8, seed=4)
     island("isB", (5.6, 13, 4.6), 1.1, 1.5, seed=5)
@@ -986,14 +993,14 @@ def s03(a):
     # foreground ledge of the library tower
     island("ledge", (-2.6, 0.6, 0.0), 1.9, 2.4, seed=7)
     tower_stack("libt", (-3.6, 1.2, 0.19), [("meadow", "")] + [("toy", c) for c in ("purple", "blue", "purple")], 0.55, seed=4)
-    cast_member("wizard", "oops", (-1.9, 0.1, 0.38), 28)
+    cast_member("wizard", "oops", (-1.7, 0.0, 0.36), 30, 1.05)
     # the tomes flee in a sweeping arc toward the islands
     rnd = random.Random(8)
     targets = [(2.6, 8, 3.6), (5.6, 13, 5.4), (-1.5, 14, 6.0)]
-    starts = [(-0.4, 0.6, 2.0), (0.4, 1.4, 2.7), (1.2, 2.6, 2.2), (0.0, 3.5, 3.4), (1.8, 5.0, 3.4), (3.6, 9.5, 4.6),
+    starts = [(0.1, -0.2, 2.15), (1.3, 0.8, 2.8), (2.4, 1.6, 1.9), (0.7, 2.6, 3.5), (2.3, 4.5, 3.4), (3.6, 9.5, 4.6),
               (0.8, 7.5, 4.6)]
     for i, p in enumerate(starts):
-        sz = 0.62 - 0.05 * i
+        sz = 0.95 - 0.08 * i
         parts = tome(f"tome{i}", sz, rnd.uniform(90, 150))
         group(f"tome{i}_g", parts, p, rot=(rnd.uniform(-30, 30), rnd.uniform(-25, 25), rnd.uniform(-40, 40)))
         tgt = targets[i % 3]
@@ -1009,7 +1016,7 @@ def s03(a):
 
 def s04(a):
     sc = scene(a.samples, SKY_DAY, amb="e8dcff", amb_str=0.65, exposure=-0.3)
-    f, r = camera(sc, (0.2, -8.6, 3.0), (0.2, 3.0, 1.5), 30)
+    f, r = camera(sc, (0.2, -7.6, 2.75), (0.2, 3.0, 1.55), 31)
     rig(f, r, key=("fff0d6", 3.2), fill=("b8c4ff", 0.8), rim=("ffe0a8", 2.4))
     island("ground", (0.4, 1.6, 0), 4.6, 3.0, seed=11)
     gz = top_z(4.6)
@@ -1048,7 +1055,7 @@ def s04(a):
 
 def s10(a):
     sc = scene(a.samples, SKY_DAY, amb="e8dcff", amb_str=0.65, exposure=-0.3)
-    f, r = camera(sc, (0, -8.2, 2.6), (0, 1.0, 1.25), 33)
+    f, r = camera(sc, (0, -6.7, 2.3), (0, 1.0, 1.25), 33)
     rig(f, r, key=("fff0d6", 3.2), fill=("b8c4ff", 0.8), rim=("ffe0a8", 2.6))
     island("main", (0, 1.2, 0), 3.0, 2.8, seed=21)
     gz = top_z(3.0)
@@ -1089,7 +1096,7 @@ def s10(a):
 
 def s11(a):
     sc = scene(a.samples, SKY_DAY, amb="e8dcff", amb_str=0.65, exposure=-0.3)
-    f, r = camera(sc, (0, -8.0, 2.3), (0.3, 1.0, 1.25), 34)
+    f, r = camera(sc, (0, -6.9, 2.2), (0.15, 1.0, 1.3), 34)
     rig(f, r, key=("fff0d6", 3.2), fill=("b8c4ff", 0.8), rim=("ffe0a8", 2.4))
     island("tut", (1.3, 1.3, 0), 2.1, 2.4, seed=41)
     gz = top_z(2.1)
@@ -1104,12 +1111,12 @@ def s11(a):
         rbox(f"slot{k}", (sx, sy, 0.03), (tx + dx, ty + dy, gz + 0.02), emit_mat("slot", "fff2a0", 6.0), 0.3)
     block("ghost", (tx, ty, gz + 0.22), "ghost", "", 0.44)
     block("placing", (tx - 0.05, ty - 0.05, 1.5), "toy", "orange", 0.44, rot=(8, -10, 12))
-    path_pts = arc((-1.4, 0.2, 2.6), (tx - 0.1, ty, 1.8), 0.6, 16)
-    motes("wandpath", path_pts, [0.03] * len(path_pts), M("mote_gold"))
-    motes("dots", [Vector((tx, ty, 1.15 - 0.15 * k)) for k in range(4)], [0.03] * 4, M("mote_white"))
+    path_pts = arc((-1.1, 0.1, 2.55), (tx - 0.1, ty, 1.8), 0.5, 22)
+    motes("wandpath", path_pts, [0.018 + 0.006 * (k % 2) for k in range(len(path_pts))], M("mote_gold"))
+    motes("dots", [Vector((tx, ty, 1.15 - 0.15 * k)) for k in range(4)], [0.02] * 4, M("mote_white"))
     sparkle_field("spk", (tx, ty, 1.5), (0.5, 0.3, 0.4), 18, 7)
     point_light("place_glow", (tx, ty - 0.4, 1.4), "fff0b0", 60, 0.2)
-    cast_member("wizard", "point", (-2.1, -0.2, 1.55), 22, 1.0, mirror=True)
+    cast_member("wizard", "point", (-1.85, -0.1, 1.5), 22, 1.05, mirror=True)
     for i in range(7):
         cloud(f"sea{i}", (-7 + i * 2.3, 5 + (i % 3) * 2.5, -2.2), 1.6, 50 + i, n=7, stretch=1.4)
     sky_clouds([((-6, 16, 5), 2.0, 10), ((6.5, 17, 6.5), 2.4, 11), ((1, 22, 8.5), 1.8, 12)])
@@ -1189,7 +1196,7 @@ def post(raw, final, thumb):
     a = load_px(raw)
     rgb = a[..., :3].astype(np.float32)
     h, w = rgb.shape[:2]
-    k = max(1, round(2 * w / 1600))
+    k = max(1, round(3 * w / 1600))
     rgb = 0.55 * kuwahara(rgb, k) + 0.45 * rgb
     lum = rgb @ np.array([0.299, 0.587, 0.114], np.float32)
     bright = rgb * np.clip((lum - 0.72) / 0.28, 0, 1)[..., None]

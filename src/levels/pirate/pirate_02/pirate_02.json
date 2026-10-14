@@ -10,10 +10,19 @@
     "h_play": 10
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
   },
   "knobs": {
-    "fall.g0": 0.8,
+    "fall.g0": 0.85,
     "goal.top_out": "rescue",
     "goal.warnings_max": 1
   },
@@ -47,12 +56,16 @@
     "status": "Authored; awaiting playtest",
     "design_spec": {
       "premise": "Soft practice cannonballs plop onto the beach and stick where they land; clear around them.",
-      "intended_modules": ["siege_shot"],
+      "intended_modules": [
+        "siege_shot"
+      ],
       "stand_in": "gumdrop_hail with object gumdrop reskinned as a soft cannonball",
-      "skin_needed": ["cannonball object skin for gumdrop_hail"]
+      "skin_needed": [
+        "cannonball object skin for gumdrop_hail"
+      ]
     },
     "unsupported": [],
     "blocking_gameplay": [],
-    "tuning": "Initial estimates; no playtest medians"
+    "tuning": "Initial estimates; no playtest medians; 2026-10-14 balance pass: Pirate g0 curve 0.80->1.20, clear-count stars at ~145 s/103 s per clear"
   }
 }

@@ -29,7 +29,7 @@
 			"smoke_passed": 10
 		},
 		{
-			"extras": 1,
+			"extras": 4,
 			"finite_puzzles_won": 0,
 			"id": "pirate",
 			"mains": 10,
@@ -3989,7 +3989,7 @@
 			"ice_flick_reachable": true,
 			"id": "pirate_01",
 			"knob_overrides": {
-				"fall.g0": 900,
+				"fall.g0": 800,
 				"goal.top_out": "rescue",
 				"goal.type": "clear_n",
 				"goal.warnings_max": 2
@@ -4050,7 +4050,7 @@
 			"ice_flick_reachable": true,
 			"id": "pirate_02",
 			"knob_overrides": {
-				"fall.g0": 800,
+				"fall.g0": 850,
 				"goal.top_out": "rescue",
 				"goal.type": "clear_n",
 				"goal.warnings_max": 1
@@ -4104,7 +4104,7 @@
 			"ice_flick_reachable": true,
 			"id": "pirate_03",
 			"knob_overrides": {
-				"fall.g0": 850,
+				"fall.g0": 900,
 				"goal.type": "clear_n"
 			},
 			"legal_spawn": true,
@@ -4321,7 +4321,7 @@
 			"ice_flick_reachable": true,
 			"id": "pirate_07",
 			"knob_overrides": {
-				"fall.g0": 1000,
+				"fall.g0": 1050,
 				"goal.type": "clear_n",
 				"goal.warnings_max": 1
 			},
@@ -4374,7 +4374,7 @@
 			"ice_flick_reachable": true,
 			"id": "pirate_08",
 			"knob_overrides": {
-				"fall.g0": 1050,
+				"fall.g0": 1100,
 				"fall.ramp_per_min": 100,
 				"goal.type": "survive"
 			},
@@ -4426,7 +4426,7 @@
 			"ice_flick_reachable": true,
 			"id": "pirate_09",
 			"knob_overrides": {
-				"fall.g0": 1200,
+				"fall.g0": 1150,
 				"goal.type": "clear_n",
 				"goal.warnings_max": 1
 			},
@@ -4478,7 +4478,7 @@
 			"ice_flick_reachable": true,
 			"id": "pirate_10",
 			"knob_overrides": {
-				"fall.g0": 1150,
+				"fall.g0": 1200,
 				"goal.type": "clear_n"
 			},
 			"legal_spawn": true,
@@ -4567,6 +4567,191 @@
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
 			"tier": 11.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_h1",
+			"knob_overrides": {
+				"fall.g0": 1150,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				16,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "crab_claw"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_h1/pirate_h1.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 12.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_h2",
+			"knob_overrides": {
+				"fall.g0": 1150,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "race_rival"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "gumdrop_hail"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_h2/pirate_h2.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 13.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_h3",
+			"knob_overrides": {
+				"fall.g0": 1200,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "crab_claw"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_h3/pirate_h3.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 14.0
 		},
 		{
 			"active_clear_plane": 64,

@@ -10,12 +10,24 @@
     "h_play": 10
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"],
-    "opening_set": ["o", "i"],
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ],
+    "opening_set": [
+      "o",
+      "i"
+    ],
     "opening_count": 2
   },
   "knobs": {
-    "fall.g0": 0.9,
+    "fall.g0": 0.8,
     "goal.warnings_max": 2,
     "goal.top_out": "rescue"
   },
@@ -57,10 +69,12 @@
       "premise": "Arrival at the cove. The pirate guide's parrot carries some pieces down slowly (balloon rule reskinned as a parrot carry).",
       "intended_modules": [],
       "stand_in": "balloon reskinned as a parrot carry; mascot_hint for onboarding",
-      "skin_needed": ["parrot carry instead of balloon"]
+      "skin_needed": [
+        "parrot carry instead of balloon"
+      ]
     },
     "unsupported": [],
     "blocking_gameplay": [],
-    "tuning": "Initial estimates copied from carnival_01 pacing; no playtest medians"
+    "tuning": "Initial estimates copied from carnival_01 pacing; no playtest medians; 2026-10-14 balance pass: Pirate g0 curve 0.80->1.20, clear-count stars at ~145 s/103 s per clear"
   }
 }

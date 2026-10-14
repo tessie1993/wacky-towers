@@ -893,6 +893,45 @@
       "blocking_gameplay": []
     },
     {
+      "id": "pirate_h1",
+      "biome": "pirate",
+      "tier": 12,
+      "name": "Kraken Blockade II",
+      "name_key": "LVL_PIRATE_H1_TITLE",
+      "json": "res://src/levels/pirate/pirate_h1/pirate_h1.json",
+      "scene": "res://src/levels/pirate/pirate_h1/pirate_h1.tscn",
+      "bonus": true,
+      "status": "Authored; awaiting playtest",
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "pirate_h2",
+      "biome": "pirate",
+      "tier": 13,
+      "name": "Fort Blast: Broadside",
+      "name_key": "LVL_PIRATE_H2_TITLE",
+      "json": "res://src/levels/pirate/pirate_h2/pirate_h2.json",
+      "scene": "res://src/levels/pirate/pirate_h2/pirate_h2.tscn",
+      "bonus": true,
+      "status": "Authored; awaiting playtest",
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
+      "id": "pirate_h3",
+      "biome": "pirate",
+      "tier": 14,
+      "name": "Rainbow Rehearsal",
+      "name_key": "LVL_PIRATE_H3_TITLE",
+      "json": "res://src/levels/pirate/pirate_h3/pirate_h3.json",
+      "scene": "res://src/levels/pirate/pirate_h3/pirate_h3.tscn",
+      "bonus": true,
+      "status": "Authored; awaiting playtest",
+      "unsupported": [],
+      "blocking_gameplay": []
+    },
+    {
       "id": "lava_01",
       "biome": "lava",
       "tier": 1,

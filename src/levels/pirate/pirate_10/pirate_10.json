@@ -10,13 +10,23 @@
     "h_play": 12
   },
   "pieces": {
-    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right", "duo"],
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right",
+      "duo"
+    ],
     "weights": {
       "duo": 0.5
     }
   },
   "knobs": {
-    "fall.g0": 1.15
+    "fall.g0": 1.2
   },
   "goal": {
     "type": "clear_n",
@@ -45,8 +55,8 @@
     }
   ],
   "stars": {
-    "t2": 520000,
-    "t3": 370000
+    "t2": 580000,
+    "t3": 410000
   },
   "music": "mus_underwater_default",
   "story": {
@@ -62,13 +72,19 @@
     "status": "Authored; awaiting playtest",
     "design_spec": {
       "premise": "The Rainbow Kraken blocks the bay. Tentacles snatch blocks from the wall while spray gusts across the deck; each clear is a bonk on the Kraken.",
-      "intended_modules": ["boss_hp"],
+      "intended_modules": [
+        "boss_hp"
+      ],
       "intended_goal": "boss_hp: each layer clear deals one hit; phases switch on crab_claw tentacles and gust spray",
       "stand_in": "clear_n 4 (four bonks) with crab_claw tentacles plus gust spray (pairing proven in underwater_10)",
-      "skin_needed": ["boss_kraken_rainbow set piece", "tentacle skin for crab_claw", "boss bar UI once boss_hp exists"]
+      "skin_needed": [
+        "boss_kraken_rainbow set piece",
+        "tentacle skin for crab_claw",
+        "boss bar UI once boss_hp exists"
+      ]
     },
     "unsupported": [],
     "blocking_gameplay": [],
-    "tuning": "Initial estimates; no playtest medians"
+    "tuning": "Initial estimates; no playtest medians; 2026-10-14 balance pass: Pirate g0 curve 0.80->1.20, clear-count stars at ~145 s/103 s per clear"
   }
 }

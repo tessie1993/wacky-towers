@@ -4,7 +4,10 @@ class_name WtIslandBuilder extends RefCounted
 ## to a point, with hanging roots/icicles/rocks), a square stone-tile board slightly inset into
 ## the slab, biome rim dressing that never covers the grid, 3-6 distant floating islands with
 ## landmarks hazed by their own shaders, the painted canvas sky, the AgX environment preset and
-## the camera-relative 3-light rig. All geometry is procedural (no GLB dependency).
+## the camera-relative 3-light rig. Geometry comes from the env v3 kit GLBs when present
+## (res://assets/models/env_v3/<family>/<kind>.glb, built by tools/asset-pipeline/build_env_v3.py:
+## sculpted rock blocks, rim props, hanging roots, distant islands) and falls back to the
+## procedural primitives below for any kind the kit does not ship, so every biome still builds.
 ## Look data: res://assets/data/biome_looks.json, key `env` per biome (schema in `env_notes`).
 ## Draw calls (8x8 board): slab 1, strata 3, tiles 1, grout 1, one MultiMesh per rim kind and
 ## per side for tall kinds (~8-14), hanging 1-2, far islands ~4 each (3-6 islands).
@@ -41,6 +44,12 @@ const PROP_SHADER := "res://src/view/shaders/spatial_env_prop.gdshader"
 const TILE_SHADER := "res://src/view/shaders/spatial_env_tile.gdshader"
 const FALL_SHADER := "res://src/view/shaders/spatial_env_fall.gdshader"
 const SKY_SHADER := "res://src/view/shaders/canvas_env_sky.gdshader"
+## Env v3 kit (Blender GLBs, one vertex-colour mesh each, same colour contract as the shader).
+const KIT_DIR := "res://assets/models/env_v3/"
+## Biome family -> family whose kit fills the gaps (generic kinds like tuft or root).
+const KIT_FALLBACK := {"ice": "meadow"}
+## Sculpted strata block variants looked up as rock_block_01..N.
+const KIT_ROCK_VARIANTS := 10
 ## Cookbook §2.1/§2.2 meadow preset; biomes override any key in env.light.
 const DEFAULT_PRESET := {"key": "#FFF0D6", "key_energy": 0.9, "fill": "#B8C4FF", "fill_energy": 0.2,
 	"back": "#FFE0A8", "back_energy": 0.3, "ambient": "#C9C3E6", "ambient_energy": 0.42,
@@ -324,6 +333,14 @@ func _far_island(kind: String, haze: float, haze_c: Color, rng: RandomNumberGene
 		node.add_child(_far_mesh(_landmark_mesh("planet"), haze * 0.6, haze_c))
 		return node
 	var half := Vector3(1.6, 0.25, 1.35)
+	var kit: Mesh = kit_mesh("far_" + kind)
+	if kit != null:
+		# Env v3: the whole island (cap, sculpted strata, landmark) is one baked GLB.
+		var whole := _far_mesh(kit, haze, haze_c)
+		whole.name = "Island"
+		node.add_child(whole)
+		if kind == "waterfall" or kind == "volcano_fall": node.add_child(_far_fall(half, haze, haze_c, 0.3))
+		return node
 	var top := MeshInstance3D.new()
 	top.mesh = rounded_box(half * 2.0, 0.25, 6)
 	top.material_override = _slab_material(half, Vector2.ZERO, haze)
@@ -346,13 +363,19 @@ func _far_island(kind: String, haze: float, haze_c: Color, rng: RandomNumberGene
 	var lm := _far_mesh(_landmark_mesh(kind), haze, haze_c)
 	lm.position = Vector3(0, half.y, 0)
 	node.add_child(lm)
-	if kind == "waterfall" or kind == "volcano_fall":
+	if kind == "waterfall" or kind == "volcano_fall": node.add_child(_far_fall(half, haze, haze_c, 0.02))
+	return node
+
+
+## Waterfall ribbon down the front of a distant island (`out` pushes it clear of the strata).
+func _far_fall(half: Vector3, haze: float, haze_c: Color, out: float) -> MeshInstance3D:
+	if true:
 		var falls: Dictionary = _env.get("falls", {})
 		var q := QuadMesh.new()
 		q.size = Vector2(0.55, 3.4)
 		var fall := MeshInstance3D.new()
 		fall.mesh = q
-		fall.position = Vector3(0.45, half.y - 1.7, half.z + 0.02)
+		fall.position = Vector3(0.45, half.y - 1.7, half.z + out)
 		var fm := ShaderMaterial.new()
 		fm.shader = load(FALL_SHADER) as Shader
 		for key: String in ["deep", "light", "foam"]:
@@ -363,8 +386,8 @@ func _far_island(kind: String, haze: float, haze_c: Color, rng: RandomNumberGene
 		fm.set_shader_parameter(&"haze_color", haze_c)
 		fall.material_override = fm
 		fall.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		node.add_child(fall)
-	return node
+		return fall
+	return null
 
 
 func _far_mesh(mesh: Mesh, haze: float, haze_c: Color) -> MeshInstance3D:
@@ -387,6 +410,7 @@ func _build_strata(parent: Node3D, half: Vector2, haze: float, scale_y: float, r
 	var bands: Array = _env.get("strata_shape", DEFAULT_STRATA)
 	var y: float = SLAB_TOP - SLAB_DEPTH + 0.15
 	var block: Mesh = _cached("rock_block", func() -> Mesh: return rounded_box(Vector3.ONE, 0.14, 3))
+	var kit_blocks: Array[Mesh] = kit_rock_blocks()
 	for i: int in bands.size():
 		var b: Array = bands[i]
 		var h: float = float(b[2]) * scale_y
@@ -431,19 +455,33 @@ func _build_strata(parent: Node3D, half: Vector2, haze: float, scale_y: float, r
 				xf.append(Transform3D(basis.scaled_local(Vector3(w, bh, d)), pos))
 				var v: float = rng.randf_range(0.82, 1.08)
 				cols.append(Color(v, v, v, 1.0))
-		var mm := MultiMesh.new()
-		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.use_colors = true
-		mm.mesh = block
-		mm.instance_count = xf.size()
-		for k: int in xf.size():
-			mm.set_instance_transform(k, xf[k])
-			mm.set_instance_color(k, cols[k])
-		var blocks := MultiMeshInstance3D.new()
+		var blocks: GeometryInstance3D
+		if not kit_blocks.is_empty():
+			# Sculpted kit blocks (env v3): one merged static mesh per band, variant per block.
+			# Slightly oversized so neighbours overlap into crevices instead of gaps.
+			var variant: Array[int] = []
+			for k: int in xf.size():
+				variant.append(rng.randi() % kit_blocks.size())
+				xf[k] = Transform3D(xf[k].basis.scaled_local(Vector3(1.18, 1.12, 1.05)), xf[k].origin)
+			var mi := MeshInstance3D.new()
+			mi.mesh = merge_instances(kit_blocks, variant, xf, cols)
+			blocks = mi
+		else:
+			var mm := MultiMesh.new()
+			mm.transform_format = MultiMesh.TRANSFORM_3D
+			mm.use_colors = true
+			mm.mesh = block
+			mm.instance_count = xf.size()
+			for k: int in xf.size():
+				mm.set_instance_transform(k, xf[k])
+				mm.set_instance_color(k, cols[k])
+			var mmi := MultiMeshInstance3D.new()
+			mmi.multimesh = mm
+			blocks = mmi
 		blocks.name = "StratumBlocks%d" % i
-		blocks.multimesh = mm
 		blocks.material_override = _rock_material(i, haze, Color.WHITE, 1.0)
-		(blocks.material_override as ShaderMaterial).set_shader_parameter(&"seam", 0.25)
+		# Painted seams belong to the plain rounded blocks; sculpted blocks carry their own.
+		(blocks.material_override as ShaderMaterial).set_shader_parameter(&"seam", 0.25 if kit_blocks.is_empty() else 0.0)
 		blocks.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		parent.add_child(blocks)
 		y -= h - 0.15
@@ -786,11 +824,103 @@ static func chunk_mesh(rt: float, rb: float, h: float, n: int, jit: float, rng: 
 
 ## Cached prop mesh for a rim / hanging kind (base at y = 0; hanging kinds point down).
 func prop_mesh(kind: String) -> Mesh:
+	var kit: Mesh = kit_mesh(kind)
+	if kit != null: return kit
 	return _cached("prop:" + kind, func() -> Mesh:
 		var st := SurfaceTool.new()
 		st.begin(Mesh.PRIMITIVE_TRIANGLES)
 		_recipe(st, kind, Transform3D.IDENTITY)
 		return st.commit())
+
+
+## Env v3 kit mesh for `kind` in this biome's family (then its KIT_FALLBACK family), or null when
+## the kit has no such GLB. Cached per family and kind; the GLB's own material is ignored (callers
+## set material_override), its node transform is baked into the vertices.
+func kit_mesh(kind: String) -> Mesh:
+	var family: String = String(_env.get("family", String(_biome)))
+	var key: String = "kit:%s:%s" % [family, kind]
+	if not _mesh_cache.has(key):
+		var found: Mesh = null
+		for dir: String in [family, String(KIT_FALLBACK.get(family, ""))]:
+			if dir.is_empty(): continue
+			found = load_kit_glb(KIT_DIR + dir + "/" + kind + ".glb")
+			if found != null: break
+		_mesh_cache[key] = found
+	return _mesh_cache[key]
+
+
+## Loads the first mesh of an imported GLB scene with its node transform applied; null if absent.
+static func load_kit_glb(path: String) -> Mesh:
+	if not ResourceLoader.exists(path): return null
+	var scene := load(path) as PackedScene
+	if scene == null: return null
+	var root: Node = scene.instantiate()
+	var mesh: Mesh = null
+	var stack: Array[Node] = [root]
+	while not stack.is_empty() and mesh == null:
+		var n: Node = stack.pop_back()
+		if n is MeshInstance3D and (n as MeshInstance3D).mesh != null:
+			var xf: Transform3D = Transform3D.IDENTITY
+			var walk: Node = n
+			while walk != null and walk != root:
+				if walk is Node3D: xf = (walk as Node3D).transform * xf
+				walk = walk.get_parent()
+			mesh = (n as MeshInstance3D).mesh
+			if not xf.is_equal_approx(Transform3D.IDENTITY):
+				var st := SurfaceTool.new()
+				st.append_from(mesh, 0, xf)
+				mesh = st.commit()
+		for c: Node in n.get_children(): stack.append(c)
+	root.free()
+	return mesh
+
+
+## Sculpted strata block variants from the kit (empty when the kit has none for this biome).
+func kit_rock_blocks() -> Array[Mesh]:
+	var out: Array[Mesh] = []
+	for i: int in KIT_ROCK_VARIANTS:
+		var m: Mesh = kit_mesh("rock_block_%02d" % (i + 1))
+		if m != null: out.append(m)
+	return out
+
+
+## Merges instances of `meshes[variant[i]]` placed by `xfs[i]` into one static ArrayMesh with the
+## per-instance colour multiplied into the vertex colour (one draw call per strata band).
+static func merge_instances(meshes: Array[Mesh], variant: Array[int], xfs: Array[Transform3D], cols: Array[Color]) -> ArrayMesh:
+	var src: Array = []
+	for m: Mesh in meshes: src.append(m.surface_get_arrays(0))
+	var pos := PackedVector3Array()
+	var nrm := PackedVector3Array()
+	var col := PackedColorArray()
+	var idx := PackedInt32Array()
+	for i: int in xfs.size():
+		var a: Array = src[variant[i]]
+		var v: PackedVector3Array = a[Mesh.ARRAY_VERTEX]
+		var n: PackedVector3Array = a[Mesh.ARRAY_NORMAL]
+		var c: PackedColorArray = a[Mesh.ARRAY_COLOR] if a[Mesh.ARRAY_COLOR] != null else PackedColorArray()
+		var ix: PackedInt32Array = a[Mesh.ARRAY_INDEX] if a[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
+		var xf: Transform3D = xfs[i]
+		var nb: Basis = xf.basis.inverse().transposed()
+		var tint: Color = cols[i]
+		var base: int = pos.size()
+		for k: int in v.size():
+			pos.append(xf * v[k])
+			nrm.append((nb * n[k]).normalized())
+			var vc: Color = c[k] if k < c.size() else Color.WHITE
+			col.append(Color(vc.r * tint.r, vc.g * tint.g, vc.b * tint.b, vc.a))
+		if ix.is_empty():
+			for k: int in v.size(): idx.append(base + k)
+		else:
+			for k: int in ix: idx.append(base + k)
+	var arrays: Array = []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = pos
+	arrays[Mesh.ARRAY_NORMAL] = nrm
+	arrays[Mesh.ARRAY_COLOR] = col
+	arrays[Mesh.ARRAY_INDEX] = idx
+	var out := ArrayMesh.new()
+	out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	return out
 
 
 func _landmark_mesh(kind: String) -> Mesh:

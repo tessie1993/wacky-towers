@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "id": "pirate_h3",
+  "biome": "pirate",
+  "tier": 14,
+  "name": "LVL_PIRATE_H3_TITLE",
+  "board": {
+    "width": 8,
+    "depth": 8,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.2,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "crab_claw",
+      "params": {
+        "claw_start_layers": 1,
+        "claw_every_ms": 20000,
+        "claw_jitter_ms": 4000,
+        "claw_warn_ms": 2000,
+        "claw_grab": 1,
+        "counter": "clear"
+      }
+    },
+    {
+      "id": "fog",
+      "params": {
+        "visible_ms": 4000,
+        "fade_ms": 1000,
+        "invisible_alpha": 0.1,
+        "reveal_ms": 700
+      }
+    }
+  ],
+  "stars": {
+    "t2": 535000,
+    "t3": 375000
+  },
+  "music": "mus_underwater_default",
+  "story": {
+    "title_key": "LVL_PIRATE_H3_TITLE",
+    "mascot_role": "watcher",
+    "icon": "kraken",
+    "boss": "rainbow_kraken"
+  },
+  "seed": null,
+  "metadata": {
+    "level_type": "defender",
+    "theme": "kraken ink",
+    "display_name": "Rainbow Rehearsal",
+    "source": "design/levels/mockup-alignment.md (Pirate Cove hard track)",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "premise": "A warm-up bout with the Rainbow Kraken: ink clouds hide the stack while a tentacle tests your wall."
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "tuning": "Initial estimates; no playtest medians. Hard-track stars: t2 = round5(0.78 x t_est), t3 = round5(0.55 x t_est), t_est = n x 171 s (underwater_h formula on 8x8)"
+  }
+}
