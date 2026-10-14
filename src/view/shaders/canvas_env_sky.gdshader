@@ -54,6 +54,8 @@ group_uniforms;
 /** 0 under reduced motion: clouds and stars hold still. */
 uniform float motion : hint_range(0.0, 1.0) = 1.0;
 
+/** Castle silhouette size relative to its authored proportions. */
+const float CASTLE_SCALE = 0.55;
 float h21(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float vn(vec2 p) {
 	vec2 i = floor(p); vec2 f = fract(p); f = f * f * (3.0 - 2.0 * f);
@@ -126,7 +128,7 @@ void fragment() {
 	}
 	// Castle silhouette: wall + five towers with cone roofs, painted pale like distant ice.
 	if (castle > 0.0) {
-		vec2 cq = vec2((uv.x - castle_pos.x) * aspect, castle_pos.y - uv.y);
+		vec2 cq = vec2((uv.x - castle_pos.x) * aspect, castle_pos.y - uv.y) / CASTLE_SCALE;
 		float body = step(abs(cq.x), 0.085) * step(cq.y, 0.045) * step(-0.06, cq.y);
 		float roof = 0.0;
 		float shade_c = 0.0;
@@ -142,8 +144,6 @@ void fragment() {
 			shade_c = max(shade_c, tower * step(tx + tw * 0.2, cq.x));
 		}
 		vec3 cc = castle_color.rgb * mix(1.0, 0.86, shade_c);
-		float win = step(0.6, h21(floor(cq * vec2(90.0, 60.0)))) * body * step(0.02, cq.y) * 0.25;
-		cc = mix(cc, castle_roof.rgb, win);
 		col = mix(col, cc, body * castle);
 		col = mix(col, castle_roof.rgb * mix(1.0, 0.8, step(0.0, cq.x - floor((cq.x + 0.021) / 0.042) * 0.042)), roof * castle);
 	}
@@ -153,7 +153,7 @@ void fragment() {
 	if (mesa_amount > 0.0) {
 		for (int layer = 0; layer < 2; layer++) {
 			float fl = float(layer);
-			float sc = mix(16.0, 10.0, fl);
+			float sc = mix(mix(16.0, 10.0, fl), mix(7.0, 4.5, fl), mesa_round);
 			float qx = p.x * sc + fl * 7.3;
 			float cell = floor(qx);
 			float fx = fract(qx);
@@ -175,7 +175,7 @@ void fragment() {
 					float w = mix(0.75, 1.25, h21(vec2(c, 11.0 + fl)));
 					float dx = qx - cx;
 					float ty = mix(0.26, 0.4, h21(vec2(c, 7.0 + fl))) + fl * 0.07;
-					float ys = ty + 0.2 * pow(abs(dx) / w, 1.7) + 0.01 * vn(vec2(qx * 4.0, fl + 2.0));
+					float ys = ty + 0.11 * pow(abs(dx) / w, 2.0) + 0.012 * vn(vec2(qx * 4.0, fl + 2.0));
 					ys = mix(9.0, ys, pres);
 					if (ys < best) { best = ys; bdx = dx; bw = w; bcell = c; }
 				}
@@ -197,7 +197,7 @@ void fragment() {
 			float fall_x = 0.5 + 0.18 * (h21(vec2(cell, 23.0 + fl)) - 0.5);
 			float fall = step(1.0 - mesa_falls, h21(vec2(cell, 19.0 + fl))) * (1.0 - smoothstep(0.05, 0.09, abs(fx - fall_x))) * step(topy + 0.012, uv.y);
 			mc = mix(mc, vec3(0.92, 0.97, 1.0) * (0.9 + 0.1 * vn(vec2(fx * 30.0, uv.y * 80.0 - t * 2.0))), fall * 0.9);
-			float hz = mix(0.38, 0.06, fl) + smoothstep(topy + 0.08, topy + 0.32, uv.y) * 0.4;
+			float hz = mix(mix(0.38, 0.06, fl), mix(0.3, 0.02, fl), mesa_round) + smoothstep(topy + 0.08, topy + 0.32, uv.y) * mix(0.4, 0.3, mesa_round);
 			mc = mix(mc, horizon.rgb, clamp(hz, 0.0, 1.0));
 			col = mix(col, mc, inside * mesa_amount);
 		}

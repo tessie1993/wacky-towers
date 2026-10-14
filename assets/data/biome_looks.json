@@ -33,8 +33,8 @@
         "topper_rate": 0.2,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
-        "piece_sat": 1.3,
-        "piece_value": 1.06
+        "piece_sat": 1.15,
+        "piece_value": 1.12
       },
       "sky": [
         "#4F94E6",
@@ -110,7 +110,7 @@
           "grout": "#6E6258",
           "alt": "#D2C8B4",
           "jitter": 0.08,
-          "ledge": "#BDB4A4"
+          "ledge": "#A89E8E"
         },
         "rim": [
           {
@@ -393,25 +393,25 @@
       "block": {
         "style": "ice",
         "cap_color": "#F6FBFF",
-        "cap_depth": 0.05,
+        "cap_depth": 0.0,
         "cap_drip": 0.04,
         "cap_lip": 0.025,
         "body_color": "#7DB6EA",
         "body_mix": 0.06,
-        "gloss": 0.8,
+        "gloss": 0.85,
         "rim": 0.4,
-        "translucency": 0.45,
+        "translucency": 0.6,
         "topper": "",
         "topper_rate": 0.0,
         "brightness": 1.0,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
         "piece_hue_range": [
-          0.5,
+          0.47,
           0.95
         ],
-        "piece_sat": 1.6,
-        "piece_value": 1.12
+        "piece_sat": 1.3,
+        "piece_value": 1.3
       },
       "sky": [
         "#8A96E4",
@@ -465,11 +465,11 @@
           "peak_rock": "#9C9AD8",
           "peak_snow": "#F6F4FF",
           "castle": 1.0,
-          "castle_color": "#C4C6F2",
-          "castle_roof": "#7C8CE0",
+          "castle_color": "#E6E6FA",
+          "castle_roof": "#A2ACEA",
           "castle_pos": [
-            0.2,
-            0.33
+            0.8,
+            0.39
           ],
           "mesa_round": 1.0
         },
@@ -497,7 +497,7 @@
           "grout": "#7486A8",
           "alt": "#C4D2EE",
           "jitter": 0.07,
-          "ledge": "#B4C2E2"
+          "ledge": "#9EAED6"
         },
         "rim": [
           {

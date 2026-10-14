@@ -19,9 +19,9 @@ const TILE_SIZE := Vector3(0.96, 0.22, 0.96)
 const TILE_RADIUS := 0.07
 ## Board ledge stones (ref 15 raised stone rim): unit stone size (length, height, width),
 ## corner radius and how far the stone top stands above the tile tops (tile top = 0).
-const LEDGE_SIZE := Vector3(0.6, 0.26, 0.3)
+const LEDGE_SIZE := Vector3(0.6, 0.28, 0.32)
 const LEDGE_RADIUS := 0.07
-const LEDGE_RISE := 0.08
+const LEDGE_RISE := 0.1
 ## Rim dressing keeps this far from the board edge (low props) so nothing overlaps a tile.
 const LOW_CLEAR := 0.3
 const TALL_CLEAR := 0.5
