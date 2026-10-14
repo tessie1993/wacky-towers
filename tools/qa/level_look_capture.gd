@@ -59,6 +59,9 @@ func _run() -> void:
 			var mode: String = OS.get_environment("WXDBG")
 			if mode.contains("noramp"): pp.color_ramp = null
 			var qm: StandardMaterial3D = (pp.mesh as QuadMesh).material as StandardMaterial3D
+			if mode.contains("blend"): qm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA; qm.render_priority = 127
+			if mode.contains("sneg"): pp.sorting_offset = -500.0
+			if mode.contains("spos"): pp.sorting_offset = 500.0
 			if mode.contains("prio"): qm.render_priority = 60
 			if mode.contains("scissor"): qm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
 			if mode.contains("nodepth"): qm.no_depth_test = true

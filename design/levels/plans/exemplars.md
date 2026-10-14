@@ -5,8 +5,10 @@ Anchors for the panel (`campaign-vision.md` section 9). Written by the game dire
 **Rules for using this file**
 - **Form, not content.** The exemplars teach structure and level of detail. No real level may reuse an
   exemplar's set piece, terrain, mask, ending or character. Exemplar ids carry the `ex_` prefix
-  (`ex_forest_05`) so they never collide with real ids; the real levels must still differ from them, and the
-  exemplars are included in the U3, U14 and U17 checks.
+  (`ex_forest_05`) so they never collide with real ids; the real levels must still differ from them. The 9.7
+  exemplars (`ex_forest_02`, `ex_forest_05`, `ex_forest_h1`, `ex_pirate_03`, `ex_pirate_10`, `ex_meadow_01`) are
+  included in the U3, U14 and U17 checks. The `ex_near_*` and `ex_weak_*` samples are excluded: they fail on
+  purpose and exist only for human scoring.
 - **Exemption.** Fields derived from phase 3 formulas (`g0`, stars, goal numbers) are written `by formula`.
   Handbook links point to entries phase 3 will write (`handbook#<rule>`).
 - Text shown in play is never sarcastic or mocking, and has no words inside play.
@@ -49,16 +51,16 @@ goal_type: [span, survive]       # play order; U3 compares the whole list
 goal_params: by formula          # gap 6 cells, hold time
 target_visible: yes, a lit footprint trail on the far ledge from frame 0
 mask: |
-  ###......###
-  ###......###
-  ###......###
-  ############
-  ############
-  ############
-  ############
-  ############
-canonical_mask: "8x12:########/########/########/#####.../#####.../#####.../#####.../#####.../#####.../########/########/########"
-corridor_check: the trench is 6 cells wide, above the 4-cell spawn minimum; no dead-end narrower than 3
+  ####......####
+  ####......####
+  ####......####
+  ##############
+  ##############
+  ##############
+  ##############
+  ##############
+canonical_mask: "8x14:########/########/########/########/#####.../#####.../#####.../#####.../#####.../#####.../########/########/########/########"
+corridor_check: min_spawn_width 4 (the top 3 rows are 4-wide pillars); min_dead_end_width n/a (no dead-end channel)
 minigame_block: gap_runner (phase 1 of 2), recall of its Meadow debut
 look: { time_of_day: golden, weather: petals, set_piece: rotten_plank_bridge, set_piece_side: back,
         accent: "#7BD36B", camera: low, dressing: lush }
@@ -66,14 +68,14 @@ scene:
   terrain: ravine_ledges
   set_piece_action: root_whip    # cosmetic: roots sway the bridge for show; no block moves or is removed
   cast_on_stage: Sif lowers a rope and hauls planks (haul); Nanny Tuft paces and rings her bell (react)
-  hud_meter: Sway meter (Balance); fits the gale phase
+  hud_meter: Gust meter, reading the strength of `gust` in the gale phase (a readout of a taught rule)
 g0: by formula
 stars: by formula
 opening_event: goat_bell_rings
 world_change: the bridge holds, Nanny Tuft crosses, fireflies light the gully
 comic_fail: Nanny Tuft slides down on her bottom, the bell rings once, and Sif covers her eyes; retry in 1.5 s
 callback_of: none
-level_table_row: ex_forest_05 | span>survive | vines | 8x12:... | ravine_ledges | rotten_plank_bridge | root_whip | haul,react | golden | petals | low | goat_bell_rings | twist | Help Nanny Tuft cross the gully | twist | none
+level_table_row: ex_forest_05 | span>survive | vines | 8x14:... | ravine_ledges | rotten_plank_bridge | root_whip | haul,react | golden | petals | low | goat_bell_rings | twist | Help Nanny Tuft cross the gully | twist | none
 ```
 
 Rule budget: this level adds no rule. `vines` debuts in `ex_forest_02` (abridged: a teach level, one rule, an
@@ -85,29 +87,30 @@ so it needs no handbook entry and the vine entry stays true: a vine-held bridge 
 **Abridged for display; assume every other required field is present and valid.**
 
 ```yaml
-id: ex_forest_06
+id: ex_near_forest_06
 name: Cliff Crossing
 headline_objective: Get the cart across the cliff
 ending_pattern: twist
 metadata.signature: The one with vines and a gust and a cart.     # names rules, not an event
 main_rule: vines
 goal_type: [span, survive]
-scene: { terrain: cliff, set_piece_action: sways, cast_on_stage: Sif hauls (haul), a villager cheers (cheer) }
+scene: { terrain: summit_ledge, set_piece_action: lantern_sway, cast_on_stage: Sif hauls (haul), a villager cheers (cheer) }
 look: { time_of_day: golden, weather: petals, set_piece: old_tree, camera: low }   # old_tree is decorative
 ```
 
 Not a failure: the twist is good and the fields are present. Expected scores: L1 9.3, L2 9.0, L3 9.0, L4 9.3,
 L5 9.2, L6 8.5, L7 9.0 (mean about 9.0). The structural fix that keeps it from 9.7: give the scene substance
 (a specific terrain id, an action that does something named, a pose set unlike its neighbour's) and rewrite the
-signature as an event. `sways` is deliberately not on the closed list (U17); the pose set repeats the neighbour's
-and the look fingerprint is close to `ex_forest_05`.
+signature as an event. Its ids are on the list but generic: `summit_ledge` and `lantern_sway` do not belong to a
+forest gully, the pose set repeats the neighbour's, and the look fingerprint is close to `ex_forest_05`. The
+defect is "generic", not "unlisted".
 
 ## 4. Weak samples (8.0 or below)
 
 **Weak spec**
 
 ```yaml
-id: ex_forest_05
+id: ex_weak_forest_05
 name: Log Challenge
 headline_objective: Clear 4 layers
 ending_pattern: plain
@@ -129,7 +132,7 @@ default camera, generic set piece (U7, U14); empty opening event and world chang
 **Weak beat (N4 at about 7)**
 
 ```yaml
-id: ex_forest_05
+id: ex_weak_forest_05
 place: A mossy place.
 who: The heroes
 problem: There are blocks.
@@ -162,15 +165,16 @@ role: boss
 headline_objective: Win back the last key from Captain Crumpet
 ending_pattern: guest            # a rival gull-ship joins in phase 2
 main_rule: cannon_volley         # taught alone in ex_pirate_03; handbook#cannon_volley (a rule: balls knock out the top row)
+extras: [tilt_plate]             # the pill; taught in pirate_06, used in phase 3. The boss adds NO new rule
 goal_type: [bonk_boss]           # hits by formula; cleared rows load your cannon (the damage route)
 mask: "8x8:########/########/########/########/####..../####..../####..../####...."   # a thick L-shaped deck
 canonical_mask: "8x8:########/########/########/########/####..../####..../####..../####...."
-corridor_check: the deck is 8 wide at the top and 4 wide in the leg, meeting the 4-cell spawn minimum
+corridor_check: min_spawn_width 8 (top rows); min_dead_end_width 4 (the leg), above the 3-cell minimum
 boss_triple: { arena: l_deck, phases: 3, building_action: wall }   # a wall blocks the volley
 phases:
   - p1: Crumpet fires cannon_volley from the bow; the player walls the volley
-  - p2: one new idea, a rival gull-ship adds a second firing lane for the same volley (guest)
-  - p3: the same volley at higher speed on a rocking deck (tilt_plate, taught in pirate_06); no new idea
+  - p2: one idea (a variant of a taught rule), a rival gull-ship adds a second firing lane for the same volley (guest)
+  - p3: the same volley at higher speed on a rocking deck (tilt_plate, already on the pill); no new idea
 scene: { terrain: ship_deck, set_piece_action: cannon_volley, cast_on_stage: Ada braces behind a wall (brace), Bram hauls shot (haul) }
 world_change: the key drops into Ada's hands and the ship turns toward the Fair
 hook_to_finale: the key is the Carnival's ticket (stakes: "The last key and the way to the Fair")
@@ -217,8 +221,8 @@ target_visible: yes, a gold flag line on the windmill from frame 0
 mask: "8x8:########/########/########/########/########/########/########/########"   # one of at most 4 plain squares
 opening_set: friendly first pieces (by formula)
 look: { time_of_day: dawn, weather: clear, set_piece: windmill, camera: default }
-scene: { terrain: hilltop_ledge, set_piece_action: sails_turn, cast_on_stage: Ada points (point), the Wizard cheers from a cloud (cheer) }
-hud_meter: Altitude, themed purple wood
+scene: { terrain: hilltop_ledge, set_piece_action: sails_turn, cast_on_stage: Ada points (point), the Wizard cheers from a cloud (cheer), hud_meter: Altitude, themed purple wood }
+p2b_note: level 01 is exempt from P2b; the lookout rule asks for a tall, steady stack and changes no drop
 opening_event: sheep_bleat
 comic_fail: the lookout wobbles and Ada sits down with a thump, then waves; retry in 1.5 s
 g0: by formula (the gentlest in the campaign)

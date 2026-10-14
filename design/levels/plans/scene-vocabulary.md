@@ -2,9 +2,12 @@
 
 Owner: technical artist. Read by `tools/qa/check_level_uniqueness.gd` (U17). Seeded in phase 3 from the roster
 and `exemplars.md`; phase 4 groups add ids only by a change request that the artist approves before the
-`level_table` is checked. Rules: `campaign-vision.md` U17. Each biome needs at least 7 terrain ids and 7 action
-ids, none used more than twice, so the full lists below must grow to at least 84 terrain and 84 action ids
-(7 per biome x 12). The seeds here are the starting point, not the final list.
+`level_table` is checked. Rules: `campaign-vision.md` U17. **Ids are global**: one list for terrain and one for
+actions, each growing to 20-30 ids (at least 20), with every biome using 7-8 distinct ids of each (none more than
+twice) and every `(terrain, action)` pair unique across the campaign. An id may serve several biomes, each as a
+biome-skinned build; the art budget counts builds (84-96), the vocabulary counts ids. The seeds here are the
+starting point, not the final list. Add `summit_ledge`-style generic ids freely, but each must be a place, not
+"floating square".
 
 Action kind: **cos** = cosmetic (never touches the board; has a static reduced-motion pose). **rule** = changes
 the board (counts toward U10 and needs a handbook entry).

@@ -13,9 +13,9 @@ The user said on 2026-10-13: "This is what our game should be." Level, narrative
 | Story and tutorial beats: Wizard's Quest, First Steps, Balance, Goblins, Molten Guardian, Cosmic Nexus | `style/07_story_tutorial_beats.jpg` |
 | Settings and Options, tall | `style/08_settings_options_tall.jpg` |
 | Minigames: Bridge Bashers, Avalanche Ascent, Rubble Rumble, Fort Frenzy | `style/09_minigames_a.jpg` |
-| Minigames: Rolling Rumble, Tumbling Towers, Shatter Shootout, Frenzy Footholds | `style/10_minigames_b.jpg` |
-| Minigames: Bridge Dash, Fort Blast, Maze Heist, Summit Scramble | `style/11_minigames_c.jpg` |
-| Minigames: Clockwork Conveyor, Kraken Blockade, Digging Frenzy, Chroma Sky Climb | `style/12_minigames_d.jpg` |
+| Minigames: Bridge Dash, Fort Blast, Maze Heist, Summit Scramble | `style/10_minigames_b.jpg` |
+| Minigames: Clockwork Conveyor, Kraken Blockade, Digging Frenzy, Chroma Sky Climb | `style/11_minigames_c.jpg` |
+| Minigames: Rolling Rumble, Tumbling Towers, Shatter Shootout, Frenzy Footholds | `style/12_minigames_d.jpg` |
 | Biome block sheet (12 biomes) | `style/13_biome_blocks.png` |
 | Tumble Fair tournament flow: lobby, wheel, round, standings, win | `style/14_tournament_flow.png` |
 | Title and in-level HUD (meadow, ice, celestial) | `style/15_title_and_hud.png` |

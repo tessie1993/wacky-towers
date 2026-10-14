@@ -66,7 +66,7 @@ inside a diorama (user rule, refs 01 and 09-12, layout only).
 reveals, and the world visibly changes when it is done.
 - *P2a world change:* name the visible world change on win (every level, including bonus and minigame levels).
 - *P2b drop change:* applies to `height`, `shape` and boss levels only. Name the rule or board shape that changes
-  how pieces are dropped here.
+  how pieces are dropped here. Level 01 of each biome is exempt (it teaches a rule and changes no drop).
 - *P2c mundane test:* describe the level without a bare counter (U15). If it reads "do the generic thing in
   a different skin", it fails.
 
@@ -160,10 +160,11 @@ and **look** (start-frame silhouette).
 - **Script check:** `tools/qa/check_level_uniqueness.gd`. Owner: tools-programmer. Built in **phase 3**, so it
   exists before phase 4 specs are written; the plan task list gets this task (size: 2 days). It reads the
   `level_table` that ends each biome plan and verifies U3, U5 (table mode), U6, U7, U12, U14, U15, U16, U17 and
-  the name check. The exemplar levels are included in U3/U14 checks. It reports observations; reviewers score.
+  the name check. The 9.7 exemplars are included in the checks. It reports observations; reviewers score.
   `level_table` is a Markdown table with the columns `id`, `goal_type` (a list in play order, e.g. `span>survive`),
   `main_rule`, `mask` (canonical string), `terrain`, `set_piece`, `set_piece_action`, `cast_pose`, `time_of_day`,
-  `weather`, `camera`, `opening_event`, `ending_pattern`, `headline_objective`, `role`, `callback_of`.
+  `weather`, `camera`, `opening_event`, `ending_pattern`, `headline_objective`, `role`, `callback_of`, and the
+  computed `min_spawn_width` and `min_dead_end_width`.
 
 **Rules.**
 - **U1 Beat first.** Every spec starts from its beat id and has a reason to stack.
@@ -183,10 +184,12 @@ and **look** (start-frame silhouette).
   spec's "4-6 set pieces per biome": 84-96 set pieces in total.
 - **U7 Feel spread.** Per biome: at least 6 distinct goal types, at most 4 plain squares (U14 forces them to be
   4 different sizes), at least 3 levels with a non-default camera. **No `clear_n` headline goals (U15)**; this
-  supersedes the identity spec's "at most 5 `clear_n` levels". **Corridor width:** every playable region is at
-  least 4 cells wide where pieces spawn and no dead-end channel is narrower than 3 (4-cell pieces cannot
-  enter 2-wide shafts); the solver (P3d) checks this at phase 7. Phase 3 restates the minimum if the piece
-  set allows narrower shafts.
+  supersedes the identity spec's "at most 5 `clear_n` levels". **Corridor width** (a mask property, computed
+  by the phase 4 script into the `level_table` columns `min_spawn_width` and `min_dead_end_width`): the
+  *spawn region* is the floor cells of the top 3 mask rows across the spawn columns and must offer a
+  landing area at least 4 wide (a piece that spawns flat needs 4); a *dead-end channel* is a void-bounded
+  vertical run of floor open at one end only, and must be at least 3 wide (a 3-cell-extent piece cannot
+  rotate inside a 2-wide shaft). Phase 3 restates the minimums if the piece set changes them.
 - **U8 Opening event.** One distinct `opening_event` id per level (same field as the beat's). **Phase 2 assigns
   and lists the ids** (the narrative lead); phase 4 may refine them under the same rule: none repeats within
   a biome and none appears in more than 2 biomes, so phase 2 plans for at least 84 distinct ids.
@@ -203,13 +206,17 @@ and **look** (start-frame silhouette).
 - **U14 Look fingerprint.** `(canonical_mask, terrain, set_piece, time_of_day, weather)` is unique per level
   across the campaign; within a biome no `set_piece` repeats more than twice and no `canonical_mask` repeats.
 - **U17 Scene spread.** `scene.terrain`, `scene.set_piece_action` and `cast_pose` take ids from the closed
-  lists in `design/levels/plans/scene-vocabulary.md` (owner: technical artist). Phase 3 seeds them from the
-  roster and the exemplars; phase 4 groups add ids only by change request that the artist approves before the
-  `level_table` is checked. A spec using an id not on the list fails the U17 script. Per biome: at least 7
-  distinct terrain ids and 7 distinct action ids, none used more than twice; across the campaign no
-  `(terrain, set_piece_action)` pair repeats. `cast_pose` verbs are build, haul, cheer, hide, brace, point,
-  plus `react` for animals and props; a biome uses at least 4 of them. Exemplars teach **form, not content**: no level may reuse
-  an exemplar's set piece, terrain, mask, ending or character.
+  lists in `design/levels/plans/scene-vocabulary.md` (owner: technical artist). **Ids are global**: one list of
+  about 20-30 terrain ids and 20-30 action ids, and an id may appear in several biomes, each time as a
+  biome-skinned build. Phase 3 seeds the lists from the roster and the exemplars; phase 4 groups add ids only
+  by change request that the artist approves before the `level_table` is checked. A spec using an id not on
+  the list fails the U17 script. Per biome: 7-8 distinct terrain ids and 7-8 distinct action ids, none used
+  more than twice; across the campaign no `(terrain, set_piece_action)` pair repeats. The art budget counts
+  **builds** (7-8 terrain builds and 7-8 acting set-piece builds per biome, 84-96 each in total); the
+  vocabulary counts ids. `cast_pose` verbs are build, haul, cheer, hide, brace, point, plus `react` for animals
+  and props; a biome uses at least 4. Exemplars teach **form, not content**: no level may reuse an
+  exemplar's set piece, terrain, mask, ending or character. The 9.7 exemplars are included in the U3, U14 and
+  U17 checks; the `ex_near_*` and `ex_weak_*` samples are excluded and exist only for human scoring.
 - **U15 No counter goals.** No level's headline goal is `clear_n` or any counter goal (defined above).
   `height`, `shape`, `survive` and the other goals are legal only when the HUD names a story object (the
   lookout, the dam, the cloud) and the number is secondary. `clear_n` is a means only (it charges, bonks,
@@ -284,12 +291,16 @@ and earns the Carnival payoff. Borrow C's beacon-light as a win reward.
    seconds, standard controls plus one extra verb, built on stacking, a scene not a grid, fair shared seeds).
    The 16 modules each have a debut, a recall, the motivating beat and a tournament use; at most 2 debuts per
    biome, re-derived for the new biome order; define the phase runner contract.
-5. **Scene kit budget.** Price in the engine-gap list, each with owner and size: terrain modules (7-8 per
-   biome, matching U17), cast poses (6 verbs for each of the three heroes and the Wizard, made once and
-   reused), acting set pieces (84-96, each a looping 2-4 second animation with a static reduced-motion pose)
-   and 4-6 themed HUD meters. The producer reports the total against the phase 6 buffer before phase 4 starts.
+5. **Scene kit budget.** Price in the engine-gap list, each with owner and size, counting biome-skinned
+   builds (U17): terrain builds (7-8 per biome, 84-96 total), cast poses (6 verbs for each of the three heroes
+   and the Wizard, made once and reused), acting set-piece builds (84-96, each a looping 2-4 second
+   animation with a static reduced-motion pose) and 4-6 themed HUD meters. The producer reports the total against the phase 6 buffer before phase 4 starts.
 6. **Bosses.** Twelve tier-10 bosses with distinct boss triples (U12), arena changes per phase, beaten by
-   building; each boss combines rules already taught in tiers 03-09 and adds at most one new idea per phase.
+   building. A boss adds no new rule: it combines rules already taught in tiers 03-09. An *idea* is a variant
+   of a rule already taught (a second lane, a higher speed, a new target), and each phase adds at most one.
+   **Defence flavour:** `reference-study-defence.md` D1-D4 (hold the wall, plug the breach, shield and strike,
+   shelter the guest) is one level flavour among many: at most 2 full defence levels per biome. A D3 level
+   names its boss in the headline, never a row count (rows are ammo).
 7. **Hero perks.** How Stitch, Smash and Redraw work as pre-level tools (proposed: Ada Stitch, Bram Smash, Sif
    Redraw) and how they interact with each biome's rules.
 8. **Difficulty and unlocks.** Formulas for `g0`, goal size and stars by tier and biome index: `g0` rises within

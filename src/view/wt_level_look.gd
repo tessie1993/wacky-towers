@@ -420,8 +420,9 @@ func _build_weather() -> void:
 	quad.size = Vector2(float(dims[0]), float(dims[1]))
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD if bool(cfg.get("additive", false)) else BaseMaterial3D.BLEND_MODE_MIX
+	# Dithered alpha stays in the opaque pass: the shared post-process quad (priority 127) is drawn last and would
+	# paint over alpha-blended particles. Hash gives soft edges without a blend pass (Compatibility-safe).
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_HASH
 	mat.vertex_color_use_as_albedo = true
 	mat.albedo_texture = _texture(String(cfg["texture"]))
 	mat.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
