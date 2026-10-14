@@ -285,7 +285,7 @@ static func _prism(st: SurfaceTool, xf: Transform3D, col: Color) -> void:
 	var nb: Basis = xf.basis.inverse().transposed()
 	var flip: bool = xf.basis.determinant() < 0.0
 	for t: Array in tris:
-		var order: Array[int] = [0, 2, 1] if flip else [0, 1, 2]
+		var order: Array = [0, 2, 1] if flip else [0, 1, 2]
 		for k: int in order:
 			st.set_color(col)
 			st.set_normal((nb * (t[3] as Vector3)).normalized())

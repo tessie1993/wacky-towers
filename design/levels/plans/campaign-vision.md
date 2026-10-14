@@ -86,7 +86,6 @@ sarcasm, no mocking the player, no fourth-wall nagging, no toilet gags. Losing i
 - No "Tetris" naming anywhere (code strings, level names, captions, marketing text). Never copy the board
   logos ("TETRO PARTY DIMENSIONS", "WACKY PARTY", "PARTY QUEST"); our logo is `logo_master.jpg`.
 - No beige or parchment UI: open purple-wood frames over a painted scene (board 05), plum glass planks.
-- No board title is reused as a level or minigame name (see `minigames.md` "Naming fixes").
 - Cast discipline: Wizard (mascot), Dame Ada, Bram, Sif (heroes), Lana, Boulder, Glim (NPCs) are the
   only recurring named characters. Everyone else is a one-off local (a goat, a crab, a clockmaker) or a
   villain. New characters need a silhouette and a colour key that follow `art-bible.md` section 5.
@@ -103,26 +102,23 @@ captures (phase 8).
 - **U2 Swap test.** The beat, goal and set piece cannot move to another biome unchanged (P1).
 - **U3 Unique triple.** No two levels in the campaign share (goal type, main rule, board shape). Compare mask
   topology, not just size. A mirrored or rotated mask counts as the same shape.
-- **U4 Signature is a story sentence,** 4-14 words, naming the event or place, not the rules ("the one where
-  the goat's bridge sways"). No two signatures share a verb-noun core.
+- **U4 Signature is a story sentence,** 4-14 words, naming the event or place, not the rules.
 - **U5 Squint test.** Hide the HUD and the biome skin. A reviewer must tell any two levels in a biome apart
   from the start frame by silhouette alone. This needs different masks or set pieces, not just a recolour.
 - **U6 Look spread.** Within a biome no two consecutive levels share `time_of_day` + `set_piece`. Across a
   biome at least 4 of 5 `time_of_day` values, at least 3 `weather` values and at least 5 set pieces appear.
 - **U7 Feel spread.** Within a biome at least 6 distinct goal types, at least 8 distinct board shapes (at most
   4 plain squares), at most 5 `clear_n` goals, and at least 3 levels where the camera is not `default`.
-- **U8 First-10-seconds event.** Each level has one distinct opening moment (a hero walks in, a tide rises,
-  a clock chimes) that makes it recognisable in a screen recording with the sound off.
+- **U8 First-10-seconds event.** One distinct opening moment (a hero walks in, a tide rises) that makes the
+  level recognisable on mute.
 - **U9 Finale is a face.** Each tier-10 level is a phased boss tied to its chapter villain or problem. It
   changes the arena at least once. It is beaten by building, not by stat checks (P2).
-- **U10 Rule budget.** At most one new rule per level, at most two rules visible on the pill in levels 01-03,
-  and a rule must be taught alone (in isolation) before it is combined.
-- **U11 World change.** The clear state changes the scene (a lit lamp, a crossed bridge), captured in the
-  clear screenshot. Failure shows a comic reaction.
+- **U10 Rule budget.** One new rule per level at most, two rules on the pill in levels 01-03, and a rule is
+  taught alone before it is combined.
+- **U11 World change.** The clear changes the scene (a lit lamp, a crossed bridge); failure is a comic reaction.
 - **U12 No cookie-cutter slots.** The same tier number may not share a goal type in more than 4 of 12 biomes
   (today tier 05 is `build_race` + height in 11 of 12).
-- **U13 Cross-biome echo.** Echoes are allowed only as a deliberate callback with a story reason, and are
-  marked `callback_of` in the spec.
+- **U13 Echoes** are allowed only as a deliberate callback with a story reason, marked `callback_of`.
 
 ## 6. Brief for the narrative lead (phase 2)
 
@@ -251,6 +247,3 @@ owner and fix; makers fix. Reviewers also check sections 4 and 5, the cast and t
   specced; palettes follow the art bible and board 15; no beige UI.
 - **L7 Completeness and buildability.** All required fields are present for every level; engine needs are
   flagged; the spec is concrete enough to build JSON without guessing.
-
-Success looks like: a new player describes three levels by story not rules, and a reviewer tells any two
-start frames in a biome apart with the HUD hidden.
