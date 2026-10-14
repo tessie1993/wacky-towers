@@ -47,7 +47,7 @@ func rotate_view(step: int) -> void:
 		return
 	target = rotation.y + wrapf(target - rotation.y, -PI, PI)
 	_tween = create_tween()
-	_tween.tween_property(self, "rotation:y", target, turn_anim_ms / 1000.0)
+	_tween.tween_property(self, "rotation:y", target, turn_anim_ms / 1000.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 
 ## Current logical yaw snap 0..11. Usage: rig.get_yaw_index()

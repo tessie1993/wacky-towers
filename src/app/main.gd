@@ -491,7 +491,7 @@ func _begin_session(level: LevelData, attempt_seed: int = -1) -> void:
 	_stage.setup(_sim, level.biome, _settings())
 	_stage.apply_cosmetics(_store.progress().get("cosmetics", {}))
 	_stage.set_story_context({"level_id":level.id,"character":_ability_character(),"keepsakes":_store.progress().get("keepsakes",[]),"mizzle_redeemed":_saved_stars(&"celestial_10")>0})
-	if _stage.has_signal("secret_tapped"): _stage.connect("secret_tapped", _on_secret_tapped)
+	if not _stage.secret_tapped.is_connected(_on_secret_tapped): _stage.secret_tapped.connect(_on_secret_tapped)
 	_stage.set_goal(level.goal)
 	_stage.set_board_area(Rect2(0.22, 0.08, 0.60, 0.66))
 	_input.reset()
