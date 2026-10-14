@@ -1,14 +1,18 @@
-# Campaign vision: Wacky Towers (phase 1 brief, revision 5)
+# Campaign vision: Wacky Towers (phase 1 brief, revision 6)
 
-Author: studio game director. 2026-10-14. Revised after the r1-r6 plan-vision reviews in
+Author: studio game director. 2026-10-14. Revised after the r1-r7 plan-vision reviews in
 `production/qa/quality-review/`. Inputs: the redo plan, quality bar, art bible, reference boards, `catalog.json`,
 `progression.md`, `minigames.md`, `minigame-party-rules.md` (user decision), `level-identity-spec.md` (with its
 later user rules), `exemplars.md`, `scene-vocabulary.md`, the 4.8/10 level review
 (source of "tier 05 is `build_race` + height in 11 of 12 biomes") and the level playtest.
 User words: "all levels look the same", "different in game play", "narrative first", "pass grade must be 9.7",
-"never clear so many layers", "end must not be obvious sometimes", "so mundane", "more art than only the grid".
+"never clear so many layers", "end must not be obvious sometimes", "so mundane", "more art than only the grid",
+**ruling A** "Minigames are the level. The principles of minigames. The game mechanics will be the base or bases
+of each level", **ruling B** "Scene variety should not have gotten 9.0 out of 10 but 3. All scenes were square
+grids... Not varied at all" (163 of 168 current levels are 8x8 squares; only 9 have a mask).
 Decisions in force: 168 levels (12 biomes x 14); a FRESH story keeping only the cast; a plain-words
-mechanics handbook before any art or code.
+mechanics handbook before any art or code. **Order of a level spec: mechanic and verb first, then the goal,
+then the footprint and scene, then the look.**
 
 **Biome order (user decision: Pirate Cove plays 11th):** 1 meadow, 2 candy, 3 ice, 4 underwater, 5 lava,
 6 forest, 7 cave, 8 clockwork, 9 neon, 10 celestial, 11 pirate, 12 carnival. The coordinator must reorder
@@ -34,16 +38,25 @@ blocks. Each stack is an answer: a bridge a goat can cross, a wall that shelters
 spots the ship. Stacking matters because in this world **built things hold the sky together**. A cleared
 layer pays out something in the story: it charges a beacon, mends a floor or drains a flood.
 Dame Ada, Bram and Sif are your party. Their perks (Stitch, Smash and Redraw, kept from the old design) are
-proposed as tools you choose before a level, and they stand on stage reacting to what you build. Every level
-is a small diorama (a gully, a fort wall, a raft) with a landmark that acts and a cast that cheers.
-Minigame blocks are the island's own games, h1-h3 are the mastery epilogue, and stars are the Wizard's thanks. The
+proposed as tools you choose before a level, and they stand on stage reacting to what you build. **Every level
+is a minigame** (ruling A): one clear goal in one verb, built on one or two mechanics, short and intense, in a
+small diorama (a gully, a fort wall, a raft) with a landmark that acts and a cast that cheers. Minigame
+modules are the island's own games, h1-h3 are the mastery epilogue, and stars are the Wizard's thanks. The
 player feels clever, a bit mischievous, and rooted for: someone always cheers when a piece lands well.
 
 ## 2. Three pillars
 
+**Level principle (ruling A): a level is a minigame.** It follows `minigame-party-rules.md`: one clear goal
+taught in 3 seconds with one sentence of 12 words or fewer, short and intense, a themed meter, a story payoff,
+standard controls plus at most one extra verb (shown as one gem button). It is built on 1-2 **mechanics** (rules
+or modules), which are its base, and has one **verb** from the closed list: race, defend, build, destroy,
+survive, rescue, balance, carry. The spec states mechanic and verb first (section 8); the board and scene
+follow from them.
+
 Each test scores 0 fail, 1 partial or 2 pass; a level passes at 2. Tests come in two sets.
 - **Spec-time tests:** phases 2-3 apply P1a, P2a, P2c; phases 4-5 apply the full set P1a, P1b, P2a, P2b, P2c,
-  P3b, P3c, P3e (defence levels), plus the `target_visible` field for P3a.
+  P2d, P3b, P3c, P3e (every level whose set-piece action is a rule that removes or moves blocks), plus the
+  `target_visible` field for P3a.
 - **Build-time tests (phases 7-8), on the built level, JSON and screenshots:** all of the above plus P1c, P3a, P3d.
 
 **P1. Every level is a scene, not a grid.** One place, one problem, one reason to stack, and the board lives
@@ -71,6 +84,9 @@ reveals, and the world visibly changes when it is done.
   how pieces are dropped here. Level 01 of each biome is exempt (it teaches a rule and changes no drop).
 - *P2c mundane test:* describe the level without a bare counter (U15). If it reads "do the generic thing in
   a different skin", it fails.
+- *P2d minigame test (spec-time):* the spec names its 1-2 `mechanic` ids and one `verb`; its tutorial sentence
+  is 12 words or fewer; it has one clear goal, a themed meter or an explicit "no meter fits", a story payoff and
+  at most one extra control verb. A level that is "a board with a rule pill" scores 0.
 
 **P3. Cosy mischief, always fair.** Failure is funny and cheap, wins are generous, nothing is mean.
 - *P3a opening clarity (build-time):* 5 first-time players; at least 4 say what to do first, from the start
@@ -79,8 +95,9 @@ reveals, and the world visibly changes when it is done.
 - *P3c rule budget (spec-time):* the level adds at most one new rule (U10).
 - *P3d winnable (build-time):* a solver (or a bot with unlimited time) wins at least 98% of 500 seeded runs;
   a loss counts against the level only if no legal winning line existed (otherwise it is a bot failure).
-- *P3e strike telegraph (spec-time):* every strike lane is warned by an actor (a rising tentacle, a cranking
-  catapult arm) at least 2 s ahead, and at least 4 s in biomes of intensity 1-2.
+- *P3e strike telegraph (spec-time):* in every level whose `set_piece_action` is a rule that removes or moves
+  blocks (any `strike` variant), each strike lane is warned by an actor (a rising tentacle, a cranking catapult
+  arm) at least 2 s ahead, and at least 4 s in biomes of intensity 1-2. The spec's `telegraph` field says how.
 - Peril (Lava, Neon) is comic and reversible. Every cue is shape plus colour plus sound; reduced motion is safe.
 
 ## 3. Emotional arc, stakes and ending
@@ -149,32 +166,42 @@ no mocking the player. Losing is a pratfall, not a shame.
 
 ## 5. "Every level unique" as testable rules
 
-This extends `level-identity-spec.md` and keeps its rules except where marked superseded. Every level has four
-facets: **story beat**, **place** (set piece, time of day), **way of playing** (unique triple plus signature)
-and **look** (start-frame silhouette).
+This extends `level-identity-spec.md` and keeps its rules except where marked superseded. Every level has five
+facets, in spec order: **mechanic and verb** (the base), **story beat**, **way of playing** (unique triple plus
+signature), **footprint and place** (board shape, terrain, set piece, time of day) and **look** (start-frame
+silhouette).
 
 **Definitions.**
-- `main_rule`: a required spec field, one id from the roster. Two rules are the same if their ids match,
-  whatever the parameters.
+- `mechanic`: a required spec field, 1-2 base ids from the roster (rules or modules); the first is the main
+  rule. `extras` may add rules already taught earlier (for example `gust`); they modify the base and are not
+  bases themselves.
+  Two mechanics are the same if their ids match, whatever the parameters. A parameterised family counts as one
+  id plus a variant (`strike[tentacle]` and `strike[catapult]` are the same mechanic `strike`).
+- `verb`: one of race, defend, build, destroy, survive, rescue, balance, carry.
 - **Canonical mask:** the board mask normalised under the 8 rotations and reflections; the smallest wins,
-  ordered by width, then height, then the rows joined with `/` (with `#` < `.`), written `WxH:rows`. A **plain square** is a full rectangle with no holes and no notches, at any size.
+  ordered by width, then height, then the rows joined with `/` (with `#` < `.`), written `WxH:rows`. A
+  **plain square** is a full rectangle with no holes and no notches, at any size.
+- **Footprint:** a shape name from the closed list in `scene-vocabulary.md` (plain square, ring, bridge span,
+  stair, island chain, ship hull, L, cross, crescent, twin towers, funnel, moat with a centre island, and
+  others added by change request) plus its size, written `shape WxD` (for example `ring 10x10`).
 - **The pill:** the rule list on the level card. **Beat id = level id** (`<biome>_01`..`_10`, `_bonus`, `_h1`-`_h3`).
 - **Counter goal:** any goal whose only HUD readout is a bare number to reach or fill (rows, cells, seconds)
   with no story object.
 - **Script check:** `tools/qa/check_level_uniqueness.gd`. Owner: tools-programmer. Built in **phase 3**, so it
   exists before phase 4 specs are written; the plan task list gets this task (size: 2 days). It reads the
-  `level_table` that ends each biome plan and verifies U3, U5 (table mode), U6, U7, U12, U14, U15, U16, U17 and
-  the name check. The 9.7 exemplars are included in the checks. It reports observations; reviewers score.
-  `level_table` is a Markdown table with the columns `id`, `goal_type` (a list in play order, e.g. `span>survive`),
-  `main_rule`, `mask` (canonical string), `terrain`, `set_piece`, `set_piece_action`, `cast_pose`, `time_of_day`,
-  `weather`, `camera`, `opening_event`, `ending_pattern`, `headline_objective`, `role`, `callback_of`, and the
-  `flavour` (`D1`-`D4` or `none`), and the computed `min_spawn_width` and `min_dead_end_width`.
+  `level_table` that ends each biome plan and verifies U3, U5 (table mode), U6, U7, U12, U14, U15, U16, U17,
+  U18, U19 and the name check. The 9.7 exemplars are included in the checks. It reports observations; reviewers
+  score. `level_table` is a Markdown table with the columns `id`, `mechanic` (1-2 ids), `verb`, `goal_type` (a
+  list in play order, e.g. `span>survive`), `footprint` (`shape WxD`), `mask` (canonical string), `terrain`,
+  `set_piece`, `set_piece_action`, `cast_pose`, `time_of_day`, `weather`, `camera`, `opening_event`,
+  `ending_pattern`, `headline_objective`, `role`, `callback_of`, `flavour` (`D1`-`D4` or `none`), `telegraph`
+  (seconds, or `n/a`), and the computed `min_spawn_width` and `min_dead_end_width`.
 
 **Rules.**
 - **U1 Beat first.** Every spec starts from its beat id and has a reason to stack.
 - **U2 Swap test.** The beat, headline objective and set piece cannot move to another biome unchanged (P1a).
-- **U3 Unique triple.** `(goal_type list, main_rule, canonical_mask)` is unique across the 168 levels (the full
-  goal list is compared, so `span>survive` differs from `span`). Hard remixes
+- **U3 Unique triple.** `(goal_type list, mechanic list, canonical_mask)` is unique across the 168 levels (the
+  full lists are compared, so `span>survive` differs from `span`). Hard remixes
   and `callback_of` levels are not exempt: a remix changes at least one element of the triple and also differs in
   `set_piece` or `time_of_day` from its source.
 - **U4 Signature** is a story sentence of 4-14 words naming the event or place, not the rules.
@@ -186,24 +213,31 @@ and **look** (start-frame silhouette).
   `time_of_day` values (the night biomes Celestial and Neon may use 2 plus dawn or dusk); at least 3
   `weather` values; **7-8 set pieces** (U14 needs 7 at least for 14 levels). This supersedes the identity
   spec's "4-6 set pieces per biome": 84-96 set pieces in total.
-- **U7 Feel spread.** Per biome: at least 6 distinct goal types, at most 4 plain squares (U14 forces them to be
-  4 different sizes), at least 3 levels with a non-default camera. **No `clear_n` headline goals (U15)**; this
+- **U7 Feel spread.** Per biome: at least 6 distinct goal types, **at most 1 plain square** (ruling B; this
+  supersedes the identity spec's "at most 4"), at least 3 levels with a non-default camera, and **1 or 2
+  defence levels** (`flavour` D1-D4, counted by the script). **No `clear_n` headline goals (U15)**; this
   supersedes the identity spec's "at most 5 `clear_n` levels". **Corridor width** (a mask property, computed
-  by the phase 4 script into the `level_table` columns `min_spawn_width` and `min_dead_end_width`): the
-  *spawn region* is the floor cells of the top 3 mask rows across the spawn columns and must offer a
-  landing area at least 4 wide (a piece that spawns flat needs 4). Pieces spawn in the **centre 4 columns of
-  the mask's bounding width** unless the spec sets `spawn_cols`; a level whose spawn columns hold void in the
-  top 3 rows must set `spawn_cols` to a floor run at least 4 wide, which the script reports as
-  `min_spawn_width`. A *dead-end channel* is a void-bounded
-  vertical run of floor open at one end only, and must be at least 3 wide (a 3-cell-extent piece cannot
-  rotate inside a 2-wide shaft). Phase 3 restates the minimums if the piece set changes them.
+  by the phase 4 script into `min_spawn_width` and `min_dead_end_width`): the *spawn region* is the floor
+  cells of the top 3 mask rows across the spawn columns and must offer a landing area at least 4 wide (a piece
+  that spawns flat needs 4). Pieces spawn in the **centre 4 columns of the mask's bounding width** (for odd
+  widths, the 4 columns starting one left of centre) unless the spec sets `spawn_cols`; a level whose spawn
+  columns hold void in the top 3 rows must set `spawn_cols` to a floor run at least 4 wide. A *dead-end
+  channel* is a void-bounded vertical run of floor open at one end only, and must be at least 3 wide (a 3-cell
+  piece cannot rotate inside a 2-wide shaft). **For the new shapes:** every band of a ring, moat, crescent,
+  stair, funnel or island chain is at least 4 wide at the spawn rows and at least 3 wide elsewhere, and every
+  island-chain link is at least 3 wide. Phase 3 restates the minimums if the piece set changes them.
 - **U8 Opening event.** One distinct `opening_event` id per level (same field as the beat's). **Phase 2 assigns
   and lists the ids** (the narrative lead); phase 4 may refine them under the same rule: none repeats within
   a biome and none appears in more than 2 biomes, so phase 2 plans for at least 84 distinct ids.
 - **U9 Boss finale.** Every tier-10 level is a phased boss (Neon included; the `progression.md` no-boss
   finale is withdrawn), tied to its chapter villain, changing the arena once or more, beaten by building.
-- **U10 Rule budget.** A level adds at most one new rule (a rule-like set-piece action counts). Levels 01-03 show two rules on the pill only if one
-  was taught in an earlier biome. A biome adds at most 2 new rules. A rule is taught alone before it combines.
+- **U10 Rule budget.** A level adds at most one new mechanic (a rule-like set-piece action counts). Levels 01-03
+  show two mechanics only if one was taught in an earlier biome. A biome adds at most 2 new mechanics. A
+  mechanic is taught alone before it combines. **Shared defence rules:** attacker variants (cannon, tentacle,
+  rock, catapult, comet) are one parameterised rule `strike`, and complete-row ammo is one rule `row_cannon`;
+  each is taught once, in the first biome that uses it, and reused later with a new attacker and scene (a
+  variant is not a new rule). `breach_plug` (D2) is the one extra defence rule. Defence rules take at most 1 of
+  a biome's 2 new mechanics.
 - **U11 World change.** The clear changes the scene (a lit lamp, a crossed bridge); failure is a comic reaction.
 - **U12 No cookie-cutter slots.** For tiers 01-09 and 11, the same tier number may not share a goal type in
   more than 4 of 12 biomes. Tier 10 is exempt (U9). Instead the 12 bosses differ in arena mask, phase count and
@@ -212,6 +246,12 @@ and **look** (start-frame silhouette).
 - **U13 Echoes** need a story reason, are marked `callback_of`, and still obey U3.
 - **U14 Look fingerprint.** `(canonical_mask, terrain, set_piece, time_of_day, weather)` is unique per level
   across the campaign; within a biome no `set_piece` repeats more than twice and no `canonical_mask` repeats.
+- **U18 Footprint spread (ruling B).** No two levels in a biome share a footprint: each has its own shape or its
+  own size (`shape WxD` unique per biome, and the U5 IoU threshold holds). A plain square is allowed at most
+  once per biome. Biomes use at least 8 different shape names between them across the 14 levels, and a hard
+  remix changes the footprint of its source.
+- **U19 Verb spread (ruling A).** Each biome uses at least 5 of the 8 verbs, and the same verb never appears in
+  more than 2 levels in a row (in level order 01-10, bonus, h1-h3). The script checks both.
 - **U17 Scene spread.** `scene.terrain`, `scene.set_piece_action` and `cast_pose` take ids from the closed
   lists in `design/levels/plans/scene-vocabulary.md` (owner: technical artist). **Ids are global**: one list of
   about 20-30 terrain ids and 20-30 action ids, and an id may appear in several biomes, each time as a
@@ -240,8 +280,10 @@ and **look** (start-frame silhouette).
 
 **Outputs:** `design/narrative/campaign-story.md` and `design/narrative/beats/<biome>.md`. Each beat file has
 one YAML front-matter block per beat: `id` (= level id), `role`, `place`, `who`, `problem`, `why_stack`,
-`headline_objective`, `ending_pattern`, `world_change`, `wordless_moment`, `opening_event`, `caption`
-(optional, 14 words or fewer). Field limits: one sentence each, 20 words or fewer.
+`headline_objective`, `verb` (proposed, from the closed list of 8), `ending_pattern`, `world_change`,
+`wordless_moment`, `opening_event`, `caption` (optional, 14 words or fewer). Field limits: one sentence each,
+20 words or fewer. Each biome's 14 beats cover at least 5 of the 8 verbs and never repeat a verb more than twice
+in a row (U19).
 
 **The fresh story must achieve:**
 1. One through-line a child can retell in two sentences, with a reason to travel island 1 to 12 in the order
@@ -253,8 +295,9 @@ one YAML front-matter block per beat: `id` (= level id), `role`, `place`, `who`,
    and payoff, NPC roles for Lana, Boulder and Glim, and the species for Glim. Pirate (chapter 11) is the
    swaggering run-up to the Carnival and must not reprise Underwater.
 5. 14 beats per biome with a **function label** (teach 01-03, twist 04-06, combine 07-09, boss 10, bonus,
-   h1-h3 remixes). The narrative lead writes situations; **the systems designer owns the mapping from function
-   to rule**.
+   h1-h3 remixes). The narrative lead writes situations and proposes a verb; **the systems designer owns the
+   mapping from function to mechanic** and may change a verb with a stated reason. Every beat must be playable as
+   a minigame (ruling A): one goal a child can state in one sentence.
 6. At least 4 beats per biome carry a non-plain `ending_pattern`, at least 3 of them twist, reveal or guest
    (U16), and none is a counter goal (U15). **This phase assigns the `opening_event` ids** (U8, 84+ distinct).
 7. A story that survives as 12 chapter captions plus level names; all names pass the board-title ban.
@@ -285,8 +328,10 @@ narrative lead may borrow C's beacon-light as a win reward.
   every rule and goal a player meets: what it does, how it reads, a worked example, what it never does, its
   debut level. No engine terms.
 
-1. **Mechanics follow the story.** One mechanic family per biome from its chapter's problem. Reuse existing
-   rules where they fit; list engine gaps (boss phases, goal phases, hidden or revealed goals, story-objective
+1. **Mechanics are the base of each level (ruling A).** Assign every level 1-2 mechanics and one verb from
+   the closed list; one mechanic family per biome from its chapter's problem. Every level obeys
+   `minigame-party-rules.md` (one clear goal, 12-word tutorial sentence, themed meter, story payoff, standard
+   controls plus at most one extra verb). Reuse existing rules where they fit; list engine gaps (boss phases, goal phases, hidden or revealed goals, story-objective
    HUD text, ending events, minigame phase runner, shape overlay, the scene kit: terrain modules, animated
    cast, acting set pieces, themed HUD meters) each with an owner and a size.
 2. **Teach, twist, combine.** A biome adds at most 2 new rules (U10), each taught alone. Include a cross-biome
@@ -295,8 +340,11 @@ narrative lead may borrow C's beacon-light as a win reward.
    order for goal phases (U3 compares the whole list). Allowed goals: `height`, `shape`,
    `survive`, `bonk_boss`, `rescue_all`, `dig_rescue`, `wind_keys`, `bake_oven`, the new `seal_breaches` and
    the minigame goals. `clear_n` is a means only (U15). **Defence mapping:** D1 = `survive`, D2 =
-   `seal_breaches`, D3 = `bonk_boss`, D4 = `rescue_all` inside a goal sequence; the new rules `breach_plug`
-   and the row-clear cannon count toward U10 (at most 2 new rules per biome) and need handbook entries. Define the ending patterns as engine features (goal phases, reveal, guest, secret).
+   `seal_breaches`, D3 = `bonk_boss`, D4 = `rescue_all` inside a goal sequence. The shared rules are `strike`
+   (parameterised by attacker variant) and `row_cannon`, each taught once and reused, plus `breach_plug` for
+   D2; defence takes at most 1 of a biome's 2 new mechanics (U10). All need handbook entries. Define the
+   ending patterns as engine features (goal phases, reveal, guest, secret). **Verb map:** the handbook lists
+   which verb each mechanic and module serves (race, defend, build, destroy, survive, rescue, balance, carry).
 4. **Minigames.** Follow `design/levels/plans/minigame-party-rules.md` (short and intense, taught in 3
    seconds, standard controls plus one extra verb, built on stacking, a scene not a grid, fair shared seeds).
    The 16 modules each have a debut, a recall, the motivating beat and a tournament use; at most 2 debuts per
@@ -310,9 +358,9 @@ narrative lead may borrow C's beacon-light as a win reward.
    of a rule already taught (a second lane, a higher speed, a new target), and each phase adds at most one.
    **Defence flavour:** `reference-study-defence.md` D1-D4 (hold the wall, plug the breach, shield and strike,
    shelter the guest) is one level flavour among many: **each biome has at least 1 and at most 2 full defence
-   levels** (the `flavour` column in `level_table`; the U7 script counts them). A D3 level names its boss in
-   the headline, never a row count (rows are ammo). An attacker's set-piece action that removes blocks is a
-   rule, never cosmetic. The idea names in `reference-study-defence.md` are working titles only; every real
+   levels** (U7; the `flavour` column; the script counts them). A D3 level names its boss in the headline,
+   never a row count (rows are ammo). An attacker's set-piece action that removes blocks is a `strike`
+   variant: a rule, never cosmetic, with a telegraph (P3e). The idea names in `reference-study-defence.md` are working titles only; every real
    name passes the title script and the paraphrase check (N5, L1).
 7. **Hero perks.** How Stitch, Smash and Redraw work as pre-level tools (proposed: Ada Stitch, Bram Smash, Sif
    Redraw) and how they interact with each biome's rules.
@@ -327,16 +375,20 @@ narrative lead may borrow C's beacon-light as a win reward.
 **Outputs:** `design/levels/plans/<biome>.md` v2 for all 12 biomes (4 groups of 3), each ending with the
 machine-readable `level_table` for the script check. Set pieces: 7-8 per biome, 84-96 in total; the technical
 artist owns `assets/data/set_pieces.json` and flags art cost per piece (the file does not exist yet).
-1. **Start from the beat.** Each spec opens with its beat id (= level id).
-2. **Required fields per level:** `id`, `headline_objective`, `ending_pattern` (written to `metadata.ending`),
-   `metadata.signature`, `main_rule` (and extras, each linked to its handbook entry), `goal_type` (a list in
-   play order), goal parameters `n` (phase 3 formula), `target_visible` (yes or no, with where), board mask
-   (ASCII: `#` floor, `.` void) with `spawn_cols` (default: the centre 4 columns), `flavour` (D1-D4 or
-   none), minigame block, full `look` block, **`scene.terrain`,
-   `scene.set_piece_action` (cosmetic or rule), `scene.cast_on_stage` with `cast_pose` (and optional
-   `scene.hud_meter`)**, `g0` and stars from the phase 3 formula,
-   role, `opening_event`, world change on win, comic fail reaction, `callback_of` if any.
-3. **Prove uniqueness.** The `level_table` passes the script check; group leads check cross-biome U3 and U14.
+1. **Start from the mechanic and verb (ruling A), then the beat.** Each spec opens with `mechanic` (1-2 ids,
+   each linked to its handbook entry) and `verb`, then its beat id (= level id) and the one-sentence tutorial
+   line (12 words or fewer). The board and scene come after.
+2. **Required fields per level, in this order:** `mechanic`, `verb`, `id`, `tutorial_line`, `headline_objective`,
+   `goal_type` (a list in play order), goal parameters `n` (phase 3 formula), `target_visible` (yes or no, with
+   where), `ending_pattern` (written to `metadata.ending`), `metadata.signature`, **`footprint` (`shape WxD`)**
+   and the board mask (ASCII: `#` floor, `.` void) with `spawn_cols` (default: the centre 4 columns),
+   `flavour` (D1-D4 or none), `telegraph` (seconds, for any `strike` level), minigame block, full `look`
+   block, **`scene.terrain`, `scene.set_piece_action` (cosmetic or rule), `scene.cast_on_stage` with
+   `cast_pose` (and optional `scene.hud_meter`)**, `g0` and stars from the phase 3 formula, role,
+   `opening_event`, world change on win, comic fail reaction, `callback_of` if any.
+3. **Prove uniqueness.** The `level_table` passes the script check (U3, U14, U18, U19 and the rest); group
+   leads check cross-biome U3 and U14. A biome has at most one plain square; every other footprint is a named
+   shape or its own size.
 4. **Readability.** Targets are visible from frame 0 at 720x1280 (`target_visible`); the active piece differs
    from the stack; the landing marker is high contrast. Flag engine needs.
 5. Level 01 has at most one rule, an opening set and a gentle `g0`. The bonus is a relaxed set piece. Hard
@@ -347,7 +399,7 @@ artist owns `assets/data/set_pieces.json` and flags art cost per piece (the file
 **Scoring.** One decimal, never rounded up. **A phase passes only if every criterion is at least 9.7.**
 Anchors: 10 = no change you would request; 9.7 = wording or tuning notes only, no structural change; 9.6 or
 lower = a structural fix is needed. Reviewers list ranked defects with owner and fix; makers fix.
-- **Preconditions.** QA runs the scripts (U3, U5, U6, U7, U12, U14, U15, U16, U17, the name check) before human
+- **Preconditions.** QA runs the scripts (U3, U5, U6, U7, U12, U14, U15, U16, U17, U18, U19, the name check) before human
   scoring; the reviewer applies the cap: a script failure caps the matching criterion at 8.0.
 - **Coverage.** Read every beat and spec of one biome in full and at least 5 levels of every other biome
   (across teach, boss and hard roles); cite at least 10 level ids per criterion.
@@ -357,7 +409,9 @@ lower = a structural fix is needed. Reviewers list ranked defects with owner and
   derived from phase 3 formulas (`g0`, stars, `n`) are exempt in exemplars.
 - **Pillars.** Phases 2-3 apply P1a, P2a, P2c; phases 4-5 apply the spec-time set (section 2) to 5 sampled
   levels; phases 7-8 apply all tests.
-- **Caps.** A mundane or counter-based level caps N4, M3 and L3 at 8.0; a spec with an empty required `scene`
+- **Caps.** A level with no mechanic or verb, or that fails P2d, caps M1, M3 and L3 at 8.0; a biome with a
+  repeated footprint or more than one plain square caps L6 and A1 at 8.0 (ruling B: a grid of squares is a 3,
+  not a 9). A mundane or counter-based level caps N4, M3 and L3 at 8.0; a spec with an empty required `scene`
   field (terrain, set_piece_action, cast_on_stage) caps L6 at 8.0; a built level that is only a grid on a
   floating square caps A-build and C5 at 8.0.
 - **Each item below uses these anchors unless a "9.7 means" is given.**
@@ -374,17 +428,19 @@ rubric separates 9.7 from 8.5; V7 every user decision is honoured.
 - N6 Hand-off (showable in one place; function labels; opening events unique).
 
 **M (phase 3, mechanics)**
-- M1 Story-to-mechanic fit. M2 Teach and combine (budget, dependency graph).
-- M3 Variety and quotas (goal set, boss triples, minigame debuts; no mundane or counter goals; surprise endings
-  specified as engine features). M4 Difficulty math. M5 Fairness and feel (98% winnable, boss by building).
+- M1 Story-to-mechanic fit (every level is a minigame on 1-2 mechanics and one verb). M2 Teach and combine
+  (budget, dependency graph, shared `strike` and `row_cannon`).
+- M3 Variety and quotas (goal set, at least 5 of 8 verbs per biome, boss triples, minigame debuts; no mundane or
+  counter goals; surprise endings specified as engine features). M4 Difficulty math. M5 Fairness and feel (98% winnable, boss by building).
 - M6 Buildability (engine gaps with owner and size). **M7 Handbook:** every rule and goal has a plain-words
   entry (what it does, how it reads, worked example, what it never does, debut level); no engine terms.
 
 **L (phase 4, level specs)**
-- L1 Beat fidelity (names pass the title script). L2 Uniqueness (U1-U17 and the scripts).
-- L3 Gameplay variety (no mundane or counter-based levels; at least 4 surprise endings per biome).
-- L4 Curve and pacing. L5 Readability and fairness. L6 Look, scene and art direction (fingerprint, U17 scene
-  spread, set pieces, palette, no beige). L7 Completeness (all fields, handbook links, `level_table`).
+- L1 Beat fidelity (names pass the title script). L2 Uniqueness (U1-U19 and the scripts).
+- L3 Gameplay variety (mechanic and verb first, verb spread, no mundane or counter-based levels, at least 4
+  surprise endings per biome).
+- L4 Curve and pacing. L5 Readability and fairness. L6 Look, scene and art direction (footprint variety U18,
+  fingerprint, U17 scene spread, set pieces, palette, no beige). L7 Completeness (all fields, handbook links, `level_table`).
 
 **A-spec (phase 5, art on paper).** 9.7 means each item is met for all 168 levels with no structural fix.
 A1 every `look` block, `scene` kit item (terrain, acting set piece, posed cast, HUD meter) and set-piece spec

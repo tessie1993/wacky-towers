@@ -240,15 +240,15 @@
  "weather": {
   "clear": {},
   "mist": {
-   "amount": 12,
-   "lifetime": 12.0,
+   "amount": 26,
+   "lifetime": 10.0,
    "mesh": [
     1.0,
     1.0
    ],
    "size": [
-    3.0,
-    5.0
+    0.9,
+    1.8
    ],
    "texture": "puff",
    "colors": [

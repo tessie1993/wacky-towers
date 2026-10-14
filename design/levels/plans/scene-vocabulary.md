@@ -40,15 +40,25 @@ the board (counts toward U10 and needs a handbook entry).
 | id | Kind | What it does |
 |---|---|---|
 | `root_whip` | cos | roots sway a vine-held bridge for show; it never moves or removes a block |
-| `cannon_volley` | rule | cannonballs knock out the top row (handbook#cannon_volley) |
-| `tentacle_grab` | rule | a tentacle pulls a block off the wall after a telegraph (defence family; handbook entry) |
-| `rock_throw` | rule | a thrower lobs a rock that knocks out the top block of a lane (handbook entry) |
-| `catapult_volley` | rule | a catapult strikes a lane after its arm cranks back (handbook entry) |
+| `cannon_volley` | rule | `strike` variant: cannonballs knock out the top block of a lane (handbook#strike) |
+| `tentacle_grab` | rule | `strike` variant: a tentacle pulls a block off the wall after a telegraph |
+| `rock_throw` | rule | `strike` variant: a thrower lobs a rock that knocks out the top block of a lane |
+| `catapult_volley` | rule | `strike` variant: a catapult strikes a lane after its arm cranks back |
 | `sails_turn` | cos | windmill sails turn faster as the stack rises |
 | `bell_ring` | cos | a bell rings when a layer lands |
 | `lantern_sway` | cos | lanterns swing with the wind |
 | `smoke_puff` | cos | a chimney or vent puffs on each lock |
 | `waterfall_pour` | cos | a waterfall pours louder as time runs down |
+
+## Footprint shapes (closed list, U18; ruling B)
+
+A footprint is `shape WxD` (for example `ring 10x10`). Each biome uses its own shape or size per level; a plain
+square is allowed once per biome. Every shape keeps the corridor rule (spawn run 4 wide, dead ends and bands 3+).
+
+`plain square` (once per biome), `ring`, `bridge span`, `stair`, `island chain`, `ship hull`, `L`, `cross`,
+`crescent`, `twin towers`, `funnel`, `moat with centre island`. More shapes (terraces, diamond, U-bay, stepping
+stones from the identity spec) are added by change request. The set of shapes across a biome's 14 levels is at
+least 8 (U18).
 
 ## Off-list ids fail the U17 script
 
