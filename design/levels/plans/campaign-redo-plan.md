@@ -101,3 +101,19 @@ owner revises and the gate re-runs. No phase starts before the one it depends on
   underwater, lava, forest, cave, clockwork, neon, celestial, **pirate**, carnival. The story, the
   emotional arc and the progression use this order. The catalog and unlock order change in phase 6
   (build).
+
+## Godot master answers to the analyst (2026-10-14)
+- The UI layer is exempt from the "logic touches UI" penalty and is scored on size only.
+- Vendored folders (third_party, addons, tools/vendor) are excluded from snake_case scoring, but still
+  flagged.
+- Instance shader params are neutral, because per-instance variation rides MultiMesh colour and
+  palette arrays.
+- Untyped Dictionaries are accepted only at serialization boundaries (lockstep and JSON snapshots).
+
+## Extra tasks
+- Phase 3: `tools/qa/check_level_uniqueness.gd`, owned by tools-programmer (about 2 days). It reads the
+  `level_table` blocks and reports observations only.
+- Phase 6: reorder the catalog, economy and progression for Pirate 11th. Build the scene kit (terrain
+  modules, animated cast, set-piece actors) for "a level is a scene, not a grid".
+- Tech debt (Anara audit, production/qa/godot-analyst-2026-10-14.md): split game_ui.gd per screen,
+  remove the src/_staging trees, type the HUD snapshot, and add a handler table to main.gd.
