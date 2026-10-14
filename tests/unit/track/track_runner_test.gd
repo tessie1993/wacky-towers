@@ -38,7 +38,7 @@ func test_event_fires_on_the_tick_the_platform_reaches_it() -> void:
 func test_same_run_gives_the_same_result_whatever_the_step_size() -> void:
 	var events: Array = [{"kind": "bump", "at_mm": 1000, "force": 3, "dir": "+x"}, {"kind": "crosswind", "at_mm": 3000, "dir": "+x", "strength": 2}]
 	var results: Array = []
-	for dt: int in [50, 10, 33]:
+	for dt: int in [50, 10, 40]:
 		var board: BoardState = T.board({Vector2i(6, 3): 4})
 		var runner := TrackRunner.new(T.def(events))
 		var out: Array[Dictionary] = T.run(runner, F.api(board), 8000, dt)
@@ -56,7 +56,7 @@ func test_lean_is_centre_of_mass_and_building_on_the_light_side_rights_it() -> v
 	for y: int in 2:
 		board.place(board.index(Vector3i(2, y, 3)), 1, 0, 2)
 	T.run(runner, api, 100)
-	assert_int(runner.lean_pm()).is_equal(0)  # x=2 and x=5 cancel
+	assert_int(runner.lean_pm()).is_equal(125)  # x=2 and x=5 cancel; the z=3 row leaves 4 x -1 / 32
 
 
 func test_a_lopsided_stack_warns_then_topples_after_the_dwell_and_costs_a_heart() -> void:

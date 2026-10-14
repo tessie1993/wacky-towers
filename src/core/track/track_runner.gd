@@ -326,26 +326,26 @@ func _eval_cargo(api: RuleApi, fx: TrackEffects, out: Array[Dictionary], lean_to
 	_update_cargo_state(api, out)
 
 
-## Stress never skips a warning stage: from stable it reaches at most wobble, from wobble at most slip.
+## Stress never skips a warning stage: the stress itself is kept whole (a huge hit is not thrown away), but the
+## state climbs at most one stage per tick: stable -> wobble -> slip -> lost, each on its own tick.
 func _update_cargo_state(api: RuleApi, out: Array[Dictionary]) -> void:
-	if _cargo_state == CARGO_STABLE:
-		_stress_u = mini(_stress_u, (int(_def.cargo["slip_pm"]) - 1) * 1000)
-	elif _cargo_state == CARGO_WOBBLE:
-		_stress_u = mini(_stress_u, 999 * 1000)
 	var pm: int = _stress_u / 1000
-	if pm >= 1000:
+	var target: int = CARGO_STABLE
+	if pm >= 1000:  # full scale of the stress meter
+		target = CARGO_LOST
+	elif pm >= int(_def.cargo["slip_pm"]):
+		target = CARGO_SLIP
+	elif pm >= int(_def.cargo["wobble_pm"]):
+		target = CARGO_WOBBLE
+	target = mini(target, _cargo_state + 1)
+	if target == CARGO_LOST:
 		_record(api, out, EV_CARGO_LOST, {"cause": _cargo_cause, "at_mm": position_mm(), "hearts_left": _hearts_left})
 		_cargo_state = CARGO_LOST
 		_lose_heart(api, out, &"cargo_lost")
 		return
-	var state: int = CARGO_STABLE
-	if pm >= int(_def.cargo["slip_pm"]):
-		state = CARGO_SLIP
-	elif pm >= int(_def.cargo["wobble_pm"]):
-		state = CARGO_WOBBLE
-	if state != _cargo_state:
-		_cargo_state = state
-		if state == CARGO_STABLE:
+	if target != _cargo_state:
+		_cargo_state = target
+		if target == CARGO_STABLE:
 			_cargo_cause = &""
 		_record(api, out, EV_CARGO_STATE, cargo_state())
 
