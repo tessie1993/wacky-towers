@@ -80,3 +80,28 @@ sometimes. And so mundane."
   win. The swap test from the vision (P1) applies.
 - **Engine needs** (phase 3 or the build): goal phases (goal A, then goal B), hidden or revealed
   goals, story-objective HUD text, and ending events. The systems designer specifies these.
+
+## User rule, 2026-10-14: a level is a scene, not a grid
+
+User: "I want to see more art than only the grid. Look at the references. Levels have more than just
+grids." See `assets/art/reference/style/01_story_flow.jpg` and `09–12_minigames_*.jpg`: Bridge Dash
+over a waterfall chasm, Fort Blast catapults on sea cliffs, Kraken Blockade's octopus wrapping the
+walls, Clockwork Conveyor's machine over lava, Digging Frenzy's mine shaft and Summit Scramble's
+volcano. They are layout and idea references only; no names, logos or IP are copied.
+
+Every level is a **diorama** built around its story beat:
+- **The board lives inside a place.** It might be a bridge of planks across a river, a fort wall on
+  a cliff, a raft, a mine shaft, a conveyor deck or a summit ledge. The island and terrain around the
+  board are shaped for this level: chasms, water, cliffs, machines and paths. It is not the same
+  floating square every time.
+- **Characters on stage.** The heroes, the Wizard and the chapter's NPCs or villain are posed and
+  animated in the scene: building, cheering, hauling blocks or reacting to danger. The boss is a
+  big on-scene creature or machine (tentacles, catapults, a storm cloud) that acts on the board.
+- **Set piece in action.** The landmark is part of the play: the catapult fires, the kraken grabs,
+  the conveyor moves, the lava rises. It is not just decoration.
+- **Themed HUD meters** where they fit: Heat, Fort HP, Altitude, Lava Rise, Balance or Stability.
+  They use the no-beige kit.
+- **The camera frames the scene,** with the board readable and the scene visible around it (U14
+  look fingerprint plus camera preset).
+- **Phase 4 specs** list each level's `scene` (terrain kind, set piece and its action, cast on
+  stage). **Phase 6** builds a scene kit: terrain modules, animated cast, and set-piece actors.

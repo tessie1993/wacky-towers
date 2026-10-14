@@ -216,18 +216,18 @@ one YAML front-matter block per beat: `id` (= level id), `role`, `place`, `who`,
 
 **The fresh story must achieve:**
 1. One through-line a child can retell in two sentences, with a reason to travel island 1 to 12 in the order
-   of section 0 (Pirate 11th).
+   of the biome-order paragraph at the top (Pirate 11th).
 2. Stacking is canon: say why building holds the world together.
 3. Twelve chapters, each with a problem, a local ally or villain, and the section 3 role and stakes. Pirate is a
    chapter of its own, not Underwater's twin. Every biome has a boss face.
-4. The cast earns its place: hero arcs and resolutions in biomes 10-12, each hero in 6+ chapters, the Wizard flaw
+4. The cast earns its place: hero arcs and resolutions in biomes 9-12, each hero in 6+ chapters, the Wizard flaw
    and payoff, NPC roles for Lana, Boulder and Glim, and the species for Glim. Pirate (chapter 11) is the
    swaggering run-up to the Carnival and must not reprise Underwater.
 5. 14 beats per biome with a **function label** (teach 01-03, twist 04-06, combine 07-09, boss 10, bonus,
    h1-h3 remixes). The narrative lead writes situations; **the systems designer owns the mapping from function
    to rule**.
-6. At least 4 beats per biome carry a non-plain `ending_pattern` (U16), and none is a counter or a plain
-   "clear" (U15). The `opening_event` ids follow U8.
+6. At least 4 beats per biome carry a non-plain `ending_pattern`, at least 3 of them twist, reveal or guest
+   (U16), and none is a counter goal (U15). **This phase assigns the `opening_event` ids** (U8, 84+ distinct).
 7. A story that survives as 12 chapter captions plus level names; all names pass the board-title ban.
 8. Resolve the `tumble-fair.md` conflict (proposed: the 14-level Carnival biome replaces the side island).
 9. Freshness: borrow nothing from old level names or story-v2 beats.
@@ -250,7 +250,8 @@ plot, gives each biome a simple problem, and earns the Carnival payoff. Borrow C
 
 ## 7. Brief for the systems designer (phase 3)
 
-**Outputs:** `design/levels/plans/mechanics-handbook.md`, `mechanics-roster.md` and `progression.md` v2.
+**Outputs:** `design/levels/plans/mechanics-handbook.md`, `mechanics-roster.md` and `progression.md` v2
+(in the section 0 biome order), plus the uniqueness script (tools-programmer, section 5).
 - **Handbook (owner: systems designer; phase 3 deliverable; written before any art or code, per the user's
   order):** a plain-words entry for every rule and goal a player meets: what it does, how the player reads it,
   a worked example, what it never does, and its debut level. No engine terms.
@@ -277,11 +278,12 @@ plot, gives each biome a simple problem, and earns the Carnival payoff. Borrow C
 ## 8. Brief for the level design lead (phase 4)
 
 **Outputs:** `design/levels/plans/<biome>.md` v2 for all 12 biomes (4 groups of 3), each ending with the
-machine-readable `level_table` for the script check. Set pieces: 5-8 per biome, 60-96 in total; the technical
+machine-readable `level_table` for the script check. Set pieces: 7-8 per biome, 84-96 in total; the technical
 artist owns `assets/data/set_pieces.json` and flags art cost per piece (the file does not exist yet).
 1. **Start from the beat.** Each spec opens with its beat id (= level id).
-2. **Required fields per level:** `id`, `headline_objective`, `ending_pattern`, `metadata.signature`, `main_rule`
-   (and extras, each linked to its handbook entry), `goal_type`, board mask (ASCII grid: `#` floor, `.` void,
+2. **Required fields per level:** `id`, `headline_objective`, `ending_pattern` (written to `metadata.ending`),
+   `metadata.signature`, `main_rule` (and extras, each linked to its handbook entry), `goal_type`, goal
+   parameters `n` (from the phase 3 formula), `target_visible` (yes or no, with where), board mask (ASCII grid: `#` floor, `.` void,
    one row per line), minigame block, full `look` block, `g0` and stars from the phase 3 formula, role,
    `opening_event`, world change on win, comic fail reaction, `callback_of` if any.
 3. **Prove uniqueness.** The `level_table` must pass the script check; group leads check cross-biome U3 and U14.
@@ -296,17 +298,21 @@ artist owns `assets/data/set_pieces.json` and flags art cost per piece (the file
 **Scoring.** One decimal, never rounded up. **A phase passes only if every criterion is at least 9.7.**
 Anchors: 10 = no change you would request; 9.7 = wording or tuning notes only, no structural change; 9.6 or
 lower = a structural fix is needed. Reviewers list ranked defects with owner and fix; makers fix.
-- **Preconditions.** The scripts (U3, U5, U6, U7, U12, U14, U15, U16, the name check) must pass before human
-  scoring. A script failure caps the matching criterion at 8.0.
+- **Preconditions.** QA runs the scripts (U3, U5, U6, U7, U12, U14, U15, U16, the name check) before human
+  scoring; the reviewer applies the cap: a script failure caps the matching criterion at 8.0.
 - **Coverage.** Read every beat and spec of one biome in full and at least 5 levels of every other biome
   (across teach, boss and hard roles); cite at least 10 level ids per criterion.
-- **Calibration.** The phase 2 and 4 makers first write one exemplar beat and one exemplar spec; the panel scores
-  them (target 9.7) and one deliberately weak sample (target 8) before reviewing the rest.
-- **Pillars.** Every rubric applies P1, P2a-c and P3a-d to 5 sampled levels.
-- **Specific criteria are single-purpose.** The mundane or counter-based level cap is 8.0 on N4, M3 and L3.
+- **Calibration.** The **game director** writes one exemplar beat, one exemplar spec and one deliberately weak
+  sample (target 8) before the phase 2 gate, stored in `design/levels/plans/exemplars.md`; the panel scores
+  them as anchors before reviewing the rest. Makers do not write their own anchors.
+- **Pillars.** Phases 2-5 apply the spec-time tests (section 2) to 5 sampled levels; phases 7-8 apply all of them.
+- **Caps.** A mundane or counter-based level caps N4, M3 and L3 at 8.0.
+- **Each item below uses these anchors unless a "9.7 means" is given.**
 
-**V (phase 1, this vision):** V1 fantasy, V2 pillar tests, V3 arc and ending, V4 uniqueness rules, V5 briefs,
-V6 rubric, V7 consistency with user decisions.
+**V (phase 1, this vision).** 9.7 means no structural fix is needed. V1 fantasy is clear in a pitch and a
+paragraph; V2 each pillar has a test that runs at its stated phase; V3 arc, stakes and ending are defined;
+V4 uniqueness rules are measurable, scripted and consistent; V5 briefs name owner, output and fields; V6 the
+rubric separates 9.7 from 8.5; V7 every user decision is honoured.
 
 **N (phase 2, narrative)**
 - N1 Through-line and logic. N2 Arc, stakes and ending. N3 Cast (arcs, perks hand-off, art rows).
@@ -327,15 +333,21 @@ V6 rubric, V7 consistency with user decisions.
 - L4 Curve and pacing. L5 Readability and fairness. L6 Look and art direction (fingerprint, set pieces, palette,
   no beige). L7 Completeness (all fields, handbook links, `level_table`).
 
-**A (phase 5, art):** A1 look block and set-piece specs per level, A2 palette and block skins incl. Pirate,
-A3 cast rows and silhouettes, A4 reference parity (boards 13 and 15), A5 no beige or parchment, A6 reduced motion.
+**A (phase 5, art).** 9.7 means each item is met for all 168 levels with no structural fix.
+A1 every `look` block and set-piece spec is complete and art-costed; A2 palette and block skins incl. Pirate
+match boards 13 and 15; A3 cast rows (silhouette, colour key, prop) exist for all recurring characters;
+A4 reference parity; A5 no beige or parchment anywhere; A6 reduced motion keeps every cue readable.
 
-**B (phase 6, build):** B1 verifier 0 failures, B2 boots (`ui_flow_smoke`), B3 JSON matches the specs and
-`level_table`, B4 engine features (boss phases, goal phases, reveals) behave as handbook entries say,
-B5 CI green and no `fixed_list`.
+**B (phase 6, build).** 9.7 means zero failures and no workaround.
+B1 verifier reports 0 failures; B2 the game boots (`ui_flow_smoke`); B3 every JSON matches its spec and
+`level_table` row; B4 boss phases, goal phases and reveals behave as the handbook entries say; B5 CI green and
+no `fixed_list`.
 
-**C (phase 7-8, captures):** C1 start, mid, clear and end screenshot per level, C2 U5 and U14 hold on the real
-frames, C3 targets visible at 720x1280, C4 contact sheets show 12 clearly different biomes, C5 P1-P3 hold in play.
+**C (phases 7-8, captures).** 9.7 means every level has retained evidence and none is a near-duplicate.
+C1 start, mid, clear and end screenshot per level in `production/qa/evidence/campaign-v2/`; C2 U5 and U14 hold
+on real frames; C3 targets visible at 720x1280; C4 contact sheets show 12 clearly different biomes; C5 all
+pillar tests (spec-time and build-time) hold in play.
 
-**S (phase 8, sound):** S1 every action has feedback, S2 a music theme per biome following the arc, S3 boss and
-ending cues, S4 comic fail sound, S5 mix and reduced-motion-safe cues.
+**S (phase 8, sound).** 9.7 means every item is audible and mixed without a clash.
+S1 every action has feedback; S2 a music theme per biome following the arc; S3 boss and ending cues; S4 a
+comic fail sound; S5 the mix is clear and cues are shape, colour and sound redundant.
