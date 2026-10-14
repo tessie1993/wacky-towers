@@ -640,7 +640,8 @@ Every entry here is a proposal for the user to accept, change or cut. Each needs
 
 **BK-33* gem cube (kind `gem`, glyph `G`)**
 - **What.** A glittering gem embedded in a cube. Clear its layer to collect it.
-- **Rule.** Placed by level data (`starting_contents`) or hailed in by `mushroom_popup` with `object_kind: gem`. Trigger: its cell is removed by a genuine layer clear (same collection rule as the item cube, `items.md` rule 2). Effect: +`gem_points` (100) score and +1 `gems` goal counter; removal by bomb, ember, pest or rescue wipe does NOT collect it (the gem is lost, with a sad puff). Fill: `fills_layer` true, so it is part of its layer. Gravity: normal. Other specials: `pest` skips kinds other than block and starter (`pest.gd:49`); a candy bomb blast destroys it unless anchored (level flag `gem_safe` anchors it while a goal needs it). Rescue: a wipe loses it. Top-out: normal height.
+- **Rule.** Placed by level data (`starting_contents`) or hailed in by `mushroom_popup` with `object_kind: gem`. Trigger: its cell is removed by a genuine layer clear (same collection rule as the item cube, `items.md` rule 2). Effect: +`gem_points` (100) score and +1 `gems` goal counter; removal by bomb, ember, pest or rescue wipe does NOT collect it (the gem is lost, with a sad puff). Fill: `fills_layer` true, so it is part of its layer. Gravity: normal. Other specials: `pest` skips kinds other than block and starter (`pest.gd:49`). A blast, ember or Smash removes it (cause DAMAGE) unless it carries the NEW `blast_safe` flag; a rescue wipe removes it unless it carries `rescue_safe` (3.1b). A level that needs its gems sets both as `goal_object`. It does NOT use `anchored`, which would block the clear that collects it (`board_state.gd:687`). Top-out: normal height.
+  - **Occlusion (r2):** a gem sits in the lowest `gem_max_layer` layers, which the stack buries from the three-quarter camera. So every gem draws the gold see-through outline (3.6) and a floor-level marker at its column that stays visible while a layer above it is sealed. The player always knows which layer to clear.
 - **Look.** A faceted gem in a gold-trimmed cube, colour by gem type (blue, green, purple), a sparkle pulse every 1.2 s and a gold rim. Skins: meadow flower-bud, ice crystal, cave crystal cluster, underwater pearl cluster, lava ember-shard, celestial star-shard, clockwork gear-jewel.
 - **Audio.** Proposed `SFX_SP_GEM_COLLECT` (a rising chime; `Loot Gold.wav` as a temp).
 - **Fits.** Cave, ice, lava, underwater, celestial. A "collect N gems" goal fits `dig_rescue`-style levels and gem-grab minigames.
@@ -717,7 +718,8 @@ Every entry here is a proposal for the user to accept, change or cut. Each needs
 
 **BK-40* peg (post, branch or spindle)**
 - **What.** A thin standing post on a platform cell. Hollow pieces drop over it.
-- **Rule.** A level marks a footprint cell `peg` with height `peg_h` (1 to 3). It is a column, not a layer cell. It is solid for non-hollow pieces (they cannot overlap it). A hollow piece whose hole lines up may pass over it (SH-01). Never cleared. Rescue: stays. Top-out: counts as height up to its top only.
+- **Rule.** A level marks a footprint cell `peg` with height `peg_h` (1 to 3). It is a column, not a layer cell: the cells it passes through are `fixed` with `static_geometry`, so they leave the active count and never block a layer (3.1b, `board_state.gd:94-96`). It is solid for non-hollow pieces (they cannot overlap it). A hollow piece whose hole lines up may pass over it (SH-01), which is a fit. Never cleared. Rescue: stays (`fixed`). Top-out: `static_geometry` adds no height.
+  - **Readability (r2):** a peg is thin, so its base is a full 1-cell gold disc, a vertical gold beam shows above it while a hollow piece is falling, and the see-through outline (3.6) keeps it visible behind blocks.
 - **Look.** A wooden post with a gold cap; a ring glow on its base while a hollow piece is falling.
 - **Audio.** `SFX_SP_RING_FIT` (proposal).
 - **Fits.** Meadow fence posts, carnival ring toss, clockwork spindles, pirate belaying pins, cave stalagmites.
@@ -739,7 +741,7 @@ Every entry here is a proposal for the user to accept, change or cut. Each needs
 
 **BK-42* hang point (branch, rail, rope loop)**
 - **What.** The thing a hook catches on (SH-05).
-- **Rule.** A level marks a cell or face `hang`. A hook cube above it locks "hung" (SH-05). Also an "anchor bolt" variant: any cube pressed onto it is anchored for `hang_locks`. Normal support otherwise. Rescue: stays.
+- **Rule.** A level marks a cell or face `hang`. A hook cube that locks beside or under it makes its piece `hung` (SH-05, 3.1b). The hang point is a `fixed` `static_geometry` prop (it adds no height and does not block layers). Normal support otherwise. Rescue: stays. (r2: the "anchor bolt" variant is cut; `hung` is the only hold status.)
 - **Look.** A branch stub with a leaf, a brass ring, or a rope loop; gold glow when a hook is above.
 - **Audio.** `SFX_SP_HOOK_CLINK` (proposal).
 - **Fits.** Forest, pirate, cave, clockwork, carnival.
@@ -1084,6 +1086,58 @@ These are the level actors and props named in `levels.md` that do not exist yet,
 - **Fairness.** The meter is always visible.
 - **Engine.** NEW. 2 days.
 - **Source.** The sleeping stone guard and "Guard Sleep" meter in `mockup_02.jpg` (Maze Heist).
+
+**OB-40* laser sweep (drone or gate)**
+- **What.** A beam sweeps one lane of the board and cuts the top cube of each column it crosses.
+- **Rule.** NEW. Every `laser_every_ms` (default 9000) a lane is lit as a thin dotted line for `warn_ms` (1500, the actor tell is a drone turning to face the lane), then the beam crosses and removes the top cube of up to `laser_max_cols` (3) columns of that lane with cause DAMAGE (3.1b: `fixed` cells survive, `blast_safe` objects survive). A clear in the lane's top layer before the beam arrives cancels it (same idea as `crab_claw.gd:16-21`). Millisecond schedule, hidden clock (Appendix E), F3b applies.
+- **Look.** Cyan-white beam, hazard-orange dotted lane while warning, a drone or lens prop at the rim. Badge: a beam and lens (3.6).
+- **Audio.** `SFX_EV_LASER_WARN`, `SFX_EV_LASER_CUT` (AUDIO-NEW).
+- **Fits.** neon (signature, 3.4), celestial.
+- **Intro and teach.** neon slot 03 (3.4). The lit lane is the teacher.
+- **Fairness.** 1500 ms warning, cap of 3 columns, cancel by clear.
+- **Engine.** NEW. 2 days, gameplay-programmer plus technical-artist. Closes catalogue gap 9 (laser sweep, `reference-minigames-catalog.md:352`, M40).
+- **Source.** Drones lasering a cube wall in the neon hack scene (M40, `mockup_10.jpg`).
+
+**OB-41* swinging ball (wrecking ball, spike ball, log)**
+- **What.** A heavy ball on a chain that swings over one row of the board.
+- **Rule.** NEW. Every `swing_every_ms` (default 8000) the ball swings across a marked row. The arc is visible for `warn_ms` (2000) as the chain winds up. It removes cells in that row on layer `swing_layer` (the row's top exposed cubes, up to 3) with cause DISPLACED (so `hung` and `fixed` cells resist it, 3.1b). A clear of that layer's row before the swing cancels it.
+- **Look.** A big spiked ball or striped carnival ball on a chain from a post. Badge: a ball on a chain.
+- **Audio.** `SFX_EV_SWING_WARN`, `SFX_EV_SWING_HIT` (AUDIO-NEW).
+- **Fits.** carnival (wrecking-ball booth), lava (spiked ball over a platform), pirate (cargo hook).
+- **Intro and teach.** carnival slot 04 (3.4).
+- **Fairness.** 2000 ms warning, visible arc, cancel by clear, `hung` pieces resist it (this is a second stake for hooks and jacks).
+- **Engine.** NEW. 2.5 days.
+- **Source.** Swinging spiked balls on the lava run (M53, `mockup_13.jpg`); swinging log trap (M19, `mockup_05.jpg`).
+
+**OB-42* gravity well (radial pull)**
+- **What.** A swirling well that tugs the falling piece toward its centre.
+- **Rule.** NEW, built on `magnet_pull`. A marked floor cell with radius `well_radius` (3). While a falling piece is inside the radius, every `well_pull_ms` (900) it moves one cell toward the well centre, with a pull-arrow telegraph (the ghost shows the arrow) 600 ms before the first pull (`magnet_pull.gd:21-25` already warns 600 ms). Blocked pulls are skipped (`:29-30`). The well cell itself is a floor hole (BK-37): a piece that ends wholly over it falls out of play. A `braced` claw piece cancels the first pull (SH-06).
+- **Look.** A violet spiral disc with falling sparks and arrow trails. Badge: a spiral.
+- **Audio.** `SFX_SP_WELL_HUM` (loop in range), `SFX_SP_WELL_PULL` (AUDIO-NEW).
+- **Fits.** celestial (signature, 3.4), neon.
+- **Intro and teach.** celestial slot 03 (3.4).
+- **Fairness.** One cell per 900 ms, arrow shown, a hard drop before the first pull is a counter.
+- **Engine.** NEW. 2 days. Closes catalogue gap 8 (radial pull, `reference-minigames-catalog.md:351`, M27, M33, M46).
+- **Source.** The black hole in the wormhole board (M27, `mockup_07.jpg`).
+
+**OB-43* claimed tile (paint tile, territory)**
+- **What.** Floor tiles take the colour of the last piece that locked on them.
+- **Rule.** NEW. A tile is `owned` by the player or colour of the last lock that covered it. Cleared cubes leave the tile owned. A goal `tiles_owned` (new evaluator) wins when a player owns the most tiles at the end condition. In versus, the overlay is the player's colour. Not a hazard, no clock.
+- **Look.** A coloured glow on the floor tile plus a small flag icon. Badge: a flag tile.
+- **Audio.** `SFX_SP_TILE_CLAIM` (AUDIO-NEW).
+- **Fits.** neon (paint splat), tournament rounds (Island Claim), carnival.
+- **Intro and teach.** neon slot 06 (3.4), or the first territory round.
+- **Fairness.** Plain scoring, shown by a tug bar.
+- **Engine.** NEW. 3 days (goal evaluator plus floor overlay). Closes the territory and paint-tile entries (M60, M86; the footprint goal M94 is a close cousin).
+- **Source.** Paint-gun hex arena (M60, `mockup_14.jpg`) and claimed tile floor (M86, `party_versus_ref.jpg`).
+
+**Recorded rejections and mappings** (so nothing from the reference gap list is lost, `reference-minigames-catalog.md:340-356`):
+- **Connector or pipe path (gap 7, M20, M52, M74):** a goal type, not a special. Out of this doc. Owner: goals handbook. Reason: it changes how the level is won, not how a block behaves. The pipe pieces are skins of existing shapes.
+- **Plank and crate pieces:** skins of the `plank` and `slab` shapes (3.6 skin rule). No rule.
+- **Avatar on the board (gap 1), ball sport (gap 4), bumper physics (gap 3), rail laying (gap 6), projectile siege (gap 2):** out of scope for a block-stacking game with one extra verb at most (`minigame-party-rules.md` rule 3). The cannon, catapult and gnome are attacker props (OB-35), not player verbs.
+- **Floor spikes:** the spiked shell BK-23f.
+- **Whirlpool:** OB-42 (gravity well) with a water skin.
+- **Mine cart and rails:** a track event on a moving platform (OB-32), not a separate object.
 
 #### 3.2.d Power-ups and items the player triggers
 
