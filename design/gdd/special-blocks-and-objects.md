@@ -266,12 +266,12 @@ The bank has 67 shapes in 10 families (`assets/data/shapes/families.json:4-92`, 
 - **Source.** The party boards show novelty-shaped blocks (`party_modes_ref.jpg`, Appendix A).
 
 **SH-13 rocket (power by form)** `*`
-- **What.** The party "rocket" (8 cubes, 6 orientations, `shape_bank.tres:648-657`) gets a rule: a thruster. Tap the drop button twice in a row (hard drop already exists) and a rocket lifts and slides forward.
-- **Rule.** NEW. Only in minigame levels that list `rocket_boost` (race levels, kite bonus). Effect: once per rocket, the "double-tap" moves the piece 3 cells in the last move direction, then drops. Counted as a second verb, so it is shown as one gem button (`minigame-party-rules.md` rule 3). It never works in plain levels.
-- **Look.** Strawberry, with flame decal. The gem button glows when a rocket is falling.
-- **Audio.** `rocket_boost_whoosh`.
-- **Fits.** Meadow bonus (kite race), neon, celestial, carnival.
-- **Intro and teach.** Race levels only.
+- **What.** The party "rocket" (8 cubes, 6 orientations, `shape_bank.tres:648-657`) gets a thruster on its own button.
+- **Rule.** NEW. Only in race and tournament levels that list `rocket_boost`. The extra verb is one gem button (`minigame-party-rules.md` rule 3: at most one extra verb, shown as a single gem button). The button is NOT a double tap on drop (r2: hard drop is already on that gesture, and the verb would only exist while a rocket falls). The button is on screen the whole level and lights up only while a rocket piece is falling. Effect: once per rocket, the piece moves 3 cells in its last move direction (blocked cells stop it), then falls normally. It never exists in the campaign Chapter 1 levels (Appendix E) and is off in plain levels.
+- **Look.** Strawberry, with a flame decal. The gem button glows while a rocket falls. Badge: a rocket flame.
+- **Audio.** `SFX_SP_ROCKET_BOOST` (AUDIO-NEW).
+- **Fits.** tournament rounds, neon, celestial, carnival. Not the Meadow bonus (the kite race keeps the single basket verb set of `levels.md:386-415`).
+- **Intro and teach.** The first tournament race round. The gem button pulses once at the first rocket.
 - **Fairness.** Optional boost. Never required.
 - **Engine.** NEW. 2 days, gameplay-programmer (command) plus ui-programmer (button).
 - **Source.** Party minigame boards (dash and boost verbs).
