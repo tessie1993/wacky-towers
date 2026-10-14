@@ -1,10 +1,10 @@
-
+# Wacky Towers — Art Bible
 
 > **User rule, 2026-10-14: no beige or parchment interface.** "You did not remove beige interface like
 > I said." Parchment and cream are retired as surface colours. Windows are open purple-wood frames over
 > the painted scene (ref 05). Groups of controls use plum glass or wood planks. This rule overrides any
 > parchment wording elsewhere in this bible. See `.claude/docs/reference-quality-bar.md`.
-# Wacky Towers — Art Bible
+
 
 Version 2.1 · 2026-10-13. This replaces the v1 bible. The user decided: "delete the old art, make it
 look like the reference style". v2.1 adds the full cast, bosses, party-mode HUD, the Party Quest hub,
