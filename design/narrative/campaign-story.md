@@ -432,4 +432,147 @@ his branches shake (a steady platform); a stair up to his crown so he can watch 
 | forest_h2 | squirrels_roll_out_catapult | wedge | raft | drumming_trunk | rock_throw | Nutmeg:point, Bram:brace | Crown Wall |
 | forest_h3 | packs_swapped_sif_pack_gone | diamond | stepped_ravine | dim_glade | bell_ring | Sif:haul, Nutmeg:hide | Pack Chase |
 
-<!-- CHAPTERS 7-9 -->
+## Chapter 7: The Lullaby Below (Cave)
+
+**Caption:** Tiptoe now. The stone guardian is sleeping.
+**Where we are and what is wrong.** Echo Hollow, caves and crystals under a mossy island. A rockfall splits the party: Sif is alone with you on the near side with Glim, while Ada, Bram, the Wizard and Boulder dig
+from the far side. Keystone seven lies in the bed of Gneiss Gus, a stone guardian who must not be woken or the cave will collapse.
+**Villain / boss: Gneiss Gus.** A mountain-sized moss-covered stone giant fast asleep, teal eyes glowing when he stirs. Three phases, beaten by building: his snore-gusts sweep the cavern (baffles); his dreams drop rock
+lumps (a path through); a tower of chimes up to his ear to hum a lullaby so he rolls over. Resolution: the hum he returns is the missing note of the Sky Lullaby (reveal). Boss triple: arena a long cavern; 3 phases; action =
+building a resonant chime tower.
+**Ally met: Glim** (a mole in a headlamp cap with blueprint scrolls). **Set pieces:** sealed_mouth, crystal_wall, rail_ledge, bat_roost, stalagmite_shaft, gus_gallery, cart_barricade, gus_bed.
+**Emotional beat:** trust in the dark, quiet courage. Sif learns a small light is enough; Bram digs from the far side by hand. **Hat Dip:** a kazoo (cave_04). **Debut (module):** deep_dig (cave_02).
+**Hook into next:** Gus's snore settles into a rhythm, tick, tock, and the Tether leads toward a distant ticking.
+
+| ID | Beat | What happens | Objective | Verb | Minigame | Place | Who | Ending |
+|---|---|---|---|---|---|---|---|---|
+| cave_01 | Sealed Entrance | A rockfall seals the entrance with the others' muffled thumps behind it, and a tiny glowing nose appears in the dark. You plant a lamp-post so the lantern mole can light the first chamber, and he bows and introduces himself with a blueprint. | Plant a lamp-post for the mole | build | base: build_tower + lantern | Sealed Entrance, night | Sif, Glim | guest: Glim arrives |
+| cave_02 | Crystal Veins | Crystal pockets sit dark in the wall while Glim trips over his own scrolls unrolling a blueprint with a glowing X below. You dig down through the packed earth to wake the crystals one by one, and each lights the next until the vein shows the way. | Wake the crystal vein | race | module: deep_dig (debut) + crystal glow | Crystal Wall, night | Sif, Glim | plain |
+| cave_03 | Rail Ledge | Old minecart rails end in thin air over a chasm, and a faint scrape comes from beyond a thin wall. You build a ledge that carries the rails across, and a tiny tunnel opens showing the far party's lantern light. | Carry the rails across the chasm | carry | module: gap_runner (recall) + rails | Rail Ledge, dusk | Sif, Glim | reveal: the far party's lantern shows through |
+| cave_04 | Bat Nets | Bats whirl round Glim's lantern, startled by a kazoo toot, and through a crack the Wizard's silhouette pulls a kazoo from his hat and tosses it in the sack. You roof a baby bat's roost against the falling pebbles through each flutter. | Shelter the baby bat | defend | base: shelter_guest (D4) + bat swirl | Bat Roost, night | Sif, Glim, bats, Wizard (through a crack) | plain |
+| cave_05 | Draught Climb | A cold draught whistles down the shaft with every snore from above. You climb a stack of stalagmites above the draught, and the last "stalagmite" wiggles: it is Gus's big toe. | Climb above the snore draught | race | module: foothold_climb (recall) + gust | Stalagmite Shaft, night | Sif, Glim | twist: the stalagmite is Gus's toe |
+| cave_06 | Mirror Chamber | Mirrored crystals show Sif many small copies of herself and she hesitates until Glim takes her hand. You build a path through the reflections to the far door, matching each mirrored twin. | Find the path through the mirrors | build | base: mirror twin + path | Crystal Wall, dusk | Sif, Glim | plain |
+| cave_07 | Tiptoe Gallery | A huge hand lies beside the path and the ceiling above gently rises and falls. You muffle the gallery with moss walls so each footstep stays silent, and the "ceiling" is Gus's breathing belly. | Sneak past the sleeping guardian | survive | module: sneak_route (recall) + silence | Tiptoe Gallery, night | Sif, Glim, Gus (asleep) | plain |
+| cave_08 | Blackout Gallery | Glim's lantern puffs out and the cave goes black as ink, and Sif's breath catches. You light the way crystal by crystal, with Sif leading by ear while Glim holds her cloak. | Carry the light through the dark | carry | base: light_the_way + dark | Blackout Gallery, night | Sif, Glim | story: Sif leads, unafraid |
+| cave_09 | Cart Barricade | Runaway mine carts rumble down the gallery toward the diggers' camp with a helmet peeking through a crack. You stack buffers to stop each cart, and the last cart carries Glim's lost toolbox, so you open a lane to let it through. | Stop the runaway carts | defend | base: hold_the_wall (D1) + cart roll | Cart Barricade, dusk | Sif, Glim, Bram (through the crack) | twist: let the last cart through |
+| cave_10 | Gus's Lullaby | Gus stirs and the whole cave shivers as the party breaks through the wall to join Sif. You baffle his snores, lay a path across his dream-rocks, then build a tower of chimes up to his ear so he hums himself back to sleep, and the hum is the missing note of the Sky Lullaby. | Lull the guardian back to sleep | defend | base: hold_the_wall + chime tower | Gus's Cavern, night | Gus, Sif, Glim, all heroes | reveal: Gus hums the lullaby's missing note |
+| cave_bonus | Page Catch | Glim's blueprint pages blow away down the shaft in a flurry and he lunges after them. You build ledges that catch each page, and the last page is a blueprint of something big and round stamped with the Wizard's star. | Catch the blown blueprint pages | carry | base: collect_run + draught | Mapmaker's Nook, golden | Glim, Sif | secret: a round blueprint with the Wizard's star (an unexplained prop) |
+| cave_h1 | Loose Cart | A cart rolls off carrying Glim's scrolls with only one track and the chasm ahead. You lay a track loop to catch it before the edge. | Catch Glim's runaway cart | race | base: outrun_hazard + rails | Rail Ledge, dawn | Glim, Sif | plain |
+| cave_h2 | Second Rockfall | A second rockfall buries the shaft while Bram and Boulder dig from above. You prop the roof as they dig through, and Boulder bursts out sitting on the last boulder. | Prop the roof for the diggers | survive | base: hold_the_wall + falling rock | Bat Roost, dusk | Bram, Boulder, Glim | guest: Boulder bursts through |
+| cave_h3 | Lost Mole | Glim has wandered into a dead end again and his headlamp blinks from far down. You dig a ladder to him before the lamp fades. | Dig a ladder to Glim | rescue | module: deep_dig (recall) + lamp | Tiptoe Gallery, night | Glim, Sif | plain |
+
+**Scene notes, chapter 7**
+
+| ID | opening_event | footprint | terrain | set_piece | set_piece_action | cast_pose | hud_meter |
+|---|---|---|---|---|---|---|---|
+| cave_01 | rockfall_seals_entrance_nose | funnel | mine_shaft | sealed_mouth | lantern_sway | Sif:point, Glim:cheer | Lantern Oil |
+| cave_02 | crystal_pockets_dark_scrolls_trip | comb | mine_shaft | crystal_wall | gear_grind | Glim:point, Sif:build | Crystals Lit |
+| cave_03 | rails_end_in_air_scrape | bridge_span | rail_chasm | rail_ledge | gear_grind | Sif:haul, Glim:brace | Rail Length |
+| cave_04 | bats_whirl_kazoo_toot | arch | stack_ledge | bat_roost | flock_wander | Glim:hide, Wizard:hide | Baby Bat Safe |
+| cave_05 | snore_draught_shaft | ladder_stair | ravine_ledges | stalagmite_shaft | snore_gust | Sif:build, Glim:brace | Climb Height |
+| cave_06 | crystals_copy_sif | diamond | fort_wall | crystal_wall | lantern_sway | Sif:hide, Glim:cheer | Path Matched |
+| cave_07 | huge_hand_beside_path | snake | plank_bridge | gus_gallery | snore_gust | Sif:brace, Glim:hide | Guard Sleep |
+| cave_08 | lantern_puffs_out_black | ring | lagoon_floor | gus_bed | waterfall_pour | Sif:point, Glim:haul | Light Left |
+| cave_09 | runaway_carts_rumble_down | H_shape | fort_wall | cart_barricade | boulder_roll | Sif:brace, Glim:haul | Barricade Strength |
+| cave_10 | gus_stirs_cave_shivers | dumbbell | lagoon_floor | gus_bed | bell_ring | Sif:build, Ada:build, Bram:build | Gus's Sleep |
+| cave_bonus | pages_blow_down_shaft | L_shape | ravine_ledges | sealed_mouth | waterfall_pour | Glim:haul, Sif:point | Pages Caught |
+| cave_h1 | cart_rolls_with_scrolls | figure_eight | rail_chasm | rail_ledge | boulder_roll | Glim:haul, Sif:brace | Cart Distance |
+| cave_h2 | second_rockfall_buries_shaft | twin_towers | stack_ledge | bat_roost | steam_vent | Bram:build, Boulder:brace | Roof Strength |
+| cave_h3 | headlamp_blinks_far_down | tadpole | plank_bridge | gus_gallery | steam_vent | Sif:haul, Glim:react | Ladder Length |
+
+## Chapter 8: Midnight Strikes Thirteen (Clockwork)
+
+**Caption:** Every cog must strike the hour. Even the thirteenth.
+**Where we are and what is wrong.** Tick Town, a brass-and-gear clock town on a floating gearwheel. Every citizen runs on Madame Cuckoo's strict schedule. She wears Keystone eight as the clock's mainspring and refuses
+a thirteenth hour because "it does not exist". Nothing may be late; Tock, the clock-mender, is always late.
+**Villain / boss: Madame Cuckoo.** A brass cuckoo automaton, navy and gold, a clock face on her chest, popping from a tower door. Immaculate, exhausted. Three phases: gears jam (sorting); shutters slam (a gate to fit
+through); the missing thirteenth-hour slot. Resolution: the slot opens into a nest box where she sits (twist). Boss triple: arena a clock face; 3 phases; action = fitting a missing slot.
+**Ally met:** Tock, a tin tortoise clock-mender, always late. Glim plans repairs; Boulder is the counterweight. **Set pieces:** great_gear, sorting_floor, tram_stop, spring_yard, tower_stairs, shutter_hall, key_row, steam_valves.
+**Emotional beat:** tension of precision. Ada learns order is not stiffness; Bram learns patience; the Wizard's rewind spell breaks the clock (clockwork_09, the tension beat). **Hat Dip:** an alarm clock (clockwork_01).
+**Debuts (modules):** sorting_belt (clockwork_02), domino_run (clockwork_bonus). **Hook into next:** the clock strikes thirteen for the first time; the Wizard's cloud is gone.
+
+| ID | Beat | What happens | Objective | Verb | Minigame | Place | Who | Ending |
+|---|---|---|---|---|---|---|---|---|
+| clockwork_01 | The Stalled Gear | Tock arrives panting and late as the Wizard pulls an alarm clock from his hat that rings deafeningly, and the plaza's great gear grinds to a halt. You seat the great gear on its axle so the plaza clock ticks again, and the alarm clock rattles silent in the sack. | Seat the plaza's great gear | build | base: build_tower + gear | Plaza of Gears, dawn | Tock, Wizard, Ada | plain |
+| clockwork_02 | Sorting Floor | Brass gears spill along belts and nobody knows which goes where while Glim unrolls a diagram. You sort each gear onto the belt to its bin so the tower lift hums to life. | Sort the gears for the lift | carry | module: sorting_belt (debut) + conveyor | Sorting Floor, day | Tock, Glim, Bram | plain |
+| clockwork_03 | Tram to Nowhere | The tram's track ends in mid-air and a queue of citizens checks their watches. You lay track across the gap, and the tram that rolls in is packed with cheering late-comers who have been waiting since yesterday. | Extend the tram to the depot | race | module: gap_runner (recall) + tram | Tram Stop, golden | Tock, citizens | twist: the tram is full of late-comers |
+| clockwork_04 | Boing Yard | Springs boing across the yard and bounce a bell past Bram's ears. You raise stops at the gate to keep the springs inside the yard. | Keep the springs in the yard | defend | base: hold_the_wall (D1) + bounce | Spring Yard, day | Bram, Tock | plain |
+| clockwork_05 | Tower Stairs | The tower stairs are missing steps and a cuckoo door sits high above. You build steps up to the door, and beside it is a small blank slot between twelve and one. | Climb to the cuckoo door | race | module: foothold_climb (recall) + stairs | Tower Stairs, dusk | Ada, Tock | reveal: a thirteenth slot hides beside the door |
+| clockwork_06 | Swinging Shutters | The great pendulum swings through the hall and shutters slam on a loose beat. You shape your stack to fit through each swinging shutter, and Ada learns to move with the beat instead of against it. | Slip through the swinging shutters | survive | module: gate_squeeze (recall) + pendulum | Shutter Hall, night | Ada, Boulder | plain |
+| clockwork_07 | One Last Minute | A giant stopwatch starts counting down the square's last minute and Boulder rolls up as a living counterweight. You raise the flag mast before the bell while the hippo sits on the base to steady it. | Raise the flag before the bell | balance | base: tilt + stopwatch | Spring Yard, golden | Boulder, Tock, Bram | guest: Boulder as living counterweight |
+| clockwork_08 | Giant Keys | Three giant winding keys stand at the edge of the plaza while Bram stares at his hammer. You build key-shaped sockets one precise piece at a time, and for once Bram waits for the last turn. | Wind the town's great keys | build | base: wind_keys + patience | Key Row, dusk | Bram, Tock, Glim | story: Bram waits for the last turn |
+| clockwork_09 | Spell Backfire | The Wizard waves his wand for a rewind spell and the square snaps back five seconds, then ten, then the tower shudders and the steam pipes crack. You plug each cracked pipe with the piece that fits before the tower shakes apart, and while everyone is busy the Wizard's cloud slips quietly away. | Plug the cracked steam pipes | defend | base: plug_breach (D2) + steam | Steam Valves, night | Wizard, Ada, Glim | story: the Wizard slips away ashamed |
+| clockwork_10 | Midnight Strikes Thirteen | Madame Cuckoo pops from her tower door as the clock spins out of control with Keystone eight turning inside. You sort the jammed gears, fit the shutters, then build the thirteenth slot in the clock face, and the slot opens into a nest box where she finally sits, and the clock strikes thirteen. | Build the thirteenth hour | build | module: sorting_belt then gate_squeeze (recalls) | Tower Stairs, night | Madame Cuckoo, Tock, all heroes | twist: the thirteenth slot is a nest box |
+| clockwork_bonus | Chime Box | Tock winds a music box and its pins tinkle one note short. You line up a chain of tiny dominoes to ring the last chime, and the tune is Huffle's lullaby. | Ring the music box's last chime | build | module: domino_run (debut) + chain | Clockmaker's Bench, golden | Tock, Glim | reveal: the tune is Huffle's lullaby |
+| clockwork_h1 | Steam Overtime | The boiler builds steam with each tick and Cuckoo calls it "within schedule". You vent the pressure before it rings the tower. | Vent the steam before it rings | survive | base: pressure + vent | Steam Valves, dawn | Madame Cuckoo, Bram | plain |
+| clockwork_h2 | Chick Cannon | Madame Cuckoo wheels out a cannon that fires wind-up chicks at the shutters, and her old mate arrives to load it. You build a keep and fire back, and the chicks bounce back onto the cannon. | Win the chick-cannon duel | destroy | module: catapult_keep (recall) + wall | Shutter Hall, dusk | Madame Cuckoo, her mate, Tock | guest: her old mate arrives |
+| clockwork_h3 | Key Magnet | A magnet pulls the giant keys off their sockets mid-turn. You build guides that keep the keys aligned. | Guide the wandering keys | balance | base: tilt + magnet | Key Row, dawn | Tock, Glim | plain |
+
+**Scene notes, chapter 8**
+
+| ID | opening_event | footprint | terrain | set_piece | set_piece_action | cast_pose | hud_meter |
+|---|---|---|---|---|---|---|---|
+| clockwork_01 | alarm_clock_rings_gear_stops | pinwheel | clock_face | great_gear | gear_grind | Tock:react, Wizard:point | Gear Speed |
+| clockwork_02 | gears_spill_belts | zigzag | conveyor_deck | sorting_floor | gear_grind | Glim:point, Bram:haul | Gears Sorted |
+| clockwork_03 | tram_track_ends_in_air | bridge_span | tram_track | tram_stop | bell_ring | citizens:cheer, Tock:hide | Track Length |
+| clockwork_04 | springs_boing_bell | comb | stack_ledge | spring_yard | drum_beat | Bram:brace, Tock:hide | Springs Inside |
+| clockwork_05 | stairs_missing_steps | spiral_terraces | summit_ledge | tower_stairs | bell_ring | Ada:build, Tock:haul | Stair Height |
+| clockwork_06 | pendulum_shutters_slam | H_shape | fort_wall | shutter_hall | pendulum_swing | Ada:brace, Boulder:haul | Beat Match |
+| clockwork_07 | stopwatch_one_minute_boulder_rolls | ring | stack_ledge | spring_yard | lamp_flicker | Boulder:brace, Bram:haul | Seconds Left |
+| clockwork_08 | three_keys_bram_hammer | key_shape | plank_bridge | key_row | drum_beat | Bram:build, Glim:point | Keys Wound |
+| clockwork_09 | rewind_snaps_square_back | cross | tram_track | steam_valves | steam_vent | Wizard:hide, Ada:brace | Steam Pressure |
+| clockwork_10 | cuckoo_pops_clock_spins | bullseye | clock_face | tower_stairs | catapult_volley | Ada:build, Bram:build, Tock:haul | Cuckoo's Stress |
+| clockwork_bonus | music_box_one_note_short | L_shape | conveyor_deck | sorting_floor | lamp_flicker | Tock:cheer, Glim:point | Chimes Rung |
+| clockwork_h1 | boiler_builds_steam_overtime | wedge | summit_ledge | steam_valves | steam_vent | Cuckoo:point, Bram:brace | Steam Pressure |
+| clockwork_h2 | cannon_fires_windup_chicks | hourglass | fort_wall | shutter_hall | catapult_volley | Cuckoo:point, Tock:brace | Cannon Duel |
+| clockwork_h3 | magnet_pulls_keys_off_sockets | trident | plank_bridge | key_row | pendulum_swing | Glim:haul, Tock:hide | Key Alignment |
+
+## Chapter 9: The Brightest Silence (Neon)
+
+**Caption:** The brightest town is the loneliest. The cloud is gone.
+**Where we are and what is wrong.** Glowtown, a neon city with no citizens. The tram drops the heroes on an empty bright platform and the Wizard's cloud is nowhere. Marquee Mae, a giant billboard, advertises a party nobody
+attends and clings to Keystone nine as her spotlight. The Tether runs dark, and far behind them the islands they mended begin to sag again (played in neon_08).
+**Villain / boss: Marquee Mae.** A huge glowing billboard with a face of changing icons and cable arms. She is lonely, not mean. Three phases: spotlights sweep the street (screens); fireworks rings fuse (fill them before they
+pop); a stage lit for a crowd. Resolution: Lumen's hundred lamp-bot friends arrive, a real crowd (guest). Boss triple: arena a rooftop stage; 3 phases; action = lighting a stage.
+**Ally met:** Lumen, a small lamp-headed robot, white and cyan, whose light dims in the low point. Glim lights the dark; Lana re-ties the dark thread.
+**Emotional beat (real tension):** the low point. The Wizard has gone, Ada cannot hold the line, Lumen dims, and the sag is real. Beats 06 to 08 stay hollow (nothing warms). The comeback is the heroes building together without
+him: Bram builds gently, Sif gives a treasure away, Ada leans on the others. Kid-safe: nothing is hurt; lights go out and come back, and Lumen's standby blink pre-signals his return. **Hat Dip:** nothing (neon_05).
+**Debut (module):** fuse_rings (neon_06). **Hook into next:** Mae's searchlight swings up into the sky and becomes a beam of stairs the heroes can climb to the stars.
+
+| ID | Beat | What happens | Objective | Verb | Minigame | Place | Who | Ending |
+|---|---|---|---|---|---|---|---|---|
+| neon_01 | Empty Platform | The tram doors close on an empty blazing platform and a battered hat lies on the seat: the Wizard's. You raise a stair to the lit map above the platform so the party can read where the thread points, and the thread points into darkness. | Read the map above the platform | build | base: raise_lookout + glow | Tram Platform, night | Ada, Bram, Sif | plain |
+| neon_02 | Dark Crossing | Every traffic light is stuck on red and hover-cars hang frozen over the junction while a woolly alpaca far across knits a dark thread. You raise crossing towers over the frozen cars so the party reaches the far side, but the alpaca is gone when they arrive. | Cross the frozen junction | race | module: gap_runner (recall) + frozen traffic | Frozen Junction, dusk | Ada, Sif, Lana (far off) | plain |
+| neon_03 | Drifting Walkway | A moving walkway carries the heroes apart from each other while a tiny lamp on legs rolls beside Sif. You rail the walkway so they stay together, and its end leads straight to Lumen's workshop, where one small light still glows. | Rail the walkway to stay together | carry | base: cart_convoy + conveyor | Moving Walkway, night | Ada, Bram, Sif, Lumen | twist: the walkway was delivering them to Lumen |
+| neon_04 | Screen Arcade | Every screen replays the heroes' old pratfalls on a loop while Ada stares. You build a pixel wall over the screens, and one screen stays dark long enough to show Meadow's windmill stopping and Biscuit looking up: the sag is real. | Cover the looping screens | build | base: fill_the_shape + loop | Screen Arcade, night | Ada, Sif, Lumen | reveal: the sag is happening to Meadow |
+| neon_05 | Cloud Sign | A huge sign in the shape of a cloud makes Bram think the Wizard is up there while Ada dips the left-behind hat and finds nothing inside. You climb the sign, and it is only a sign, so Bram sits down and says nothing for a long time. | Climb to the cloud sign | race | base: build_stair + blink | Rooftop, dusk | Bram, Ada, Sif | twist: it is only a sign |
+| neon_06 | Fuse Street | A fireworks rig on the empty street starts a countdown with fuses burning toward its launch rings and nobody to cheer. You fill each ring before its fuse burns down so the fireworks never launch alone, and the unlaunched rockets sparkle sadly. | Defuse the fireworks rings | survive | module: fuse_rings (debut) + countdown | Arcade Plaza, night | Ada, Sif, Lumen | plain |
+| neon_07 | Paint Rain | Neon paint pours from the sky onto the empty street and Ada's armour turns pink without a word. You claim the street's floor in your colour as the paint falls, and Glim's lantern arrives to light the crossing, but nobody laughs. | Claim the street in your colour | build | module: splat_claim (recall) + paint | Moving Walkway, golden | Ada, Glim, Lumen | guest: Glim arrives with his lantern |
+| neon_08 | Sag Signal | A relay mast on the rooftop shows a far-off screen of Meadow's windmill sagging and its thread drooping while Lumen's glow dims a notch. You build counterweights on the mast so the sagging thread stays level, holding the sky up from here, and the windmill on screen steadies. | Hold the sagging thread level | balance | module: wobble_plate (recall) + sag | Relay Mast, dusk | Ada, Bram, Lumen | plain |
+| neon_09 | Blackout Night | A surge blacks out the city and Lumen's light fades like a power cut, with a standby blink that promises his return, while Ada sinks onto the curb whispering she cannot hold the line. You raise a lightning tower to ground the surge while Bram builds gently beside you and Sif sets her best treasure on top, and Lumen blinks back on. | Ground the surge and wake Lumen | build | base: raise_lookout + surge | Rooftop Stage, night | Ada, Bram, Sif, Lumen | story: Sif gives up a treasure and Lumen wakes |
+| neon_10 | Mae's Audience | Marquee Mae blazes on the rooftop, spotlights sweeping the empty plaza, Keystone nine glowing as her spotlight. You build screens against the spotlights, fill the fuse rings before the fireworks pop, then raise a stage lit for a crowd, and Lumen's hundred lamp-bot friends turn up, real and cheering. | Give Mae an audience | defend | module: fuse_rings (recall) + hold_the_wall | Billboard Stage, night | Marquee Mae, Lumen, all heroes | guest: Lumen's lamp-bot friends arrive |
+| neon_bonus | Lamp Party | Lumen throws a tiny party for the heroes and a few lamp-bots with streamers made of light. You build a dance-floor tower, and the lamps' dance spells "come up" in the sky. | Build the party's dance-floor tower | build | base: raise_lookout + beats | Workshop Roof, night | Lumen, lamp-bots, heroes | secret: the dance spells "come up" |
+| neon_h1 | Mae's Rush | Mae, now cheery, speeds up the street's rush hour with lamp-bots whooshing past. You pave a lane for Lumen's cart through the whoosh. | Pave a lane for Lumen's cart | race | module: paver_rally (recall) + rush | Tram Platform, dusk | Mae, Lumen | plain |
+| neon_h2 | Fast Spotlights | Spotlights sweep faster as Mae rehearses a new act and the beams draw a staircase into the clouds. You build screens that shield the crowd as the beams point the way up. | Shield the crowd from spotlights | defend | base: hold_the_wall + spotlight | Billboard Stage, night | Mae, Lumen | reveal: the beams draw the stairs up |
+| neon_h3 | Swapping Colours | The street's colours swap every second as Mae tries a new look. You claim the floor before the colours change again. | Claim the floor before the swap | build | module: splat_claim (recall) + colour swap | Workshop Roof, dawn | Mae, Lumen, Glim | plain |
+
+**Scene notes, chapter 9**
+
+| ID | opening_event | footprint | terrain | set_piece | set_piece_action | cast_pose | hud_meter |
+|---|---|---|---|---|---|---|---|
+| neon_01 | tram_doors_close_hat_on_seat | arrow | tram_track | tram_platform | lamp_flicker | Ada:point, Sif:hide | Map Lit |
+| neon_02 | lights_stuck_red_cars_frozen | cross | stack_ledge | crossing_towers | firework_pop | Sif:build, Lana:haul | Junction Cleared |
+| neon_03 | walkway_carries_apart_lamp_rolls | ribbon | conveyor_deck | moving_walkway | spotlight_sweep | Bram:brace, Lumen:react | Walkway Drift |
+| neon_04 | screens_replay_pratfalls | zigzag | glass_causeway | screen_arcade | lamp_flicker | Ada:hide, Sif:point | Screens Covered |
+| neon_05 | cloud_sign_hat_dipped_empty | cloud_blob | summit_ledge | rooftop_stage | firework_pop | Bram:build, Ada:hide | Sign Height |
+| neon_06 | fireworks_rig_countdown | star_five | hex_deck | screen_arcade | confetti_burst | Sif:build, Ada:brace | Fuse Burn |
+| neon_07 | neon_paint_rains_ada_pink | S_curve | hex_deck | moving_walkway | waterfall_pour | Ada:point, Glim:haul | Paint Share |
+| neon_08 | relay_mast_screen_sag | twin_towers | fort_wall | sag_relay | cannon_volley | Bram:build, Lumen:react | Thread Sag |
+| neon_09 | city_blackout_lumen_fades | ring | summit_ledge | rooftop_stage | drum_beat | Ada:hide, Bram:build, Sif:haul | Lumen Charge |
+| neon_10 | mae_blazes_spotlights | crescent | stack_ledge | billboard_face | spotlight_sweep | Mae:point, Lumen:cheer, Ada:build | Mae's Crowd |
+| neon_bonus | lumen_throws_party | clover | glass_causeway | lamp_workshop | confetti_burst | Lumen:cheer, Sif:point | Dance Height |
+| neon_h1 | rush_hour_whooshes | bridge_span | tram_track | tram_platform | drum_beat | Mae:point, Lumen:haul | Lane Length |
+| neon_h2 | spotlights_speed_up_stairs | comb | conveyor_deck | billboard_face | cannon_volley | Lumen:brace, Mae:point | Spotlight Speed |
+| neon_h3 | colours_swap_every_second | heart | fort_wall | lamp_workshop | waterfall_pour | Glim:point, Lumen:hide | Colour Share |
+
+<!-- CHAPTERS 10-12 -->

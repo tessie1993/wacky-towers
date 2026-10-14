@@ -1,106 +1,119 @@
-# Plan review r9: phase 1 campaign vision (header still "revision 6"), exemplars (revision 6), scene vocabulary (strict, pass mark 9.7 on every criterion)
+# Plan review r9: phase 1 campaign vision (header still "revision 6"), exemplars (revision 6), scene vocabulary
 
-Reviewed commit e75a4f5: `design/levels/plans/campaign-vision.md` (489 lines), `exemplars.md`, `scene-vocabulary.md`, against the user rulings A and B, the build-ceiling
-anchor, and my r8 fixes. Method: I re-derived every mask, canonical string and recogniser clause by hand, counted `level_table` columns, and re-read the whole vision for terminology drift.
+**Strict marking rules applied (user, 2026-10-14, `.claude/docs/reference-quality-bar.md` "Stricter marking", all 8 rules):** every item starts at 5 and earns points only with cited evidence; 9.0+ would need 3 cited
+pieces of evidence and a reason it is not 10 (nothing here reaches 9.0); any open defect caps an item at 8.5; paper-only player-facing qualities cap at 7; sub-items are scored separately and the lowest open sub-item governs;
+when unsure I took the lower score; 9.6 is a fail. The r7 and r8 scores in the history column were given under the earlier rules, so the drops below are the new rules at work, not regressions (no score rose, so rule 5 does not trigger).
+
+**Interpretation I applied, flagged for the coordinator:** V1 (campaign fantasy) and V3 (emotional arc) describe what the *player* feels and exist only on paper, so I applied the "paper-only player-facing, at most 7" cap to them.
+V2, V4, V5, V6 and V7 score the vision as a design document (testability, consistency, completeness), so the paper cap does not apply, but the open-defect cap (8.5) does. If you want V1/V3 judged as document clarity instead, tell me and I will re-score them
+(they would be capped by the open defects in G6 and A1 below, at 8.5).
+
+Reviewed commit e75a4f5: `design/levels/plans/campaign-vision.md` (489 lines), `exemplars.md`, `scene-vocabulary.md`, against rulings A and B, the build-ceiling anchor, and my r8 fixes. Method: I re-derived every mask, canonical
+string and recogniser clause by hand, counted `level_table` columns, and re-read the whole vision for drift.
 
 ## Scores
 
-| # | Criterion | r7 | r8 | r9 | Pass (>= 9.7) |
+| # | Criterion | r8 (old rules) | r9 | Cap that applied | Pass (>= 9.7) |
 |---|---|---|---|---|---|
-| V1 | Clarity of the campaign fantasy | 9.7 | 9.7 | 9.7 | YES |
-| V2 | Pillars: distinct, each with an appliable test | 9.6 | 9.5 | 9.7 | YES |
-| V3 | Emotional arc: escalation, variety, ending | 9.7 | 9.7 | 9.7 | YES |
-| V4 | "Every level unique" rules | 9.6 | 9.4 | 9.5 | NO |
-| V5 | Briefs for narrative, systems, level teams | 9.5 | 9.4 | 9.6 | NO |
-| V6 | Rubric quality (incl. exemplars as calibration) | 9.6 | 9.5 | 9.3 | NO |
-| V7 | Consistency with user decisions and constraints | 9.7 | 9.6 | 9.5 | NO |
-| Ex | Exemplars as calibration (supplementary) | 9.6 | 9.4 | **9.5** | NO |
+| V1 | Clarity of the campaign fantasy | 9.7 | **7.0** | paper-only player-facing (7) | NO |
+| V2 | Pillars: distinct, each with an appliable test | 9.5 | **8.5** | open defects (8.5) | NO |
+| V3 | Emotional arc: escalation, variety, ending | 9.7 | **7.0** | paper-only player-facing (7) | NO |
+| V4 | "Every level unique" rules | 9.4 | **8.0** | open defects G2, G4 | NO |
+| V5 | Briefs for narrative, systems, level teams | 9.4 | **8.0** | open defects G3, G4 | NO |
+| V6 | Rubric quality (incl. exemplars as calibration) | 9.5 | **7.5** | G1 makes gates unpassable | NO |
+| V7 | Consistency with user decisions and constraints | 9.6 | **8.0** | G1 misapplies the user's anchor | NO |
+| Ex | Exemplars as calibration (supplementary) | 9.4 | **8.0** | open defects G5 | NO |
 
-V6 and V7 fall because the new build-ceiling cap, as written, makes the phase 4 and 5 gates impossible to pass (G1). That is a structural defect, found while fixing r8 item 5.
+### Sub-item scores (rule 6; evidence from file and line)
+
+| Criterion | Sub-item | Score | Evidence for the points | Why not higher |
+|---|---|---|---|---|
+| V1 | Pitch and stacking-is-canon | 7.0 | vision lines 33-34 (pitch), 36-39 ("built things hold the sky together"), 41-45 (ruling A: "every level is a minigame") | Paper only, cap 7; section 1 does not mention footprint variety (ruling B) |
+| V2 | P1 scene tests | 8.5 | lines 62-78: P1a swap, P1b fields incl. meter rule (agrees with P2d), P1c 60% pixels | P1c needs a capture tool that does not exist; line 51 still says "extra verb" |
+| V2 | P2 tests | 8.5 | lines 80-90: P2a-P2d, P2d names mechanic, verb, 12-word line, `extra_control` | `ex_candy_03` omits its P2b note |
+| V2 | P3 tests | 8.0 | lines 92-102: P3a-P3e; P3e telegraph 2 s / 4 s | P3a and P3d need players and a solver that are not built; unsized (G3) |
+| V3 | Arc table, stakes, ending | 7.0 | lines 110-133: 12 rows with intensity 2,3,2,3,5,2,3,4,5,3,4,5; first reversal chapter 5; Neon low chapter 9; ending proposed | Paper only, cap 7; stakes and ending are "proposed" |
+| V4 | Definitions and glossary | 8.5 | lines 176-202: glossary, canonical mask, footprint, `level_table` of 23 columns | Footprint names depend on recognisers that overlap (G2) |
+| V4 | Uniqueness rules U3, U14, U17, U18, U19 | 8.5 | lines 207-276; rows in `exemplars.md` section 9 pass by hand | Unscripted (script not built) |
+| V4 | Shape recognisers | 8.0 | `scene-vocabulary.md` lines 64-77 | `funnel` and `ship hull` match the same mask; `crescent` wording contradicts itself |
+| V4 | U10 budget | 8.0 | lines 240-250: 2 rules plus 2 modules, 3+ verbs per mechanic | Totals say 24 rules; the stated rule gives 25 (G4) |
+| V5 | Narrative brief | 8.5 | lines 291-315: YAML schema, `verb`, 5 of 8 verbs, `opening_event` ids 84+ | Header stale; no open defect beyond that |
+| V5 | Systems brief | 8.0 | lines 341-390: engine gaps with owners and 21 days for ruling A/B items | Older gaps unsized, "qa tooling" is not an agent (G3) |
+| V5 | Level brief | 8.5 | lines 394-414: fields in order, `mechanic` and `verb` first | Depends on unbuilt script |
+| V6 | Rubric structure | 8.0 | lines 418-441 (scoring, caps, calibration), 443-488 (N, M, L, A, B, C, S with "9.7 means") | Build ceiling cap is structurally wrong (G1) |
+| V6 | Build ceiling | 6.0 | lines 436-440 | It lists L6 (a spec criterion), so phases 4-5 can never reach 9.7 and phase 6 can never start (G1) |
+| V6 | Exemplars as anchors | 8.0 | `exemplars.md`: eight 9.7 exemplars, near-miss, three weak samples, A/C/S one-liners | Data errors (G5); no mislabelled-footprint near-miss |
+| V7 | Rulings A, B, plain-square cap, Pirate 11th, no-beige/IP | 8.5 | lines 10-15 (rulings), 17 (order), 220-222 (at most 1 plain square), 150-166 (hard rules) | |
+| V7 | Build-ceiling anchor | 6.0 | line 436-440 | Intent right, implementation deadlocks gates (G1) |
+
+No criterion reaches 9.0, so rule 2's three-evidence requirement is not triggered; no score rose, so rule 5 is not triggered.
 
 ## Verdict: FAIL
 
-V1, V2 and V3 pass. V4, V5, V6 and V7 are below 9.7. All five r8 fixes landed and are sound in substance. Four items remain that are structural, not wording: a rubric deadlock (G1), overlapping shape recognisers (G2),
-an unsized engine-gap tail (G3) and a budget arithmetic slip (G4). The rest is stale text and exemplar data errors.
+All eight items are below 9.7; none came within 1.2 of the pass mark under the strict rules. All five r8 fixes landed and are sound in substance, but the blocking item is structural: the build-ceiling cap as written makes the phase 4 and 5 gates impossible
+to pass (G1), and several rules are still gameable or miscounted (G2, G4).
 
 ## r8 fixes: did they land?
 
 | r8 item | Landed? | Note |
 |---|---|---|
-| G1 U10: 2 new rules plus 2 module debuts, 3+ verbs per mechanic, campaign totals | YES | Totals sentence has an arithmetic slip (G4) |
-| G2 glossary, `extra_control`, P1b/P2d meter | YES | One residual "extra verb" (line 51, G6) |
-| G3 `ex_forest_05` to 12 wide; `gap_runner` in `mechanic`; module exemplar | YES | `ex_candy_03` added. Stale note on `ex_forest_h1` (G5) |
-| G4 recognisers for all 12 shapes; corridor sentence covers every shape | YES | Two recognisers overlap (G2) |
-| G5 engine gaps with owner and days; build-ceiling cap; old rule struck | MOSTLY | New gaps sized (21 days total); the older gaps are not; the cap deadlocks the gates (G1, G3) |
+| G1 U10: 2 rules plus 2 module debuts, 3+ verbs per mechanic, campaign totals | YES | Totals arithmetic wrong (G4) |
+| G2 glossary, `extra_control`, P1b/P2d meter | YES | Line 51 still says "extra verb" (G6) |
+| G3 `ex_forest_05` to 12 wide; `gap_runner` in `mechanic`; module exemplar | YES | `ex_candy_03` added; stale note in `ex_forest_h1` (G5) |
+| G4 recognisers for all 12 shapes; corridor sentence for every shape | YES | Two recognisers overlap (G2) |
+| G5 engine gaps with owners and days; build-ceiling cap; old rule struck | MOSTLY | New gaps sized; older gaps not; cap deadlocks the gates (G1, G3) |
 
 ### Hand checks (all pass unless listed under defects)
 
-- `ex_forest_05` (12x8 `bridge span`): mask rows `####....####` x3, then full x5. Columns 0-3 give 4 solid rows, columns 4-7 give `#####...` (floor in rows 3-7) x4, columns 8-11 give 4 solid rows: the given
-  `8x12` string (4 + 4 + 4 rows) is the smallest orientation. The `bridge span` recogniser holds: a 4-wide gap (3+), 3 rows deep (2-3), pillars 4 wide, base 5 deep (3+). `spawn_cols: 0-3` is right (the centre columns 4-7 are void).
-- `ex_forest_h1` stair: column heights 4, 6, 8 (3 distinct, monotone), treads 4 wide; canonical string correct; spawn run 4 wide.
-- `ex_candy_03` cross 10x10: corners 3x3, arms 4 wide, symmetric so its own canonical form; spawn columns 3-6 are floor; tutorial line is 9 words; the row has 23 columns in schema order.
-- `ex_underwater_09` funnel: row widths 10,10,10,10,10,10,8,6 (narrowing by 4, top 10, bottom 6): matches the recogniser; canonical `8x10` string correct.
-- `ex_pirate_10` L: 8x8 minus a 4x4 corner, legs 4 wide, its own canonical form.
-- Unique biome footprints: Forest = plain 10x8, bridge span 12x8, stair 12x8; Pirate = plain 9x9, L 8x8; one plain square per biome in all biomes shown.
+- `ex_forest_05` (12x8 `bridge span`): columns 0-3 give 4 solid rows, columns 4-7 give `#####...` x4, columns 8-11 give 4 solid rows; the `8x12` string is the smallest orientation. Recogniser holds (gap 4 wide, 3 rows deep, pillars 4 wide, base 5 deep);
+  `spawn_cols: 0-3` is right (centre columns 4-7 are void).
+- `ex_forest_h1` stair: heights 4, 6, 8 (3 distinct, monotone), treads 4 wide; canonical string correct. `ex_candy_03` cross 10x10: corners 3x3, arms 4 wide, symmetric; spawn columns 3-6 floor; 23-column row.
+- `ex_underwater_09` funnel: widths 10,10,10,10,10,10,8,6; `ex_pirate_10` L: 8x8 minus a 4x4 corner. Biome footprints: Forest = plain 10x8, bridge span 12x8, stair 12x8; Pirate = plain 9x9, L 8x8.
 
 ## Does the length matter? (489 lines against the old 340)
 
-Mildly. The rules are dense and mostly consistent, but length is where drift enters: this pass found one stale phrase ("extra verb", line 51), one stale number (`bridge span 14x8` in `ex_forest_h1`), an arithmetic slip (24 vs 25 rules) and a header that still says
-"revision 6". Five teams must read it, and sections 5 (rules, about 115 lines) and 9 (rubrics, about 75 lines) are reference material. Recommendation (not a blocker): keep sections 1-4 and a one-page summary of U1-U19 in the vision, and move the full
-rules and rubrics to `level-rules.md` and `review-rubrics.md`, each linked from the vision. Until then, add a short table of contents with the rule numbers, and a changelog line per revision so makers can see what moved.
+Mildly. Length is where drift enters: this pass found a stale phrase (line 51), a stale number (`14x8`), an arithmetic slip (24 vs 25), and a header that still says "revision 6". Sections 5 (rules, about 115 lines) and 9 (rubrics, about 75 lines) are reference material.
+Recommendation (not a blocker): keep sections 1-4 plus a one-page summary of U1-U19 in the vision and move the full rules and rubrics to `level-rules.md` and `review-rubrics.md`. Until then, add a table of contents with rule numbers and a changelog line per revision.
 
-## Defects (ranked)
+## Open defects (ranked)
 
-**G1 (V6, V7) The build-ceiling cap makes the phase 4 and 5 gates impossible to pass.** Section 9 says: "no item may be scored above what the retained screenshots show of the build ... A phase gate may not claim scene variety passes on the plan alone",
-and caps L6, A-build and C4 at 3 for any built biome with a repeated footprint or more than one plain square. But **L6 is a phase 4 (spec) criterion** and A1 a phase 5 criterion, judged before any build or screenshot exists (phase 6 builds and depends on 5).
-Read literally, L6 can never exceed what the screenshots show (today: 163 of 168 levels are squares, scene variety about 3), so phases 4 and 5 can never reach 9.7 and phase 6 can never start. Also, the same condition gets two different caps
-(L6 and A1 at 8.0 under "Caps", then L6 at 3 under "Build ceiling"). The user's anchor is right: a plan cannot claim that scene variety is achieved. Fix: scope the ceiling to what can be evidenced at each phase.
-> **Build ceiling.** Scene variety is scored in two places. **Phases 4-5 (L6, A1, A-spec)** score the *rules and fields*: footprints, shapes, scene fields and the recogniser results. They do not claim the build is varied; a spec review states
-> "plan only: the current build still has N squares" and scores the spec on its merits. **Phases 7-8 (A-build, C4, C5)** score screenshots: for a built biome with more than one plain square or any shared footprint, A-build and C4 are capped at 3, and no
-> item scores above what the retained screenshots show. Delete L6 from the build-ceiling list; keep the 8.0 cap for specs with a repeated footprint.
+**G1 (V6, V7) The build-ceiling cap makes phases 4 and 5 impossible to pass.** Section 9 ("Build ceiling", lines 436-440) says no item may be scored above what retained screenshots show, and caps L6, A-build and C4 at 3 for a built biome with a repeated footprint or
+more than one plain square. But **L6 is a phase 4 (spec) criterion** and A1 a phase 5 one, judged before any build exists (phase 6 builds and depends on 5). Read literally, L6 can never exceed what screenshots show (today 163 of 168 levels are squares, about 3), so
+phases 4 and 5 cannot pass and phase 6 cannot start. The same condition also gets two caps (L6 and A1 at 8.0 under "Caps", L6 at 3 under "Build ceiling"). Fix:
+> **Build ceiling.** Scene variety is scored in two places. **Phases 4-5 (L6, A1, A-spec)** score the *rules and fields* (footprints, shapes, scene fields, recogniser results), state "plan only: the current build still has N squares", and may not claim the build is varied.
+> **Phases 7-8 (A-build, C4, C5)** score screenshots: for a built biome with more than one plain square or any shared footprint, A-build and C4 are capped at 3, and no item scores above what the retained screenshots show. Remove L6 from the ceiling list;
+> keep the 8.0 cap for specs with a repeated footprint. Under the stricter marking rules, a phase 4-5 item that describes a player-facing quality on paper is itself capped at 7; the phase 4-5 gates therefore need their own bar for plans: "9.7 on every
+> *document* criterion (consistency, testability, completeness)", with player-facing qualities judged at phases 7-8.
+(That last sentence resolves a second deadlock created by the new marking rules: a paper-only plan can never score above 7 on player-facing items, so the gates must state which items are document items.)
 
-**G2 (V4) Two shape recognisers overlap, which makes the name count gameable.** `funnel` (symmetric about the vertical axis, row widths non-increasing, narrowing by 4 or more, bottom 4+ wide) and `ship hull`
-(symmetric about its long axis, non-increasing toward one end by 4 or more, narrow end 4+ wide) match the same masks: `ex_underwater_09`'s mask satisfies both. U18 needs at least 8 different names per biome and the script checks only that each declared
-name *matches*, so one mask can be given either name and the same shape can be counted twice. Fix:
-> "A mask must match exactly one recogniser; when two match, the earlier row in the table names it (priority: plain square, ring, moat, cross, L, stair, bridge span, twin towers, crescent, island chain, funnel, ship hull). `ship hull` additionally requires a
-> pointed bow: the end rows narrow to 2 or fewer cells over at least 3 rows, and the stern is flat." (A `ship hull` is not a `funnel`.) Re-check `ex_underwater_09`: it remains a `funnel` (its narrow end is 6 wide).
-Also reword `crescent`: "exactly one enclosed bay, open on one side by 3+ cells" is self-contradictory; say "one bay bounded by floor on three sides and open on the fourth by 3+ cells".
+**G2 (V4) Two shape recognisers overlap.** `funnel` and `ship hull` match the same masks (`ex_underwater_09` satisfies both), so one mask can be counted as two names toward the "8 different names per biome" quota (U18), and the script checks only that a
+declared name matches. Fix: "A mask must match exactly one recogniser; when two match, the earlier row names it (priority: plain square, ring, moat, cross, L, stair, bridge span, twin towers, crescent, island chain, funnel, ship hull). `ship hull` also requires a pointed bow
+(end rows narrowing to 2 or fewer cells over at least 3 rows) and a flat stern." Reword `crescent`: "one bay bounded by floor on three sides and open on the fourth by 3+ cells" (the current text says "enclosed" and "open").
 
-**G3 (V5) The engine-gap tail is unsized.** Section 7.1 promises "each with an owner and a size" but only the items rulings A and B add have them (spawn_cols 1 day, strike 4, row_cannon 2, breach_plug and seal_breaches 3, tutorial UI 2, recognisers 2, capture tool 2, solver 5 = 21 days).
-The older gaps (boss phases, goal phases, hidden or revealed goals, story-objective HUD text, ending events, the minigame phase runner, the shape overlay, the scene kit) have neither. These are the largest items. Add an owner and a size for each
-or write "owner and size: see `engine-gaps.md` (phase 3)" and create that table. Also "qa tooling" is not an agent in the plan; use `qa-tester` or `tools-programmer`.
+**G3 (V5) The engine-gap tail is unsized.** Section 7.1 promises an owner and size for each gap but only the ruling A/B items have them (spawn_cols 1 day, strike 4, row_cannon 2, breach_plug and seal_breaches 3, tutorial UI 2, recognisers 2, capture tool 2, solver 5 = 21 days).
+Boss phases, goal phases, hidden or revealed goals, story-objective HUD text, ending events, the phase runner, the shape overlay and the scene kit have neither. Add owner and size for each (or point to an `engine-gaps.md` table), and replace "qa tooling" (not an agent) with `qa-tester` or `tools-programmer`.
 
-**G4 (V4) Campaign totals arithmetic.** U10 says "up to 24 rules (2 per biome, biome 1 up to 3)". 12 biomes at 2 rules plus the one extra in biome 1 is **25**, not 24. Fix: "up to 25 rules (2 per biome, plus 1 extra in biome 1) plus the 16 modules".
-Section 7.2 repeats "up to 24 rules plus 16 modules cover 168 levels"; change both and keep the phase 3 check.
+**G4 (V4) Campaign totals arithmetic.** U10 and 7.2 say "up to 24 rules (2 per biome, biome 1 up to 3)". 12 x 2 plus 1 extra is **25**. Fix both places: "up to 25 rules plus 16 modules", and keep the phase 3 check that this inventory can cover 168 levels with unique `(goal list, mechanic list, mask)` triples.
 
-**G5 (V6, nit) Exemplar data errors.**
-- `ex_forest_h1`: the footprint comment says "differs from the source's bridge span **14x8**". The source is now 12x8. Fix to "12x8".
-- `ex_candy_03`: the row says `min_dead_end_width n/a`, but the bottom arm of the cross (3 rows tall, 4 wide, bounded by void on both sides and open only at the top) is a dead-end channel as defined in U7 (`ex_pirate_10`'s leg is reported as 4). Report **4**.
-  The arms left and right are horizontal and are not vertical runs; the top arm is open to the spawn edge.
-- `ex_candy_03`: the headline comment says "8 words"; "Keep the cake tower on its stand" is 7.
-- `ex_candy_03` is a `height` level in position 03, so P2b applies. Add `p2b_note: the wobble_plate tilts toward the stack's centre, which changes how pieces are dropped`.
+**G5 (V6, Ex) Exemplar data errors.** (a) `ex_forest_h1` comment says "differs from the source's bridge span **14x8**"; the source is 12x8. (b) `ex_candy_03` row has `min_dead_end_width n/a`, but its bottom arm (4 wide, bounded by void on both sides, open only at the top) is a dead-end channel
+as U7 defines it (`ex_pirate_10`'s leg is reported as 4); report 4. (c) `ex_candy_03` headline comment says "8 words"; it has 7. (d) `ex_candy_03` is a `height` level at position 03, so P2b applies; add a `p2b_note`. (e) Add a near-miss with a **mislabelled footprint** so the panel
+sees a G2-type defect.
 
-**G6 (V2, V5, nit) Residual drift.**
-- Line 51 still says "standard controls plus at most one extra verb (shown as one gem button)". The glossary says the extra control is never called a verb. Change to "at most one `extra_control`".
-- The header says "revision 6, revised after r1-r7" and lists no r8 change. Update to "revision 7, after r1-r8" and add a changelog line.
-- U17 appears after U18/U19 and U15/U16 after it (the order is U14, U18, U19, U17, U15, U16). Reorder for readability.
+**G6 (V2, V5, nit) Residual drift.** Line 51 still says "at most one extra verb"; change to "at most one `extra_control`". The header should read "revision 7, after r1-r8" with a changelog line. Rules appear in the order U14, U18, U19, U17, U15, U16; reorder.
 
-## Build reality: rules the build cannot yet meet (flag, not a plan defect)
+**A1 (V1) The fantasy omits ruling B.** Section 1 says "small diorama (a gully, a fort wall, a raft)" but never says that boards take many shapes (ring, bridge, stair, island chain, hull). That is the user's 3/10 complaint, and the player-facing fantasy should name it. Add: "No two levels in an island share a footprint: you build on bridges, rings, stairs and ship decks, not one square."
 
-Unchanged from r8; today's build has 163 of 168 levels as 8x8 squares, only 9 with masks, and no `spawn_cols`, `row_cannon`, `breach_plug` or `seal_breaches` in `src/` (`defend_core` and mask parsing exist). The new shape recognisers, the uniqueness script, the P1c capture tool,
-the P3d solver, the telegraph actors and the tutorial preview UI do not exist. The plan names owners and days for them (21 days for the items from rulings A and B), but the older gaps are unsized (G3).
+## Build reality: rules the build cannot yet meet (flag)
 
-## Exemplars: calibration score 9.5 / 10
-
-Good: eight 9.7 exemplars cover teach, twist, boss, hard, level 01, defence and now a module-based level; every one has a `level_table` row (23 columns), unique biome footprints, and hand-verified canonical strings. Remaining: the stale and incorrect items in G5, no weak sample
-for the scene fields of a module level, and no near-miss for the new footprint rules (for example a level whose declared shape name does not match its mask). Add one abridged near-miss with a mislabelled footprint so the panel sees a G2-type defect.
+163 of 168 levels are 8x8 squares and 9 have masks, so today's scene variety is about 3. In `src/` I found mask parsing and `defend_core`, and no `spawn_cols`, `row_cannon`, `breach_plug` or `seal_breaches`. The shape recognisers, the uniqueness script, the P1c capture tool, the P3d solver,
+the telegraph actors and the tutorial preview UI do not exist. Under rule 3 ("a plan cannot score more than the build that carries it out") this is why V1 and V3 sit at 7.
 
 ## Ordered fix list
 
-1. G1: split the build ceiling by phase (spec rules at 4-5, screenshots at 7-8); remove L6 from the ceiling list.
-2. G2: recogniser priority and a pointed-bow clause for `ship hull`; reword `crescent`.
-3. G3: size the older engine gaps (or point to a table) and fix the owner name.
-4. G4 and G5: correct 24 to 25; fix the four exemplar items; add a mislabelled-footprint near-miss.
-5. G6: line 51, header revision and changelog, rule order. Optionally split the vision (rules and rubrics to their own files).
+1. G1: split the build ceiling by phase; remove L6 from it; give phases 4-5 a document-item bar.
+2. G2: recogniser priority and `ship hull` bow clause; reword `crescent`.
+3. G3 and G4: size the older engine gaps, fix the owner name, correct 24 to 25 in U10 and 7.2.
+4. G5: fix the five exemplar items and add the mislabelled-footprint near-miss.
+5. G6 and A1: line 51, header and changelog, rule order, and one sentence on footprint variety in the fantasy. Optionally split the vision.
 
-I expect V4, V5, V6 and V7 to clear 9.7 after 1-4. Re-run as r10.
+Even with all of these fixed, V1 and V3 cannot exceed 7 until the arc and fantasy are built and captured (phases 7-8). I need the coordinator's ruling on whether they should be judged as document items at this gate.
