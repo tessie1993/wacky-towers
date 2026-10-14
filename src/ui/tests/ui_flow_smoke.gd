@@ -14,7 +14,7 @@ func _run():
     await process_frame
     ui.intent.connect(func(id,args):seen.append({"id":id,"args":args}))
     ui.show_title({"has_profile":true})
-    press(ui,"Continue  →")
+    press(ui,"PLAY")
     assert(seen[-1].id==&"continue")
     ui.show_profiles({"profiles":[]})
     press(ui,"＋  New profile")

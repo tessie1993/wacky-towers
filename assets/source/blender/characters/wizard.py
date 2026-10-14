@@ -709,7 +709,7 @@ def build(pose_name, M):
         lip.append((0.38 * math.cos(a), 0.36 * math.sin(a) + 0.02, 1.095 + brim_z(a, 1.0)))
     hat_parts.append(sweep("W_brimlip", lip, [0.026] * 72, ring=14, mat=M["hat"], closed=True))
     hat_parts.append(sweep("W_hatband", [(0, 0.022, 1.125), (0, 0.024, 1.16), (0, 0.027, 1.195)],
-                           [0.214, 0.205, 0.196], ring=36, n=6, mat=M["band"], cap=False, wobble=0.03))
+                           [0.236, 0.226, 0.216], ring=48, n=6, mat=M["band"], cap=False, wobble=0.0))
     hs = decal_star("W_hatstar", hat_parts[0], (0, -2, 1.255), (0, 1, 0), 0.06, 0.012, M["trim"], offset=0.004)
     if hs:
         hat_parts.append(hs)
