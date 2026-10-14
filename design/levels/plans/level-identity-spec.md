@@ -118,3 +118,13 @@ write each level out. And from that level description make the platform."
 - Order: write the level out first (mechanics, then story). The platform's form, shape and mode are derived from that
   written description, never picked from a menu up front.
 - The art then builds that platform.
+
+## User rules, 2026-10-14: describe levels as a game builder; speed instead of timers
+
+- **Describe each level as a game builder would.** Say plainly what the level is, which mechanic it uses and what
+  the minigame is. User example: "13 is a Tetris race. Players have to build their car as they drive and try not to
+  fall over. And foresee the race track."
+- **No countdown on Tetris-variant levels.** If a level is a variation on standard Tetris, it has no set time. The
+  pieces speed up as the level progresses. A clock is only for minigames that truly need one, such as races.
+- **Moving platforms and tracks are real.** The moving track for race levels is built as an engine feature, not
+  faked with a scrolling backdrop.
