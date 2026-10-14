@@ -548,6 +548,120 @@ These powers ride on a single falling piece through a spawn tag or piece flag. P
 - **Engine.** EXISTS (`src/mechanics/wave3/mystery_piece.gd`).
 - **Source.** The party boards' "next item" slots (`mockup_12.jpg`).
 
+#### 3.2.b Special BLOCK KINDS, part 5: NEW kinds (proposed, `*`)
+
+Every entry here is a proposal for the user to accept, change or cut. Each needs a new row in `blocks.json` (next free `kind_id` is 25) and a rule. The existing rule JSON schema (`assets/data/rules/*.json`) is the pattern. Size is in working days.
+
+**BK-33* gem cube (kind `gem`, glyph `G`)**
+- **What.** A glittering gem embedded in a cube. Clear its layer to collect it.
+- **Rule.** Placed by level data (`starting_contents`) or hailed in by `mushroom_popup` with `object_kind: gem`. Trigger: its cell is removed by a genuine layer clear (same collection rule as the item cube, `items.md` rule 2). Effect: +`gem_points` (100) score and +1 `gems` goal counter; removal by bomb, ember, pest or rescue wipe does NOT collect it (the gem is lost, with a sad puff). Fill: `fills_layer` true, so it is part of its layer. Gravity: normal. Other specials: `pest` skips kinds other than block and starter (`pest.gd:49`); a candy bomb blast destroys it unless anchored (level flag `gem_safe` anchors it while a goal needs it). Rescue: a wipe loses it. Top-out: normal height.
+- **Look.** A faceted gem in a gold-trimmed cube, colour by gem type (blue, green, purple), a sparkle pulse every 1.2 s and a gold rim. Skins: meadow flower-bud, ice crystal, cave crystal cluster, underwater pearl cluster, lava ember-shard, celestial star-shard, clockwork gear-jewel.
+- **Audio.** Proposed `SFX_SP_GEM_COLLECT` (a rising chime; `Loot Gold.wav` as a temp).
+- **Fits.** Cave, ice, lava, underwater, celestial. A "collect N gems" goal fits `dig_rescue`-style levels and gem-grab minigames.
+- **Intro and teach.** Cave 01. Hint: "Clear the layer to grab the gem."
+- **Fairness.** Risk: a gem buried under a full stack can never be reached. Counterplay: place gems only within the lowest `gem_max_layer` layers and never in a pocket; the validator proves a path with the solver (G5).
+- **Engine.** NEW. Kind row 0.1 day, rule 1 day, view 1 day. Owner: gameplay-programmer, technical-artist.
+- **Source.** Gem pickups on the floor in `mockup_01.jpg` (Rubble Rumble), `mockup_03.jpg` (Frenzy Footholds), `mockup_14.jpg` (Gem Grab); crystal cube on top in `mockup_20.jpg` (Candy Climb); shard ornaments on the volcanic and underwater sheets.
+
+**BK-34* magnet block (kind `magnet`, glyph `M`)**
+- **What.** A horseshoe cell that tugs the falling piece one cell toward it.
+- **Rule.** Placed by level data. Trigger: a falling piece within `magnet_range` (2) columns of the magnet and above it, once per piece, after a `pull_warn_ms` (600) telegraph of field lines. Effect: one `try_translate` toward the magnet (blocked pulls are skipped), the same effect as `magnet_pull` (`src/mechanics/wave3/magnet_pull.gd:12-30`) but tied to a visible cell instead of a timer. Fill: `fills_layer` true. Gravity: unaffected. Other specials: gust applies first, then the pull; a hung (anchored) piece ignores it; a ghost piece ignores it. Rescue: wiped. Top-out: none.
+- **Look.** A red-and-silver horseshoe on a cube, blue field arcs that pulse toward the piece, tiny filings. Skins: space-lab magnet, pirate lodestone, clockwork electromagnet, neon beam emitter.
+- **Audio.** Proposed `SFX_SP_MAGNET_HUM` (loop in range), `SFX_SP_MAGNET_PULL`.
+- **Fits.** Clockwork, neon, celestial, cave.
+- **Intro and teach.** Clockwork 02. Field arcs appear before the pull.
+- **Fairness.** One cell, telegraphed, avoidable by moving out of range or hard dropping before the warning ends.
+- **Engine.** NEW (reuses `magnet_pull`). 1.5 days, gameplay-programmer.
+- **Source.** Magnet crane and beams in `mockup_05.jpg` (Galactic Grab), `mockup_09.jpg` (Magnetic Mash), the grapple magnet in `mockup_03.jpg`.
+
+**BK-35* ice cube (kind `ice`, glyph `i`)**
+- **What.** A slippery cube. A piece landing on it slides one cell.
+- **Rule.** Placed by level data or made by the `frozen` shell. Trigger: a falling piece comes to rest with any cube on top of an ice cube. Effect: it slides one cell in the last move direction (same as `ice_slide`, `ice_slide.gd:11-25`, but only when the support is ice). Melt: removed when a burning cell or ember piece is face-adjacent, or after `ice_melt_locks` (0 = never). Fill: `fills_layer` true. Gravity: normal. Other specials: goo on ice cancels the slide (sticky wins); a bounce pad above ice: bounce first, slide skipped. Rescue: wiped.
+- **Look.** Pale blue translucent cube with frost edge, a glint sweeping every 2 s, snowflake badge on the top (the biome sheet ice cube has a snow cap and flake, `biome_block_materials_ref.png`).
+- **Audio.** Proposed `SFX_SP_ICE_SLIDE` (glassy squeak).
+- **Fits.** Ice biome, carnival rink, pirate (floe).
+- **Intro and teach.** Ice 01. The ghost shows the slide end.
+- **Fairness.** One cell, previewed. A slide off an open rim is a topple (see Edge Cases).
+- **Engine.** NEW. 1.5 days gameplay-programmer; ghost preview 1 day ui-programmer.
+- **Source.** Ice blocks in `biome_block_materials_ref.png`, `mockup_02.jpg` (Summit Scramble), `mockup_11.jpg`.
+
+**BK-36* fire tile (floor tile, hazard)**
+- **What.** A floor tile that is hot on a beat. A cube on it burns away while it is hot.
+- **Rule.** A level marks floor cells `fire`. Each tile cycles: `fire_on_locks` (2) hot, `fire_off_locks` (3) cool, with an orange glow one lock before it turns hot. At resolve, a layer-0 cube on a hot tile is removed as damage (the cubes above settle). A cool tile is a normal floor. Fill: the tile is floor, not a layer cell. Clears: clearing a layer does not stop the fire. Rescue: no refund. Top-out: none.
+- **Look.** A cracked floor tile with flames when hot, embers when warning, soot when cool. The flame animation is the 0.5 s tell.
+- **Audio.** Proposed `SFX_EV_FIRE_WARN`, `SFX_EV_FIRE_BURN`.
+- **Fits.** Lava, clockwork (furnace), candy (oven tile).
+- **Intro and teach.** Lava 03. The tile shows its cycle.
+- **Fairness.** Fixed, visible cycle; plan around the cool window.
+- **Engine.** NEW (extends `crumble_tiles`). 2 days, gameplay-programmer plus technical-artist.
+- **Source.** The fire tiles inside the board in `party_biome_islands_ref.jpg` (the user's note: "holes and fire tiles inside the board").
+
+**BK-37* floor hole (mask pit)**
+- **What.** A missing floor cell. Nothing can rest there. A piece that slides or bounces into it falls out of play.
+- **Rule.** Uses `board.mask` inactive cells (`level-identity-spec.md:11-16`; `WtIslandBuilder.build_island` builds from active cells). Cells over a hole are not valid rest cells. A piece pushed so every cube is over holes falls through; partly over holes it is held by the rest. Wobble and tilt already pop pieces off edges (`wobble.gd`, `tilt_plate.gd`). Inactive cells are excluded from layer fill. Rescue and top-out: normal.
+- **Look.** A dark pit with a soft inner glow and bevelled rim; lava in lava biomes, water in meadow, stars in celestial.
+- **Audio.** Proposed `SFX_PL_HOLE_FALL`.
+- **Fits.** Every biome; cross, ring, twin-island footprints.
+- **Intro and teach.** From meadow_06 terraces onward; footprints explain themselves.
+- **Fairness.** The validator checks every level can be tiled around holes (G5).
+- **Engine.** EXISTS for masks; G16 verify 1 day, fix 2 (`levels.md:557`). Per-biome hole art NEW.
+- **Source.** The floor holes in the lava keep board in `party_biome_islands_ref.jpg`.
+
+**BK-38* switch plate (floor tile and trigger)**
+- **What.** A glowing tile. Cover it with a locked cube and something happens.
+- **Rule.** A level marks floor cells `switch` with an `effect`: `open_gate`, `flip_wind`, `start_bridge`, `ring_bell`. Trigger: a lock puts a cube on the tile. Effect: fires once (`once: true`) or toggles on cover and release. Fill: floor. Gravity: unaffected. Other specials: clearing the pressing cube's layer releases it (toggle mode flips back). Rescue: a wipe releases it. Top-out: none.
+- **Look.** A round plate with a coloured ring (blue idle, gold pressed) and a small arrow to what it controls. The target pulses in the same colour.
+- **Audio.** Proposed `SFX_SP_SWITCH_CLICK`.
+- **Fits.** Clockwork, cave, pirate, meadow bonus (open the hoop), carnival.
+- **Intro and teach.** One per level; the linked gate pulses in matching colour.
+- **Fairness.** The effect is outlined before pressing. Never required unless the level says so.
+- **Engine.** NEW. 2 days, gameplay-programmer.
+- **Source.** The glowing blue pads in `mockup_03.jpg`, `mockup_13.jpg`, `mockup_14.jpg`.
+
+**BK-39* gate (movable wall)**
+- **What.** A wall segment that opens and closes (a pen gate, a stone door).
+- **Rule.** A mask cell group switched by `request_mask`, the call used for the Hearth Stump cage (gap G1, `levels.md:542`). Triggers: switch plate, wound keyhole, layer clear, or wave schedule. Closed = inactive floor (blocks pieces and walkers). Open = empty. Fill: excluded. Rescue: the gate state is kept. Top-out: none.
+- **Look.** Wooden gate with a lantern, stone door in cave; a lit lintel shows open or shut.
+- **Audio.** Proposed `SFX_SP_GATE_OPEN`, `SFX_SP_GATE_SHUT`.
+- **Fits.** meadow_04 pen gates ("the pen has two gates", `levels.md:186`), cave, clockwork, pirate.
+- **Intro and teach.** meadow_04.
+- **Fairness.** Gate timing shows in advance (a filling bar).
+- **Engine.** PARTIAL. `request_mask` exists (README line 57). Gate rule NEW, shared with G1 and G7, 2 days.
+- **Source.** Pen with fence in `mockup_15.jpg`, stone doors in `mockup_02.jpg`.
+
+**BK-40* peg (post, branch or spindle)**
+- **What.** A thin standing post on a platform cell. Hollow pieces drop over it.
+- **Rule.** A level marks a footprint cell `peg` with height `peg_h` (1 to 3). It is a column, not a layer cell. It is solid for non-hollow pieces (they cannot overlap it). A hollow piece whose hole lines up may pass over it (SH-01). Never cleared. Rescue: stays. Top-out: counts as height up to its top only.
+- **Look.** A wooden post with a gold cap; a ring glow on its base while a hollow piece is falling.
+- **Audio.** `SFX_SP_RING_FIT` (proposal).
+- **Fits.** Meadow fence posts, carnival ring toss, clockwork spindles, pirate belaying pins, cave stalagmites.
+- **Intro and teach.** First hollow level.
+- **Fairness.** The validator guarantees a hollow piece in the bag when a peg goal is set.
+- **Engine.** NEW. 3 days (with SH-01), gameplay-programmer.
+- **Source.** Pillars and idol posts in `party_biome_islands_ref.jpg`, `mockup_11.jpg`; pillar rule in `obstacles.md`.
+
+**BK-41* stone pillar (full-height column)**
+- **What.** A fixed column from floor to sky.
+- **Rule.** `obstacles.md` Core Rule 4: unbreakable, counts as filled in every layer, layers clear around it; not allowed with conveyors or flips that would move it (rule 10); at most `pillar_max_share` (25 percent) of the footprint. In the engine `pillar` appears only in view and layout code (`src/view/wt_stage.gd`, `src/view/wt_island_builder.gd`, `src/core/modules/bridge_dash_layout.gd`), not as a rule. Proposed: masked-off columns marked `static_geometry` like the meadow_01 cage, drawn as a pillar.
+- **Look.** A stone column with moss or crystal and a tapered cap, never a piece colour.
+- **Audio.** Normal land.
+- **Fits.** Meadow ruins, cave, celestial, clockwork.
+- **Intro and teach.** Not taught; reads as scenery with a shape.
+- **Fairness.** Validator for share and tiling.
+- **Engine.** PARTIAL. Design exists. 0.5 day on top of G16 mask work, gameplay-programmer.
+- **Source.** `obstacles.md`, and the stone pillars flanking the board in `party_biome_islands_ref.jpg`.
+
+**BK-42* hang point (branch, rail, rope loop)**
+- **What.** The thing a hook catches on (SH-05).
+- **Rule.** A level marks a cell or face `hang`. A hook cube above it locks "hung" (SH-05). Also an "anchor bolt" variant: any cube pressed onto it is anchored for `hang_locks`. Normal support otherwise. Rescue: stays.
+- **Look.** A branch stub with a leaf, a brass ring, or a rope loop; gold glow when a hook is above.
+- **Audio.** `SFX_SP_HOOK_CLINK` (proposal).
+- **Fits.** Forest, pirate, cave, clockwork, carnival.
+- **Intro and teach.** With the hook shape.
+- **Fairness.** Always optional.
+- **Engine.** NEW (with SH-05).
+- **Source.** Vines and ropes in `mockup_10.jpg`, `mockup_12.jpg`.
+
 #### 3.2.c OBJECTS on the platform (existing engine rules)
 
 Objects are not falling pieces. Some are grid cells (a kind). Most are rule props: a marker, a column, a tile or an actor that a rule reads. The Entry fields are shorter here. All share conventions 1 to 8.
