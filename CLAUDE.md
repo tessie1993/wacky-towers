@@ -44,7 +44,7 @@ after it runs `project.yaml` holds the real values.
 ## Reference Quality Bar
 
 Every player-visible part of the game (art, UI, levels, mechanics, sound) must reach the quality of
-the reference boards in `assets/art/reference/`, scoring at least 8/10 from the strict reviewer panel.
+the reference boards in `assets/art/reference/`, scoring at least 9.7/10 from the strict reviewer panel.
 There must be no beige or parchment UI. Reviewers instruct, makers fix, and nothing is done below the bar.
 Read `.claude/docs/reference-quality-bar.md`. This is enforced by `.claude/hooks/reference-quality-gate.sh` (Stop).
 
