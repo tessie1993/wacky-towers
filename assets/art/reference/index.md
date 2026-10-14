@@ -29,4 +29,14 @@ The user said on 2026-10-13: "This is what our game should be." Level, narrative
 
 (*) These boards carry the "TETRO PARTY DIMENSIONS", "WACKY PARTY" or "PARTY QUEST" logos. Use them for layout and content only. Never copy those logos, and avoid "Tetris" naming. Our logo is `logo_master.jpg`.
 
-Four further user boards show Nintendo characters. They are layout references only and are not stored here.
+Four further user boards show Nintendo characters. They are not stored here.
+
+`party_biome_islands_ref.jpg` (4 party boards: a meadow island, two lava keeps, a cosmic glass grid) is stored. User ruling, 2026-10-14: **everything on it is relevant except the Nintendo figurines.** Use the following:
+- the board inset into a floating island, with themed props around its rim;
+- hazard statues and stone faces standing at the board edge;
+- holes and fire tiles inside the board;
+- a lava moat ringing the board, with lava falls off the island;
+- a glowing glass grid where rainbow roads cross;
+- the HUD layout: player cards with the next piece, a timer and a mode ribbon.
+
+Never use its characters, character names, castle or pipes, or its titles.
