@@ -6,22 +6,49 @@ const PLUGIN_ID := &"top"
 
 @warning_ignore("integer_division")
 func plan_arrival(shape: ShapeDef, board: BoardState, api: RuleApi) -> ArrivalPlan:
-	var plan := ArrivalPlan.new()
-	var orientation: int = shape.spawn_orient
-	var size: Vector3i = api.board_size()
+	# Primary choice is unchanged: the flattest face against gravity, ties to the longest ground extent.
+	# Spawn safety: if that plan cannot be placed (an I4 on a 3-deep board has no room along z), fall back to the
+	# next-best orientation that can; if none can, return the primary plan blocked and the sim's spawn safety takes over.
 	var down: Vector3i = api.down_vector()
 	var down_axis: int = 1 if down.y != 0 else (0 if down.x != 0 else 2)
-	# The flattest face is perpendicular to current gravity, including sideways arrivals.
-	var best_extent: int = shape.bbox(orientation)[down_axis]
 	var long_axis: int = 0 if down_axis != 0 else 2
+	var orientation: int = shape.spawn_orient
+	var best_extent: int = shape.bbox(orientation)[down_axis]
 	var best_long: int = shape.bbox(orientation)[long_axis]
+	var ranked: Array[Vector3i] = [] # (orientation, extent, long extent)
 	for candidate: int in Orientations.COUNT:
-		var extent: int = shape.bbox(candidate)[down_axis]
-		var long_extent: int = shape.bbox(candidate)[long_axis]
+		var box: Vector3i = shape.bbox(candidate)
+		var extent: int = box[down_axis]
+		var long_extent: int = box[long_axis]
+		ranked.append(Vector3i(candidate, extent, long_extent))
 		if extent < best_extent or (extent == best_extent and long_extent > best_long):
 			orientation = candidate
 			best_extent = extent
 			best_long = long_extent
+	var primary: ArrivalPlan = _plan_for(shape, orientation, board, api)
+	if not primary.blocked:
+		return primary
+	ranked.sort_custom(func(a: Vector3i, b: Vector3i) -> bool:
+		if a.y != b.y:
+			return a.y < b.y
+		if a.z != b.z:
+			return a.z > b.z
+		return a.x < b.x)
+	for candidate: Vector3i in ranked:
+		if candidate.x == orientation:
+			continue
+		var alt: ArrivalPlan = _plan_for(shape, candidate.x, board, api)
+		if not alt.blocked:
+			return alt
+	return primary
+
+
+@warning_ignore("integer_division")
+func _plan_for(shape: ShapeDef, orientation: int, board: BoardState, api: RuleApi) -> ArrivalPlan:
+	var plan := ArrivalPlan.new()
+	var size: Vector3i = api.board_size()
+	var down: Vector3i = api.down_vector()
+	var down_axis: int = 1 if down.y != 0 else (0 if down.x != 0 else 2)
 	var box: Vector3i = shape.bbox(orientation)
 	var lo: Vector3i = shape.min_corner(orientation)
 	var anchor: Vector2i = board.spawn_anchor()

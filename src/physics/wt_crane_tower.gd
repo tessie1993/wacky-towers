@@ -100,7 +100,7 @@ func submit(command_data: Variant) -> bool:
 			command("spin",int(args[1]) if args.size()>=2 else int(cmd_dict.get("direction",1)));return true
 		"tap","release","hard_drop","drop","mg_drop":command("tap");return true
 		"view":command("view",int(cmd_dict.get("direction",1)));return true
-		"mg_receive_attack","attack":return apply_attack(args[0] if not args.is_empty() else cmd_dict.get("attack",command))
+		"mg_receive_attack","attack":return apply_attack(args[0] if not args.is_empty() else cmd_dict.get("attack",{}))
 		"mg_target":_target_id=str(args[0]) if not args.is_empty() else str(cmd_dict.get("target",""));return true
 		"mg_send":return false # Height ribbons automatically send their earned Gust.
 		"standing":

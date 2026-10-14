@@ -14,7 +14,7 @@ const TRANSITIONS: Dictionary = {
 }
 
 ## Current State.
-var state: int = State.BUILDING
+var state: State = State.BUILDING
 ## Walker ground cell (x, z).
 var cell: Vector2i = Vector2i.ZERO
 ## True while walking on a broken path (edge case a: stop at the last intact node).
@@ -41,7 +41,7 @@ func configure(start: Vector2i, goal: Vector2i, hold_ms: int, walk_ms: int) -> v
 ## Advances the machine to `now_ms`. While BUILDING/HOLDING, `path` runs from anchor A; while WALKING it runs
 ## from the walker's cell. `reached` is true when `path` ends on the far anchor. Returns the new state.
 ## Usage: walker.update(state.level_ms, r["reached"], r["path"])
-func update(now_ms: int, reached: bool, path: Array) -> int:
+func update(now_ms: int, reached: bool, path: Array) -> State:
 	match state:
 		State.BUILDING:
 			if reached:
@@ -68,7 +68,7 @@ func snapshot() -> Dictionary:
 func restore(saved: Dictionary) -> void:
 	if saved.is_empty():
 		return
-	state = int(saved.get("state", State.BUILDING))
+	state = int(saved.get("state", State.BUILDING)) as State
 	cell = Vector2i(int(saved.cell[0]), int(saved.cell[1]))
 	frozen = bool(saved.get("frozen", false))
 	_goal_cell = Vector2i(int(saved.goal[0]), int(saved.goal[1]))
@@ -97,7 +97,7 @@ func _walk(now_ms: int, reached: bool, path: Array) -> void:
 			_go(State.ARRIVED)
 
 
-func _go(next: int) -> bool:
+func _go(next: State) -> bool:
 	if not (TRANSITIONS[state] as Array).has(next):
 		push_error("WtSpanWalker: illegal transition %d -> %d" % [state, next])
 		return false
