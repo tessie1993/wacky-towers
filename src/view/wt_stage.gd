@@ -1212,7 +1212,9 @@ func _apply_biome_block_material() -> void:
 	var material: Material = _biome_block_material()
 	if not material is ShaderMaterial: return
 	# The falling piece never fades, so it gets its own copy without occlusion state.
-	var falling: ShaderMaterial = material.duplicate() as ShaderMaterial
+	# A fresh material, not duplicate(): the copy drops the palette arrays (the piece rendered black).
+	var falling: ShaderMaterial = _biome_block_material() as ShaderMaterial
+	if falling == null: falling = material.duplicate() as ShaderMaterial
 	falling.set_shader_parameter(&"use_cell_alpha", false)
 	_active.material_override = falling
 	if _locked != null: _locked.set_biome_material(material as ShaderMaterial)

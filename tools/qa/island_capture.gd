@@ -4,6 +4,7 @@ extends Node
 ## freezes the sim (optionally --pieces: a few locked pieces, like the stage demo), and saves in-game shots + side-by-sides with ref 15.
 ## Run: timeout 240 xvfb-run -a -s "-screen 0 1280x1280x24" godot --path . --rendering-driver opengl3 \
 ##   --resolution 720x1280 res://tools/qa/island_capture.tscn -- [--biomes=meadow,ice] [--tag=v1]
+var _stack: bool = false
 const OUT := "res://production/qa/evidence/islands-v2/"
 const REF := "res://assets/art/reference/style/15_title_and_hud.png"
 const PANELS := {"meadow": Rect2i(424, 0, 414, 941), "ice": Rect2i(840, 0, 414, 941), "celestial": Rect2i(1256, 0, 416, 941)}
@@ -22,6 +23,7 @@ func _run() -> void:
 		if a.begins_with("--biomes="): biomes = a.trim_prefix("--biomes=").split(",")
 		if a.begins_with("--tag="): tag = "_" + a.trim_prefix("--tag=")
 		if a == "--pieces": pieces = true
+		if a == "--stack": pieces = true; _stack = true
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	var vs: Vector2 = get_viewport().get_visible_rect().size
 	var res: String = "%dx%d" % [int(vs.x), int(vs.y)]
@@ -66,6 +68,27 @@ func _place_pieces(main: Node) -> void:
 	var stage: Node = main.get("_stage")
 	if sim == null or stage == null: return
 	var b: BoardState = sim.board()
+	if _stack:
+		# Mid-stack fixture: distinct piece uids (dominoes/trominoes) over three layers, like play.
+		var uid: int = 1
+		var pieces: Array = [[0,0,1,0,0,0],[1,0,0,0,0,1],[0,1,1,0,0,0],[2,0,3,0,0,0],[2,0,0,0,0,2]]
+		var cs: Array = []
+		for y: int in 3:
+			for z: int in 6:
+				for x: int in 6:
+					if (x + z + y) % 7 != 0 and (x * 3 + z * 5 + y) % 11 != 0: cs.append(Vector3i(x + 1, y, z + 1))
+		# group consecutive cells (x runs) into pieces of 2-3 cubes
+		var i: int = 0
+		while i < cs.size():
+			var run: int = 2 + (uid % 2)
+			for k: int in run:
+				if i + k < cs.size() and cs[i + k].y == cs[i].y and cs[i + k].z == cs[i].z and cs[i + k].x == cs[i].x + k:
+					if b.in_bounds(cs[i + k]): b.place(b.index(cs[i + k]), 1, 1 + uid % 5, uid)
+			i += run
+			uid += 1
+		var sv: Object = stage.get("_locked")
+		if sv != null and sv.has_method("refresh"): sv.call("refresh")
+		return
 	var cells: Array = [[2, 0, 3, 1], [3, 0, 3, 1], [3, 1, 3, 1], [3, 0, 4, 2], [4, 0, 4, 2], [4, 0, 5, 2],
 		[2, 0, 4, 3], [2, 0, 5, 3], [2, 1, 5, 3], [4, 1, 4, 4], [4, 2, 4, 4], [5, 0, 3, 5], [5, 0, 4, 5]]
 	for c: Array in cells:

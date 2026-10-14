@@ -86,3 +86,8 @@ owner revises and the gate re-runs. No phase starts before the one it depends on
 - 2026-10-14: **fresh story**. Keep only the cast (the Wizard, Dame Ada, Bram, Sif, plus the NPCs
   Lana, Boulder and Glim). Write a new campaign story from scratch. The 20 old panels (S01–S20) are
   not binding (user).
+- 2026-10-14: order confirmed by the user. (1) Research the story and write a chapter per biome,
+  making every level a piece of the story. (2) Write out in words how each level is played and how
+  each mechanic works. (3) Only then make the level art and the level code. Step 2 has two outputs:
+  the per-level specs (phase 4) and a plain-words **mechanics handbook**
+  (`design/levels/plans/mechanics-handbook.md`) explaining every rule and goal a player meets.

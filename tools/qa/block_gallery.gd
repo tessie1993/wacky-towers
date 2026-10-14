@@ -91,13 +91,13 @@ func _cell_v2(biome: StringName) -> Control:
 	box.custom_minimum_size = Vector2(640, 560)
 	var svc := SubViewportContainer.new()
 	svc.stretch = true
-	svc.custom_minimum_size = Vector2(640, 540)
+	svc.custom_minimum_size = Vector2(640, 510)
 	box.add_child(svc)
 	var vp := SubViewport.new()
 	vp.own_world_3d = true
 	vp.transparent_bg = true
 	vp.msaa_3d = Viewport.MSAA_4X
-	vp.size = Vector2i(640, 540)
+	vp.size = Vector2i(640, 510)
 	svc.add_child(vp)
 	var world := Node3D.new()
 	vp.add_child(world)
