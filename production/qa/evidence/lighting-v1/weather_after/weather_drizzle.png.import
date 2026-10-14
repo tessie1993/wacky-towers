@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ck1whd4l3qihx"
-path="res://.godot/imported/after_real_level1_1280_vs_ref.png-72254016e52c550f76d611e78f58b425.ctex"
+uid="uid://yp4g0san861i"
+path="res://.godot/imported/weather_drizzle.png-cae0b80c557da1516e24dca57015639a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://production/qa/evidence/ui-v2/after_real_level1_1280_vs_ref.png"
-dest_files=["res://.godot/imported/after_real_level1_1280_vs_ref.png-72254016e52c550f76d611e78f58b425.ctex"]
+source_file="res://production/qa/evidence/lighting-v1/weather_after/weather_drizzle.png"
+dest_files=["res://.godot/imported/weather_drizzle.png-cae0b80c557da1516e24dca57015639a.ctex"]
 
 [params]
 

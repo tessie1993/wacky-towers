@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwb3im3fbtvei"
-path="res://.godot/imported/after_hud_full_1280_vs_ref.png-3da831b0a04f020d1c4ada9f091efbb2.ctex"
+uid="uid://dytv4o2mg3llu"
+path="res://.godot/imported/weather_stars.png-5281639213701b981bdd7dad6bb36054.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://production/qa/evidence/ui-v2/after_hud_full_1280_vs_ref.png"
-dest_files=["res://.godot/imported/after_hud_full_1280_vs_ref.png-3da831b0a04f020d1c4ada9f091efbb2.ctex"]
+source_file="res://production/qa/evidence/lighting-v1/weather_after/weather_stars.png"
+dest_files=["res://.godot/imported/weather_stars.png-5281639213701b981bdd7dad6bb36054.ctex"]
 
 [params]
 

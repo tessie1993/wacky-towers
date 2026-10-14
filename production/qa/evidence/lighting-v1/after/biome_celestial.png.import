@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c8qjyen7id2pr"
-path="res://.godot/imported/after_hud_full_720_vs_ref.png-97b8bd13c3107689a16297afb53a70f6.ctex"
+uid="uid://b6we3nsmnlpc5"
+path="res://.godot/imported/biome_celestial.png-767ba24bdfbee0820b623b00d7578ef2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://production/qa/evidence/ui-v2/after_hud_full_720_vs_ref.png"
-dest_files=["res://.godot/imported/after_hud_full_720_vs_ref.png-97b8bd13c3107689a16297afb53a70f6.ctex"]
+source_file="res://production/qa/evidence/lighting-v1/after/biome_celestial.png"
+dest_files=["res://.godot/imported/biome_celestial.png-767ba24bdfbee0820b623b00d7578ef2.ctex"]
 
 [params]
 

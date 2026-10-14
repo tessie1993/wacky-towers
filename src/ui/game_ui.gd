@@ -1311,12 +1311,17 @@ func _build_hud() -> void:
 	var clock_slot := Control.new()
 	clock_slot.name = "ClockSlot"
 	clock_slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	clock_slot.custom_minimum_size = Vector2(110, 64)
-	clock_slot.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	clock_slot.custom_minimum_size = Vector2(120, 120)
 	clock_slot.visible = _hud_has("clock")
 	clock_slot.add_child(clock)
-	clock.set_anchors_and_offsets_preset(Control.PRESET_CENTER_LEFT)
-	row.add_child(clock_slot)
+	clock.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	# Round sundial medallion (120 px), bottom-centre per the level art brief; art comes later.
+	_hud.add_child(clock_slot)
+	clock_slot.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	clock_slot.offset_left = -60
+	clock_slot.offset_right = 60
+	clock_slot.offset_top = -(120 + 16 + inset.w)
+	clock_slot.offset_bottom = -(16 + inset.w)
 	_hud_labels.clock_slot = clock_slot
 	# NEXT plaque: the upcoming piece drawn as isometric toy cubes.
 	var next_panel := PanelContainer.new()
@@ -1383,6 +1388,13 @@ func _build_hud() -> void:
 	meter.hearth_icon = str(meter_def.get("icon", "")) == "hearth"
 	meter.caption = meter_label if meter_key.is_empty() or tr(meter_key) == meter_key else tr(meter_key)
 	_hud_labels.meter = meter
+	# Meter sits bottom-left (portrait: just above the Turn button).
+	_hud.add_child(meter)
+	meter.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	meter.offset_left = 18 + inset.x
+	meter.offset_right = meter.offset_left + meter.custom_minimum_size.x
+	meter.offset_bottom = -(18 + inset.w) - (84.0 * _control_factor + 20.0 if _portrait else 0.0)
+	meter.offset_top = meter.offset_bottom - meter.custom_minimum_size.y
 	var spacer := Control.new()
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -1390,16 +1402,12 @@ func _build_hud() -> void:
 		# Row 2, centred over the board: meter, score and clock only for what the level shows.
 		var info_row := _hbox(col, 10)
 		info_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		info_row.add_child(meter)
 		info_row.add_child(score_panel)
-		ribbon.get_parent().move_child(clock_slot, ribbon.get_index() + 1)
 		_hud_labels.info_row = info_row
 	else:
 		ribbon.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-		ribbon.custom_minimum_size.x = 300
-		row.move_child(clock_slot, ribbon.get_index() + 1)
+		ribbon.custom_minimum_size.x = 400
 		row.add_child(spacer)
-		row.add_child(meter)
 		row.add_child(score_panel)
 		row.move_child(next_panel, -1)
 	_hud_labels.rules = _label("", 16, MUTED, true)
@@ -1976,7 +1984,11 @@ func update_hud(data: Dictionary) -> void:
 	_hud_labels.tools.visible = tools_ok and _hud_has("tools")
 	_hud_labels.tools.text = "Kit" if bool(capabilities.get("kit", false)) else ("Direction" if bool(capabilities.get("choose_down", false)) or bool(capabilities.get("ice_flick", false)) else "Puzzle")
 	_hud_labels.level.text = str(_hud_data.get("level_name", "Meadow"))
-	_hud_labels.goal.text = "%s  %s / %s" % [str(_hud_data.get("goal", "Layers")), str(_hud_data.get("progress", 0)), str(_hud_data.get("target", 1))]
+	# A level's story objective is shown alone: never a layer count (level rule). Levels without
+	# one keep the "goal  n / target" line.
+	var objective := str((_hud_data.get("hud", {}) as Dictionary).get("objective", "")) if _hud_data.get("hud", {}) is Dictionary else ""
+	if objective.is_empty(): objective = str(_hud_data.get("objective", ""))
+	_hud_labels.goal.text = objective if not objective.is_empty() else "%s  %s / %s" % [str(_hud_data.get("goal", "Layers")), str(_hud_data.get("progress", 0)), str(_hud_data.get("target", 1))]
 	_hud_labels.next.text = str(_hud_data.get("next_piece", "—")).capitalize()
 	_hud_labels.held.text = "Hold: " + str(_hud_data.get("held_shape", "—")).capitalize()
 	var ready := bool(_hud_data.get("skill_ready", false))

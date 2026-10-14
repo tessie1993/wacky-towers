@@ -687,7 +687,7 @@ func _hud_snapshot() -> Dictionary:
 		target /= 1000
 	var next_ids: Array[StringName] = _sim.preview(clampi(_sim.knobs().int_value(&"spawn.preview_count"), 1, PREVIEW_COUNT))
 	return {"level_name": _level_name(_level_id) if _mode == &"campaign" else "Arcade" if _mode == &"arcade" else "Party practice",
-		"goal": _goal_text(goal), "progress": progress, "target": target, "score": _sim.score(), "time": _format_ms(_sim.elapsed_ms()),
+		"goal": _goal_text(goal), "objective": String(_level.story.get("objective", "")) if _level != null and _mode == &"campaign" else "", "progress": progress, "target": target, "score": _sim.score(), "time": _format_ms(_sim.elapsed_ms()),
 		"next_piece": ", ".join(next_ids), "twists": _rule_labels(_arcade.snapshot().rules if _arcade != null else _level.rules),
 		"danger": _sim.board().stack_height() >= _sim.board().limit_layer() - 2,
 		"can_tilt": _level.knobs.get(&"control.rotation_axes_enabled", []).has("tilt"),

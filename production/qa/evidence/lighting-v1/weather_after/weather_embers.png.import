@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cq251nmpgbiia"
-path="res://.godot/imported/after_real_level1_720_vs_ref.png-40dca4858d2eac51204a7e2bfb6312c4.ctex"
+uid="uid://cqn5ueeetcp45"
+path="res://.godot/imported/weather_embers.png-e26ed3eadac8728b0ed0d2afc56c6454.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://production/qa/evidence/ui-v2/after_real_level1_720_vs_ref.png"
-dest_files=["res://.godot/imported/after_real_level1_720_vs_ref.png-40dca4858d2eac51204a7e2bfb6312c4.ctex"]
+source_file="res://production/qa/evidence/lighting-v1/weather_after/weather_embers.png"
+dest_files=["res://.godot/imported/weather_embers.png-e26ed3eadac8728b0ed0d2afc56c6454.ctex"]
 
 [params]
 

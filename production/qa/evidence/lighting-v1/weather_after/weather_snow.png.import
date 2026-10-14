@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dcftjkb8ga2u6"
-path="res://.godot/imported/after_hud_level1_1280.png-c2a6883397dbf47c869bee49865ac4c2.ctex"
+uid="uid://bm25beq8tkwqf"
+path="res://.godot/imported/weather_snow.png-c4c02f685aa0621f722b5b6a64757a54.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://production/qa/evidence/ui-v2/after_hud_level1_1280.png"
-dest_files=["res://.godot/imported/after_hud_level1_1280.png-c2a6883397dbf47c869bee49865ac4c2.ctex"]
+source_file="res://production/qa/evidence/lighting-v1/weather_after/weather_snow.png"
+dest_files=["res://.godot/imported/weather_snow.png-c4c02f685aa0621f722b5b6a64757a54.ctex"]
 
 [params]
 

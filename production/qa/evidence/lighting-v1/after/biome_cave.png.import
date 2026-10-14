@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bplxe7a47447k"
-path="res://.godot/imported/after_real_level1_1280.png-d77017d70aff347b60e92f37d249c832.ctex"
+uid="uid://b2g2r14tvkloa"
+path="res://.godot/imported/biome_cave.png-c0aba6c5f13643016c02d85a7e9aac81.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://production/qa/evidence/ui-v2/after_real_level1_1280.png"
-dest_files=["res://.godot/imported/after_real_level1_1280.png-d77017d70aff347b60e92f37d249c832.ctex"]
+source_file="res://production/qa/evidence/lighting-v1/after/biome_cave.png"
+dest_files=["res://.godot/imported/biome_cave.png-c0aba6c5f13643016c02d85a7e9aac81.ctex"]
 
 [params]
 

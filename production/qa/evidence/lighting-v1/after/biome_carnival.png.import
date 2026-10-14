@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://baouvp56f3sbo"
-path="res://.godot/imported/after_hud_level1_720.png-9c8d546efea79294c6a53b874482eb48.ctex"
+uid="uid://dt7fgm3a53qv1"
+path="res://.godot/imported/biome_carnival.png-3b627d4fdb940effe81250f4542fe51c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://production/qa/evidence/ui-v2/after_hud_level1_720.png"
-dest_files=["res://.godot/imported/after_hud_level1_720.png-9c8d546efea79294c6a53b874482eb48.ctex"]
+source_file="res://production/qa/evidence/lighting-v1/after/biome_carnival.png"
+dest_files=["res://.godot/imported/biome_carnival.png-3b627d4fdb940effe81250f4542fe51c.ctex"]
 
 [params]
 

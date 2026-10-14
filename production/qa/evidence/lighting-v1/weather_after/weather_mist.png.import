@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbcomqt85akh3"
-path="res://.godot/imported/after_hud_level1_720_vs_ref.png-4daad411d273a0c5ee4d5e65add53951.ctex"
+uid="uid://bsafirpv2u0dc"
+path="res://.godot/imported/weather_mist.png-96c102aeffc851ffd90eb17e028d090c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://production/qa/evidence/ui-v2/after_hud_level1_720_vs_ref.png"
-dest_files=["res://.godot/imported/after_hud_level1_720_vs_ref.png-4daad411d273a0c5ee4d5e65add53951.ctex"]
+source_file="res://production/qa/evidence/lighting-v1/weather_after/weather_mist.png"
+dest_files=["res://.godot/imported/weather_mist.png-96c102aeffc851ffd90eb17e028d090c.ctex"]
 
 [params]
 

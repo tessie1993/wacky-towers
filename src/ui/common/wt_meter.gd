@@ -117,9 +117,9 @@ func _segment(rect: Rect2, fill_color: Color, amount: float) -> void:
 ## Hearth flame: gold outer, light inner, in a dark ring so it reads on any biome.
 func _flame(center: Vector2, h: float, lit: bool) -> void:
 	draw_circle(center, h * 0.62, Color("2a1838"))
-	draw_arc(center, h * 0.62, 0.0, TAU, 24, WtStorybook.GOLD if lit else WtStorybook.STAR_DIM, 3.0, true)
+	draw_arc(center, h * 0.62, 0.0, TAU, 24, WtStorybook.GOLD if lit else Color("c08a58"), 3.0, true)
 	var outer := PackedVector2Array([center + Vector2(0, -h * 0.5), center + Vector2(h * 0.3, -h * 0.05), center + Vector2(h * 0.24, h * 0.3),
 		center + Vector2(0, h * 0.42), center + Vector2(-h * 0.24, h * 0.3), center + Vector2(-h * 0.3, -h * 0.05)])
-	draw_colored_polygon(outer, Color("ff9a3c") if lit else WtStorybook.STAR_DIM)
+	draw_colored_polygon(outer, Color("ff9a3c") if lit else Color("c08a58"))
 	var inner := PackedVector2Array([center + Vector2(0, -h * 0.12), center + Vector2(h * 0.14, h * 0.16), center + Vector2(0, h * 0.34), center + Vector2(-h * 0.14, h * 0.16)])
-	draw_colored_polygon(inner, WtStorybook.GOLD_GLINT if lit else WtStorybook.PLUM_SOFT)
+	draw_colored_polygon(inner, WtStorybook.GOLD_GLINT if lit else Color("e8c89a"))

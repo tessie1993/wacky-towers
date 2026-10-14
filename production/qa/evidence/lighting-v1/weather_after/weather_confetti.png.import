@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crg4g26b6i8fc"
-path="res://.godot/imported/after_real_level1_720.png-6108391229b0ef541b13cb03d329baff.ctex"
+uid="uid://c1cepgyqvwefa"
+path="res://.godot/imported/weather_confetti.png-80e235b62edb8ca3d7a8b74050339b52.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://production/qa/evidence/ui-v2/after_real_level1_720.png"
-dest_files=["res://.godot/imported/after_real_level1_720.png-6108391229b0ef541b13cb03d329baff.ctex"]
+source_file="res://production/qa/evidence/lighting-v1/weather_after/weather_confetti.png"
+dest_files=["res://.godot/imported/weather_confetti.png-80e235b62edb8ca3d7a8b74050339b52.ctex"]
 
 [params]
 
