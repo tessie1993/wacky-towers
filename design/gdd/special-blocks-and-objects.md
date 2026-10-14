@@ -1361,11 +1361,71 @@ All values are starting defaults. Each knob lives in a data file (section 7). Ta
 
 ## 5. Edge Cases
 
-TODO
+Each case states what happens. "Rescue" means the soft top-out rescue that wipes the lowest planes and spends a warning (`levels.md:34`, README top-out table).
+
+**Chains and combos**
+1. **Bomb next to bomb.** A blast never detonates another bomb directly (R-7). If the blast completes a layer, the layer clears in the one allowed extra clear pass, and a bomb cleared there detonates once. Maximum 2 blasts per lock. Counted as one combo step each for scoring (`layer-clearing.md` combo).
+2. **Item bomb on a candy bomb.** The item blast runs at `on_lock` before the clear check. It removes the candy bomb by damage, so the candy bomb does not detonate. This is a deliberate safe case.
+3. **Countdown bomb hits zero in the same resolve as a clear next to it.** The clear hook runs first, so the bomb is defused and removed (`countdown_bomb.gd:9-15` runs on `on_clear`, the tick runs on `on_resolve_end`). Defuse wins ties. No junk layer is added.
+4. **Egg cleared on the lock it would hatch.** The clear hook pays `egg_bonus` and the egg is gone before `on_resolve_end` runs the hatch (`hatching_eggs.gd:10-14` versus `:20`). No chick appears.
+5. **Goo spread and a clear in the same resolve.** The spread is skipped once (`goo_spread.gd:15-18`). The next quiet lock spreads normally.
+6. **Frosting peeled by two clears in one resolve.** At most one coat per resolve (`_peeled`, `frosting.gd:17-18`). A double clear does not double-peel.
+7. **Moody cube next to a rainbow cube.** The rainbow cube counts as a match, so the moody cube is happy and fills its layer. `ART-CHECK` in `moody_cube.gd`; if it does not today, treat as a 0.25 day change.
+8. **Sprout growing into a cell a mushroom was about to claim.** The mushroom's marked cell is no longer free at its due lock, so the spawn is cancelled (`mushroom_popup.gd:19-25`). The sprout wins by being first.
+9. **Hook hang expires while a piece rests on it.** The status is removed. The cube is a normal cube; it does not fall unless a slice collapse moves it.
+
+**Specials at the top-out line**
+10. **A hazard spawns in the danger band.** Spawners already restrict cells: the mushroom needs `layer < layer_count - 4` (`mushroom_popup.gd:30`); goo needs `layer < limit_layer` (`goo_spread.gd:27`); pests need `layer < limit_layer` (`pest.gd:49`). Rule for every NEW spawner: never place into the top 4 layers.
+11. **A special cube sits in the danger band after a rescue lifts the stack.** It counts as height like any cube, except `static_geometry` cells (rock, shelf, masked columns), which add none (README line 20, `levels.md:34`).
+12. **A bomb or Smash is the only way out of a top-out.** Allowed. Removing cubes lowers height. A bomb blast does not count as a clear for the goal counter, so it cannot win a `clear_n`-style goal.
+13. **A critter or gem is in the planes a rescue wipes.** It is lost. Proposed rule (needs the user's ruling, Open Question 3): a rescue never wipes a cell that carries `goal_object: true` (gems, critters, keys, cargo). The wipe skips it and the stack settles around it. Without this rule a rescue can silently lose the goal.
+14. **A growing sprout reaches the danger line.** Growth stops (`api.is_free(above)` fails, `sprouts.gd:45`) because the cell above the top is not free or not active. It never causes a top-out by itself.
+15. **A pest escapes over the rim (`rim_escape`).** It removes one cube with it and counts `worms_escaped` (`pest.gd:71-76`). If the goal wants the pests gone this is a loss path, not a win.
+
+**Specials inside masks and moving platforms**
+16. **Specials on masked cells.** A special is never placed on an inactive cell. A mask change (`request_mask`, gap G1) that deactivates a cell under a special moves the special to the nearest active free cell above, or removes it as displaced if none exists. Anchored cells are never deactivated.
+17. **Terraced masks (different mask per layer).** Pads, goo and pests treat an inactive cell as a wall. A bounce hop that would end over an inactive cell is blocked for that cell (same as any blocked translate).
+18. **Moving platform bump.** A bump shakes loose cubes that are not supported (G8). Anchored and hung cubes are exempt. Cargo is pushed one cell and may fall off the edge. A critter on the cart is moved to the nearest safe cell, never deleted.
+19. **Arch sweep.** Anything above `arch_gap` layers is swept. A gem, key or critter above the gap is swept too. The level validator must keep gems and goal objects below the lowest arch gap or mark them `arch_safe`.
+20. **Camera or axis change.** If a level changes the down axis (`topsy_tumble`, `flip`), specials keep identity and status through the move (README line 35). Pad direction, magnet pull direction and ice slide direction are stored in world axes, so they do not flip with the view.
+
+**Specials in the soft rescue**
+21. **Rescue never releases a goal item.** Per `levels.md:34`, a rescue never releases a grip. Extend: a rescue never collects a gem, key, egg bonus or item cube (`items.md` edge case: lost).
+22. **Rescue while a countdown bomb is live.** The bomb is wiped with its plane if it sits low. If it sits above the wiped planes it keeps its remaining count. No junk layer is added by a wiped bomb.
+23. **Rescue while a hazard is warning.** Warnings are cancelled if their target cell is wiped. The next warning is scheduled after `E` locks. This prevents a free hit during the recovery pause. Rule R-warn: all warning timers pause during the rescue animation (framework "Suspended", `buffs-debuffs.md` rule 4).
+24. **Rescue with goo.** Goo cells wiped with their plane. Goo above the wiped planes stays and settles (slice mode shifts down).
+25. **Rescue and a tilt plate.** Run the tilt check after the wipe, before play resumes. If tau is still above the threshold, give one grace resolve with no slip (`slip_after_resolves` counts from the first resolve after the wipe).
+
+**Other**
+26. **Two hazards want the same cell.** The first marked wins. The second finds the cell occupied at its due lock and cancels (all spawners cancel on an occupied mark, for example `mushroom_cancelled`, `hail_cancelled`, `geyser_cancelled`).
+27. **A special piece (ghost, balloon, bubble) is held.** The piece keeps its tag and flags through hold (`items.gd:109-113` shows the rule for item cubes). The ghost flag is re-evaluated on respawn.
+28. **Reduced motion.** Idle animations become static badges. Warnings stay visible as static outlines plus the same sound. No information is lost (`accessibility` rules; the weather layer is already skipped under reduced motion, `level-identity-spec.md:46`).
+29. **Colour-blind play.** Every special has a badge shape that is unique across the set (section 3.1 convention 1). Hazard rims also differ by pulse pattern: warn is a slow pulse, due is a fast pulse.
+30. **Determinism.** Every random choice uses the rule's own stream (`api.rng()`), is ordered canonically, and a one-candidate choice draws nothing (README line 61). New rules must do the same, or replays diverge.
 
 ## 6. Dependencies
 
-TODO
+This catalogue reads from the systems below and must be listed in each as a dependency (bidirectional rule, `.claude/rules/design-docs.md`). Those edits are not made here; they are a follow-up (Open Question 5 offers the user the choice).
+
+| System or file | Direction | What flows | Hard or soft |
+|---|---|---|---|
+| `design/gdd/piece-set.md` | both | Shape families, tags, hue and motif rules. This doc adds power-by-form to shapes and asks for tags `heavy`, `hang`, `pin`, `nest` | Hard |
+| `design/gdd/block-status-effects.md` | both | The 7 shells. This doc records engine status per shell | Hard |
+| `design/gdd/obstacles.md`, `obstacle-clearing.md` | both | Rock, pillar, junk, hit points, damage. This doc adds `goal_object` and `anchored` rules | Hard |
+| `design/gdd/items.md`, `buffs-debuffs.md`, `skills.md` | both | Item table, effects, skills. This doc adds 4 NEW items | Hard |
+| `design/gdd/layer-clearing.md` | reads | Clear passes, combo, chain rounds, `clear.chain_max` | Hard |
+| `design/gdd/board-grid.md` | reads | Footprint, masks, `P_eff`, spawn clearance | Hard |
+| `design/gdd/rule-twist-framework.md` | reads | Rule layers (`content`, `twist`, `mechanic`, `item_buff`), priority, `rules.max_twists` 2, `rules.max_level_mechanics` 1 | Hard |
+| `design/gdd/mechanics-catalog.md`, `mechanics-wave3.md`, `minigame-mechanics-wave4.md` | both | Rule handbook entries. This doc points at them and adds proposals | Soft |
+| `design/gdd/audio/sfx-cue-list.md` | writes | New cue ids (`AUDIO-NEW`) | Soft |
+| `design/art/block-art-sets.md`, `design/art/art-bible.md` | reads | Biome skins, shells, silhouette rule | Hard |
+| `design/levels/levels.md`, `level-identity-spec.md`, `minigame-party-rules.md` | reads | First 12 levels, rules, party rules | Hard |
+| `design/gdd/tournament-minigames.md`, `mode-minigame-randomizer.md` | both | Which specials a tournament round may use; seed sharing | Soft |
+| `design/gdd/onboarding-accessibility.md`, `design/accessibility-requirements.md` | reads | Teach hints, reduced motion, colour-blind rules | Hard |
+
+**Code touched when this is built** (owners as in section 3.2). `assets/data/content/blocks.json` (next `kind_id` 25), `assets/data/rules/*.json` (one per new rule), `assets/data/knobs/*.json` (new `specials.json`), `src/mechanics/**` (new plugins), `src/view/wt_block_materials.gd` and `assets/data/biome_looks.json` (skins and badges), `src/core/rules/plugin_registry.gd` (registers each `PLUGIN_ID`), `tools/qa/block_gallery.gd` (gallery of every special per biome, 12 biomes), `tools/qa/verify_campaign_biomes.gd` (validator checks in section 8).
+
+**Registry.** `design/registry/entities.yaml` was not present when this was written (the directory listing shows no `design/registry`). Cross-system facts introduced here are listed in Appendix C for the orchestrator, who may add them to a registry.
 
 ## 7. Tuning Knobs
 
