@@ -44,6 +44,37 @@ Reviewers had scored it higher, which was too lenient.
 - A plan cannot score higher than the build that carries it out. Good writing about variety is not variety.
 - Two levels on the same square footprint with only a reskin count as the same scene.
 
+## Stricter marking (user, 2026-10-14: "Make the reviews be stricter with giving good marks")
+
+These rules apply to every reviewer and every area: art, UI, levels, mechanics, story, sound and plans.
+
+1. **Start low and earn each point.** Every item starts at 5/10. Raise it only for strengths you can see
+   in a retained screenshot or quote from the file, each set against a named reference board or rule.
+   Points with no evidence are not given.
+2. **Reaching 9+ needs proof.**
+   - A score of 9.0 or higher must cite at least 3 concrete pieces of evidence: a file and line, a
+     screenshot path, or a side-by-side with a reference.
+   - It must also say why the item is not 10.
+   - "Good", "clear", "solid" and "much improved" are not evidence.
+3. **Hard caps.**
+   - **Any open defect:** an item with an open defect that a player or the user would notice
+     scores ≤ 8.5.
+   - **Not built:** an item that exists only on paper (a plan, spec or unbuilt mechanic) scores ≤ 7
+     for player-facing qualities. A plan cannot score more than the build that carries it out.
+   - **No capture:** a missing or stale capture caps the item at 6.
+4. **No rounding up, and no credit for effort.**
+   - Score the thing as it is now. Improvement since the last round is not a score.
+   - When unsure between two scores, give the lower one.
+5. **A score cannot rise much between rounds unless the evidence shows it.**
+   - A score that rises by more than 1.5 points in one round must list each change that earned it.
+   - A different reviewer then spot-checks that rise before it counts.
+6. **Score each sub-item separately.** List each sub-item's score and its defects on its own. One strong
+   sub-item may not lift a weak one through an average.
+7. **Calibration miss.** Any reviewer score that the user later marks down by 1 or more is logged here.
+   That reviewer's next 3 reviews are then capped 0.5 lower.
+8. **Pass means 9.7 on every item, with no exceptions.** A 9.6 is a fail.
+   - A review whose average passes but has any item below the bar is a FAIL.
+
 ## How work is judged: reviewers instruct, makers fix
 
 1. Makers (UI, world, blocks, characters, levels, audio agents) change things and capture
