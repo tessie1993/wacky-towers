@@ -1669,3 +1669,13 @@ Each has a recommended option first. The decision is the user's.
 | **Total** | **112** | **66** | **19** | **27** |
 
 "Existing" means the rule or shape is in the engine today. "Partial" means the base exists and a power, view or rule is missing. In group (b), 7 of the 10 NEW entries (fire tile, hole, switch, gate, peg, pillar, hang point) are floor or wall markers rather than cubes; they are filed under block kinds because they are cell-level data in the level file.
+
+## Appendix E. User decisions (2026-10-14)
+
+- **Chapter 1 specials:** "Remix in hard levels." Each of meadow_h2 and meadow_h3 adds one existing special kind as a
+  remix. The teach levels 01-10 keep the core objects only.
+- **Clock-based hazards on Tetris-variant levels:** "Hidden timer." Millisecond schedules stay, but no countdown is shown
+  on the HUD. Telegraphs (an actor tell plus a sound) still warn before every hazard.
+- **Items in the campaign:** "From Chapter 2." Starter items and new items unlock in the campaign from Chapter 2 on.
+  Chapter 1 uses character skills only.
+- **Next step:** "3-expert review first." The document goes to three blind experts before any new kind is added to the data.
