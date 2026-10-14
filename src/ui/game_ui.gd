@@ -731,7 +731,7 @@ func show_modes(data: Dictionary = {}) -> void:
 		var row := _hbox(content, 14)
 		var keys: Array = rows[r]
 		var big := r == 0
-		var height := vh * ((0.25 if big else 0.21) if _portrait else (0.34 if big else 0.3))
+		var height := vh * ((0.27 if big else 0.225) if _portrait else (0.28 if big else 0.24))
 		for key: String in keys:
 			var card := _mode_card(cards[key], height, big and key == "campaign", str(data.get("continue_level_name", "")))
 			# Landscape ref 05: Campaign is twice the width of Tournament.
