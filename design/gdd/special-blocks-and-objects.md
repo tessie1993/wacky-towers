@@ -295,8 +295,8 @@ Baseline kinds that are not special (listed so the registry is complete): `block
 - **Rule.** Trigger: every `spawn_every_locks` (5) locks. One lock before, a free surface cell is marked and a sparkle shows (`mushroom_popup.gd:26-38`). Effect: on the next due lock the cell becomes a mushroom cube, unless it was filled, then the spawn is cancelled with `mushroom_cancelled` (`:19-25`). Limits: at most `objects_max` (4) mushrooms on the board; only cells at least 4 layers below the limit and with something or nothing-active under them (`:30`); `place_mode: lowest` restricts to the lowest candidates. Fill: `fills_layer` true, so it counts toward layers and clears with them (`blocks.json:23-32`). Gravity: it is placed on a supported surface and then behaves like a normal cube in slice collapses. Other specials: `object_kind` lets the same rule spawn any registered kind (`:16`), so the same warning and cap machinery spawns goo or a pest later. Rescue: wiped like any cube. Top-out: counts as height.
 - **Look.** Red cap with cream spots, a bouncy idle squash every 1.5 s, a rim of hazard orange only while it is a warning mark (sparkle). Skins: meadow cap, candy gumdrop-mushroom, forest moss cap, cave glowing fungus, underwater anemone, neon holo-cap. Never a plain cube silhouette.
 - **Audio.** `SFX_EV_MUSHROOM_SPARKLE` (warn) and `SFX_EV_MUSHROOM_POP` (spawn), both in `sfx-cue-list.md:85-86`.
-- **Fits.** Meadow (legacy `src/levels/meadow/meadow_04/meadow_04.json:50` uses it, but the levels.md frame makes meadow_04 the sheep drive and does not list it), forest, cave, candy.
-- **Intro and teach.** Not in the first 12. Recommended first use: meadow_h2 or forest_01. Teach: the sparkle already tells you where; hint "Sparkle means something is growing here."
+- **Fits.** meadow_h2 (the h2 remix kind, Appendix E), forest, cave, candy. (The legacy file `src/levels/meadow/meadow_04/meadow_04.json:50` still lists it, but the `levels.md` frame makes meadow_04 the sheep drive.) Rule layer: twist (`assets/data/rules/mushroom_popup.json:5`).
+- **Intro and teach.** meadow_h2 (3.4). The sparkle teaches by itself; hint "Sparkle means something is growing here."
 - **Fairness.** It can pop into a spot you wanted. Counterplay: the cell is shown a full lock ahead, and a piece placed there cancels the spawn.
 - **Engine.** EXISTS (`src/mechanics/behaviour/mushroom_popup.gd`). View for sparkle and squeak is in the Meadow cue list. No gap.
 - **Source.** Own idea from the meadow set; the toadstool-style prop appears in the biome and party boards (`party_biome_islands_ref.jpg`, Appendix A).
@@ -304,12 +304,12 @@ Baseline kinds that are not special (listed so the registry is complete): `block
 **BK-02 sprout (kind 4, glyph `^`)**
 - **What.** A seed that grows upward as you place pieces. It builds a living column.
 - **Rule.** Trigger: every `grow_locks` (4) locks. One lock before, a bud shows (`sprouts.gd:46-47`). Effect: if the cell above the tip is free and the column has grown fewer than `grow_max` (default 1; 0 means uncapped) cells, a new sprout cube appears above it (`:48-53`). Growth metadata (`sprout_id`, count) is stored on the cube and follows slice collapse, belt and flip moves, even after the root clears (README line 31). Fill: `fills_layer` true, so a growing sprout can complete a layer or block one. Gravity: normal. Other specials: pairs with `mill_belt` and `flip` by design (identity retained). Rescue: the sprout is lost with the plane. Top-out: grows only if free above; it never pushes a piece.
-- **Look.** Green stalk with two leaves and a bud; the bud pulses faster on the warning lock. Skins: meadow beanstalk, candy sugar-cane, forest sapling, underwater kelp, clockwork brass vine, neon circuit-vine.
+- **Look.** A stalk with a bud and a gold tip. The Meadow HUD already puts a small leaf sticker on the top of every cube (`style/15_title_and_hud.png`), so the sprout badge is NOT a leaf: it is a gold-tipped bud on a stem (3.6). The bud pulses on the warning lock. Skins: meadow beanstalk, candy sugar-cane, forest sapling, underwater kelp, clockwork brass vine, neon circuit-vine.
 - **Audio.** `SFX_SP_SPROUT_GROW` (`sfx-cue-list.md:91`).
-- **Fits.** meadow_h1 Beanstalk Rescue uses it ("Sprouts grow new cells on the stalks as you lock pieces", `levels.md:428`; "sprouts grow every two locks, then every lock", `:438`). Forest, celestial garden.
-- **Intro and teach.** h1 only in Chapter 1. No earlier teach exists, which is a gap: add a gentle intro in meadow_07 or the bonus (one sprout, `grow_max` 1). Proposed hint: "The bud grows next lock."
-- **Fairness.** Risk: a column grows into the landing space and blocks the spawn row. Counterplay: growth stops when the cell above is not free; a `grow_max` cap; the bud warning.
-- **Engine.** EXISTS (`src/mechanics/behaviour/sprouts.gd:13-53`). Note: levels.md h1 says "every two locks, then every lock", so `grow_locks` needs a per-phase change (see Formulas F6). Size 0.5 day, gameplay-programmer.
+- **Fits.** meadow_h1 Beanstalk Rescue (the frame's own sprouts level: "Sprouts grow new cells on the stalks as you lock pieces", `levels.md:428`). Forest, celestial garden.
+- **Intro and teach.** meadow_h1 is the sprout teach. `levels.md:431-433` says "no new mechanic", but the sprout kind is first used there, so h1 counts it as its one new package (F1). No sprout appears in meadow_01 to meadow_10 or the bonus (Appendix E: teach levels keep core objects only). Hint "The bud grows next lock."
+- **Fairness.** Risk: a column grows into the landing space and blocks the spawn row. Counterplay: growth stops when the cell above is not free (`sprouts.gd:45`); the `grow_max` cap; the bud warning. **Telegraph exception:** with `grow_locks` 1 the bud lock and the growth lock are the same lock (`sprouts.gd:46-48` test `_locks % every == every - 1` and `== 0`, both true when `every` is 1). So phase B of h1 ("every lock") has no separate bud warning. This is allowed because growth only adds one cube into a free cell above a tip and never removes or moves anything; the tip of each stalk glows continuously in phase B instead.
+- **Engine.** PARTIAL. The rule EXISTS (`src/mechanics/behaviour/sprouts.gd:13-53`). `levels.md:438` says the pace changes "per lamb rescued", and the rule has one `grow_locks` per level, so a per-phase change is NEW (0.5 day, gameplay-programmer; F11).
 - **Source.** Our own level plan (h1). Reference mockups show growing vines and jungle (checked in Appendix A).
 
 **BK-03 egg (kind 5, glyph `e`) and BK-04 chick (kind 6, glyph `c`)**
@@ -317,26 +317,26 @@ Baseline kinds that are not special (listed so the registry is complete): `block
 - **Rule.** Trigger: every completed lock ages each egg by 1 (`hatching_eggs.gd:20-24`). At `hatch_locks` (6), the egg is removed and a chick appears at the lowest reachable neighbouring cell in a fixed tie order right, left, forward, back, same cell (`:28-47`). One lock before hatching, an `egg_hatch_warning` plays. Clear bonus: an egg cleared before it hatches pays `egg_bonus` (25) points (`:12-14`). Fill: both are `fills_layer` true (`blocks.json:43-62`). Gravity: the chick lands by the rigid-drop calculation on the neighbour column (`:39-40`). Other specials: a chick next to a goo cell is not protected. Rescue: wiped with the plane. Top-out: a chick can hatch into a danger plane; the spawn simply picks the lowest option.
 - **Look.** Egg: cream oval cube with speckles and a faint crack line that grows over the 6 locks (crack stage = age). Chick: yellow puffball with orange beak, hop-in-place idle. Skins: meadow, candy marshmallow-chick, pirate parrot egg, underwater turtle egg, celestial star-egg.
 - **Audio.** `SFX_SP_EGG_HATCH`, `SFX_SP_CHICK_HOP`, `SFX_SP_EGG_BONUS` (`sfx-cue-list.md:100-102`). The egg-hatch and bonus cues exist; `SFX_SP_EGG_HATCH` has no file yet (GAP).
-- **Fits.** Meadow and candy easter-style levels. Not in the first 12 levels frame; a natural fit for meadow_h2 or a bonus. Pairs with `dented_cube` nest (SH-11).
-- **Intro and teach.** One egg on an easy level, hint "It hatches in a few moves." The crack stages teach by themselves.
+- **Fits.** meadow_h3 (the h3 remix kind, Appendix E), candy, pirate (parrot egg), celestial. Pairs with the dent of `dented_cube` (SH-11).
+- **Intro and teach.** meadow_h3 (3.4). One egg, hint "It hatches in a few moves." The crack stages teach by themselves. The chick is the egg's output, not a second new kind, so h3 adds exactly one existing kind.
 - **Fairness.** Risk: a chick wanders into an awkward cell. Counterplay: it always chooses the lowest, never higher; clear the egg for bonus.
 - **Engine.** EXISTS (`src/mechanics/behaviour/hatching_eggs.gd`). View crack stages: gap, 1 day, technical-artist.
 - **Source.** Own meadow idea; critters and eggs appear in the party boards (Appendix A).
 
 **BK-05 bounce_pad (kind 7, glyph `b`)**
 - **What.** A trampoline cell. A piece that lands on it hops up and slides a cell. It flings the lamb in meadow_08.
-- **Rule.** Trigger: the falling piece ends on a pad (any piece cube has a pad directly below it) (`bounce_pad.gd:26-30`). Effect: it fires once per piece (`_bounced`, `:24`). The piece rises up to `bounce_h` (default 2, clamped 1 to 4) cells while free (`:33-37`), then moves one cell in the last move direction (`dir_mode: last_move`) or a fixed `bounce_dir` (`:38-40`). After that the pad is ordinary support (class header, `:2`). Fill: `fills_layer` true (`blocks.json:63-72`). Also spawnable by `lava_rock_spawn` with `object: SP35` (`lava_rock_spawn.gd:21`). Gravity: the hop is a translate against gravity, then normal fall. Other specials: ice (slide twice? see matrix), goo (pad bounce is vetoed on a sticky landing), wind (gust then bounce order: gust is applied before landing). Rescue: wiped like a cube. Top-out: a bounce cannot lift a piece above the limit (the translate is blocked and `rise` is 0).
+- **Rule.** Trigger: the falling piece ends on a pad (any piece cube has a pad directly below it) (`bounce_pad.gd:26-30`). Effect: it fires once per piece (`_bounced`, `:24`). The piece rises up to `bounce_h` (default 2, clamped 1 to 4) cells while free (`:33-37`), then moves one cell in the last move direction (`dir_mode: last_move`) or a fixed `bounce_dir` (`:38-40`). After that the pad is ordinary support (class header, `:2`). Fill: `fills_layer` true (`blocks.json:63-72`). Also spawnable by `lava_rock_spawn` with `object: SP35` (`lava_rock_spawn.gd:21`). Gravity: the hop is a translate against gravity, then normal fall. Other specials (r2, matched to code): `bounce_pad` subscribes to `on_spawn`, `on_command` and `on_land` only (`bounce_pad.gd:9`). It has no check for goo, ice, jelly or any sticky landing. Today the hop, the `jelly_piece` hop and the `ice_slide` each fire once per piece in `on_land` and would add up. The arbiter R-2 (3.3) is NEW and fixes that. A goo veto is NEW too (R-12). A gust is applied while the piece falls, before landing (`gust.gd` subscribes to `on_tick`). Rescue: a pad is a plain cube, so a wipe removes it. Top-out: a bounce cannot lift a piece above the limit (the translate is blocked and `rise` is 0).
 - **Look.** A round pink or green cushion on a coil spring, squashes when hit, ripple ring. In meadow it is a dewdrop on a lily pad (the frame's story). Skins: meadow lily-dewdrop, candy gumdrop-bounce, carnival trampoline, underwater jelly-bubble, clockwork spring plate, neon rubber-glow.
 - **Audio.** Proposed `SFX_SP_BOUNCE_BOING` (AUDIO-NEW); temp `Retro/Jump.wav` as the mushroom pop does.
 - **Fits.** meadow_08 Bouncy Lambs (the whole level, `levels.md:290-318`). Candy, carnival, underwater. A hazard-free fun block.
 - **Intro and teach.** meadow_08. First pad sits in the preview strip with an arrow showing the bounce path. Hint 12 words or fewer: "Pads bounce! Plan where the piece lands."
 - **Fairness.** Risk: a bounce flings a piece into a gap. Counterplay: the landing marker shows the bounce end (a ghost at the hop end), and it is capped at 4 cells.
-- **Engine.** EXISTS for pieces (`src/mechanics/behaviour/bounce_pad.gd`). The lamb being flung is NEW (gap G10, `levels.md:551`, 3 days, gameplay-programmer). Ghost preview of the hop end: NEW, 1 day, ui-programmer.
+- **Engine.** PARTIAL. The pad rule for pieces EXISTS (`src/mechanics/behaviour/bounce_pad.gd`). The landing arbiter R-2 is NEW (GAP-2). The lamb being flung is NEW (gap G10, `levels.md:551`). The ghost preview of the hop end is NEW (GAP-8). Sizes in 3.7.
 - **Source.** Springs and trampolines in `party_modes_ref.jpg` (Wonky Builders spring base) and `party_minigames_ref.jpg` (Wobble Builders spring).
 
 **BK-06 snowball (kind 8, glyph `n`)**
 - **What.** A rolling ball of snow that rolls down a slope across your stack and grows.
-- **Rule.** Trigger: every `roll_locks` (2) locks, each ball rolls one cell in `slope_dir` (default `-x`) (`snowball.gd:34-35,45-79`). One lock before it moves, a warning plays (`:46`). The ball stays a short column of up to `snow_max` (3, clamped 1 to 4) cubes and grows by one cube each roll while free above (`:76-78`). If the next step is off the footprint, blocked, or changes height by more than 1, the ball parks (`:63-68`). A parked ball is inert. At `respawn_locks` (8) it respawns at the high end (`:80`). Clearing a ball cube emits `snowball_puff`. Fill: `fills_layer` true. Gravity: climbs or falls at most 1 per step. Other specials: stops on ice? (see matrix; ice_slide is only for landing pieces). Rescue: wiped. Top-out: growth needs a free cell above.
+- **Rule.** Trigger: every `roll_locks` (2) locks, each ball rolls one cell in `slope_dir` (default `-x`) (`snowball.gd:34-35,45-79`). One lock before it moves, a warning plays (`:46`). The ball stays a short column of up to `snow_max` (3, clamped 1 to 4) cubes and grows by one cube each roll while free above (`:76-78`). If the next step is off the footprint, blocked, or changes height by more than 1, the ball parks (`:63-68`). A parked ball is inert. At `respawn_locks` (8) it respawns at the high end (`:80`). Clearing a ball cube emits `snowball_puff`. Fill: `fills_layer` true. Gravity: climbs or falls at most 1 per step. Other specials: none. `ice_slide` moves only the falling piece on landing, so it never touches a snowball. Rescue: a ball is plain cubes, so a wipe removes them. Top-out: growth needs a free cell above.
 - **Look.** White ball with a blue shadow, trailing snow puffs, a small arrow floor-decal in `slope_dir`. Skins: ice white, candy meringue, cave boulder, lava ash-ball, desert tumbleweed.
 - **Audio.** Proposed `SFX_SP_SNOWBALL_ROLL` (AUDIO-NEW) and `SFX_SP_SNOWBALL_PUFF`.
 - **Fits.** Ice biome (levels not yet in the first 12), mountains, carnival (rolling barrel skin).
@@ -346,15 +346,21 @@ Baseline kinds that are not special (listed so the registry is complete): `block
 - **Source.** Ice and snow boards in the minigame mockups (checked in Appendix A) and the ice block in `biome_block_materials_ref.png`.
 
 **BK-07 goo (kind 9, glyph `g`)**
-- **What.** Naughty sticky goo that spreads to a neighbouring cell after a quiet lock. A clear cancels the next spread.
-- **Rule.** Trigger: each resolve end. If the last resolve had a clear and `cancel_on_clear` is true (default), no spread this lock (`goo_spread.gd:15-18`). Otherwise each goo chooses a free face neighbour (6 directions) below the limit layer, and `per_lock` (default 1) new goo cells appear, picked with the rule's own random stream (`:23-33`). Fill: `fills_layer` true, so goo can fill a layer cell and count for a clear (`blocks.json:83-92`). Gravity: goo cells are placed on any free neighbour, including mid-air (see Edge Cases: unsupported goo). Other specials: sticky landing is a twist; goo as a kind does not slow pieces today. Rescue: wiped. Top-out: spread is limited by `api.limit_layer()`.
-- **Look.** Glossy green or pink blob with a drip, bubbles rising, a wobble animation; the warning lock puffs a small drip on the target cell. Skins: candy syrup, underwater slime, forest sap, lava tar, neon slime-glow.
-- **Audio.** `SFX_PL_STICKY_SPLAT` exists for sticky landing (`sfx-cue-list.md:96`); goo spread proposal `SFX_SP_GOO_SPREAD` (AUDIO-NEW).
-- **Fits.** Candy (frosting level), forest, underwater.
-- **Intro and teach.** After the player knows clears. "A clear stops the goo." is the hint.
-- **Fairness.** Risk: runaway spread (positive feedback). Counterplay: every clear cancels one spread, and a cap is proposed (`goo_max`, section 7) because the rule has no cap today.
-- **Engine.** EXISTS (`src/mechanics/behaviour/goo_spread.gd`). Gap: no `goo_max` cap, 0.25 day, gameplay-programmer, and a spread warning (marked cell one lock ahead) 0.5 day.
-- **Source.** Own idea; the candy board `party_modes_ref.jpg` (Candy Clash) for candy skin.
+- **What.** Naughty sticky goo. It blocks the layer it sits in, makes pieces stick where they land, and spreads. A clear next to it washes it off.
+- **Today (the engine).** `goo_spread` copies goo into one free face neighbour per quiet lock (`goo_spread.gd:23-33`). It skips a spread after a clear (`:15-18`). The goo cell is `fills_layer` true (`blocks.json:83-92`), so today goo FILLS layers, which helps the player. It never touches a falling piece. The kind is a twist-layer rule (`assets/data/rules/goo_spread.json:5`). The r1 panel was right: as built, goo has no threat.
+- **Rule (r2 redesign, one job: stick and block).**
+  1. **Block.** Goo cells carry the status `fills_layer` false (`_update_fill_status` honours a status override, `board_state.gd:697-706`). An active cell with `fills_layer` false that holds a cube is not filled, so its layer cannot be full (convention 4). Goo blocks its layer until it is washed off. This is the same mechanism the grumpy moody cube uses.
+  2. **Wash.** NEW `on_clear` step: when a clear removes a cell, each face-adjacent goo cell is removed once per resolve (cause CLEAR, like the pest shoo in `pest.gd:19-29`). A goo cell in layer k is washed by a clear in layer k-1 or k+1 (it cannot be washed by its own layer, which it blocks).
+  3. **Stick.** NEW rule R-12: a piece that comes to rest with a cube directly above a goo cell locks at once (lock delay 0, the piece flag `lock_now`, as `fog_ghost.gd:30` sets) and receives no bounce, jelly or ice displacement. This is the honey behaviour of `block-status-effects.md`.
+  4. **Spread.** As today, plus: (a) a one-lock warning (the target cell shows a drip, as `mushroom_popup.gd:26-38` marks a cell); (b) the target must be supported (a cube or the floor below it, as `mushroom_popup.gd:30` and `gumdrop_hail.gd` require), so goo never floats; (c) a cap `goo_max` (12).
+  - Gravity: goo is a plain cube for gravity. Rescue: wiped with its plane (3.1b, plain). Top-out: spread is limited by `api.limit_layer()` (`goo_spread.gd:27`).
+- **Look.** Glossy green or pink blob with a drip and a slow wobble. The warning lock shows a drip on the target. Badge: a drip drop (3.6). Skins: candy syrup, underwater slime, forest sap, lava tar, neon slime-glow.
+- **Audio.** `SFX_PL_STICKY_SPLAT` for the stick (`sfx-cue-list.md:96`); `SFX_SP_GOO_SPREAD` and `SFX_SP_GOO_WASH` (AUDIO-NEW).
+- **Fits.** candy, forest, underwater, lava (tar).
+- **Intro and teach.** One biome level after the player knows clears (3.4). Hint: "A clear next to goo washes it off."
+- **Fairness.** Risk: runaway spread (positive feedback). Counterplay: the one-lock warning, the cap, the skip after a clear, and the wash. Goo is no longer free fill, so the cap is not the only protection; F5 models the wash.
+- **Engine.** PARTIAL. `goo_spread.gd` EXISTS. NEW: status override (0.25 day), wash hook (0.5), warning mark (0.75), supported-only target (0.25), cap (0.25), and the stick rule R-12, which belongs to the landing arbiter (GAP-2). Owner: gameplay-programmer. Sizes in 3.7.
+- **Source.** Own idea; the candy board (Candy Clash in `party_modes_ref.jpg`) for the candy skin; mud pits on a dino board in `mockup_33.jpg` for the floor look.
 
 **BK-08 pest (kind 10, glyph `p`)**
 - **What.** A critter (ant or worm) that walks over your stack and eats ordinary blocks. A clear next to it shoos it.
@@ -379,7 +385,7 @@ Source for all: `src/mechanics/candy/` and `blocks.json`. Candy levels are not i
 - **Fits.** Candy biome, ice (hail skin).
 - **Intro and teach.** A candy mid-teach level. Shadow circle is the teacher.
 - **Fairness.** It can land in a spot you needed. Counterplay: warning mark, cancel by filling, cap of 6.
-- **Engine.** EXISTS (`gumdrop_hail.gd`). Sticky status is NEW only if design wants it (0.5 day). Open question 5.
+- **Engine.** EXISTS (`gumdrop_hail.gd`). The event field `sticky: true` (`:31`) is read by no rule. Treat it as presentation only (the gumdrop has no sticky rule; stickiness is goo's job, BK-07). Optional clean-up 0.1 day.
 - **Source.** The candy block (frosted cube with a heart) in `biome_block_materials_ref.png`; sweet props in the candy board of `party_modes_ref.jpg` and the cake and jelly pieces in `mockup_05.jpg` and `mockup_08.jpg`.
 
 **BK-10 icing_dollop (kind 20, glyph `D`) and BK-11 frosting (kind 12, glyph `2`) / frosting_three (kind 13, glyph `3`)**
@@ -389,13 +395,13 @@ Source for all: `src/mechanics/candy/` and `blocks.json`. Candy levels are not i
 - **Audio.** Proposed `SFX_SP_FROSTING_PEEL` (AUDIO-NEW).
 - **Fits.** Candy bake levels (`bake_stage`, `bake_oven_goal`), ice (rime).
 - **Intro and teach.** Candy tier 2. "Clear next to it to peel the icing."
-- **Fairness.** Risk: a layer that never clears. Counterplay: hits are by adjacency, so any neighbouring clear works, and the coat count is visible.
+- **Fairness.** Frosting does not block its layer: it is `fills_layer` true, so the layer is full and clears around it (`board_sim.gd:1429-1430` skips cells that `can_remove` refuses). The risk is different: frosting survives every clear, so frosting cells can pile up. Counterplay: any neighbouring clear peels one coat, the coat count is visible, and `objects_max` (6) caps hailed frosting. A blast or Smash removes frosting at once (3.1b).
 - **Engine.** EXISTS (`frosting.gd`, `gumdrop_hail.gd`, `tier_frosting.gd`). No gap.
 - **Source.** Frosted candy block in `biome_block_materials_ref.png`; cake pieces in `mockup_05.jpg` and `mockup_08.jpg` (Cake Stackers, Sugar Rush Stack).
 
 **BK-12 sponge (kind 14, glyph `s`)**
 - **What.** A soft cake sponge that cannot be cleared away by a normal layer clear. It is a protected cell.
-- **Rule.** At level start it is protected via `CandyCells.protect` (`frosting.gd:11`, `climber_boss.gd:25`). Effect: `clear_protected`, so a full layer clears around it. Fill: `fills_layer` true. It is the supporting stage under the climber boss. Gravity, rescue, top-out: as any cube. `ART-CHECK` exact `protect` flags in `candy_cells.gd`.
+- **Rule.** At level start `CandyCells.protect` sets `anchored`, `clear_protected` and `fixed` (`candy_cells.gd:49-50`, called from `frosting.gd:11` and `climber_boss.gd:25`). Result from the table in 3.1b: only MASKED removes it. A clear skips it, a rescue skips it, a blast and Smash skip it (`fixed` blocks DAMAGE), nothing moves it. Fill: `fills_layer` true and it is an active cell, so it counts as filled and the layer clears around it. It is the supporting stage under the climber boss. Top-out: counts as height (it is not `static_geometry`).
 - **Look.** Yellow cake crumb texture with holes; no icing. Distinct from frosting by the missing cap.
 - **Audio.** Normal land. Proposed `SFX_SP_SPONGE_SQUISH` (AUDIO-NEW).
 - **Fits.** Candy.
@@ -406,7 +412,7 @@ Source for all: `src/mechanics/candy/` and `blocks.json`. Candy levels are not i
 
 **BK-13 licorice (kind 15, glyph `l`)**
 - **What.** A black-and-white licorice knot anchored to the board. It unties into a normal cube when a neighbour clears.
-- **Rule.** Level start: anchored and `clear_protected` (`licorice_lock.gd:5-9`). Trigger: a clear removes a face-neighbour (`:11-15`). Effect: the licorice is removed and replaced by a `starter` cube, with `licorice_untied`. Fill: `fills_layer` true. Anchored means it does not move in slice shifts. Gravity: fixed. Rescue and top-out: as any cube; anchored cells can be wiped by a rescue like others (confirm in `rescue_top_out.gd`; `ART-CHECK`).
+- **Rule.** Level start: anchored and `clear_protected` (`licorice_lock.gd:5-9`). Trigger: a clear removes a face-neighbour (`:11-15`). Effect: the licorice is removed and replaced by a `starter` cube, with `licorice_untied`. Fill: `fills_layer` true. Anchored means it does not move in slice shifts. Gravity: fixed. Rescue: NOT wiped (`anchored` blocks RESCUE, `board_state.gd:687`; `wipe_bottom` uses `Cause.RESCUE`, `:608`). A blast or Smash DOES remove it, because `anchored` allows DAMAGE (`:687`). Top-out: counts as height.
 - **Look.** Black spiral knot with a white ribbon, small lock icon badge.
 - **Audio.** Proposed `SFX_SP_LICORICE_UNTIE`.
 - **Fits.** Candy.
@@ -417,53 +423,53 @@ Source for all: `src/mechanics/candy/` and `blocks.json`. Candy levels are not i
 
 **BK-14 moody (kind 16, glyph `y`)**
 - **What.** A grumpy gummy cube. It sulks until a neighbour shares its flavour. While it sulks it will not fill a layer.
-- **Rule.** One tagged Mono per bag becomes a moody cube at spawn (`moody_cube.gd:5-9`) and on lock keeps the piece's colour (`:10-17`). Each resolve it checks six face neighbours for the same flavour (`:19-27`): happy means `fills_layer` true; grumpy means `fills_layer` false and `clear_protected` true. Emits `gummy_mood`. Gravity: normal. Other specials: a rainbow cube neighbour counts as a match (design intent; `ART-CHECK`). Rescue: wiped. Top-out: height.
+- **Rule.** One tagged Mono per bag becomes a moody cube at spawn (`moody_cube.gd:5-9`) and on lock keeps the piece's colour (`:10-17`). Each resolve it checks six face neighbours for the same flavour (`:19-27`): happy means `fills_layer` true; grumpy means `fills_layer` false and `clear_protected` true. Emits `gummy_mood`. Gravity: normal. Other specials: a rainbow cube neighbour does NOT count as a match today. The test is colour equality only (`moody_cube.gd:15,23`), and the `rainbow` status is honoured only by the shape goal (`candy_cells.gd:47`). Making rainbow a match is NEW (0.25 day). Rescue: wiped (`clear_protected` blocks only CLEAR, `board_state.gd:691`). Top-out: height.
 - **Look.** A gummy cube with a face: sad brows and flat mouth when grumpy, smile when happy. The face must read at 28 px: big eyes, bold brows.
 - **Audio.** Proposed `SFX_SP_MOODY_GRUMBLE` and `SFX_SP_MOODY_HAPPY`.
 - **Fits.** Candy (colour-connect levels), carnival.
 - **Intro and teach.** Candy tier 2. "Put a matching colour beside it."
 - **Fairness.** Risk: a lone grumpy cube blocks the whole layer. Counterplay: place a matching flavour next to it; the hint arrow points to a matching cell.
-- **Engine.** EXISTS (`moody_cube.gd`). Hint arrow NEW, 1 day, gameplay-programmer plus ui-programmer.
+- **Engine.** PARTIAL. `moody_cube.gd` EXISTS. NEW: rainbow match (0.25 day) and the hint arrow (1 day, gameplay-programmer plus ui-programmer).
 - **Source.** Faces on blocks are a party-board motif (`party_modes_ref.jpg`).
 
 **BK-15 candy_bomb (kind 17, glyph `a`)**
 - **What.** A bomb cube earned by clearing a big connected group of one flavour. It blows up a 3x3x3 area when it is cleared.
-- **Rule.** Earn: after a resolve, a connected same-flavour cleared group of at least `bomb_at` (7; 0 turns it off) leaves one bomb on a free cell of that group nearest the last lock (`earned_specials.gd:23-39`). `rocket_at` and `colour_bomb_at` are schema-limited to 0 (`earned_specials.json`). Trigger: the bomb cell is cleared like any cube (`:11-12`). Effect: every non-empty cell within the 3x3x3 cube around it is removed as damage, except cells with `anchored` true (`:14-19`). It is not a layer clear itself, but removed cells can open follow-up clears. Fill: `fills_layer` true. Gravity: after the blast, collapse follows the level's collapse rule. Other specials: frosting is hit by blast damage at once (`anchored` is the only shield; frosting is `clear_protected`, not anchored, so it is removed: `ART-CHECK` whether damage respects `clear_protected`); locked cubes unlock only by adjacent clears, not by blast. Rescue: wiped. Top-out: the bomb can end the pressure by deleting 27 cells.
-- **Look.** Glossy round cherry-bomb with a lit fuse and a gold spark; a pulsing orange rim (hazard-reward). Skins: candy cherry bomb, lava ember-bomb, ice crystal-bomb, clockwork dynamite-gear, celestial star-nova, pirate powder keg.
+- **Rule.** Earn: after a resolve, a connected same-flavour cleared group of at least `bomb_at` (7; 0 turns it off) leaves one bomb on a free cell of that group nearest the last lock (`earned_specials.gd:23-39`). `rocket_at` and `colour_bomb_at` are schema-limited to 0 (`earned_specials.json`). Trigger: the bomb cell is cleared like any cube (`:11-12`). Effect: every non-empty cell within the 3x3x3 cube around it is removed as damage, except cells with `anchored` true (`:14-19`). It is not a layer clear itself, but removed cells can open follow-up clears. Fill: `fills_layer` true. Gravity: after the blast, collapse follows the level's collapse rule. Other specials (resolved from `can_remove`, 3.1b): the blast uses cause DAMAGE. `clear_protected` blocks only CLEAR (`board_state.gd:691`), so a blast removes frosting at once. `locked` blocks only CLEAR and DISPLACED (`:689-691`), so a blast removes locked cubes (the r1 text said the opposite). `fixed` cells (rock, shelf, sponge) survive. `anchored` cells survive only because `earned_specials.gd:18` skips them on purpose; the item bomb and Smash do not skip them. A 2-hit rock loses one hit instead of dying (`remove` decrements `hits_left`, `board_state.gd:341-348`). Rescue: wiped. Top-out: the bomb can end the pressure by deleting up to 27 cells.
+- **Look.** Glossy round cherry-bomb with a lit fuse. The rim is GOLD (a reward block), and only the fuse spark is orange (r2: the r1 "orange hazard-reward rim" mixed two colour roles). Badge: a fuse and spark. Skins: candy cherry bomb, lava ember-bomb, ice crystal-bomb, clockwork dynamite-gear, celestial star-nova, pirate powder keg.
 - **Audio.** Proposed `SFX_SP_BOMB_BLAST` (AUDIO-NEW); reuse `Hollywood/Wooden Crate Destruction.wav` as a stand-in (cue list uses it for sail-off).
 - **Fits.** Candy; any biome as a reward block. Cave (rock-breaker), pirate.
 - **Intro and teach.** Candy. First earn is shown in slow motion with a callout: "Big clears make a bomb."
-- **Fairness.** Risk: the blast deletes a goal object or critter. Counterplay: critters and keys are `anchored` or protected (rule: protected objects have the `anchored` status).
-- **Engine.** EXISTS (`earned_specials.gd`). Gap: protect objects explicitly (0.5 day) and blast preview outline (1 day, ui-programmer).
+- **Fairness.** Risk: the blast deletes a goal object or critter. Counterplay: a level marks goal objects `goal_object` (the NEW `blast_safe` plus `rescue_safe` flags, 3.1b). `anchored` is NOT the protection: it blocks clears (r1 error, removed). The blast preview outline shows the 3x3x3 box on the ghost.
+- **Engine.** PARTIAL. `earned_specials.gd` EXISTS. NEW: the `blast_safe` flag (GAP-3) and the blast preview outline (GAP-8).
 - **Source.** Bomb ideas: cannon blasts and explosions across the party boards (`mockup_02.jpg` Fort Blast, `mockup_03.jpg` Shatter Shootout).
 
 **BK-16 countdown_bomb (kind 18, glyph `q`)**
 - **What.** A thrown bomb with a number on it. When it hits zero it adds a junk layer. A clear beside it defuses it.
 - **Rule.** Trigger: every `thrown_every_locks` (8) a bomb appears on a random surface cell with `cd_start` (8) (`countdown_bomb.gd:22-25`). Each lock it counts down 1; at 0 it is removed, `request_junk_layers(blast_layers)` (default 1) pushes junk up from below, and `countdown_blast` plays (`:17-21`). A clear on or face-adjacent to it defuses and removes it (`:9-15`). Fill: `fills_layer` true. Gravity: it sits on a surface cell. Rescue: if the plane is wiped, the bomb goes with it. Top-out: a junk layer pushes the stack up by one and may cause a top-out warning (`obstacles.md` rule 8).
-- **Look.** Dark round bomb with a big white countdown digit on the top face and a lit fuse that shortens. Numbers 3 and below turn red and shake. Skins: candy gum-bomb, pirate powder keg, clockwork alarm-clock, neon timer-cube.
+- **Look.** Dark round bomb with a big white digit on the top face and a lit fuse that shortens. Numbers 3 and below turn red and shake. **Ruling check (Appendix E):** the digit counts LOCKS on one object. It is not a clock on the HUD, so the "no countdown shown" decision (which is about the HUD clock for hidden-timer hazards) does not apply. Badge: a digit in a round bomb (3.6). Skins: candy gum-bomb, pirate powder keg, clockwork alarm-clock, neon timer-cube.
 - **Audio.** Proposed `SFX_SP_BOMB_TICK` (a soft tick per count), `SFX_SP_BOMB_DEFUSE`.
 - **Fits.** Candy, pirate, clockwork. Versus mode (thrown by a rival). 
 - **Intro and teach.** After blocks and clears are known. Hint: "Clear next to it before zero."
-- **Fairness.** Risk: a bomb lands in an unreachable spot. Counterplay: 8 locks is long; a bomb never spawns where `surface` has under 2 free neighbours (proposed constraint, 0.25 day).
-- **Engine.** EXISTS (`countdown_bomb.gd`). View digit: gap, 1 day, technical-artist.
+- **Fairness.** Risk 1: a bomb lands in an unreachable spot. Counterplay: a bomb never spawns where `surface` has under 2 free neighbours (proposed constraint, 0.25 day). Risk 2 (r2, from the r1 panel): the shipped defaults do not balance. `thrown_every_locks` 8 and `cd_start` 8 give about one live bomb, about 71 percent of bombs explode unaimed, and about one junk layer arrives per 11 locks against one clear per 12 (F6b). So the default is re-tuned to `thrown_every_locks` 12 and `cd_start` 10, and F6b requires `(1 / E_t) x (1 - p_def) < c` for every level that uses it. Junk then rises slower than clears when the player does nothing special.
+- **Engine.** EXISTS (`countdown_bomb.gd`). The digit view is an art task, not an engine gap (1 day, technical-artist). The re-tune is data only.
 - **Source.** Timer bombs and cannons in the party mockups.
 
 **BK-17 climber_boss (kind 19, glyph `B`)**
 - **What.** A 2x2 gummy boss that climbs your terraces. Clears next to it bonk it down a step.
-- **Rule.** Spawn: on the first valid terrace (the highest legal 2x2 spot, ties by x then z) after the `bake_oven` goal's `baked` counter is above 0 (`climber_boss.gd:34-43`). Each resolve it moves to the highest reachable adjacent 2x2 spot, one terrace step of height at most 1 per move (`:53-59`). Trigger: a clear next to any of its 4 cells sets a bonk (`:27-32`); next resolve it drops to a lower neighbour at least `bonk_drop_cells` (1) down (`:44-52`), adds a `bonks` goal counter and emits `boss_bonk`. If no lower spot exists, `bonk_blocked`. It is `anchored` and `clear_protected`. Fill: it counts as 4 filled cells. Rescue: wiped with its plane. Top-out: it can climb above the line (a loss if it stays there is a design choice, see Open Questions). `ART-CHECK`.
+- **Rule.** Spawn: on the first valid terrace (the highest legal 2x2 spot, ties by x then z) after the `bake_oven` goal's `baked` counter is above 0 (`climber_boss.gd:34-43`). Each resolve it moves to the highest reachable adjacent 2x2 spot, one terrace step of height at most 1 per move (`:53-59`). Trigger: a clear next to any of its 4 cells sets a bonk (`:27-32`); next resolve it drops to a lower neighbour at least `bonk_drop_cells` (1) down (`:44-52`), adds a `bonks` goal counter and emits `boss_bonk`. If no lower spot exists, `bonk_blocked`. It is `anchored` and `clear_protected` (`:42`), not `fixed`, because it moves with `force` (`:52`; `remove` refuses force on `fixed`, `board_state.gd:338`). Table 3.1b: a clear skips it, a rescue does NOT wipe it, but a blast and Smash DO remove it (`anchored` allows DAMAGE). So it needs the NEW `blast_safe` flag while the bake goal runs (GAP-3). Fill: it counts as 4 filled cells. Top-out: it cannot climb above the line, because `_candidates` rejects any cell at or above `limit_layer` (`climber_boss.gd:17`).
 - **Look.** A big smug gummy bear with a crown, 2x2 footprint, bounces a little each climb. Shield-rim gold, health bar over its head with bonk pips.
 - **Audio.** `SFX_BOSS_FLOUR_BONK` exists as a GAP in the Meadow list (`sfx-cue-list.md:108`); candy needs `SFX_BOSS_GUMMY_BONK` (AUDIO-NEW).
 - **Fits.** Candy boss (candy_10). The `bonk_boss` goal is the identity-spec boss pattern.
 - **Intro and teach.** The Chapter boss only. The previous levels teach "clear next to it".
 - **Fairness.** Risk: no lower spot, no progress. Counterplay: `bonk_blocked` message, and a terrace is always reachable by design.
-- **Engine.** EXISTS (`climber_boss.gd`, goal `bonk_boss_goal.gd`). Boss phase hand-over: gap G13 (`levels.md:554`).
+- **Engine.** PARTIAL. `climber_boss.gd` and goal `bonk_boss_goal.gd` EXIST. NEW: `blast_safe` (GAP-3). Boss phase hand-over: gap G13 (`levels.md:554`).
 - **Source.** The big octopus and golem bosses in `mockup_02.jpg`, `mockup_04.jpg`, `mockup_07.jpg` (a boss that acts on the board).
 
 #### 3.2.b Special BLOCK KINDS, part 3: cave, lava, forest, underwater
 
 **BK-18 rock (kind 21, glyph `R`)**
 - **What.** A solid rock that is part of the level. It does not count toward full layers. Some rocks take two hits.
-- **Rule.** Permanent: `fixed`, `static_geometry`, `anchored`, `clear_protected`, `fills_layer` false (`rock_obstacle.gd:18-21`; `blocks.json:203-212` has `fills_layer: false`). Rocks placed by `params.cells` at level start (`:12-17`). `lava_rock_spawn` can also pop a rock: it warns one lock ahead (`geyser_warning`), then creates a 2-hit rock with `hits_left` (`hard_hits`, default 2, range 1 to 8) (`lava_rock_spawn.gd:23-38`); adjacent clears hit it (`_hit_adjacent`). Because it is excluded from the layer denominator, the layer clears around it. Gravity: never moves. Rescue: `ART-CHECK` whether a rescue wipes fixed rocks (it should not). Top-out: `static_geometry` adds no stack height (levels.md note about masked cells).
+- **Rule.** Permanent: `fixed`, `static_geometry`, `anchored`, `clear_protected`, `fills_layer` false (`rock_obstacle.gd:18-21`; `blocks.json:203-212` has `fills_layer: false`). Rocks placed by `params.cells` at level start (`:12-17`). `lava_rock_spawn` can also pop a rock: it warns one lock ahead (`geyser_warning`), then creates a 2-hit rock with `hits_left` (`hard_hits`, default 2, range 1 to 8) (`lava_rock_spawn.gd:23-38`); adjacent clears hit it (`_hit_adjacent`). Because it is excluded from the layer denominator, the layer clears around it. Gravity: never moves. Rescue: NOT wiped (`fixed` blocks every cause but MASKED, `board_state.gd:685-686`). Blast and Smash: no effect on a placed rock (`fixed`). The geyser rock is different: it is not `fixed`, so a blast, a rescue and DISPLACED remove it, and DAMAGE counts down `hits_left` first (3.1b). Top-out: `static_geometry` adds no stack height (`board_state.gd:94-96`).
 - **Look.** Grey boulder, mossy in meadow, cracked in lava (shows hits left with cracks), crystal-flecked in cave. Square footprint but rounded outline.
 - **Audio.** Proposed `SFX_SP_ROCK_CRACK` (AUDIO-NEW).
 - **Fits.** Lava, cave, forest, meadow stone cage (the `shelf` and masked columns of meadow_01), any biome.
@@ -474,7 +480,7 @@ Source for all: `src/mechanics/candy/` and `blocks.json`. Candy levels are not i
 
 **BK-19 mole (kind 22, glyph `o`)**
 - **What.** A buried mole you rescue by clearing the layer it sits in.
-- **Rule.** `dig_rescue` goal: a mole is rescued only when its layer clears; damage and trims do not rescue it (`dig_rescue_goal.gd:2,8-10`). Emits `critter_rescued {kind: mole}`. Fill: `fills_layer` true. Gravity: normal; it sinks with slice shifts. Rescue wipe: a mole wiped by soft rescue is lost (counts as not rescued, level can still be won if the goal allows; see Edge Cases). `ART-CHECK`.
+- **Rule.** `dig_rescue` goal: a mole is rescued only when its layer clears; damage and trims do not rescue it (`dig_rescue_goal.gd:2,8-10`). Emits `critter_rescued {kind: mole}`. Fill: `fills_layer` true. Gravity: normal; it sinks with slice shifts. Rescue wipe: a mole is a plain cube, so a wipe removes it and it is NOT rescued (`dig_rescue_goal.gd:8-10` counts only a CLEAR). A level with a dig goal sets `rescue_safe` on its moles (`goal_object`, 3.1b), so a wipe skips them. Blast: removes a mole unless `blast_safe`.
 - **Look.** A round brown mole with pink nose and tiny goggles, peeking from a dirt cube. Skins: cave, meadow, forest.
 - **Audio.** Proposed `SFX_SP_MOLE_SQUEAK` and `SFX_SP_MOLE_FREE`.
 - **Fits.** Cave dig-rescue levels (`cave_h3.json` mentions mole).
@@ -485,12 +491,12 @@ Source for all: `src/mechanics/candy/` and `blocks.json`. Candy levels are not i
 
 **BK-20 locked_cube (kind 23, glyph `k`)**
 - **What.** A cube in a padlock. A clear next to it unlocks it so it can be cleared.
-- **Rule.** At level start every locked cube gets `locked` true (`locked_cube.gd:11-18`). Trigger: a cell face-adjacent to a clear (`on_clear`, `:22-31`). Effect: `locked` false and `cube_unlocked`, once per resolve. Cubes that are `anchored` or `fixed` are skipped. Fill: `fills_layer` true. Gravity: normal. Other specials: the key cube (BK-24) is the planned stronger opener (see there). Rescue: wiped. Top-out: height.
+- **Rule.** At level start every locked cube gets `locked` true (`locked_cube.gd:11-18`). Trigger: a cell face-adjacent to a clear (`on_clear`, `:22-31`). Effect: `locked` false and `cube_unlocked`, once per resolve. Cubes that are `anchored` or `fixed` are skipped. Fill: `fills_layer` true. Gravity: normal (a `locked` cell cannot move, `board_state.gd:679`). Other specials: there is no key cube in the engine; the key piece (BK-24) winds wall keyholes and does not open locked cubes. A blast or Smash removes a locked cube (DAMAGE is allowed). Rescue: wiped (`locked` blocks only CLEAR and DISPLACED). Top-out: height. **No deadlock:** `on_clear` hooks run for every cell of a full layer before removal is tested (`board_sim.gd:1421-1430`), and the hook unlocks cells face-adjacent to a cleared cell (`locked_cube.gd:22-31`). So a full layer that holds a locked cube unlocks it from its own neighbours and clears it in the same resolve. The r1 "lone layer deadlock" cannot happen.
 - **Look.** A cube with a brass padlock on every face; the padlock opens with a click and drops off when unlocked. Rim: blue while locked, none when open.
 - **Audio.** Proposed `SFX_SP_LOCK_CLICK`, `SFX_SP_LOCK_OPEN`.
 - **Fits.** Lava (`lava/locked_cube.gd` lives in the lava folder), cave, pirate, clockwork.
 - **Intro and teach.** Early lava. "Clear next to it to open it."
-- **Fairness.** A locked cube blocks its layer until opened; always reachable by an adjacent clear.
+- **Fairness.** A locked cube does not block its layer (it fills the cell and unlocks from the clearing neighbours). It only resists a clear that does not include its neighbours, which cannot occur in a full layer. Always reachable.
 - **Engine.** EXISTS (`src/mechanics/lava/locked_cube.gd`).
 - **Source.** Chest and key in `mockup_02.jpg` Maze Heist and the treasure chests in `mockup_03.jpg`, `mockup_10.jpg`.
 
@@ -499,27 +505,27 @@ Source for all: `src/mechanics/candy/` and `blocks.json`. Candy levels are not i
 - **Rule.** `fixed`, `static_geometry`, `anchored`, `clear_protected`, `fills_layer` false, `shelf` true (`anchored_shelf.gd:18-21`; `blocks.json:233-242`). Placed by `params.cells` at level start. Gravity: fixed. Other specials: pieces rest on it; cells under it are protected pockets (hail avoids them with `avoid_start_holes`). Rescue and top-out: no height added.
 - **Look.** A wooden plank or stone slab with brackets, visibly nailed to the wall.
 - **Audio.** Normal land.
-- **Fits.** Forest (branch ledge), meadow scaffold (meadow_07), clockwork.
+- **Fits.** forest (branch ledge), clockwork. (r2: the meadow_07 scaffold use is removed; meadow_07 keeps fog only, Appendix E.)
 - **Intro and teach.** Not taught. Looks like a platform.
 - **Fairness.** It can trap holes. The validator checks reachability.
 - **Engine.** EXISTS (`src/mechanics/forest/anchored_shelf.gd`).
 - **Source.** Scaffolds and ledges in `style/09_minigames_a.jpg` and the party hill boards.
 
-**BK-22 vine and BK-23 status shells (frozen, honey, burning, crumbling, shadow, spiked)**
-- **What.** Seven status shells that sit on one cube. A cube holds at most one (`block-status-effects.md` Core Rule 1).
+**BK-22 vines, BK-23a frozen, BK-23b honey, BK-23c burning, BK-23d crumbling, BK-23e shadow, BK-23f spiked (status shells, 7 ids)**
+- **What.** Seven status shells that sit on one cube. A cube holds at most one (`block-status-effects.md` Core Rule 1). Ids: BK-22 vines; BK-23a frozen; BK-23b honey; BK-23c burning; BK-23d crumbling; BK-23e shadow; BK-23f spiked.
 - **Rule (all).** Table, from `block-status-effects.md`: frozen (+1 hit point, thaws when its layer takes layer damage or a neighbouring layer clears), vines (+1 hp; every `vine_every_locks` 4 locks spreads to one neighbour), honey (a piece resting on it locks at once), burning (removed after `burn_locks` 3; neighbours catch fire with `burn_spread_p` 0.3), crumbling (removed `crumble_locks` 2 locks after something lands on it), shadow (drawn at invisible alpha), spiked (first landing is pushed up 1 cell, spike breaks). Priority: a new status replaces the old unless the old one's rule ranks higher. Fill: all keep the cell's own `fills_layer`. Rescue: wiped.
 - **Engine status per shell (important, this is a design-doc-only area).**
   - Vines: PARTIAL. The forest `vines` rule (`src/mechanics/forest/vines.gd:12-40`) selects `vine_per_bag` (default 1, 0 to 2) pieces per bag, marks them `vined`, and protects direct neighbours with `status.vined`. The "spreads every 4 locks" part of the GDD is not in that file. Gap: spread, 1.5 days, gameplay-programmer.
   - Burning: PARTIAL. `ember` rule (`src/mechanics/behaviour/ember.gd`) drills below tagged pieces; the burn-out and fire spread of the GDD are NEW (2 days).
-  - Frozen: NEW as a status (thin_ice and ice_slide cover related ideas, see BK-26, BK-27). 1.5 days.
+  - Frozen: NEW as a status (thin_ice and ice_slide are different rules: OB-19 and OB-20; the ice CUBE is BK-35). It uses the `hp` key, so a DAMAGE hit thaws one hit instead of removing it (`board_state.gd:341-348`). 1.5 days.
   - Honey: NEW as a cell status. `sticky_landing` is the twist version (README line 38). 1 day.
   - Crumbling: PARTIAL. `crumble_tiles` (wave 3) cracks floor tiles, not cubes (`src/mechanics/wave3/crumble_tiles.gd`). Cube status NEW, 1 day.
   - Shadow: PARTIAL. `fog` hides by time (`src/mechanics/behaviour/fog.gd`), not a per-cube status. NEW, 0.5 day.
   - Spiked: NEW, 1 day.
   - Owner for all: gameplay-programmer (rule), technical-artist (shells).
-- **Look.** Frost crust with a snowflake badge; green vine wrap with leaf badge; amber gloss drips with drop badge; ember glow and flame badge; cracked ridges and dust badge; dim translucent with an eye-slash badge; spikes with a spike badge. Each also has an animation (pulse, wobble, flicker) and a rim pulse, per the look rule (`block-status-effects.md:87`).
+- **Look (r2, badges fixed).** Each shell has one badge from the 3.6 sheet, and none shares a badge with another special or with a biome ornament: frozen = an ice-shell crack with a padlock tab (NOT a snowflake, because the ice cube BK-35 owns the snowflake and the Ice biome ornament is already a snowflake); vines = a curling tendril with a thorn (NOT a leaf, because the Meadow HUD already puts a leaf sticker on every cube); honey = an amber drop; burning = a flame; crumbling = a split block with dust; shadow = an eye-slash; spiked = a spike fan. Each also has an animation (pulse, wobble, flicker) and a rim pulse, per the look rule (`block-status-effects.md:87`).
 - **Audio.** The GDD lists `freeze`, `thaw`, `vine_grow`, `honey_stick`, `ignite`, `burn_out`, `crumble`, `spike_bounce`. Map to `SFX_SP_*` and mark AUDIO-NEW.
-- **Fits.** Frozen: ice. Vines: forest. Honey: candy, meadow. Burning: lava, clockwork. Crumbling: cave, desert. Shadow: celestial, neon, fog levels. Spiked: carnival, pirate.
+- **Fits.** Frozen: ice. Vines: forest. Honey: candy. Burning: lava, clockwork. Crumbling: cave, carnival. Shadow: celestial, neon. Spiked: carnival, pirate.
 - **Intro and teach.** One shell per level, first appearance after tier 3 of its biome.
 - **Fairness.** Fire spread is a positive feedback loop. Counterplay: expected spread 0.9 per burn-out on a dense stack (F2 in the status GDD) and a cap proposed in Formulas.
 - **Engine.** See the per-shell list above.
