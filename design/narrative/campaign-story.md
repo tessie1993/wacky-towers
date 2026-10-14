@@ -289,4 +289,147 @@ and stairs.
 | ice_h2 | fog_drops_on_rink | figure_eight | floating_island | frost_lake | lantern_sway | Lana:brace, Sir Shiver:point | Stones On Ice |
 | ice_h3 | early_spring_harbour_splits | island_chain | dock_pier | harbour_floe | smoke_puff | Lana:haul, villagers:cheer | Raft Length |
 
-<!-- CHAPTERS 4-6 -->
+## Chapter 4: The Shy Giant's Shell (Underwater)
+
+**Caption:** A shy giant crab has lost his house.
+**Where we are and what is wrong.** Pearl Lagoon on the seabed, lit from above. The party breathes in Lana's woolly bubble hats. Hugo, a house-sized hermit crab, lost his shell to a current and
+thrashes about looking for a new one, clutching Keystone four because it looks like a pearl. His secret (he is a child, and his mother is looking for him) is only revealed at underwater_10.
+**Villain / boss: Hugo.** A shy house-sized hermit crab, coral-pink with big wet eyes and a tiny hat. Three phases: claw swings sweep the arena (gate walls); silt rises (a stair to the Keystone
+ledge); build him a shell house. His mother arrives (guest) and carries him home. Boss triple: arena a round lagoon floor; 3 phases; action = enclosing a home.
+**Ally met:** Finn, an old seahorse lamplighter with a long pole. **Set pieces:** lamp_post_landing, clam_beds, reef_current_wall, coral_tower, crooked_hull, swirl_gate, hugo_cove.
+**Emotional beat:** strange wonder; curiosity with a trace of unease (the ink in underwater_07). **Hat Dip:** a teapot (underwater_01). **Debuts (modules):** giant_bonk (underwater_04), gate_squeeze (underwater_09).
+**Hook into next:** the party surfaces and the sea steams, with a red glow pulsing on the horizon: a volcano.
+
+| ID | Beat | What happens | Objective | Verb | Minigame | Place | Who | Ending |
+|---|---|---|---|---|---|---|---|---|
+| underwater_01 | Bubble Landing | In woolly bubble hats the heroes sink to the lagoon floor while the Wizard floats in a star-shaped bubble, tugs a teapot from his hat, and drops it in the sack. You set a sturdy lamp-post base for Finn's first lantern, and the Wizard hangs a gold star on it until Finn quietly sets it aside. | Plant the first lamp-post | build | base: build_tower + bubble float | Lamplighter's Landing, day | Finn, Wizard, all heroes | plain |
+| underwater_02 | Clam Crossing | Clams along the path snap at anything that touches them while a pearl glints in Sif's pocket. You pave a walkway between the clams so Sif can cross with the party behind her. | Cross the clam beds | race | module: gap_runner (recall) + clam snap | Clam Beds, day | Sif, Ada, Finn, clams | plain |
+| underwater_03 | Reef Current | A strong current sweeps through the reef lane, ruffling Finn's tail and Ada's plume. You raise a reef wall upstream so the water slows and the lamp row can be lit. | Calm the current for the lamps | defend | base: hold_the_wall + current | Reef Lane, dusk | Finn, Ada | plain |
+| underwater_04 | Lobster Gate | A bossy lobster in a sergeant's cap blocks the lamp lane, clacking both claws. You wall up and bonk him back with each cleared layer until he scuttles off, dropping a tiny crab hat. | Bonk the lobster off the lane | destroy | module: giant_bonk (debut) + claw | Coral Arch, dusk | Finn, Bram, lobster | reveal: the dropped hat is far too small for a lobster |
+| underwater_05 | Coral Lookout | A huge shy shadow glides behind the reef and Finn whispers that nobody has seen its face. You raise a coral lookout above the ridge, and the shadow ducks behind a rock just as you reach the top. | Spot the shy shadow | build | base: raise_lookout + jelly sway | Coral Lookout, golden | Finn, Sif | plain |
+| underwater_06 | Pearl String | The clam elders demand their pearls back and Sif unwraps seven from her pockets with a sheepish grin. You restring the pearls into the elders' necklace pattern, and a grumpy old clam elder gives one pearl back to Sif. | Restore the clam elders' necklace | build | base: fill_the_shape + clam snap | Pearl Parlour, day | Sif, Ada, clam elder | guest: the clam elder gifts Sif a pearl |
+| underwater_07 | Midnight Ink | A black cloud of ink swallows the lagoon and every hero's lamp winks out, leaving only Finn's shout and silence. You raise a lamp tower as a beacon so the lost heroes find their way back, and the last missing hero, Sif, turns out to be asleep inside a giant clam. | Raise a beacon for the lost party | rescue | base: raise_lookout (beacon) + fog | Ink Reef, night | Finn, Ada, Bram, Sif | twist: Sif is asleep in a clam |
+| underwater_08 | Crooked Hull | An old sunken ship sits crooked in the sand, creaking, and a claw pulls a plank off its side with a squeal of bubbles. You plug each plank gap with the piece that fits before the hold floods, so the ship stops sliding toward the lighthouse. | Plug the hull before it floods | defend | base: plug_breach (D2) + claw pull | Crooked Hull, dusk | Finn, Bram, Hugo (claw) | plain |
+| underwater_09 | Swirl Gate | A whirlpool spins at the lagoon mouth with a coral gate sweeping across it every few seconds. You shape a breakwater to fit through the gate's sweep and calm the water, and the settled water uncovers a huge shell on the seabed: the shy giant's lost home. | Calm the whirlpool for the tow | build | module: gate_squeeze (debut) + current | Whirlpool Mouth, dawn | Finn, Sif, Bram | reveal: the shell on the seabed is the giant's home |
+| underwater_10 | Hugo's New Shell | Hugo, house-sized and frantic, thrashes through the lagoon clutching Keystone four like a pearl. You build gate walls against his claws, a stair up the rising silt, then a shell house round him, and his enormous mother arrives with the old shell and carries him home. | Calm Hugo and free Keystone four | defend | module: giant_bonk (soft form) + rising silt | Lagoon Floor, golden | Hugo, Hugo's mother, Finn, all heroes | guest: Hugo's mother arrives |
+| underwater_bonus | Pearl Chase | Pearls roll across the seabed on the current while Finn flings out a net. You build ramps that steer the pearls into the net, and the last pearl cracks open: a seahorse egg. | Net the drifting pearls | carry | base: collect_run + current | Chest Cove, golden | Finn, Sif | twist: the last pearl hatches |
+| underwater_h1 | Claw Machine | Hugo practises his catching with a giant claw and accidentally grabs blocks off Finn's lighthouse wall. You hold the wall and patch each gap while Hugo apologises with bubbles. | Hold the lighthouse wall | defend | base: hold_the_wall + claw grab | Lamplighter's Landing, night | Hugo, Finn | plain |
+| underwater_h2 | Tide Swirl | The whirlpool wakes at high tide and a school of fish swirls round its edge. You build breakers that fit through the gate before the tide closes it. | Break the tide before the gate closes | survive | module: gate_squeeze (recall) + current | Whirlpool Mouth, dusk | Finn, fish | plain |
+| underwater_h3 | Hugo's Housewarming | Hugo throws a shy housewarming and splashes every guest. You roof the guests' seats against his splashes, and he finally laughs. | Shelter the guests from splashes | defend | base: shelter_guest (D4) + splash | Hugo's Cove, golden | Hugo, Finn, Lana | story: Hugo's first laugh |
+
+**Scene notes, chapter 4**
+
+| ID | opening_event | footprint | terrain | set_piece | set_piece_action | cast_pose | hud_meter |
+|---|---|---|---|---|---|---|---|
+| underwater_01 | teapot_flung_bubble_hats_sink | clover | seabed_sand | lamp_post_landing | lantern_sway | Finn:point, Wizard:point | Lamp Glow |
+| underwater_02 | clams_snap_pearl_glints | comb | stack_ledge | clam_beds | bell_ring | Sif:hide, Ada:brace | Clam Snap |
+| underwater_03 | current_ruffles_plume | arrow | reef_wall | reef_current_wall | flock_wander | Finn:haul, Ada:brace | Current Strength |
+| underwater_04 | lobster_blocks_lamp_lane | moat_island | lagoon_floor | coral_tower | jelly_wobble | Bram:haul, Finn:point | Lobster Pressure |
+| underwater_05 | shy_shadow_glides_behind_reef | pyramid_steps | stack_ledge | coral_tower | smoke_puff | Sif:point, Finn:hide | Lookout Height |
+| underwater_06 | clams_demand_pearls | ribbon_loop | seabed_sand | clam_beds | bell_ring | Sif:cheer, clam elder:react | Necklace Done |
+| underwater_07 | ink_swallows_lamps | snake | glass_causeway | reef_current_wall | smoke_puff | Finn:point, Ada:brace | Beacon Light |
+| underwater_08 | plank_pulled_from_hull | ship_hull | ship_deck | crooked_hull | tentacle_grab | Bram:haul, Hugo:react | Hull Integrity |
+| underwater_09 | whirlpool_gate_sweeps | spiral | reef_wall | swirl_gate | tide_surge | Finn:build, Sif:haul | Whirl Strength |
+| underwater_10 | hugo_thrashes_keystone_pearl | keyhole | lagoon_floor | hugo_cove | tentacle_grab | Hugo:react, Ada:build, Bram:build | Hugo's Calm |
+| underwater_bonus | pearls_roll_net_flung | L_shape | glass_causeway | lamp_post_landing | lantern_sway | Finn:cheer, Sif:point | Pearls Netted |
+| underwater_h1 | claw_grabs_lighthouse_blocks | wedge | ship_deck | crooked_hull | tide_surge | Finn:brace, Hugo:react | Lighthouse Wall |
+| underwater_h2 | tide_wakes_whirlpool_fish_swirl | pinwheel | dock_pier | swirl_gate | jelly_wobble | Finn:haul, fish:react | Tide Level |
+| underwater_h3 | hugo_splashes_every_guest | horseshoe | dock_pier | hugo_cove | flock_wander | Lana:cheer, Hugo:react | Guests Dry |
+
+## Chapter 5: The Night Watch (Lava)
+
+**Caption:** The forge watchman woke up grumpy. Bram went in alone.
+**Where we are and what is wrong.** Ember Forge, a volcano island with a cooling-crust road and an ancient forge. With the Keystone gone the lava keeps rising and Cinderbottom, the forge's
+basalt watchman, has stamped awake to guard it. Keystone five hums from the forge. Bram hears it and slips off alone.
+**Villain / boss: Cinderbottom, the forge watchman.** A hulking basalt golem with glowing cracks and a lava-rim mouth, big fists. He is a tired night watchman, not a monster. Three phases: fists
+stamp (wall); lava rises (cooling road); a seat so he can sit and rest. Resolution: Boulder, a peer, takes over the watch. Boss triple: arena a crater ring; 3 phases; action = paving then seating.
+**Ally met: Boulder** (hippo, hard hat, rock cart). Sits on wobbly things to steady them; sometimes smashes by accident.
+**Set pieces:** rim_landing, egg_nest, crust_road, vent_field, glass_tower, toasting_ledge, anvil_forge, cooling_vat.
+**Emotional beat (real tension):** danger and the midpoint reversal. Every opening notes something unsettling (the shivering rim, a growing glow, a cracking road, a lost Wizard). Bram is lost in smoke
+and on a crumbling crust; for a moment the cast fears the worst. The Wizard's hat fails and the heroes find his star stamped into the forge anvil: the sneeze story cracks. Kid-safe; the comeback is
+earned by teamwork. **Hat Dip:** a boot (lava_08). **Hook into next:** a cool green gust smells of leaves; the anvil's thread points toward a canopy.
+
+| ID | Beat | What happens | Objective | Verb | Minigame | Place | Who | Ending |
+|---|---|---|---|---|---|---|---|---|
+| lava_01 | Cart at the Rim | The cloud lands on the volcano rim in an orange night, a hippo in a hard hat sits on his tipping rock cart to steady it, and the whole rim shivers. You build a flat basalt platform so Boulder's cart parks safely, and a deep rumble answers like a stomach growl. | Park Boulder's cart safely | carry | base: cart_convoy + quake | Rim Landing, dusk | Boulder, Wizard, Ada | plain |
+| lava_02 | Egg Nest | Embers settle round a nest of glowing lizard eggs while a red glow brightens behind the peak. You shield the eggs with obsidian roofs through each shower, and when the glow fades the nest is empty because the eggs were under the party's cart all along. | Shelter the eggs from the embers | defend | base: shelter_guest (D4) + embers | Egg Nest, night | Sif, Boulder, Ada | twist: the nest is empty, the eggs rode in the cart |
+| lava_03 | Crust Road | The only road to the forge is a lava river with crust drifting down it, and the road cracks behind the cart with a hiss. You pave the road ahead of Boulder's cart so it keeps moving over the lava, and the crust behind it crumbles into the glow. | Pave a road to the forge | race | module: paver_rally (debut) + lava rise | Crust Road, golden | Boulder, Ada | plain |
+| lava_04 | Vent Fountain | Geysers pop at random and toss Boulder's rocks like popcorn, and one launches the Wizard's cloud out of sight with a squeal. You fence the vents so the rocks bounce back into the cart, and the cloud thumps down on the fence with the Wizard clutching his hat, shaken. | Catch the geyser rocks | defend | base: hold_the_wall + geyser | Vent Field, dusk | Boulder, Wizard, Bram | plain |
+| lava_05 | Black Glass Steps | The forge's window is high on a glossy black tower with the glass hot underfoot while Bram hears the Keystone humming inside. You build obsidian steps so Bram can peek in, and he sees a silhouette standing guard, gazing back. | Reach the forge window | build | base: raise_lookout + heat | Black Glass Tower, night | Bram, Boulder | plain |
+| lava_06 | Toasting Ledge | Boulder sets up a marshmallow toast on a ledge and Bram's gaze keeps sliding to the forge while the hum grows louder. You build a toasting ring for the marshmallows, and when it is done Bram's seat is empty: he has slipped away alone. | Build the marshmallow toasting ring | build | base: fill_the_shape + hum | Toasting Ledge, dusk | Boulder, Wizard, Bram | reveal: Bram has gone ahead |
+| lava_07 | Choking Smoke | Black smoke fills the cavern so thickly that Ada's plume vanishes and Bram's call echoes, then stops. You raise a tall vent to draw the smoke off, and it clears to show only Bram's helmet on a rock: for a heartbeat, no Bram. | Clear the smoke to find Bram | rescue | base: raise_lookout + fog | Smoke Cavern, night | Ada, Sif, Boulder | twist: only his helmet is left |
+| lava_08 | Crumbling Crust | The volcano erupts and Bram stands on a crust raft far out in the lava, shouting he is fine while it crumbles, and the Wizard digs in his hat and pulls out a boot. You lay a crust bridge piece by piece with Ada running along it as it forms, and Bram, for once, takes her hand. | Reach Bram before the crust goes | rescue | module: floe_footing (recall) + lava rise | Crumbling Crust, dusk | Ada, Bram, Boulder, Wizard | story: Bram accepts help; the Wizard's hat fails |
+| lava_09 | Rising Glow | Boulder carries Bram on his back as the lava rises behind them and the Wizard's star glows from the forge anvil, stamped there long ago. You build steps ahead of the rising lava so the party climbs out, and nobody looks at the Wizard. | Climb out ahead of the lava | survive | module: foothold_climb (recall) + lava rise | Forge Anvil Hall, night | Boulder, Bram, Ada, Wizard | reveal: the anvil bears the Wizard's star |
+| lava_10 | Forge Watchman | Cinderbottom stamps the floor in the rising glow while the heroes face him with the truth between them. You build a wall against his fists and a cooling road over the lava, and Boulder, a peer, sits in the watchman's chair so Cinderbottom's night watch can finally end, and he hands over Keystone five. | Relieve the watchman of his post | defend | base: hold_the_wall then module: paver_rally (recall) | Forge Anvil Hall, golden | Cinderbottom, Boulder, all heroes | story: Boulder takes the watch |
+| lava_bonus | Boulder's Bowling | Boulder rolls a boulder down the forge floor at a row of anvil-shaped pins with a roar. You build the lane's rails so the boulder knocks down every pin, and Cinderbottom bowls the last strike himself. | Knock down the anvil pins | destroy | base: bowling (destroy) + boulder roll | Forge Floor, golden | Boulder, Cinderbottom, Bram | guest: Cinderbottom bowls |
+| lava_h1 | Midnight Lap | Cinderbottom, now a friend, jogs his night lap and the lava rises to the rhythm of his steps. You pave a safe road ahead of him, and the lap turns out to be a race against Boulder. | Pave ahead of Cinderbottom's lap | race | module: paver_rally (recall) + lava rise | Crust Road, night | Cinderbottom, Boulder | plain |
+| lava_h2 | Ash Blanket | A blanket of ash falls over the vents and hides every geyser. You mark each hidden vent with a tall block so the cart avoids it, and the biggest vent opens to show a mother lizard returning for her eggs. | Mark the hidden vents | survive | base: fog + geyser | Cooling Vat Yard, dusk | Boulder, Ada | guest: a mother lizard returns |
+| lava_h3 | Anvil Mend | Boulder tries to mend the anvil by smashing it and bits fly everywhere. You catch the flying pieces with a funnel of blocks. | Catch the pieces of the anvil | carry | base: collect_run + rock throw | Rim Landing, dawn | Boulder, Bram | plain |
+
+**Scene notes, chapter 5**
+
+| ID | opening_event | footprint | terrain | set_piece | set_piece_action | cast_pose | hud_meter |
+|---|---|---|---|---|---|---|---|
+| lava_01 | hippo_sits_on_tipping_cart | wedge | rim_ledge | rim_landing | boulder_roll | Boulder:brace, Ada:point | Quake Meter |
+| lava_02 | embers_settle_round_nest | horseshoe | fort_wall | egg_nest | smoke_puff | Sif:brace, Boulder:haul | Egg Warmth |
+| lava_03 | lava_river_cracks_behind_cart | S_curve | crust_road | crust_road | lava_rise | Boulder:haul, Ada:cheer | Road Ahead |
+| lava_04 | geysers_pop_cloud_launches | trident | stepped_ravine | vent_field | geyser_spout | Wizard:hide, Bram:brace | Rocks Caught |
+| lava_05 | hot_glass_forge_window_hum | ladder_stair | mine_shaft | glass_tower | drum_beat | Bram:build, Boulder:brace | Window Height |
+| lava_06 | marshmallow_toast_hum_grows | L_shape | stepped_ravine | toasting_ledge | steam_vent | Boulder:cheer, Wizard:hide | Hum Level |
+| lava_07 | smoke_fills_cavern_call_stops | hourglass | mine_shaft | glass_tower | smoke_puff | Ada:point, Sif:hide | Smoke Level |
+| lava_08 | eruption_raft_crumbles_boot | island_chain | raft | vent_field | geyser_spout | Ada:build, Bram:brace | Crust Left |
+| lava_09 | boulder_carries_bram_star_glows | pyramid_steps | summit_ledge | anvil_forge | lava_rise | Boulder:haul, Wizard:hide | Lava Rise |
+| lava_10 | cinderbottom_stamps_floor | ring | crust_road | anvil_forge | rock_throw | Ada:brace, Bram:haul, Boulder:build | Watchman's Weariness |
+| lava_bonus | boulder_rolls_at_pins | keyhole | fort_wall | cooling_vat | gear_grind | Boulder:cheer, Bram:point | Pins Down |
+| lava_h1 | cinderbottom_night_jog | zigzag | summit_ledge | crust_road | boulder_roll | Cinderbottom:point, Boulder:haul | Lap Time |
+| lava_h2 | ash_falls_over_vents | boomerang | raft | cooling_vat | steam_vent | Boulder:point, Ada:brace | Vents Marked |
+| lava_h3 | anvil_smashed_bits_fly | cross | rim_ledge | rim_landing | rock_throw | Bram:haul, Boulder:cheer | Pieces Caught |
+
+## Chapter 6: The Treehouse Secret (Forest)
+
+**Caption:** The treehouse holds a secret. So do the vines.
+**Where we are and what is wrong.** Whisper Wood, a canopy island of rope bridges and mossy limbs. Old Knotty, the great oak at its heart, has tied everyone in with vines because everyone he loves
+leaves. Keystone six glows in his crown, and in his branches stands Sif's tiny old treehouse.
+**Villain / boss: Old Knotty.** A vast mossy oak with a kind knot-face and vine arms; bark brown, moss green, firefly gold. He hugs too tightly. Three phases: vines sweep the clearing (trellis walls);
+his branches shake (a steady platform); a stair up to his crown so he can watch them go and know they come back. Boss triple: arena a vertical trunk; 3 phases; action = weaving trellis and stair.
+**Ally met:** Nutmeg, a brisk squirrel scout with a leaf cap and a whistle. **Set pieces:** winter_pantry, log_span, root_bank, old_treehouse, dim_glade, campfire_branch, drumming_trunk, oak_crown.
+**Emotional beat:** tangled warmth: shelter and a secret. The cast bonds around a campfire and the Wizard confesses; Sif learns she belongs here. **Hat Dip:** an umbrella (forest_01).
+**Debut (module):** splat_claim (forest_06). **Hook into next:** the roots part to show a dark hole breathing cool air, and the Tether dives into it.
+
+| ID | Beat | What happens | Objective | Verb | Minigame | Place | Who | Ending |
+|---|---|---|---|---|---|---|---|---|
+| forest_01 | Winter Pantry | The cloud snags in hanging vines, the Wizard pulls an umbrella from his hat and flings it into the sack, and Nutmeg shimmies down whistling. You build a shelf above the vines so the squirrels' winter acorns stay dry through the first drizzle. | Shelve the squirrels' winter acorns | build | base: build_tower + vines | Winter Pantry, dawn | Nutmeg, Wizard, Ada | plain |
+| forest_02 | Log Tunnel | The log tunnel to Nutmeg's den is stuffed with roots that wriggle shut as the party approaches. You lay a ramp through the log so the acorn cart rolls through before the roots seal it. | Roll the acorn cart through | carry | base: cart_convoy + root creep | Hollow Log, day | Nutmeg, Bram | plain |
+| forest_03 | Mossy Brook | Vines yank the stepping stones out of the brook one by one. You build a footbridge between the mossy banks before the last stone goes, and Sif crosses first. | Bridge the brook before the vines pull it | race | module: gap_runner (recall) + vines | Mossy Brook, golden | Sif, Bram, Nutmeg | plain |
+| forest_04 | Acorn Volley | Nutmeg's scouts pelt the clearing with acorns in a mock battle while a tiny squirrel kit squeaks in the middle. You roof the kit with a shell of blocks through each volley, and Sif trades the scouts her best trinket for a truce. | Shelter the squirrel kit | defend | base: shelter_guest (D4) + acorn throw | Root Bank, dusk | Sif, Nutmeg, squirrels | twist: Sif gives a trinket away |
+| forest_05 | Old Treehouse | High on the trunk sits a tiny weathered treehouse and Sif goes quiet at the sight of it. You raise a limb ladder to reach it, and inside are her carved initials and a drawing of the oak hugging a small elf. | Climb to the old treehouse | race | base: build_stair + sway | Old Treehouse, golden | Sif, Ada, Old Knotty (watching) | reveal: Sif grew up in this tree |
+| forest_06 | Moss Claim | A creeping grey fungus dims the glade and the fireflies flicker out one by one. You paint the glade floor with moss before the fungus takes it, and the fireflies relight in the shape of a small elf. | Reclaim the glade with moss | build | module: splat_claim (debut) + fungus spread | Dim Glade, night | Nutmeg, Sif, fireflies | plain |
+| forest_07 | Swaying Campfire | Wind whips leaves off a swaying log where the party wants to camp. You balance a platform for the campfire, and by its light the Wizard tells the whole truth about the tower, the shooing and the lie, and nobody leaves. | Steady the campfire platform | balance | module: wobble_plate (recall) + gust | Campfire Log, dusk | Wizard, Ada, Bram, Sif | story: the Wizard's confession and forgiveness |
+| forest_08 | Drumming Trunk | Woodpeckers drum the oak and every knock pops a hole in the bark wall while Lana swings in on a vine with a knitted net. You plug each hole with the piece that fits before the next drum roll. | Plug the trunk's holes | defend | base: plug_breach (D2) + woodpecker knock | Drumming Trunk, day | Lana, Bram, Nutmeg | guest: Lana swings in with a net |
+| forest_09 | Sweeping Roots | Roots slide like belts and sweep everyone toward the oak's hollow. You build a stair above the roots, and at the top the belts are loading a basket with Sif's lost childhood things, which Knotty has kept all these years. | Climb above the sweeping roots | survive | base: material twist (roots as belts) + stair | Root Bank, golden | Old Knotty, Ada, Sif | reveal: Knotty kept Sif's childhood things |
+| forest_10 | Old Knotty's Hug | Old Knotty rises with vines flailing, Keystone six glowing in his crown, because everyone he loves leaves. You weave trellis walls against the vines, a platform against the shaking, then a stair up to his crown so he can watch them go and know they come back, and he lets go. | Show Knotty they will come back | defend | base: hold_the_wall + vines then stair | Great Oak Crown, golden | Old Knotty, Nutmeg, all heroes | story: he opens his vines; they leave and return |
+| forest_bonus | Berry Relay | Nutmeg lines up her scouts for a berry relay down the trunk with a whistle blast. You build relay ramps so each basket passes down without spilling, and the last scout carries Sif's first bead. | Pass the berry baskets down | carry | base: cart_convoy + wobble | Winter Pantry, golden | Nutmeg, Sif, squirrels | plain |
+| forest_h1 | Lantern Night | At night the fireflies throw a party that spirals faster than before, and you raise lantern perches for them. The finished spiral of light draws the island's map, with an X where the Fair will stand. | Raise perches for the firefly party | build | base: raise_lookout + wander | Old Treehouse, night | Nutmeg, Old Knotty | twist: the fireflies draw a map |
+| forest_h2 | Acorn Siege | The squirrels roll out a catapult and aim acorns at Knotty's crown for fun. You build a wall in front of the crown until the acorns run out. | Wall the crown against the acorns | defend | base: hold_the_wall + acorn throw | Drumming Trunk, dusk | Nutmeg, Old Knotty | plain |
+| forest_h3 | Pack Swap | The squirrels swap everyone's packs mid-trek and Sif's pack disappears up the trunk. You build chase ramps up the trunk to get it back. | Chase the stolen pack up the trunk | rescue | base: outrun_hazard + vines | Dim Glade, dawn | Sif, Nutmeg | plain |
+
+**Scene notes, chapter 6**
+
+| ID | opening_event | footprint | terrain | set_piece | set_piece_action | cast_pose | hud_meter |
+|---|---|---|---|---|---|---|---|
+| forest_01 | umbrella_flung_cloud_snags | fork | treetop_platform | winter_pantry | vine_creep | Nutmeg:react, Wizard:hide | Pantry Dryness |
+| forest_02 | roots_wriggle_shut_tunnel | ribbon | plank_bridge | log_span | root_whip | Bram:haul, Nutmeg:point | Tunnel Open |
+| forest_03 | vines_yank_stones | island_chain | ravine_ledges | log_span | wind_gust | Sif:haul, Nutmeg:point | Bridge Progress |
+| forest_04 | scouts_pelt_acorns_kit_squeaks | boomerang | hilltop_ledge | root_bank | rock_throw | Sif:cheer, Nutmeg:react | Kit Safe |
+| forest_05 | sif_sees_treehouse | ladder_stair | treetop_platform | old_treehouse | lantern_sway | Sif:point, Ada:build | Treehouse Height |
+| forest_06 | fungus_dims_glade | clover | stepped_ravine | dim_glade | vine_creep | Nutmeg:point, Sif:build | Moss Share |
+| forest_07 | wind_whips_leaves_camp | T_shape | raft | campfire_branch | wind_gust | Wizard:hide, Ada:brace, Bram:cheer | Campfire Steadiness |
+| forest_08 | woodpeckers_drum_holes_pop | bowtie | fort_wall | drumming_trunk | drum_beat | Lana:haul, Bram:brace | Trunk Holes |
+| forest_09 | roots_slide_toward_hollow | snake | hilltop_ledge | root_bank | root_whip | Knotty:react, Sif:cheer | Root Speed |
+| forest_10 | knotty_rises_vines_flail | pinwheel | ravine_ledges | oak_crown | drum_beat | Ada:build, Bram:build, Sif:build | Knotty's Grip |
+| forest_bonus | berry_relay_whistle | heart | fort_wall | winter_pantry | bell_ring | Nutmeg:react, Sif:cheer | Berries Spilled |
+| forest_h1 | fireflies_spiral_party_night | cross | plank_bridge | old_treehouse | lantern_sway | Nutmeg:cheer, Knotty:react | Firefly Cheer |
+| forest_h2 | squirrels_roll_out_catapult | wedge | raft | drumming_trunk | rock_throw | Nutmeg:point, Bram:brace | Crown Wall |
+| forest_h3 | packs_swapped_sif_pack_gone | diamond | stepped_ravine | dim_glade | bell_ring | Sif:haul, Nutmeg:hide | Pack Chase |
+
+<!-- CHAPTERS 7-9 -->
