@@ -1,8 +1,9 @@
-# Campaign vision: Wacky Towers (phase 1 brief, revision 3)
+# Campaign vision: Wacky Towers (phase 1 brief, revision 4)
 
-Author: studio game director. 2026-10-14. Revised after the r1 and r2 plan-vision reviews in
+Author: studio game director. 2026-10-14. Revised after the r1-r3 plan-vision reviews in
 `production/qa/quality-review/`. Inputs: the redo plan, quality bar, art bible, reference boards, `catalog.json`,
-`progression.md`, `minigames.md`, `level-identity-spec.md` (with its later user rules), the 4.8/10 level review
+`progression.md`, `minigames.md`, `minigame-party-rules.md` (user decision), `level-identity-spec.md` (with its
+later user rules), `exemplars.md`, `scene-vocabulary.md`, the 4.8/10 level review
 (source of "tier 05 is `build_race` + height in 11 of 12 biomes") and the level playtest.
 User words: "all levels look the same", "different in game play", "narrative first", "pass grade must be 9.7",
 "never clear so many layers", "end must not be obvious sometimes", "so mundane", "more art than only the grid".
@@ -95,13 +96,13 @@ presupposes concept A) but not the escalation shape (intensity column, first rev
 | 7 | Cave | **Trust in the dark.** Tight boards (narrow masks inside the 8x8 minimum box), one hero alone with you. | A lost light | 3 | Quiet courage |
 | 8 | Clockwork | **Tension of precision.** A machine everyone is stuck in; ticking and tidy. | Time itself runs down | 4 | Focus, joy in order |
 | 9 | Neon | **Low point.** Bright but empty; a setback the heroes face; lowest morale. | The party is split | 5 | Doubt turning to resolve |
-| 10 | Celestial | **Awe and gathering.** Above the weather; everyone returns; stakes named. | The whole sky | 4 | Sublime calm, readiness |
+| 10 | Celestial | **Awe and gathering.** Above the weather; everyone returns; stakes named. | The whole sky | 3 | Sublime calm, readiness |
 | 11 | Pirate | **Swashbuckling swagger.** Rowdy rivals hold the last piece the party needs; the energy lift into the finale. | The last key and the way to the Fair | 4 | Cheeky, confident, ready to party |
 | 12 | Carnival | **Triumph and release.** Every learned idea returns as a game. | The world holds, or sags | 5 | Joy, pride, "I built all this" |
 
 Every biome has a tier-10 boss. The first reversal is Lava (chapter 5), the true midpoint is 6.5, and the Neon
-low is chapter 9. Recovery takes three biomes with rising stakes: Celestial gathers the party (4), Pirate
-lifts the mood and its tier-10 boss hands over the last key to the finale (4), the Carnival pays off (5).
+low is chapter 9. Recovery takes three biomes with rising intensity (3, 4, 5): Celestial gathers the party in
+quiet awe, Pirate lifts the mood and its tier-10 boss hands over the last key, the Carnival pays off.
 Pirate must not reprise Underwater: its play is rowdy, rival-driven and ship-based.
 
 **The ending (proposed, narrative lead owns detail).** The campaign ends on the Carnival tier-10 boss and its
@@ -182,7 +183,10 @@ and **look** (start-frame silhouette).
   spec's "4-6 set pieces per biome": 84-96 set pieces in total.
 - **U7 Feel spread.** Per biome: at least 6 distinct goal types, at most 4 plain squares (U14 forces them to be
   4 different sizes), at least 3 levels with a non-default camera. **No `clear_n` headline goals (U15)**; this
-  supersedes the identity spec's "at most 5 `clear_n` levels".
+  supersedes the identity spec's "at most 5 `clear_n` levels". **Corridor width:** every playable region is at
+  least 4 cells wide where pieces spawn and no dead-end channel is narrower than 3 (4-cell pieces cannot
+  enter 2-wide shafts); the solver (P3d) checks this at phase 7. Phase 3 restates the minimum if the piece
+  set allows narrower shafts.
 - **U8 Opening event.** One distinct `opening_event` id per level (same field as the beat's). **Phase 2 assigns
   and lists the ids** (the narrative lead); phase 4 may refine them under the same rule: none repeats within
   a biome and none appears in more than 2 biomes, so phase 2 plans for at least 84 distinct ids.
@@ -198,11 +202,13 @@ and **look** (start-frame silhouette).
 - **U13 Echoes** need a story reason, are marked `callback_of`, and still obey U3.
 - **U14 Look fingerprint.** `(canonical_mask, terrain, set_piece, time_of_day, weather)` is unique per level
   across the campaign; within a biome no `set_piece` repeats more than twice and no `canonical_mask` repeats.
-- **U17 Scene spread.** `scene.terrain` and `scene.set_piece_action` each take an id from a closed list (phase
-  4 groups propose it; the technical artist approves it before specs are scored). Per biome: at least 7
+- **U17 Scene spread.** `scene.terrain`, `scene.set_piece_action` and `cast_pose` take ids from the closed
+  lists in `design/levels/plans/scene-vocabulary.md` (owner: technical artist). Phase 3 seeds them from the
+  roster and the exemplars; phase 4 groups add ids only by change request that the artist approves before the
+  `level_table` is checked. A spec using an id not on the list fails the U17 script. Per biome: at least 7
   distinct terrain ids and 7 distinct action ids, none used more than twice; across the campaign no
-  `(terrain, set_piece_action)` pair repeats. `cast_pose` is a closed verb list (build, haul, cheer, hide,
-  brace, point) and a biome uses at least 4 of them. Exemplars teach **form, not content**: no level may reuse
+  `(terrain, set_piece_action)` pair repeats. `cast_pose` verbs are build, haul, cheer, hide, brace, point,
+  plus `react` for animals and props; a biome uses at least 4 of them. Exemplars teach **form, not content**: no level may reuse
   an exemplar's set piece, terrain, mask, ending or character.
 - **U15 No counter goals.** No level's headline goal is `clear_n` or any counter goal (defined above).
   `height`, `shape`, `survive` and the other goals are legal only when the HUD names a story object (the
@@ -278,18 +284,18 @@ and earns the Carnival payoff. Borrow C's beacon-light as a win reward.
    seconds, standard controls plus one extra verb, built on stacking, a scene not a grid, fair shared seeds).
    The 16 modules each have a debut, a recall, the motivating beat and a tournament use; at most 2 debuts per
    biome, re-derived for the new biome order; define the phase runner contract.
-   **Scene kit budget.** Price in the engine-gap list, each with owner and size: terrain modules (6-8 per
-   biome, 168 level terrains reusing the closed list under U17), cast poses (6 verbs for each of the three
-   heroes and the Wizard, made once and reused), acting set pieces (84-96, each a looping 2-4 second
-   animation, with a static reduced-motion pose) and 4-6 themed HUD meters. The producer reports the total
-   against the phase 6 buffer before phase 4 starts.
-5. **Bosses.** Twelve tier-10 bosses with distinct boss triples (U12), arena changes per phase, beaten by building.
-6. **Hero perks.** How Stitch, Smash and Redraw work as pre-level tools (proposed: Ada Stitch, Bram Smash, Sif
+5. **Scene kit budget.** Price in the engine-gap list, each with owner and size: terrain modules (7-8 per
+   biome, matching U17), cast poses (6 verbs for each of the three heroes and the Wizard, made once and
+   reused), acting set pieces (84-96, each a looping 2-4 second animation with a static reduced-motion pose)
+   and 4-6 themed HUD meters. The producer reports the total against the phase 6 buffer before phase 4 starts.
+6. **Bosses.** Twelve tier-10 bosses with distinct boss triples (U12), arena changes per phase, beaten by
+   building; each boss combines rules already taught in tiers 03-09 and adds at most one new idea per phase.
+7. **Hero perks.** How Stitch, Smash and Redraw work as pre-level tools (proposed: Ada Stitch, Bram Smash, Sif
    Redraw) and how they interact with each biome's rules.
-7. **Difficulty and unlocks.** Formulas for `g0`, goal size and stars by tier and biome index: `g0` rises within
+8. **Difficulty and unlocks.** Formulas for `g0`, goal size and stars by tier and biome index: `g0` rises within
    and across biomes, the hard track beats tier 10, finales are not easier than tiers 07-09. Keep the 15 of 30
    star gate (stars in the biome needed to open the next) unless argued.
-8. **Fairness.** No `fixed_list`; opening sets at each level 01; spawn safety; soft-lock warning; `meadow_01`
+9. **Fairness.** No `fixed_list`; opening sets at each level 01; spawn safety; soft-lock warning; `meadow_01`
    winnable in under two minutes.
 
 ## 8. Brief for the level design lead (phase 4)
@@ -316,13 +322,13 @@ artist owns `assets/data/set_pieces.json` and flags art cost per piece (the file
 **Scoring.** One decimal, never rounded up. **A phase passes only if every criterion is at least 9.7.**
 Anchors: 10 = no change you would request; 9.7 = wording or tuning notes only, no structural change; 9.6 or
 lower = a structural fix is needed. Reviewers list ranked defects with owner and fix; makers fix.
-- **Preconditions.** QA runs the scripts (U3, U5, U6, U7, U12, U14, U15, U16, the name check) before human
+- **Preconditions.** QA runs the scripts (U3, U5, U6, U7, U12, U14, U15, U16, U17, the name check) before human
   scoring; the reviewer applies the cap: a script failure caps the matching criterion at 8.0.
 - **Coverage.** Read every beat and spec of one biome in full and at least 5 levels of every other biome
   (across teach, boss and hard roles); cite at least 10 level ids per criterion.
 - **Calibration.** The **game director** writes the anchors in `design/levels/plans/exemplars.md`: a 9.7
-  beat and spec, a near-miss (about 9.0), a weak sample (8 or below), and boss, hard-remix and level-01
-  specs. The panel scores them before reviewing the rest. Makers do not write their own anchors. Fields
+  beat and spec, a near-miss (about 9.0), weak samples (8 or below) for beat, spec and handbook entry, boss,
+  hard-remix and level-01 specs, and 9.0 vs 9.7 one-liners for A, C and S. The panel scores them before reviewing the rest. Makers do not write their own anchors. Fields
   derived from phase 3 formulas (`g0`, stars, `n`) are exempt in exemplars.
 - **Pillars.** Phases 2-3 apply P1a, P2a, P2c; phases 4-5 apply the spec-time set (section 2) to 5 sampled
   levels; phases 7-8 apply all tests.
@@ -350,7 +356,7 @@ rubric separates 9.7 from 8.5; V7 every user decision is honoured.
   entry (what it does, how it reads, worked example, what it never does, debut level); no engine terms.
 
 **L (phase 4, level specs)**
-- L1 Beat fidelity (names pass the title script). L2 Uniqueness (U1-U16 and the scripts).
+- L1 Beat fidelity (names pass the title script). L2 Uniqueness (U1-U17 and the scripts).
 - L3 Gameplay variety (no mundane or counter-based levels; at least 4 surprise endings per biome).
 - L4 Curve and pacing. L5 Readability and fairness. L6 Look, scene and art direction (fingerprint, U17 scene
   spread, set pieces, palette, no beige). L7 Completeness (all fields, handbook links, `level_table`).
