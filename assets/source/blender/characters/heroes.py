@@ -24,8 +24,8 @@ Outputs (relative to the repo root):
   production/qa/evidence/heroes-v2/*.png               lineup with the wizard, turnarounds, bake previews
 
 Coordinates while modelling: Z up, the hero faces -Y (glTF +Z), feet at z = 0. Parts are authored in
-nominal metres and the whole hero is then scaled so its idle height (headgear included, prop
-excluded) is TARGET_H.
+nominal metres and every hero is scaled by the same HERO_SCALE, so heads, hands and eyes match
+across the cast; feet are then moved to z = 0.
 """
 import argparse
 import math
@@ -42,7 +42,7 @@ import wizard as wz  # noqa: E402  (shared helpers, materials, render rig)
 from wizard import B, E, add_mods, ellipsoid, join, link, mesh_obj, metaball, realize, sweep  # noqa: E402
 
 HEROES = ("knight", "dwarf", "elf")
-TARGET_H = {"knight": 1.22, "dwarf": 1.12, "elf": 1.2}    # metres, idle pose, headgear included
+HERO_SCALE = 1.12      # nominal -> metres; one scale for all so heads match (knight ~1.3 m with plume, elf ~1.2, dwarf ~1.1)
 TRI_BUDGET_BODY = 7000
 TRI_BUDGET_PROP = 1200
 BAKE_SIZE = 1024
@@ -118,7 +118,7 @@ ARMS = {
 PROP_DIR = {   # direction the prop points out of the right fist
     "knight": {"idle": (-0.45, -0.25, 1.0), "cheer": (-0.25, -0.1, 1.0)},
     "dwarf": {"idle": (0.05, 0.45, 1.0), "cheer": (-0.2, -0.05, 1.0)},
-    "elf": {"idle": (-0.35, -0.55, 0.75), "cheer": (-0.2, -0.1, 1.0)},
+    "elf": {"idle": (-0.6, -0.45, 0.75), "cheer": (-0.2, -0.1, 1.0)},
 }
 
 
@@ -207,7 +207,7 @@ def head(P, c, semi, M, blush_dx, blush_dz=-0.035):
 
 
 def face(P, h, c, M, pose, eye_dx, eye_dz=0.02, eye_k=1.15, nose=(0.042, 0.038, 0.038), nose_dz=-0.03,
-         nose_push=0.024, mouth_dz=-0.088, smile=True, brows=None, mouth_surface=None):
+         nose_push=0.024, mouth_dz=-0.088, smile=True, brows=None, mouth_surface=None, lashes=False):
     """Eyes (open, or happy closed arcs for cheer), nose, brows and mouth, fitted to the head surface."""
     out = []
     k = eye_k
@@ -220,6 +220,11 @@ def face(P, h, c, M, pose, eye_dx, eye_dz=0.02, eye_k=1.15, nose=(0.042, 0.038, 
             out.append(ellipsoid(f"{P}eye{sx}", (ex, ey + 0.005 * k, ez), (0.024 * k, 0.014 * k, 0.034 * k), M["eye"]))
             out.append(ellipsoid(f"{P}glint{sx}a", (ex - 0.007 * k, ey - 0.008 * k, ez + 0.012 * k), (0.008 * k,) * 3, M["glint"], seg=12))
             out.append(ellipsoid(f"{P}glint{sx}b", (ex + 0.007 * k, ey - 0.007 * k, ez - 0.012 * k), (0.0042 * k,) * 3, M["glint"], seg=10))
+        if lashes:
+            x0, z0 = ex + sx * 0.02 * k, ez + 0.022 * k
+            pts = [(x0 + sx * 0.012 * t, (fy(x0 + sx * 0.012 * t, z0 + 0.012 * t * t) or ey) - 0.004, z0 + 0.012 * t * t)
+                   for t in (0.0, 0.5, 1.0)]
+            out.append(sweep(f"{P}lash{sx}", pts, [0.0055, 0.0045, 0.002], ring=8, n=8, mat=M["eye"]))
         else:
             pts = []
             for i in range(9):
@@ -356,9 +361,9 @@ def sword(P, pc, u, M):
     u, s, n = side_axes(u)
     return [sweep(P + "grip", [pc - u * 0.06, pc, pc + u * 0.06], [0.017] * 3, ring=12, n=8, mat=M["leather"]),
             ellipsoid(P + "pommel", pc - u * 0.078, (0.026,) * 3, M["gold"], seg=16),
-            sweep(P + "guard", [pc + u * 0.062 - s * 0.085, pc + u * 0.07, pc + u * 0.062 + s * 0.085],
+            sweep(P + "guard", [pc + u * 0.062 - s * 0.1, pc + u * 0.07, pc + u * 0.062 + s * 0.1],
                   [0.016, 0.02, 0.016], ring=12, n=12, mat=M["gold"]),
-            slab(P + "blade", [(-0.034, 0), (0.034, 0), (0.034, 0.26), (0, 0.33), (-0.034, 0.26)], 0.018,
+            slab(P + "blade", [(-0.04, 0), (0.04, 0), (0.04, 0.34), (0, 0.42), (-0.04, 0.34)], 0.02,
                  M["blade"], pc + u * 0.075, s, u)]
 
 
@@ -372,20 +377,20 @@ def pickaxe(P, pc, u, M):
             ellipsoid(P + "knob", pc - u * 0.135, (0.026,) * 3, M["wood"], seg=16)]
 
 
-def slingshot(P, pc, u, M):
+def slingshot(P, pc, u, M, k=1.45):
     u, s, n = side_axes(u)
-    t = pc + u * 0.07
-    out = [sweep(P + "grip", [pc - u * 0.065, pc, t], [0.018, 0.017, 0.017], ring=12, n=10, mat=M["wood"])]
+    t = pc + u * 0.07 * k
+    out = [sweep(P + "grip", [pc - u * 0.065 * k, pc, t], [0.019 * k, 0.017 * k, 0.017 * k], ring=12, n=10, mat=M["wood"])]
     tips = []
     for sg in (-1, 1):
-        a, b = t + u * 0.04 + s * sg * 0.03, t + u * 0.1 + s * sg * 0.055
-        out.append(sweep(f"{P}prong{sg}", [t, a, b], [0.016, 0.014, 0.012], ring=12, n=12, mat=M["wood"]))
-        out.append(ellipsoid(f"{P}tip{sg}", b, (0.016,) * 3, M["wood"], seg=12))
+        a, b = t + (u * 0.04 + s * sg * 0.03) * k, t + (u * 0.1 + s * sg * 0.055) * k
+        out.append(sweep(f"{P}prong{sg}", [t, a, b], [0.016 * k, 0.014 * k, 0.012 * k], ring=12, n=12, mat=M["wood"]))
+        out.append(ellipsoid(f"{P}tip{sg}", b, (0.016 * k,) * 3, M["wood"], seg=12))
         tips.append(b)
-    mid = (tips[0] + tips[1]) / 2 + n * 0.05 - u * 0.02
+    mid = (tips[0] + tips[1]) / 2 + (n * 0.05 - u * 0.02) * k
     out.append(sweep(P + "band", [tips[0], (tips[0] + mid) / 2 + n * 0.005, mid, (tips[1] + mid) / 2 + n * 0.005, tips[1]],
-                     [0.006] * 5, ring=8, n=24, mat=M["band"]))
-    out.append(ellipsoid(P + "pouch", mid, (0.03, 0.02, 0.022), M["leather"], seg=16))
+                     [0.007] * 5, ring=8, n=24, mat=M["band"]))
+    out.append(ellipsoid(P + "pouch", mid, (0.03 * k, 0.02 * k, 0.022 * k), M["leather"], seg=16))
     return out
 
 
@@ -397,7 +402,7 @@ def build_knight(pose, M, P="K_"):
     parts, lights = [], []
     h = head(P, c, semi, M, blush_dx=0.112)
     parts.append(h)
-    parts += face(P, h, c, M, pose, eye_dx=0.072, brows=None)
+    parts += face(P, h, c, M, pose, eye_dx=0.072, brows=None, lashes=True)
     # auburn fringe peeking under the helmet, short bob under the cheek guards
     els = []
     for i in range(9):
@@ -416,12 +421,12 @@ def build_knight(pose, M, P="K_"):
     top = hc.z + hsemi[2]
     # red plume: chain of soft lobes arcing front-to-back over the crest
     els = []
-    for dy, dz, r in ((-0.05, 0.015, 0.045), (0.0, 0.075, 0.06), (0.07, 0.11, 0.066), (0.15, 0.10, 0.066),
-                      (0.22, 0.06, 0.058), (0.27, -0.01, 0.05), (0.29, -0.08, 0.04)):
+    for dy, dz, r in ((-0.06, 0.02, 0.05), (-0.01, 0.075, 0.068), (0.07, 0.105, 0.078), (0.16, 0.095, 0.078),
+                      (0.24, 0.05, 0.07), (0.3, -0.02, 0.062), (0.33, -0.1, 0.052), (0.33, -0.17, 0.04)):
         p = (0, c.y + dy, top + dz)
         els.append(B(p, r))
         for sx in (-1, 1):
-            els.append(B((sx * 0.032, c.y + dy + 0.01, top + dz - 0.01), r * 0.72))
+            els.append(B((sx * 0.042, c.y + dy + 0.01, top + dz - 0.012), r * 0.75))
     plume = realize(metaball(P + "mb_plume", els, res=0.009), P + "plume", M["plume"])
     add_mods(plume, remesh=0.008, smooth=(0.6, 12), displace=(0.05, 0.01))
     parts.append(realize(plume))
@@ -454,10 +459,10 @@ def build_dwarf(pose, M, P="D_"):
     # beard + back hair: one soft ginger mass, two braids with gold bands below
     cz = c.z
     els = [E((0, -0.14, cz - 0.11), (0.2, 0.11, 0.1)), E((0, -0.17, cz - 0.22), (0.18, 0.1, 0.12)),
-           B((0, -0.21, cz - 0.32), 0.075), E((0, 0.07, cz + 0.0), (0.2, 0.15, 0.13))]
+           B((0, -0.24, cz - 0.32), 0.075), E((0, 0.07, cz + 0.0), (0.2, 0.15, 0.13))]
     for sx in (-1, 1):
         els += [B((sx * 0.16, -0.1, cz - 0.05), 0.075), B((sx * 0.195, -0.02, cz + 0.02), 0.06),
-                B((sx * 0.11, -0.2, cz - 0.29), 0.075), B((sx * 0.06, -0.2, cz - 0.36), 0.06)]
+                B((sx * 0.11, -0.23, cz - 0.29), 0.075), B((sx * 0.07, -0.25, cz - 0.36), 0.06)]
     beard = realize(metaball(P + "mb_beard", els, res=0.011), P + "beard", M["ginger"])
     add_mods(beard, remesh=0.008, smooth=(0.6, 14), displace=(0.05, 0.008))
     beard = realize(beard)
@@ -467,13 +472,13 @@ def build_dwarf(pose, M, P="D_"):
         els = []
         for i in range(5):
             r = 0.036 - 0.003 * i
-            els.append(E((x, -0.205 + 0.006 * i, cz - 0.37 - 0.045 * i), (r, r * 0.9, r * 0.85)))
+            els.append(E((x, -0.262 - 0.004 * i, cz - 0.37 - 0.045 * i), (r, r * 0.9, r * 0.85)))
         parts.append(realize(metaball(f"{P}mb_braid{sx}", els, res=0.007), f"{P}braid{sx}", M["ginger"]))
         zb = cz - 0.37 - 0.045 * 4 - 0.035
-        ring = [(x + 0.024 * math.cos(2 * math.pi * i / 16), -0.181 + 0.022 * math.sin(2 * math.pi * i / 16), zb)
+        ring = [(x + 0.024 * math.cos(2 * math.pi * i / 16), -0.278 + 0.022 * math.sin(2 * math.pi * i / 16), zb)
                 for i in range(16)]
         parts.append(sweep(f"{P}braidband{sx}", ring, [0.009] * 16, ring=10, mat=M["gold"], closed=True))
-        parts.append(ellipsoid(f"{P}tuft{sx}", (x, -0.18, zb - 0.032), (0.028, 0.025, 0.034), M["ginger"], seg=16))
+        parts.append(ellipsoid(f"{P}tuft{sx}", (x, -0.278, zb - 0.032), (0.028, 0.025, 0.034), M["ginger"], seg=16))
     # moustache: two lobes over the beard
     els = []
     for sx in (-1, 1):
@@ -506,7 +511,7 @@ def build_dwarf(pose, M, P="D_"):
                           "shirt", pose, sh, (0.07, 0.065, 0.072, 0.078),
                           belts=[("belt", 0.27, 0.022, "leather_dark", "brass")])
     parts += [b] + extra
-    parts.append(apron(P + "apron", b, 0.17, 0.0, 0.42, 0.13, 0.17, M["leather"]))
+    parts.append(apron(P + "apron", b, 0.115, 0.0, 0.40, 0.13, 0.16, M["leather"]))
     parts += pauldrons(P, M, sh, "steel", semi=(0.09, 0.09, 0.055))
     parts += legs(P, M, 0.1, 0.21, "breeches", "boot", r=(0.08, 0.074, 0.068), boot=(0.085, 0.115, 0.06))
     hs, pcs = hands(P, M, dirs, pose, "skin")
@@ -516,7 +521,7 @@ def build_dwarf(pose, M, P="D_"):
 
 
 def apron(name, target, z0, _unused, z1, w_top, w_bot, mat):
-    """Leather apron: a trapezoid grid shrink-wrapped onto the front of the torso, then solidified."""
+    """Leather apron: a trapezoid grid ray-projected onto the front of the torso, then solidified."""
     bm = bmesh.new()
     nu, nv = 14, 16
     V = []
@@ -528,19 +533,21 @@ def apron(name, target, z0, _unused, z1, w_top, w_bot, mat):
         for i in range(nu + 1):
             s = -1 + 2 * i / nu
             zz = z - (0.025 * (1 - s * s) if j == 0 else 0.0)     # rounded hem
-            row.append(bm.verts.new((s * w, -0.6, zz)))
+            row.append([s * w, zz])
         V.append(row)
+    # front-project every vertex onto the torso; below the belly the apron hangs straight down
+    for i in range(nu + 1):
+        last = None
+        for j in range(nv, -1, -1):
+            x, z = V[j][i]
+            y = wz.front_y(target, x, z)
+            if y is not None and y < -0.05:
+                last = y if last is None else min(y, last + 0.004)
+            V[j][i] = bm.verts.new((x, (last if last is not None else -0.2) - 0.006, z))
     for j in range(nv):
         for i in range(nu):
             bm.faces.new((V[j][i], V[j][i + 1], V[j + 1][i + 1], V[j + 1][i]))
     o = mesh_obj(name, bm, mat)
-    sw = o.modifiers.new("wrap", "SHRINKWRAP")
-    sw.target = target
-    sw.wrap_method = "PROJECT"
-    sw.use_project_y = True
-    sw.use_negative_direction = True
-    sw.use_positive_direction = True
-    sw.offset = 0.006
     so = o.modifiers.new("solid", "SOLIDIFY")
     so.thickness = 0.012
     so.offset = 1.0
@@ -550,8 +557,8 @@ def apron(name, target, z0, _unused, z1, w_top, w_bot, mat):
 
 def build_elf(pose, M, P="E_"):
     """Elf "Sif": green tunic and pointed hood, blond fringe, pointed ears, tan breeches, slingshot."""
-    c, semi = Vector((0, -0.01, 0.79)), (0.195, 0.18, 0.19)
-    sh = (0.15, 0.53)
+    c, semi = Vector((0, -0.01, 0.80)), (0.203, 0.188, 0.197)
+    sh = (0.158, 0.535)
     parts, lights = [], []
     h = head(P, c, semi, M, blush_dx=0.108)
     parts.append(h)
@@ -579,17 +586,17 @@ def build_elf(pose, M, P="E_"):
     hsemi = (semi[0] * 1.15, semi[1] * 1.17, semi[2] * 1.15)
     parts += shell(P + "hood", hc, hsemi, lambda p: p.z > -0.6 and not (p.y < 0.06 and p.z < 0.42), M["hood"],
                    thick=0.02, rim=0.02, rim_mat=M["hood_rim"])
-    p0 = hc + Vector((0, 0.55 * hsemi[1], 0.72 * hsemi[2]))
-    tip = sweep(P + "hood_tip", [p0, p0 + Vector((0, 0.10, 0.03)), p0 + Vector((0.0, 0.18, -0.04)), p0 + Vector((0.025, 0.21, -0.14))],
-                [0.09, 0.065, 0.035, 0.008], ring=24, n=30, mat=M["hood"])
+    p0 = hc + Vector((0, 0.62 * hsemi[1], 0.6 * hsemi[2]))
+    tip = sweep(P + "hood_tip", [p0, p0 + Vector((0, 0.11, -0.01)), p0 + Vector((-0.02, 0.2, -0.07)), p0 + Vector((-0.07, 0.25, -0.18))],
+                [0.1, 0.07, 0.04, 0.01], ring=24, n=30, mat=M["hood"])
     add_mods(tip, smooth=None, displace=(0.06, 0.006))
     parts.append(realize(tip))
     collar = [(0.17 * math.cos(2 * math.pi * i / 32), 0.15 * math.sin(2 * math.pi * i / 32) + 0.005,
                0.585 - 0.015 * max(0.0, -math.sin(2 * math.pi * i / 32))) for i in range(32)]
-    parts.append(sweep(P + "collar", collar, [0.05] * 32, ring=16, mat=M["hood"], closed=True, wobble=0.08))
+    parts.append(sweep(P + "collar", collar, [0.04] * 32, ring=16, mat=M["hood"], closed=True, wobble=0.08))
     # tunic + arms (flares into a short skirt), belt with buckle, tan hem trim
-    b, dirs, extra = body(P, M, [E((0, 0, 0.45), (0.16, 0.135, 0.14)), E((0, 0, 0.33), (0.185, 0.155, 0.1)),
-                                 E((0, 0, 0.27), (0.205, 0.17, 0.06))],
+    b, dirs, extra = body(P, M, [E((0, 0, 0.45), (0.17, 0.142, 0.145)), E((0, 0, 0.33), (0.192, 0.16, 0.1)),
+                                 E((0, 0, 0.27), (0.212, 0.176, 0.06))],
                           "tunic", pose, sh, (0.056, 0.052, 0.06, 0.066),
                           belts=[("belt", 0.37, 0.018, "leather", "gold"), ("hem", 0.245, 0.014, "tan", None)])
     parts += [b] + extra
@@ -609,11 +616,10 @@ def zrange(objs):
 
 
 def build(hero, pose, M):
-    """Build the high-res hero, feet at z = 0, scaled so the idle height is TARGET_H[hero]."""
+    """Build the high-res hero, scaled by HERO_SCALE with the feet at z = 0."""
     parts, prop, lights, sh = BUILDERS[hero](pose, M)
-    # scale from the idle silhouette so idle and cheer match exactly: headgear is the top in both
     lo, hi = zrange(parts)
-    s = TARGET_H[hero] / (hi - lo)
+    s = HERO_SCALE
     N = Matrix.Translation((0, 0, -lo * s)) @ Matrix.Scale(s, 4)
     for o in parts + prop:
         o.data.transform(N)
