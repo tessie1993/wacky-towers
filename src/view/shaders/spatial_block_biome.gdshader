@@ -43,6 +43,22 @@ uniform float wrap : hint_range(0.0, 1.0) = 0.45;
 uniform float band_soft : hint_range(0.01, 1.0) = 0.35;
 // Fake translucency: light glowing through the body (jelly, ice, glass).
 uniform float translucency : hint_range(0.0, 1.0) = 0.0;
+group_uniforms piece_colour;
+// v4 polish (ref 15): the instance COLOR is authored sRGB (palette hex), so it is linearised
+// before use; then pushed per biome so every piece reads as its own bright colour.
+/** Saturation multiplier on the piece colour (1 = authored). */
+uniform float piece_sat : hint_range(0.0, 2.5) = 1.0;
+/** Value multiplier on the piece colour (1 = authored). */
+uniform float piece_value : hint_range(0.3, 1.6) = 1.0;
+/** Hue remap: when x < y the piece hue (0..1) is squeezed into [x, y] (ice: cyan..pink jelly). */
+uniform vec2 piece_hue_range = vec2(0.0, 0.0);
+/** Albedo multiplier on side faces vs the top: painted key/shade separation (1 = off). */
+uniform float side_shade : hint_range(0.3, 1.0) = 1.0;
+/** Extra darkening of the side faces turned away from the key light (0 = off). */
+uniform float shade_side_extra : hint_range(0.0, 0.6) = 0.0;
+/** 1 = treat COLOR as sRGB and linearise it (correct); 0 = legacy raw use (washed out). */
+uniform float piece_linear : hint_range(0.0, 1.0) = 1.0;
+group_uniforms;
 // Shared with the stage/BoardView accessibility and occlusion contract.
 uniform int stickers = 0;
 uniform bool patterns = false;
@@ -60,6 +76,17 @@ varying float motif;
 varying float cell_alpha;
 varying vec3 center;
 
+vec3 rgb2hsv(vec3 c) {
+	vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+	vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+	vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+	float d = q.x - min(q.w, q.y);
+	return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + 1e-10)), d / (q.x + 1e-10), q.x);
+}
+vec3 hsv2rgb(vec3 c) {
+	vec3 p = abs(fract(c.xxx + vec3(1.0, 2.0 / 3.0, 1.0 / 3.0)) * 6.0 - 3.0);
+	return c.z * mix(vec3(1.0), clamp(p - 1.0, 0.0, 1.0), c.y);
+}
 float hash21(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float hash31(vec3 p) { return hash21(p.xy + p.z * 17.17); }
 float vnoise(vec2 p) {
@@ -154,7 +181,13 @@ void fragment() {
 	float bevel = smoothstep(0.15, 1.0, ea.x + ea.y + ea.z - emx - min(ea.x, min(ea.y, ea.z)));
 	vec2 vt = vec2(dot(VIEW, tu), dot(VIEW, tv));
 
-	vec3 piece = COLOR.rgb;
+	// Piece colour: authored sRGB -> HSV push (hue squeeze, saturation, value) -> linear.
+	vec3 phsv = rgb2hsv(clamp(COLOR.rgb, 0.0, 1.0));
+	if (piece_hue_range.x < piece_hue_range.y) phsv.x = mix(piece_hue_range.x, piece_hue_range.y, phsv.x);
+	phsv.y = clamp(phsv.y * piece_sat, 0.0, 1.0);
+	phsv.z = clamp(phsv.z * piece_value, 0.0, 1.0);
+	vec3 prgb = hsv2rgb(phsv);
+	vec3 piece = mix(prgb, pow(prgb, vec3(2.2)), piece_linear);
 	vec3 col = mix(piece, body_color, body_mix);
 	vec3 emit = vec3(0.0);
 	float rough = 1.0 - gloss;
@@ -462,6 +495,13 @@ void fragment() {
 	g *= sculpt;
 	NORMAL = normalize(NORMAL - tu * g.x - tv * g.y);
 
+	// Painted key/shade separation: sides darker than the top, the face turned from the key
+	// (world +x / camera-right in the house rig) darker still. Cap keeps its own value.
+	if (side) {
+		vec3 wn0 = normalize((MODEL_MATRIX * vec4(ln, 0.0)).xyz);
+		vec3 vn0 = normalize((VIEW_MATRIX * vec4(wn0, 0.0)).xyz);
+		col *= side_shade * (1.0 - shade_side_extra * smoothstep(-0.2, 0.6, vn0.x));
+	}
 	// Painted AO: dark toward the foot, creases on bevels between neighbours.
 	float foot = 1.0 - smoothstep(-0.5, -0.15, p.y);
 	float ao = 1.0 - 0.35 * foot - cavity;

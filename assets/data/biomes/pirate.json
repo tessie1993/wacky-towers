@@ -1,0 +1,65 @@
+{
+  "id": "pirate",
+  "index": 5,
+  "art_set": "candy_toy",
+  "palette": "meadow",
+  "side_island": false,
+  "default_music": "mus_underwater_default",
+  "levels": [
+    {
+      "id": "pirate_01",
+      "json": "res://src/levels/pirate/pirate_01/pirate_01.json",
+      "scene": "res://src/levels/pirate/pirate_01/pirate_01.tscn"
+    },
+    {
+      "id": "pirate_02",
+      "json": "res://src/levels/pirate/pirate_02/pirate_02.json",
+      "scene": "res://src/levels/pirate/pirate_02/pirate_02.tscn"
+    },
+    {
+      "id": "pirate_03",
+      "json": "res://src/levels/pirate/pirate_03/pirate_03.json",
+      "scene": "res://src/levels/pirate/pirate_03/pirate_03.tscn"
+    },
+    {
+      "id": "pirate_04",
+      "json": "res://src/levels/pirate/pirate_04/pirate_04.json",
+      "scene": "res://src/levels/pirate/pirate_04/pirate_04.tscn"
+    },
+    {
+      "id": "pirate_05",
+      "json": "res://src/levels/pirate/pirate_05/pirate_05.json",
+      "scene": "res://src/levels/pirate/pirate_05/pirate_05.tscn"
+    },
+    {
+      "id": "pirate_06",
+      "json": "res://src/levels/pirate/pirate_06/pirate_06.json",
+      "scene": "res://src/levels/pirate/pirate_06/pirate_06.tscn"
+    },
+    {
+      "id": "pirate_07",
+      "json": "res://src/levels/pirate/pirate_07/pirate_07.json",
+      "scene": "res://src/levels/pirate/pirate_07/pirate_07.tscn"
+    },
+    {
+      "id": "pirate_08",
+      "json": "res://src/levels/pirate/pirate_08/pirate_08.json",
+      "scene": "res://src/levels/pirate/pirate_08/pirate_08.tscn"
+    },
+    {
+      "id": "pirate_09",
+      "json": "res://src/levels/pirate/pirate_09/pirate_09.json",
+      "scene": "res://src/levels/pirate/pirate_09/pirate_09.tscn"
+    },
+    {
+      "id": "pirate_10",
+      "json": "res://src/levels/pirate/pirate_10/pirate_10.json",
+      "scene": "res://src/levels/pirate/pirate_10/pirate_10.tscn"
+    },
+    {
+      "id": "pirate_bonus",
+      "json": "res://src/levels/pirate/pirate_bonus/pirate_bonus.json",
+      "scene": "res://src/levels/pirate/pirate_bonus/pirate_bonus.tscn"
+    }
+  ]
+}

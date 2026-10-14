@@ -30,9 +30,13 @@ static func for_biome(biome: StringName) -> ShaderMaterial:
 	for key: String in ["cap_color", "body_color", "accent_color", "glow_color"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), Color(String(record[key])))
-	for key: String in ["cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt", "translucency"]:
+	for key: String in ["cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt", "translucency",
+			"piece_sat", "piece_value", "piece_linear", "side_shade", "shade_side_extra"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), float(record[key]))
+	if record.has("piece_hue_range"):
+		var hr: Array = record["piece_hue_range"]
+		material.set_shader_parameter(&"piece_hue_range", Vector2(float(hr[0]), float(hr[1])))
 	# Sky-tinted rim and fake reflection: the biome's horizon colour, lifted toward white.
 	var sky: Array = look(biome).get("sky", [])
 	if record.has("rim_color"):
