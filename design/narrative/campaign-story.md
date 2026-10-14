@@ -766,7 +766,8 @@ plank_bridge, dock_pier. Pirate dock_pier, plank_bridge, raft, summit_ledge, shi
 - **Art-director (input, not decisions).** New silhouette rows are needed for Lana, Boulder, Glim, Huffle and the villains. The art-bible boss table describes the old story and needs a refresh. Cinderbottom, Huffle and Gneiss Gus can reuse
   the old golem, wind-cloud and stone-guardian silhouettes. Footprints are named silhouettes only; phase 4 draws the masks.
 - **Audio-director.** The Sky Lullaby: each recovered Keystone adds one note. Neon drops the lullaby out; Celestial brings it back as a rattle and a hum; clockwork_bonus plays the melody; cave_10 hums its missing note.
-- **Per-beat YAML** (`design/narrative/beats/<biome>.md`) is written next from these tables (opening event = `opening_event`, objective = `headline_objective`).
+- **Per-beat YAML** is written: `design/narrative/beats/<biome>.md` for all 12 biomes (168 documents), derived from these tables (opening event = `opening_event`, objective = `headline_objective`). If a table and a
+  YAML file disagree, the story tables win and the YAML is regenerated.
 
 ## 7. Coverage checks (self-audit against review r1)
 

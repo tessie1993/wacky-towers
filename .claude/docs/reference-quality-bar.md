@@ -27,6 +27,12 @@ Standing rules from the user:
 
 ## Calibration: the user's own score is the anchor
 
+**Current anchor (user, 2026-10-14, latest): "Everything we have so far I would score at a 3 out of 10. Be far stricter
+with giving high marks. We are nowhere near 9s yet."** Every existing screen, level, platform and piece of scenery
+starts from 3/10. The 4.5 art anchor below is superseded. The procedural scenery and the primitive set pieces are
+called "ugly" and "procedural crap". Scenery must come from PolyHaven and BlendKit assets, through Blender and Godot
+addons. Any score above 3 must name the exact change since this anchor and show it side by side with a reference.
+
 On 2026-10-14 the user said: "No this art gets a 4.5 not a 6.3". **The in-game art as it stands scores 4.5/10.**
 Reviewers had scored it higher, which was too lenient.
 
