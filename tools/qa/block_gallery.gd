@@ -43,7 +43,9 @@ func _run() -> void:
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
 	root.content_scale_factor = 1.0
 	var mode: String = args[0] if args.size() > 0 else "sheet"
-	if mode == "tints":
+	if mode == "v2":
+		await _sheet_v2()
+	elif mode == "tints":
 		await _sheet_tints()
 	elif mode == "ghost":
 		await _sheet_ghost()
@@ -63,6 +65,132 @@ func _sheet_main() -> void:
 		var cells: Array = [[Vector3(-0.5, 0.5, 0), colours[0]], [Vector3(0.5, 0.5, 0), colours[1]], [Vector3(0.5, 1.5, 0), colours[2]]]
 		grid.add_child(_cell(StringName(entry[0]), entry[1], cells, false))
 	await _snap("gallery.png")
+
+
+## Block variation v2: one PNG per biome with every palette hue as its own piece, a stacked 2-cube piece, the
+## falling (active) piece and one topper. Output: blocks-v2/<biome>.png
+const V2_BIOMES := ["meadow", "candy", "ice", "underwater", "lava", "forest", "cave", "clockwork", "neon", "celestial", "carnival", "pirate"]
+
+func _sheet_v2() -> void:
+	root.size = Vector2i(640, 560)
+	for biome: String in V2_BIOMES:
+		var bg := ColorRect.new()
+		bg.color = BG
+		bg.size = Vector2(root.size)
+		root.add_child(bg)
+		var box: Control = _cell_v2(StringName(biome))
+		root.add_child(box)
+		await _snap(biome + ".png")
+		bg.queue_free()
+		box.queue_free()
+		await process_frame
+
+
+func _cell_v2(biome: StringName) -> Control:
+	var box := VBoxContainer.new()
+	box.custom_minimum_size = Vector2(640, 560)
+	var svc := SubViewportContainer.new()
+	svc.stretch = true
+	svc.custom_minimum_size = Vector2(640, 540)
+	box.add_child(svc)
+	var vp := SubViewport.new()
+	vp.own_world_3d = true
+	vp.transparent_bg = true
+	vp.msaa_3d = Viewport.MSAA_4X
+	vp.size = Vector2i(640, 540)
+	svc.add_child(vp)
+	var world := Node3D.new()
+	vp.add_child(world)
+	_rig(world)
+	var material: ShaderMaterial = WtBlockMaterials.for_biome(biome)
+	var n: int = int(material.get_shader_parameter(&"palette_size"))
+	# Cells: [pos, piece id]. Base layer 3x2 single-cube pieces, plus a 2-cube piece on top.
+	var cells: Array = []
+	var pid: int = 1
+	for z: int in 2:
+		for x: int in 3:
+			cells.append([Vector3(x - 1.0, 0.5, z - 0.5), pid])
+			pid += 1
+	cells.append([Vector3(-1.0, 1.5, -0.5), 100])
+	cells.append([Vector3(0.0, 1.5, -0.5), 100])
+	cells.append([Vector3(1.0, 1.5, 0.5), 101])
+	# Greedy variant per piece: differ from every face-neighbour piece already coloured.
+	var variant: Dictionary = {}
+	for c: Array in cells:
+		var id: int = c[1]
+		if variant.has(id):
+			continue
+		var used: Dictionary = {}
+		for o: Array in cells:
+			if variant.has(o[1]) and o[1] != id and (o[0] as Vector3).distance_to(c[0]) < 1.01:
+				used[variant[o[1]]] = true
+		var v: int = (id * 3) % maxi(n, 1)
+		for k: int in maxi(n, 1):
+			if not used.has((v + k) % maxi(n, 1)):
+				v = (v + k) % maxi(n, 1)
+				break
+		variant[id] = v
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
+	mm.use_custom_data = true
+	mm.mesh = WtBlockMesh.cube()
+	mm.instance_count = cells.size()
+	material.set_shader_parameter(&"layer_span", 3.0)
+	for i: int in cells.size():
+		var pos: Vector3 = cells[i][0]
+		var mask: int = 0
+		var dirs: Array[Vector3] = [Vector3.LEFT, Vector3.RIGHT, Vector3.DOWN, Vector3.UP, Vector3.FORWARD, Vector3.BACK]
+		for b: int in 6:
+			for o: Array in cells:
+				if (o[0] as Vector3).distance_to(pos + dirs[b]) < 0.1 and o[1] != cells[i][1]:
+					mask |= 1 << b
+		var layer: int = int(pos.y)
+		mm.set_instance_transform(i, Transform3D(Basis(), pos))
+		mm.set_instance_color(i, Color("#C8643C"))
+		mm.set_instance_custom_data(i, Color(0, float(int(variant[cells[i][1]]) + 1) / 16.0, float(mask + 64 * layer) / 2048.0, 1))
+	var mmi := MultiMeshInstance3D.new()
+	mmi.multimesh = mm
+	mmi.material_override = material
+	world.add_child(mmi)
+	# Active (falling) piece: its own material copy, use_cell_alpha off.
+	var falling: ShaderMaterial = material.duplicate() as ShaderMaterial
+	falling.set_shader_parameter(&"use_cell_alpha", false)
+	var amm := MultiMesh.new()
+	amm.transform_format = MultiMesh.TRANSFORM_3D
+	amm.use_colors = true
+	amm.use_custom_data = true
+	amm.mesh = WtBlockMesh.cube()
+	amm.instance_count = 2
+	var av: int = (n - 1) if n > 0 else 0
+	for i: int in 2:
+		amm.set_instance_transform(i, Transform3D(Basis.from_scale(Vector3.ONE * 0.97), Vector3(-1.0 + i, 3.0, 0.5)))
+		amm.set_instance_color(i, Color("#C8643C"))
+		amm.set_instance_custom_data(i, Color(0, float(av + 1) / 16.0, 0, 0))
+	var ammi := MultiMeshInstance3D.new()
+	ammi.multimesh = amm
+	ammi.material_override = falling
+	world.add_child(ammi)
+	var topper: Node3D = WtBlockToppers.build_for_cells(biome, [Vector3(1.0, 1.5, 0.5)] as Array[Vector3], 1.0)
+	if topper != null:
+		world.add_child(topper)
+	var cam := Camera3D.new()
+	cam.fov = 30.0
+	world.add_child(cam)
+	var target := Vector3(0.0, 1.35, 0.0)
+	cam.look_at_from_position(target + Vector3(-2.6, 3.4, 7.4) * 1.05, target)
+	cam.current = true
+	var label := Label.new()
+	label.text = String(biome).capitalize() + "  (" + str(n) + " hues)"
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var ls := LabelSettings.new()
+	if _font != null:
+		ls.font = _font
+	ls.font_size = 30
+	ls.font_color = INK
+	label.label_settings = ls
+	box.add_child(label)
+	return box
 
 
 func _sheet_tints() -> void:

@@ -81,3 +81,8 @@ owner revises and the gate re-runs. No phase starts before the one it depends on
 - 2026-10-14: the pass mark is 9.7/10 for all reviewers (user).
 - 2026-10-14: narrative comes first and levels are inspired by the story (user).
 - 2026-10-14: the level-redesign agents were stopped before writing; no level JSON was changed.
+- 2026-10-14: the plan was approved and started (user).
+- 2026-10-14: keep 168 levels (12 biomes × 14) (user).
+- 2026-10-14: **fresh story**. Keep only the cast (the Wizard, Dame Ada, Bram, Sif, plus the NPCs
+  Lana, Boulder and Glim). Write a new campaign story from scratch. The 20 old panels (S01–S20) are
+  not binding (user).
