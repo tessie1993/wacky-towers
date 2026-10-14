@@ -67,6 +67,8 @@ uniform float cap_hue_min_sat : hint_range(0.0, 1.0) = 0.15;
 uniform float stone_value : hint_range(0.5, 1.8) = 1.0;
 uniform float stone_sat : hint_range(0.3, 1.5) = 1.0;
 /** Strength of the faint painted cracks on stone pieces. */
+/** Body-colour mix for cap-keeping pieces; < 0 = use body_mix (meadow: dirt body under the grass cap). */
+uniform float cap_body_mix : hint_range(-1.0, 1.0) = -1.0;
 uniform float stone_crack : hint_range(0.0, 1.0) = 0.22;
 group_uniforms;
 // Shared with the stage/BoardView accessibility and occlusion contract.
@@ -215,7 +217,7 @@ void fragment() {
 		vec3 srgb = hsv2rgb(shsv);
 		piece = mix(srgb, pow(srgb, vec3(2.2)), piece_linear);
 	}
-	vec3 col = mix(piece, body_color, body_mix * keep_cap);
+	vec3 col = mix(piece, body_color, keep_cap > 0.5 ? (cap_body_mix < 0.0 ? body_mix : cap_body_mix) : 0.0);
 	vec3 emit = vec3(0.0);
 	float rough = 1.0 - gloss;
 	vec2 g = vec2(0.0);
@@ -248,7 +250,7 @@ void fragment() {
 		col *= mix(0.94, 1.06, smoothstep(0.25, 0.75, paint));
 		if (top) col *= 1.1;
 		vec2 sv = voronoi(suv * 1.7 + 3.0);
-		float crack = (1.0 - smoothstep(0.0, 0.035, sv.x)) * step(0.45, hash21(vec2(sv.y, seed)));
+		float crack = (1.0 - smoothstep(0.0, 0.035, sv.x)) * step(0.3, hash21(vec2(sv.y, seed)));
 		col *= 1.0 - crack * stone_crack * detail;
 		col += vec3(0.05) * crack * stone_crack * (1.0 - smoothstep(0.0, 0.02, sv.x));
 		g += vec2(hnoise(suv * 9.0) - 0.5) * 0.08;

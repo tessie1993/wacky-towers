@@ -42,7 +42,9 @@
           ]
         ],
         "stone_value": 1.22,
-        "stone_sat": 0.78
+        "stone_sat": 0.78,
+        "cap_body_mix": 0.9,
+        "stone_crack": 0.4
       },
       "sky": [
         "#4F94E6",

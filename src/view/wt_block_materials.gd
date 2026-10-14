@@ -31,7 +31,7 @@ static func for_biome(biome: StringName) -> ShaderMaterial:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), Color(String(record[key])))
 	for key: String in ["cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt", "translucency",
-			"piece_sat", "piece_value", "piece_linear", "cap_hue_min_sat", "stone_value", "stone_sat", "stone_crack", "side_shade", "shade_side_extra"]:
+			"piece_sat", "piece_value", "piece_linear", "cap_hue_min_sat", "stone_value", "stone_sat", "stone_crack", "cap_body_mix", "side_shade", "shade_side_extra"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), float(record[key]))
 	if record.has("piece_hue_range"):
