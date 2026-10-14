@@ -128,3 +128,15 @@ write each level out. And from that level description make the platform."
   pieces speed up as the level progresses. A clock is only for minigames that truly need one, such as races.
 - **Moving platforms and tracks are real.** The moving track for race levels is built as an engine feature, not
   faked with a scrolling backdrop.
+
+## User note, 2026-10-14: use our own block set when designing
+
+The user said: "Also look at the 68-block set we made. You might want to use it in your design process." Level
+designers must pick each level's pieces from the full shape bank, not only the classic 7:
+- `assets/data/shapes/shape_bank.tres` and `families.json` hold the families standard, special, helper, pento_flat,
+  pento_3d, chunky and hollow.
+- `assets/data/content/blocks.json` holds the special cell kinds: mushroom, sprout, egg, bounce_pad, snowball, goo,
+  candy_bomb, countdown_bomb, rock, mole, locked_cube and others.
+
+Name the shapes used in each level spec, and give the reason they fit the minigame. Fairness checks (tiling and
+parity) use the chosen set.
