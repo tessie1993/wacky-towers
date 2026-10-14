@@ -81,7 +81,7 @@ The party travels together; "Who" lists who is on screen. Resolutions are beats,
 
 | Hero | Arc | Featured chapters | Resolution beats |
 |---|---|---|---|
-| **Dame Ada** (knight, silver and red plume) | believes a tower is held by rules and a straight line; fears one wobble means failure | 1 tutor, 3 cold and cared for, 5 leads the rescue, 8 order is not stiffness, 9, 10, 11, 12 | neon_09 low point ("I cannot hold the line"), celestial_05 she waves at Huffle first, pirate_09 cannon captain, carnival_09 her block wobbles and she laughs |
+| **Dame Ada** (knight, silver and red plume) | believes a tower is held by rules and a straight line; fears one wobble means failure | 1 tutor, 3 cold and cared for, 5 leads the rescue, 8 order is not stiffness, 9, 10, 11, 12 | neon_09 low point ("I cannot hold the line"), celestial_05 she waves at Huffle first, pirate_08 cannon captain, carnival_09 her block wobbles and she laughs |
 | **Bram** (dwarf, ginger braids, hammer) | solves things by breaking them; learns to build and accept help | 2, 4, 5 trapped on the crust, 7, 8 patience, 9, 12 | lava_08 accepts help, clockwork_08 waits for the last turn, neon_09 builds gently, carnival_04 builds the cake tier without his hammer |
 | **Sif** (elf, green hood, slingshot) | a cheeky "borrower" who never felt she belonged | 4 the pearls, 6 the secret treehouse, 7 alone in the dark, 9, 10, 11, 12 | forest_05 learns she belonged, neon_09 gives a treasure away, celestial_08 hands Huffle the rattle, pirate_07 the heist, carnival_bonus returns every trinket |
 
@@ -89,7 +89,7 @@ The party travels together; "Who" lists who is on screen. Resolutions are beats,
 
 | NPC | Species and look (art input) | Debut | Role | Small arc (evidence) |
 |---|---|---|---|---|
-| **Lana** | alpaca, cream and rose wool, oversized cardigan, trailing golden yarn | Ch 3 Ice | **Thread-keeper.** Knits and ties the Tether between Keystones; cares for the heroes. | Over-helps: her scarf is far too warm (ice_08); re-ties the dark thread (neon_02 far off, neon_09); her bunting ends the story (carnival_01) |
+| **Lana** | alpaca, cream and rose wool, oversized cardigan, trailing golden yarn | Ch 3 Ice | **Thread-keeper.** Knits and ties the Tether between Keystones; cares for the heroes. | Over-helps: her scarf is far too warm (ice_08); knits a dark thread far off in the empty city (neon_02); her bunting ends the story (carnival_01) |
 | **Boulder** | hippo, slate blue, orange hard hat, rock cart | Ch 5 Lava | **Heavy lifter and gentle demolisher.** | Sits on wobbly things to steady them (lava_01); relieves the watchman (lava_10); counterweight (clockwork_07); the strongman booth (carnival_02) |
 | **Glim** | **a mole**, teal and cream, round, miner's headlamp cap, blueprint scrolls in his cheeks | Ch 7 Cave | **Planner and light.** His blueprints are why the landing ghost exists. | Over-plans and trips on scrolls (cave_02); lights the dark town (neon_07); keeps the ticket booth (carnival_06) |
 
@@ -168,7 +168,7 @@ plays with her) is only revealed at meadow_10, not before. Boss triple: arena a 
 | meadow_08 | Leafy Roof | Fat dewdrops shake from Gert's bonnet and a lamb bleats under a basket while Bram holds up a huge leaf for shade. You roof the lamb with blocks before the next shower, and the lamb trots out dry. | Shelter the lamb from the dew | defend | base: shelter_guest (D4) + dew drops | Lily Pond Bank, golden | Bram, Biscuit, lamb | plain |
 | meadow_09 | Tilting Hill | Gert spins the windmill sails backward and the whole hilltop tips like a tray with the sheep sliding. You weigh down the high side until the hill levels, and Gert herself slides down the tilt giggling and lands in the grass. | Level the tipping hilltop | balance | base: tilt (topsy tumble) + counterweight | Windmill Hill, dusk | Gert, Ada, Wizard, sheep | guest: Gert slides in laughing |
 | meadow_10 | Gert's Whirl | Gert towers over the mill, bonnet strings flying, Keystone one caught in her ribbons. You build a windbreak, a pen-ramp, then a mill tower whose sails spin her to a stop, and she sits down dizzy and cries a little because nobody ever plays with her, then joins the picnic. | Calm Gert and free Keystone one | defend | base: hold_the_wall then module: sneak_route (recall) | Windmill Hill, golden | Gert, Biscuit, all heroes | story: Gert was only lonely |
-| meadow_bonus | Kite Day | Gert's gust lifts a kite with the picnic hamper tied to it and the hamper sails toward the gorge. You raise a launch tower so the kite carries the hamper over the bridge, and the Wizard's cloud gets towed along as the kite's tail. | Carry the picnic hamper by kite | carry | base: cart_convoy + balloon lift | Footbridge Gorge, golden | Gert, Biscuit, Wizard | twist: the Wizard's cloud is the kite's tail |
+| meadow_bonus | Kite Day | Gert's gust lifts a kite with the picnic hamper tied to it and the hamper sails toward the gorge. You raise a launch tower so the kite carries the hamper over the bridge, and the Wizard's cloud gets towed along as the kite's tail. | Carry the picnic hamper by kite | carry | base: cart_convoy + balloon lift | Footbridge Gorge, golden | Gert, Biscuit, Wizard | plain |
 | meadow_h1 | Beanstalk Rescue | Gert's last puffs scattered seeds that shoot into beanstalks overnight with lambs stranded on top. You span rope-bridges from stalk to stalk to bring each lamb down. | Bring the lambs down the beanstalks | rescue | module: gap_runner (recall) + sprouts | Beanstalk Row, night | Gert, Biscuit | plain |
 | meadow_h2 | Gert Builds | Gert, bored, tries building her own dance stage and her whirl spits out the blocks this time. You race her tower on your own, and the two stages join into one giant dance floor. | Out-build Gert's dance stage | build | base: race_rival + gust | Pond Stage, dusk | Gert, Sif, Biscuit | story: two stages become one floor |
 | meadow_h3 | Gnome Gate Again | The gnomes return with Gert riding their wheelbarrow, throwing stones in a new rhythm. You hold the hedge until the barrow runs out of stones. | Hold the hedge against the barrow | defend | base: hold_the_wall + stone throw | Hedge Gate, night | Gert, Ada, gnomes | plain |
@@ -214,12 +214,12 @@ inside a pie, not the cherry. Boss triple: arena concentric cake tiers; 3 phases
 | candy_06 | Icing Mural | Someone has scribbled a moustache on the iced mural of Granny Gumdrop. You repaint it block by block before she wakes from her nap, and halfway Granny waddles in and adds a second moustache herself. | Repaint Granny's mural | build | base: fill_the_shape + wobble | Gingerbread Wall, dusk | Crumb, Sif, Granny Gumdrop | guest: Granny adds her own moustache |
 | candy_07 | Gummy Roundup | The village's pet gummy worms wriggle free of their pen and tickle ankles all over the pasture. You fence them back in with Bram keeping his hammer behind his back, and the last worm squirts through your gap, so you close it with a nose-to-tail loop. | Round up the gummy worms | rescue | module: sneak_route herd form (recall) + wander | Gummy Pasture, day | Bram, Crumb, worms | plain |
 | candy_08 | Pie Fort Practice | Crumb sets up two toy forts of marzipan on either side of the syrup and hands you a pie catapult for the village contest. You build your keep and loose pies at the rival fort, and the last pie sails over it into a high window where a jester's bell jingles. | Win the village pie contest | destroy | module: catapult_keep (debut) + wall | Syrup Cove, golden | Crumb, Ada, Bram | reveal: the pie lands in Jester's hideout |
-| candy_09 | Cocoa Wave | The fountain gurgles and Crumb shouts at a levee, but the brown wave comes from behind the plaza instead of the front. You raise the levee on the right side in time, and the wave leaves a first step of the cake stair behind. | Hold back the cocoa wave | defend | base: hold_the_wall + conveyor current | Fountain Plaza, dusk | Crumb, Wizard | twist: the wave arrives from behind |
+| candy_09 | Cocoa Wave | The fountain gurgles and a brown wave rolls toward Crumb's tarts across the plaza. You raise a levee in time, and the wave leaves a first step of the cake stair behind. | Hold back the cocoa wave | defend | base: hold_the_wall + conveyor current | Fountain Plaza, dusk | Crumb, Wizard | plain |
 | candy_10 | Jester's Cake Fort | Jester towers over the cake fort flinging pies from a pudding cannon, Keystone two hidden in a pie. You build pie shields, a wide base on the wobbling plate, then a ladder, and the pies bounce back onto Jester so he laughs, and the Keystone rolls out of the last one. | Catch the pie with Keystone two | destroy | module: catapult_keep then wobble_plate (recalls) | Cake Stand Spire, golden | Jester, Crumb, all heroes | twist: his pies return and the Keystone was inside one |
 | candy_bonus | Birthday Float | Crumb pushes a wobbly float of cakes toward Granny Gumdrop's birthday party with sprinkles flying. You build the float's frame so it holds all the way down the lane, and Granny hops aboard and rides it. | Carry the birthday float to Granny | carry | base: cart_convoy + wobble | Birthday Lane, golden | Crumb, Granny Gumdrop, Bram | guest: Granny rides the float |
 | candy_h1 | Gumball Run | Jester wheels out a giant gumball at the top of the lane and it starts to roll toward the village. You build barriers faster than it rolls, steering it away from the bakery. | Steer the gumball past the bakery | race | base: outrun_hazard (rolling hazard) + syrup | Gummy Pasture, night | Jester, Crumb | plain |
-| candy_h2 | Frosting Works | Jester hijacks the frosting pipes and splats the walls pink as the frosting spells a word. You redirect the belts to the bakery, and the splats finish a sentence: ONE MORE PRANK. | Steer the frosting to the bakery | carry | base: cart_convoy + conveyor | Frosting Works, dusk | Jester, Crumb | reveal: the frosting spells his next prank |
-| candy_h3 | Jester's Rematch | Jester returns with a bigger cannon and a crown, firing pies from a syrup raft. You shield the village before the next pie volley lands. | Shield the village from pies | defend | base: hold_the_wall + pie volley | Syrup Raft, night | Jester, Crumb | plain |
+| candy_h2 | Frosting Works | Jester hijacks the frosting pipes and splats the walls pink. You redirect the belts to the bakery before the village is iced shut. | Steer the frosting to the bakery | carry | base: cart_convoy + conveyor | Frosting Works, dusk | Jester, Crumb | plain |
+| candy_h3 | Jester's Rematch | Jester returns with a bigger cannon and a crown, firing pies from a syrup raft. You shield the village before the next pie volley lands. | Shield the village from pies | defend | base: hold_the_wall + pie volley | Syrup Raft, night | Jester, Crumb | story: the village makes him its court jester |
 
 **Scene notes, chapter 2**
 
@@ -255,7 +255,7 @@ and stairs.
 
 | ID | Beat | What happens | Objective | Verb | Minigame | Place | Who | Ending |
 |---|---|---|---|---|---|---|---|---|
-| ice_01 | Floe Mooring | The Wizard pulls a trombone from his hat and blasts it across the harbour, the floe cracks, and he drops it in the sack. You patch the cracks as the floe drifts so the party reaches shore before it breaks up, and a startled seal surfaces to nudge it in. | Hold the floe together to shore | survive | module: floe_footing (debut) + thin ice | Frost Harbour Floe, dawn | Wizard, Ada, Bram, seal | guest: a seal nudges the floe home |
+| ice_01 | Floe Mooring | The Wizard pulls a trombone from his hat and blasts it across the harbour, the floe cracks, and he drops it in the sack. You patch the cracks as the floe drifts so the party reaches shore before it breaks up, and a startled seal surfaces to nudge it in. | Hold the floe together to shore | survive | module: floe_footing (debut) + thin ice | Frost Harbour Floe, dawn | Wizard, Ada, Bram, seal | plain |
 | ice_02 | Glass Jetty | The jetty is slick as a rink and Bram slides along it on his backside with a loaded sled behind him. You line the edge with rails so the supply sled glides in and stops at the pier's end. | Stop the supply sled at the pier | carry | base: cart_convoy + ice slide | Glass Jetty, day | Bram, Ada | plain |
 | ice_03 | Lana's Sled | A woolly alpaca in a lopsided hat shoots down the slope on a runaway sled, trailing golden yarn that ends in two loose bows. You build banked catches ahead of her so the sled stops short of the sea, and she ties the bows to the sky: Meadow's and Candy's threads. | Stop Lana's sled before the sea | race | base: outrun_hazard + ice slide | Sled Slope, golden | Lana, Ada, Wizard | guest: Lana arrives and ties the loose threads |
 | ice_04 | Snowball Alley | Sir Shiver rolls huge snowballs down the alley without ever lifting his bucket helm, and each one smashes a post. You build bumper walls at the alley's mouth so the snowballs ricochet away from the village. | Shield the village from snowballs | defend | base: hold_the_wall (D1) + snowball roll | Snowball Alley, day | Sir Shiver, Lana, Bram | plain |
@@ -263,7 +263,7 @@ and stairs.
 | ice_06 | Snowman Gallery | Lana's ice sculptures froze lopsided and every snowman frowns in the gallery. You refill each missing curve to make them smile, and the last one, a small twin, wears a bucket helm: Sir Shiver's lost companion. | Make the gallery smile | build | base: fill_the_shape + frost creep | Snowman Gallery, golden | Lana, Wizard | twist: the last sculpture is Shiver's twin |
 | ice_07 | White Curtain | A white wall rolls down the mountain, a snowball the size of a house, and the party runs along the path. You build ramps and walls ahead of it so it rolls off the cliff instead of into the village. | Outrun the giant snowball | race | base: outrun_hazard (rolling hazard) + gust | Avalanche Peak, dusk | Ada, Wizard, Bram | reveal: the snowball carries a crate stamped with the Wizard's star |
 | ice_08 | Mitten Floe | Ada chases a runaway mitten onto the lake and the ice splits into a shrinking floe with her stranded and frozen with worry. You patch the ice under her steps while Lana knits her a scarf so long and warm that Ada disappears into it, and she lets herself be helped. | Bring Ada safely home | survive | module: floe_footing + side travel | Frost Lake, dusk | Ada, Lana, Bram, Wizard | story: Ada accepts care and a scarf too warm |
-| ice_09 | Leaning Gate | The berg under the castle gate cracks and the gate leans like a sleepy giant. You brace the leaning side to keep it upright, and a hidden room in the gate's base opens with a thump. | Keep the castle gate upright | balance | base: tilt + brace | Castle Gate Berg, dusk | Lana, Bram, Ada | reveal: a hidden store of frozen scrolls |
+| ice_09 | Leaning Gate | The berg under the castle gate cracks and the gate leans like a sleepy giant. You brace the leaning side so the gate stays upright long enough for the party to cross. | Keep the castle gate upright | balance | base: tilt + brace | Castle Gate Berg, dusk | Lana, Bram, Ada | plain |
 | ice_10 | Sir Shiver's Gate | Sir Shiver blocks the gate, rolling snowballs and sliding across the rink, an old order rattling in his bucket. You build bumpers, stoppers, then a stair up to his helm so the Wizard can wave him "at ease", and the order turns out to be the Wizard's own, forgotten for a hundred years. | Free Sir Shiver from his order | destroy | module: foothold_climb (recall) + hold_the_wall | Castle Gate Berg, golden | Sir Shiver, Wizard, Lana, all heroes | reveal: the old order was the Wizard's |
 | ice_bonus | Sled Derby | Lana and Bram line up their sleds at the top of the run with a cheering crowd on the slope. You build ramps so both sleds make the jump, and Sir Shiver stands at the finish line as the snowman judge. | Build ramps for the sled derby | race | base: outrun_hazard + ice slide | Glass Jetty Run, golden | Lana, Bram, Sir Shiver | guest: Sir Shiver judges the finish |
 | ice_h1 | Snowball Duel | Sir Shiver challenges the village to a snowball duel, but this time he is behind your wall and the village throws. You hold the fort while the villagers lob at him, and he tips his helm with a grin. | Hold the snow fort for the village | defend | base: shield_and_strike (D3) + snowball | Snowball Alley, dusk | Sir Shiver, villagers, Bram | twist: Shiver is the target, not the attacker |
@@ -562,12 +562,12 @@ him: Bram builds gently, Sif gives a treasure away, Ada leans on the others. Kid
 |---|---|---|---|---|---|---|---|
 | neon_01 | tram_doors_close_hat_on_seat | arrow | tram_track | tram_platform | lamp_flicker | Ada:point, Sif:hide | Map Lit |
 | neon_02 | lights_stuck_red_cars_frozen | cross | stack_ledge | crossing_towers | firework_pop | Sif:build, Lana:haul | Junction Cleared |
-| neon_03 | walkway_carries_apart_lamp_rolls | ribbon | conveyor_deck | moving_walkway | spotlight_sweep | Bram:brace, Lumen:react | Walkway Drift |
+| neon_03 | walkway_carries_apart_lamp_rolls | ribbon | conveyor_deck | moving_walkway | spotlight_sweep | Bram:brace, Lumen:point | Walkway Drift |
 | neon_04 | screens_replay_pratfalls | zigzag | glass_causeway | screen_arcade | lamp_flicker | Ada:hide, Sif:point | Screens Covered |
 | neon_05 | cloud_sign_hat_dipped_empty | cloud_blob | summit_ledge | rooftop_stage | firework_pop | Bram:build, Ada:hide | Sign Height |
 | neon_06 | fireworks_rig_countdown | star_five | hex_deck | screen_arcade | confetti_burst | Sif:build, Ada:brace | Fuse Burn |
 | neon_07 | neon_paint_rains_ada_pink | S_curve | hex_deck | moving_walkway | waterfall_pour | Ada:point, Glim:haul | Paint Share |
-| neon_08 | relay_mast_screen_sag | twin_towers | fort_wall | sag_relay | cannon_volley | Bram:build, Lumen:react | Thread Sag |
+| neon_08 | relay_mast_screen_sag | twin_towers | fort_wall | sag_relay | cannon_volley | Bram:build, Lumen:point | Thread Sag |
 | neon_09 | city_blackout_lumen_fades | ring | summit_ledge | rooftop_stage | drum_beat | Ada:hide, Bram:build, Sif:haul | Lumen Charge |
 | neon_10 | mae_blazes_spotlights | crescent | stack_ledge | billboard_face | spotlight_sweep | Mae:point, Lumen:cheer, Ada:build | Mae's Crowd |
 | neon_bonus | lumen_throws_party | clover | glass_causeway | lamp_workshop | confetti_burst | Lumen:cheer, Sif:point | Dance Height |
@@ -575,4 +575,211 @@ him: Bram builds gently, Sif gives a treasure away, Ada leans on the others. Kid
 | neon_h2 | spotlights_speed_up_stairs | comb | conveyor_deck | billboard_face | cannon_volley | Lumen:brace, Mae:point | Spotlight Speed |
 | neon_h3 | colours_swap_every_second | heart | fort_wall | lamp_workshop | waterfall_pour | Glim:point, Lumen:hide | Colour Share |
 
-<!-- CHAPTERS 10-12 -->
+## Chapter 10: The Sulking Sky (Celestial)
+
+**Caption:** At the top of the sky, someone small is sulking.
+**Where we are and what is wrong.** Starlight Steppes, a night-sky island of star-stone causeways and glass domes. Mae's beam drops the heroes on the first star, where the Wizard waits, hatless and ashamed. Above everything
+sits Huffle, a lilac baby cloud sulking in her blanket, with Keystone ten in her blanket and Keystone twelve in her fist. The stakes are named: two Keystones remain, one at sea and one in a toddler's hand, and every island sags
+until both come home.
+**Villain / boss: Huffle.** A huge round baby cloud, lilac swirls, big wet eyes, puffed cheeks. She is sulking, not evil: she loves the clatter of toppling blocks and has no one to build with. Three phases, beaten by building: her
+huffs blow gusts (a gust wall); she throws shards like toys (shields); her blanket cloud rises (a tall cradle lookout so she can see above it). Boss triple: arena a spire top; 3 phases; action = lifting her view with a lookout.
+**Allies (the gathering):** Lana, Boulder and Glim lead; Biscuit, Crumb, Finn, Nutmeg, Tock and Lumen arrive as guests. **Set pieces:** star_dock, constellation_stone, star_causeway, peek_tower, star_dome, cloud_steps, spire_top, star_slide.
+**Emotional beat:** awe and gathering. The Wizard finally listens: the baby rattle that fell from his hat is the first thing Huffle smiles at, and Sif hands it up to her. Ada waves at Huffle first. **Hat Dip:** a baby rattle (celestial_08).
+**Debut (module):** sky_steps (celestial_03). **Hook into next:** Huffle, calmer, points a chubby finger out to sea: a glint of lantern light on a distant mast is Keystone eleven. She keeps Keystone twelve and puffs a cloud-sized "party hat" onto her head.
+
+| ID | Beat | What happens | Objective | Verb | Minigame | Place | Who | Ending |
+|---|---|---|---|---|---|---|---|---|
+| celestial_01 | Star Dock | Mae's beam sets the heroes down on a drifting star where a small cloud waits with the Wizard huddled on it, hatless. You build a landing dock for his cloud so he can step off, and Ada puts his hat back on his head without a word. | Dock the Wizard's cloud | build | base: build_tower + drift | Star Dock, night | Wizard, Ada, Bram, Sif | story: Ada returns the hat; no words needed |
+| celestial_02 | Missing Star | Glim unrolls a star map and one star is missing from the chart while the real sky has a hole. You plug the gap with a stone of the right shape so the constellation completes and a path lights up. | Fill the missing star | build | base: fill_the_shape + lantern | Constellation Stone, night | Glim, Sif, Wizard | plain |
+| celestial_03 | Starlight Causeway | A long causeway of glass stretches across the void with the solar wind tugging cloaks, and tiny figures appear on the far side: Biscuit, Crumb, Finn and more. You build a rising stair of glass steps against the wind so the gathering friends can climb in, and they run, swim and sail to the party. | Raise a stair for the friends | carry | module: sky_steps (debut) + gust | Starlight Causeway, dusk | Biscuit, Crumb, Finn, Lana, heroes | guest: every earlier ally arrives |
+| celestial_04 | Star-Seed Shower | Glittering shards the size of footballs bounce across the causeway from above while the friends dash for cover. You roof the path against each shard, and the last shard splits to show a glowing seed: the "meteors" are star-seeds, tossed like toys. | Shield the causeway from the shards | defend | base: hold_the_wall + meteor fall | Starlight Causeway, night | Ada, Boulder, Glim | twist: the meteors are tossed star-seeds |
+| celestial_05 | Peek-a-Boo Tower | A huge sulking shadow sits above a curl of cloud and nobody can see its face. You raise a tower above the blanket and Ada steps up first and waves, and a pair of enormous wet eyes peeks back: the giant is a baby. | Raise the tower to see Huffle | build | base: raise_lookout + sway | Peek-a-Boo Tower, night | Ada, Wizard, Huffle (eyes) | reveal: the giant is a baby (friendly surprise 2 of 2) |
+| celestial_06 | Star Picture | A dome of dark glass holds half a star picture with spark points scattered about. You fill in the missing sparks, and the finished constellation is a ring with spokes that nobody in the party recognises. | Complete the constellation | build | base: fill_the_shape + sparks | Star Dome, night | Glim, Sif, Wizard | secret: a ring of stars with spokes (an unexplained prop) |
+| celestial_07 | Blanket Shadow | The sky goes dark as a vast quilted blanket drifts over the lookout and the party loses sight of each other. You steady a lookout through the dark with glow-lamps, and the blanket's edge turns out to be hand-knitted: Lana's stitches. | Keep the lookout steady in the dark | balance | module: wobble_plate (recall) + dark | Peek-a-Boo Tower, dawn | Wizard, Lana, Ada | twist: the blanket is Lana's own knitting |
+| celestial_08 | Sideways Dome | Gravity tilts so blocks fall sideways while the Wizard fumbles in his hat and a baby rattle drops out. You build on every wall of the dome so the friends have footing, and Sif tosses the rattle up to Huffle, who hushes and sniffles. | Give everyone footing in the dome | survive | base: pull_push_field + gravity | Star Dome, night | Wizard, Sif, Huffle, Boulder | plain |
+| celestial_09 | Rising Cloud | Huffle's blanket rises over the causeway like milk, soft and fast, with Lana's yarn trailing. You build steps ahead of the rising cloud to carry everyone up, and Boulder braces the last step so every friend makes it. | Climb above the rising cloud | survive | module: foothold_climb (recall) + cloud flood | Cloud Steps, dusk | Lana, Boulder, all allies | guest: Boulder braces the last step |
+| celestial_10 | Lift Huffle Up | Huffle's huge sulking face fills the sky, Keystone ten glowing in her blanket and twelve in her fist. You build a gust wall against her huffs, shields against her shard toys, then a tall cradle lookout above her blanket so she sees the whole sky at last, and she stops crying and hands over Keystone ten. | Lift Huffle above her blanket | build | base: hold_the_wall + raise_lookout | Spire Top, night | Huffle, Wizard, all heroes, all allies | story: she keeps twelve and wants a party |
+| celestial_bonus | Chase the Hat | A gust snatches the Wizard's hat and it tumbles across the starfield with everyone's eyes on it. You build glass ramps to steer the hat back, and under the brim is a folded faded ribbon. | Steer the Wizard's hat home | race | base: outrun_hazard + gust | Star Slide, night | Wizard, Glim, Sif | reveal: a faded ribbon under the brim |
+| celestial_h1 | Hiccup Rescue | Huffle hiccups and the star where four friends stand wobbles with each hic. You build steps ahead of the wobble to bring them down one by one. | Bring the stranded friends down | rescue | module: foothold_climb (recall) + hiccup | Star Dock, night | Huffle, Biscuit, Crumb, Finn, Nutmeg | plain |
+| celestial_h2 | Wish Night | Huffle sends wishes spinning upward and the stars wobble. You steady the lookout against each wish, and the last wish writes itself across the sky: COME TO MY FAIR. | Steady the lookout for the wishes | balance | base: tilt + wish spin | Spire Top, dawn | Huffle, Sif | secret: the wish says "come to my fair" |
+| celestial_h3 | Sparks Everywhere | Huffle shuffles the star picture for fun and every spark swaps place. You refill the picture faster than she can shuffle it. | Refill the star picture | build | base: fill_the_shape + shuffle | Cloud Steps, dawn | Huffle, Glim | plain |
+
+**Scene notes, chapter 10**
+
+| ID | opening_event | footprint | terrain | set_piece | set_piece_action | cast_pose | hud_meter |
+|---|---|---|---|---|---|---|---|
+| celestial_01 | beam_sets_down_hatless_wizard | star_five | floating_island | star_dock | firework_pop | Wizard:hide, Ada:cheer | Dock Steadiness |
+| celestial_02 | star_map_missing_star | diamond | hex_deck | constellation_stone | lantern_sway | Glim:point, Sif:build | Stars Placed |
+| celestial_03 | friends_appear_far_side | ladder_stair | glass_causeway | star_causeway | wind_gust | Biscuit:cheer, Lana:haul | Stair Height |
+| celestial_04 | shards_bounce_across_causeway | ribbon | glass_causeway | star_causeway | meteor_fall | Ada:brace, Boulder:brace | Roof Strength |
+| celestial_05 | shadow_above_blanket | pyramid_steps | summit_ledge | peek_tower | meteor_fall | Ada:point, Wizard:hide | Tower Height |
+| celestial_06 | dome_half_picture | ring | hex_deck | star_dome | bell_ring | Glim:build, Wizard:point | Sparks Lit |
+| celestial_07 | quilted_blanket_drifts_dark | crescent | cloud_deck | peek_tower | wind_gust | Wizard:brace, Lana:point | Lookout Lean |
+| celestial_08 | gravity_tilts_rattle_drops | pinwheel | cloud_deck | star_dome | rock_throw | Sif:haul, Boulder:brace | Gravity Tilt |
+| celestial_09 | blanket_rises_like_milk | spiral_terraces | plank_bridge | cloud_steps | tide_surge | Lana:haul, Boulder:brace | Cloud Level |
+| celestial_10 | huffle_face_fills_sky | cloud_blob | summit_ledge | spire_top | tide_surge | Huffle:hide, Ada:build, Wizard:build | Huffle's Sulk |
+| celestial_bonus | gust_snatches_hat | S_curve | dock_pier | star_slide | lantern_sway | Wizard:point, Glim:haul | Hat Distance |
+| celestial_h1 | star_wobbles_with_each_hic | island_chain | dock_pier | star_dock | bell_ring | Huffle:cheer, Biscuit:react | Hiccup Gap |
+| celestial_h2 | wishes_spin_upward | boomerang | plank_bridge | spire_top | firework_pop | Sif:point, Huffle:cheer | Wish Spin |
+| celestial_h3 | huffle_shuffles_stars | clover | floating_island | cloud_steps | rock_throw | Glim:haul, Huffle:hide | Sparks Lit |
+
+## Chapter 11: The Tallest Nest (Pirate)
+
+**Caption:** Captain Bea wants the tallest crow's nest. So does the Wizard.
+**Where we are and what is wrong.** Cutlass Cove, a rowdy harbour of docks, beach and a sea-stack fort, far out at sea. Keystone eleven flew farthest and landed on Captain Barnacle Bea's mast, where she uses it as the tallest,
+shiniest lantern in the sky. Her crew, the Sloppy Gulls, bicker with everyone, and the whole sky wobbles each time her cannon fires.
+**Villain / boss: Captain Barnacle Bea.** A ginger-braided captain in a blue coat and tricorn, big laugh, brass cannon "Brenda". She mirrors the old vain Wizard. Three phases, beaten by building: broadsides (shields); the raft tilts
+(balance); a crow's nest taller than hers, with room for the whole crew. Resolution: the two nests tie in height, so Bea merges them into one and hangs the Keystone on top as her island's light (twist). Boss triple: arena a mast
+crown; 3 phases; action = out-building and making room (terrain is the mast crown, not a ship deck).
+**Ally met:** Tuppence, a ship's parrot who has had enough of the shouting. Pirates are unnamed crew, not recurring cast. Every ally pitches in: Lana patches the sail, Boulder is the ballast, Glim charts the shoals, Hugo hauls from below.
+**Emotional beat:** swagger and joy, a loud lift before the finale. The Wizard, now humbled, laughs at the tie and gives his frying pan away; Ada captains the cannon crew and loves the noise; Sif stages a heist.
+**Hat Dip:** a frying pan (pirate_05). **Debut (module):** knockdown_tower (pirate_09). **Hook into next:** Bea's farewell salute fires a rain of fireworks toward a bunting-lit island, where Huffle waves in her paper party hat, Keystone twelve glowing in her hand.
+
+| ID | Beat | What happens | Objective | Verb | Minigame | Place | Who | Ending |
+|---|---|---|---|---|---|---|---|---|
+| pirate_01 | Map from the Sky | A parrot drops a rolled map on Ada's helmet, squawks twice and flaps away over a swaying dock as the tide starts to rise. You race a gangplank across the dock's gaps ahead of the tide so the party can follow her aboard. | Race the gangplank ahead of the tide | race | module: gap_runner (recall) + tide | Dock and Gangplank, day | Tuppence, Ada, Sif | plain |
+| pirate_02 | Gull Gauntlet | A thousand gulls dive-bomb the boardwalk, dropping clam shells all along the party's path. You build covered walkway sections to dash between volleys, one cover at a time. | Dash the boardwalk between volleys | survive | base: outrun_hazard + wind | Cannon Beach, day | Sloppy Gulls (crew), Bram | plain |
+| pirate_03 | Wobbly Raft | The only way to Bea's fort is a raft that tips like a seesaw while Boulder sits down on one end as ballast. You load barrels evenly so it stays flat across the waves, and the Wizard sneezes (really, this time) and nearly sinks it. | Cross to the fort on the raft | balance | module: wobble_plate (recall) + tide | Buoy Raft, dusk | Wizard, Ada, Sif, Boulder | plain |
+| pirate_04 | Barrel Bandits | The Sloppy Gulls roll barrels downhill at the dock, cackling and missing. You build a barricade so barrels bounce like skittles, and Bea herself strolls in to see why the barrels stopped. | Stop the barrel raid | defend | base: hold_the_wall + barrel roll | Dockside Slope, golden | Sloppy Gulls (crew), Bea, Bram | guest: Bea strolls in to watch |
+| pirate_05 | Lookout Rivals | Bea and the Wizard each declare their lookout the tallest and the Wizard fishes in his hat for a boast and pulls out a frying pan. You raise yours against Bea's, and the Wizard stops boasting, hands the pan to Tuppence, and tips his hat to Bea. | Out-build Bea's lookout | race | base: race_rival + height | Crow's Nest Mast, dusk | Bea, Wizard, Ada, Tuppence | plain |
+| pirate_06 | Sail Patch | A stray cannonball tears Bea's mainsail and the wind whips the crew's flag off the mast. You build a frame to hold the patch while Lana knits it, and the patch spells a skull-and-star badge: the crew's new flag. | Hold the patch frame in the wind | build | base: fill_the_shape + wind | Flagship Deck, night | Bea, Sloppy Gulls (crew), Lana | story: the patch becomes the crew's new flag |
+| pirate_07 | Lockpick Chase | Tuppence snatches Sif's lockpick and flits through the rigging, giggling like a kettle, while Glim holds up a chart. You raise rope-ladder runs so Sif catches up, and the parrot only wanted to lead her to Keystone eleven's hiding spot. | Catch the thieving parrot | race | module: sneak_route (recall) + chase | Rigging, golden | Sif, Tuppence, Glim | reveal: Tuppence leads Sif to the Keystone |
+| pirate_08 | Cannon Crew | Ada takes the captain's wheel with the crew and a rival ship drifts into range with its cannons run out. You build rows that load Ada's cannons and fire at the rival's masts until its sails drop, and Hugo's claw hauls the wreck off the rocks. | Fire the broadside at the rival | destroy | module: catapult_keep (recall) + cannon | Cannon Crew Deck, dusk | Ada, Bram, Bea, Hugo | plain |
+| pirate_09 | Stack Topple | Two crews fire at a tall sea stack of coloured blocks, each trying to knock the other's colour off. You build a bulwark behind your colour so only the rivals' blocks fall, and the stack's top block turns out to be Bea's own lost hat. | Knock the rival blocks off the stack | destroy | module: knockdown_tower (debut) + cannon | Sea Stack Fort, golden | Bea, Ada, Sloppy Gulls (crew) | twist: the prize on top is Bea's lost hat |
+| pirate_10 | Bea's Big Mast | Bea laughs from her tallest mast, Keystone eleven glowing as a lantern, firing broadsides across the harbour. You build shields against the broadsides, balance the raft, then raise a crow's nest taller than hers with room for the whole crew, and the two nests tie, so Bea merges them and hangs the Keystone on top. | Out-build Bea and make room | build | module: knockdown_tower then catapult_keep (recalls) | Crow's Nest Mast, golden | Bea, Wizard, Tuppence, all heroes | twist: the nests tie and merge into one |
+| pirate_bonus | Parrot Derby | Tuppence lines up parrots and gulls for a derby with a ribbon finish. You build perch ramps so every bird finishes, and the finish ribbon unrolls into a map with an X on Huffle's fair. | Build perch ramps for the derby | race | base: race + wind | Captain's Cabin Roof, golden | Tuppence, Sif, crew | secret: the ribbon is a map to the Fair |
+| pirate_h1 | Bea's Rematch | Bea sails back to claim "the tallest nest" for one more round, with the crew hauling a rope behind her. You hold her tower steady as she builds it this time, and Hugo surfaces to wave. | Steady Bea's new tower | balance | base: tilt + gust | Buoy Raft, dawn | Bea, Wizard, Hugo | guest: Hugo surfaces to wave |
+| pirate_h2 | Seagull Siege | A hundred seagulls drop clam shells on the dock as a joke. You roof the dock before the shells pile up. | Roof the dock against shells | defend | base: hold_the_wall + falling shells | Cannon Beach, dusk | Sloppy Gulls (crew), Tuppence | plain |
+| pirate_h3 | Parrot Parade | Tuppence conducts a parade of cheering pirates with a barrel float. You assemble the float fast enough for the parade to keep moving. | Build the parade float | carry | base: cart_convoy + barrels | Captain's Cabin, golden | Tuppence, crew | plain |
+
+**Scene notes, chapter 11**
+
+| ID | opening_event | footprint | terrain | set_piece | set_piece_action | cast_pose | hud_meter |
+|---|---|---|---|---|---|---|---|
+| pirate_01 | parrot_drops_map_tide_rises | ribbon | dock_pier | dock_gangplank | sails_turn | Tuppence:react, Ada:cheer | Tide Gap |
+| pirate_02 | gulls_dive_bomb_boardwalk | bridge_span | plank_bridge | cannon_beach | wind_gust | Bram:brace, Gulls:react | Dash Cover |
+| pirate_03 | raft_tips_boulder_sits | cross | raft | buoy_raft | tide_surge | Boulder:brace, Wizard:hide | Raft Level |
+| pirate_04 | barrels_roll_dock | wedge | dock_pier | dock_gangplank | boulder_roll | Bram:cheer, Bea:point | Barrel Wall |
+| pirate_05 | bea_wizard_declare_tallest_pan | T_shape | summit_ledge | crows_nest_mast | sails_turn | Wizard:build, Bea:build | Nest Height |
+| pirate_06 | cannonball_tears_mainsail | ship_hull | ship_deck | flagship_hull | bell_ring | Lana:build, crew:haul | Patch Frame |
+| pirate_07 | tuppence_snatches_lockpick | snake | ship_deck | flagship_hull | flock_wander | Sif:haul, Tuppence:react | Chase Gap |
+| pirate_08 | ada_takes_wheel_rival_ship | L_shape | fort_wall | sea_stack_fort | wind_gust | Ada:point, Bram:haul | Rival Sails |
+| pirate_09 | crews_fire_at_stack | pyramid_steps | stack_ledge | sea_stack_fort | cannon_volley | Bea:point, Ada:haul | Rival Blocks |
+| pirate_10 | bea_laughs_broadsides | star_five | summit_ledge | crows_nest_mast | cannon_volley | Ada:build, Wizard:build, Bea:cheer | Bea's Pride |
+| pirate_bonus | birds_line_up_for_derby | dumbbell | fort_wall | captain_cabin | flock_wander | Tuppence:react, Sif:cheer | Derby Progress |
+| pirate_h1 | bea_sails_back_rope_hauled | island_chain | raft | buoy_raft | lantern_sway | Bea:build, Hugo:react | Tower Tilt |
+| pirate_h2 | seagulls_drop_shells_joke | comb | plank_bridge | cannon_beach | boulder_roll | Gulls:react, Tuppence:hide | Dock Roof |
+| pirate_h3 | tuppence_conducts_parade | heart | stack_ledge | captain_cabin | tide_surge | Tuppence:cheer, crew:haul | Float Length |
+
+## Chapter 12: Huffle's Birthday Fair (Carnival)
+
+**Caption:** The Fair opens! Every game is one you have won.
+**What the Carnival is.** A victory festival with a final twist. It is Huffle's birthday fair, a bunting-hung fairground island with a half-built Big Wheel, and every game on it is an idea the heroes learned on the way, replayed for
+fun (see `callback_of`). Every ally and every former villain comes as a guest. The twist: the "tallest tower" the Wizard once boasted about was always meant to be this wheel, so that a baby cloud could see over her own blanket. He
+promised it, forgot, got vain, and shooed her away. The Fair is his chance to keep the promise. It is revealed once, in carnival_08.
+**Villain / boss: the Great Heap.** The Wizard, eager to impress, tries a showy trick: he zaps the wheel into existence instead of building it, and the Wrong Sack bursts. The eight wrong objects (spoon, sock, trombone, teapot,
+boot, umbrella, kazoo, alarm clock) stack themselves into a lumbering heap. It is clumsy, not cruel. Three phases, beaten by building: it stomps (walls); it flings spoons and socks (shields); build the wheel's hub and spokes
+around it so the Heap becomes the wheel's cars. Boss triple: arena the Big Wheel base; 3 phases; action = assembling a wheel round the enemy.
+**Ally met:** every ally returns; Huffle is now the host, in a cloud-sized paper party hat.
+**Set pieces:** fair_gate, coconut_booth, mirror_tent, teacup_ring, sail_ring, ticket_booth, bumper_arena, big_wheel.
+**Emotional beat:** triumph and release. Ada's block wobbles and she laughs (carnival_09); Bram builds the cake tier without his hammer (carnival_04); Sif returns every borrowed trinket and is home (carnival_bonus); the Wizard finds the
+right object in his hat at last (carnival_10). **Hat Dip:** a small star-carved block in a faded ribbon. **Hook / end:** the wheel turns, twelve Keystones hum, the Epilogue plays.
+
+| ID | Beat | What happens | Objective | Verb | Minigame | Place | Who | Ending | callback_of |
+|---|---|---|---|---|---|---|---|---|---|
+| carnival_01 | Hoop Toss | Bunting snaps open over the gates as a cloud-sized lilac baby in a paper party hat bobs overhead, giggling, while Lana's bunting flaps. You build the ring-toss stall counter so the first hoops land, and Huffle claps so hard the bunting flies. | Open the ring-toss stall | build | base: build_tower + toss | Fair Gate, golden | Huffle, Wizard, Lana, all heroes | plain | - |
+| carnival_02 | Coconut Shy | Boulder's strongman booth rattles as a coconut rolls off its shelf. You build a keep for your coconut stand and lob coconuts at the rival stack, and Boulder wins a plush hippo. | Win the coconut contest | destroy | module: catapult_keep (recall) + wall | Coconut Booth, day | Boulder, Bram, Huffle | plain | candy_10 |
+| carnival_03 | Twin Tent | A tent of twin mirrors reflects every move a heartbeat late. You build matching sides so both mirrors agree, and halfway Gert and Jester stroll in as guests and add reflections of their own. | Match both sides of the mirror | build | base: mirror twin + path | Mirror Tent, dusk | Ada, Gert, Jester | guest: Gert and Jester join in | cave_06 |
+| carnival_04 | Tilting Cake | A giant cake plate tilts on its pivot and the top tier slides toward the edge while Bram reaches for his hammer, then puts it down. You stack the cake tier steady on the tilting plate without a single hammer swing, and Bram holds the last layer by hand. | Hold the cake tier steady | balance | module: wobble_plate (recall) + tilt | Teacup Ring, golden | Bram, Crumb, Sif | plain | candy_04 |
+| carnival_05 | Windmill Ring | A ring of windmill sails spins above the prize stall, driven by a friendly gust, with Gert's whirl in the middle. You build the sail frame so the ring turns steadily and lifts the prize basket to the roof, and Biscuit barks the beat. | Lift the prize basket by sail | carry | base: cart_convoy + wind | Sail Ring, day | Gert, Biscuit, Sif | plain | meadow_10 |
+| carnival_06 | Prize Shelf | Glim's ticket booth has a jammed drawer and a shelf of blueprints stamped with every ally's mark. You shelve each ally's blueprint in order, and the Wizard's star is on none of them. | Shelve each ally's blueprint | build | base: fill_the_shape + sort | Ticket Booth, golden | Glim, Sif, Wizard | reveal: the Wizard's star is on none | cave_bonus |
+| carnival_07 | Bump Arena | A bumper-car arena fills with Cinderbottom, Sir Shiver and Madame Cuckoo in tiny cars, waving, on an icy floor. You build floe bumpers so the guest cars bump instead of crash, and all three cheer the heroes. | Keep the guest cars on the ice | survive | module: floe_footing (recall) + ice | Bumper Arena, dusk | Cinderbottom, Sir Shiver, Madame Cuckoo, Bram | guest: three old villains drive in | ice_08 |
+| carnival_08 | Wheel Frame | The half-built wheel stands on a cloud with an empty hub the exact size of a Keystone, and the Wizard sees it and goes still. You raise the wheel's spokes ring by ring so it can hold its hub, and a faded ticket stub in his hand shows the promise he made her long ago. | Raise the Big Wheel's spokes | race | module: sky_steps (recall) + spokes | Big Wheel Base, dusk | Wizard, Huffle, Ada | reveal: the wheel is the promised tower | celestial_03 |
+| carnival_09 | Giggle Cannons | Huffle's giggle fit fires confetti cannons in every direction while Ada drills the cannon crew. You shield the stalls with Ada's wall, and her tower wobbles and she laughs out loud, and behind her the Wrong Sack starts to rattle. | Shield the stalls from confetti | defend | base: hold_the_wall + cannon | Fair Gate, night | Ada, Huffle, Wizard, Tuppence | twist: the Wrong Sack starts to rattle | pirate_08 |
+| carnival_10 | The Great Heap | The Wizard waves his wand to zap the wheel into being, and the Wrong Sack bursts: eight wrong things rise into a rattling giant heap. You build walls against its stomps, shields against flying spoons and socks, then the wheel's hub and spokes round it so the Heap turns into the wheel's cars, and the Wizard dips his hat and finds the right gift at last. | Turn the Heap into the wheel | build | module: giant_bonk (recall) + sky_steps (recall) | Big Wheel Base, night | Great Heap, Wizard, Huffle, all heroes, all allies | story: the promised block; Huffle seats Keystone twelve | neon_10, forest_10 |
+| carnival_bonus | Party Table | The whole cast gathers for the birthday feast, with cakes from Crumb, bunting from Lana and a fireworks salute from Bea. You build the long party table so every friend has a seat, and Sif sets out every borrowed trinket she ever kept, one for each friend, and Huffle hands her the first ticket. | Build the long party table | build | base: build_tower + feast | Ticket Booth, night | all heroes, all allies, all former villains | story: Sif is home; the borrowing is over | - |
+| carnival_h1 | Gert's Whirl-a-Round | Gert returns in a ringmaster's bonnet with a spinning ride at double speed, "just one more game". You steady a platform that stays upright through every spin. | Steady the spinning platform | balance | module: wobble_plate (recall) + spin | Teacup Ring, dusk | Gert, Biscuit | plain | meadow_09 |
+| carnival_h2 | Jester's Pie Parlour | Jester sets up a pie-throwing stall and swears this is his best prank yet. You shield the stalls faster than the pies fly, and every pie turns out to be full of confetti. | Shield the stalls from pies | defend | base: hold_the_wall + pie volley | Coconut Booth, night | Jester, Crumb | twist: the pies are full of confetti | candy_h3 |
+| carnival_h3 | Shiver's Ice Rink | Sir Shiver freezes the fairground into a rink for an encore skate. You build rails and stoppers so the skaters stop before the stalls. | Rail the fair's ice rink | defend | base: hold_the_wall + ice slide | Bumper Arena, dawn | Sir Shiver, Lana | plain | ice_04 |
+
+**Scene notes, chapter 12**
+
+| ID | opening_event | footprint | terrain | set_piece | set_piece_action | cast_pose | hud_meter |
+|---|---|---|---|---|---|---|---|
+| carnival_01 | bunting_snaps_huffle_hat | arch | stack_ledge | fair_gate | confetti_burst | Huffle:cheer, Wizard:point | Hoops Landed |
+| carnival_02 | coconut_rolls_booth_rattles | U_bay | conveyor_deck | coconut_booth | catapult_volley | Boulder:brace, Bram:haul | Coconut Stack |
+| carnival_03 | mirrors_lag_reflections | twin_towers | tent_floor | mirror_tent | pendulum_swing | Gert:cheer, Jester:hide | Mirror Match |
+| carnival_04 | cake_plate_tilts_hammer_down | ring | cake_plate | teacup_ring | pendulum_swing | Bram:build, Crumb:react | Cake Steadiness |
+| carnival_05 | windmill_ring_lifts_basket | pinwheel | raft | sail_ring | firework_pop | Gert:cheer, Biscuit:react | Sail Speed |
+| carnival_06 | drawer_jammed_blueprints | keyhole | tent_floor | ticket_booth | bell_ring | Glim:point, Wizard:hide | Blueprints Shelved |
+| carnival_07 | bumper_cars_villains_wave | bullseye | conveyor_deck | bumper_arena | bell_ring | Cinderbottom:cheer, Bram:brace | Bumper Calm |
+| carnival_08 | half_wheel_empty_hub | spiral_terraces | wheel_base | big_wheel | drum_beat | Huffle:hide, Wizard:point | Wheel Height |
+| carnival_09 | giggle_fires_cannons | cross | fort_wall | fair_gate | firework_pop | Ada:brace, Tuppence:react | Confetti Shield |
+| carnival_10 | wizard_zaps_sack_bursts | moat_island | wheel_base | big_wheel | heap_stomp | Ada:build, Bram:build, Sif:build, Wizard:build | Heap Wobble |
+| carnival_bonus | feast_laid_cast_gathers | star_five | stack_ledge | ticket_booth | catapult_volley | Sif:cheer, Huffle:cheer | Table Length |
+| carnival_h1 | gert_rides_back_double_speed | crescent | cake_plate | teacup_ring | confetti_burst | Gert:point, Biscuit:react | Ride Balance |
+| carnival_h2 | jester_pie_stall | zigzag | raft | coconut_booth | drum_beat | Jester:cheer, Crumb:hide | Pie Shield |
+| carnival_h3 | shiver_freezes_fair | figure_eight | fort_wall | bumper_arena | heap_stomp | Sir Shiver:brace, Lana:haul | Rink Rails |
+
+## 5. Decisions and conflicts resolved
+
+- **`tumble-fair.md` versus the 14-level Carnival biome (ruling).** The Carnival is the 12th biome with 14 levels and a hard track, a victory festival after Pirate Cove. The 5-level side island in `tumble-fair.md` is retired as a story
+  source. Its ride ideas survive only as renamed set pieces. Its cast (Bounce, Baron Balloon, the violet-cuff Mizzle wink) is not part of the fresh story. "Tumble Fair" is a reference-board title and is not used; the tournament lobby
+  naming is a separate decision. `carnival.md` plan rows are superseded by this chapter in phase 4.
+- **Pirate Cove is the 11th chapter (user decision).** Its Keystone flew farthest; Celestial's meeting with Huffle shows where it is; Pirate is a loud ensemble lift before the finale. Bea is the Wizard's vain twin, now met by a humbled Wizard.
+  Pirate no longer reprises Underwater: the hull-leak and listing-deck beats were replaced by a sail patch and a cannon duel.
+- **Boss resolutions differ** (r1 fix): story (Gert, Cinderbottom, Knotty, Huffle, Heap), twist (Jester, Cuckoo, Bea), reveal (Sir Shiver, Gus), guest (Hugo, Mae). The villain's secret is revealed at tier 10, not in beat 09.
+- **Friendly-surprise cap** (r1 fix): at most two (candy_03 turtles, celestial_05 the baby). All other surprises are twists, reveals, guests, secrets or stories.
+- **Names.** Chapter villains and allies are one-offs. Recurring named cast is only the Wizard, Ada, Bram, Sif, Lana, Boulder and Glim; Huffle is the story's single named force.
+
+## 5b. Scene vocabulary (global lists, proposals for the technical artist)
+
+`scene-vocabulary.md` is read and obeyed. Its rules: ids are global, each list grows to 20-30 ids, every biome uses 7 or 8 distinct ids of each (none more than twice), and every `(terrain, action)` pair is unique across the campaign.
+The seeds (14 terrains, 10 actions) are used as they stand; the rest are **change requests** (marked NEW) for the artist to approve. Calibration ids (`meadow_01`, `forest_05`, `forest_h1`, `pirate_10`) avoid the exemplars' set pieces,
+terrain, masks and endings (meadow_01 is on `floating_island`, not `hilltop_ledge`; pirate_10 is on `summit_ledge`, not `ship_deck`).
+
+**Terrains (30).** Seeds: ravine_ledges, stepped_ravine, ship_deck, hilltop_ledge, treetop_platform, dock_pier, reef_wall, plank_bridge, fort_wall, raft, mine_shaft, conveyor_deck, summit_ledge, floating_island.
+NEW (16): cake_plate (a cake plate), clock_face (a clock dial), rim_ledge (a crater rim), tram_track, rail_chasm (rails over a gap), stack_ledge (a coral, sea or block stack), tent_floor, wheel_base, seabed_sand, lagoon_floor,
+ice_floe, snow_slope, cloud_deck, glass_causeway, hex_deck, crust_road.
+
+**Actions (30), kind.** Seeds: root_whip (cos), cannon_volley (rule), tentacle_grab (rule), rock_throw (rule), catapult_volley (rule), sails_turn (cos), bell_ring (cos), lantern_sway (cos), smoke_puff (cos), waterfall_pour (cos).
+NEW: lava_rise (rule), spotlight_sweep (rule), heap_stomp (rule), snore_gust (rule), wind_gust (rule), ice_crack (rule), tide_surge (rule), boulder_roll (rule), steam_vent (rule), vine_creep (rule), meteor_fall (rule), pendulum_swing (rule),
+flock_wander (rule), jelly_wobble (rule), gear_grind (cos), geyser_spout (cos), firework_pop (cos), confetti_burst (cos), lamp_flicker (cos), drum_beat (cos). Phase 3 decides which rule actions are actually rules; any that does not
+move or remove blocks may be downgraded to cosmetic, which also eases the U10 budget.
+
+**Per-biome use** (7 or 8 distinct terrains, set pieces and actions, each used at most twice; the scene tables show it):
+Meadow floating_island, hilltop_ledge, plank_bridge, fort_wall, stepped_ravine, raft, ravine_ledges. Candy raft, fort_wall, plank_bridge, cake_plate, summit_ledge, conveyor_deck, floating_island. Ice ice_floe, dock_pier, snow_slope,
+stepped_ravine, floating_island, summit_ledge, fort_wall. Underwater seabed_sand, stack_ledge, reef_wall, lagoon_floor, glass_causeway, ship_deck, dock_pier. Lava rim_ledge, fort_wall, crust_road, stepped_ravine, mine_shaft, raft, summit_ledge.
+Forest treetop_platform, plank_bridge, ravine_ledges, hilltop_ledge, stepped_ravine, raft, fort_wall. Cave mine_shaft, rail_chasm, stack_ledge, ravine_ledges, fort_wall, plank_bridge, lagoon_floor. Clockwork clock_face, conveyor_deck,
+tram_track, stack_ledge, summit_ledge, fort_wall, plank_bridge. Neon tram_track, stack_ledge, conveyor_deck, glass_causeway, summit_ledge, hex_deck, fort_wall. Celestial floating_island, hex_deck, glass_causeway, summit_ledge, cloud_deck,
+plank_bridge, dock_pier. Pirate dock_pier, plank_bridge, raft, summit_ledge, ship_deck, fort_wall, stack_ledge. Carnival stack_ledge, conveyor_deck, tent_floor, cake_plate, raft, wheel_base, fort_wall.
+
+## 6. Hand-off notes
+
+- **Minigame debuts (at most 2 per biome).** Meadow gap_runner, sneak_route. Candy wobble_plate, catapult_keep. Ice floe_footing, foothold_climb. Underwater giant_bonk, gate_squeeze. Lava paver_rally. Forest splat_claim. Cave deep_dig.
+  Clockwork sorting_belt, domino_run. Neon fuse_rings (taught in neon_06, used again in neon_10). Celestial sky_steps. Pirate knockdown_tower. Carnival: none, only recalls. Every module has at least one recall (gap_runner: candy, forest, cave,
+  clockwork, neon, pirate; wobble_plate: forest, neon, celestial, pirate, carnival; catapult_keep: clockwork, pirate, carnival; floe_footing: lava, carnival; foothold_climb: lava, cave, clockwork, celestial; deep_dig: cave;
+  sorting_belt: clockwork boss; domino_run: only clockwork_bonus, so it needs a recall in phase 3, proposed in a Carnival bonus; fuse_rings: neon_10; sky_steps: carnival; knockdown_tower: pirate_10; giant_bonk: carnival, plus the
+  Celestial boss; sneak_route: candy, cave, pirate; splat_claim: neon; paver_rally: lava, neon; gate_squeeze: clockwork).
+- **Base patterns** (not modules): build_tower, hold_the_wall (D1), plug_breach (D2: meadow_05, underwater_08, forest_08, clockwork_09), shelter_guest (D4: meadow_08, underwater_h3, lava_02, forest_04, cave_04, ...), shield_and_strike (D3), cart_convoy,
+  outrun_hazard, raise_lookout, fill_the_shape, pull_push_field, collect_run. At most 2 defence levels per biome in Meadow, Forest, Lava, Cave and Clockwork (the hard track adds a few more by design).
+- **Art-director (input, not decisions).** New silhouette rows are needed for Lana, Boulder, Glim, Huffle and the villains. The art-bible boss table describes the old story and needs a refresh. Cinderbottom, Huffle and Gneiss Gus can reuse
+  the old golem, wind-cloud and stone-guardian silhouettes. Footprints are named silhouettes only; phase 4 draws the masks.
+- **Audio-director.** The Sky Lullaby: each recovered Keystone adds one note. Neon drops the lullaby out; Celestial brings it back as a rattle and a hum; clockwork_bonus plays the melody; cave_10 hums its missing note.
+- **Per-beat YAML** (`design/narrative/beats/<biome>.md`) is written next from these tables (opening event = `opening_event`, objective = `headline_objective`).
+
+## 7. Coverage checks (self-audit against review r1)
+
+- 12 chapters, 14 beats each, 168 beat rows and 168 scene rows. Every beat has a verb and a minigame hook; every beat row is two sentences; every objective is 8 words or fewer with no numeral.
+- Hat Dip: each wrong object is shown in an opening event (section 2.1); the Heap is the eight wrong objects; no contradictions with the rattle or the pan.
+- Wheel promise revealed once (carnival_08); earlier hints are unexplained props (cave_bonus, celestial_06, pirate_bonus).
+- Endings: at least 4 non-plain per chapter, no pattern more than twice per chapter, boss endings vary, bonuses vary, every chapter has a non-plain hard level, friendly surprises capped at two.
+- Defence studies: D2 in Meadow, Underwater, Forest, Clockwork; D4 in Meadow, Lava, Forest, Cave, Underwater; endings drawn from the studies where they are not "friendly".
+- Carnival: 9 `callback_of` ids; Ada's laugh (carnival_09) and Bram's cake tier (carnival_04) are shown.
+- Scenes: footprints distinct inside every biome; pairs recorded to be unique across the campaign; `react` only for animals and props; a `hud_meter` on every row.
+- Names: "Star Scramble" and "Balloon Lift" are gone; "Fizzy Dash" is gone; "Broadside Bash" is gone.
+
+## 8. Choices made without asking (the user may override)
+
+1. Premise: concept A refined ("The Twelve Keystones"; Huffle; the Wizard's lie "a sneeze"). 2. Glim is a mole. 3. The Carnival is a victory festival and birthday fair with the Great Heap boss. 4. The Wizard leaves in Clockwork and returns in Celestial.
+5. Every level is a minigame; the story names the verb and the idea, phase 3 maps rules. 6. Footprint names are placeholders for phase 4's masks.

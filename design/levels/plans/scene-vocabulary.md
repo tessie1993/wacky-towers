@@ -61,6 +61,11 @@ and at least 3 wide elsewhere). The script verifies each declared shape name aga
 recognisers below ("floor" = `#` cells; "component" = a 4-connected floor region; widths are measured across
 the thinnest cross-section).
 
+A mask must match **exactly one** recogniser. When two match, the earlier row in this priority order names it:
+plain square, ring, moat with centre island, cross, L, stair, bridge span, twin towers, crescent, island chain,
+funnel, ship hull. The script rejects a declared name that is not the first match, so one mask never counts as
+two shape names toward the U18 quota.
+
 | Shape | Recogniser (all clauses must hold) |
 |---|---|
 | `plain square` | the mask is a full rectangle: no void cell at all (once per biome) |
@@ -70,10 +75,10 @@ the thinnest cross-section).
 | `twin towers` | one floor component: a base 3+ deep spanning the full width, plus exactly two towers, each 4+ wide and 4+ rows tall above the base, separated by a void gap 3-4 wide |
 | `stair` | the column heights are monotone (all non-decreasing or all non-increasing) across 3+ distinct heights, and each tread (a run of equal height) is 4+ wide |
 | `island chain` | 3+ floor components, each at least 4x4, joined in a path by links 3+ wide and 1+ cells long; the links are the only connections |
-| `ship hull` | one component, symmetric about its long axis, with the width non-increasing toward one end by at least 4 cells in total, and a floor run 4+ wide at the narrow end |
+| `ship hull` | one component, symmetric about its long axis, with a flat stern (the full-width end row) and a **pointed bow**: the rows at the other end narrow to 2 cells or fewer over at least 3 rows; the widest part is 6+ wide. (A funnel's narrow end is 4+ wide, so the two cannot both match.) |
 | `L` | the floor equals the bounding rectangle minus one corner rectangle of at least 4x4; both legs are 4+ wide |
 | `cross` | the floor equals the bounding rectangle minus four equal corner rectangles of at least 3x3; all four arms are 4+ wide |
-| `crescent` | one component forming a C: exactly one enclosed bay, open on one side by 3+ cells, whose width changes by at least 2 across its depth (curved, not rectangular); band 4+ wide |
+| `crescent` | one component forming a C: exactly one bay, bounded by floor on three sides and open on the fourth by 3+ cells, whose width changes by at least 2 across its depth (curved, not rectangular); band 4+ wide |
 | `funnel` | one component, symmetric about the vertical axis, row widths non-increasing from top to bottom, narrowing by at least 4 cells in total, top row 8+ wide and bottom row 4+ wide |
 
 More shapes (terraces, diamond, U-bay, stepping stones from the identity spec) are added by change request, each

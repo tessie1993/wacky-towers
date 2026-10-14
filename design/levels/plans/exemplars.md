@@ -1,4 +1,4 @@
-# Calibration exemplars (game director, 2026-10-14, revision 6)
+# Calibration exemplars (game director, 2026-10-14, revision 7)
 
 Anchors for the panel (`campaign-vision.md` section 9). Written by the game director, not the makers.
 
@@ -120,6 +120,37 @@ neighbour's) and rewrite the signature as an event. Its ids are on the list but 
 `lantern_sway` do not belong to a forest gully, the pose set repeats the neighbour's, and the look fingerprint is
 close to `ex_forest_05`. The defect is "generic", not "unlisted".
 
+## 3b. Near-miss with a mislabelled footprint (about 8.5, script failure)
+
+**Abridged for display; assume every other required field is present and valid.**
+
+```yaml
+mechanic: [wobble_plate]
+verb: balance
+extra_control: none
+id: ex_near_candy_05
+name: Sugar Ring
+headline_objective: Keep the cake tower on its stand
+footprint: ring 10x10            # DECLARED ring
+mask: |
+  ##########
+  ##########
+  ###....###
+  ###....###
+  ###....###
+  ###....###
+  ##########
+  ##########
+  ##########
+  #####.####
+```
+
+The mask has a hole, but the outer boundary has a notch (the bottom row), so the `ring` recogniser (a full
+rectangular outer boundary, one hole, band 3+) fails: the script reports "declared ring, matches no ring". By
+the priority order it matches nothing else, so it needs a footprint of its own name or a repaired mask. The
+rest of the spec is good, so the panel score is about 8.5, with L6 capped at 8.0 by the script failure (the
+Preconditions rule). It teaches the G2-type defect: a footprint name that does not match its mask.
+
 ## 4. Weak samples (8.0 or below)
 
 **Weak spec**
@@ -225,7 +256,7 @@ flavour: D4                      # shelter the guest: the kid goat is the guest,
 headline_objective: Help Nanny Tuft cross before the gale
 ending_pattern: reveal           # hidden: a kid goat is under the bridge. Telegraph: a bleat and a tail poking out of the left pillar in the first 10 seconds
 goal_type: [survive, span, rescue_all]   # differs from ex_forest_05's list (U3); rescue_all inside a goal sequence
-footprint: stair 12x8            # differs from the source's bridge span 14x8 (U18)
+footprint: stair 12x8            # differs from the source's bridge span 12x8 (U18)
 mask: |
   ........####
   ........####
@@ -327,7 +358,7 @@ id: ex_candy_03
 tutorial_line: Stack the cake evenly so the plate stays level.     # 9 words
 name: Tipsy Cake Stand
 role: teach
-headline_objective: Keep the cake tower on its stand      # 8 words
+headline_objective: Keep the cake tower on its stand      # 7 words
 ending_pattern: plain
 goal_type: [height]              # the plate tilts toward the stack's centre of mass; hold it level while the tower grows
 footprint: cross 10x10           # arms 4 wide, corners 3x3 void; the plate sits under the whole cross
@@ -343,7 +374,8 @@ mask: |
   ...####...
   ...####...
 canonical_mask: "10x10:...####.../...####.../...####.../##########/##########/##########/##########/...####.../...####.../...####..."
-corridor_check: min_spawn_width 4 (the centre 4 columns, 3-6, are floor in the top rows); arms 4 wide
+corridor_check: min_spawn_width 4 (the centre 4 columns, 3-6, are floor in the top rows); min_dead_end_width 4 (each arm, bounded by void on both sides and open at one end, is 4 wide)
+p2b_note: a `height` level at position 03, so P2b applies; the plate tilts toward the stack's centre of mass, so the stack must be dropped evenly (that is the drop change)
 scene: { terrain: bakery_counter, set_piece_action: icing_drip, cast_on_stage: Lana nibbles a cake and watches (react); Bram cheers (cheer), hud_meter: Balance gauge, themed purple wood }
 world_change: the cake tower stands level and Lana claps; the counter's bell rings
 ```
@@ -383,7 +415,7 @@ ex_pirate_03 | strike | defend | none | survive | plain square 9x9 | 9x9:#######
 ex_pirate_10 | strike,row_cannon | destroy | fire | bonk_boss | L 8x8 | 8x8:########/########/########/########/####..../####..../####..../####.... | ship_deck | pirate_galleon | cannon_volley | brace,haul | dusk | clear | low | crumpet_laughs | guest | Win back the last key from Captain Crumpet | boss | none | D3 | 3 | 8 | 4
 ex_meadow_01 | lookout | build | none | height | plain square 8x8 | 8x8:########/########/########/########/########/########/########/######## | hilltop_ledge | windmill | sails_turn | point,cheer | dawn | clear | default | sheep_bleat | plain | Raise the lookout so Ada spots sheep | teach | none | none | n/a | 8 | n/a
 ex_underwater_09 | strike,row_cannon | defend | fire | bonk_boss | funnel 10x8 | 8x10:######../#######./########/########/########/########/########/########/#######./######.. | reef_wall | coral_towers | tentacle_grab | haul,point,react | golden | bubbles | default | baby_eye_blinks | reveal | Hold the reef wall against Squidge | combine | none | D3 | 3 | 10 | n/a
-ex_candy_03 | wobble_plate | balance | none | height | cross 10x10 | 10x10:...####.../...####.../...####.../##########/##########/##########/##########/...####.../...####.../...####... | bakery_counter | giant_cake_stand | icing_drip | react,cheer | golden | confetti | high | cake_bell_dings | plain | Keep the cake tower on its stand | teach | none | none | n/a | 4 | n/a
+ex_candy_03 | wobble_plate | balance | none | height | cross 10x10 | 10x10:...####.../...####.../...####.../##########/##########/##########/##########/...####.../...####.../...####... | bakery_counter | giant_cake_stand | icing_drip | react,cheer | golden | confetti | high | cake_bell_dings | plain | Keep the cake tower on its stand | teach | none | none | n/a | 4 | 4
 ```
 
 Notes for the script: `ex_forest_02` (plain 10x8, Forest's one plain square), `ex_pirate_03` (plain 9x9, Pirate's

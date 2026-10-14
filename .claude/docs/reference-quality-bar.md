@@ -75,6 +75,41 @@ These rules apply to every reviewer and every area: art, UI, levels, mechanics, 
 8. **Pass means 9.7 on every item, with no exceptions.** A 9.6 is a fail.
    - A review whose average passes but has any item below the bar is a FAIL.
 
+## Three blind experts per review (user, 2026-10-14)
+
+The user said: "Change the way you mark. Mark each thing for what it is. Mark it by 3 experts in that field. Each time
+each agent that don't know each other's opinion."
+
+1. **Mark each thing for what it is.**
+   - A plan or spec is marked as a plan: is it clear, complete, testable and consistent, and could a maker build from it?
+   - A build is marked as a build, from retained captures, against the reference boards.
+   - Caps that belong to one kind do not apply to the other. The "paper-only ≤ 7" cap and screenshot ceilings apply only
+     when a build is reviewed, never at a plan gate. A plan also cannot claim credit for qualities the game does not
+     show yet.
+2. **Three experts in that field.** Each review is done by 3 reviewer agents whose speciality matches the thing being
+   reviewed:
+
+   | What is reviewed | The three experts |
+   |---|---|
+   | Level and campaign plans | level designer, game designer, systems designer |
+   | Art and screens | art director, technical artist, UI/UX designer (UI) or world builder (levels) |
+   | Story | narrative director, writer, world builder |
+   | Mechanics feel | game designer, systems designer, gameplay programmer |
+   | Sound | audio director, sound designer, game designer |
+   | Code | lead programmer, Godot specialist, the matching language specialist |
+
+3. **Blind and fresh.**
+   - The three experts are new agents each round. They are started in parallel, and none sees another's score or notes.
+   - None sees an earlier round's scores. They get the thing itself, its brief, the references and these rules. They
+     never get a previous review file.
+   - The orchestrator only collects the three reports. It never edits or averages a score.
+4. **Result.**
+   - The review file lists all three experts' scores per item side by side, with the lowest shown.
+   - An item passes only when **all three** score it at least 9.7.
+   - Fixes from all three are merged and deduplicated, and each fix is tagged with its owner.
+5. The strict marking rules above still apply inside each expert's review. Rule 5 (a second reviewer spot-checks big
+   rises) is covered by the blind panel.
+
 ## How work is judged: reviewers instruct, makers fix
 
 1. Makers (UI, world, blocks, characters, levels, audio agents) change things and capture

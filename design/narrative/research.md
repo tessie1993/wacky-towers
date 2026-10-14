@@ -74,6 +74,14 @@ frameable. (Captain Toad, Monument Valley, art-bible pillar 3.)
 **R12. Reuse is a payoff.** A late, last-chapter return of earlier ideas (Katamari sequel's callbacks) turns
 learning into triumph. Our Carnival re-plays every biome idea as a fair game.
 
+**R13. Every level is a minigame with a verb.** From the reference studies (`reference-study-defence.md`, `reference-study-mockups.md`) and the party rules: each level
+is one scenario pattern (build a span, race a rising hazard, hold the wall, plug the breach, shelter a guest, carry cargo, outrun a rolling hazard) on 1 or 2 mechanics, with a
+themed meter and a visible actor. We tag every beat with one of eight verbs (race, defend, build, destroy, survive, rescue, balance, carry).
+
+**R14. The board is a place with its own silhouette.** The boards are never a floating grid: deck, ledge, ring, bridge span, stair, island chain, hull, crescent. Each level
+names its footprint and no two share one inside a biome. Surprise endings come from the studies' non-obvious twists (an empty nest, a door in the rubble, a thirteenth slot
+that is a nest box), with at most two "the scary thing was friendly" endings in the whole campaign.
+
 ## 4. What we reject
 
 - A dialogue-heavy cutscene layer, a voiced narrator, or any caption over the board.
@@ -93,5 +101,7 @@ learning into triumph. Our Carnival re-plays every biome idea as a fair game.
 | R5, R6 | Text rules, 12 captions, wordless beats |
 | R7 | Keystone lullaby, time of day in each place cell |
 | R9, R10 | Villain cards with three phases, beaten by building |
-| R11 | 3 to 5 set pieces per chapter, one place per level |
-| R12 | Chapter 12, Carnival |
+| R11 | one set piece and place per level (7 or 8 set pieces per chapter) |
+| R12 | Chapter 12, Carnival (nine `callback_of` ids) |
+| R13 | `Verb` and `Minigame` columns on every beat row |
+| R14 | `footprint`, `terrain`, `hud_meter` columns in the scene tables |

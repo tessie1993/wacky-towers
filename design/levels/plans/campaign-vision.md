@@ -1,6 +1,16 @@
-# Campaign vision: Wacky Towers (phase 1 brief, revision 6)
+# Campaign vision: Wacky Towers (phase 1 brief, revision 7)
 
-Author: studio game director. 2026-10-14. Revised after the r1-r7 plan-vision reviews in
+**Contents.** 1 Campaign fantasy; 2 Three pillars and their tests (P1a-P3e); 3 Emotional arc, stakes and ending;
+4 Tone rules; 5 "Every level unique" (glossary, `level_table`, rules U1-U19); 6 Narrative brief (phase 2);
+7 Systems brief (phase 3, engine gaps); 8 Level brief (phase 4); 9 Review rubrics (N, M, L, A, B, C, S, V).
+
+**Changelog.** r1: U9/U12 settled. r2: counter goals, surprise quota. r3: scene rule, U17. r4: `scene-vocabulary.md`.
+r5: global ids, corridor rule. r6: defence flavour. r7 (rulings A and B): mechanic and verb first, footprints,
+U18, U19. r8: glossary, `extra_control`, recognisers, engine gaps, build ceiling. r9 (this revision): recogniser
+priority, sized gap tail, 25 rules, exemplar fixes, contents and changelog, rules in numeric order. The
+build-ceiling wording is held for the user's ruling on how plan gates are scored.
+
+Author: studio game director. 2026-10-14. Revised after the r1-r9 plan-vision reviews in
 `production/qa/quality-review/`. Inputs: the redo plan, quality bar, art bible, reference boards, `catalog.json`,
 `progression.md`, `minigames.md`, `minigame-party-rules.md` (user decision), `level-identity-spec.md` (with its
 later user rules), `exemplars.md`, `scene-vocabulary.md`, the 4.8/10 level review
@@ -40,7 +50,9 @@ layer pays out something in the story: it charges a beacon, mends a floor or dra
 Dame Ada, Bram and Sif are your party. Their perks (Stitch, Smash and Redraw, kept from the old design) are
 proposed as tools you choose before a level, and they stand on stage reacting to what you build. **Every level
 is a minigame** (ruling A): one clear goal in one verb, built on one or two mechanics, short and intense, in a
-small diorama (a gully, a fort wall, a raft) with a landmark that acts and a cast that cheers. Minigame
+small diorama (a gully, a fort wall, a raft) with a landmark that acts and a cast that cheers. **No two levels
+in an island share a footprint** (ruling B): you build on bridges, rings, stairs, ship decks and island chains,
+not on one square. Minigame
 modules are the island's own games, h1-h3 are the mastery epilogue, and stars are the Wizard's thanks. The
 player feels clever, a bit mischievous, and rooted for: someone always cheers when a piece lands well.
 
@@ -48,7 +60,7 @@ player feels clever, a bit mischievous, and rooted for: someone always cheers wh
 
 **Level principle (ruling A): a level is a minigame.** It follows `minigame-party-rules.md`: one clear goal
 taught in 3 seconds with one sentence of 12 words or fewer, short and intense, a themed meter, a story payoff,
-standard controls plus at most one extra verb (shown as one gem button). It is built on 1-2 **mechanics** (rules
+standard controls plus at most one `extra_control` (shown as one gem button). It is built on 1-2 **mechanics** (rules
 or modules), which are its base, and has one **verb** from the closed list: race, defend, build, destroy,
 survive, rescue, balance, carry. The spec states mechanic and verb first (section 8); the board and scene
 follow from them.
@@ -241,7 +253,7 @@ silhouette).
   01-03 show two mechanics only if one was taught in an earlier biome. **A biome adds at most 2 new rules plus
   at most 2 module debuts** (biome 1 may teach 3 rules plus 2 modules if the handbook's verb map reaches 5
   verbs there). Each mechanic serves **at least 3 verbs** in the handbook's verb map, so a biome with 4
-  mechanics can cover 5 verbs (U19). **Campaign totals** for phase 3 to check against 168 levels: up to 24
+  mechanics can cover 5 verbs (U19). **Campaign totals** for phase 3 to check against 168 levels: up to 25
   rules (2 per biome, biome 1 up to 3) plus the 16 modules, each debuting once. A mechanic is taught alone
   before it combines. **Shared defence rules:** attacker variants (cannon, tentacle,
   rock, catapult, comet) are one parameterised rule `strike`, and complete-row ammo is one rule `row_cannon`;
@@ -256,12 +268,17 @@ silhouette).
 - **U13 Echoes** need a story reason, are marked `callback_of`, and still obey U3.
 - **U14 Look fingerprint.** `(canonical_mask, terrain, set_piece, time_of_day, weather)` is unique per level
   across the campaign; within a biome no `set_piece` repeats more than twice and no `canonical_mask` repeats.
-- **U18 Footprint spread (ruling B).** No two levels in a biome share a footprint: each has its own shape or its
-  own size (`shape WxD` unique per biome, and the U5 IoU threshold holds). A plain square is allowed at most
-  once per biome. Biomes use at least 8 different shape names between them across the 14 levels, and a hard
-  remix changes the footprint of its source.
-- **U19 Verb spread (ruling A).** Each biome uses at least 5 of the 8 verbs, and the same verb never appears in
-  more than 2 levels in a row (in level order 01-10, bonus, h1-h3). The script checks both.
+- **U15 No counter goals.** No level's headline goal is `clear_n` or any counter goal (defined above).
+  `height`, `shape`, `survive` and the other goals are legal only when the HUD names a story object (the
+  lookout, the dam, the cloud) and the number is secondary. `clear_n` is a means only (it charges, bonks,
+  drains). Each spec records `headline_objective` (story wording, 8 words or fewer) that contains a noun from
+  the beat and no bare numeral.
+- **U16 Surprise quota.** At least 4 of the 14 levels in each biome use an `ending_pattern` other than `plain`
+  (twist, reveal, guest, secret, story). **At least 3 of those 4 must be twist, reveal or guest** (the end
+  is not predictable from frame 0); secret and story may fill only the 4th slot. No pattern is used more than
+  twice per biome. `ending_pattern` is written to `metadata.ending` in the JSON. Each is telegraphed, fair,
+  comic on failure and keeps a clear opening objective; tier 10 and level 01 may not hide their goal. P1 and
+  P3a demand a clear opening problem; U16 lets the ending change after it. Secret endings are optional.
 - **U17 Scene spread.** `scene.terrain`, `scene.set_piece_action` and `cast_pose` take ids from the closed
   lists in `design/levels/plans/scene-vocabulary.md` (owner: technical artist). **Ids are global**: one list of
   about 20-30 terrain ids and 20-30 action ids, and an id may appear in several biomes, each time as a
@@ -274,17 +291,13 @@ silhouette).
   and props; a biome uses at least 4. Exemplars teach **form, not content**: no level may reuse an
   exemplar's set piece, terrain, mask, ending or character. The 9.7 exemplars are included in the U3, U14, U17,
   U18 and U19 checks; the `ex_near_*` and `ex_weak_*` samples are excluded and exist only for human scoring.
-- **U15 No counter goals.** No level's headline goal is `clear_n` or any counter goal (defined above).
-  `height`, `shape`, `survive` and the other goals are legal only when the HUD names a story object (the
-  lookout, the dam, the cloud) and the number is secondary. `clear_n` is a means only (it charges, bonks,
-  drains). Each spec records `headline_objective` (story wording, 8 words or fewer) that contains a noun from
-  the beat and no bare numeral.
-- **U16 Surprise quota.** At least 4 of the 14 levels in each biome use an `ending_pattern` other than `plain`
-  (twist, reveal, guest, secret, story). **At least 3 of those 4 must be twist, reveal or guest** (the end
-  is not predictable from frame 0); secret and story may fill only the 4th slot. No pattern is used more than
-  twice per biome. `ending_pattern` is written to `metadata.ending` in the JSON. Each is telegraphed, fair,
-  comic on failure and keeps a clear opening objective; tier 10 and level 01 may not hide their goal. P1 and
-  P3a demand a clear opening problem; U16 lets the ending change after it. Secret endings are optional.
+- **U18 Footprint spread (ruling B).** No two levels in a biome share a footprint: each has its own shape or its
+  own size (`shape WxD` unique per biome, and the U5 IoU threshold holds). A plain square is allowed at most
+  once per biome. Biomes use at least 8 different shape names between them across the 14 levels, and a hard
+  remix changes the footprint of its source. A mask matches exactly one recogniser (priority order in
+  `scene-vocabulary.md`), so one mask cannot count as two shape names.
+- **U19 Verb spread (ruling A).** Each biome uses at least 5 of the 8 verbs, and the same verb never appears in
+  more than 2 levels in a row (in level order 01-10, bonus, h1-h3). The script checks both.
 
 ## 6. Brief for the narrative lead (phase 2)
 
@@ -342,18 +355,33 @@ narrative lead may borrow C's beacon-light as a win reward.
    the closed list; one mechanic family per biome from its chapter's problem. Every level obeys
    `minigame-party-rules.md` (one clear goal, 12-word tutorial sentence, themed meter, story payoff, standard
    controls plus at most one `extra_control`). Reuse existing rules where they fit. **Engine gaps**, each with
-   an owner and a size (estimates; phase 3 confirms and the producer totals them against the phase 6 buffer
-   before phase 4 starts): boss phases, goal phases, hidden or revealed goals, story-objective HUD text,
-   ending events, the minigame phase runner, the shape overlay, the scene kit (7.5), and the items rulings A
-   and B add: `spawn_cols` support (gameplay-programmer, 1 day); the `strike` family with its variants and
-   telegraph actors (gameplay-programmer plus technical-artist, 4 days); `row_cannon` (gameplay-programmer, 2
-   days); `breach_plug` and the `seal_breaches` goal (gameplay-programmer, 3 days); the per-level tutorial
-   preview and 12-word line UI (ui-programmer, 2 days); the shape recognisers (tools-programmer, 2 days, inside
-   the uniqueness script); the P1c segmentation-mask capture tool (qa tooling, 2 days); the P3d solver
-   (gameplay-programmer, 5 days).
+   an owner and a size in days (estimates; phase 3 confirms and the producer totals them against the phase 6
+   buffer before phase 4 starts):
+
+   | Gap | Owner | Days |
+   |---|---|---|
+   | Boss phases (arena change per phase) | gameplay-programmer | 4 |
+   | Goal phases (a goal list in play order) | gameplay-programmer | 3 |
+   | Hidden or revealed goals | gameplay-programmer | 2 |
+   | Ending events (twist, reveal, guest, secret, story) | gameplay-programmer | 2 |
+   | Story-objective HUD text (per-level wording) | ui-programmer | 1 |
+   | Minigame phase runner (module phases inside levels) | gameplay-programmer | 5 |
+   | Shape overlay (target cells shown from frame 0) | technical-artist | 3 |
+   | Scene kit: terrain modules, cast poses, acting set-piece actors, themed HUD meters (see 7.5) | technical-artist | about 40 |
+   | `spawn_cols` support | gameplay-programmer | 1 |
+   | `strike` family, variants and telegraph actors | gameplay-programmer plus technical-artist | 4 |
+   | `row_cannon` | gameplay-programmer | 2 |
+   | `breach_plug` and the `seal_breaches` goal | gameplay-programmer | 3 |
+   | Per-level tutorial preview and 12-word line UI | ui-programmer | 2 |
+   | Shape recognisers (inside the uniqueness script) | tools-programmer | 2 |
+   | P1c segmentation-mask capture tool | tools-programmer | 2 |
+   | P3d solver | gameplay-programmer | 5 |
+
+   The sum is about 81 days, of which the 21 days for the last eight rows are ruling A/B items.
 2. **Teach, twist, combine.** A biome adds at most 2 new rules plus 2 module debuts (U10), each mechanic taught
-   alone. Include a cross-biome dependency graph and the campaign totals check (up to 24 rules plus 16 modules
-   cover 168 levels). The systems designer owns the function-to-mechanic mapping for the narrative beats.
+   alone. Include a cross-biome dependency graph and the campaign totals check (up to 25 rules plus 16 modules
+   cover 168 levels with unique `(goal list, mechanic list, mask)` triples). The systems designer owns the
+   function-to-mechanic mapping for the narrative beats.
 3. **Goal vocabulary as story objectives.** Define every goal's HUD wording; `goal_type` is a list in play
    order for goal phases (U3 compares the whole list). Allowed goals: `height`, `shape`,
    `survive`, `bonk_boss`, `rescue_all`, `dig_rescue`, `wind_keys`, `bake_oven`, the new `seal_breaches` and
