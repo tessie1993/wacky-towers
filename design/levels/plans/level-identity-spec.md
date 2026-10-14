@@ -12,7 +12,7 @@ biome repeats the same tier template. This spec sets the rules every level must 
   (8x8 minimum bounding box, up to 12x12). Shapes include cross, ring with a hole, L, twin islands joined
   by a bridge, terraces (masks that differ per layer), diamond, U-bay, and stepping stones. The island
   art follows the mask automatically (WtIslandBuilder.build_island uses the active cells).
-- **Goals:** at most 5 `clear_n` levels per biome. Use the full set: `height`, `shape`, `survive`,
+- **Goals:** ~~at most 5 `clear_n` levels per biome~~. *Superseded by U15: no `clear_n` headline goals.* Use the full set: `height`, `shape`, `survive`,
   `bonk_boss`, `rescue_all`, `dig_rescue`, `wind_keys`, `bake_oven`, plus any goal in
   assets/data/goals.json.
 - **No two levels share the same (goal, main rule, board shape) triple**, across the whole campaign.
@@ -46,7 +46,7 @@ biome repeats the same tier template. This spec sets the rules every level must 
   reduced motion.
 - **set_piece** is one big landmark next to the board that makes the level recognisable: windmill,
   castle gate, kraken, volcano vent, clock tower, ferris wheel, crystal geode, treehouse, lighthouse,
-  observatory, gingerbread house, shipwreck, and so on. Each biome gets 4–6 set pieces. Use
+  observatory, gingerbread house, shipwreck, and so on. Each biome gets ~~4–6~~ **7–8** set pieces (superseded: U14 needs at least 7 per biome). Use
   `assets/models/env_v3` GLBs or builder primitives, and list them in `assets/data/set_pieces.json`.
 - Within a biome, no two consecutive levels share the same `time_of_day` + `set_piece`.
 
