@@ -4,7 +4,7 @@ Status: DRAFT r2 for user review (goal changed by the user). Author: level desig
 The user's decisions for level 1 are binding and override `design/levels/plans/campaign-vision.md`:
 minigame "Build to the mark", scene "Giant tree stump", board "Round", HUD "Minimal".
 r2 user decisions: the goal is "layer clearer with obstacles, on a timer"; a stack that gets too high gets a soft
-rescue plus a grace knob; party play is side by side, same seed; the wobble-giggle is cosmetic only.
+rescue plus a grace knob; campaign single player (no multiplayer); the wobble-giggle is cosmetic only.
 Story source: `design/narrative/beats/meadow.md` (meadow_01) and `design/narrative/campaign-story.md`.
 Ruling on words: the headline names the story, not a row count. The objective line may say "Clear 3 layers before time runs out".
 This overrides vision rule U15 (no counter goals) for this level, by the user's choice.
@@ -38,7 +38,7 @@ Level card facts:
 
 ---
 
-## 2. Minigame: Build to the mark
+## 2. Minigame: Clear 3 layers before the timer
 
 **Verb.** Build. Drop a block. Turn a block. Fill the gaps.
 
@@ -71,7 +71,7 @@ Level card facts:
 
 | Stars | Rule | Reasoning |
 |---|---|---|
-| 1 | Win, with or without the retry. | A party guest never leaves with nothing. |
+| 1 | Win, with or without the retry. | A first-time player never leaves with nothing. |
 | 2 | 3 clears in 90 s or less (`t2 = 90000`). | 24 to 28 pieces at about 3.5 s each. Needs the drop gesture most of the time. |
 | 3 | 3 clears in 60 s or less (`t3 = 60000`), with no warning and no trim. | The minimum is 24 pieces, so about 2.5 s per piece with hard drops and almost no gaps. Hard but fair for a fast, tidy player. |
 
@@ -201,7 +201,7 @@ z=7      - - . . . . - -
 
 ## 5. Pieces
 
-**Shapes (4 only):** O, I, L, T. S is dropped on purpose. Its skew is fiddly for a first-time player and a party guest. S joins in level 3 or later.
+**Shapes (4 only):** O, I, L, T. S is dropped on purpose. Its skew is fiddly for a first-time player. S joins in level 3 or later.
 JSON: `"shapes": ["o","i","l","t"]`, equal weights, `spawn.randomizer = bag` (the default, a fair shuffle).
 
 **Opening set:** `["o","i","l"]`, `opening_count 3`. The first three pieces are fixed: O (drop), I (turn), L (free choice). Then the bag takes over.
@@ -269,26 +269,10 @@ Small extras (no cost, optional):
 
 ---
 
-## 8. Party play (2 to 4 players)
+## 8. Mode: campaign, single player
 
-**Decision (user): side by side, same seed. First to 3 clears rings the bell.**
-
-How it plays:
-- Each player has their own round stump with the same rock layout.
-- All players get the same piece sequence. Fair.
-- Each player has their own Hearth Hum meter. Each player has their own 2:00 clock and the same start moment.
-- The first player to 3 clears rings the bell. Their stump glows green.
-- Everyone else keeps playing to their own 3 clears and gets the green glow and at least 1 star. No one is knocked out.
-- The soft retry (+30 s once) is per player.
-- Ties: the player with the earlier finish time wins the bell. An exact tie rings the bell for both.
-
-Solo play: no rival. The stars decide the challenge.
-
-Engine: one board per player is native (`layout.kind = single`). No shared-board code. Three or four boards on one screen is a presentation task (NEW-8).
-
-Art note: for 3 to 4 players the scene is one wide meadow with the stumps in a row. The distant islands and the cottage stay behind them. Each stump has its own tree rings and its own bell light.
-
----
+**Decision (user, 2026-10-14): level 1 is a campaign level and is NOT multiplayer.** One player, one stump. There is no
+party or split-screen variant of this level. Party play belongs to the party modes, not the campaign.
 
 ## 9. HUD contract (Minimal)
 
@@ -410,7 +394,7 @@ Also: delete `metadata.design_spec` (stale 4x4 copy). Set `metadata.ending = "pl
 | NEW-7 | Clear sweep ring, three-tree-ring green lighting, bell and rim rush (set piece `hearth_stump`, action `bell_ring`). | 3 days | technical-artist |
 | NEW-8 | Intro (Wizard hat-tip, spoon gag, sandglass yawn) plus poses Wizard:point and Ada:cheer, shared later. Scene build "Giant tree stump" from PolyHaven/BlendKit assets (stump top with rings and the round rim, floating meadow island with grass, wildflowers and rocks, distant islands, cottage with chimney smoke, waterfall, bell post, Wrong Sack). | 2 days (intro) + 5 to 8 days (scene) | technical-artist + art-director |
 | NEW-9 | Timer on the plaque (sunrise bar) and the 12-word objective line UI (overlaps the vision gap "per-level tutorial preview and 12-word line UI"). | 2 days (shared) | ui-programmer |
-| NEW-10 | 2 to 4 boards on one screen (side by side). | 0 to 2 days | gameplay-programmer |
+| NEW-10 | (removed: level 1 is single player) | 0 | - |
 
 Scene art must beat the reference boards in `assets/art/reference/`. No beige, no parchment. Dawn lighting with a warm rim light.
 

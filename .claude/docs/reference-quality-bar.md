@@ -27,11 +27,13 @@ Standing rules from the user:
 
 ## Calibration: the user's own score is the anchor
 
-**Current anchor (user, 2026-10-14, latest): "Everything we have so far I would score at a 3 out of 10. Be far stricter
-with giving high marks. We are nowhere near 9s yet."** Every existing screen, level, platform and piece of scenery
-starts from 3/10. The 4.5 art anchor below is superseded. The procedural scenery and the primitive set pieces are
-called "ugly" and "procedural crap". Scenery must come from PolyHaven and BlendKit assets, through Blender and Godot
-addons. Any score above 3 must name the exact change since this anchor and show it side by side with a reference.
+**Correction (user, 2026-10-14): the 3/10 was ONLY the user's score for the previous art renders ("very ugly"). It is
+NOT a score for everything and is NOT an anchor.** Let it go. Each aspect is scored on its own merits by its own three
+experts, and must reach 9.7. The 4.5 and 3.0 art anchors below are historical notes about old renders, not rules.
+
+**The references are a style guide, not a picture to rebuild (user, 2026-10-14).** Match their style, finish and
+quality, never their literal layout or content. **The level decides the art:** each level's mechanics and story set
+what the scene shows; the art serves the level.
 
 On 2026-10-14 the user said: "No this art gets a 4.5 not a 6.3". **The in-game art as it stands scores 4.5/10.**
 Reviewers had scored it higher, which was too lenient.
@@ -43,7 +45,7 @@ Reviewers had scored it higher, which was too lenient.
 - 9.7 means a screenshot could sit next to the reference boards in `assets/art/reference/` and pass as the same game.
   "Better than before" is not a score.
 
-**Second anchor (user, 2026-10-14):** "Scene variety should not have gotten 9.0 out of 10 but 3. All scenes were square grids. Not varied at all."
+**Historical note (user, 2026-10-14, about the old square boards):** "Scene variety should not have gotten 9.0 out of 10 but 3. All scenes were square grids. Not varied at all."
 **Scene variety as it stands scores 3/10.** The data backs this up: 163 of 168 levels use the same 8×8 square board, and only 9 have a mask.
 
 - A scene variety score above 3 must name what changed: the board footprint (not square), the set pieces and what the camera shows.
@@ -81,7 +83,14 @@ These rules apply to every reviewer and every area: art, UI, levels, mechanics, 
 8. **Pass means 9.7 on every item, with no exceptions.** A 9.6 is a fail.
    - A review whose average passes but has any item below the bar is a FAIL.
 
-## Three blind experts per review (user, 2026-10-14)
+## Three blind experts per aspect (user, 2026-10-14)
+
+Each level is made step by step, in this order: **mechanics, then story, then art.** Each aspect is reviewed
+separately by its own three blind experts (mechanics: game designer, systems designer, level designer; story:
+narrative director, writer, world builder; art: art director, technical artist, world builder or UI designer). An
+aspect passes only when all three of its experts give 9.7 or more.
+
+### Panel rules
 
 The user said: "Change the way you mark. Mark each thing for what it is. Mark it by 3 experts in that field. Each time
 each agent that don't know each other's opinion."
