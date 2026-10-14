@@ -25,6 +25,18 @@ Standing rules from the user:
 - No Nintendo IP. The Nintendo boards are for layout only.
 - No "Tetris" naming. Never copy the board logos.
 
+## Calibration: the user's own score is the anchor
+
+On 2026-10-14 the user said: "No this art gets a 4.5 not a 6.3". **The in-game art as it stands scores 4.5/10.**
+Reviewers had scored it higher, which was too lenient.
+
+- Every art reviewer starts from this anchor. Today's game screens are 4.5.
+- A higher score must name the exact visible change since this calibration, compared side by side with a reference board.
+- When unsure between two scores, give the lower one.
+- A reviewer's score that the user later marks down by 1 point or more is a calibration miss. Log it here with the new anchor.
+- 9.7 means a screenshot could sit next to the reference boards in `assets/art/reference/` and pass as the same game.
+  "Better than before" is not a score.
+
 ## How work is judged: reviewers instruct, makers fix
 
 1. Makers (UI, world, blocks, characters, levels, audio agents) change things and capture
