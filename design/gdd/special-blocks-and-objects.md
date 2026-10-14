@@ -1296,27 +1296,66 @@ The following items from the references are not yet written up because they dupl
 
 ### 3.3 Interaction matrix
 
-**How to read it.** The row is the special that ACTS. The column is the thing it MEETS. The cell says what happens. Codes: `-` nothing happens; `W` the row wins and the column is overridden; `L` the row loses, the column wins; `O` both act, in the order given by the Order rules below; `X(n)` an explicit rule R-n below. "Plain" means a normal block. Only specials that can actually meet are listed. Specials not in the grid (shells, status effects, items) follow the notes under the grid.
+**r2 rule: every cell is backed by code or flagged as a gap.** Each cell carries one tag.
+- `[C]` backed by code. The file and line follow.
+- `[T]` read from the status-by-cause table in 3.1b, which is a copy of `can_remove` and `can_move`.
+- `[G n]` a gap: no code does this today. It names the NEW rule R-n (below) that would build it, and 3.7 sizes it. Nothing tagged `[G]` may be described as existing behaviour.
 
-Columns, left to right: **PLN** plain block, **BNC** bounce pad or jelly hop, **GOO** goo or honey (sticky), **ICE** ice cube or ice slide, **BMB** any bomb blast, **GHO** ghost piece, **MAG** magnet pull, **WND** wind or gust, **ANC** anchored or fixed (rock, shelf, pillar, licorice, hung cube, climber), **CRT** critter (egg, chick, mole, lamb, herd animal, gem, key).
+There are three matrices. Matrix A is what happens when two effects meet on one falling piece. Matrix B is what each stack-changing effect does to each kind of target cell. Matrix C is what happens when a spawner or grower finds its target cell in each state.
 
-| ACTS \ MEETS | PLN | BNC | GOO | ICE | BMB | GHO | MAG | WND | ANC | CRT |
-|---|---|---|---|---|---|---|---|---|---|---|
-| **BNC** (hop) | X(1) lands, hops once | - | L sticky wins, no hop | O one displacement only, X(2) | - | - | O pulled before landing | O gust before landing | W (a hop never moves an anchored cube) | X(3) |
-| **GOO** (spread, sticky) | X(4) spreads into free cells only | W cancels the hop | - | W cancels the slide | L goo cell is removed | - | - | - | L goo never spreads into anchored cells | X(5) |
-| **ICE** (slide) | X(6) slides one cell | O one displacement only, X(2) | L sticky wins | - | - | - | - | O gust first | W stops at anchored | X(3) |
-| **BMB** (blast, 3x3x3) | W removes | - | W removes | W removes | X(7) no chain by blast | W ghost cells are not solid until solid | - | - | L anchored survives (`earned_specials.gd:18`) | X(8) |
-| **GHO** (ghost, intangible) | - passes through | - | - | - | - | - | L ignores pull | O wind still pushes it | - passes through | - passes through |
-| **MAG** (pull, one cell) | O pulls the falling piece | O pull before bounce | - | - | - | L ignored | - | O wind first, then pull | L pulled piece stops at anchored | - |
-| **WND** (gust, one cell) | O pushes the falling piece | O gust then bounce | - | O gust then slide | - | O still acts | O see MAG | - | L stops at anchored | - |
-| **ANC** (fixed) | W never moves | W | W | W | W (blast-proof) | W | L | L | - | X(9) |
-| **CRT** (critter) | X(10) pest only eats PLN | - | X(5) | - | X(8) | - | - | - | - | - |
+#### Matrix A: effects on one falling piece (landing stack)
+
+Effects: **GST** gust push, **MAG** magnet pull, **BNC** pad hop, **JEL** jelly hop, **ICS** ice slide (rule `ice_slide`, fixed `slide_dir`), **ICC** ice cube slide (NEW kind BK-35, last move), **STK** sticky landing (goo, honey, `sticky_landing`), **BRC** braced claw (SH-06, NEW). Row = the effect that fires first. Column = the effect that also applies to the same piece.
+
+| First \ also | GST | MAG | BNC | JEL | ICS | ICC | STK | BRC |
+|---|---|---|---|---|---|---|---|---|
+| **GST** | - | [C] both are one-cell `try_translate` or `request_move_piece` in flight (`magnet_pull.gd:29`); order = plugin tick order, not defined [G 1] | [C] gust is applied in flight, bounce on land (`bounce_pad.gd:9` `on_land`) | same as BNC [C] | same as BNC [C] | [G 2] (kind is NEW) | [C] flight comes first; sticky acts on landing (`sticky_landing.gd`) | [G 2] brace cancels one push |
+| **MAG** | [G 1] | - | [C] flight before landing | [C] | [C] | [G 2] | [C] | [G 2] |
+| **BNC** | - | - | - | [G 2] today BOTH fire: each plugin has its own once-per-piece flag (`bounce_pad.gd:24`), nothing checks another | [G 2] same | [G 2] | [G 3] `bounce_pad.gd:12-41` never checks stickiness | [G 2] |
+| **JEL** | - | - | [G 2] | - | [G 2] (`jelly_piece.gd:16-23` flag `_hopped` only) | [G 2] | [G 3] | [G 2] |
+| **ICS** | - | - | [G 2] | [G 2] | - | [G 2] | [G 3] (`ice_slide.gd:15-18` checks `_slid` only) | [G 2] |
+| **ICC** | - | - | [G 2] | [G 2] | [G 2] | - | [G 3] | [G 2] |
+| **STK** | - | - | [G 3] (the veto direction) | [G 3] | [G 3] | [G 3] | - | [G 3] |
+| **BRC** | [G 2] | [G 2] | [G 2] | [G 2] | [G 2] | [G 2] | - | - |
+
+Reading: every landing-stack cell that combines two of BNC, JEL, ICS, ICC, STK, BRC is a gap today. The three plugins fire independently. R-2 (one displacement, priority bounce, then jelly, then ice slide, then ice cube), R-12 (sticky vetoes all displacement) and the `braced` flag are one NEW arbiter on the landing hook (GAP-2). Until it exists the validator bans the combinations (table at the end of this section).
+
+#### Matrix B: stack-changing effects on each kind of target cell
+
+Targets (columns), with the example cells from 3.1b: **PLN** plain cube; **FIX** `fixed` (rock, shelf, sponge, peg, pillar); **ANC** `anchored` only (licorice, climber boss); **LCK** `locked`; **CPR** `clear_protected` (frosting, grumpy moody, geyser rock); **HNG** `hung` (NEW); **GOB** goal object (`blast_safe` plus `rescue_safe`, NEW). Y = the effect changes or removes the cell. N = blocked.
+
+| Effect (cause or hook) | PLN | FIX | ANC | LCK | CPR | HNG | GOB | Source |
+|---|---|---|---|---|---|---|---|---|
+| Layer clear (CLEAR) | Y | N | N | N (until unlocked) | N | Y | Y | [T] `board_state.gd:685-692` |
+| Rescue wipe (RESCUE) | Y | N | N | Y | Y | Y | N (only RESCUE blocked) | [T] `:608,685-688` |
+| Blast, ember, Smash, pest bite (DAMAGE) | Y | N | Y | Y | Y | Y | N (blast_safe) | [T] `:685-688`; `wt_abilities.gd:202` Smash also skips `fixed` and `locked` |
+| Quake, woodpecker, squirrel, claw, bubble pop (DISPLACED) | Y | N | N | N | Y | N | Y | [T] `:685-690`; causes used in `quake.gd:37`, `crab_claw.gd:39` |
+| Tilt slip, trim (TRIM) | Y | N | N | Y | Y | N | Y | [T] `:685-693`; `tilt_plate.gd:7` |
+| Floor rise, mask change (MASKED) | Y | Y | Y | Y | Y | Y | Y | [T] `:683-684`; `set_floor` `:709-717` |
+| Belt, turntable, piston, settle, collapse (move) | Y | N | N (unless forced) | N | Y | N | Y | [T] `can_move` `:677-679` |
+| Fire, burning (NEW BK-23c, removal by DAMAGE) | Y | N | Y | Y | Y | Y | N | [G 4] rule is NEW; its cause follows [T] |
+| Goo wash (CLEAR on an adjacent goo cell, NEW) | Y (goo is plain) | n.a. | n.a. | n.a. | n.a. | n.a. | n.a. | [G 5] |
+
+Backing note: the first six rows are exact copies of `can_remove` and `can_move`. The `on_clear` hooks (frosting peel, licorice untie, locked unlock, pest shoo, countdown defuse, candy bomb blast, egg bonus, gem collect) run for every cell in a full layer BEFORE the removal test (`board_sim.gd:1421-1430`). They do not run when a cell is removed by DAMAGE, DISPLACED, TRIM, RESCUE or MASKED, because `remove_cell` only queues a write (`rule_api.gd:278-282`) and the hook is fired only from the clear loop (`board_sim.gd:1422`). So a blast does not peel frosting next to it, does not defuse a countdown bomb, does not pay an egg bonus, and does not detonate a candy bomb it removes.
+
+#### Matrix C: spawners and growers meeting their target cell
+
+Rows: **MSH** mushroom, hail, geyser spawn; **GOO** goo spread; **SPR** sprout growth; **EGG** egg hatch; **PST** pest bite; **CDB** countdown bomb throw. Columns are the state of the target cell.
+
+| Spawner | Occupied, plain | Occupied, special or critter | Empty, supported | Empty, unsupported | Inactive or masked | `hung` cell |
+|---|---|---|---|---|---|---|
+| **MSH** | cancel at the due lock if the marked cell is no longer free [C] `mushroom_popup.gd:19-25` | cancel [C] same | spawn [C] `:20-22,30` | never chosen: candidates need support below [C] `:30` | never chosen [C] `:30` | n.a. (cell is occupied) |
+| **GOO** | not chosen [C] `goo_spread.gd:27` needs `is_free` | not chosen [C] | spread [C] `:27-32` | spreads today, floating goo [C] `goo_spread.gd:25-27` has NO support check; NEW R-13 adds one [G 6] | not chosen [C] `limit_layer` and `is_free` | n.a. |
+| **SPR** | no growth if the cell above the tip is not free [C] `sprouts.gd:45` | same [C] | grows [C] `:48-53` | grows into a free cell above the tip even if not supported (the tip supports it) [C] | no growth [C] `is_free` | n.a. |
+| **EGG** | hatch goes to a free neighbour only [C] `hatching_eggs.gd:35`; if none, the chick appears in the egg's own cell [C] `:31` (ZERO direction) | same [C] | chick lands by rigid drop [C] `:39-40` | rigid drop handles it [C] | not chosen [C] `is_active` | n.a. |
+| **PST** | bites plain `block` or `starter` only, with cause DAMAGE [C] `pest.gd:49,65` | never bites a special [C] `:49` | n.a. | n.a. | n.a. | a hung cube is bitten (DAMAGE allowed) [T] |
+| **CDB** | throw lands on a surface cell [C] `candy_cells.gd:31-37` (`surface` = empty cell with support) | not chosen [C] | throw [C] `countdown_bomb.gd:22-25` | not chosen [C] | not chosen [C] | n.a. |
 
 **Order rules (O).** Within one lock, the order is fixed, so replays are deterministic.
-1. **Flight order.** Gust push, then magnet pull, then landing detection. Both are one cell and both are skipped if blocked (`magnet_pull.gd:30`, README line 28).
-2. **Landing order.** On landing, at most ONE displacement fires, chosen by priority bounce hop, then jelly hop, then ice slide. This is a NEW rule (R-2). The engine today lets `bounce_pad`, `jelly_piece` and `ice_slide` each fire once per piece and they would stack to 4 cells of travel. R-2 caps total landing travel at `bounce_h + 1` cells (5 at most).
-3. **Sticky beats motion.** A sticky landing (honey, `sticky_landing`, goo under the piece) cancels every displacement above, and the piece locks at once.
-4. **Lock to clear.** After the lock: item `bomb` blast (before the clear check, `buffs-debuffs.md` rule 6), then clear detection, then clear hooks (frosting peel, licorice untie, locked cube unlock, pest shoo, countdown defuse, candy bomb blast, egg bonus, gem collect), then collapse, then `on_resolve_end` hooks in plugin order (sprouts, eggs, goo spread, mushroom or hail or geyser spawn, countdown tick, wobble, tilt, belt). The README states that content writes flush at hook boundaries and that a write after the first clear pass may cause ONE more clear pass and the resolve hook does not recurse (README lines 55 to 57).
+1. **Flight order.** The gust push and the magnet pull are separate plugins, each a one-cell translate on `on_tick`. Both are skipped if blocked (`magnet_pull.gd:29-30`, README line 28). Their order is the plugin tick order, which the engine does not define between two twists [G 1]. R-1b (NEW, 0.25 day): break the tie by gust first, then magnet, by a fixed priority in the plugin registry.
+2. **Landing order.** On landing, at most ONE displacement fires, chosen by priority bounce hop, then jelly hop, then ice slide, then ice cube. This is NEW (R-2, GAP-2). The engine today lets `bounce_pad`, `jelly_piece` and `ice_slide` each fire once per piece and they would stack to 4 cells of travel (`bounce_pad.gd:24`, `jelly_piece.gd:16-17`, `ice_slide.gd:15`). R-2 caps total landing travel at `bounce_h + 1` cells (5 at most).
+3. **Sticky beats motion.** NEW (R-12, GAP-2). A sticky landing (goo under the piece, honey) cancels every displacement above, and the piece locks at once. `sticky_landing.gd` is a twist that slows gravity and locks on first support; it does not veto the pad or the slide (no code does, see Matrix A).
+4. **Lock to clear.** After the lock: item `bomb` blast (`buffs-debuffs.md` rule 6), then clear detection, then `on_clear` hooks (3.1b note 5), then removal of the cells that pass `can_remove`, then collapse, then `on_resolve_end` hooks in plugin order (sprouts, eggs, goo spread, mushroom or hail or geyser spawn, countdown tick, wobble, tilt, belt). The README states that content writes flush at hook boundaries, that a write after the first clear pass may cause ONE more clear pass, and that the resolve hook does not recurse (README lines 55 to 57).
 
 **Explicit rules.**
 - **R-1 Bounce on plain.** The pad fires when any piece cube sits directly on it (`bounce_pad.gd:26-30`). Rise is `rise = min(bounce_h, free cells above)` then one cell in the last move direction.
