@@ -1,0 +1,41 @@
+# Reference quality bar
+
+Set by the user on 2026-10-14: "we want AAA quality in level design, mechanics, art, sound, like the
+references; all game must be quality level of reference."
+
+## The bar
+
+Every player-visible part of Wacky Towers must match the quality of the reference boards in
+`assets/art/reference/` (index: `assets/art/reference/index.md`; art bible: `design/art/art-bible.md`).
+"Close" is not done.
+
+| Area | Judged against | Pass |
+|---|---|---|
+| UI screens | style boards 04, 05, 06, 08, 14, 15, 16 | >= 8/10 each, zero beige/parchment panels |
+| Levels and worlds | board 15 (islands), 13 (blocks), mockup-alignment.md | >= 8/10 per biome |
+| Characters and story | turnaround sheets, story boards 01, 02, 07 | >= 8/10 each |
+| Mechanics and level design | design/levels/*, design/gdd/* | >= 8/10 per biome: readable, fair, varied, smooth curve |
+| Sound | design/gdd audio docs, the art bible's tone | >= 8/10: every action has feedback, music per biome |
+
+Standing rules from the user:
+- No beige or parchment interface. Windows are open purple-wood frames over a painted scene
+  (board 05). Groups of controls sit on translucent purple or wood planks.
+- No Nintendo IP. The Nintendo boards are for layout only.
+- No "Tetris" naming. Never copy the board logos.
+
+## How work is judged: reviewers instruct, makers fix
+
+1. Makers (UI, world, blocks, characters, levels, audio agents) change things and capture
+   720x1280 screenshots into `production/qa/evidence/`.
+2. A strict reviewer panel (art critic, level and mechanics critic, audio critic) scores every item
+   against the references. They write `production/qa/quality-review/<date>-<area>.md`, with a
+   scoreboard, ranked defects and owner-tagged fixes.
+3. The orchestrator sends each fix to its owner. Nothing is called done while any item is
+   below 8/10.
+4. Repeat until every item passes.
+
+## Enforcement
+
+`.claude/hooks/reference-quality-gate.sh` (Stop hook) checks whether player-visible files are newer
+than the newest review report. If they are, it blocks the stop once and asks for a review. It reports
+what it observes and gives no verdict. The verdicts come from the reviewers.

@@ -243,6 +243,15 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/reference-quality-gate.sh\"",
+            "timeout": 20
+          }
+        ]
       }
     ],
     "SubagentStart": [
