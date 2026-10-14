@@ -1429,7 +1429,57 @@ This catalogue reads from the systems below and must be listed in each as a depe
 
 ## 7. Tuning Knobs
 
-TODO
+**Where values live.** Per-level rule numbers are in each level's `rules[].params` inside `src/levels/<biome>/<id>/<id>.json` (the rule JSONs under `assets/data/rules/` only declare the param schema, for example `bounce_pad.json` lists `bounce_h` and `dir_mode`). Global knobs are in `assets/data/knobs/*.json` and use the registry format `{id, type, default, min, max, rule_adjustable, source, note}` (see `knobs/rules.json`, `knobs/fall.json`, `knobs/clearing.json`). Item weights are in `assets/data/items/starter.json`. Skill numbers are in `assets/data/meta/abilities_runtime.json`. Shape families are in `assets/data/shapes/families.json`. Biome skins are in `assets/data/biome_looks.json` and `src/view/wt_block_materials.gd`. **Proposed NEW file:** `assets/data/knobs/specials.json` for the cross-level knobs marked NEW below. Nothing in this table is hard-coded (coding standard: gameplay values are data-driven).
+
+| Knob id | File | Default | Safe range | Affects |
+|---|---|---|---|---|
+| `spawn_every_locks` (mushroom, hail) | level `rules[].params` (`mushroom_popup`, `gumdrop_hail`) | 5 and 4 | 2 to 10 (engine min 2) | Hazard pace, F2, F3 |
+| `objects_max` | level params | mushroom 4, hail 6, geyser 3 | 1 to 8 | Board clutter, F3 |
+| `place_mode` | level params | random | random, lowest | Where objects land |
+| `hatch_locks` / `egg_bonus` | level params (`hatching_eggs`) | 6 / 25 | 3 to 10 / 0 to 100 | Egg tension |
+| `grow_locks` / `grow_max` | level params (`sprouts`) | 4 / 1 | 1 to 6 / 0 to 6 | Sprout pace, F11 |
+| `bounce_h` / `dir_mode` / `bounce_dir` | level params (`bounce_pad`) | 2 / last_move / +x | 1 to 4 | Bounce travel, F4 |
+| `roll_locks` / `snow_max` / `balls_max` / `respawn_locks` / `slope_dir` | level params (`snowball`) | 2 / 3 / n.a. / 8 / -x | 1 to 4 / 1 to 4 / 1 to 3 / 4 to 16 | Snowball threat |
+| `per_lock` / `cancel_on_clear` | level params (`goo_spread`) | 1 / true | 1 to 2 / true | Goo growth, F5 |
+| `goo_max` | `assets/data/knobs/specials.json` NEW | 12 | 4 to 20 | Caps goo, F5 |
+| `ant_every_locks` / `ant_starve_acts` / `ant_shoo_bonus` / `rim_escape` / `late_spawn_s` | level params (`pest`) | 3 / 3 / 50 / false / 0 | 2 to 6 / 2 to 5 / 0 to 200 | Pest pressure |
+| `thrown_every_locks` / `cd_start` / `blast_layers` | level params (`countdown_bomb`) | 8 / 8 / 1 | 5 to 16 / 4 to 12 / 1 to 2 | Bomb pressure, F6 |
+| `bomb_at` | level params (`earned_specials`) | 7 | 0 (off) or 5 to 12 | How often a candy bomb is earned |
+| `bomb_chain_passes` | `knobs/specials.json` NEW | 1 | 0 to 2 | Chain depth, R-7 |
+| `bomb_radius` / `bomb_rock_damage` | `knobs/specials.json` NEW (from `buffs-debuffs.md`) | 1 / 2 | 1 to 2 / 1 to 3 | Item bomb size |
+| `frosting_layers` | level start, set by kind | 2 or 3 | 2 to 3 | Peel time, F6 |
+| `hits_left` / `hard_hits` (geyser rock) | level params (`lava_rock_spawn`) | 2 | 1 to 8 | Rock toughness |
+| `pull_warn_ms` / `magnet_range` | level params (`magnet_pull`, new magnet kind) | 600 / 2 | 300 to 1500 / 1 to 3 | Magnet fairness |
+| `balloon_per_bag` / `balloon_g_mult` / `balloon_drift_ms` | level params (`balloon`) | 1 / 0.5 / 3000 | 0 to 2 / 0.3 to 0.8 / 1500 to 5000 | Balloon feel |
+| `key_per_bag` / `keys_needed` / `keyholes` | level params (`key_stamp`, goal `wind_keys`) | 2 / 4 / authored | 1 to 3 / 1 to 8 | Key hunt |
+| `drill_depth` (ember) | level params | 1 | 1 to 3 | Melt depth |
+| `every` (anvil) / `max_crush` | level params (`anvil_drop`) | 6 / n.a. | 3 to 12 | Crush rate |
+| `slip_threshold` / `warn_at` / `slip_count` / `slip_after_resolves` / `fixed_kinds` | level params (`tilt_plate`) | 0.6 / 0.7 / n.a. / n.a. / ["rock"] | 0.3 to 0.8 / 0.5 to 0.9 | Balance difficulty; meadow_09 goes 0.7 to 0.5 (`levels.md:343`) |
+| `heavy_weight` | `knobs/specials.json` NEW | 2 | 1 to 3 | Heavy shapes, F7 |
+| `core_hp` / `attack_every_ms` / `warn_ms` / `core_damage` | level params (`defend_core`) | 3 / n.a. / 2000 / n.a. | 1 to 5 / 3000 to 12000 / 1000 to 3000 | Defender pressure |
+| `rival_rate` / `rival_warn_pct` / head start / rubber band | level params (`race_rival`) | n.a. | 0.9 to 1.1 of player pace (`levels.md:408`) | Race tension |
+| `heist_every_locks` / `heist_warn_locks` / `heist_min_fill` | level params (`squirrel_heist`) | 6 / 1 / 0.5 | 3 to 12 / 1 to 3 / 0.3 to 0.8 | Thief pace |
+| `claw_start_layers` / `claw_warn_ms` / `claw_grab` | level params (`crab_claw`) | 2 / 2000 / 1 | 0 to 5 / 1000 to 3000 / 0 or 1 | Claw pressure |
+| `melt_every_s` / `melt_max` / `melt_warn_ms` | level params (`lava_rise`) | 35 / 3 / 3000 | 20 to 60 / 0 to 4 / 2000 to 5000 | Lava pressure. Clock-based; see Open Question 2 |
+| `lid_first_s` / `lid_max` / `lid_push_per_clear` | level params (`lava_lid`) | 60 / 2 / 1 | 30 to 120 / 0 to 3 / 1 to 2 | Lid pressure |
+| `quake_warn_ms` / `quake_max_cubes` / `active_after_clears` | level params (`quake`) | 2000 / 6 / 0 | 1000 to 3000 / 2 to 10 / 0 to 5 | Quake pressure |
+| `slide_cells` / `slide_dir` / `start_after_clears` | level params (`ice_slide`) | 1 / +x / 0 | 1 to 2 | Ice slide |
+| `p_item` | `items` rule params (`items.gd:115`) | 0.12 | 0 to 0.5 (engine clamp) | Item frequency, F8 |
+| item `weight` and `bias` | `assets/data/items/starter.json` | table | weight 0 to 20, bias -1 to +2 | Item mix |
+| `item.slots` | `knobs/rules.json` | 2 | 1 to 3 | Hoarding |
+| `calm_*`, `stitch_duration_ms`, `smash_size`, `smash_depth`, `redraw_pieces`, `charge_layer_milli` | `abilities_runtime.json` | 250 / 10000 / 3 / 3 / 3 / 125 | per `skills.md` tuning | Skill power |
+| `skill.charge_rate` | `knobs/rules.json` | 1.0 | 0.5 to 1.5 | Skill frequency |
+| `A_cap`, `E0`, `d_lvl`, `d_bio`, `E_min`, `k_fair` | `knobs/specials.json` NEW | 3, 6, 0.4, 0.25, 3, 1.5 | see F1 to F3 | Progression of specials |
+| `gem_points` / `g0` / `Gem_cap` / `f` | `knobs/specials.json` NEW | 100 / 3 / 8 / 0.5 | 0 to 500 / 1 to 5 / 3 to 12 / 0.3 to 0.7 | Gems, F9 |
+| `ring_weight` / `giant_weight` / `giant_max_height_frac` | level `spawn` params NEW | 0.5 / 0.25 / 0.5 | 0 to 2 / 0 to 1 / 0.3 to 0.7 | Special-shape frequency, F10 |
+| `hang_locks` | `knobs/specials.json` NEW | 4 | 2 to 8 | Hook hold time |
+| `fall.g0`, `fall.ramp_per_clear`, `fall.ramp_per_min`, `fall.gravity_scale` | `knobs/fall.json` | 1.0 / 0.05 / 0.0 / 1.0 | see file | Speed ramp. Specials never change the ramp. They multiply gravity only through items and balloons |
+| `clear.chain_max` | `knobs/clearing.json` | 10 | 1 to 20 (inert in slice mode) | Chain safety |
+
+**Feedback loops, stated.**
+- Positive (needs a cap): goo spread, fire or vine spread, sprout growth into pressure, countdown junk (adds a layer, which makes more hazards reachable). Caps: `goo_max`, `grow_max`, `objects_max`, `burn_spread_p` (0.3), `vine_per_bag` (0 to 2).
+- Negative (intended): clear cancels goo, claw, lid, heist. Guard wakes if you stop clearing (OB-39). Frosting and bomb need aimed clears. These keep the player clearing, which is the core loop.
+- Neutral: pads, ice, magnets (displacement only).
 
 ## 8. Acceptance Criteria
 
