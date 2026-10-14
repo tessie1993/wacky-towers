@@ -235,20 +235,20 @@
   "face_yaw_deg": 22.0,
   "piece_scale_mult": 0.72,
   "side_u_fraction": 0.55,
-  "back_v_fraction": 0.95
+  "back_v_fraction": 0.8
  },
  "weather": {
   "clear": {},
   "mist": {
-   "amount": 26,
+   "amount": 30,
    "lifetime": 10.0,
    "mesh": [
     1.0,
     1.0
    ],
    "size": [
-    0.9,
-    1.8
+    0.45,
+    0.9
    ],
    "texture": "puff",
    "colors": [
@@ -284,7 +284,7 @@
     0.0,
     0.0
    ],
-   "fog_add": 0.005
+   "fog_add": 0.006
   },
   "drizzle": {
    "amount": 110,

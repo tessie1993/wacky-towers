@@ -73,7 +73,7 @@ inside a diorama (user rule, refs 01 and 09-12, layout only).
   HUD, not plain sky gradient) are at least 60% of the board's pixel area, measured by a segmentation mask in
   the capture tool; the terrain, the cast and the set piece acting are each identifiable; and the active
   piece, the stack and the landing marker are never occluded by the scene.
-- *Cosmetic or rule:* a `set_piece_action` is cosmetic unless it is the level's `main_rule` or an extra. Any
+- *Cosmetic or rule:* a `set_piece_action` is cosmetic unless it is one of the level's `mechanic` ids or an extra. Any
   action that moves, removes, blocks or scores blocks is a rule: it counts toward U10 and needs a handbook
   entry. Cosmetic actions never touch the board and have a static reduced-motion pose.
 
@@ -262,8 +262,8 @@ silhouette).
   **builds** (7-8 terrain builds and 7-8 acting set-piece builds per biome, 84-96 each in total); the
   vocabulary counts ids. `cast_pose` verbs are build, haul, cheer, hide, brace, point, plus `react` for animals
   and props; a biome uses at least 4. Exemplars teach **form, not content**: no level may reuse an
-  exemplar's set piece, terrain, mask, ending or character. The 9.7 exemplars are included in the U3, U14 and
-  U17 checks; the `ex_near_*` and `ex_weak_*` samples are excluded and exist only for human scoring.
+  exemplar's set piece, terrain, mask, ending or character. The 9.7 exemplars are included in the U3, U14, U17,
+  U18 and U19 checks; the `ex_near_*` and `ex_weak_*` samples are excluded and exist only for human scoring.
 - **U15 No counter goals.** No level's headline goal is `clear_n` or any counter goal (defined above).
   `height`, `shape`, `survive` and the other goals are legal only when the HUD names a story object (the
   lookout, the dam, the cloud) and the number is secondary. `clear_n` is a means only (it charges, bonks,
