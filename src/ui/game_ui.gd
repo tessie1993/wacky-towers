@@ -116,10 +116,12 @@ func _make_theme() -> Theme:
 	if track == null: track = Kit.plank_box(8)
 	t.set_stylebox("slider", "HSlider", _pad(track, 0, 14, 0, 14))
 	for part in ["grabber_area", "grabber_area_highlight"]:
-		var fill := Kit.pill(Kit.GOLD, Kit.GOLD_DEEP, false, 8)
+		# Sky-blue fill inside the wooden track (ref 04 music bar), slimmer than the track.
+		var fill := Kit.pill(Color("4aa8e8"), Color("2a6fb0"), false, 8)
 		fill.shadow_size = 0
 		fill.set_border_width_all(1)
-		t.set_stylebox(part, "HSlider", _pad(fill, 0, 6, 0, 6))
+		fill.border_width_bottom = 2
+		t.set_stylebox(part, "HSlider", _pad(fill, 0, 9, 0, 9))
 	var thumb := _kit_icon("slider_star_thumb", 0.8 * clampf(_control_factor, 1.0, 1.4))
 	if thumb != null:
 		for icon_name in ["grabber", "grabber_highlight", "grabber_disabled"]: t.set_icon(icon_name, "HSlider", thumb)

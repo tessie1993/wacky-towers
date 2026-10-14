@@ -375,9 +375,19 @@ static func backdrop(biome: String = "meadow", motion: float = 1.0) -> ColorRect
 	if spec.has("castle_pos"):
 		var cp: Array = spec["castle_pos"]
 		material.set_shader_parameter(&"castle_pos", Vector2(float(cp[0]), float(cp[1])))
+	# Menu dress: no waterfall streaks (they read as glitches behind panels at UI scale) and
+	# a cool white low sky instead of the biome's warm-cream horizon haze.
+	material.set_shader_parameter(&"mesa_falls", 0.0)
+	var low := Color(String(sky[sky.size() - 1]))
+	if is_warm_light(low): material.set_shader_parameter(&"low", Color(String(sky[mini(1, sky.size() - 1)])).lerp(Color("f4f6ff"), 0.6))
 	material.set_shader_parameter(&"motion", motion)
 	rect.material = material
 	return rect
+
+
+## True for warm off-white sky colours (cream, ivory) that would read as beige behind the UI.
+static func is_warm_light(c: Color) -> bool:
+	return c.r > 0.9 and c.g > 0.85 and c.b < c.r - 0.04
 
 
 ## A transparent PNG sprite from assets/art/ui (logo, wizard poses), or null if missing.
