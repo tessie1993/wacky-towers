@@ -169,6 +169,17 @@ func sync(events: Array[SimEvent]) -> void:
 				_syrup_band(ev.data)
 			&"syrup_glide":
 				_react_toys(&"sparkle")
+			&"track_started":
+				var track_def: TrackDef = MovingPlatformRule.load_track(String(ev.data.get("track", "")))
+				if track_def != null:
+					attach_track(track_def)
+			&"track_progress":
+				set_track_progress(int(ev.data.get("at_mm", 0)))
+			&"track_restart":
+				set_track_progress(int(ev.data.get("at_mm", 0)))
+				_audio.cue(&"lose")
+			&"track_topple", &"track_cargo_lost":
+				if not _reduced(): burst(Vector3(0, _board.h_play() * 0.4, 0), Color("#F2B27A"), 30)
 			&"fog_visibility":
 				if ev.data.has("cell_alphas"):
 					_locked.set_cell_visibility(ev.data.get("cell_alphas",[]))

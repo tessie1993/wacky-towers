@@ -1,196 +1,219 @@
 extends GdUnitTestSuite
-## G8 moving platform sim core: determinism, event timing, arch limit, cargo loss, checkpoints.
+## G8 moving platform sim core: data, determinism, timing, lean and topple, cargo states, arch, clock, restart.
+const T := preload("res://tests/unit/track/track_fixture.gd")
 const F := preload("res://tests/unit/mechanics/mechanics_fixture.gd")
-const SAMPLE := "res://assets/data/tracks/meadow_brook_run.json"
-const TICK := 50
 
 
-func _def(events: Array, checkpoints: Array = [], cargo: Dictionary = {}, effects: Dictionary = {}) -> TrackDef:
-	var fx: Dictionary = {"bump": {"loose_pct_per_force": 100}, "arch": {}, "crosswind": {"slide_pct": 100},
-		"updraft": {"lift_pct": 50, "height_pct_per_layer": 0}}
-	fx.merge(effects, true)
-	return TrackDef.from_dict({"id": "t", "tick_ms": TICK, "preview_window_mm": 4000,
-		"segments": [{"id": "s", "length_mm": 10000, "speed_mm_s": 1000}],
-		"events": events, "checkpoints": checkpoints, "cargo": cargo, "effects": fx})
+func test_shipped_tracks_are_valid_and_winnable() -> void:
+	for id: String in ["meadow_brook_run", "meadow_kite_day"]:
+		var def: TrackDef = TrackDef.load_file("res://assets/data/tracks/%s.json" % id)
+		assert_array(def.errors).is_empty()
+		assert_bool(def.base_duration_ms() <= def.time_limit_ms).is_true()
+	assert_int(TrackDef.load_file("res://assets/data/tracks/meadow_brook_run.json").base_duration_ms()).is_between(120000, 180000)
 
 
-func _board(columns: Dictionary) -> BoardState:
-	## columns: Vector2i(x, z) -> height; solid stacks from the floor.
-	var board: BoardState = F.board(4, 4, 10)
-	for col: Vector2i in columns:
-		for y: int in int(columns[col]):
-			board.place(board.index(Vector3i(col.x, y, col.y)), 1, 0, 1)
-	return board
+func test_preview_rows_carry_time_and_safe_height() -> void:
+	var def: TrackDef = T.def([{"kind": "arch", "at_mm": 3000, "gap_layers": 6}, {"kind": "bump", "at_mm": 2000, "force": 2, "dir": "+x"}],
+		[{"id": "p", "at_mm": 2500}])
+	var rows: Array[Dictionary] = def.preview(1000)
+	assert_array(T.kinds(rows)).is_equal([&"bump", &"checkpoint", &"arch"])
+	assert_int(int(rows[0]["ahead_ms"])).is_equal(1000)
+	assert_int(int(rows[0]["impulse_pm"])).is_equal(240)
+	assert_int(int(rows[2]["safe_height_layers"])).is_equal(5)
 
 
-func _cell_count(board: BoardState) -> int:
-	var n: int = 0
-	for y: int in 10:
-		for z: int in 4:
-			for x: int in 4:
-				if board.get_kind(board.index(Vector3i(x, y, z))) != 0:
-					n += 1
-	return n
-
-
-func _run(runner: TrackRunner, api: RuleApi, ms: int, dt: int = TICK) -> Array[Dictionary]:
-	var out: Array[Dictionary] = []
-	for _i: int in ms / dt:
-		out.append_array(runner.step(dt, api))
-		api.flush_writes()
-	return out
-
-
-func _hanging_board() -> BoardState:
-	var board: BoardState = _board({Vector2i(0, 0): 1})
-	for y: int in range(3, 8):  # a floating overhang the bump can shake loose
-		board.place(board.index(Vector3i(2, y, 2)), 1, 0, 2)
-		board.place(board.index(Vector3i(3, y, 2)), 1, 0, 2)
-	return board
-
-
-func test_sample_track_is_valid_and_preview_lists_what_is_ahead() -> void:
-	var def: TrackDef = TrackDef.load_file(SAMPLE)
-	assert_array(def.errors).is_empty()
-	assert_int(def.length_mm()).is_equal(60000)
-	var ahead: Array[Dictionary] = def.preview(0, 12001)
-	assert_int(ahead.size()).is_equal(2)
-	assert_int(int(ahead[0]["ahead_mm"])).is_equal(6000)
-	assert_str(String(ahead[1]["kind"])).is_equal("arch")
-
-
-func test_invalid_track_reports_errors() -> void:
-	var def: TrackDef = TrackDef.from_dict({"id": "x", "segments": [], "events": [{"kind": "tornado", "at_mm": 5}]})
-	assert_bool(def.is_valid()).is_false()
+func test_validation_rejects_missing_and_bad_params() -> void:
+	assert_bool(T.def([{"kind": "arch", "at_mm": 100}]).is_valid()).is_false()  # no gap_layers
+	assert_bool(T.def([{"kind": "crosswind", "at_mm": 100, "dir": "up", "strength": 1}]).is_valid()).is_false()
+	assert_bool(T.def([{"kind": "tornado", "at_mm": 100}]).is_valid()).is_false()
+	assert_bool(T.def([], [], {"time_limit_ms": 5000}).is_valid()).is_false()  # shorter than the drive
+	assert_bool(T.def([], [], {"cargo": {"height_layers": 1}}).is_valid()).is_false()  # merge keeps keys, so test a bare dict
+	var bare: Dictionary = T.dict()
+	bare["cargo"] = {"height_layers": 1}
+	assert_bool(TrackDef.from_dict(bare).is_valid()).is_false()
 
 
 func test_event_fires_on_the_tick_the_platform_reaches_it() -> void:
-	var board: BoardState = _board({Vector2i(0, 0): 1})
-	var api: RuleApi = F.api(board)
-	var runner := TrackRunner.new(_def([{"kind": "updraft", "at_mm": 2000, "duration_ms": 500}]), 1)
-	var out: Array[Dictionary] = _run(runner, api, 5000)
-	assert_int(out.size()).is_equal(1)
-	assert_int(int(out[0]["tick"])).is_equal(40)  # 2000 mm at 1000 mm/s with 50 ms ticks
-	assert_int(int(out[0]["at_mm"])).is_equal(2000)
+	var api: RuleApi = F.api(T.board())
+	var runner := TrackRunner.new(T.def([{"kind": "updraft", "at_mm": 2000, "duration_ms": 500}]))
+	var out: Array[Dictionary] = T.run(runner, api, 5000)
+	var ev: Array[Dictionary] = out.filter(func(r: Dictionary) -> bool: return r["kind"] == TrackRunner.EV_EVENT)
+	assert_int(ev.size()).is_equal(1)
+	assert_int(int(ev[0]["tick"])).is_equal(40)
 
 
-func test_updraft_speeds_the_platform_for_its_duration_only() -> void:
-	var api: RuleApi = F.api(_board({}))
-	var runner := TrackRunner.new(_def([{"kind": "updraft", "at_mm": 1000, "duration_ms": 1000}]), 1)
-	_run(runner, api, 1000)
-	assert_int(runner.speed_mm_s(api)).is_equal(1500)
-	_run(runner, api, 1100)
-	assert_int(runner.speed_mm_s(api)).is_equal(1000)
-
-
-func test_same_seed_same_result_and_chunking_does_not_matter() -> void:
-	var events: Array = [{"kind": "bump", "at_mm": 1000, "force": 1}, {"kind": "crosswind", "at_mm": 3000, "dir": "+x"}]
+func test_same_run_gives_the_same_result_whatever_the_step_size() -> void:
+	var events: Array = [{"kind": "bump", "at_mm": 1000, "force": 2, "dir": "+x"}, {"kind": "crosswind", "at_mm": 3000, "dir": "+x", "strength": 2}]
 	var results: Array = []
-	for dt: int in [50, 50, 10]:
-		var board: BoardState = _hanging_board()
+	for dt: int in [50, 10, 33]:
+		var board: BoardState = T.board({Vector2i(3, 1): 4})
 		var api: RuleApi = F.api(board)
-		var runner := TrackRunner.new(_def(events, [], {}, {"bump": {"loose_pct_per_force": 50}}), 7)
-		var out: Array[Dictionary] = _run(runner, api, 6000, dt)
-		results.append([_cell_count(board), runner.position_mm(), out.size(), runner.snapshot()["rng_state"]])
+		var runner := TrackRunner.new(T.def(events))
+		var out: Array[Dictionary] = T.run(runner, api, 6600, dt)
+		results.append([T.count(board), runner.position_mm(), T.kinds(out), runner.lean_pm()])
 	assert_array(results[1]).is_equal(results[0])
 	assert_array(results[2]).is_equal(results[0])
 
 
-func test_bump_shakes_loose_only_unsupported_blocks() -> void:
-	var board: BoardState = _hanging_board()
+func test_lean_is_centre_of_mass_and_building_on_the_light_side_rights_it() -> void:
+	var board: BoardState = T.board({Vector2i(3, 1): 2})
 	var api: RuleApi = F.api(board)
-	var runner := TrackRunner.new(_def([{"kind": "bump", "at_mm": 500, "force": 1}]), 3)
-	_run(runner, api, 1000)
-	assert_int(board.get_kind(board.index(Vector3i(0, 0, 0)))).is_equal(1)  # grounded block stays
-	assert_int(board.get_kind(board.index(Vector3i(2, 3, 2)))).is_equal(0)  # the overhang base is gone
-	# Bottom-up pass: blocks that lost their support in the same shake go too (a cascade).
-	assert_int(board.get_kind(board.index(Vector3i(2, 4, 2)))).is_equal(0)
+	var runner := TrackRunner.new(T.def())
+	T.run(runner, api, 100)
+	assert_int(runner.lean_pm()).is_equal(750)  # 3/4 of the way to the +x edge
+	for y: int in 2:
+		board.place(board.index(Vector3i(0, y, 1)), 1, 0, 2)
+	T.run(runner, api, 100)
+	assert_int(runner.lean_pm()).is_less(750)
+	assert_int(runner.lean_pm()).is_equal(250)  # (3 + 3 - 3 - 3... cells at x=3 and x=0) -> 0 shifted by two cells
 
 
-func test_arch_removes_everything_at_or_above_the_gap() -> void:
-	var board: BoardState = _board({Vector2i(0, 0): 5, Vector2i(3, 3): 2})
+func test_bump_pushes_the_heavy_side_past_the_limit_and_the_top_spills() -> void:
+	var board: BoardState = T.board({Vector2i(3, 1): 4})
 	var api: RuleApi = F.api(board)
-	var runner := TrackRunner.new(_def([{"kind": "arch", "at_mm": 500, "gap_layers": 3}]), 1)
-	var out: Array[Dictionary] = _run(runner, api, 1000)
-	assert_int(_cell_count(board)).is_equal(3 + 2)
-	assert_int(int(out[0]["removed"])).is_equal(2)
-	assert_int(board.get_kind(board.index(Vector3i(0, 2, 0)))).is_equal(1)
-	assert_int(board.get_kind(board.index(Vector3i(0, 3, 0)))).is_equal(0)
+	var runner := TrackRunner.new(T.def([{"kind": "bump", "at_mm": 500, "force": 2, "dir": "-x"}]))
+	var out: Array[Dictionary] = T.run(runner, api, 1200)
+	assert_array(T.kinds(out)).contains([TrackRunner.EV_LEAN_WARNING, TrackRunner.EV_TOPPLE])
+	assert_int(T.count(board)).is_equal(2)  # spill_cells = 2 removed, the top ones
+	assert_int(board.get_kind(board.index(Vector3i(3, 3, 1)))).is_equal(0)
+	assert_int(board.get_kind(board.index(Vector3i(3, 0, 1)))).is_equal(1)
 
 
-func test_cargo_survives_an_arch_it_fits_under_and_is_lost_when_too_tall() -> void:
-	var cargo: Dictionary = {"x": 1, "z": 1, "height_layers": 1, "max_drop_layers": 5}
-	var fits: Array[Dictionary] = _run_arch(2, 3, cargo)
-	assert_bool(fits.any(func(r: Dictionary) -> bool: return r["kind"] == TrackRunner.EV_CARGO_LOST)).is_false()
-	var lost: Array[Dictionary] = _run_arch(3, 3, cargo)
-	assert_bool(lost.any(func(r: Dictionary) -> bool: return r["kind"] == TrackRunner.EV_CARGO_LOST)).is_true()
-
-
-func _run_arch(column_height: int, gap: int, cargo: Dictionary) -> Array[Dictionary]:
-	var api: RuleApi = F.api(_board({Vector2i(1, 1): column_height}))
-	var runner := TrackRunner.new(_def([{"kind": "arch", "at_mm": 500, "gap_layers": gap}], [], cargo), 1)
-	return _run(runner, api, 1000)
-
-
-func test_cargo_is_lost_when_a_bump_drops_its_seat_too_far() -> void:
-	var board: BoardState = _board({Vector2i(1, 1): 4})
+func test_a_centred_flat_stack_never_topples() -> void:
+	var board: BoardState = T.board(T.flat(2))
 	var api: RuleApi = F.api(board)
-	var cargo: Dictionary = {"x": 1, "z": 1, "height_layers": 1, "max_drop_layers": 1}
-	var fx: Dictionary = {"bump": {"tall_layer": 1, "tall_pct_per_force": 100}}
-	var runner := TrackRunner.new(_def([{"kind": "bump", "at_mm": 500, "force": 1}], [], cargo, fx), 1)
-	var out: Array[Dictionary] = _run(runner, api, 1000)
-	assert_bool(out.any(func(r: Dictionary) -> bool: return r["kind"] == TrackRunner.EV_CARGO_LOST)).is_true()
+	var runner := TrackRunner.new(T.def([{"kind": "bump", "at_mm": 500, "force": 1, "dir": "+x"}]))
+	var out: Array[Dictionary] = T.run(runner, api, 1500)
+	assert_bool(T.kinds(out).has(TrackRunner.EV_TOPPLE)).is_false()
 
 
-func test_cargo_loss_returns_to_the_last_checkpoint_and_clears_the_blocks() -> void:
-	var board: BoardState = _board({Vector2i(1, 1): 4})
+func test_crosswind_scales_with_stack_height() -> void:
+	var impulses: Array = []
+	for layers: int in [1, 4]:
+		var api: RuleApi = F.api(T.board(T.flat(layers)))
+		var runner := TrackRunner.new(T.def([{"kind": "crosswind", "at_mm": 100, "dir": "+x", "strength": 2}]))
+		var out: Array[Dictionary] = T.run(runner, api, 300)
+		var ev: Dictionary = out.filter(func(r: Dictionary) -> bool: return r["kind"] == TrackRunner.EV_EVENT)[0]
+		impulses.append((ev["impulse"] as Vector2i).x)
+	assert_array(impulses).is_equal([60, 240])
+
+
+func test_updraft_lifts_tall_light_builds_and_gust_punishes_tall_heavy() -> void:
+	var tall_light: RuleApi = F.api(T.board({Vector2i(1, 1): 6}))
+	var flat_heavy: RuleApi = F.api(T.board(T.flat(6)))
+	var lifts: Array = []
+	var gusts: Array = []
+	for api: RuleApi in [tall_light, flat_heavy]:
+		var up := TrackRunner.new(T.def([{"kind": "updraft", "at_mm": 100, "duration_ms": 1000}]))
+		var rec: Array[Dictionary] = T.run(up, api, 300)
+		lifts.append(int(rec.filter(func(r: Dictionary) -> bool: return r["kind"] == TrackRunner.EV_EVENT)[0]["lift_pct"]))
+		var gu := TrackRunner.new(T.def([{"kind": "gust", "at_mm": 100, "dir": "+z", "strength": 1}]))
+		var g: Array[Dictionary] = T.run(gu, api, 300)
+		gusts.append((g.filter(func(r: Dictionary) -> bool: return r["kind"] == TrackRunner.EV_EVENT)[0]["impulse"] as Vector2i).y)
+	assert_int(lifts[0]).is_greater(lifts[1])  # 1 column x6: 10+72-6 = 76; 9 columns x6: 10+72-54 = 28
+	assert_int(gusts[1]).is_greater(gusts[0])  # 6*54*60/100 = 194 versus 6*6*60/100 = 21
+
+
+func test_arch_takes_the_cargo_only_when_the_stack_is_too_tall() -> void:
+	for pair: Array in [[2, false], [3, true]]:
+		var api: RuleApi = F.api(T.board(T.flat(int(pair[0]))))
+		var runner := TrackRunner.new(T.def([{"kind": "arch", "at_mm": 500, "gap_layers": 3}]))
+		var out: Array[Dictionary] = T.run(runner, api, 1000)
+		assert_bool(T.kinds(out).has(TrackRunner.EV_CARGO_LOST)).is_equal(bool(pair[1]))
+
+
+func test_unstable_seat_warns_wobble_then_slip_before_the_cargo_falls() -> void:
+	var api: RuleApi = F.api(T.board({Vector2i(1, 1): 4}))  # a lone tower: 1 of 9 footprint columns
+	var runner := TrackRunner.new(T.def())
+	var out: Array[Dictionary] = T.run(runner, api, 9000)
+	var names: Array = out.filter(func(r: Dictionary) -> bool: return r["kind"] == TrackRunner.EV_CARGO_STATE).map(func(r: Dictionary) -> StringName: return r["name"])
+	assert_array(names).starts_with([&"wobble", &"slip"])
+	var order: Array = T.kinds(out)
+	assert_bool(order.find(TrackRunner.EV_CARGO_STATE) < order.find(TrackRunner.EV_CARGO_LOST)).is_true()
+
+
+func test_building_a_level_seat_during_the_warning_saves_the_cargo() -> void:
+	var board: BoardState = T.board({Vector2i(1, 1): 4})
 	var api: RuleApi = F.api(board)
-	var cargo: Dictionary = {"x": 1, "z": 1, "height_layers": 1, "max_drop_layers": 5}
-	var runner := TrackRunner.new(_def([{"kind": "arch", "at_mm": 6000, "gap_layers": 2}],
-		[{"id": "post_a", "at_mm": 3000}], cargo), 1)
-	var out: Array[Dictionary] = _run(runner, api, 6500)
-	var kinds: Array = out.map(func(r: Dictionary) -> StringName: return r["kind"])
-	assert_array(kinds).contains([TrackRunner.EV_CHECKPOINT, TrackRunner.EV_CARGO_LOST, TrackRunner.EV_RESTART])
-	assert_int(runner.attempts()).is_equal(2)
-	assert_str(String(runner.checkpoint_id())).is_equal("post_a")
-	assert_int(_cell_count(board)).is_equal(0)
-	assert_int(runner.position_mm()).is_less(6000)
-	assert_int(runner.position_mm()).is_greater_equal(3000)
+	var runner := TrackRunner.new(T.def())
+	T.run(runner, api, 3500)
+	assert_int(int(runner.cargo_state()["state"])).is_greater_equal(TrackRunner.CARGO_WOBBLE)
+	for col: Vector2i in T.flat(4):
+		for y: int in 4:
+			if board.get_kind(board.index(Vector3i(col.x, y, col.y))) == 0:
+				board.place(board.index(Vector3i(col.x, y, col.y)), 1, 0, 3)
+	var out: Array[Dictionary] = T.run(runner, api, 4000)
+	assert_bool(T.kinds(out).has(TrackRunner.EV_CARGO_LOST)).is_false()
+	assert_int(int(runner.cargo_state()["state"])).is_equal(TrackRunner.CARGO_STABLE)
 
 
-func test_fail_mode_ends_the_run_instead_of_restarting() -> void:
-	var api: RuleApi = F.api(_board({Vector2i(1, 1): 4}))
-	var def: TrackDef = _def([{"kind": "arch", "at_mm": 500, "gap_layers": 1}], [], {"x": 1, "z": 1})
-	def.on_loss = &"fail"
-	var runner := TrackRunner.new(def, 1)
-	_run(runner, api, 1000)
-	assert_bool(runner.is_failed()).is_true()
-	assert_int(runner.attempts()).is_equal(1)
+func test_a_line_clear_that_drops_the_seat_stresses_the_cargo() -> void:
+	var board: BoardState = T.board(T.flat(4))
+	var api: RuleApi = F.api(board)
+	var runner := TrackRunner.new(T.def())
+	T.run(runner, api, 200)
+	for col: Vector2i in T.flat(4):
+		board.remove(board.index(Vector3i(col.x, 3, col.y)), BoardState.Cause.CLEAR)
+	T.run(runner, api, 100)
+	assert_int(int(runner.cargo_state()["stress_pm"])).is_greater_equal(200)
 
 
-func test_platform_finishes_at_the_end_of_the_track() -> void:
-	var api: RuleApi = F.api(_board({}))
-	var runner := TrackRunner.new(_def([]), 1)
-	var out: Array[Dictionary] = _run(runner, api, 11000)
+func test_platform_finishes_in_time_with_the_cargo() -> void:
+	var runner := TrackRunner.new(T.def())
+	var out: Array[Dictionary] = T.run(runner, F.api(T.board()), 11000)
 	assert_bool(runner.is_finished()).is_true()
-	assert_int(runner.position_mm()).is_equal(10000)
-	assert_int(out.size()).is_equal(1)
-	assert_str(String(out[0]["kind"])).is_equal(String(TrackRunner.EV_FINISHED))
+	assert_int(runner.time_left_ms()).is_equal(2000)
+	assert_array(T.kinds(out)).is_equal([TrackRunner.EV_FINISHED])
 
 
-func test_snapshot_restore_round_trips() -> void:
-	var api: RuleApi = F.api(_hanging_board())
-	var runner := TrackRunner.new(_def([{"kind": "bump", "at_mm": 4000, "force": 1}]), 5)
-	_run(runner, api, 2000)
-	var snap: Dictionary = runner.snapshot()
-	_run(runner, api, 1000)
-	runner.restore(snap)
-	assert_dict(runner.snapshot()).is_equal(snap)
+func test_running_out_of_time_loses_the_race() -> void:
+	var over: Dictionary = {"time_limit_ms": 10000, "restart_penalty_ms": 5000}
+	var runner := TrackRunner.new(T.def([], [], over))
+	var api: RuleApi = F.api(T.board({Vector2i(1, 1): 4}))  # the tower loses the cargo near 7 s; the penalty ends the clock
+	var out: Array[Dictionary] = T.run(runner, api, 12000)
+	assert_bool(runner.is_failed()).is_true()
+	assert_str(String(runner.fail_reason())).is_equal("time_up")
+	assert_bool(T.kinds(out).has(TrackRunner.EV_TIME_UP)).is_true()
+
+
+func test_restart_returns_to_the_post_wipes_blocks_and_replays_later_events() -> void:
+	var board: BoardState = T.board(T.flat(4))
+	var api: RuleApi = F.api(board)
+	var def: TrackDef = T.def([{"kind": "arch", "at_mm": 6000, "gap_layers": 3}, {"kind": "updraft", "at_mm": 4000, "duration_ms": 100}],
+		[{"id": "post_a", "at_mm": 3000}])
+	var runner := TrackRunner.new(def)
+	var out: Array[Dictionary] = T.run(runner, api, 6500)
+	assert_array(T.kinds(out)).contains([TrackRunner.EV_CHECKPOINT, TrackRunner.EV_CARGO_LOST, TrackRunner.EV_RESTART])
+	assert_int(runner.attempts()).is_equal(2)
+	assert_int(T.count(board)).is_equal(0)
+	assert_int(runner.snapshot()["best_pm"]).is_greater_equal(600)  # progress never goes backwards
+	var again: Array[Dictionary] = T.run(runner, api, 1500)
+	assert_bool(again.any(func(r: Dictionary) -> bool: return r.get("event", &"") == TrackDef.KIND_UPDRAFT)).is_true()
+
+
+func test_fail_mode_asks_the_session_to_fail() -> void:
+	var api: RuleApi = F.api(T.board(T.flat(4)))
+	var runner := TrackRunner.new(T.def([{"kind": "arch", "at_mm": 500, "gap_layers": 3}], [], {"on_loss": "fail"}))
+	T.run(runner, api, 1000)
+	assert_bool(runner.is_failed()).is_true()
+	assert_bool(api.take_requests().any(func(r: Dictionary) -> bool: return r["op"] == &"fail")).is_true()
+
+
+func test_a_restored_runner_continues_identically() -> void:
+	var events: Array = [{"kind": "updraft", "at_mm": 3000, "duration_ms": 2000}, {"kind": "cloud_bump", "at_mm": 5000, "force": 1, "dir": "+z"}]
+	var a := TrackRunner.new(T.def(events))
+	var api_a: RuleApi = F.api(T.board())
+	T.run(a, api_a, 2000)
+	var snap: Dictionary = a.snapshot()
+	var b := TrackRunner.new(T.def(events))
+	b.restore(snap)
+	var out_a: Array[Dictionary] = T.run(a, api_a, 6000)
+	var out_b: Array[Dictionary] = T.run(b, F.api(T.board()), 6000)
+	assert_array(out_b).is_equal(out_a)
+	assert_dict(b.snapshot()).is_equal(a.snapshot())
 
 
 func test_path_point_follows_arc_length() -> void:
-	var def: TrackDef = TrackDef.from_dict({"id": "p", "segments": [{"id": "s", "length_mm": 1000, "speed_mm_s": 1}],
-		"path": [[0, 0, 0], [0, 0, -10], [10, 0, -10]]})
-	assert_vector(def.path_point(0)).is_equal(Vector3.ZERO)
-	assert_vector(def.path_point(500)).is_equal(Vector3(0, 0, -10))
-	assert_vector(def.path_point(1000)).is_equal(Vector3(10, 0, -10))
+	var def: TrackDef = T.def([], [], {"path": [[0, 0, 0], [0, 0, -10], [10, 0, -10]]})
+	assert_vector(def.path_point(5000)).is_equal(Vector3(0, 0, -10))
+	assert_vector(def.path_point(10000)).is_equal(Vector3(10, 0, -10))
