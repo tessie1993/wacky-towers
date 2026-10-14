@@ -8,7 +8,9 @@ biome repeats the same tier template. This spec sets the rules every level must 
 
 ## Gameplay variety rules (per biome, 14 levels)
 
-- **Board footprint:** at most 4 of the 14 levels are plain squares. The others use `board.mask` shapes
+- **Board footprint:** ~~at most 4 of the 14 levels are plain squares~~ (superseded 2026-10-14 by user ruling B
+  and `campaign-vision.md` U18: **at most 1 plain square per biome**, and no two levels in a biome share a
+  footprint). The others use `board.mask` shapes
   (8x8 minimum bounding box, up to 12x12). Shapes include cross, ring with a hole, L, twin islands joined
   by a bridge, terraces (masks that differ per layer), diamond, U-bay, and stepping stones. The island
   art follows the mask automatically (WtIslandBuilder.build_island uses the active cells).

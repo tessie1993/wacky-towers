@@ -1,4 +1,4 @@
-# Calibration exemplars (game director, 2026-10-14, revision 5)
+# Calibration exemplars (game director, 2026-10-14, revision 6)
 
 Anchors for the panel (`campaign-vision.md` section 9). Written by the game director, not the makers.
 
@@ -7,7 +7,7 @@ Anchors for the panel (`campaign-vision.md` section 9). Written by the game dire
   exemplar's set piece, terrain, footprint, mask, ending or character. Exemplar ids carry the `ex_` prefix
   (`ex_forest_05`) so they never collide with real ids; the real levels must still differ from them. The 9.7
   exemplars (`ex_forest_02`, `ex_forest_05`, `ex_forest_h1`, `ex_pirate_03`, `ex_pirate_10`, `ex_meadow_01`,
-  `ex_underwater_09`) are included in the U3, U14, U17, U18 and U19 checks; each has a `level_table` row in
+  `ex_underwater_09`, `ex_candy_03`) are included in the U3, U14, U17, U18 and U19 checks; each has a `level_table` row in
   section 9. The `ex_near_*` and `ex_weak_*` samples are excluded: they fail on purpose and exist only for human
   scoring. Exemplar ids are not in campaign order (for instance `strike` is shown in `ex_pirate_03` and
   `ex_underwater_09`; in the real campaign it is taught once, in the first biome that uses it).
@@ -43,31 +43,32 @@ The objective names a story object (U15). The opening event is distinct and sile
 ## 2. Exemplar spec (9.7, complete)
 
 ```yaml
-mechanic: [vines]                # the base (ruling A); taught alone in ex_forest_02; handbook#vines
+mechanic: [gap_runner, vines]    # the bases (ruling A): the module gap_runner (debuted in Meadow) and the rule vines (taught alone in ex_forest_02)
 extras: [gust]                   # a rule taught in biome 1; handbook#gust
 verb: build
+extra_control: none
 id: ex_forest_05
 tutorial_line: Build a bridge so Nanny Tuft can walk across.      # 9 words
 name: Goat Gully
 role: twist                      # adds NO new mechanic; its novelty is the goal-phase twist
 headline_objective: Help Nanny Tuft cross the gully
 goal_type: [span, survive]       # play order; U3 compares the whole list
-goal_params: by formula          # gap 6 cells, hold time
+goal_params: by formula          # gap 4 cells, hold time
 target_visible: yes, a lit footprint trail on the far ledge from frame 0
 ending_pattern: twist            # written to metadata.ending
 metadata.signature: The one where the bridge is finished and the wind arrives.
-footprint: bridge span 14x8
+footprint: bridge span 12x8      # recogniser: a 4-wide gap, 3 rows deep, open at the top, 4-wide pillars, a 5-deep base
 mask: |
-  ####......####
-  ####......####
-  ####......####
-  ##############
-  ##############
-  ##############
-  ##############
-  ##############
-canonical_mask: "8x14:########/########/########/########/#####.../#####.../#####.../#####.../#####.../#####.../########/########/########/########"
-spawn_cols: 0-3                  # the centre 4 columns (5-8) are void in the top rows, so the spec names the left pillar
+  ####....####
+  ####....####
+  ####....####
+  ############
+  ############
+  ############
+  ############
+  ############
+canonical_mask: "8x12:########/########/########/########/#####.../#####.../#####.../#####.../########/########/########/########"
+spawn_cols: 0-3                  # the centre 4 columns (4-7) are void in the top rows, so the spec names the left pillar
 flavour: none
 telegraph: n/a                   # no strike in this level
 corridor_check: min_spawn_width 4 (the left pillar, columns 0-3, is a 4-wide floor run); min_dead_end_width n/a
@@ -87,7 +88,8 @@ comic_fail: Nanny Tuft slides down on her bottom, the bell rings once, and Sif c
 callback_of: none
 ```
 
-Rule budget: this level adds no mechanic. `vines` debuts in `ex_forest_02`. The gale is `gust`, known from biome 1.
+Mechanic budget: this level adds no mechanic. `vines` debuts in `ex_forest_02` and `gap_runner` in Meadow, so the
+two bases are both taught earlier. The gale is `gust`, known from biome 1.
 `root_whip` is cosmetic, so it needs no handbook entry and the vine entry stays true: a vine-held bridge sways
 but never loses a block. Minigame check (P2d): one goal, one 9-word sentence, a themed meter, a story payoff,
 standard controls.
@@ -99,6 +101,7 @@ standard controls.
 ```yaml
 mechanic: [vines]
 verb: build
+extra_control: none
 id: ex_near_forest_06
 name: Cliff Crossing
 headline_objective: Get the cart across the cliff
@@ -175,6 +178,7 @@ full `look` block are present in the real spec.
 mechanic: [strike, row_cannon]   # both taught earlier (strike variant: cannon); the boss adds NO new mechanic
 extras: [tilt_plate]             # taught in pirate_06, used in phase 3
 verb: destroy
+extra_control: fire              # the one extra button: fire the reef... the deck cannon
 id: ex_pirate_10
 tutorial_line: Wall off the cannons, then fire back with full rows.     # 10 words
 name: Crumpet's Deck
@@ -208,9 +212,10 @@ building (U9), has a unique `(arena, phases, building_action)` (U12) and hands o
 **Abridged:** `metadata.signature`, `target_visible`, `world_change` and `comic_fail` are present in the real spec.
 
 ```yaml
-mechanic: [vines]
+mechanic: [gap_runner, vines]    # the module gap_runner supplies the span goal
 extras: [gust]
 verb: rescue
+extra_control: none
 id: ex_forest_h1
 tutorial_line: Hold the bridge, then find the kid goat.     # 8 words
 name: Gully by Dusk
@@ -231,7 +236,7 @@ mask: |
   ############
   ############
 canonical_mask: "8x12:########/########/########/########/######../######../######../######../####..../####..../####..../####...."
-spawn_cols: 4-7                  # the top-3-row floor run across these columns is row 3, 4 wide
+spawn_cols: 4-7                  # the first floor row across these columns is row index 2 (zero-based), 4 wide
 look: { time_of_day: dusk, weather: mist, set_piece: rotten_plank_bridge, camera: wide }   # differs in time of day (U3 remix rule)
 scene: { terrain: stepped_ravine, set_piece_action: root_whip, cast_on_stage: Sif braces the rope (brace) }
 g0: by formula (faster than forest_10)
@@ -244,6 +249,7 @@ g0: by formula (faster than forest_10)
 ```yaml
 mechanic: [lookout]              # the only mechanic; handbook#lookout
 verb: build
+extra_control: none
 id: ex_meadow_01
 tutorial_line: Stack high so Ada can spot the sheep.      # 9 words
 name: Windmill Lookout

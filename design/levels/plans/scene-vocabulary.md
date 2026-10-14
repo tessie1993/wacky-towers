@@ -26,6 +26,7 @@ the board (counts toward U10 and needs a handbook entry).
 | `hilltop_ledge` | a grassy hill shoulder | exemplar `ex_meadow_01` |
 | `treetop_platform` | a platform in the canopy | exemplar `ex_forest_02` |
 | `dock_pier` | a harbour pier | exemplar `ex_pirate_03` |
+| `bakery_counter` | a giant bakery counter | exemplar `ex_candy_03` |
 | `reef_wall` | a sea wall between two coral towers | exemplar `ex_underwater_09` |
 | `plank_bridge` | a bridge deck over water | to be assigned |
 | `fort_wall` | a stone wall walk | to be assigned |
@@ -44,6 +45,7 @@ the board (counts toward U10 and needs a handbook entry).
 | `tentacle_grab` | rule | `strike` variant: a tentacle pulls a block off the wall after a telegraph |
 | `rock_throw` | rule | `strike` variant: a thrower lobs a rock that knocks out the top block of a lane |
 | `catapult_volley` | rule | `strike` variant: a catapult strikes a lane after its arm cranks back |
+| `icing_drip` | cos | icing drips down the cake stand as the plate tilts |
 | `sails_turn` | cos | windmill sails turn faster as the stack rises |
 | `bell_ring` | cos | a bell rings when a layer lands |
 | `lantern_sway` | cos | lanterns swing with the wind |
@@ -52,13 +54,30 @@ the board (counts toward U10 and needs a handbook entry).
 
 ## Footprint shapes (closed list, U18; ruling B)
 
-A footprint is `shape WxD` (for example `ring 10x10`). Each biome uses its own shape or size per level; a plain
-square is allowed once per biome. Every shape keeps the corridor rule (spawn run 4 wide, dead ends and bands 3+).
+A footprint is `shape WxD` (for example `ring 10x10`); sizes run from 8x8 up to 12x12 (U5 pads to 12x12). Each
+biome uses its own shape or size per level; a plain square is allowed once per biome. Every shape keeps the
+corridor rule (spawn run 4 wide; every band, arm, tread, tower, link or leg at least 4 wide at the spawn rows
+and at least 3 wide elsewhere). The script verifies each declared shape name against its mask with the
+recognisers below ("floor" = `#` cells; "component" = a 4-connected floor region; widths are measured across
+the thinnest cross-section).
 
-`plain square` (once per biome), `ring`, `bridge span`, `stair`, `island chain`, `ship hull`, `L`, `cross`,
-`crescent`, `twin towers`, `funnel`, `moat with centre island`. More shapes (terraces, diamond, U-bay, stepping
-stones from the identity spec) are added by change request. The set of shapes across a biome's 14 levels is at
-least 8 (U18).
+| Shape | Recogniser (all clauses must hold) |
+|---|---|
+| `plain square` | the mask is a full rectangle: no void cell at all (once per biome) |
+| `ring` | one floor component with exactly one enclosed void hole; the outer boundary is a full rectangle (no notches); band width 3+ everywhere |
+| `moat with centre island` | exactly two floor components (an outer ring and an inner island of at least 4x4) separated by one closed void band 1-2 wide; the outer ring band is 3+ wide |
+| `bridge span` | one floor component with a void gap open on exactly one long side: gap width 3+, gap depth 2-3 rows, floor 4+ wide on both sides of the gap, and a floor base 3+ deep on the closed side |
+| `twin towers` | one floor component: a base 3+ deep spanning the full width, plus exactly two towers, each 4+ wide and 4+ rows tall above the base, separated by a void gap 3-4 wide |
+| `stair` | the column heights are monotone (all non-decreasing or all non-increasing) across 3+ distinct heights, and each tread (a run of equal height) is 4+ wide |
+| `island chain` | 3+ floor components, each at least 4x4, joined in a path by links 3+ wide and 1+ cells long; the links are the only connections |
+| `ship hull` | one component, symmetric about its long axis, with the width non-increasing toward one end by at least 4 cells in total, and a floor run 4+ wide at the narrow end |
+| `L` | the floor equals the bounding rectangle minus one corner rectangle of at least 4x4; both legs are 4+ wide |
+| `cross` | the floor equals the bounding rectangle minus four equal corner rectangles of at least 3x3; all four arms are 4+ wide |
+| `crescent` | one component forming a C: exactly one enclosed bay, open on one side by 3+ cells, whose width changes by at least 2 across its depth (curved, not rectangular); band 4+ wide |
+| `funnel` | one component, symmetric about the vertical axis, row widths non-increasing from top to bottom, narrowing by at least 4 cells in total, top row 8+ wide and bottom row 4+ wide |
+
+More shapes (terraces, diamond, U-bay, stepping stones from the identity spec) are added by change request, each
+with a recogniser. The set of shapes across a biome's 14 levels is at least 8 (U18).
 
 ## Off-list ids fail the U17 script
 
