@@ -3,15 +3,22 @@ class_name MechanicsCells extends RefCounted
 
 
 static func all(api: RuleApi) -> Array[Vector3i]:
+	# One pass bucketed by layer: same order as the old per-layer rescans (layer, x, z, y) at O(cells).
 	var result: Array[Vector3i] = []
 	var size: Vector3i = api.board_size()
+	var buckets: Array[Array] = []
 	for layer: int in api.layer_count():
-		for x: int in size.x:
-			for z: int in size.z:
-				for y: int in size.y:
-					var c := Vector3i(x, y, z)
-					if api.is_active(c) and api.layer_of(c) == layer:
-						result.append(c)
+		buckets.append([])
+	for x: int in size.x:
+		for z: int in size.z:
+			for y: int in size.y:
+				var c := Vector3i(x, y, z)
+				if api.is_active(c):
+					var layer_index: int = api.layer_of(c)
+					if layer_index >= 0 and layer_index < buckets.size():
+						buckets[layer_index].append(c)
+	for bucket: Array in buckets:
+		result.append_array(bucket)
 	return result
 
 

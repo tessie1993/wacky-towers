@@ -10,6 +10,9 @@ const VARIANTS := {
 	"windy_tower":"Windy Tower", "meteor_shower":"Meteor Shower", "tallest_in_time":"Tallest in Time",
 	"gentle_drop":"Gentle Drop", "moving_platform":"Moving Platform", "domino_chain":"Domino Chain", "reach_out":"Reach Out"}
 const SOURCE: String = "res://design/gdd/physics-mode.md"
+## Every physics number lives here (design/gdd/physics-mode.md); nothing below hardcodes a tuning value.
+const TUNING_PATH: String = "res://assets/data/physics_tuning.json"
+const EMPTY_OFFSETS: Array[Vector3i] = []
 var variant: String = "tower_race"
 var _config: Dictionary = {}
 var _built: bool = false
@@ -50,7 +53,11 @@ var _chain_started: bool = false
 var _target: float = 8.0
 var _limit: float = 90.0
 var _bridge_walking: bool = false
-var _ray_mask: int = 1
+var _tuning: Dictionary = {}
+var _layer_world: int = 1
+var _layer_pieces: int = 2
+var _layer_meteors: int = 4
+var _ray_mask: int = 3
 var _settings: Dictionary = {}
 var _wind_flag: Node3D
 var _flag_target: Vector3 = Vector3(4.4,2.2,0)
@@ -59,6 +66,7 @@ var _next_probe_drop: float = 1.0
 
 
 func setup(config: Dictionary = {}) -> void:
+	_load_tuning()
 	_config=config.duplicate(true)
 	variant=str(config.get("variant","tower_race"))
 	if not VARIANTS.has(variant):variant="tower_race"
@@ -80,6 +88,7 @@ func _ready() -> void:
 func _build() -> void:
 	if _built:return
 	_built=true
+	_load_tuning()
 	_bank=load("res://assets/data/shapes/shape_bank.tres") as ShapeBank
 	for shape: ShapeDef in _bank.shapes:
 		if shape.cube_count>=3 and shape.cube_count<=5 and shape.family in [&"tetromino",&"flat"]:_choices.append(shape)
@@ -104,6 +113,31 @@ func _build_behaviour() -> void:
 		var action:=WtPhysicsAction.new();action.phase=phase;action.name="Advance_"+str(phase)
 		sequence.add_child(condition);sequence.add_child(action);selector.add_child(sequence)
 	_tree.add_child(selector);add_child(_tree)
+
+
+## Loads assets/data/physics_tuning.json once and resolves the collision layer bits.
+func _load_tuning() -> void:
+	if not _tuning.is_empty():return
+	var parsed: Variant=JSON.parse_string(FileAccess.get_file_as_string(TUNING_PATH))
+	if parsed is not Dictionary:
+		push_error("WtPhysicsChallenge: cannot read "+TUNING_PATH);return
+	_tuning=parsed
+	_layer_world=int(_tune("layers","world"));_layer_pieces=int(_tune("layers","pieces"));_layer_meteors=int(_tune("layers","meteors"))
+	_ray_mask=_layer_world|_layer_pieces
+
+
+## Reads one tuning number. Missing keys are reported once per call site and read as 0.
+func _tune(section: String, key: String) -> float:
+	var block: Variant=_tuning.get(section,null)
+	if block is Dictionary and (block as Dictionary).has(key):return float((block as Dictionary)[key])
+	push_error("WtPhysicsChallenge: missing tuning %s.%s"%[section,key])
+	return 0.0
+
+
+## True when reduced motion is on in the settings handed to setup() ("on" or a legacy bool).
+func _reduced_motion() -> bool:
+	var motion: Variant=_settings.get("reduced_motion","system")
+	return motion if motion is bool else str(motion)=="on"
 
 
 func behaviour_phase() -> StringName:
