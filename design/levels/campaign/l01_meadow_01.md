@@ -458,3 +458,9 @@ Three questions. Each has a recommended option first.
    - (Recommended) Make the soft retry +45 s. No change to the goal or the layout.
    - Raise the limit to 2:30.
    - Cut the goal to 2 clears.
+
+## User decisions (2026-10-14, round 3)
+
+- **Timer:** "fitting theme". The 2:00 timer is shown with a themed, in-world look that fits the meadow and the Hearth story, not a plain number clock. The art director designs it (for example a carved sundial or a hearth candle that burns down), and it stays readable at a glance. It replaces the "sunrise bar" option.
+- **Obstacles:** two full-height walls (roots left, stones right) framing a 4-wide lane, 32 cells per layer.
+- **Playtest tuning:** "nothing". The 2:00 limit, the 3-clear goal and the +30 s soft retry stay as designed. No pre-planned fallback.
