@@ -82,6 +82,9 @@ var _mouse_orbit: bool = false
 var _pan_settle: float = 0.0
 const PAN_SETTLE_S := 0.25
 var _cam_controls := WtCameraControls.new()
+## Snap-turn easing and backdrop parallax (assets/data/camera_controls.json "turn"); see WtCameraTurn.
+var _turn := WtCameraTurn.new()
+var _sky_mat: ShaderMaterial
 var _time: float = 0.0
 var _danger: MeshInstance3D
 var _danger_mat: StandardMaterial3D
@@ -270,8 +273,7 @@ func predict(command: SimCommand) -> void:
 func rotate_view(dir: int) -> void:
 	_snap.step(-dir if _preference_flag("invert_view",false) else dir)
 	_target_yaw = _snap.yaw_deg()
-	if _reduced() or not _preference_flag("turn_animation",true):
-		_yaw = _target_yaw
+	_start_turn()
 	_update_camera()
 	view_changed.emit(_snap.k)
 
@@ -296,7 +298,7 @@ func settle_camera() -> void:
 	_dragging = false
 	_snap.settle(_yaw)
 	_target_yaw = _snap.yaw_deg()
-	if _reduced() or not _preference_flag("turn_animation", true): _yaw = _target_yaw
+	_start_turn()
 	view_changed.emit(_snap.k)
 
 
@@ -313,6 +315,21 @@ func camera_intent(id: StringName, args: Dictionary) -> void:
 			elif args.has("pinch"): zoom_camera(_cam_controls.pinch_factor(float(args["pinch"])))
 		&"camera_release":
 			settle_camera()
+
+
+## Starts the eased turn from the current yaw to `_target_yaw`; reduced motion or the turn_animation
+## preference off gives the data-driven instant cut (or short linear turn), never an overshoot.
+func _start_turn() -> void:
+	_turn.set_reduced(_reduced())
+	if not _preference_flag("turn_animation", true):
+		_yaw = _target_yaw
+		_turn.begin(_yaw, _yaw)
+		_turn.sync_yaw(_yaw)
+		return
+	_target_yaw = _turn.begin(_yaw, _target_yaw)
+	if not _turn.is_active():
+		_yaw = _target_yaw
+		_turn.sync_yaw(_yaw)
 
 
 ## Returns the logical settled camera view (0..11).
@@ -435,10 +452,11 @@ func _process(delta: float) -> void:
 	if _pan_settle > 0.0:
 		_pan_settle -= delta
 		if _pan_settle <= 0.0: settle_camera()
-	if not _dragging:
-		var d: float = angle_difference(deg_to_rad(_yaw), deg_to_rad(_target_yaw))
-		_yaw += rad_to_deg(d) * minf(1.0, delta * 10.0)
+	if not _dragging and _turn.is_active():
+		_yaw = _turn.step(delta)
 		_update_camera()
+	elif _turn.drift() != 0.0:
+		_update_camera()  # the backdrop eases back to rest after the camera stops
 	if _windmill != null and not _reduced():
 		_windmill.rotation.z += delta * 0.35
 	if _carousel != null and not _reduced():
@@ -506,7 +524,9 @@ func _build_light() -> void:
 	builder.motion = 0.0 if _reduced() else 1.0
 	var env := builder.make_environment()
 	_environment = env
-	builder.build_sky(self, env)
+	var sky: CanvasLayer = builder.build_sky(self, env)
+	for c: Node in sky.get_children():
+		if c is ColorRect and (c as ColorRect).material is ShaderMaterial: _sky_mat = (c as ColorRect).material as ShaderMaterial
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
@@ -792,6 +812,8 @@ func _frame_camera() -> void:
 func _update_camera() -> void:
 	if _camera == null: return
 	var target := Vector3(0, _board.h_play() * .36, 0)
+	var drift: float = _turn.update_drift(_yaw, get_process_delta_time() if is_inside_tree() else 0.0)
+	if _sky_mat != null: _sky_mat.set_shader_parameter(&"view_shift", _turn.sky_shift())
 	var yaw: float = deg_to_rad(_yaw)
 	var elev: float = deg_to_rad(_elevation)
 	_camera.position = target + Vector3(sin(yaw) * cos(elev), sin(elev), cos(yaw) * cos(elev)) * CAMERA_DISTANCE
@@ -800,7 +822,7 @@ func _update_camera() -> void:
 	if _look != null: _look.update_view(_rig, _yaw, _camera)
 	WtIslandBuilder.update_facing(_world, _yaw)
 	if _far != null and is_inside_tree():
-		WtIslandBuilder.layout_far(_far, target, _yaw, _elevation, _camera.size, get_viewport().get_visible_rect().size.aspect())
+		WtIslandBuilder.layout_far(_far, target, _yaw - drift, _elevation, _camera.size, get_viewport().get_visible_rect().size.aspect())
 	_update_status_orientation()
 	var quadrant := Vector2i(-1 if sin(yaw)>=0 else 1,-1 if cos(yaw)>=0 else 1)
 	if quadrant != _guide_quadrant:

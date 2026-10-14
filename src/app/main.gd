@@ -701,7 +701,7 @@ func _hud_snapshot() -> Dictionary:
 		"potion_count": int(_store.progress().get("inventory", {}).get("potions", {}).get(String(_store.get_setting("selected_potion", "")), 0)) if _mode in [&"campaign", &"arcade"] else 0,
 		"warning": _warning, "hint": _hint, "wobble": _wobble,
 		"next_shapes": _preview_shapes(next_ids), "held_cells": _preview_shapes([_sim.held_shape()]) if _sim.held_shape() != &"" else [],
-		"star_pace": _star_pace(), "biome": String(_level.biome) if _level != null else "meadow"}
+		"hud": _level.hud if _level != null and _mode == &"campaign" else {}, "star_pace": _star_pace(), "biome": String(_level.biome) if _level != null else "meadow"}
 
 ## Cube offsets and a display tint for HUD piece previews (display only).
 func _preview_shapes(ids: Array) -> Array:

@@ -71,3 +71,78 @@ func _touch(index: int, position: Vector2, pressed: bool) -> InputEventScreenTou
 	e.position = position
 	e.pressed = pressed
 	return e
+
+
+# --- Camera turn (WtCameraTurn): data-driven overshoot, parallax, reduced motion ---
+
+func test_turn_values_come_from_camera_controls_json() -> void:
+	var turn := WtCameraTurn.new()
+	var block: Dictionary = WtCameraControls.load_data().get("turn", {})
+	assert_bool(block.is_empty()).is_false()
+	for key: String in ["duration_ms", "overshoot", "parallax_ratio"]:
+		assert_float(turn.value(key)).is_equal(float(block[key]))
+
+
+func test_turn_injected_config_overrides_data() -> void:
+	var turn := WtCameraTurn.new({"duration_ms": 400.0, "overshoot": 1.2})
+	assert_float(turn.duration_s()).is_equal_approx(0.4, 0.0001)
+	assert_float(turn.value("overshoot")).is_equal(1.2)
+
+
+func test_turn_overshoots_slightly_then_settles_on_target() -> void:
+	var turn := WtCameraTurn.new({"duration_ms": 200.0, "overshoot": 0.8})
+	turn.begin(0.0, 30.0)
+	var peak: float = 0.0
+	for i: int in 100:
+		peak = maxf(peak, turn.step(0.002))
+	assert_float(peak).is_greater(30.0)
+	assert_float(peak).is_less(30.0 * 1.05)
+	assert_float(turn.step(1.0)).is_equal_approx(30.0, 0.001)
+	assert_bool(turn.is_active()).is_false()
+
+
+func test_turn_takes_shortest_way_round() -> void:
+	var turn := WtCameraTurn.new()
+	assert_float(turn.begin(350.0, 10.0)).is_equal_approx(370.0, 0.001)
+
+
+func test_reduced_motion_turn_is_instant_by_default_and_never_overshoots() -> void:
+	var turn := WtCameraTurn.new()
+	turn.set_reduced(true)
+	turn.begin(0.0, 30.0)
+	assert_bool(turn.is_active()).is_false()
+	assert_float(turn.step(0.016)).is_equal_approx(30.0, 0.001)
+
+
+func test_reduced_motion_short_turn_is_linear_without_overshoot() -> void:
+	var turn := WtCameraTurn.new({"reduced_duration_ms": 100.0})
+	turn.set_reduced(true)
+	turn.begin(0.0, 30.0)
+	assert_float(turn.step(0.05)).is_equal_approx(15.0, 0.001)
+	assert_float(turn.step(0.2)).is_equal_approx(30.0, 0.001)
+
+
+func test_parallax_backdrop_trails_then_returns_to_rest() -> void:
+	var turn := WtCameraTurn.new({"parallax_ratio": 0.5, "parallax_settle_per_s": 5.0})
+	turn.update_drift(0.0, 0.016)
+	var d: float = turn.update_drift(10.0, 0.0)
+	assert_float(d).is_equal_approx(5.0, 0.001)
+	for i: int in 200:
+		turn.update_drift(10.0, 0.016)
+	assert_float(turn.drift()).is_equal(0.0)
+
+
+func test_reduced_motion_has_no_parallax() -> void:
+	var turn := WtCameraTurn.new({"parallax_ratio": 0.5})
+	turn.set_reduced(true)
+	turn.update_drift(0.0, 0.016)
+	assert_float(turn.update_drift(30.0, 0.016)).is_equal(0.0)
+	assert_float(turn.sky_shift()).is_equal(0.0)
+
+
+func test_overshoot_fraction_matches_curve_peak() -> void:
+	var s: float = 0.8
+	var peak: float = 0.0
+	for i: int in 1001:
+		peak = maxf(peak, WtCameraTurn.ease_out_back(float(i) / 1000.0, s) - 1.0)
+	assert_float(WtCameraTurn.overshoot_fraction(s)).is_equal_approx(peak, 0.001)

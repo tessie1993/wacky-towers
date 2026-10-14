@@ -8,11 +8,13 @@ const YAW_TO_ROT_DEG := 90.0  # rotation.y = yaw - 90 puts camera basis.x at (si
 @export var step_deg: int = CameraMath.DEFAULT_STEP_DEG
 @export var elevation_deg: float = 30.0                    # Camera GDD F2 default
 @export var margin: float = 0.5                            # Camera GDD F2 default
-@export var turn_anim_ms: int = 150                        # Camera GDD F4 default; 0 = instant cut
+@export var turn_anim_ms: int = -1                         # Camera GDD F4; -1 = WtCameraTurn data (camera_controls.json "turn"), 0 = instant cut
+@export var reduced_motion: bool = false                   # true: data-driven instant/linear turn, no overshoot
 @export var distance: float = 100.0                        # camera stand-off; orthographic, so only clipping depends on it
 
 var _k: int = 0
 var _tween: Tween
+var _turn: WtCameraTurn = WtCameraTurn.new()
 @onready var _pcam: PhantomCamera3D = $PhantomCamera
 
 
@@ -42,12 +44,22 @@ func rotate_view(step: int) -> void:
 	if _tween:
 		_tween.kill()
 	var target: float = _target_rot()
-	if turn_anim_ms <= 0:
+	_turn.set_reduced(reduced_motion)
+	var seconds: float = _turn.duration_s() if turn_anim_ms < 0 else turn_anim_ms / 1000.0
+	if seconds <= 0.0:
 		rotation.y = target
 		return
 	target = rotation.y + wrapf(target - rotation.y, -PI, PI)
+	var from: float = rotation.y
+	var overshoot: float = 0.0 if reduced_motion else _turn.value("overshoot")
 	_tween = create_tween()
-	_tween.tween_property(self, "rotation:y", target, turn_anim_ms / 1000.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_tween.tween_method(_apply_turn.bind(from, target, overshoot), 0.0, 1.0, seconds)
+
+
+## Tween step: yaw at eased progress `t` (ease-out-back, or linear under reduced motion).
+func _apply_turn(t: float, from: float, target: float, overshoot: float) -> void:
+	var e: float = WtCameraTurn.linear(t) if reduced_motion else WtCameraTurn.ease_out_back(t, overshoot)
+	rotation.y = lerpf(from, target, e)
 
 
 ## Current logical yaw snap 0..11. Usage: rig.get_yaw_index()

@@ -1249,108 +1249,78 @@ func _build_hud() -> void:
 	screen_frame.add_theme_stylebox_override("panel", Kit.hud_frame(biome))
 	_hud.add_child(screen_frame)
 	screen_frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var inset := _safe_insets()
 	var top := MarginContainer.new()
 	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_hud.add_child(top)
 	top.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	top.offset_left = 18
-	top.offset_right = -18
-	top.offset_top = 16
+	top.offset_left = 18 + inset.x
+	top.offset_right = -(18 + inset.z)
+	top.offset_top = 16 + inset.y
 	_hud_labels.top = top
 	# The party item bar hangs below the header: re-place it whenever the header grows.
 	top.resized.connect(_on_hud_header_resized)
 	var col := _vbox(top, 8)
 	var row := _hbox(col, 10)
+	row.alignment = BoxContainer.ALIGNMENT_BEGIN
 	var pause := _play_button("Ⅱ", &"pause", {}, false)
 	pause.tooltip_text = "Pause"
+	pause.set("accessibility_name", "Pause")
 	pause.custom_minimum_size = Vector2(64, 64)
 	pause.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	pause.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	# Round purple gem with a gold rim (ref 15 pause).
+	# Round purple gem with a gold rim (ref 15 pause). Focusable so pads and keys can reach it.
 	_gem_button(pause, true)
 	pause.add_theme_font_size_override("font_size", 26)
+	pause.focus_mode = Control.FOCUS_ALL
+	pause.visible = _hud_has("pause")
 	row.add_child(pause)
-	# Goal lozenge: level name and progress on dark plum glass.
+	_hud_labels.pause = pause
+	# GOAL plaque (first in the information order): level name, objective and progress on a carved
+	# purple-wood plaque with vines.
 	var ribbon := PanelContainer.new()
 	ribbon.name = "GoalChip"
-	ribbon.add_theme_stylebox_override("panel", _pad(Kit.glass_box(0.88, 22), 16, 8, 16, 10))
-	ribbon.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	ribbon.add_theme_stylebox_override("panel", _pad(_chip_style(biome), 22, 10, 22, 14))
+	ribbon.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	ribbon.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	var goal := _hbox(ribbon, 10)
-	_hud_labels.level = _label("Meadow", 15, MUTED)
-	_hud_labels.goal = _label("0 / 1", 19, INK, true)
+	ribbon.visible = _hud_has("goal")
+	var goal := _vbox(ribbon, 0)
+	_hud_labels.level = _label("Meadow", 14, MUTED, true)
+	_hud_labels.goal = _label("0 / 1", 20, INK, true)
 	_hud_labels.goal.add_theme_font_override("font", Kit.font(true))
 	for l: Label in [_hud_labels.level, _hud_labels.goal]:
-		l.autowrap_mode = TextServer.AUTOWRAP_OFF
-		l.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		goal.add_child(l)
-	# Timer: dark plum lozenge with gold numerals, top centre, inside the safe area (bible 5b).
+	_hud_labels.goal_chip = ribbon
+	row.add_child(ribbon)
+	# Timer: small carved lozenge, shown only when the level lists it and the player wants it.
 	var clock := PanelContainer.new()
 	clock.name = "Clock"
 	var clock_face := Kit.chip_flat(biome)
 	clock_face.set_corner_radius_all(22)
 	clock.add_theme_stylebox_override("panel", _pad(clock_face, 16, 4, 16, 8))
 	clock.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	clock.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	clock.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	clock.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_hud_labels.time = _label("0:00", 20, Kit.GOLD_GLINT, true)
 	_hud_labels.time.autowrap_mode = TextServer.AUTOWRAP_OFF
 	_hud_labels.time.add_theme_font_override("font", Kit.font(true))
 	clock.add_child(_hud_labels.time)
 	_hud_labels.clock = clock
-	if _portrait:
-		var goal_row := _hbox(col, 10)
-		goal_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		ribbon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		goal_row.add_child(ribbon)
-		goal_row.add_child(clock)
-	else:
-		row.add_child(ribbon)
-		row.add_child(clock)
-	var spacer := Control.new()
-	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(spacer)
-	# SCORE chip in the level's biome rim (ref 15): gold caption, big number, three pace stars.
-	var score_panel := PanelContainer.new()
-	score_panel.name = "ScoreChip"
-	score_panel.add_theme_stylebox_override("panel", _chip_style(biome))
-	score_panel.custom_minimum_size.x = 168
-	score_panel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	row.add_child(score_panel)
-	var score_col := _vbox(score_panel, 0)
-	var score_caption := _label("SCORE", 14, Kit.GOLD, true)
-	score_caption.add_theme_font_override("font", Kit.font(true))
-	score_col.add_child(score_caption)
-	_hud_labels.score = _label("0", 28, INK, true)
-	_hud_labels.score.autowrap_mode = TextServer.AUTOWRAP_OFF
-	_hud_labels.score.add_theme_font_override("font", Kit.font(true))
-	score_col.add_child(_hud_labels.score)
-	var star_row := _hbox(score_col, 2)
-	star_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	_hud_labels.stars = []
-	for i: int in 3:
-		var star := _label("★", 24, Kit.STAR_ON, true)
-		star.autowrap_mode = TextServer.AUTOWRAP_OFF
-		star.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		star.add_theme_color_override("font_outline_color", Kit.GOLD_DEEP)
-		star.add_theme_constant_override("outline_size", 4)
-		star_row.add_child(star)
-		_hud_labels.stars.append(star)
-	# NEXT chip: same rim, the upcoming piece drawn as isometric toy cubes.
+	# NEXT plaque: the upcoming piece drawn as isometric toy cubes.
 	var next_panel := PanelContainer.new()
 	next_panel.name = "NextChip"
-	next_panel.add_theme_stylebox_override("panel", _chip_style(biome))
+	next_panel.add_theme_stylebox_override("panel", _pad(_chip_style(biome), 16, 8, 16, 12))
 	next_panel.size_flags_horizontal = Control.SIZE_SHRINK_END
 	next_panel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	next_panel.custom_minimum_size.x = 118
-	row.add_child(next_panel)
+	next_panel.custom_minimum_size.x = 112
+	next_panel.visible = _hud_has("next")
 	var next := _vbox(next_panel, 0)
 	var next_caption := _label("NEXT", 14, Kit.GOLD, true)
 	next_caption.add_theme_font_override("font", Kit.font(true))
 	next.add_child(next_caption)
 	_hud_labels.next_preview = WtPiecePreview.new()
-	_hud_labels.next_preview.custom_minimum_size = Vector2(84, 64)
+	_hud_labels.next_preview.custom_minimum_size = Vector2(72, 56)
 	_hud_labels.next_preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	next.add_child(_hud_labels.next_preview)
 	_hud_labels.next = _label("—", 12, MUTED, true)
@@ -1359,6 +1329,65 @@ func _build_hud() -> void:
 	_hud_labels.held = _label("Hold: —", 12, MUTED, true)
 	_hud_labels.held.visible = false
 	next.add_child(_hud_labels.held)
+	row.add_child(next_panel)
+	# SCORE plaque (last in the order): caption, number, three pace stars.
+	var score_panel := PanelContainer.new()
+	score_panel.name = "ScoreChip"
+	score_panel.add_theme_stylebox_override("panel", _pad(_chip_style(biome), 18, 8, 18, 12))
+	score_panel.custom_minimum_size.x = 132
+	score_panel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	score_panel.visible = _hud_has("score")
+	var score_col := _vbox(score_panel, 0)
+	var score_caption := _label("SCORE", 13, Kit.GOLD, true)
+	score_caption.add_theme_font_override("font", Kit.font(true))
+	score_col.add_child(score_caption)
+	_hud_labels.score = _label("0", 24, INK, true)
+	_hud_labels.score.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_hud_labels.score.add_theme_font_override("font", Kit.font(true))
+	score_col.add_child(_hud_labels.score)
+	var star_row := _hbox(score_col, 2)
+	star_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	_hud_labels.stars = []
+	for i: int in 3:
+		var star := _label("★", 20, Kit.STAR_ON, true)
+		star.autowrap_mode = TextServer.AUTOWRAP_OFF
+		star.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		star.add_theme_color_override("font_outline_color", Kit.GOLD_DEEP)
+		star.add_theme_constant_override("outline_size", 4)
+		star_row.add_child(star)
+		_hud_labels.stars.append(star)
+	# Named meter (level-defined, e.g. Hearth Hum): a generic WtMeter fed from the goal progress.
+	var meter := WtMeter.new()
+	meter.name = "Meter"
+	meter.reduced_motion = _reduced_motion()
+	meter.color = Kit.biome_rim(biome)[1].lerp(Kit.LEAF_LIGHT, 0.4)
+	meter.custom_minimum_size = Vector2(200 if _portrait else 240, 48)
+	meter.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	meter.visible = _hud_has("meter")
+	var meter_def: Dictionary = (_hud_data.get("hud", {}) as Dictionary).get("meter", {}) if _hud_data.get("hud", {}) is Dictionary else {}
+	var meter_key := str(meter_def.get("label_key", ""))
+	var meter_label := str(meter_def.get("label", "Progress"))
+	meter.caption = meter_label if meter_key.is_empty() or tr(meter_key) == meter_key else tr(meter_key)
+	_hud_labels.meter = meter
+	var spacer := Control.new()
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	if _portrait:
+		# Row 2, centred over the board: meter, score and clock only for what the level shows.
+		var info_row := _hbox(col, 10)
+		info_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		info_row.add_child(meter)
+		info_row.add_child(score_panel)
+		info_row.add_child(clock)
+		_hud_labels.info_row = info_row
+	else:
+		ribbon.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		ribbon.custom_minimum_size.x = 300
+		row.add_child(spacer)
+		row.add_child(meter)
+		row.add_child(clock)
+		row.add_child(score_panel)
+		row.move_child(next_panel, -1)
 	_hud_labels.rules = _label("", 16, MUTED, true)
 	_hud_labels.rules.autowrap_mode = TextServer.AUTOWRAP_OFF
 	var rules_panel := PanelContainer.new()
@@ -1392,9 +1421,9 @@ func _build_hud() -> void:
 	left.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 	_hud.add_child(left)
 	left.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	left.offset_left = 18
-	left.offset_bottom = -18
-	left.offset_right = 18 + left_width
+	left.offset_left = 18 + inset.x
+	left.offset_bottom = -(18 + inset.w)
+	left.offset_right = 18 + inset.x + left_width
 	left.offset_top = -_left_control_height()
 	var lpad := MarginContainer.new()
 	for side in ["left", "right", "top", "bottom"]: lpad.add_theme_constant_override("margin_" + side, 12)
@@ -1429,10 +1458,16 @@ func _build_hud() -> void:
 			blank.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			pad.add_child(blank)
 	var hold_row := _hbox(lcol, 8)
-	hold_row.add_child(_play_button("Hold", &"hold", {}, false))
+	var hold_button := _play_button("Hold", &"hold", {}, false)
+	hold_button.visible = _hud_has("hold")
+	hold_button.focus_mode = Control.FOCUS_ALL
+	hold_row.add_child(hold_button)
+	_hud_labels.hold_button = hold_button
 	_hud_labels.tools = _play_button("Tools", &"open_tools", {}, false)
 	hold_row.add_child(_hud_labels.tools)
 	var tools := _hbox(lcol, 8)
+	_hud_labels.tools_row = tools
+	_hud_labels.hold_row = hold_row
 	_hud_labels.skill = _play_button("Skill", &"use_skill", {}, false)
 	_hud_labels.skill.tooltip_text = "Character skill"
 	tools.add_child(_hud_labels.skill)
@@ -1445,9 +1480,9 @@ func _build_hud() -> void:
 	right.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 	_hud.add_child(right)
 	right.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	right.offset_right = -18
-	right.offset_left = -(18 + right_width)
-	right.offset_bottom = -18
+	right.offset_right = -(18 + inset.z)
+	right.offset_left = -(18 + inset.z + right_width)
+	right.offset_bottom = -(18 + inset.w)
 	right.offset_top = -right_height
 	var rpad := MarginContainer.new()
 	for side in ["left", "right", "top", "bottom"]: rpad.add_theme_constant_override("margin_" + side, 12)
@@ -1455,20 +1490,19 @@ func _build_hud() -> void:
 	var rcol := _vbox(rpad, 8)
 	rcol.alignment = BoxContainer.ALIGNMENT_END
 	var view := _hbox(rcol, 8)
+	view.visible = _hud_has("view")
 	view.add_child(_play_button("View ‹", &"view", {"direction": -1}, true))
 	view.add_child(_play_button("View ›", &"view", {"direction": 1}, true))
 	for axis in ["spin", "tilt", "roll"]:
-		if axis == "tilt" and not bool(_hud_data.get("can_tilt", true)): continue
-		if axis == "roll" and not bool(_hud_data.get("can_roll", true)): continue
+		if axis == "tilt" and (not bool(_hud_data.get("can_tilt", true)) or not _hud_has("flip")): continue
+		if axis == "roll" and (not bool(_hud_data.get("can_roll", true)) or not _hud_has("flip")): continue
 		var r := _hbox(rcol, 8)
 		var title: String = {"spin": "Turn", "tilt": "Flip", "roll": "Roll"}[axis]
 		r.add_child(_play_button(title + " ‹", &"rotate", {"axis": StringName(axis), "direction": -1}, true))
 		r.add_child(_play_button(title + " ›", &"rotate", {"axis": StringName(axis), "direction": 1}, true))
 	var drop_row := _hbox(rcol, 8)
-	var soft := _play_button("Soft", &"noop", {}, false)
-	soft.pressed.disconnect(soft.pressed.get_connections()[0].callable)
-	soft.button_down.connect(func() -> void: intent.emit(&"soft", {"active": true}))
-	soft.button_up.connect(func() -> void: intent.emit(&"soft", {"active": false}))
+	var soft := _fall_button()
+	soft.visible = _hud_has("fall")
 	drop_row.add_child(soft)
 	var drop := _play_button("DROP ↓", &"drop", {}, false)
 	drop.custom_minimum_size.y = maxf(64.0, 64.0 * _control_factor)
@@ -1492,11 +1526,11 @@ func _build_hud() -> void:
 			right.offset_left = -(18.0 + right_width / combined * available)
 	if bool(_prefs.get("left_hand", false)):
 		left.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-		left.offset_left = -(18.0 + left_width)
-		left.offset_right = -18
+		left.offset_left = -(18.0 + inset.z + left_width)
+		left.offset_right = -(18 + inset.z)
 		right.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
-		right.offset_left = 18
-		right.offset_right = 18.0 + right_width
+		right.offset_left = 18 + inset.x
+		right.offset_right = 18.0 + inset.x + right_width
 	_place_gesture_pad()
 	if is_instance_valid(_menu): _root.move_child(_menu, -1)
 	if is_instance_valid(_countdown): _root.move_child(_countdown, -1)
@@ -1520,11 +1554,39 @@ func _ui_sprite(sprite_name: String) -> Texture2D:
 ## Biome HUD chip (meadow vines, ice frost, celestial gold) with trimmed content margins.
 ## HUD chip: plum glass in the biome rim (no parchment PNG; chip_hud* are retired).
 func _chip_style(biome: String) -> StyleBox:
-	return _pad(Kit.chip_flat(biome), 18, 12, 18, 12)
+	var carved: StyleBoxTexture = WtCarved.plaque_box("chip_hud", Kit.biome_rim(biome)[0])
+	return _pad(carved, 22, 14, 22, 16) if carved != null else _pad(Kit.chip_flat(biome), 18, 12, 18, 12)
 
 ## Parchment tray slot (ref 15 bottom shelf); `lit` marks the hold / selected slot in gold.
 func _slot_style(lit: bool = false) -> StyleBox:
-	return _pad(Kit.slot_flat(str(_hud_data.get("biome", "meadow")), lit), 12, 8, 12, 10)
+	var biome := str(_hud_data.get("biome", "meadow"))
+	var carved: StyleBoxTexture = WtCarved.plaque_box("tray_slot", Kit.biome_rim(biome)[0], lit)
+	return _pad(carved, 12, 10, 12, 12) if carved != null else _pad(Kit.slot_flat(biome, lit), 12, 8, 12, 10)
+
+## Progressive-disclosure HUD elements a level's `hud.show` list may name. A level with no `hud`
+## shows all of them. Move, Turn and Drop are core controls and are never hidden.
+const HUD_ELEMENTS: Array[String] = ["pause", "goal", "next", "meter", "score", "clock", "hold", "queue", "view", "flip", "fall", "tools", "skill", "potion", "items"]
+
+## True when the current level shows HUD element `id` (see HUD_ELEMENTS).
+func _hud_has(id: String) -> bool:
+	var def: Variant = _hud_data.get("hud", {})
+	if def is Dictionary and (def as Dictionary).get("show") is Array:
+		return id in (def as Dictionary).get("show")
+	return true
+
+## Insets (left, top, right, bottom) in viewport pixels for notches and system bars; zero on desktop.
+func _safe_insets() -> Vector4:
+	var window := DisplayServer.window_get_size()
+	var safe := DisplayServer.get_display_safe_area()
+	if safe.size.x <= 0 or safe.size.y <= 0 or window.x <= 0 or window.y <= 0: return Vector4.ZERO
+	var view := get_viewport().get_visible_rect().size
+	var kx := view.x / float(window.x)
+	var ky := view.y / float(window.y)
+	var l := clampf(float(safe.position.x) * kx, 0.0, 120.0)
+	var t := clampf(float(safe.position.y) * ky, 0.0, 120.0)
+	var r := clampf(float(window.x - safe.end.x) * kx, 0.0, 120.0)
+	var b := clampf(float(window.y - safe.end.y) * ky, 0.0, 120.0)
+	return Vector4(l, t, r, b)
 
 ## Portrait phones use the storybook tray and gestures unless classic controls are on.
 func _storybook_dock() -> bool:
@@ -1539,15 +1601,17 @@ func _build_dock() -> void:
 	dock.add_theme_constant_override("separation", 8)
 	_hud.add_child(dock)
 	dock.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	dock.offset_left = 14
-	dock.offset_right = -14
-	dock.offset_bottom = -14
-	dock.offset_top = -_dock_height()
+	var inset := _safe_insets()
+	dock.offset_left = 14 + inset.x
+	dock.offset_right = -(14 + inset.z)
+	dock.offset_bottom = -(14 + inset.w)
+	dock.offset_top = -_dock_height() - inset.w
 	_hud_labels.dock = dock
 	# One gem icon bar on plum glass replaces the rows of wooden planks: view, flip, roll, soft,
 	# tools, skill and potion as compact purple gems (two rows only at large text sizes).
 	var bar := PanelContainer.new()
 	bar.name = "GemBar"
+	_hud_labels.gem_bar = bar
 	bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	bar.add_theme_stylebox_override("panel", _pad(Kit.glass_box(0.78, 30), 8, 6, 8, 6))
 	dock.add_child(bar)
@@ -1555,24 +1619,27 @@ func _build_dock() -> void:
 	var rows: Array[HBoxContainer] = [_hbox(bar_col, 5)]
 	if _text_factor > 1.15: rows.append(_hbox(bar_col, 5))
 	var gems: Array[Button] = []
-	gems.append(_play_button("⟲ View", &"view", {"direction": -1}, false))
-	gems.append(_play_button("View ⟳", &"view", {"direction": 1}, false))
+	var hidden: Array[Button] = []
+	var view_left := _play_button("⟲ View", &"view", {"direction": -1}, false)
+	var view_right := _play_button("View ⟳", &"view", {"direction": 1}, false)
+	for b: Button in [view_left, view_right]: (gems if _hud_has("view") else hidden).append(b)
 	for axis: String in ["tilt", "roll"]:
-		if not bool(_hud_data.get("can_" + axis, false)): continue
+		if not bool(_hud_data.get("can_" + axis, false)) or not _hud_has("flip"): continue
 		var title: String = {"tilt": "Flip", "roll": "Roll"}[axis]
 		for dir: int in [-1, 1]:
 			gems.append(_play_button(title + (" ‹" if dir < 0 else " ›"), &"rotate", {"axis": StringName(axis), "direction": dir}, true))
-	var soft := _play_button("Soft", &"noop", {}, false)
-	soft.pressed.disconnect(soft.pressed.get_connections()[0].callable)
-	soft.button_down.connect(func() -> void: intent.emit(&"soft", {"active": true}))
-	soft.button_up.connect(func() -> void: intent.emit(&"soft", {"active": false}))
-	gems.append(soft)
+	var soft := _fall_button()
+	(gems if _hud_has("fall") else hidden).append(soft)
 	_hud_labels.tools = _play_button("Tools", &"open_tools", {}, false)
 	_hud_labels.skill = _play_button("Skill", &"use_skill", {}, false)
 	_hud_labels.skill.tooltip_text = "Character skill"
 	_hud_labels.potion = _play_button("Potion", &"use_item", {}, false)
 	_hud_labels.potion.tooltip_text = "Selected potion"
+	# Tools, skill and potion appear only while they have something to do (update_hud).
 	gems.append_array([_hud_labels.tools, _hud_labels.skill, _hud_labels.potion])
+	for b: Button in hidden:
+		b.visible = false
+		bar.add_child(b)
 	for i: int in gems.size():
 		var b: Button = gems[i]
 		b.custom_minimum_size = Vector2(0, 52)
@@ -1592,19 +1659,31 @@ func _build_dock() -> void:
 	tray_row.add_child(turn)
 	var tray := PanelContainer.new()
 	tray.name = "Tray"
-	tray.add_theme_stylebox_override("panel", _pad(Kit.chip_flat(str(_hud_data.get("biome", "meadow"))), 10, 8, 10, 10))
+	var tray_style := WtCarved.plaque_box("tray_slot", Kit.biome_rim(str(_hud_data.get("biome", "meadow")))[0])
+	tray.add_theme_stylebox_override("panel", _pad(tray_style, 14, 10, 14, 14) if tray_style != null else _pad(Kit.chip_flat(str(_hud_data.get("biome", "meadow"))), 10, 8, 10, 10))
 	tray.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	tray_row.add_child(tray)
+	tray.visible = _hud_has("hold") or _hud_has("queue")
+	if tray.visible: tray_row.add_child(tray)
+	else:
+		var gap := Control.new()
+		gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		gap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		tray_row.add_child(gap)
+		tray_row.add_child(tray)
 	var slots := _hbox(tray, 6)
 	_hud_labels.tray = []
 	for i: int in 3:
+		var shown := _hud_has("hold") if i == 0 else _hud_has("queue")
 		var slot := Button.new()
-		slot.focus_mode = Control.FOCUS_NONE
-		slot.custom_minimum_size = Vector2(0, 92) * _control_factor
-		slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		slot.focus_mode = Control.FOCUS_ALL if i == 0 else Control.FOCUS_NONE
+		# The hold slot is a compact tap target (it is empty most of the time); the queue shares the rest.
+		slot.custom_minimum_size = Vector2(88 if i == 0 else 0, 84) * _control_factor
+		slot.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN if i == 0 else Control.SIZE_EXPAND_FILL
+		slot.visible = shown
 		var face := _slot_style(i == 0)
-		for state: String in ["normal", "hover", "pressed", "disabled", "focus"]:
+		for state: String in ["normal", "hover", "pressed", "disabled"]:
 			slot.add_theme_stylebox_override(state, face)
+		slot.add_theme_stylebox_override("focus", _focus_box())
 		var preview := WtPiecePreview.new()
 		preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		slot.add_child(preview)
@@ -1621,6 +1700,7 @@ func _build_dock() -> void:
 		caption.offset_bottom = 28
 		if i == 0:
 			slot.tooltip_text = "Hold"
+			slot.set("accessibility_name", "Hold piece")
 			slot.pressed.connect(func() -> void: intent.emit(&"hold", {}))
 		else:
 			slot.disabled = true
@@ -1635,9 +1715,30 @@ func _build_dock() -> void:
 	drop.add_theme_font_override("font", Kit.font(true))
 	tray_row.add_child(drop)
 
+## Gold focus ring for slots and plaques reached by keyboard or pad.
+func _focus_box() -> StyleBox:
+	var ring := Kit.pill(Color(0, 0, 0, 0), Kit.GOLD_GLINT, false, 16)
+	ring.draw_center = false
+	ring.set_border_width_all(3)
+	ring.shadow_size = 0
+	ring.set_expand_margin_all(2)
+	return ring
+
+## "Fast fall": hold to drop faster, release to resume (replaces the unclear "Soft").
+func _fall_button() -> Button:
+	var soft := _play_button("▼ Fast fall", &"noop", {}, false)
+	soft.tooltip_text = "Hold to fall faster"
+	soft.set("accessibility_name", "Fast fall")
+	soft.pressed.disconnect(soft.pressed.get_connections()[0].callable)
+	soft.button_down.connect(func() -> void: intent.emit(&"soft", {"active": true}))
+	soft.button_up.connect(func() -> void: intent.emit(&"soft", {"active": false}))
+	return soft
+
 func _dock_height() -> float:
-	var bar_rows := 2.0 if _text_factor > 1.15 else 1.0
-	return bar_rows * 58.0 + 12.0 + 8.0 + (92.0 + 34.0) * _control_factor + 24.0
+	var gem_bar := _hud_has("view") or _hud_has("fall") or _hud_has("tools") or _hud_has("skill") or _hud_has("potion") or _hud_has("flip")
+	var bar_rows := (2.0 if _text_factor > 1.15 else 1.0) if gem_bar else 0.0
+	var tray_h := (92.0 if (_hud_has("hold") or _hud_has("queue")) else 84.0) + 34.0
+	return bar_rows * 58.0 + (12.0 if gem_bar else 0.0) + 8.0 + tray_h * _control_factor + 24.0
 
 ## Keeps the gesture pad over the board area only, below every HUD control.
 func _place_gesture_pad() -> void:
@@ -1707,7 +1808,7 @@ func _party_bar_height() -> float:
 
 func _party_items_enabled() -> bool:
 	var items: Dictionary = _hud_data.get("items", {})
-	return bool(items.get("enabled", false))
+	return bool(items.get("enabled", false)) and _hud_has("items")
 
 func _item_name(id: String) -> String:
 	return {"slow_time":"Slow time", "bomb":"Bomb", "helper_drop":"Helper drop", "preview_peek":"Preview peek", "junk_rain":"Junk rain", "fog":"Fog", "speed_up":"Speed up", "spin_lock":"Spin lock"}.get(id, id.replace("_", " ").capitalize())
@@ -1830,7 +1931,8 @@ func update_hud(data: Dictionary) -> void:
 	if _hud_labels.is_empty(): return
 	_update_item_bar()
 	var capabilities: Dictionary = _hud_data.get("capabilities", {})
-	_hud_labels.tools.visible = bool(capabilities.get("kit", false)) or bool(capabilities.get("choose_down", false)) or bool(capabilities.get("ice_flick", false)) or bool(capabilities.get("undo", false)) or bool(capabilities.get("reset", false))
+	var tools_ok := bool(capabilities.get("kit", false)) or bool(capabilities.get("choose_down", false)) or bool(capabilities.get("ice_flick", false)) or bool(capabilities.get("undo", false)) or bool(capabilities.get("reset", false))
+	_hud_labels.tools.visible = tools_ok and _hud_has("tools")
 	_hud_labels.tools.text = "Kit" if bool(capabilities.get("kit", false)) else ("Direction" if bool(capabilities.get("choose_down", false)) or bool(capabilities.get("ice_flick", false)) else "Puzzle")
 	_hud_labels.level.text = str(_hud_data.get("level_name", "Meadow"))
 	_hud_labels.goal.text = "%s  %s / %s" % [str(_hud_data.get("goal", "Layers")), str(_hud_data.get("progress", 0)), str(_hud_data.get("target", 1))]
@@ -1839,10 +1941,13 @@ func update_hud(data: Dictionary) -> void:
 	var ready := bool(_hud_data.get("skill_ready", false))
 	var charge := float(_hud_data.get("skill_charge", 0))
 	_hud_labels.skill.disabled = not ready
+	# A 0% skill pill is a dead control: it appears once the charge starts and stays until used.
+	_hud_labels.skill.visible = _hud_has("skill") and (ready or charge > 0.0)
 	_hud_labels.skill.text = "Skill ✓" if ready else "%d%%" % clampi(roundi(charge / 10.0), 0, 100)
 	_hud_labels.skill.tooltip_text = str(_hud_data.get("skill_name", "Character skill")) + (" · ready" if ready else " · charging")
 	var potion_count := int(_hud_data.get("potion_count", 0))
 	_hud_labels.potion.disabled = potion_count <= 0 or str(_hud_data.get("selected_potion", "")).is_empty()
+	_hud_labels.potion.visible = _hud_has("potion") and potion_count > 0
 	_hud_labels.potion.text = "Potion %d" % potion_count
 	_hud_labels.potion.tooltip_text = str(_hud_data.get("selected_potion", "No potion selected")).replace("_", " ").capitalize()
 	_hud_labels.score.text = _grouped(int(_hud_data.get("score", 0)))
@@ -1868,7 +1973,12 @@ func update_hud(data: Dictionary) -> void:
 			tray[i].cells = entry.get("cells", [])
 			tray[i].tint = entry.get("tint", Kit.GOLD)
 	_hud_labels.time.text = _time_text(_hud_data.get("time", 0.0))
-	_hud_labels.clock.visible = bool(_prefs.get("show_clock", true))
+	_hud_labels.clock.visible = bool(_prefs.get("show_clock", true)) and _hud_has("clock")
+	if _hud_labels.has("meter"):
+		var meter_def: Variant = (_hud_data.get("hud", {}) as Dictionary).get("meter", {}) if _hud_data.get("hud", {}) is Dictionary else {}
+		var target_value := maxf(1.0, float(_hud_data.get("target", 1)))
+		(_hud_labels.meter as WtMeter).fill = float(_hud_data.get("progress", 0)) / target_value if str((meter_def as Dictionary).get("source", "goal_progress")) == "goal_progress" else 0.0
+	_refresh_gem_bar()
 	var twist_names := PackedStringArray()
 	for twist in _hud_data.get("twists", []): twist_names.append(str(twist).replace("_", " ").capitalize())
 	_hud_labels.rules.text = "  ·  ".join(twist_names)
@@ -1883,6 +1993,27 @@ func update_hud(data: Dictionary) -> void:
 	else: _hud_labels.rules.add_theme_color_override("font_color", TEXT_SOFT)
 	_hud_labels.rules_panel.visible = not _hud_labels.rules.text.strip_edges().is_empty()
 	if int(_hud_data.get("round", 0)) > 0: _hud_labels.level.text += "  ·  Round %s" % str(_hud_data.round)
+
+## Hides the gem bar (and the landscape rows) when none of their buttons has anything to show.
+func _refresh_gem_bar() -> void:
+	var bar: Control = _hud_labels.get("gem_bar")
+	if is_instance_valid(bar):
+		var any := false
+		for b: Node in bar.find_children("*", "Button", true, false):
+			if (b as Button).visible: any = true
+		bar.visible = any
+	var tools_row: Control = _hud_labels.get("tools_row")
+	if is_instance_valid(tools_row):
+		var any_tools := false
+		for b: Node in tools_row.get_children():
+			if b is Button and (b as Button).visible: any_tools = true
+		tools_row.visible = any_tools
+	var hold_row: Control = _hud_labels.get("hold_row")
+	if is_instance_valid(hold_row):
+		var any_hold := false
+		for b: Node in hold_row.get_children():
+			if b is Button and (b as Button).visible: any_hold = true
+		hold_row.visible = any_hold
 
 func _update_item_bar() -> void:
 	var enabled := _party_items_enabled()

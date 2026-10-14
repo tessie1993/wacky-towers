@@ -50,6 +50,7 @@
     "t2": 290000,
     "t3": 210000
   },
+  "hud": {"show": ["pause", "goal", "next", "meter"], "meter": {"label": "Hearth Hum", "label_key": "HUD_METER_HEARTH_HUM", "source": "goal_progress"}},
   "story": {
     "title_key": "LVL_MEADOW_01_TITLE",
     "premise_key": "LVL_MEADOW_01_PREMISE",
