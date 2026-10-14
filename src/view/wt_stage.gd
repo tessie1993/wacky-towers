@@ -95,6 +95,8 @@ var _guide_quadrant: Vector2i = Vector2i.ZERO
 var _telegraphs: MultiMeshInstance3D
 var _marks: Dictionary = {}
 var _secrets: Dictionary = {}
+var _look: WtLevelLook ## Optional per-level `look` (time of day, weather, set piece, camera); null when a level has none.
+var _look_zoom: float = 1.0
 
 
 ## Binds one authoritative simulation and constructs a biome's original diorama.
@@ -360,6 +362,7 @@ func apply_settings(settings: Dictionary) -> void:
 		(status_view.material_override as ShaderMaterial).set_shader_parameter(&"reduced",_reduced())
 	for actor: WtToyActor in [_wizard,_mascot,_boss]:
 		if actor!=null:actor.set_reduced_motion(_reduced())
+	if _look != null: _look.set_reduced(_reduced())
 	set_process(true)
 
 
@@ -721,7 +724,7 @@ func _frame_camera() -> void:
 	var tall: float = widest * sin(elev) + (_board.h_play() + 1.0) * cos(elev)
 	var by_width: float = widest / (aspect * usable_w)
 	var by_height: float = tall / usable_h
-	_camera.size = maxf(by_width, by_height)
+	_camera.size = maxf(by_width, by_height) * _look_zoom
 	_update_camera()
 
 
@@ -733,6 +736,7 @@ func _update_camera() -> void:
 	_camera.position = target + Vector3(sin(yaw) * cos(elev), sin(elev), cos(yaw) * cos(elev)) * CAMERA_DISTANCE
 	_camera.look_at(target, Vector3.UP)
 	WtIslandBuilder.orient_rig(_rig, _yaw)
+	if _look != null: _look.update_view(_rig, _yaw, _camera)
 	WtIslandBuilder.update_facing(_world, _yaw)
 	if _far != null and is_inside_tree():
 		WtIslandBuilder.layout_far(_far, target, _yaw, _elevation, _camera.size, get_viewport().get_visible_rect().size.aspect())
@@ -762,6 +766,25 @@ func set_story_context(context: Dictionary) -> void:
 		_key_light.light_color=Color(lighting.key)
 		_key_light.light_energy=float(base.key_energy)*float(lighting.key_energy)/.65
 		set_meta("authored_time_of_day",lighting.time)
+	apply_level_look(WtLevelLook.read_level_look(_biome, str(context.get("level_id", ""))))
+
+
+## Applies the optional level `look` block over the biome look (see WtLevelLook). A level without
+## one leaves the stage exactly as built; an empty block after a look restores the biome look.
+func apply_level_look(look: Dictionary) -> void:
+	if look.is_empty() and _look == null: return
+	if _look == null:
+		_look = WtLevelLook.new()
+		_look.name = "LevelLook"
+		add_child(_look)
+		_look.bind({"environment": _environment, "rig": _rig, "camera": _camera, "world": _world, "sky_parent": self, "size": _size,
+			"biome": String(_biome), "reduced": _reduced(), "elevation": _elevation,
+			"hide": {"windmill": _windmill.get_parent() if _windmill != null else null, "carousel": _carousel.get_parent() if _carousel != null else null,
+				"ferris": _ferris.get_parent() if _ferris != null else null}})
+	var cam: Dictionary = _look.apply(look)
+	_elevation = float(cam["elevation"])
+	_look_zoom = float(cam["zoom"])
+	_frame_camera()
 
 
 ## Auto applies a deterministic owned theme per category; purchases remain profile owned.

@@ -49,7 +49,15 @@
           "#3E9E94"
         ],
         "glyph_strength": 0.8,
-        "layer_dark": 0.1
+        "layer_dark": 0.1,
+        "cap_palette": [
+          "#8ED63A",
+          "#E08A2A",
+          "#3FA58A",
+          "#B8E070",
+          "#A98AE8",
+          "#F07AA8"
+        ]
       },
       "sky": [
         "#4F94E6",
@@ -303,8 +311,16 @@
           "#B58CFF",
           "#5FC8FF"
         ],
-        "cap_tint": 0.18,
-        "glyph_strength": 0.8
+        "cap_tint": 0.0,
+        "glyph_strength": 0.8,
+        "cap_palette": [
+          "#FFA0C0",
+          "#FFB27A",
+          "#A0F0D0",
+          "#FFF59A",
+          "#8A5236",
+          "#7F8CFF"
+        ]
       },
       "sky": [
         "#E79AD0",
@@ -473,8 +489,16 @@
           "#4A78D6",
           "#F0A8CC"
         ],
-        "cap_tint": 0.1,
-        "glyph_strength": 0.8
+        "cap_tint": 0.0,
+        "glyph_strength": 0.8,
+        "cap_palette": [
+          "#BFE2FF",
+          "#9FEDE6",
+          "#D8CCFF",
+          "#FFFFFF",
+          "#A0BCF0",
+          "#FFD0E4"
+        ]
       },
       "sky": [
         "#8A96E4",
@@ -698,7 +722,8 @@
           "#F0709A",
           "#FFB84A"
         ],
-        "glyph_strength": 0.8
+        "glyph_strength": 0.8,
+        "top_tint": 0.25
       },
       "sky": [
         "#1E4C86",
@@ -866,7 +891,8 @@
           "#FF8A2A"
         ],
         "glyph_strength": 0.8,
-        "layer_dark": 0.12
+        "layer_dark": 0.12,
+        "top_tint": 0.4
       },
       "sky": [
         "#2A1E3A",
@@ -1034,7 +1060,8 @@
           "#5E8A58",
           "#7A5A8A"
         ],
-        "glyph_strength": 0.8
+        "glyph_strength": 0.8,
+        "top_tint": 0.3
       },
       "sky": [
         "#9CC8A8",
@@ -1209,7 +1236,8 @@
           "#7CF08A",
           "#E8E8FF"
         ],
-        "glyph_strength": 0.8
+        "glyph_strength": 0.8,
+        "top_tint": 0.4
       },
       "sky": [
         "#2E2943",
@@ -1370,7 +1398,8 @@
           "#E8A0A0",
           "#8A6A3A"
         ],
-        "glyph_strength": 0.8
+        "glyph_strength": 0.8,
+        "top_tint": 0.3
       },
       "sky": [
         "#C9A57A",
@@ -1521,7 +1550,8 @@
           "#FFB020",
           "#FF4A5A"
         ],
-        "glyph_strength": 0.8
+        "glyph_strength": 0.8,
+        "top_tint": 0.25
       },
       "sky": [
         "#140F33",
@@ -1691,7 +1721,8 @@
           "#FFE08A",
           "#FFA0B0"
         ],
-        "glyph_strength": 0.8
+        "glyph_strength": 0.8,
+        "top_tint": 0.35
       },
       "sky": [
         "#140F3A",
@@ -1860,7 +1891,8 @@
           "#3AB86A",
           "#8A4AE0"
         ],
-        "glyph_strength": 0.8
+        "glyph_strength": 0.8,
+        "top_tint": 0.0
       },
       "sky": [
         "#F7A97A",
@@ -2030,7 +2062,8 @@
           "#C08A3A",
           "#C08A3A"
         ],
-        "glyph_strength": 0.8
+        "glyph_strength": 0.8,
+        "top_tint": 0.3
       },
       "sky": [
         "#2FB5B0",

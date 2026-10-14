@@ -32,7 +32,7 @@ static func for_biome(biome: StringName) -> ShaderMaterial:
 	for key: String in ["cap_color", "body_color", "accent_color", "glow_color"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), Color(String(record[key])))
-	for key: String in ["glyph_strength", "seam_dark", "layer_dark", "cap_tint", "active_boost", "cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt", "translucency",
+	for key: String in ["top_tint", "glyph_strength", "seam_dark", "layer_dark", "cap_tint", "active_boost", "cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt", "translucency",
 			"piece_sat", "piece_value", "piece_linear", "cap_hue_min_sat", "stone_value", "stone_sat", "stone_crack", "cap_body_mix", "side_shade", "shade_side_extra"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), float(record[key]))
@@ -55,6 +55,9 @@ static func for_biome(biome: StringName) -> ShaderMaterial:
 		if record.has("palette_accent"):
 			material.set_shader_parameter(&"palette_accent", _color_array(record["palette_accent"], n))
 			material.set_shader_parameter(&"accent_vary", 1.0)
+	if record.has("cap_palette") and record.has("palette"):
+		material.set_shader_parameter(&"cap_palette", _color_array(record["cap_palette"], mini(record["cap_palette"].size(), PALETTE_SLOTS)))
+		material.set_shader_parameter(&"cap_palette_on", 1.0)
 	# Sky-tinted rim and fake reflection: the biome's horizon colour, lifted toward white.
 	var sky: Array = look(biome).get("sky", [])
 	if record.has("rim_color"):

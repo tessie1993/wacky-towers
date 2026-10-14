@@ -94,6 +94,11 @@ uniform float seam_dark : hint_range(0.0, 1.0) = 0.5;
 uniform float layer_dark : hint_range(0.0, 0.6) = 0.22;
 /** Number of layers in the board (set by BoardView). */
 uniform float layer_span : hint_range(1.0, 32.0) = 8.0;
+/** Per-piece cap colours (grass, icing, snow), authored sRGB; used when cap_palette_on > 0.5. */
+uniform vec4 cap_palette[8];
+uniform float cap_palette_on : hint_range(0.0, 1.0) = 0.0;
+/** Top faces of cap-less styles lean toward the piece colour (the camera mostly sees tops). */
+uniform float top_tint : hint_range(0.0, 1.0) = 0.0;
 /** Tint of the cap (icing, snow) toward the piece colour. */
 uniform float cap_tint : hint_range(0.0, 0.6) = 0.0;
 /** Falling-piece boost: brightness, emission pulse and rim (applied when use_cell_alpha is false). */
@@ -580,11 +585,13 @@ void fragment() {
 		float cap = top ? 1.0 : (bottom ? 0.0 : smoothstep(limit - sd, limit + sd, p.y));
 		float cap_edge = side ? (1.0 - smoothstep(0.0, 0.06, p.y - limit)) * cap : 0.0;
 		float tuft = fbm(p.xz * 9.0 + seed * 5.0) * 0.6 + fbm(vec2(along * 14.0, p.y * 3.0)) * 0.4;
-		vec3 cc = cap_color;
+		vec3 capc = cap_color;
+		if (cap_palette_on > 0.5 && vid >= 0) capc = pow(clamp(cap_palette[vid].rgb, 0.0, 1.0), vec3(2.2));
+		vec3 cc = capc;
 		if (style == 1 || style == 6) {
-			vec3 dark = cap_color * vec3(0.5, 0.68, 0.5);
-			vec3 light = cap_color * vec3(1.25, 1.2, 1.0) + vec3(0.02, 0.03, 0.0);
-			cc = mix(dark, cap_color, smoothstep(0.2, 0.6, tuft));
+			vec3 dark = capc * mix(vec3(0.5, 0.68, 0.5), vec3(0.6), cap_palette_on);
+			vec3 light = capc * vec3(1.25, 1.2, 1.0) + vec3(0.02, 0.03, 0.0);
+			cc = mix(dark, capc, smoothstep(0.2, 0.6, tuft));
 			cc = mix(cc, light, smoothstep(0.55, 0.8, tuft));
 			cc = mix(cc, dark, cap_edge * 0.5);
 			float blade = vnoise(vec2(along * 60.0, p.y * 4.0));
@@ -601,11 +608,11 @@ void fragment() {
 					vec2 kc = fract(suv * 2.0 + 0.37) - 0.5;
 					float kl = step(0.8, hash21(floor(suv * 2.0 + 0.37) + 4.0));
 					float clov = max(circle(kc, vec2(0.0, 0.05), 0.05), max(circle(kc, vec2(-0.045, -0.025), 0.05), circle(kc, vec2(0.045, -0.025), 0.05)));
-					cc = mix(cc, cap_color * vec3(0.7, 1.05, 0.7) * (0.85 + 0.3 * step(0.0, kc.y)), clov * kl * detail);
+					cc = mix(cc, capc * vec3(0.7, 1.05, 0.7) * (0.85 + 0.3 * step(0.0, kc.y)), clov * kl * detail);
 				}
 			}
 		} else if (style == 2) { // frosting: creamy with soft sheen and sprinkles on top
-			cc = cap_color * (0.94 + 0.08 * fbm(suv * 4.0));
+			cc = capc * (0.94 + 0.08 * fbm(suv * 4.0));
 			if (top) {
 				vec2 sc = suv * 6.0;
 				vec2 sq = fract(sc) - 0.5;
@@ -616,7 +623,7 @@ void fragment() {
 			}
 			g += vec2(0.0, 1.0) * cap_edge * 0.6;
 		} else if (style == 3) { // snow with blue icicle tips
-			cc = mix(cap_color, vec3(0.72, 0.87, 1.0), cap_edge * 0.75) * (0.95 + 0.08 * fbm(suv * 8.0));
+			cc = mix(capc, vec3(0.72, 0.87, 1.0), cap_edge * 0.75) * (0.95 + 0.08 * fbm(suv * 8.0));
 			if (top) g += vec2(hnoise(suv * 6.0) - 0.5, hnoise(suv * 6.0 + 3.0) - 0.5) * 0.5;
 		}
 		float below = (1.0 - cap) * (1.0 - smoothstep(0.0, 0.08, limit - p.y)) * float(side);
@@ -629,9 +636,10 @@ void fragment() {
 		g += vec2(0.0, 1.0) * cap_edge * 0.8;
 	}
 
+	if (top && keep_cap < 0.5 || (top && cap_depth <= 0.0)) col = mix(col, piece * 1.25 + vec3(0.03), top_tint);
 	// Per-piece secondary cue: a small embossed glyph (one silhouette per palette index) in the face corner.
 	if (vid >= 0 && glyph_strength > 0.0) {
-		vec2 gq = (uv - vec2(-0.235, -0.235)) / 0.085;
+		vec2 gq = (uv - vec2(-0.235, -0.235)) / (top ? 0.105 : 0.085);
 		int gid = vid % 7;
 		float gd = glyph_sd(gid, gq);
 		float gm = 1.0 - smoothstep(-0.12, 0.12, gd);
@@ -671,11 +679,11 @@ void fragment() {
 	int smask = int(v_mask + 0.5);
 	if (smask > 0 && is_active < 0.5) {
 		float sm = 0.0;
-		sm = max(sm, seam_bit(smask, axu) * (1.0 - smoothstep(0.0, 0.09, 0.5 - uv.x)));
-		sm = max(sm, seam_bit(smask, -axu) * (1.0 - smoothstep(0.0, 0.09, 0.5 + uv.x)));
-		sm = max(sm, seam_bit(smask, axv) * (1.0 - smoothstep(0.0, 0.09, 0.5 - uv.y)));
-		sm = max(sm, seam_bit(smask, -axv) * (1.0 - smoothstep(0.0, 0.09, 0.5 + uv.y)));
-		col *= 1.0 - seam_dark * sm;
+		sm = max(sm, seam_bit(smask, axu) * (1.0 - smoothstep(0.0, (top ? 0.13 : 0.09), 0.5 - uv.x)));
+		sm = max(sm, seam_bit(smask, -axu) * (1.0 - smoothstep(0.0, (top ? 0.13 : 0.09), 0.5 + uv.x)));
+		sm = max(sm, seam_bit(smask, axv) * (1.0 - smoothstep(0.0, (top ? 0.13 : 0.09), 0.5 - uv.y)));
+		sm = max(sm, seam_bit(smask, -axv) * (1.0 - smoothstep(0.0, (top ? 0.13 : 0.09), 0.5 + uv.y)));
+		col *= 1.0 - min(seam_dark * (top ? 1.5 : 1.0), 0.85) * sm;
 	}
 	float layer_t = clamp(v_layer / max(layer_span - 1.0, 1.0), 0.0, 1.0);
 	col *= mix(1.0 - layer_dark, 1.0, mix(layer_t, 1.0, is_active));
