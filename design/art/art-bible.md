@@ -51,9 +51,10 @@ through a purple-wood frame wrapped in vines.
 2. **Painted, not vector.** Hand-painted texture, soft gradients, rim light, warm bounce
    light, specular glints. **No flat clip-art. No single-colour fills. No geometric
    placeholder characters.**
-3. **Floating-island dioramas.** Every play space is a floating island chunk: a grass, snow
-   or stone top, layered rock cliffs under it, roots or icicles hanging down, set in a sky
-   full of distant islands.
+3. **Dioramas.** Every play space is a level-specific diorama: the board sits in its own terrain
+   (plank bridge, fort wall, raft, mine shaft, ravine ledge). The floating island, with a grass, snow
+   or stone top, layered rock cliffs under it, roots or icicles hanging down and a sky full of
+   distant islands, is one terrain among many (amended 2026-10-14, user rule "a level is a scene, not a grid").
 4. **Warm, saturated and magical.** Golden sparkles, glow, confetti and stars. Purple and gold
    are the brand colours.
 5. **Readability first.** Pieces and the landing ghost must read at a glance on a phone. The
@@ -300,8 +301,9 @@ and an emissive for lava, neon and celestial. Small toppers are separate instanc
 
 ## 7. Islands and environments
 
-- **Board island** (ref 15): a square stone-tile board, slightly inset, sits on a thick
-  floating chunk. The biome rim around it has flowers, clover and grass tufts (meadow), snowy
+- **Board terrain** (amended 2026-10-14: the board follows the level's mask and terrain, and the square
+  stone-tile board on a floating chunk of ref 15 is one terrain among many). In that terrain the board is
+  slightly inset on a thick chunk. The biome rim around it has flowers, clover and grass tufts (meadow), snowy
   shrubs and frost trees (ice), or marble with gold inlay and broken pillars (celestial).
 - **Cliffs:** 2–3 layered rock bands with painted strata. Roots, icicles or crystals hang from
   the bottom.

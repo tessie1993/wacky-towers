@@ -75,6 +75,13 @@ var _yaw: float = 45.0
 var _target_yaw: float = 45.0
 var _elevation: float = 32.0
 var _dragging: bool = false
+## Player camera zoom multiplier (1 = framed default) and input translator (assets/data/camera_controls.json).
+var _user_zoom: float = 1.0
+var _mouse_orbit: bool = false
+## Seconds left before a trackpad pan settles to the nearest view.
+var _pan_settle: float = 0.0
+const PAN_SETTLE_S := 0.25
+var _cam_controls := WtCameraControls.new()
 var _time: float = 0.0
 var _danger: MeshInstance3D
 var _danger_mat: StandardMaterial3D
@@ -269,6 +276,45 @@ func rotate_view(dir: int) -> void:
 	view_changed.emit(_snap.k)
 
 
+## Orbits and tilts the play camera by degrees (touch, mouse or gamepad); settle_camera() snaps it.
+func orbit_camera(yaw_deg: float, tilt_deg: float) -> void:
+	_dragging = true
+	_yaw += -yaw_deg if _preference_flag("invert_view", false) else yaw_deg
+	_elevation = _cam_controls.clamp_elevation(_elevation + tilt_deg)
+	_update_camera()
+
+
+## Multiplies the player zoom (factor < 1 zooms in), clamped by the data limits.
+func zoom_camera(factor: float) -> void:
+	_user_zoom = _cam_controls.clamp_zoom(_user_zoom * factor)
+	_frame_camera()
+
+
+## Ends a free orbit: snaps to the nearest of the twelve views so moves stay camera-relative.
+func settle_camera() -> void:
+	if not _dragging: return
+	_dragging = false
+	_snap.settle(_yaw)
+	_target_yaw = _snap.yaw_deg()
+	if _reduced() or not _preference_flag("turn_animation", true): _yaw = _target_yaw
+	view_changed.emit(_snap.k)
+
+
+## Applies a camera intent from the gesture pad: camera_orbit {relative, source},
+## camera_zoom {wheel: +1/-1 | pinch: new/old finger distance}, camera_release {}.
+func camera_intent(id: StringName, args: Dictionary) -> void:
+	match id:
+		&"camera_orbit":
+			var rel: Vector2 = args.get("relative", Vector2.ZERO)
+			var d: Vector2 = _cam_controls.drag_delta(rel, StringName(args.get("source", &"mouse")))
+			orbit_camera(d.x, d.y)
+		&"camera_zoom":
+			if args.has("wheel"): zoom_camera(_cam_controls.wheel_factor(int(args["wheel"])))
+			elif args.has("pinch"): zoom_camera(_cam_controls.pinch_factor(float(args["pinch"])))
+		&"camera_release":
+			settle_camera()
+
+
 ## Returns the logical settled camera view (0..11).
 func view_index() -> int:
 	return _snap.k
@@ -380,6 +426,15 @@ func burst(origin: Vector3, tint: Color, count: int = 30) -> void:
 
 func _process(delta: float) -> void:
 	_time += delta
+	var pad: Vector2 = _cam_controls.pad_delta(delta)
+	var pad_released: bool = _cam_controls.pad_released(pad)
+	if pad != Vector2.ZERO:
+		orbit_camera(pad.x, pad.y)
+	elif pad_released:
+		settle_camera()
+	if _pan_settle > 0.0:
+		_pan_settle -= delta
+		if _pan_settle <= 0.0: settle_camera()
 	if not _dragging:
 		var d: float = angle_difference(deg_to_rad(_yaw), deg_to_rad(_target_yaw))
 		_yaw += rad_to_deg(d) * minf(1.0, delta * 10.0)
@@ -408,17 +463,23 @@ func _unhandled_input(event: InputEvent) -> void:
 			secret_tapped.emit(StringName(hit["collider"].get_meta("secret_id")))
 			get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
-		_dragging = event.pressed
-		if not _dragging:
-			_snap.settle(_yaw)
-			_target_yaw = _snap.yaw_deg()
-			if _reduced() or not _preference_flag("turn_animation",true): _yaw = _target_yaw
-			view_changed.emit(_snap.k)
+		_mouse_orbit = event.pressed
+		if not _mouse_orbit: settle_camera()
 		get_viewport().set_input_as_handled()
-	elif event is InputEventMouseMotion and _dragging:
-		_yaw -= event.relative.x * 0.35
-		_elevation = clampf(_elevation + event.relative.y * 0.12, 24.0, 50.0)
-		_update_camera()
+	elif event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
+		zoom_camera(_cam_controls.wheel_factor(1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else -1))
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMouseMotion and _mouse_orbit:
+		var d: Vector2 = _cam_controls.drag_delta(event.relative, &"mouse")
+		orbit_camera(d.x, d.y)
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMagnifyGesture:
+		zoom_camera(_cam_controls.pinch_factor(event.factor))
+		get_viewport().set_input_as_handled()
+	elif event is InputEventPanGesture:
+		var p: Vector2 = _cam_controls.drag_delta(event.delta * 8.0, &"touch")
+		orbit_camera(p.x, p.y)
+		_pan_settle = PAN_SETTLE_S
 		get_viewport().set_input_as_handled()
 
 
@@ -724,7 +785,7 @@ func _frame_camera() -> void:
 	var tall: float = widest * sin(elev) + (_board.h_play() + 1.0) * cos(elev)
 	var by_width: float = widest / (aspect * usable_w)
 	var by_height: float = tall / usable_h
-	_camera.size = maxf(by_width, by_height) * _look_zoom
+	_camera.size = maxf(by_width, by_height) * _look_zoom * _user_zoom
 	_update_camera()
 
 

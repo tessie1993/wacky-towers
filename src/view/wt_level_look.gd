@@ -424,10 +424,8 @@ func _build_weather() -> void:
 	mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD if bool(cfg.get("additive", false)) else BaseMaterial3D.BLEND_MODE_MIX
 	mat.vertex_color_use_as_albedo = true
 	mat.albedo_texture = _texture(String(cfg["texture"]))
-	mat.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
-	mat.particles_anim_h_frames = 1
-	mat.particles_anim_v_frames = 1
-	mat.particles_anim_loop = false
+	mat.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	mat.billboard_keep_scale = true
 	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	mat.disable_fog = true
 	quad.material = mat

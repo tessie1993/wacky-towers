@@ -242,7 +242,7 @@ static func install_actions() -> void:
 		event.axis = pair[1]
 		event.axis_value = pair[2]
 		if not InputMap.action_has_event(pair[0], event): InputMap.action_add_event(pair[0], event)
-	for pair: Array in [[&"wt_view_left", JOY_AXIS_RIGHT_X, -1.0], [&"wt_view_right", JOY_AXIS_RIGHT_X, 1.0], [&"wt_skill", JOY_AXIS_TRIGGER_LEFT, 1.0], [&"wt_item", JOY_AXIS_TRIGGER_RIGHT, 1.0]]:
+	for pair: Array in [[&"wt_skill", JOY_AXIS_TRIGGER_LEFT, 1.0], [&"wt_item", JOY_AXIS_TRIGGER_RIGHT, 1.0]]:
 		var event := InputEventJoypadMotion.new()
 		event.axis = pair[1]
 		event.axis_value = pair[2]

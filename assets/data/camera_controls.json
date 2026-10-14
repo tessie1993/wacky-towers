@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "source": "User request 2026-10-14: move the play camera with touchscreen, controller or mouse. See src/view/wt_camera_controls.gd.",
+  "mouse": {
+    "orbit_deg_per_px": 0.35,
+    "tilt_deg_per_px": 0.12,
+    "wheel_zoom_step": 0.08
+  },
+  "touch": {
+    "orbit_deg_per_px": 0.3,
+    "tilt_deg_per_px": 0.12,
+    "pinch_gain": 1.0
+  },
+  "pad": {
+    "orbit_deg_per_s": 140.0,
+    "tilt_deg_per_s": 45.0,
+    "deadzone": 0.25
+  },
+  "limits": {
+    "elevation_min": 22.0,
+    "elevation_max": 55.0,
+    "zoom_min": 0.65,
+    "zoom_max": 1.6
+  }
+}

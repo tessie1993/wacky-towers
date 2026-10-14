@@ -58,6 +58,10 @@ func _run() -> void:
 			var pp: CPUParticles3D = stage.get_node("LevelLook").get_child(stage.get_node("LevelLook").get_child_count() - 1) as CPUParticles3D
 			var mode: String = OS.get_environment("WXDBG")
 			if mode.contains("noramp"): pp.color_ramp = null
+			var qm: StandardMaterial3D = (pp.mesh as QuadMesh).material as StandardMaterial3D
+			if mode.contains("prio"): qm.render_priority = 60
+			if mode.contains("scissor"): qm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
+			if mode.contains("nodepth"): qm.no_depth_test = true
 			if mode.contains("big"): pp.scale_amount_min = 8.0; pp.scale_amount_max = 8.0
 			if mode.contains("plain"):
 				var m := StandardMaterial3D.new(); m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED; m.albedo_color = Color.RED

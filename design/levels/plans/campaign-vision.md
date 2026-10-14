@@ -11,8 +11,11 @@ mechanics handbook before any art or code.
 
 **Biome order (user decision: Pirate Cove plays 11th):** 1 meadow, 2 candy, 3 ice, 4 underwater, 5 lava,
 6 forest, 7 cave, 8 clockwork, 9 neon, 10 celestial, 11 pirate, 12 carnival. The coordinator must reorder
-`catalog.json`, `economy.json` and `progression.md` (pirate is 5th there). Art-bible changes needed: a Pirate
-block row, Dune Bazaar dropped, and section 5 rows for Lana, Boulder and Glim.
+`catalog.json`, `economy.json` and `progression.md` (pirate is 5th there). `minigames.md` debut biomes and the
+tournament unlock order are re-derived in phase 3 from the new order; no lead may use the old 5th-place Pirate.
+Art-bible changes: a Pirate block row, Dune Bazaar dropped, section 5 rows for Lana, Boulder and Glim, and
+(done 2026-10-14) section 1 pillar 3 and section 7 amended: a board sits in a level-specific terrain and the
+floating island is one terrain among many.
 
 **Open decisions (anything marked "proposed" below is not decided):** (1) concept A is a recommendation only;
 (2) `tumble-fair.md` replaced by the 14-level Carnival biome; (3) comic peril in Lava and Neon (proposed:
@@ -27,15 +30,17 @@ You are the Wizard's trusted builder in a sky of twelve floating islands. You dr
 blocks. Each stack is an answer: a bridge a goat can cross, a wall that shelters the heroes, a lookout that
 spots the ship. Stacking matters because in this world **built things hold the sky together**. A cleared
 layer pays out something in the story: it charges a beacon, mends a floor or drains a flood.
-Dame Ada, Bram and Sif are your party: their perks (Stitch, Smash and Redraw, kept from the old design;
-proposed as tools you choose before a level), and they are on stage reacting to what you build. Minigame
-blocks are the island's own games, h1-h3 are the mastery epilogue, and stars are the Wizard's thanks. The
+Dame Ada, Bram and Sif are your party. Their perks (Stitch, Smash and Redraw, kept from the old design) are
+proposed as tools you choose before a level, and they stand on stage reacting to what you build. Every level
+is a small diorama (a gully, a fort wall, a raft) with a landmark that acts and a cast that cheers.
+Minigame blocks are the island's own games, h1-h3 are the mastery epilogue, and stars are the Wizard's thanks. The
 player feels clever, a bit mischievous, and rooted for: someone always cheers when a piece lands well.
 
 ## 2. Three pillars
 
 Each test scores 0 fail, 1 partial or 2 pass; a level passes at 2. Tests come in two sets.
-- **Spec-time tests (phases 2-5):** P1a, P1b, P2a, P2b, P2c, P3b, P3c, plus the `target_visible` field for P3a.
+- **Spec-time tests:** phases 2-3 apply P1a, P2a, P2c; phases 4-5 apply the full set P1a, P1b, P2a, P2b, P2c,
+  P3b, P3c, plus the `target_visible` field for P3a.
 - **Build-time tests (phases 7-8), on the built level, JSON and screenshots:** all of the above plus P1c, P3a, P3d.
 
 **P1. Every level is a scene, not a grid.** One place, one problem, one reason to stack, and the board lives
@@ -45,10 +50,16 @@ inside a diorama (user rule, refs 01 and 09-12, layout only).
 - *P1b scene test (spec-time):* the spec names `scene.terrain` (the place the board sits in: plank bridge,
   fort wall, raft, mine shaft, conveyor deck, summit ledge; not "floating square"), `scene.set_piece_action`
   (what the landmark does during play: fires, grabs, moves, rises) and `scene.cast_on_stage` (who is posed and
-  doing what). An empty field, a decorative-only set piece or "the same floating island" scores 0.
-- *P1c scene test (build-time):* on the start and mid screenshots, the area outside the board shows the
-  terrain, the cast and the set piece acting, at least as much art as board; where it fits, a themed HUD meter
-  (Heat, Altitude, Lava Rise, Balance) in the no-beige kit; the camera frames both board and scene.
+  doing what). An empty required field, a decorative-only set piece or "the same floating island" scores 0.
+  Terrain and action ids come from closed lists (U17). `scene.hud_meter` is optional ("where it fits");
+  an empty meter is not a defect.
+- *P1c scene test (build-time):* on the start and mid screenshots at 720x1280, scene pixels (not board, not
+  HUD, not plain sky gradient) are at least 60% of the board's pixel area, measured by a segmentation mask in
+  the capture tool; the terrain, the cast and the set piece acting are each identifiable; and the active
+  piece, the stack and the landing marker are never occluded by the scene.
+- *Cosmetic or rule:* a `set_piece_action` is cosmetic unless it is the level's `main_rule` or an extra. Any
+  action that moves, removes, blocks or scores blocks is a rule: it counts toward U10 and needs a handbook
+  entry. Cosmetic actions never touch the board and have a static reduced-motion pose.
 
 **P2. The stack is the answer, and never mundane.** The goal is something the player builds, protects or
 reveals, and the world visibly changes when it is done.
@@ -71,7 +82,7 @@ reveals, and the world visibly changes when it is done.
 
 Intensity target 1-5 (tier 10 peak). **Stakes** say what is at risk if the island is not mended (always
 reversible and gentle). **The Stakes column is proposed:** the narrative lead may change the wording (it
-presupposes concept A) but not the escalation shape (intensity column, Lava reversal, Neon low).
+presupposes concept A) but not the escalation shape (intensity column, first reversal, Neon low).
 
 | # | Biome | Role in the arc | Stakes | Int. | Player leaves feeling |
 |---|---|---|---|---|---|
@@ -79,17 +90,18 @@ presupposes concept A) but not the escalation shape (intensity column, Lava reve
 | 2 | Candy | **Mischief.** Sweet chaos, a prankster problem. | A town of sweets goes sticky | 3 | Delight, a giggle at a mess |
 | 3 | Ice | **Hush and slide.** Quiet music, slippery floors, care for a hero. | A lost creature is cold | 2 | Calm awe, careful hands |
 | 4 | Underwater | **Strange wonder.** Light from above, odd friends, a shy giant. | A reef loses its glow | 3 | Curiosity with a hint of unease |
-| 5 | Lava | **Danger, the midpoint reversal.** The team is truly in trouble. | The party is cut off | 5 | "We might lose this" |
+| 5 | Lava | **Danger, the first reversal (chapter 5 of 12).** The team is truly in trouble. | The party is cut off | 5 | "We might lose this" |
 | 6 | Forest | **Tangled warmth.** Shelter after heat; a secret; the cast bonds. | A home in the trees | 2 | Relief, belonging |
 | 7 | Cave | **Trust in the dark.** Tight boards (narrow masks inside the 8x8 minimum box), one hero alone with you. | A lost light | 3 | Quiet courage |
 | 8 | Clockwork | **Tension of precision.** A machine everyone is stuck in; ticking and tidy. | Time itself runs down | 4 | Focus, joy in order |
 | 9 | Neon | **Low point.** Bright but empty; a setback the heroes face; lowest morale. | The party is split | 5 | Doubt turning to resolve |
 | 10 | Celestial | **Awe and gathering.** Above the weather; everyone returns; stakes named. | The whole sky | 4 | Sublime calm, readiness |
-| 11 | Pirate | **Swashbuckling swagger.** Loud, rowdy rivals and a ship of the party's own; the energy lift before the finale. | Treasure and a ship's pride | 4 | Cheeky, confident, ready to party |
+| 11 | Pirate | **Swashbuckling swagger.** Rowdy rivals hold the last piece the party needs; the energy lift into the finale. | The last key and the way to the Fair | 4 | Cheeky, confident, ready to party |
 | 12 | Carnival | **Triumph and release.** Every learned idea returns as a game. | The world holds, or sags | 5 | Joy, pride, "I built all this" |
 
-Every biome has a tier-10 boss. The Lava reversal sits at chapter 5 and the Neon low at chapter 9. Recovery
-takes three biomes: Celestial gathers the party, Pirate lifts the mood with swagger, the Carnival pays off.
+Every biome has a tier-10 boss. The first reversal is Lava (chapter 5), the true midpoint is 6.5, and the Neon
+low is chapter 9. Recovery takes three biomes with rising stakes: Celestial gathers the party (4), Pirate
+lifts the mood and its tier-10 boss hands over the last key to the finale (4), the Carnival pays off (5).
 Pirate must not reprise Underwater: its play is rowdy, rival-driven and ship-based.
 
 **The ending (proposed, narrative lead owns detail).** The campaign ends on the Carnival tier-10 boss and its
@@ -139,22 +151,24 @@ and **look** (start-frame silhouette).
 **Definitions.**
 - `main_rule`: a required spec field, one id from the roster. Two rules are the same if their ids match,
   whatever the parameters.
-- **Canonical mask:** the board mask normalised under the 8 rotations and reflections, compared as a string
-  (the smallest of the 8). A **plain square** is a full rectangle with no holes and no notches, at any size.
+- **Canonical mask:** the board mask normalised under the 8 rotations and reflections; the smallest wins,
+  ordered by width, then height, then the rows joined with `/` (with `#` < `.`), written `WxH:rows`. A **plain square** is a full rectangle with no holes and no notches, at any size.
 - **The pill:** the rule list on the level card. **Beat id = level id** (`<biome>_01`..`_10`, `_bonus`, `_h1`-`_h3`).
 - **Counter goal:** any goal whose only HUD readout is a bare number to reach or fill (rows, cells, seconds)
   with no story object.
 - **Script check:** `tools/qa/check_level_uniqueness.gd`. Owner: tools-programmer. Built in **phase 3**, so it
   exists before phase 4 specs are written; the plan task list gets this task (size: 2 days). It reads the
-  `level_table` that ends each biome plan and verifies U3, U5 (table mode), U6, U7, U12, U14, U15, U16 and the
-  name check. It reports observations; reviewers score. `level_table` is a Markdown table with the columns
-  `id`, `goal_type`, `main_rule`, `mask` (canonical string), `set_piece`, `time_of_day`, `weather`, `camera`,
-  `opening_event`, `ending_pattern`, `headline_objective`, `role`, `callback_of`.
+  `level_table` that ends each biome plan and verifies U3, U5 (table mode), U6, U7, U12, U14, U15, U16, U17 and
+  the name check. The exemplar levels are included in U3/U14 checks. It reports observations; reviewers score.
+  `level_table` is a Markdown table with the columns `id`, `goal_type` (a list in play order, e.g. `span>survive`),
+  `main_rule`, `mask` (canonical string), `terrain`, `set_piece`, `set_piece_action`, `cast_pose`, `time_of_day`,
+  `weather`, `camera`, `opening_event`, `ending_pattern`, `headline_objective`, `role`, `callback_of`.
 
 **Rules.**
 - **U1 Beat first.** Every spec starts from its beat id and has a reason to stack.
 - **U2 Swap test.** The beat, headline objective and set piece cannot move to another biome unchanged (P1a).
-- **U3 Unique triple.** `(goal_type, main_rule, canonical_mask)` is unique across the 168 levels. Hard remixes
+- **U3 Unique triple.** `(goal_type list, main_rule, canonical_mask)` is unique across the 168 levels (the full
+  goal list is compared, so `span>survive` differs from `span`). Hard remixes
   and `callback_of` levels are not exempt: a remix changes at least one element of the triple and also differs in
   `set_piece` or `time_of_day` from its source.
 - **U4 Signature** is a story sentence of 4-14 words naming the event or place, not the rules.
@@ -174,7 +188,7 @@ and **look** (start-frame silhouette).
   a biome and none appears in more than 2 biomes, so phase 2 plans for at least 84 distinct ids.
 - **U9 Boss finale.** Every tier-10 level is a phased boss (Neon included; the `progression.md` no-boss
   finale is withdrawn), tied to its chapter villain, changing the arena once or more, beaten by building.
-- **U10 Rule budget.** A level adds at most one new rule. Levels 01-03 show two rules on the pill only if one
+- **U10 Rule budget.** A level adds at most one new rule (a rule-like set-piece action counts). Levels 01-03 show two rules on the pill only if one
   was taught in an earlier biome. A biome adds at most 2 new rules. A rule is taught alone before it combines.
 - **U11 World change.** The clear changes the scene (a lit lamp, a crossed bridge); failure is a comic reaction.
 - **U12 No cookie-cutter slots.** For tiers 01-09 and 11, the same tier number may not share a goal type in
@@ -182,8 +196,14 @@ and **look** (start-frame silhouette).
   the building action that damages them (the "boss triple"; actions come from a closed list in the handbook,
   for example wall, ramp, bridge, bait, cage, pillar), and no two bosses share all three.
 - **U13 Echoes** need a story reason, are marked `callback_of`, and still obey U3.
-- **U14 Look fingerprint.** `(canonical_mask, set_piece, time_of_day, weather)` is unique per level across the
-  campaign; within a biome no `set_piece` repeats more than twice and no `canonical_mask` repeats.
+- **U14 Look fingerprint.** `(canonical_mask, terrain, set_piece, time_of_day, weather)` is unique per level
+  across the campaign; within a biome no `set_piece` repeats more than twice and no `canonical_mask` repeats.
+- **U17 Scene spread.** `scene.terrain` and `scene.set_piece_action` each take an id from a closed list (phase
+  4 groups propose it; the technical artist approves it before specs are scored). Per biome: at least 7
+  distinct terrain ids and 7 distinct action ids, none used more than twice; across the campaign no
+  `(terrain, set_piece_action)` pair repeats. `cast_pose` is a closed verb list (build, haul, cheer, hide,
+  brace, point) and a biome uses at least 4 of them. Exemplars teach **form, not content**: no level may reuse
+  an exemplar's set piece, terrain, mask, ending or character.
 - **U15 No counter goals.** No level's headline goal is `clear_n` or any counter goal (defined above).
   `height`, `shape`, `survive` and the other goals are legal only when the HUD names a story object (the
   lookout, the dam, the cloud) and the number is secondary. `clear_n` is a means only (it charges, bonks,
@@ -250,11 +270,19 @@ and earns the Carnival payoff. Borrow C's beacon-light as a win reward.
    cast, acting set pieces, themed HUD meters) each with an owner and a size.
 2. **Teach, twist, combine.** A biome adds at most 2 new rules (U10), each taught alone. Include a cross-biome
    dependency graph. The systems designer owns the function-to-rule mapping for the narrative beats.
-3. **Goal vocabulary as story objectives.** Define every goal's HUD wording. Allowed goals: `height`, `shape`,
+3. **Goal vocabulary as story objectives.** Define every goal's HUD wording; `goal_type` is a list in play
+   order for goal phases (U3 compares the whole list). Allowed goals: `height`, `shape`,
    `survive`, `bonk_boss`, `rescue_all`, `dig_rescue`, `wind_keys`, `bake_oven` and the minigame goals. `clear_n`
    is a means only (U15). Define the ending patterns as engine features (goal phases, reveal, guest, secret).
-4. **Minigames.** The 16 modules each have a debut, a recall, the motivating beat and a tournament use; at most
-   2 debuts per biome; define the phase runner contract.
+4. **Minigames.** Follow `design/levels/plans/minigame-party-rules.md` (short and intense, taught in 3
+   seconds, standard controls plus one extra verb, built on stacking, a scene not a grid, fair shared seeds).
+   The 16 modules each have a debut, a recall, the motivating beat and a tournament use; at most 2 debuts per
+   biome, re-derived for the new biome order; define the phase runner contract.
+   **Scene kit budget.** Price in the engine-gap list, each with owner and size: terrain modules (6-8 per
+   biome, 168 level terrains reusing the closed list under U17), cast poses (6 verbs for each of the three
+   heroes and the Wizard, made once and reused), acting set pieces (84-96, each a looping 2-4 second
+   animation, with a static reduced-motion pose) and 4-6 themed HUD meters. The producer reports the total
+   against the phase 6 buffer before phase 4 starts.
 5. **Bosses.** Twelve tier-10 bosses with distinct boss triples (U12), arena changes per phase, beaten by building.
 6. **Hero perks.** How Stitch, Smash and Redraw work as pre-level tools (proposed: Ada Stitch, Bram Smash, Sif
    Redraw) and how they interact with each biome's rules.
@@ -271,10 +299,11 @@ machine-readable `level_table` for the script check. Set pieces: 7-8 per biome, 
 artist owns `assets/data/set_pieces.json` and flags art cost per piece (the file does not exist yet).
 1. **Start from the beat.** Each spec opens with its beat id (= level id).
 2. **Required fields per level:** `id`, `headline_objective`, `ending_pattern` (written to `metadata.ending`),
-   `metadata.signature`, `main_rule` (and extras, each linked to its handbook entry), `goal_type`, goal
-   parameters `n` (phase 3 formula), `target_visible` (yes or no, with where), board mask (ASCII: `#` floor,
-   `.` void), minigame block, full `look` block, **`scene.terrain`, `scene.set_piece_action`,
-   `scene.cast_on_stage` (and `scene.hud_meter` where it fits)**, `g0` and stars from the phase 3 formula,
+   `metadata.signature`, `main_rule` (and extras, each linked to its handbook entry), `goal_type` (a list in
+   play order), goal parameters `n` (phase 3 formula), `target_visible` (yes or no, with where), board mask
+   (ASCII: `#` floor, `.` void), minigame block, full `look` block, **`scene.terrain`,
+   `scene.set_piece_action` (cosmetic or rule), `scene.cast_on_stage` with `cast_pose` (and optional
+   `scene.hud_meter`)**, `g0` and stars from the phase 3 formula,
    role, `opening_event`, world change on win, comic fail reaction, `callback_of` if any.
 3. **Prove uniqueness.** The `level_table` passes the script check; group leads check cross-biome U3 and U14.
 4. **Readability.** Targets are visible from frame 0 at 720x1280 (`target_visible`); the active piece differs
@@ -291,12 +320,15 @@ lower = a structural fix is needed. Reviewers list ranked defects with owner and
   scoring; the reviewer applies the cap: a script failure caps the matching criterion at 8.0.
 - **Coverage.** Read every beat and spec of one biome in full and at least 5 levels of every other biome
   (across teach, boss and hard roles); cite at least 10 level ids per criterion.
-- **Calibration.** The **game director** writes one exemplar beat, one exemplar spec and one deliberately weak
-  sample (target 8) before the phase 2 gate, stored in `design/levels/plans/exemplars.md`; the panel scores
-  them as anchors before reviewing the rest. Makers do not write their own anchors.
-- **Pillars.** Phases 2-5 apply the spec-time tests (section 2) to 5 sampled levels; phases 7-8 apply all of them.
-- **Caps.** A mundane or counter-based level caps N4, M3 and L3 at 8.0; a spec with an empty `scene` field
-  caps L6 at 8.0; a built level that is only a grid on a floating square caps A1 and C5 at 8.0.
+- **Calibration.** The **game director** writes the anchors in `design/levels/plans/exemplars.md`: a 9.7
+  beat and spec, a near-miss (about 9.0), a weak sample (8 or below), and boss, hard-remix and level-01
+  specs. The panel scores them before reviewing the rest. Makers do not write their own anchors. Fields
+  derived from phase 3 formulas (`g0`, stars, `n`) are exempt in exemplars.
+- **Pillars.** Phases 2-3 apply P1a, P2a, P2c; phases 4-5 apply the spec-time set (section 2) to 5 sampled
+  levels; phases 7-8 apply all tests.
+- **Caps.** A mundane or counter-based level caps N4, M3 and L3 at 8.0; a spec with an empty required `scene`
+  field (terrain, set_piece_action, cast_on_stage) caps L6 at 8.0; a built level that is only a grid on a
+  floating square caps A-build and C5 at 8.0.
 - **Each item below uses these anchors unless a "9.7 means" is given.**
 
 **V (phase 1, this vision).** 9.7 means no structural fix is needed. V1 fantasy is clear in a pitch and a
@@ -320,14 +352,16 @@ rubric separates 9.7 from 8.5; V7 every user decision is honoured.
 **L (phase 4, level specs)**
 - L1 Beat fidelity (names pass the title script). L2 Uniqueness (U1-U16 and the scripts).
 - L3 Gameplay variety (no mundane or counter-based levels; at least 4 surprise endings per biome).
-- L4 Curve and pacing. L5 Readability and fairness. L6 Look, scene and art direction (fingerprint, `scene`
-  fields, set pieces, palette, no beige). L7 Completeness (all fields, handbook links, `level_table`).
+- L4 Curve and pacing. L5 Readability and fairness. L6 Look, scene and art direction (fingerprint, U17 scene
+  spread, set pieces, palette, no beige). L7 Completeness (all fields, handbook links, `level_table`).
 
-**A (phase 5, art).** 9.7 means each item is met for all 168 levels with no structural fix.
+**A-spec (phase 5, art on paper).** 9.7 means each item is met for all 168 levels with no structural fix.
 A1 every `look` block, `scene` kit item (terrain, acting set piece, posed cast, HUD meter) and set-piece spec
-is complete and art-costed; A2 palette and block skins incl. Pirate
-match boards 13 and 15; A3 cast rows (silhouette, colour key, prop) exist for all recurring characters;
-A4 reference parity; A5 no beige or parchment anywhere; A6 reduced motion keeps every cue readable.
+is complete and art-costed within the scene-kit budget; A3 cast rows (silhouette, colour key, prop) exist for
+all recurring characters; A7 the art-bible amendments and the closed terrain and action lists are approved.
+
+**A-build (phase 8, built art).** A2 palette and block skins incl. Pirate match boards 13 and 15; A4 reference
+parity; A5 no beige or parchment anywhere; A6 reduced motion keeps every cue readable (static poses).
 
 **B (phase 6, build).** 9.7 means zero failures and no workaround. B1 verifier 0 failures; B2 boots
 (`ui_flow_smoke`); B3 every JSON matches its spec and `level_table` row; B4 boss phases, goal phases and

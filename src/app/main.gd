@@ -307,6 +307,8 @@ func _execute_intent(id: StringName, args: Dictionary) -> void:
 		&"move", &"rotate", &"drop", &"soft", &"hold", &"use_skill", &"use_item", &"tap": _play_intent(id, args)
 		&"view":
 			if _stage != null and not _paused: _stage.rotate_view(int(args.get("direction", 1)))
+		&"camera_orbit", &"camera_zoom", &"camera_release":
+			if _stage != null and not _paused: _stage.camera_intent(id, args)
 		&"back": _back()
 		&"quit": get_tree().quit()
 
