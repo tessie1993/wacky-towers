@@ -5,7 +5,7 @@
 			"finite_puzzles_won": 1,
 			"id": "meadow",
 			"mains": 10,
-			"smoke_passed": 9
+			"smoke_passed": 10
 		},
 		{
 			"extras": 4,
@@ -88,21 +88,7 @@
 	"catalog_errors": [],
 	"date": "2026-10-10",
 	"engine": "4.7.2-stable (official)",
-	"failures": [
-		{
-			"failures": [
-				"variant seed 1729 (transpose): no completed lock",
-				"variant seed 1 (mirror_x): no completed lock",
-				"variant seed 2 (mirror_x): no completed lock",
-				"variant seed 3 (transpose): no completed lock",
-				"variant seed 4 (identity): no completed lock",
-				"variant seed 5 (rot90): no completed lock",
-				"variant seed 6 (rot180): no completed lock",
-				"variant seed 7 (rot180): no completed lock"
-			],
-			"id": "meadow_02"
-		}
-	],
+	"failures": [],
 	"levels": [
 		{
 			"active_clear_plane": 64,
@@ -178,16 +164,7 @@
 			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
 			"danger_limit": 10,
 			"embedded_world": true,
-			"failures": [
-				"variant seed 1729 (transpose): no completed lock",
-				"variant seed 1 (mirror_x): no completed lock",
-				"variant seed 2 (mirror_x): no completed lock",
-				"variant seed 3 (transpose): no completed lock",
-				"variant seed 4 (identity): no completed lock",
-				"variant seed 5 (rot90): no completed lock",
-				"variant seed 6 (rot180): no completed lock",
-				"variant seed 7 (rot180): no completed lock"
-			],
+			"failures": [],
 			"goal": {
 				"n": 3.0,
 				"type": "clear_n"
@@ -227,78 +204,8 @@
 			],
 			"scene": "res://src/levels/meadow/meadow_02/meadow_02.tscn",
 			"scene_instantiated": true,
-			"smoke_status": "FAIL",
-			"tier": 2.0,
-			"variation": {
-				"failures": [
-					"variant seed 1729 (transpose): no completed lock",
-					"variant seed 1 (mirror_x): no completed lock",
-					"variant seed 2 (mirror_x): no completed lock",
-					"variant seed 3 (transpose): no completed lock",
-					"variant seed 4 (identity): no completed lock",
-					"variant seed 5 (rot90): no completed lock",
-					"variant seed 6 (rot180): no completed lock",
-					"variant seed 7 (rot180): no completed lock"
-				],
-				"variants": [
-					{
-						"legal_spawn": true,
-						"locks": 0,
-						"moved": 0,
-						"seed": 1729,
-						"symmetry": "transpose"
-					},
-					{
-						"legal_spawn": true,
-						"locks": 0,
-						"moved": 0,
-						"seed": 1,
-						"symmetry": "mirror_x"
-					},
-					{
-						"legal_spawn": true,
-						"locks": 0,
-						"moved": 0,
-						"seed": 2,
-						"symmetry": "mirror_x"
-					},
-					{
-						"legal_spawn": true,
-						"locks": 0,
-						"moved": 0,
-						"seed": 3,
-						"symmetry": "transpose"
-					},
-					{
-						"legal_spawn": true,
-						"locks": 0,
-						"moved": 0,
-						"seed": 4,
-						"symmetry": "identity"
-					},
-					{
-						"legal_spawn": true,
-						"locks": 0,
-						"moved": 0,
-						"seed": 5,
-						"symmetry": "rot90"
-					},
-					{
-						"legal_spawn": true,
-						"locks": 0,
-						"moved": 0,
-						"seed": 6,
-						"symmetry": "rot180"
-					},
-					{
-						"legal_spawn": true,
-						"locks": 0,
-						"moved": 0,
-						"seed": 7,
-						"symmetry": "rot180"
-					}
-				]
-			}
+			"smoke_status": "PASS",
+			"tier": 2.0
 		},
 		{
 			"active_clear_plane": 64,

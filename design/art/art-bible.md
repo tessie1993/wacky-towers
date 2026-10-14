@@ -1,3 +1,9 @@
+
+
+> **User rule, 2026-10-14: no beige or parchment interface.** "You did not remove beige interface like
+> I said." Parchment and cream are retired as surface colours. Windows are open purple-wood frames over
+> the painted scene (ref 05). Groups of controls use plum glass or wood planks. This rule overrides any
+> parchment wording elsewhere in this bible. See `.claude/docs/reference-quality-bar.md`.
 # Wacky Towers — Art Bible
 
 Version 2.1 · 2026-10-13. This replaces the v1 bible. The user decided: "delete the old art, make it
@@ -66,8 +72,8 @@ through a purple-wood frame wrapped in vines.
 | `wood_purple_light` | `#9a78b8` | Frame top-edge highlight |
 | `wood_brown` | `#8a5a34` | Signboards, sliders, secondary planks |
 | `wood_brown_dark` | `#4e2f1a` | Text on parchment, sign shadow |
-| `parchment` | `#f6e7c4` | Panel and card interiors |
-| `parchment_shade` | `#e2c995` | Parchment edge burn, inner shadow |
+| `parchment` | `#f6e7c4` | **RETIRED for surfaces (user rule 2026-10-14).** Only small text or highlights; never a panel, card, chip or button fill |
+| `parchment_shade` | `#e2c995` | **RETIRED (user rule 2026-10-14)** |
 | `gold` | `#f8c840` | Primary button face, trims, stars |
 | `gold_deep` | `#c98418` | Button lip, gold shadow |
 | `gold_glint` | `#fff3b0` | Specular on gold |
@@ -115,18 +121,18 @@ used as nine-patches. They must match these specs.
 | Component | Spec (ref) |
 |---|---|
 | **Main frame** | Thick purple planks with visible grain, metal corner caps with gold stars, rope or vines wrapping the corners, small white blossoms. Inner edge is a dark bevel (refs 05, 06, 08) |
-| **Parchment panel** | Cream with a burnt edge, soft inner shadow, very rounded corners (refs 06, 14) |
+| **Plum glass panel** | Translucent dark purple (`wood_purple_dark` at about 75%) with a soft inner border and very rounded corners. It replaces the retired parchment panel (ref 05) |
 | **Wood panel** | Brown planks, horizontal grain, rope border for sub-groups (ref 04) |
 | **Title plaque** | Purple-wood scroll plaque, gold trim and curls, multicolour title text (refs 05, 06) |
 | **Primary button** | Gold glossy pill: thick gold-deep lip underneath, white specular streak on top, a star icon on the left, dark-plum ALL-CAPS text ("PLAY", "BACK", "DONE") |
-| **Secondary button** | Cream or wood pill with a brown lip (refs 08, 04) |
+| **Secondary button** | Purple-wood or brown-wood pill with a dark lip and cream text (refs 08, 04) |
 | **Close button** | Red round or square gem, white ×, gold rim |
 | **Toggle** | Rounded track (green ON, cream OFF) with a star knob |
 | **Slider** | Branch or stick track with a gold star thumb (ref 08) or a coloured fill (ref 04) |
 | **Mode / picture card** | Painted illustration in a gold or wood frame with a signboard label (refs 03, 05, 06) |
-| **HUD chip** | Parchment card in a biome-tinted frame (green vines, ice blue, celestial purple), with a label and a big number (ref 15) |
-| **Next / hold slot** | Square parchment tile in a biome frame showing a 3D render of the piece (ref 15) |
-| **Piece tray (bottom)** | A three-slot parchment shelf in a biome frame (ref 15) |
+| **HUD chip** | Plum glass card in a biome-tinted frame (green vines, ice blue, celestial purple), with a label and a big number (ref 15) |
+| **Next / hold slot** | Square plum glass tile in a biome frame showing a 3D render of the piece (ref 15) |
+| **Piece tray (bottom)** | A three-slot plum glass or wood shelf in a biome frame (ref 15) |
 | **Player tag** | Dark rounded tag: portrait, name, score (refs 09–12) |
 | **Meter** | Vertical thermometer (heat, balance, altitude) with a red→green gradient and a bulb (refs 09–12) |
 | **Timer** | Dark rounded lozenge, cream digits (refs 09–12) |
@@ -181,23 +187,23 @@ photoreal. A boss health bar uses the party HUD language (5b).
 
 ### 5b. Party-mode HUD language (refs 09-12, 15, mockups 06/12/14/15)
 
-All items share one set of materials: dark translucent navy-brown tags for the top row, parchment
+All items share one set of materials: dark translucent navy-brown tags for the top row, plum glass
 cards for the bottom row, wood-brown signboards for names.
 
 | Element | Spec |
 |---|---|
 | **Top player tag** | Rounded dark tag (navy for P1-style, brown-red for opponents), portrait on the outer side, name in Fredoka 700 cream, score in a bigger number. Stack of 2-4 tags down the left or right edge. P1 left, others right |
-| **Player card (portrait mode)** | Parchment card in a wood frame, bottom corner. Tab above it in the player colour with the label "P1" to "P4" (red, red-brown, gold, green). Portrait box left, "SCORE" and a big number, "LIVES" with 3 red hearts (empty = dark heart). Wizard portrait sits left of the number |
-| **Goal parchment chip** | Parchment card bottom right: minigame name in brown caps, goal line in small caps ("GOAL: HERD SHEEP!"). Torn-paper edge |
+| **Player card (portrait mode)** | Plum glass card in a wood frame, bottom corner. Tab above it in the player colour with the label "P1" to "P4" (red, red-brown, gold, green). Portrait box left, "SCORE" and a big number, "LIVES" with 3 red hearts (empty = dark heart). Wizard portrait sits left of the number |
+| **Goal chip** | Plum glass card bottom right: minigame name in brown caps, goal line in small caps ("GOAL: HERD SHEEP!"). Torn-paper edge |
 | **Round timer lozenge** | Dark rounded lozenge top centre, cream digits, optional gear ornament on the sides, bunting above in party mode |
 | **NEXT slots** | Square wood-framed slot top right: label NEXT BLOCK / NEXT AMMO / NEXT ITEM / NEXT RAMP / NEXT HAZARD above, a 3D icon inside (block, log, ramp, key, pickaxe, boxing glove, boot, blaster) |
 | **Vertical thermometer meters** | Glass tube with a bulb at the bottom and a red-yellow-green gradient (heat: orange fill; balance and stability: red-yellow-green with Danger tick; altitude and pressure: green or cyan fill; speed boost: green). Label above. Always on the left edge |
 | **Horizontal bars** | Rising Lava Height, Conveyor Speed, Guard Sleep, Fort HP: thin wood-framed bar, coloured fill, small icon at the left |
 | **Boss health bar** | Wide red bar with a dark frame, top centre under the timer, label "BOSS" above |
-| **Goal chips / counters** | Small parchment chips: sheep 5/10, stars 7/12, targets 8/15, treasure 0/30 |
+| **Goal chips / counters** | Small plum glass chips: sheep 5/10, stars 7/12, targets 8/15, treasure 0/30 |
 | **Live leaderboard** | Dark panel, 4 rows, rank, portrait, score, gold highlight on first place |
 | **Hazard sign** | Yellow triangular warning sign with a red exclamation mark, on island edges |
-| **Hint bubble** | Parchment speech bubble with a brown outline and a pointing-hand cursor |
+| **Hint bubble** | White speech bubble with a brown outline and a pointing-hand cursor |
 
 Rules: HUD sits in the outer 15% of the screen. Chips never cover the play area. Colours of player
 tags match the P1-P4 colours used in the tournament (red, blue, green, purple).
@@ -227,7 +233,7 @@ Each mode is a **painted illustration** inside a gold or wood frame. Content:
 - **Biomes**: orbit of floating islands around a globe: meadow, ice, crystal
 A signboard label hangs over the bottom edge, cream text with a brown carved look, a tiny icon on the left.
 Variants: a big Campaign card with a "Level 15" ribbon, a "LIVE NOW" red badge on Tournament (ref 05);
-all five equal cards in a parchment grid with a candy-coloured outline per card (ref 06); library
+all five equal cards in a grid over the painted scene with a candy-coloured outline per card (ref 06); library
 scene with five tall portrait cards on a shelf (ref 03). The wizard peeks over the top-right card.
 Background is a blurred library with big windows showing floating islands.
 
@@ -240,7 +246,7 @@ glowing focal object (book, tower, treasure chest, portal) and a depth of 3 laye
 | Beat | Composition |
 |---|---|
 | The Story Begins (lost tomes) | Library interior, warm candlelight, the wizard points at a glowing open book on a lectern, elf and dwarf watch, a ghosted block tower rising from the book, potion bottles |
-| Learn to Stack / tutorial | Bright sky, floating meadow island, a ghost block and dotted arrows, the wizard on a cloud, a hand cursor and a parchment tutorial bubble |
+| Learn to Stack / tutorial | Bright sky, floating meadow island, a ghost block and dotted arrows, the wizard on a cloud, a hand cursor and a white tutorial bubble |
 | Explore the Biomes | Cart carrying heroes on a stacked-block wagon along a path through ice castle, volcano and neon city islands |
 | Canopy Chaos | Jungle, a buggy loaded with mossy blocks, monkeys, vines, waterfall |
 | Goblins' Ambush | Forest clearing, a brick fort and cannon, goblins throwing rocks |
@@ -324,7 +330,7 @@ and an emissive for lava, neon and celestial. Small toppers are separate instanc
 | Level map | 06 "Campaign" card | Winding path over floating islands, round stone level nodes, wizard on cloud |
 | In-level HUD | 15 | Pause gem, SCORE chip with stars, NEXT chip, biome frame around the screen, 3-slot piece tray at the bottom |
 | Results | 02 "Story Victory" | Banner, treasure chest, confetti, star row, gold buttons |
-| Settings | 04 / 08 | Wood or parchment panel, star sliders, star toggles, signboard headings |
+| Settings | 04 / 08 | Open purple frame over the painted scene, plum glass rows, star sliders, star toggles, signboard headings |
 | Tournament | 14 | Lobby cards, spinning wheel, 4-island round play, standings table, win screen |
 | Story beats | 01 / 02 / 07 | Full painted scenes, title banner. Optional and secondary. Never flat vector. See 5e |
 | Party minigame | 09-12, mockups 12/14/15 | Diorama play area, top tags, timer, NEXT slot, meter, player card. See 5b |
