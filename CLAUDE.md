@@ -59,6 +59,7 @@ This is enforced by `.claude/hooks/clickable-questions.sh` (Stop).
 User rule (2026-10-14): subagents **ask the Godot master (the main session) before guessing** on Godot,
 architecture, cross-owner or design-ambiguity decisions. If messaging is unavailable, end the turn
 with a `QUESTIONS FOR GODOT MASTER` section. See `.claude/docs/godot-master-consult.md`.
+Builder: the main session writes and applies all Godot code (agents hand back sandbox overlays and patches); every change passes `tools/build/check.sh` before commit.
 
 ## Coordination Rules
 

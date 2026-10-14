@@ -36,3 +36,17 @@ Every subagent **asks before it guesses** on a Godot or architecture decision.
 - Keep values data-driven in `assets/data/*.json`.
 - After every batch of edits, run `godot --headless --path . --import` and check for "Parse Error",
   then run `ui_flow_smoke`. Do not run the full gdUnit suite (user rule).
+
+## Godot builder: who writes Godot code (user, 2026-10-14)
+
+User: "you are in charge of coding in Godot." The main session is the **Godot builder**
+(`.claude/skills/godot-builder/SKILL.md`):
+- Subagents design, prototype and test in a **sandbox copy** (or write new files only where they are
+  told to). They hand back an **overlay plus patch scripts** and evidence, as the world agent does.
+- The builder reviews each patch, applies it to the live repo, runs `tools/build/check.sh` (isolated XDG
+  cache, import parse check, `ui_flow_smoke`, campaign verifier) and commits only on CHECK PASS.
+- Data-only level JSON work may still be written directly by level agents, but it must pass
+  `tools/build/check.sh` before commit.
+- Builder rules: isolate XDG for concurrent Godot runs, end headless scripts with `quit()`, set the
+  `owner` of generated scene nodes, prefer `uid://` loads, no `duplicate(true)` (use `duplicate_deep`),
+  and run a headless `--import` after generating resources.

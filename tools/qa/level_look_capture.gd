@@ -29,6 +29,9 @@ func _run() -> void:
 	if which == "night":
 		for b: String in ["neon", "celestial"]:
 			jobs.append({"biome": b, "name": b + "_night", "look": {"time_of_day": "night", "weather": "stars", "set_piece": WtSetPieceBuilder.ids_for_biome(b)[0], "set_piece_side": "right", "camera": "default"}})
+	elif which == "weather":
+		for kind: String in ["mist", "drizzle", "snow", "embers", "bubbles", "petals", "stars", "confetti"]:
+			jobs.append({"biome": biome, "name": "weather_" + kind, "look": {"time_of_day": "day", "weather": kind}})
 	elif which == "all_pieces":
 		for id: String in WtSetPieceBuilder.pieces():
 			jobs.append({"biome": String(WtSetPieceBuilder.pieces()[id]["biome"]), "name": "piece_" + id, "look": {"set_piece": id, "set_piece_side": "right", "camera": "wide"}})
@@ -51,6 +54,10 @@ func _run() -> void:
 		var stage: Node = main.get("_stage")
 		stage.call("apply_level_look", job["look"])
 		await _frames(30)
+		var wx: Node = stage.get_node_or_null("LevelLook")
+		if wx != null:
+			for c: Node in wx.get_children():
+				if c is CPUParticles3D: print("WX ", c.name, " amount=", (c as CPUParticles3D).amount, " emitting=", (c as CPUParticles3D).emitting, " pos=", (c as CPUParticles3D).global_position, " vis=", (c as CPUParticles3D).is_visible_in_tree())
 		await RenderingServer.frame_post_draw
 		var img: Image = get_viewport().get_texture().get_image()
 		img.convert(Image.FORMAT_RGBA8)
