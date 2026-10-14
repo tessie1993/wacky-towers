@@ -548,7 +548,189 @@ These powers ride on a single falling piece through a spawn tag or piece flag. P
 - **Engine.** EXISTS (`src/mechanics/wave3/mystery_piece.gd`).
 - **Source.** The party boards' "next item" slots (`mockup_12.jpg`).
 
-#### 3.2.b (continues below as more entries are added)
+#### 3.2.c OBJECTS on the platform (existing engine rules)
+
+Objects are not falling pieces. Some are grid cells (a kind). Most are rule props: a marker, a column, a tile or an actor that a rule reads. The Entry fields are shorter here. All share conventions 1 to 8.
+
+A note on clocks. Several rules below run on wall-clock milliseconds (`lava_rise`, `lava_lid`, `quake`, `crab_claw`, `storm_bolt`, `magnet_pull`, `gust`, `defend_core`, `race_rival`, `thin_ice`). The frame's timer rule (`levels.md:23`) bans a visible countdown on Tetris-variant levels and removed the rising-water hazard for that reason (`levels.md:565`). Attacks in a wave schedule are allowed, because the wave is a story event. Open question 3 asks the user to rule on a lock-count schedule mode.
+
+**OB-01 defend core (the thing under attack)**
+- **What.** A small thing with hit points that attacks aim at: the sprout in meadow_02.
+- **Rule.** A core tile group on layer 0 (default the 2x2 board centre) with `core_hp` (3). Every `attack_every_ms` a shot is announced `warn_ms` (2000) earlier, enters at a seeded edge column and travels inward. The first column with cubes loses its top cube (armour). An empty core column deals `core_damage`. At 0 hp the run fails (`defend_core.gd:3-10,24-40`). Fill: core tiles are not cells that count toward layers (`ART-CHECK`). Rescue: a rescue never heals the core. Top-out: normal.
+- **Look.** A sprout in a small mound, leaning with each hit; three leaf pips for hp. Wind line shown across the board before each shot.
+- **Audio.** Proposed `SFX_EV_DEFEND_WARN`, `SFX_EV_DEFEND_HIT`.
+- **Fits.** meadow_02 Windbreak (core: sprout, 3 hp, `levels.md:98-127`), meadow_10 phase 1, ice (igloo), pirate (treasure), lava (egg).
+- **Intro and teach.** meadow_02. Weathervane star spins before each gust (teach by showing the line).
+- **Fairness.** Warn 2 s ahead, seeded and replayable, wave schedule shortens warnings slowly.
+- **Engine.** EXISTS (`src/mechanics/wave4/defend_core.gd:11`). Gap G9 (`levels.md:550`): wire it with a wind attack, a unit test and one level run, 4 days shared with two other rules, gameplay-programmer.
+- **Source.** Castle and fort defence boards (`style/09_minigames_a.jpg`, `mockup_11.jpg`).
+
+**OB-02 wind gust and weathervane**
+- **What.** A wind blast that pushes the falling piece sideways. A weathervane star spins before it.
+- **Rule.** A seeded gust schedule; a gust due with no falling piece is dropped (`gust.gd:2`). Warning arrow and wind sound ahead (`sfx-cue-list.md:82-83`, `SFX_EV_GUST_TELEGRAPH`, 1 s). Effect: one cell push of the active piece (not a stack write). Gravity: unaffected. Other specials: bounce, ice slide and balloon apply their effects around it; balloon bob and gust do not cancel each other. Rescue and top-out: none.
+- **Look.** Streaked arrow across the grass, grass bends, leaf and dandelion particles, the gold star weathervane spins to the direction.
+- **Audio.** `SFX_EV_GUST_TELEGRAPH`, `SFX_EV_GUST`.
+- **Fits.** meadow_02, 03 (legacy), 09, 10, bonus (wind lanes). Celestial, ice (blizzard), pirate (storm), cave (draft).
+- **Intro and teach.** meadow_02, via the weathervane.
+- **Fairness.** Always telegraphed; one cell; the landing marker updates after a gust.
+- **Engine.** EXISTS (`src/mechanics/behaviour/gust.gd`). Weathervane view: NEW, 1.5 days (G9 group), technical-artist.
+- **Source.** The wind cloud in `mockup_04.jpg` (Chroma Sky Climb); the weathervane is the frame's own.
+
+**OB-03 stone throw (`storm_bolt`) and the gnome**
+- **What.** A thrown stone or bolt that knocks the top cube out of a marked column.
+- **Rule.** Warn on a seeded occupied column, then damage its top cube; an emptied column fizzles (README Wave 3 table; `storm_bolt.gd:2`). In meadow_05 each stone is shown 2 s before it lands (`levels.md:201-204`). Fill: removed cube opens a hole. Clears: a clear in the column before impact may cancel it (proposed: use the same cancel-on-clear idea as `crab_claw`). Rescue: none.
+- **Look.** A grey stone with a landing ring and a thin arc line from the gnome; on hit, a puff and flying fragments.
+- **Audio.** `SFX_EV_STONE_WARN`, `SFX_EV_STONE_HIT` (AUDIO-NEW).
+- **Fits.** meadow_05 Gnome Hedge. Pirate (cannonball), cave (falling rock), ice (icicle).
+- **Intro and teach.** meadow_05. Warning ring plus a gnome wind-up pose.
+- **Fairness.** 2 s warning. Volleys never land in the same column twice in a row (proposed).
+- **Engine.** PARTIAL. The bolt exists (`storm_bolt.gd`). Stone skin, sheep peek view, stone-cart pile meter and fail rule are gap G12 (2.5 days, gameplay-programmer plus technical-artist).
+- **Source.** Gnomes throwing acorns and stones in `mockup_12.jpg` (Wacky Party meadow panel).
+
+**OB-04 tilt plate and tilt gauge**
+- **What.** The platform is a plate on a pivot. It tips toward the heavy side. Blocks slide off if it tips too far.
+- **Rule.** After each resolve, tilt tau = centre-of-mass offset in permille. `warn_at` (0.7) of the `slip_threshold` (0.6) warns. At the threshold for `slip_after_resolves` resolves, the `slip_count` top cubes of the heavy half are removed off the rim (`tilt_plate.gd:1-40`). Fixed kinds (rocks) are excluded (`:26`). Real Jolt physics is NOT implemented (`:9-11`). Fill: normal. Clears: clearing lowers weight, which shifts tilt. Rescue: a rescue changes balance; run the tilt check after it.
+- **Look.** A round plate that visibly tips, a rim line for the slide limit, a tilt gauge on the HUD. Sheep slide on the plate.
+- **Audio.** `SFX_PL_WOBBLE_CREAK` style creak scaled by tilt (`sfx-cue-list.md:88`), `SFX_PL_WOBBLE_SLIP` on slip (`:89`).
+- **Fits.** meadow_09 Tilting Hill (slip line 0.7 to 0.5, `levels.md:343`), meadow_10 phase 3, pirate (rocking ship), carnival (see-saw), cake plate (`mockup_05.jpg`).
+- **Intro and teach.** meadow_09. Gauge plus "stack on the high side".
+- **Fairness.** A warning always comes first. The preview of the landing tilt (ghost weight) is proposed.
+- **Engine.** PARTIAL. Grid rule EXISTS (`src/mechanics/wave4/tilt_plate.gd:14`). Visible tilt view is gap G9; heavy-weight support: `weighted_cells` exists (`:57`) and could take a weight per kind (1 day).
+- **Source.** The spring and tilt plates in `party_modes_ref.jpg`, `party_minigames_ref.jpg` (Wobble Builders), `mockup_03.jpg` (Tumbling Towers) and `mockup_05.jpg` (Cake Stackers).
+
+**OB-05 rival marker (`race_rival`)**
+- **What.** A rival with its own pace. It fills a hidden bar and wins if it gets to 100 percent first.
+- **Rule.** `rival_rate` percent per second, optional head start and rubber band, warning at `rival_warn_pct`. A tie goes to the player (`race_rival.gd:1-8`). Fail through `request_fail`. Events: `race_progress`, `race_rival_warning`, `race_won`, `race_rival_finished`.
+- **Look.** A second kite or cart marker on a progress strip; Gert cheers when she overtakes.
+- **Audio.** Proposed `SFX_EV_RIVAL_PASS`.
+- **Fits.** meadow_bonus Kite Day (rival 0.9 to 1.1, `levels.md:408`), meadow_03, candy rails, jungle bridge.
+- **Intro and teach.** Bonus. The strip is the teacher.
+- **Fairness.** Rubber band, second place still passes with one star.
+- **Engine.** EXISTS (`src/mechanics/wave4/race_rival.gd:9`). Gap G9 wiring with a kite view, 4 days shared.
+- **Source.** Rival racers on `party_minigames_ref.jpg` (Block Bridge Dash) and `mockup_03.jpg` (Rolling Rumble).
+
+**OB-06 fog bank (`fog`)**
+- **What.** Mist that hides the top layers. Collision stays real.
+- **Rule.** Each locked piece fades from its own lock time, respects staged clear activation, clears reveal it, and the ghost neighbourhood is always lit (README line 33; `src/mechanics/behaviour/fog.gd:7`).
+- **Look.** Soft white volume above a line, edge feathered, a glowing landing marker visible through it.
+- **Audio.** `SFX_EV_FOG_ROLL`, `SFX_EV_FOG_REVEAL` (`sfx-cue-list.md:92-93`).
+- **Fits.** meadow_07 Fog Frolic, forest, cave, celestial.
+- **Intro and teach.** meadow_07 (fog thickens with height).
+- **Fairness.** Landing marker and next preview never fade.
+- **Engine.** EXISTS. Fog volume art: gap (technical-artist).
+- **Source.** Cloud and mist in `style/01_story_flow.jpg` (checked in the work log).
+
+**OB-07 conveyor and mill belt**
+- **What.** Parts of the stack slide along a belt.
+- **Rule.** Every N locks the occupied cubes translate together (a cyclic permutation preserving identity and status) (`mill_belt.gd:2`; README line 38). Specials ride with it, so a goo or key moves with its cell.
+- **Look.** Visible belt tiles with chevrons, rollers turning.
+- **Audio.** `SFX_EV_MILL_BELT` (`sfx-cue-list.md:103`).
+- **Fits.** meadow_10 (older plan), clockwork (conveyor), candy (rails), neon.
+- **Intro and teach.** Clockwork. Chevrons show the direction.
+- **Fairness.** Fixed schedule, previewed one lock ahead (proposed).
+- **Engine.** EXISTS (`conveyor.gd`, `mill_belt.gd`).
+- **Source.** `mockup_04.jpg` Clockwork Conveyor, `mockup_06.jpg` Factory Frenzy.
+
+**OB-08 turntable and OB-09 piston**
+- **What.** A turntable quarter-turns a square stack. A piston punches a row in from the wall.
+- **Rule.** Turntable: every N locks the stack is one simultaneous permutation (`turntable.gd:2`). Piston: a row prefix shifts into its first empty cell, full rows jam (`piston_punch.gd:2`).
+- **Look.** A round rotating disc under the stack with arrows; a brass piston on the wall with a push arrow.
+- **Audio.** Proposed `SFX_EV_TURNTABLE`, `SFX_EV_PISTON`.
+- **Fits.** Clockwork, carnival (carousel), pirate (capstan).
+- **Intro and teach.** Clockwork 04 to 07.
+- **Fairness.** Previewed; periodic.
+- **Engine.** EXISTS.
+- **Source.** Gear plate in `mockup_08.jpg` (Clockwork Chaos).
+
+**OB-10 woodpecker and OB-11 squirrel thief (forest critters)**
+- **What.** A bird knocks loose unsupported cubes. A squirrel steals one exposed cube from the fullest layer.
+- **Rule.** Woodpecker: outlines unsupported cubes at warning time, pops that subset at resolution (`woodpecker_knock.gd:2`). Squirrel: every `heist_every_locks` (6, clamp 3 to 12) marks an exposed cube in the fullest unfinished layer (min fill 0.5) one lock ahead; a clear in that layer or covering the cube cancels it (`squirrel_heist.gd:14-45`).
+- **Look.** A woodpecker on a branch pecking with a dotted outline on targets; a squirrel with a nut and a sparkle ring on the target.
+- **Audio.** Proposed `SFX_EV_WOODPECKER_KNOCK`, `SFX_EV_SQUIRREL_STEAL`.
+- **Fits.** Forest. Meadow (squirrel) later.
+- **Intro and teach.** Forest 02 and 05.
+- **Fairness.** Both warn; the squirrel is cancelled by a clear.
+- **Engine.** EXISTS (`woodpecker_knock.gd`, `src/mechanics/forest/squirrel_heist.gd`). Actor art: gap.
+- **Source.** Own idea.
+
+**OB-12 crab claw**
+- **What.** A claw warns a column and steals its top cube.
+- **Rule.** After `claw_start_layers` (2) clears, warns `claw_warn_ms` (2000), then removes the top cube of the column on resolve (`crab_claw.gd:11-40`). Any clear during the warning cancels it. `claw_grab` 0 makes it a decoy.
+- **Look.** A giant crab claw rising from the edge with a dotted column highlight; "clear a layer to cancel!" message.
+- **Audio.** Proposed `SFX_EV_CLAW_WARN`, `SFX_EV_CLAW_GRAB`.
+- **Fits.** Underwater, pirate.
+- **Intro and teach.** Underwater 04.
+- **Fairness.** Cancel by clear.
+- **Engine.** EXISTS (`src/mechanics/underwater/crab_claw.gd:3`).
+- **Source.** The Kraken and tentacle boards (`mockup_04.jpg`, `mockup_07.jpg`).
+
+**OB-13 lava floor rise, OB-14 lava lid, OB-15 quake, OB-16 geyser vent**
+- **What.** Four lava-biome pressures: the floor melts up, a soft ceiling lowers, overhangs shake loose, and a geyser pops a rock or pad.
+- **Rule.** Floor rise: every `melt_every_s` (35) the floor rises one layer, up to `melt_max` (3), with a 3 s warning (`lava_rise.gd:13-37`). Lid: lowers up to `lid_max` (2) layers; clears lift it by `lid_push_per_clear` (1) and cancel a pending drop (`lava_lid.gd:14-40`). Quake: outlines up to `quake_max_cubes` (6) unsupported overhangs 2 s ahead and removes them (`quake.gd:13-40`). Geyser: marks a free supported cell, then pops a 2-hit rock or a bounce pad (`lava_rock_spawn.gd:13-38`). Fill: cubes lost in a rise are not clears. Rescue: ties with the floor (the rescue wipe and the floor use the same bottom planes; `ART-CHECK`).
+- **Look.** Glowing orange lava seams that brighten before action; a rim glow; a lid shown as a dim ceiling; dotted outlines on quake targets; a vent with smoke and a ring.
+- **Audio.** `lava_warning` rumble; proposed `SFX_EV_LAVA_RISE`, `SFX_EV_QUAKE`, `SFX_EV_GEYSER`.
+- **Fits.** Lava biome and celestial (the lid's "Moon's pillow" message).
+- **Intro and teach.** Lava 01 to 05, one per level.
+- **Fairness.** Time-based; see the clock note above. Counterplay: clears cancel or relieve. Proposed `schedule_mode: locks` for Tetris variants.
+- **Engine.** EXISTS (`lava_rise.gd`, `lava_lid.gd`, `quake.gd`, `lava_rock_spawn.gd`). Gap: lock-count mode, 1 day, gameplay-programmer.
+- **Source.** Lava Escape and Volcano Dash in `mockup_13.jpg`, `mockup_16.jpg`; volcanic sheet.
+
+**OB-17 crumble tile, OB-18 quicksand tile**
+- **What.** Cracked floor tiles break after touching locks and drop the column above one cell. Quicksand swallows the bottom cube every N locks.
+- **Rule.** Crumble: tile breaks after N locks touch it (`crumble_tiles.gd:2`). Quicksand: every N locks the floor cube sinks and the column above slides down (`quicksand.gd:2`).
+- **Look.** Cracked floor with dust; swirling sand disc.
+- **Audio.** Proposed `SFX_EV_TILE_CRUMBLE`, `SFX_EV_SAND_SINK`.
+- **Fits.** Cave, dune bazaar, pirate.
+- **Intro and teach.** Mid-biome.
+- **Fairness.** Crack stages visible before break.
+- **Engine.** EXISTS (wave 3).
+- **Source.** Cracked lava floor in `mockup_04.jpg` (Digging Frenzy).
+
+**OB-19 thin ice rim and OB-20 ice slide**
+- **What.** The rim strips of the platform melt away. A landing piece slides once.
+- **Rule.** Thin ice telegraphs one rim strip and removes it at the next resolution, keeping a minimum width (`thin_ice.gd:2`; README line 41). Ice slide: on landing a piece slides `slide_cells` (1, clamp 1 to 2) cells in `slide_dir`, starting after `start_after_clears` clears (`ice_slide.gd:11-25`).
+- **Look.** A pale cracked rim strip with a blue pulse; shiny glassy floor with sparkle.
+- **Audio.** Proposed `SFX_EV_ICE_CRACK`, `SFX_EV_ICE_SLIDE`.
+- **Fits.** Ice biome; carnival (ice rink).
+- **Intro and teach.** Ice 01 to 03.
+- **Fairness.** Preview of the strip; slide is one cell with a ghost end.
+- **Engine.** EXISTS (`thin_ice.gd`, `ice_slide.gd`). Ghost end of the slide: NEW, 1 day.
+- **Source.** `mockup_11.jpg` Slippery Sumo Iceberg, `mockup_12.jpg` Glacier Gauntlet.
+
+**OB-21 syrup band and OB-22 speed bump (candy)**
+- **What.** A sticky band slows pieces and then glides once. A speed bump notches the fall faster when the stack is untidy.
+- **Rule.** Syrup: slow above authored rows, preview the glide end, glide up to 2 cells once then lock (`syrup_band.gd:2`; README line 40). Speed bump: mood-driven notches telegraph 1 s ahead; clears calm one notch; the baseline ramps by minute (`speed_bump.gd:2`).
+- **Look.** Amber syrup layer with drips; a bump sign with a rising gauge.
+- **Audio.** Proposed `SFX_EV_SYRUP_SLOW`.
+- **Fits.** Candy.
+- **Intro and teach.** Candy 03.
+- **Fairness.** Speed bump follows the user decision "pieces speed up over time" (`levels.md:597`).
+- **Engine.** EXISTS (`syrup_band.gd`, `speed_bump.gd`).
+- **Source.** Syrup-like candy sauce paths in `mockup_15.jpg` (Candy Dodger).
+
+**OB-23 golden row, OB-24 star coin, OB-25 secret angle gem (pickups)**
+- **What.** Pickups. A glowing gold layer pays a bonus when cleared. Coins float in empty cells. A hidden gem can be found by looking from a low angle.
+- **Rule.** Golden row: clearing the gold layer pays a bonus and a goal counter, then gold moves up a layer (`golden_row.gd:2`). Star coins: state-only coins in empty cells; covering one with a lock collects it for score and goal; clears shift or collect coins (`star_coins.gd:2`). Angle gem: a secret placed at level start (`secret_placed`); collected only by an explicit tap with the matching `secret_id` (`angle_gem.gd:11-20`); gives the secret star.
+- **Look.** Gold layer: honey glow and sparkle edge. Coin: spinning gold star in mid-air with a shadow dot on the floor. Angle gem: a faint glint visible only from the matching camera angle.
+- **Audio.** `SFX_EV_GOLD_ROW`, `SFX_EV_COIN`, `SFX_EV_GEM_FIND` (AUDIO-NEW).
+- **Fits.** Anywhere. The secret ending slot (meadow_08 hoop, h1 golden lamb, `levels.md:318,445`).
+- **Intro and teach.** Coins from level 02; gem is secret.
+- **Fairness.** Optional bonuses.
+- **Engine.** EXISTS (`golden_row.gd`, `star_coins.gd`, `angle_gem.gd`). Coin view: gap (state only), 1.5 days, technical-artist.
+- **Source.** Star coins in `mockup_03.jpg` and `mockup_06.jpg`, stars in `mockup_15.jpg`, gems in `mockup_14.jpg`.
+
+**OB-26 Pip's catch (`mascot_catch`)**
+- **What.** A helper critter that undoes one bad lock.
+- **Rule.** Veto a covered-hole lock before board writes and return the same piece to spawn; `catches` (default 1) per level; clear and goal-winning placements are protected; `happy_only` needs tidiness 0.9 (README line 27; `mascot_catch.gd:1-12`).
+- **Look.** A small critter leaps and carries the piece back.
+- **Audio.** `SFX_PIP_CATCH`, `SFX_PIP_CATCH_RETURN` (`sfx-cue-list.md:109-110`).
+- **Fits.** Early levels.
+- **Intro and teach.** Level 02 style. The first catch is a free gift.
+- **Fairness.** It is a safety net.
+- **Engine.** EXISTS.
+- **Source.** Own cast.
+
+#### 3.2.c (continues: NEW objects below)
 
 ### 3.3 Interaction matrix
 TODO
@@ -613,6 +795,11 @@ Every image below was opened with Read. Each line lists what special blocks or o
 - `party_biome_islands_ref.jpg` (4 boards; the Nintendo figurines, castle, pipes and titles are NOT used, per `index.md`): a meadow island with the board inset and themed props around the rim (tall spotted mushroom pillars, round bushes, flowers); two lava keeps with angry stone-face statues standing at the board edge, fire tiles and floor holes inside the board, a lava moat and lava falls off the island, a stone idol on the rim; a glass board at a rainbow-road crossing with a neon grid. Ideas used: edge statue hazard (OB-hazard statue), fire tile (floor tile), floor hole (mask), lava moat, glass grid. These are the exact items the user ruled "relevant".
 - `party_versus_ref.jpg`: Block Bridge Dash split screen with a checkered finish flag, stability meters and a "Speed Boost" gem button; Wonky Tower Builders on spring bases with stability meters; Island Claim Battle (floor tiles coloured blue and red by who claimed them, tiki and palm props, fruit props). Ideas: finish flag, extra-verb gem button, claimed-tile floor.
 - `biome_screens_ref.jpg` (4 biome scenes): candy (wafer-tile board, gumdrop and jelly cubes, chocolate cubes, gummy-bear critters, candy castle); lava (cracked-lava stone board with glowing seams, big gem crystals, a dragon and a fire sprite, lava falls); underwater (glowing dark tiles, shells and jellyfish standing on tiles, an octopus at a DJ deck, shipwreck); neon (circuit-board plinth, arcade cabinets, a robot wizard on a stone tower). Ideas: jellyfish and shell critters on tiles, gem crystals, gummy bear as critter.
+
+- `mockup_18.jpg`: a hub of floating gear-bottomed islands; a central board on a wooden scaffold with plank platforms at several heights (pieces fall onto planks); balloon-lifted crate carts on a road; a bomb on a tray among characters; a stone arch bridge over water. Ideas: plank shelves inside the play space (BK-21 shelf), balloon lift.
+- `mockup_19.jpg` (4 panels): Tower Tumble (a board with plank platforms around it and glowing rainbow cubes); Bridge Builder (a stone arch bridge over water); Balloon Race (cloud with next-piece bubbles) with a small palette of six block types in a wooden frame: grass cube, carved wooden crate, mossy crate, plain crate, glass crystal cube, coiled spring; Bomb Defuse (a black bomb with a spark on a gear board with colour cubes). Ideas: the six-type palette (spring, glass, crate) is the direct inspiration for the spring skin of the bounce pad and the glass ghost block.
+- `mockup_20.jpg` (4 panels): Fruit Stack (cubes shaped as orange, banana and watermelon on a tile board); Potion Puzzle (glowing potion bottles as pieces on a stone lab table, a golem); Candy Climb (a tower of candy cubes with a crystal cube on top, a gummy-bear king and a spring "next block"). Ideas: fruit and potion skins, a crystal cube as a gem-on-top, spring as a piece.
+- `mockup_21.jpg`, `mockup_22.jpg`, `mockup_23.jpg`: opened. They show the same four-panel boards as `mockup_01` to `mockup_03` (Bridge Bashers set, Bridge Dash set, Rolling Rumble set) as far as visible at this size. No new items beyond those already listed.
 
 More boards are added to this list as they are opened (see the work log).
 
