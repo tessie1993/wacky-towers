@@ -17,6 +17,8 @@ func _run() -> void:
 		ui.apply_prefs({"reduced_motion": "off", "text_scale": 1.0, "button_scale": 1.0})
 		ui.show_title({"has_profile":true,"profile_name":"Clover","stars":42,"wallet":18,"continue_level_name":"Meadow · First Sprout"})
 		await _capture(output + "/title_%d.png" % viewport_size.x)
+		ui.show_modes({"has_profile":true,"profile_name":"Clover","stars":42,"wallet":18,"continue_level_name":"Meadow · First Sprout"})
+		await _capture(output + "/modes_%d.png" % viewport_size.x)
 		ui.show_physics({"selected_variant":"domino_chain"})
 		await _capture(output + "/physics_%d.png" % viewport_size.x)
 		ui.show_tournament({"profile_name":"Clover", "character":"c4", "network_status":"hosting", "host":true,"address":"192.168.1.20:24680", "network_players":[{"name":"Clover","character":"c1","perks":["breeze_brake"]},{"name":"LanaFan","character":"c2","perks":["gentle_landing"]},{"name":"Rock","character":"c3","perks":[]},{"name":"Star","character":"c4","perks":["long_look"]}]})
@@ -29,7 +31,7 @@ func _run() -> void:
 		await _capture(output + "/items_%d.png" % viewport_size.x)
 	ui.queue_free()
 	await process_frame
-	print("UI_VISUAL_CAPTURE_PASS: title, physics, lobby, story, tools and HUD at 1280x720 and 720x1280")
+	print("UI_VISUAL_CAPTURE_PASS: title, modes, physics, lobby, story, tools and HUD at 1280x720 and 720x1280")
 	quit(0)
 
 func _capture(path: String) -> void:

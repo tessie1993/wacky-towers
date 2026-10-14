@@ -682,12 +682,15 @@ func show_title(data: Dictionary = {}) -> void:
 	biomes.add_theme_font_override("font", Kit.font(true))
 	biomes.add_theme_font_size_override("font_size", roundi(30 * _text_factor))
 	buttons.add_child(biomes)
-	var more := _hbox(buttons, 8)
-	for entry: Array in [["Party", &"open_tournament"], ["Arcade", &"open_arcade"], ["Shop", &"open_shop"], ["Toy box", &"open_physics"]]:
-		var b := _button(entry[0], entry[1], {}, false, 48)
-		b.custom_minimum_size.x = 112
-		b.add_theme_font_size_override("font_size", roundi(16 * _text_factor))
-		more.add_child(b)
+	# MODES opens the picture-card Select Mode screen inside the UI (no controller intent);
+	# Tournament, Arcade, Shop and Toy box live there now.
+	var modes := _button("MODES", &"noop", {}, true, 62)
+	modes.pressed.disconnect(modes.pressed.get_connections()[0].callable)
+	modes.pressed.connect(func() -> void: show_modes(_snapshot))
+	modes.custom_minimum_size.x = 300
+	modes.add_theme_font_size_override("font_size", roundi(28 * _text_factor))
+	buttons.add_child(modes)
+	_focus_default = play
 	var foot := _hbox(col)
 	var tally := "★  %d collected    ·    %d in your jar" % [int(data.get("stars", 0)), int(data.get("wallet", 0))] if has_profile else "Build, turn, drop. Make room for wonder."
 	foot.add_child(_label(tally, 16, INK, true))
@@ -699,6 +702,172 @@ func show_title(data: Dictionary = {}) -> void:
 	quit.visible = not OS.has_feature("mobile")
 	foot.add_child(quit)
 	_finish()
+
+## Mode cards for the Select Mode screen (refs 05, 06; art bible 5d): label, one-line hint,
+## intent, hero render(s) and the biome whose sky tints the illustration. `intent` empty = disabled.
+const MODE_CARDS: Array[Dictionary] = [
+	{"key": "campaign", "label": "CAMPAIGN", "hint": "Follow the island path, one tower at a time.", "intent": &"open_map", "art": ["wizard_point"], "biome": "meadow"},
+	{"key": "tournament", "label": "TOURNAMENT", "hint": "Party rounds for up to four builders.", "intent": &"open_tournament", "art": ["knight_cheer", "dwarf_cheer"], "biome": "candy"},
+	{"key": "biomes", "label": "BIOMES", "hint": "Hop to any island you've unlocked.", "intent": &"open_map", "art": ["elf_idle"], "biome": "ice"},
+	{"key": "arcade", "label": "ARCADE", "hint": "Endless stacking against the clock.", "intent": &"open_arcade", "art": ["dwarf_idle"], "biome": "lava"},
+	{"key": "story", "label": "STORY", "hint": "The wizard's tale is still being written.", "intent": &"", "art": ["wizard_idle"], "biome": "celestial", "badge": "Coming soon"},
+]
+
+## Select Mode: purple frame, "SELECT MODE" plaque, five picture cards, Shop / Toy box pills and
+## a gold BACK. Opened from the title's MODES pill; `data` is the title snapshot so BACK restores it.
+## Portrait: big Campaign card, then two rows of two. Landscape: Campaign + Tournament, then three.
+func show_modes(data: Dictionary = {}) -> void:
+	var col := _begin("modes", data)
+	_header(col, "SELECT MODE")
+	# The subtitle/Settings row _header adds is not part of the reference layout.
+	col.get_child(col.get_child_count() - 1).visible = false
+	var vh: float = get_viewport().get_visible_rect().size.y
+	var content := _scroll(col)
+	content.add_theme_constant_override("separation", 14)
+	var cards: Dictionary = {}
+	for entry: Dictionary in MODE_CARDS: cards[entry.key] = entry
+	var rows: Array = [["campaign"], ["tournament", "biomes"], ["arcade", "story"]] if _portrait else [["campaign", "tournament"], ["biomes", "arcade", "story"]]
+	for r: int in rows.size():
+		var row := _hbox(content, 14)
+		var keys: Array = rows[r]
+		var big := r == 0
+		var height := vh * ((0.25 if big else 0.21) if _portrait else (0.34 if big else 0.3))
+		for key: String in keys:
+			var card := _mode_card(cards[key], height, big and key == "campaign", str(data.get("continue_level_name", "")))
+			# Landscape ref 05: Campaign is twice the width of Tournament.
+			card.size_flags_stretch_ratio = 2.0 if (not _portrait and key == "campaign") else 1.0
+			row.add_child(card)
+	var extras := _hbox(col, 16)
+	for entry: Array in [["Shop", &"open_shop"], ["Toy box", &"open_physics"]]:
+		var b := _button(entry[0], entry[1], {}, false, 52)
+		b.custom_minimum_size.x = 160
+		extras.add_child(b)
+	var campaign_focus := _focus_default
+	var back := _button("BACK", &"noop", {}, true, 64)
+	back.pressed.disconnect(back.pressed.get_connections()[0].callable)
+	back.pressed.connect(func() -> void: show_title(_snapshot))
+	back.custom_minimum_size.x = 280
+	back.add_theme_font_size_override("font_size", roundi(28 * _text_factor))
+	col.add_child(back)
+	_focus_default = campaign_focus
+	_finish()
+
+## One picture card: a focusable Button whose face is the rope-bordered wood panel, holding a
+## biome-sky illustration with hero renders, a wooden label sign and a one-line hint below.
+func _mode_card(entry: Dictionary, height: float, featured: bool, ribbon: String) -> Button:
+	var card := Button.new()
+	card.name = "Card_" + str(entry.key).capitalize()
+	var label := str(entry.label)
+	var hint := str(entry.hint)
+	card.tooltip_text = hint
+	card.set("accessibility_name", label.capitalize() + ". " + hint)
+	card.custom_minimum_size = Vector2(0, maxf(height, 180.0))
+	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var intent_id: StringName = entry.intent
+	card.disabled = intent_id == &""
+	if not card.disabled:
+		card.pressed.connect(func() -> void: intent.emit(intent_id, {}))
+		if featured or not is_instance_valid(_focus_default): _focus_default = card
+	var face: StyleBox = _kit("panel_wood", 0.75)
+	if face == null: face = Kit.panel_box(true)
+	for state: String in ["normal", "hover", "pressed", "disabled"]:
+		var box := face.duplicate() as StyleBox
+		if box is StyleBoxTexture:
+			var tint := {"hover": Color(1.08, 1.08, 1.08), "pressed": Color(0.88, 0.85, 0.82), "disabled": Color(0.8, 0.78, 0.82)}
+			(box as StyleBoxTexture).modulate_color = tint.get(state, Color.WHITE)
+		card.add_theme_stylebox_override(state, box)
+	# Visible gold ring for keyboard / gamepad focus.
+	var ring := Kit.pill(Color(0, 0, 0, 0), Kit.GOLD, false, 22)
+	ring.draw_center = false
+	ring.set_border_width_all(5)
+	ring.shadow_size = 0
+	card.add_theme_stylebox_override("focus", ring)
+	var margin := MarginContainer.new()
+	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for side: String in ["left", "right", "top"]: margin.add_theme_constant_override("margin_" + side, 16)
+	margin.add_theme_constant_override("margin_bottom", 18)
+	card.add_child(margin)
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var stack := _vbox(margin, 4)
+	stack.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Illustration: the biome's sky as a vertical gradient (fallback art), hero renders on top.
+	var art := Control.new()
+	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	art.clip_contents = true
+	art.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	stack.add_child(art)
+	var sky: Array = WtBlockMaterials.look(StringName(str(entry.biome))).get("sky", ["#4F94E6", "#CFE6FB", "#FFF4E6"])
+	var gradient := Gradient.new()
+	gradient.colors = PackedColorArray([Color(String(sky[0])), Color(String(sky[mini(1, sky.size() - 1)])), Color(String(sky[sky.size() - 1]))])
+	gradient.offsets = PackedFloat32Array([0.0, 0.55, 1.0])
+	var fill := GradientTexture2D.new()
+	fill.gradient = gradient
+	fill.fill_from = Vector2(0, 0)
+	fill.fill_to = Vector2(0, 1)
+	fill.width = 4
+	fill.height = 64
+	var backdrop := TextureRect.new()
+	backdrop.texture = fill
+	backdrop.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	backdrop.stretch_mode = TextureRect.STRETCH_SCALE
+	backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	art.add_child(backdrop)
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var heroes := HBoxContainer.new()
+	heroes.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	heroes.alignment = BoxContainer.ALIGNMENT_CENTER
+	heroes.add_theme_constant_override("separation", 0)
+	art.add_child(heroes)
+	heroes.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	heroes.offset_top = 6
+	heroes.offset_bottom = -(28.0 * _text_factor + 10.0)
+	for sprite_name: String in entry.art:
+		var texture: Texture2D = _ui_sprite(sprite_name)
+		if texture == null: continue
+		var hero := TextureRect.new()
+		hero.texture = texture
+		hero.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		hero.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		hero.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		hero.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if card.disabled: hero.modulate = Color(0.75, 0.72, 0.8, 0.85)
+		heroes.add_child(hero)
+	# Wooden label sign hangs over the bottom edge of the illustration (ref 05).
+	var sign_holder := CenterContainer.new()
+	sign_holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	art.add_child(sign_holder)
+	sign_holder.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	sign_holder.offset_top = -(30.0 * _text_factor + 22.0)
+	sign_holder.offset_bottom = 0
+	sign_holder.add_child(_sign(label, 30 if featured else 22))
+	if featured and not ribbon.is_empty():
+		var chip := _sign(ribbon, 14)
+		chip.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		chip.position = Vector2(8, 8)
+		art.add_child(chip)
+	if entry.has("badge"):
+		var badge := PanelContainer.new()
+		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var pill := Kit.pill(Kit.DANGER_RED, Color("8e2a22"), false, 18)
+		_pad(pill, 12, 4, 12, 6)
+		badge.add_theme_stylebox_override("panel", pill)
+		var text := _label(str(entry.badge), 14, Kit.CREAM_PILL, true)
+		text.autowrap_mode = TextServer.AUTOWRAP_OFF
+		text.add_theme_font_override("font", Kit.font(true))
+		badge.add_child(text)
+		art.add_child(badge)
+		badge.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+		badge.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+		badge.offset_right = -8
+		badge.offset_top = 8
+	var line := _label(hint, 14, Kit.CREAM_PILL, true)
+	line.add_theme_color_override("font_outline_color", Kit.WOOD_DARK)
+	line.add_theme_constant_override("outline_size", 4)
+	line.autowrap_mode = TextServer.AUTOWRAP_OFF
+	line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	line.clip_text = true
+	stack.add_child(line)
+	return card
 
 ## 12345 -> "12,345" for the score plaque.
 func _grouped(value: int) -> String:
@@ -1492,6 +1661,9 @@ func handle_back() -> bool:
 	if current_screen == "profile_form":
 		show_profiles(_snapshot)
 		return true
+	if current_screen == "modes":
+		show_title(_snapshot)
+		return true
 	return false
 
 func update_hud(data: Dictionary) -> void:
@@ -2230,6 +2402,7 @@ func show_physics(data: Dictionary = {}) -> void:
 func _restore_screen(screen: String, data: Dictionary) -> void:
 	match screen:
 		"title": show_title(data)
+		"modes": show_modes(data)
 		"profiles": show_profiles(data)
 		"map": show_map(data)
 		"intro": show_intro(data)
