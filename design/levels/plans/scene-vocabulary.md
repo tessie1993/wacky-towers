@@ -33,7 +33,7 @@ the board (counts toward U10 and needs a handbook entry).
 
 | id | Kind | What it does |
 |---|---|---|
-| `root_whip` | rule | roots sway a vine-held bridge; it never removes a block (handbook#root_whip) |
+| `root_whip` | cos | roots sway a vine-held bridge for show; it never moves or removes a block |
 | `cannon_volley` | rule | cannonballs knock out the top row (handbook#cannon_volley) |
 | `sails_turn` | cos | windmill sails turn faster as the stack rises |
 | `bell_ring` | cos | a bell rings when a layer lands |
