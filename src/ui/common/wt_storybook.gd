@@ -5,15 +5,14 @@ class_name WtStorybook extends RefCounted
 ## Reference: assets/art/reference/style/05, 06, 04, 08, 14, 15. Colours are the art-bible
 ## tokens (design/art/art-bible.md section 2). Used by GameUi for every screen and the HUD.
 ##
-## Kit v2 pieces (assets/art/ui/kit/x1, built by assets/source/blender/ui/build_ui_kit.py):
-## frame_purple, frame_purple_open, panel_parchment, panel_wood, plaque_title, btn_gold,
-## btn_cream, btn_close, chip_hud (meadow), chip_hud_ice, chip_hud_celestial, tray_slot,
-## toggle_on, toggle_off, slider_track, slider_star_thumb, sign_heading.
+## Kit v2 pieces in use (assets/art/ui/kit/x1, built by assets/source/blender/ui/build_ui_kit.py):
+## frame_purple_open, panel_wood, plaque_title, btn_gold, btn_close, toggle_on, slider_track,
+## slider_star_thumb, sign_heading. RETIRED until re-rendered without beige: panel_parchment,
+## frame_purple (parchment centre), btn_cream, chip_hud*, tray_slot, toggle_off. Their roles are
+## filled by flat plum-glass / purple-wood StyleBoxes below (glass_box, chip_flat, slot_flat, gem).
 
 const PLUM := Color("3b2346")          # ink
 const PLUM_SOFT := Color("6e5578")
-const PARCHMENT := Color("f6e7c4")     # parchment
-const PARCHMENT_DEEP := Color("e2c995")  # parchment_shade
 const WOOD := Color("8a5a34")          # wood_brown
 const WOOD_DARK := Color("4e2f1a")     # wood_brown_dark
 const WOOD_PURPLE := Color("6b4a8a")
@@ -26,9 +25,11 @@ const VINE_GREEN := Color("4f9a3a")
 const LEAF_LIGHT := Color("8fd05a")
 const DANGER_RED := Color("e0483c")
 const GO_GREEN := Color("4cc04a")
-const CREAM_PILL := Color("fff4dc")
 const STAR_ON := Color("f8c840")
-const STAR_OFF := Color("cdbfa6")
+## Unearned star: dim lilac, reads as "empty" on plum glass without any beige.
+const STAR_DIM := Color("7d6a96")
+## Highlight green for minigame lanes and windows (was duplicated as MINT in three scripts).
+const MINT := Color("b8ddc7")
 ## Lettering on the scene, glass and wood: cream face, plum outline (AA on every kit surface).
 const TEXT := Color("fff6e6")
 const TEXT_SOFT := Color("e6dcf7")
@@ -47,8 +48,9 @@ const PILL_RAMP_DARK := Color("2a1838")
 const PILL_RAMP_LIGHT := Color("8a68ad")
 ## Multicolour display-title letters, cycled per glyph (orange, cream, blue, green, lilac, pink).
 const TITLE_COLORS: Array[Color] = [Color("f08a2c"), Color("f6e2b8"), Color("4aa8e8"), Color("6cc04a"), Color("b48ad8"), Color("ee6aa0")]
-## HUD chip piece per biome; other biomes fall back to the meadow chip.
-const BIOME_CHIPS := {"meadow": "chip_hud", "ice": "chip_hud_ice", "celestial": "chip_hud_celestial"}
+## HUD frame / chip rim colours [rail, glint] per biome (ref 15: vine green, frost blue,
+## celestial violet-gold, iron for lava, frosting pink for candy). Others use the look's "frame".
+const BIOME_RIMS := {"meadow": ["6f8f3a", "a8d060"], "ice": ["5f8fd0", "cfe6ff"], "celestial": ["4a3590", "f8c840"], "lava": ["3a2c2c", "e07a4a"], "candy": ["d0679a", "ffd0e4"]}
 const FONT_PATH := "res://assets/fonts/fredoka/fredoka-600.woff2"
 const FONT_BOLD_PATH := "res://assets/fonts/fredoka/fredoka-700.woff2"
 const SKY_SHADER := "res://src/view/shaders/canvas_env_sky.gdshader"
@@ -185,10 +187,87 @@ static func recolor_image(source: Image, dark: Color, light: Color, parchment_on
 	return image
 
 
-## HUD chip (SCORE, NEXT) in the biome's frame: meadow vines, ice frost, celestial gold.
+## HUD chip (SCORE, NEXT, tray, pause gem): plum glass face in a thick biome-tinted rim.
 static func chip_box(biome: String = "meadow") -> StyleBox:
-	var box: StyleBoxTexture = kit_box(String(BIOME_CHIPS.get(biome, "chip_hud")), 10.0)
-	return box if box != null else panel(GLASS, biome_frame(biome), 14, 6)
+	return chip_flat(biome)
+
+
+## Rim colours [rail, glint] for a biome's HUD frame and chips.
+static func biome_rim(biome: String) -> Array[Color]:
+	if BIOME_RIMS.has(biome):
+		var pair: Array = BIOME_RIMS[biome]
+		return [Color(String(pair[0])), Color(String(pair[1]))]
+	var rail := biome_frame(biome)
+	return [rail, rail.lightened(0.45)]
+
+
+## Plum glass chip in a 5 px biome rim with a heavier bottom lip (HUD SCORE / NEXT / goal).
+static func chip_flat(biome: String = "meadow", lit: bool = false) -> StyleBoxFlat:
+	var rim := biome_rim(biome)
+	var s := panel(Color(WOOD_PURPLE_DARK, 0.9) if not lit else Color(WOOD_PURPLE, 0.95), GOLD if lit else rim[0], 16, 5)
+	s.border_width_bottom = 8
+	s.shadow_color = Color(0.1, 0.04, 0.16, 0.35)
+	s.shadow_size = 6
+	s.shadow_offset = Vector2(0, 3)
+	return s
+
+
+## Tray / item slot: plum glass in a biome rim; `lit` (hold, selected) glows purple with gold.
+static func slot_flat(biome: String = "meadow", lit: bool = false) -> StyleBoxFlat:
+	var s := chip_flat(biome, lit)
+	s.set_corner_radius_all(14)
+	s.set_border_width_all(4)
+	s.border_width_bottom = 6
+	return s
+
+
+## Round gem button face (HUD icon bar, ref 15 pause gem): purple wood with a gold rim.
+## `round` false gives a lozenge (landscape clusters). `state` is normal/hover/pressed/disabled.
+static func gem(state: String = "normal", round: bool = true, fill: Color = WOOD_PURPLE) -> StyleBoxFlat:
+	var face := fill
+	if state == "hover": face = fill.lightened(0.12)
+	elif state == "pressed": face = fill.darkened(0.15)
+	elif state == "disabled": face = fill.lerp(PLUM_SOFT, 0.6).darkened(0.25)
+	var s := pill(face, GOLD_DEEP, state == "pressed", 999 if round else 18)
+	s.border_color = GOLD if state != "disabled" else PLUM_SOFT
+	s.set_border_width_all(3)
+	s.border_width_bottom = 3 if state == "pressed" else 6
+	for side: int in [SIDE_LEFT, SIDE_RIGHT]: s.set_content_margin(side, 6)
+	s.content_margin_top = 4 + (3 if state == "pressed" else 0)
+	s.content_margin_bottom = 6
+	return s
+
+
+## Full-screen HUD frame in the biome's rim colour: a thick rounded rail (centre not drawn).
+static func hud_frame(biome: String = "meadow") -> StyleBoxFlat:
+	var rim := biome_rim(biome)
+	var s := StyleBoxFlat.new()
+	s.draw_center = false
+	s.border_color = rim[0]
+	s.set_border_width_all(9)
+	s.set_corner_radius_all(26)
+	s.shadow_color = Color(rim[1], 0.35)
+	s.shadow_size = 3
+	s.anti_aliasing = true
+	return s
+
+
+## The palette as one Theme type ("Palette") plus the panel type variations screens use:
+## PlumPanel (content group glass), PlankRow (settings strip), HudChip (meadow chip).
+## Screens set `theme_type_variation` instead of overriding colours node by node.
+static func apply_palette(t: Theme) -> void:
+	for entry: Array in [["ink", PLUM], ["ink_soft", PLUM_SOFT], ["text", TEXT], ["text_soft", TEXT_SOFT], ["outline", TEXT_OUTLINE],
+			["glass", GLASS], ["glass_rim", GLASS_RIM], ["plank", PLANK], ["wood", WOOD], ["wood_dark", WOOD_DARK],
+			["purple", WOOD_PURPLE], ["purple_dark", WOOD_PURPLE_DARK], ["purple_light", WOOD_PURPLE_LIGHT],
+			["gold", GOLD], ["gold_deep", GOLD_DEEP], ["gold_glint", GOLD_GLINT], ["star_on", STAR_ON], ["star_dim", STAR_DIM],
+			["danger", DANGER_RED], ["go", GO_GREEN], ["mint", MINT]]:
+		t.set_color(String(entry[0]), &"Palette", entry[1])
+	t.set_type_variation(&"PlumPanel", &"PanelContainer")
+	t.set_stylebox(&"panel", &"PlumPanel", glass_box())
+	t.set_type_variation(&"PlankRow", &"PanelContainer")
+	t.set_stylebox(&"panel", &"PlankRow", plank_box())
+	t.set_type_variation(&"HudChip", &"PanelContainer")
+	t.set_stylebox(&"panel", &"HudChip", chip_flat())
 
 
 ## Carved brown signboard for section headings ("AUDIO", card labels).

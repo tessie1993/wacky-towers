@@ -8,9 +8,10 @@ extends Node
 ##   --rendering-driver opengl3 --resolution 720x1280 res://tools/qa/playtest/core_loop_capture.tscn [-- --levels=a,b] [--fail=id]
 const OUT := "res://production/qa/evidence/playtest-2026-10-14/"
 const LEVELS := ["meadow_02", "ice_04", "lava_05", "underwater_03", "pirate_01", "pirate_h1", "carnival_03", "meadow_h3"]
-const STEPS_PER_FRAME := 6
+const STEPS_PER_FRAME := 6          ## first piece: rendered closely
+const BOT_STEPS_PER_FRAME := 40     ## bot phase: fast-forward between shots
 const BOT_CAP_MS := 300000
-const WALL_CAP_MS := 60000
+const WALL_CAP_MS := 120000
 var _main: Node
 var _log: Array = []
 
@@ -29,17 +30,19 @@ func _tick() -> void: _main.call("_physics_process", 1.0 / 60.0)
 
 func _run() -> void:
 	var levels: Array = LEVELS
-	var force_fail: Array = ["meadow_h3"]
+	var force_fail: Array = ["pirate_h1"]
 	for a: String in OS.get_cmdline_user_args():
 		if a.begins_with("--levels="): levels = Array(a.trim_prefix("--levels=").split(","))
 		if a.begins_with("--fail="): force_fail = Array(a.trim_prefix("--fail=").split(","))
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
-	_main = load("res://src/app/main.tscn").instantiate()
-	add_child(_main)
-	await _frames(20)
-	var store: Object = _main.get("_store")
-	if store.call("active_profile") == null: store.call("create", "QA Playtest")
 	for id: String in levels:
+		# Fresh main per level: re-starting a level from the results screen on the same main left the old sim in place.
+		if _main != null: _main.queue_free(); await _frames(3)
+		_main = load("res://src/app/main.tscn").instantiate()
+		add_child(_main)
+		await _frames(20)
+		var store: Object = _main.get("_store")
+		if store.call("active_profile") == null: store.call("create", "QA Playtest")
 		var row: Dictionary = await _play(id, force_fail.has(id))
 		_log.append(row)
 		print("PT_ROW ", JSON.stringify(row))
@@ -129,8 +132,10 @@ func _play(id: String, fail_on_purpose: bool) -> Dictionary:
 		if bool(_main.get("_paused")):
 			row.notes.append("paused during play screen=%s" % String(_main.get("_ui").get("current_screen")))
 			_main.set("_paused", false)
-		for s: int in STEPS_PER_FRAME:
-			if sim.get_phase() == BoardSim.Phase.ENDED: break
+		var want_mid: bool = false
+		for s: int in BOT_STEPS_PER_FRAME:
+			if sim.get_phase() == BoardSim.Phase.ENDED or sim.goal_state().layers_cleared > cleared: break
+			if not mid_done and sim.goal_state().locks >= 5 and sim.get_piece() != null and sim.get_tick() - spawn_at >= 20: want_mid = true; break
 			if sim.get_phase() == BoardSim.Phase.SELECTING:
 				var ch: Array[Dictionary] = sim.kit_choices()
 				if not ch.is_empty(): _main.call("_on_intent", &"pick_shape", {"shape_id": String(ch[0].shape_id)})
@@ -140,7 +145,7 @@ func _play(id: String, fail_on_purpose: bool) -> Dictionary:
 			_tick()
 			if sim.get_piece_uid() != last_uid and sim.get_piece() != null:
 				last_uid = sim.get_piece_uid(); spawn_at = sim.get_tick()
-		if not mid_done and sim.goal_state().locks >= 5 and sim.get_piece() != null and sim.get_tick() - spawn_at in range(15, 60):
+		if want_mid:
 			mid_done = true
 			await _frames(1)
 			row.shots.append(await _shot(id + "_mid"))
@@ -161,6 +166,7 @@ func _play(id: String, fail_on_purpose: bool) -> Dictionary:
 			sim.call("_finish", GoalState.RESULT_LOST, &"qa_forced"); _tick(); break
 		await _frames(1)
 	sim = _sim()
+	row.sim_level = String(_main.get("_level").id) if _main.get("_level") != null else "?"
 	var r: LevelResult = sim.result() if sim != null else null
 	row.outcome = ("won" if r.is_won() else "lost") if r != null else "none"
 	row.mode_at_end = mode
