@@ -30,6 +30,13 @@
 		},
 		{
 			"extras": 4,
+			"finite_puzzles_won": 0,
+			"id": "pirate",
+			"mains": 10,
+			"smoke_passed": 10
+		},
+		{
+			"extras": 4,
 			"finite_puzzles_won": 1,
 			"id": "lava",
 			"mains": 10,
@@ -643,7 +650,68 @@
 			"scene": "res://src/levels/meadow/meadow_09/meadow_09.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 9.0
+			"tier": 9.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1729,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 2,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 3,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 4,
+						"symmetry": "transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 5,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 6,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 7,
+						"symmetry": "rot180"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -782,7 +850,7 @@
 				"level_ms": 2000,
 				"locks": 6,
 				"stars": 3,
-				"state_hash": 2982949791,
+				"state_hash": 464665655,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -869,7 +937,68 @@
 			"scene": "res://src/levels/meadow/meadow_h1/meadow_h1.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 12.0
+			"tier": 12.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 1729,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 1,
+						"symmetry": "transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 2,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 3,
+						"symmetry": "transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 4,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 5,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 6,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 7,
+						"symmetry": "transpose"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -965,7 +1094,7 @@
 			"id": "meadow_h3",
 			"knob_overrides": {
 				"control.fog_ghost_preview": "faint",
-				"fall.g0": 950,
+				"fall.g0": 1000,
 				"goal.top_out": "rescue",
 				"goal.type": "clear_n",
 				"goal.warnings_max": 1
@@ -1560,7 +1689,68 @@
 			"scene": "res://src/levels/candy/candy_07/candy_07.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 7.0
+			"tier": 7.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1729,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 2,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 3,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 4,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 5,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 6,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 7,
+						"symmetry": "rot90"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -1728,7 +1918,68 @@
 			"scene": "res://src/levels/candy/candy_09/candy_09.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 9.0
+			"tier": 9.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 1729,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 1,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 2,
+						"symmetry": "identity"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 3,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 4,
+						"symmetry": "transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 5,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 6,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 7,
+						"symmetry": "transpose"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 60,
@@ -1880,7 +2131,7 @@
 				"level_ms": 2000,
 				"locks": 6,
 				"stars": 3,
-				"state_hash": 920964340,
+				"state_hash": 2119411572,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -2303,7 +2554,68 @@
 			"scene": "res://src/levels/ice/ice_03/ice_03.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 3.0
+			"tier": 3.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1729,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1,
+						"symmetry": "identity"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 2,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 3,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 4,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 5,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 6,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 7,
+						"symmetry": "mirror_z"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -2355,7 +2667,68 @@
 			"scene": "res://src/levels/ice/ice_04/ice_04.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 4.0
+			"tier": 4.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1729,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 2,
+						"symmetry": "identity"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 3,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 4,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 5,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 6,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 7,
+						"symmetry": "mirror_x"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -2806,7 +3179,7 @@
 				"level_ms": 2100,
 				"locks": 6,
 				"stars": 3,
-				"state_hash": 2710147041,
+				"state_hash": 3769482840,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -2921,7 +3294,7 @@
 			"knob_overrides": {
 				"control.flick_per_piece": 1,
 				"control.verb": "curling_flick",
-				"fall.g0": 1000,
+				"fall.g0": 1050,
 				"goal.type": "clear_n",
 				"goal.warnings_max": 1
 			},
@@ -2956,7 +3329,68 @@
 			"scene": "res://src/levels/ice/ice_h2/ice_h2.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 13.0
+			"tier": 13.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1729,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 2,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 3,
+						"symmetry": "identity"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 4,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 5,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 6,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 7,
+						"symmetry": "rot90"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -3284,7 +3718,68 @@
 			"scene": "res://src/levels/underwater/underwater_04/underwater_04.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 4.0
+			"tier": 4.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 3,
+						"seed": 1729,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 3,
+						"seed": 1,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 3,
+						"seed": 2,
+						"symmetry": "transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 3,
+						"seed": 3,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 3,
+						"seed": 4,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 3,
+						"seed": 5,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 3,
+						"seed": 6,
+						"symmetry": "identity"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 3,
+						"seed": 7,
+						"symmetry": "rot180"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -3414,7 +3909,7 @@
 				"level_ms": 3250,
 				"locks": 9,
 				"stars": 3,
-				"state_hash": 3715629205,
+				"state_hash": 2736512866,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -3743,7 +4238,7 @@
 				"level_ms": 2366,
 				"locks": 7,
 				"stars": 3,
-				"state_hash": 2439020347,
+				"state_hash": 2902916143,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -3827,7 +4322,68 @@
 			"scene": "res://src/levels/underwater/underwater_h1/underwater_h1.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 12.0
+			"tier": 12.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 1729,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 1,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 2,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 3,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 4,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 5,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 6,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 7,
+						"symmetry": "identity"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -3960,6 +4516,855 @@
 		},
 		{
 			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 2.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_01",
+			"knob_overrides": {
+				"fall.g0": 800,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 2
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_spawn"
+					],
+					"id": "mascot_hint"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_command",
+						"on_tick",
+						"on_lock"
+					],
+					"id": "balloon"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_01/pirate_01.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 1.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_02",
+			"knob_overrides": {
+				"fall.g0": 850,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "gumdrop_hail"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_02/pirate_02.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 2.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_03",
+			"knob_overrides": {
+				"fall.g0": 900,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_resolve_end"
+					],
+					"id": "tilt_plate"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_03/pirate_03.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 3.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_04",
+			"knob_overrides": {
+				"fall.g0": 950,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "crab_claw"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_04/pirate_04.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 4.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"h_target": 10.0,
+				"height_coverage": 0.6,
+				"type": "height"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_05",
+			"knob_overrides": {
+				"fall.g0": 950,
+				"goal.height_coverage": 600,
+				"goal.top_out": "trim",
+				"goal.type": "height"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				16,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start"
+					],
+					"id": "build_race"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_05/pirate_05.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 5.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_06",
+			"knob_overrides": {
+				"fall.g0": 1000,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [],
+			"scene": "res://src/levels/pirate/pirate_06/pirate_06.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 6.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_07",
+			"knob_overrides": {
+				"fall.g0": 1050,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "squirrel_heist"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_07/pirate_07.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 7.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 8,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"T": 150.0,
+				"t_ms": 150000.0,
+				"type": "survive"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_08",
+			"knob_overrides": {
+				"fall.g0": 1100,
+				"fall.ramp_per_min": 100,
+				"goal.type": "survive"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				12,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "rising_silt"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_08/pirate_08.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 8.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_09",
+			"knob_overrides": {
+				"fall.g0": 1150,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "race_rival"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_09/pirate_09.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 9.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_10",
+			"knob_overrides": {
+				"fall.g0": 1200,
+				"goal.type": "clear_n"
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				16,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "crab_claw"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_10/pirate_10.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 10.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_bonus",
+			"knob_overrides": {
+				"fall.g0": 1100,
+				"goal.top_out": "rescue",
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear"
+					],
+					"id": "golden_row"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_bonus/pirate_bonus.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 11.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 12,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_h1",
+			"knob_overrides": {
+				"fall.g0": 1150,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				16,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_spawn",
+						"on_tick"
+					],
+					"id": "gust"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "crab_claw"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_h1/pirate_h1.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 12.0
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 3.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_h2",
+			"knob_overrides": {
+				"fall.g0": 1150,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick"
+					],
+					"id": "race_rival"
+				},
+				{
+					"hooks": [
+						"on_level_start",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "gumdrop_hail"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_h2/pirate_h2.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 13.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 1729,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 1,
+						"symmetry": "identity"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 2,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 3,
+						"symmetry": "transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 4,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 5,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 6,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 4,
+						"seed": 7,
+						"symmetry": "transpose"
+					}
+				]
+			}
+		},
+		{
+			"active_clear_plane": 64,
+			"biome": "pirate",
+			"capabilities": {
+				"choose_down": false,
+				"flicks_left": 1,
+				"ice_flick": false,
+				"kit": false,
+				"reset": false,
+				"undo": false,
+				"undo_available": false
+			},
+			"choose_down_reachable": true,
+			"completion_status": "FULL_PLAYTHROUGH_NOT_ASSESSED",
+			"danger_limit": 10,
+			"embedded_world": true,
+			"failures": [],
+			"goal": {
+				"n": 4.0,
+				"type": "clear_n"
+			},
+			"ice_flick_reachable": true,
+			"id": "pirate_h3",
+			"knob_overrides": {
+				"fall.g0": 1200,
+				"goal.type": "clear_n",
+				"goal.warnings_max": 1
+			},
+			"legal_spawn": true,
+			"level_ms": 700,
+			"locks": 3,
+			"parse_status": "PASS",
+			"physical_size": [
+				8,
+				14,
+				8
+			],
+			"result_after_smoke": 0,
+			"rule_hooks": [
+				{
+					"hooks": [
+						"on_level_start",
+						"on_tick",
+						"on_clear",
+						"on_resolve_end"
+					],
+					"id": "crab_claw"
+				},
+				{
+					"hooks": [
+						"on_spawn",
+						"on_tick",
+						"on_lock",
+						"on_clear"
+					],
+					"id": "fog"
+				}
+			],
+			"scene": "res://src/levels/pirate/pirate_h3/pirate_h3.tscn",
+			"scene_instantiated": true,
+			"smoke_status": "PASS",
+			"tier": 14.0
+		},
+		{
+			"active_clear_plane": 64,
 			"biome": "lava",
 			"capabilities": {
 				"choose_down": false,
@@ -4060,7 +5465,68 @@
 			"scene": "res://src/levels/lava/lava_02/lava_02.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 2.0
+			"tier": 2.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 1729,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 1,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 2,
+						"symmetry": "transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 3,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 4,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 5,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 6,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 7,
+						"symmetry": "transpose"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -4632,7 +6098,7 @@
 				"level_ms": 2366,
 				"locks": 7,
 				"stars": 3,
-				"state_hash": 258276969,
+				"state_hash": 1523361289,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -4769,7 +6235,68 @@
 			"scene": "res://src/levels/lava/lava_h2/lava_h2.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 13.0
+			"tier": 13.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 1729,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 1,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 2,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 3,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 4,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 5,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 6,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 7,
+						"symmetry": "rot180"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -4927,7 +6454,68 @@
 			"scene": "res://src/levels/forest/forest_02/forest_02.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 2.0
+			"tier": 2.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 1729,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 1,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 2,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 3,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 4,
+						"symmetry": "rot180"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 5,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 6,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 7,
+						"symmetry": "rot90"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -5159,7 +6747,7 @@
 				"level_ms": 2000,
 				"locks": 6,
 				"stars": 3,
-				"state_hash": 229536328,
+				"state_hash": 3750577512,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -5503,7 +7091,7 @@
 				"level_ms": 3250,
 				"locks": 9,
 				"stars": 3,
-				"state_hash": 161441784,
+				"state_hash": 1215311168,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -5827,7 +7415,68 @@
 			"scene": "res://src/levels/cave/cave_02/cave_02.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 2.0
+			"tier": 2.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1729,
+						"symmetry": "transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1,
+						"symmetry": "identity"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 2,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 3,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 4,
+						"symmetry": "transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 5,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 6,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 7,
+						"symmetry": "rot180"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -6116,7 +7765,7 @@
 				"level_ms": 900,
 				"locks": 3,
 				"stars": 3,
-				"state_hash": 1675135250,
+				"state_hash": 2015476606,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -6389,7 +8038,7 @@
 				"level_ms": 1333,
 				"locks": 4,
 				"stars": 3,
-				"state_hash": 4153658527,
+				"state_hash": 887223803,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -6535,7 +8184,68 @@
 			"scene": "res://src/levels/cave/cave_h2/cave_h2.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 13.0
+			"tier": 13.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1729,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 1,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 2,
+						"symmetry": "transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 3,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 4,
+						"symmetry": "mirror_z"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 5,
+						"symmetry": "transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 6,
+						"symmetry": "identity"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 2,
+						"seed": 7,
+						"symmetry": "rot270"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -6561,7 +8271,7 @@
 			"ice_flick_reachable": true,
 			"id": "cave_h3",
 			"knob_overrides": {
-				"fall.g0": 1250,
+				"fall.g0": 1300,
 				"goal.type": "dig_rescue",
 				"goal.warnings_max": 1
 			},
@@ -6945,7 +8655,7 @@
 				"level_ms": 2366,
 				"locks": 7,
 				"stars": 3,
-				"state_hash": 221417824,
+				"state_hash": 55181944,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -7286,7 +8996,7 @@
 				"level_ms": 2483,
 				"locks": 7,
 				"stars": 3,
-				"state_hash": 559609147,
+				"state_hash": 2735224183,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -7882,7 +9592,7 @@
 				"level_ms": 2733,
 				"locks": 8,
 				"stars": 3,
-				"state_hash": 758409148,
+				"state_hash": 3584005236,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -8539,7 +10249,68 @@
 			"scene": "res://src/levels/celestial/celestial_02/celestial_02.tscn",
 			"scene_instantiated": true,
 			"smoke_status": "PASS",
-			"tier": 2.0
+			"tier": 2.0,
+			"variation": {
+				"failures": [],
+				"variants": [
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 1729,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 1,
+						"symmetry": "mirror_x"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 2,
+						"symmetry": "rot90"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 3,
+						"symmetry": "transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 4,
+						"symmetry": "anti_transpose"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 5,
+						"symmetry": "identity"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 6,
+						"symmetry": "rot270"
+					},
+					{
+						"legal_spawn": true,
+						"locks": 1,
+						"moved": 0,
+						"seed": 7,
+						"symmetry": "rot270"
+					}
+				]
+			}
 		},
 		{
 			"active_clear_plane": 64,
@@ -8780,7 +10551,7 @@
 				"level_ms": 2000,
 				"locks": 6,
 				"stars": 3,
-				"state_hash": 3157525954,
+				"state_hash": 2416609534,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -8893,7 +10664,7 @@
 					"-z"
 				],
 				"control.verb": "choose_down",
-				"fall.g0": 1300,
+				"fall.g0": 1450,
 				"goal.type": "clear_n",
 				"goal.warnings_max": 1
 			},
@@ -9128,7 +10899,7 @@
 				"level_ms": 1716,
 				"locks": 5,
 				"stars": 3,
-				"state_hash": 1378729153,
+				"state_hash": 2405576984,
 				"status": "WIN",
 				"trimmed": 0
 			},
@@ -9836,7 +11607,7 @@
 			"ice_flick_reachable": true,
 			"id": "carnival_08",
 			"knob_overrides": {
-				"fall.g0": 1400,
+				"fall.g0": 1500,
 				"goal.top_out": "rescue",
 				"goal.type": "clear_n",
 				"goal.warnings_max": 1
@@ -10223,7 +11994,7 @@
 			"ice_flick_reachable": true,
 			"id": "carnival_h3",
 			"knob_overrides": {
-				"fall.g0": 1450,
+				"fall.g0": 1550,
 				"goal.top_out": "rescue",
 				"goal.type": "clear_n",
 				"goal.warnings_max": 1

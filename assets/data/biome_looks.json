@@ -20,19 +20,36 @@
     "meadow": {
       "block": {
         "style": "meadow",
-        "cap_color": "#5FA03A",
+        "cap_color": "#4E9232",
         "cap_depth": 0.13,
-        "cap_drip": 0.09,
-        "body_color": "#8A5A36",
-        "body_mix": 0.7,
-        "gloss": 0.25,
+        "cap_drip": 0.07,
+        "cap_lip": 0.03,
+        "body_color": "#8E623E",
+        "body_mix": 0.1,
+        "gloss": 0.2,
         "rim": 0.12,
-        "brightness": 1.25
+        "brightness": 1.0,
+        "topper": "sprout",
+        "topper_rate": 0.2,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26,
+        "piece_sat": 1.15,
+        "piece_value": 1.12,
+        "cap_hues": [
+          [
+            0.2,
+            0.46
+          ]
+        ],
+        "stone_value": 1.22,
+        "stone_sat": 0.78,
+        "cap_body_mix": 0.9,
+        "stone_crack": 0.4
       },
       "sky": [
-        "#8EC9F0",
-        "#D9EEF8",
-        "#F7F1DE"
+        "#4F94E6",
+        "#CFE6FB",
+        "#FFF4E6"
       ],
       "cloud": "#FFFFFF",
       "far_island": "#9FC79A",
@@ -54,72 +71,228 @@
       "accent": "#F2E35C",
       "frame": "#6E9A4A",
       "env": {
-        "lip": "grass",
-        "lip_color": "#78B84E",
+        "family": "meadow",
+        "light": {
+          "key": "#FFF0D6",
+          "key_energy": 0.972,
+          "fill": "#B8C4FF",
+          "fill_energy": 0.2,
+          "back": "#FFE0A8",
+          "back_energy": 0.3,
+          "ambient": "#C9C3E6",
+          "ambient_energy": 0.336,
+          "saturation": 1.28,
+          "contrast": 1.06,
+          "brightness": 1.02,
+          "shadow_tint": "#6B5C9E"
+        },
+        "sky": {
+          "cloud": "#FFFBF4",
+          "cloud_shade": "#D4DAF2",
+          "mountains": "#86A9D6",
+          "mountain_amount": 0.8,
+          "mesa_amount": 1.0,
+          "mesa_top": "#7CBF4E",
+          "mesa_rock": "#A9876A",
+          "mesa_falls": 0.6,
+          "cloud_bank": 0.9,
+          "mesa_round": 1.0
+        },
+        "haze": "#D6E4F8",
+        "cap": {
+          "color": "#5C9E38",
+          "light": "#9BD65E",
+          "dark": "#2F6A24",
+          "depth": 0.14,
+          "drip": 0.12
+        },
+        "body": {
+          "color": "#A07650",
+          "dark": "#6B4A33"
+        },
+        "strata": [
+          "#A57A52",
+          "#8E6646",
+          "#76533A"
+        ],
+        "tile": {
+          "color": "#DCD6CA",
+          "grout": "#6E6258",
+          "alt": "#D2C8B4",
+          "jitter": 0.08,
+          "ledge": "#A89E8E"
+        },
+        "rim": [
+          {
+            "kind": "flower_white",
+            "weight": 6.4,
+            "scale": [
+              1.6,
+              2.2
+            ],
+            "spacing": 0.5
+          },
+          {
+            "kind": "flower_lilac",
+            "weight": 4.0,
+            "scale": [
+              1.5,
+              2.0
+            ],
+            "spacing": 0.5
+          },
+          {
+            "kind": "clover",
+            "tint": "#5DB043",
+            "weight": 3,
+            "scale": [
+              1.8,
+              2.5
+            ],
+            "spacing": 0.5
+          },
+          {
+            "kind": "tuft",
+            "tint": "#7BC24E",
+            "weight": 1.7999999999999998,
+            "scale": [
+              1.2,
+              1.8
+            ],
+            "spacing": 0.28
+          },
+          {
+            "kind": "bush",
+            "tint": "#5FA63C",
+            "weight": 1.2,
+            "scale": [
+              1.0,
+              1.4
+            ]
+          },
+          {
+            "kind": "clover",
+            "tint": "#4FA43A",
+            "weight": 2.2,
+            "scale": [
+              2.0,
+              2.6
+            ],
+            "edge": true,
+            "spacing": 0.45
+          },
+          {
+            "kind": "flower_white",
+            "weight": 2.5600000000000005,
+            "scale": [
+              1.8,
+              2.3
+            ],
+            "edge": true,
+            "spacing": 0.5
+          },
+          {
+            "kind": "tuft",
+            "tint": "#6CB843",
+            "weight": 1.2,
+            "scale": [
+              1.4,
+              2.0
+            ],
+            "edge": true,
+            "spacing": 0.3
+          },
+          {
+            "kind": "bush",
+            "tint": "#4E9A36",
+            "weight": 2.2,
+            "scale": [
+              0.65,
+              0.95
+            ],
+            "tall": false,
+            "spacing": 0.45
+          },
+          {
+            "kind": "flower_lilac",
+            "weight": 1.4,
+            "scale": [
+              1.7,
+              2.2
+            ],
+            "edge": true,
+            "spacing": 0.5
+          }
+        ],
+        "rim_density": 6.0,
+        "hang": [
+          {
+            "kind": "root",
+            "tint": "#B08058",
+            "count": 28,
+            "size": 1.4
+          },
+          {
+            "kind": "strand",
+            "tint": "#6CB040",
+            "count": 34,
+            "size": 1.2
+          }
+        ],
+        "far": [
+          "waterfall",
+          "trees",
+          "castle",
+          "trees",
+          "waterfall",
+          "trees"
+        ],
+        "far_cap": "#6AA84A",
+        "far_rock": "#A07650",
+        "far_accent": "#6A7FD0",
         "falls": {
-          "kind": "water",
-          "count": 1,
           "deep": "#3C9AD8",
           "light": "#A9E2FF",
-          "foam": "#FFFFFF",
-          "emission": 0.0,
-          "speed": 0.7
-        },
-        "under": [
-          "roots"
-        ],
-        "dressing": [
-          {
-            "kind": "flowers",
-            "weight": 5,
-            "tint": "top"
-          },
-          {
-            "kind": "bush",
-            "weight": 3,
-            "tint": "rim"
-          },
-          {
-            "kind": "rock",
-            "weight": 1,
-            "tint": "cliff"
-          },
-          {
-            "kind": "tree",
-            "weight": 1,
-            "tint": "rim",
-            "sway": 0.03
-          }
-        ],
-        "backdrop": [
-          {
-            "kind": "tree",
-            "weight": 3,
-            "tint": "rim",
-            "sway": 0.03
-          },
-          {
-            "kind": "bush",
-            "weight": 2,
-            "tint": "rim"
-          }
-        ]
+          "foam": "#FFFFFF"
+        }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#D6E8FA",
+        "warm_tint": "#FFF6E2",
+        "vignette_color": "#3A2A55",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "candy": {
       "block": {
         "style": "candy",
-        "cap_color": "#FFF1F4",
-        "cap_depth": 0.17,
-        "cap_drip": 0.14,
-        "body_color": "#FF7FA3",
-        "body_mix": 0.3,
+        "cap_color": "#FFEEF2",
+        "cap_depth": 0.16,
+        "cap_drip": 0.13,
+        "cap_lip": 0.03,
+        "body_color": "#FF6E98",
+        "body_mix": 0.08,
         "gloss": 0.85,
         "rim": 0.3,
-        "brightness": 1.1
+        "translucency": 0.35,
+        "brightness": 1.0,
+        "topper": "heart",
+        "topper_rate": 0.15,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26,
+        "piece_sat": 1.25,
+        "piece_value": 1.08
       },
       "sky": [
-        "#F6B6CF",
+        "#E79AD0",
         "#FCE1EA",
         "#FFF4E6"
       ],
@@ -141,71 +314,151 @@
       "accent": "#FF7FA3",
       "frame": "#E58FA8",
       "env": {
-        "lip": "grass",
-        "lip_color": "#FFE6EE",
-        "falls": {
-          "kind": "syrup",
-          "count": 1,
-          "deep": "#E9668F",
-          "light": "#FFB3C9",
-          "foam": "#FFF4F7",
-          "emission": 0.0,
-          "speed": 0.4
+        "family": "candy",
+        "light": {
+          "key": "#FFF0E0",
+          "key_energy": 0.9,
+          "fill": "#D8C4FF",
+          "fill_energy": 0.25,
+          "back": "#FFD0E0",
+          "back_energy": 0.35,
+          "ambient": "#E8C8E6",
+          "ambient_energy": 0.45,
+          "saturation": 1.2,
+          "contrast": 1.05,
+          "brightness": 1.02,
+          "shadow_tint": "#9A5C9E"
         },
-        "under": [
-          "roots"
+        "sky": {
+          "cloud": "#FFF8FC",
+          "cloud_shade": "#F0C4DC",
+          "mountains": "#F2B8D4",
+          "mountain_amount": 0.6,
+          "mesa_amount": 0.8,
+          "mesa_top": "#FFF2F7",
+          "mesa_rock": "#E89AB8",
+          "cloud_bank": 0.8,
+          "mesa_falls": 0.3
+        },
+        "haze": "#FCE1EA",
+        "cap": {
+          "color": "#FFF2F7",
+          "light": "#FFFFFF",
+          "dark": "#F2B8D0",
+          "depth": 0.14,
+          "drip": 0.2
+        },
+        "body": {
+          "color": "#D09070",
+          "dark": "#9C624D",
+          "pebbles": 0.0
+        },
+        "strata": [
+          "#F2A6C4",
+          "#D9A07E",
+          "#B9785E"
         ],
-        "dressing": [
+        "tile": {
+          "color": "#FBEBDD",
+          "grout": "#C99A8A"
+        },
+        "rim": [
+          {
+            "kind": "blob",
+            "tint": "#FF9FC4",
+            "weight": 3
+          },
+          {
+            "kind": "blob",
+            "tint": "#FFFFFF",
+            "weight": 2
+          },
+          {
+            "kind": "gumdrop",
+            "tint": "#8FD8F0",
+            "weight": 2
+          },
+          {
+            "kind": "gumdrop",
+            "tint": "#FFD86A",
+            "weight": 1.5
+          },
           {
             "kind": "lollipop",
-            "weight": 2,
-            "tint": "white"
-          },
-          {
-            "kind": "bush",
-            "weight": 2,
-            "tint": "#F7A8C4"
-          },
-          {
-            "kind": "flowers",
-            "weight": 3,
-            "tint": "#F7C4D6"
-          },
-          {
-            "kind": "mushroom",
-            "weight": 1,
-            "tint": "#FF8FB1"
+            "tint": "#F05A8C",
+            "weight": 1
           }
         ],
-        "backdrop": [
+        "rim_density": 4.0,
+        "hang": [
           {
-            "kind": "lollipop",
-            "weight": 3,
-            "tint": "white"
-          },
-          {
-            "kind": "bush",
-            "weight": 2,
-            "tint": "#F7A8C4"
+            "kind": "stalactite",
+            "tint": "#FFB6D0",
+            "count": 24
           }
-        ]
+        ],
+        "far": [
+          "candy",
+          "castle",
+          "waterfall",
+          "candy",
+          "trees"
+        ],
+        "far_cap": "#FFD6E6",
+        "far_rock": "#D09070",
+        "far_accent": "#F07AA8",
+        "far_stone": "#FFF0F4",
+        "falls": {
+          "deep": "#F07AA8",
+          "light": "#FFC4DA",
+          "foam": "#FFFFFF"
+        }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#FFE0F0",
+        "warm_tint": "#FFF3EA",
+        "ao_tint": "#8A4A80",
+        "bloom_strength": 0.32,
+        "vignette_color": "#5A2A55",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "ice": {
       "block": {
         "style": "ice",
-        "cap_color": "#F4FAFF",
-        "cap_depth": 0.15,
-        "cap_drip": 0.12,
-        "body_color": "#9DD3F2",
-        "body_mix": 0.45,
+        "cap_color": "#F6FBFF",
+        "cap_depth": 0.0,
+        "cap_drip": 0.04,
+        "cap_lip": 0.025,
+        "body_color": "#7DB6EA",
+        "body_mix": 0.06,
         "gloss": 0.85,
-        "rim": 0.45
+        "rim": 0.4,
+        "translucency": 0.6,
+        "topper": "",
+        "topper_rate": 0.0,
+        "brightness": 1.0,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26,
+        "piece_hue_range": [
+          0.44,
+          0.95
+        ],
+        "piece_sat": 1.3,
+        "piece_value": 1.3
       },
       "sky": [
-        "#8FB7E6",
-        "#C9DDF4",
-        "#EEF4FB"
+        "#8A96E4",
+        "#C8C6F2",
+        "#EEE8FB"
       ],
       "cloud": "#FFFFFF",
       "far_island": "#C2D6EA",
@@ -225,62 +478,197 @@
       "accent": "#BFE7FF",
       "frame": "#7FB2D9",
       "env": {
-        "lip": "snow",
-        "lip_color": "#F6FAFF",
-        "falls": {
-          "kind": "water",
-          "count": 1,
-          "deep": "#6FB7E6",
-          "light": "#DDF3FF",
-          "foam": "#FFFFFF",
-          "emission": 0.0,
-          "speed": 0.5
+        "family": "ice",
+        "light": {
+          "key": "#F2F6FF",
+          "key_energy": 1.026,
+          "fill": "#A9C8FF",
+          "fill_energy": 0.3,
+          "back": "#E8D8FF",
+          "back_energy": 0.3,
+          "ambient": "#C4D2F2",
+          "ambient_energy": 0.4,
+          "saturation": 1.18,
+          "contrast": 1.04,
+          "brightness": 1.03,
+          "shadow_tint": "#7A86C8"
         },
-        "under": [
-          "icicles"
+        "sky": {
+          "cloud": "#FFFFFF",
+          "cloud_shade": "#CEC8EE",
+          "mountains": "#A8A4E0",
+          "mountain_amount": 0.0,
+          "mesa_amount": 0.85,
+          "mesa_top": "#F4F6FF",
+          "mesa_rock": "#9EA4D8",
+          "mesa_falls": 0.35,
+          "cloud_bank": 0.9,
+          "peaks": 1.0,
+          "peak_rock": "#9C9AD8",
+          "peak_snow": "#F6F4FF",
+          "castle": 1.0,
+          "castle_color": "#E6E6FA",
+          "castle_roof": "#A2ACEA",
+          "castle_pos": [
+            0.8,
+            0.39
+          ],
+          "mesa_round": 1.0
+        },
+        "haze": "#D8D6F6",
+        "cap": {
+          "color": "#EEF4FF",
+          "light": "#FFFFFF",
+          "dark": "#B9C8E8",
+          "depth": 0.16,
+          "drip": 0.09
+        },
+        "body": {
+          "color": "#9AA6C4",
+          "dark": "#66749A",
+          "pebbles": 0.4
+        },
+        "strata": [
+          "#A3AECB",
+          "#8C99BA",
+          "#7584A8"
         ],
-        "dressing": [
+        "strata_cover": 0.85,
+        "tile": {
+          "color": "#D6E2F4",
+          "grout": "#7486A8",
+          "alt": "#C4D2EE",
+          "jitter": 0.07,
+          "ledge": "#9EAED6"
+        },
+        "rim": [
           {
-            "kind": "pine_snow",
+            "kind": "mound",
+            "tint": "#F4F8FF",
             "weight": 3,
-            "tint": "white"
+            "scale": [
+              1.1,
+              1.7
+            ]
+          },
+          {
+            "kind": "shrub",
+            "tint": "#EAF2FF",
+            "weight": 2,
+            "scale": [
+              1.1,
+              1.7
+            ]
+          },
+          {
+            "kind": "tree_white",
+            "weight": 1.2,
+            "scale": [
+              0.9,
+              1.3
+            ]
+          },
+          {
+            "kind": "tuft",
+            "tint": "#E2ECFF",
+            "weight": 2,
+            "scale": [
+              1.1,
+              1.7
+            ]
           },
           {
             "kind": "crystal",
-            "weight": 2,
             "tint": "#BFE7FF",
-            "glow": 0.35
+            "glow": 0.25,
+            "weight": 0.7,
+            "tall": false,
+            "scale": [
+              0.5,
+              0.7
+            ]
           },
           {
-            "kind": "rock",
+            "kind": "mound",
+            "tint": "#F6FAFF",
             "weight": 2,
-            "tint": "#C9DCEC"
+            "scale": [
+              1.6,
+              2.2
+            ],
+            "edge": true,
+            "spacing": 0.5
+          },
+          {
+            "kind": "shrub",
+            "tint": "#E6F0FF",
+            "weight": 1,
+            "scale": [
+              1.2,
+              1.6
+            ],
+            "edge": true,
+            "tall": false
           }
         ],
-        "backdrop": [
+        "rim_density": 4.2,
+        "hang": [
           {
-            "kind": "pine_snow",
-            "weight": 4,
-            "tint": "white"
-          },
-          {
-            "kind": "crystal",
-            "weight": 1,
-            "tint": "#BFE7FF",
-            "glow": 0.35
+            "kind": "icicle",
+            "count": 30
           }
-        ]
+        ],
+        "far": [
+          "castle",
+          "pine",
+          "mountain",
+          "pine",
+          "waterfall",
+          "mountain"
+        ],
+        "far_cap": "#EEF4FF",
+        "far_rock": "#9AA6C4",
+        "far_accent": "#6F8FE0",
+        "far_stone": "#F2F4FC",
+        "falls": {
+          "deep": "#7FB6E8",
+          "light": "#DDF2FF",
+          "foam": "#FFFFFF"
+        }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#DCEBFF",
+        "warm_tint": "#F4F8FF",
+        "ao_tint": "#4A5E9A",
+        "outline_color": "#2E3A6A",
+        "bloom_strength": 0.3,
+        "vignette_color": "#2A3A6A",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "underwater": {
       "block": {
         "style": "underwater",
         "cap_depth": 0.0,
-        "body_color": "#3B4FC9",
+        "body_color": "#2C33A0",
         "body_mix": 0.55,
         "accent_color": "#7FD8FF",
         "gloss": 0.8,
-        "rim": 0.4
+        "rim": 0.4,
+        "translucency": 0.25,
+        "topper": "coral",
+        "topper_rate": 0.15,
+        "brightness": 0.9,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26
       },
       "sky": [
         "#1E4C86",
@@ -306,68 +694,136 @@
       "accent": "#F2B6D8",
       "frame": "#4D7F8C",
       "env": {
-        "lip": "grass",
-        "lip_color": "#6FA88E",
-        "falls": {
-          "kind": "none",
-          "count": 0
+        "family": "meadow",
+        "light": {
+          "key": "#E8F4FF",
+          "key_energy": 0.85,
+          "fill": "#7FB8FF",
+          "fill_energy": 0.35,
+          "back": "#B8F0FF",
+          "back_energy": 0.35,
+          "ambient": "#6A8AC0",
+          "ambient_energy": 0.5,
+          "saturation": 1.2,
+          "contrast": 1.05,
+          "brightness": 1.0,
+          "shadow_tint": "#3A5A9E"
         },
-        "under": [
-          "kelp"
+        "sky": {
+          "cloud": "#BFE6F2",
+          "cloud_shade": "#4A88B8",
+          "mountains": "#2E5E8E",
+          "mountain_amount": 0.7,
+          "sun": 0.3,
+          "mesa_amount": 0.8,
+          "cloud_bank": 0.7,
+          "mesa_top": "#7FB59A",
+          "mesa_rock": "#5A5A8E",
+          "mesa_falls": 0.0
+        },
+        "haze": "#3D7DB3",
+        "cap": {
+          "color": "#E8D9B5",
+          "light": "#FFF4DA",
+          "dark": "#BFA67E",
+          "depth": 0.1,
+          "drip": 0.05
+        },
+        "body": {
+          "color": "#7C7AA8",
+          "dark": "#4A4878"
+        },
+        "strata": [
+          "#7C7AA8",
+          "#666494",
+          "#504E7E"
         ],
-        "dressing": [
+        "tile": {
+          "color": "#C2B8A8",
+          "grout": "#6E6258"
+        },
+        "rim": [
           {
             "kind": "coral",
-            "weight": 3,
-            "tint": "#C46FB8"
+            "tint": "#FF8AA0",
+            "weight": 2
           },
           {
-            "kind": "kelp",
-            "weight": 3,
-            "tint": "white",
-            "sway": 0.08
+            "kind": "coral",
+            "tint": "#FFB070",
+            "weight": 1.5
           },
           {
             "kind": "shell",
-            "weight": 2,
-            "tint": "white"
+            "tint": "#F6DCE6",
+            "weight": 2
           },
           {
-            "kind": "rock",
-            "weight": 1,
-            "tint": "#8A86A8"
+            "kind": "tuft",
+            "tint": "#5E8F4A",
+            "weight": 3
           }
         ],
-        "backdrop": [
+        "rim_density": 4.0,
+        "hang": [
           {
-            "kind": "coral",
-            "weight": 3,
-            "tint": "#E07A9A"
-          },
-          {
-            "kind": "kelp",
-            "weight": 2,
-            "tint": "white",
-            "sway": 0.08
+            "kind": "strand",
+            "tint": "#4E8A5A",
+            "count": 30
           }
-        ]
+        ],
+        "far": [
+          "trees",
+          "mountain",
+          "castle"
+        ],
+        "far_cap": "#7FB59A",
+        "far_rock": "#6C6A9A",
+        "far_accent": "#6A7FD0",
+        "falls": {
+          "deep": "#3C9AD8",
+          "light": "#A9E2FF",
+          "foam": "#FFFFFF"
+        }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#7FD0E0",
+        "haze_strength": 0.35,
+        "warm_tint": "#F2FBFF",
+        "ao_tint": "#2A4A80",
+        "outline_color": "#1B3A5A",
+        "vignette_color": "#0E2A50",
+        "dof_strength": 2.6,
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "shadow_lift": 0.01
       }
     },
     "lava": {
       "block": {
         "style": "lava",
         "cap_depth": 0.0,
-        "body_color": "#3E3434",
-        "body_mix": 0.75,
-        "glow_color": "#FF7A1F",
-        "glow": 1.0,
+        "body_color": "#4A3E3E",
+        "body_mix": 0.8,
+        "glow_color": "#FF5A14",
+        "glow": 1.3,
         "gloss": 0.2,
-        "rim": 0.08
+        "rim": 0.08,
+        "topper": "spike",
+        "topper_rate": 0.12,
+        "brightness": 0.9,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26
       },
       "sky": [
-        "#4B3A55",
-        "#8A6A78",
-        "#D9A88C"
+        "#2A1E3A",
+        "#8A4A50",
+        "#E07A4A"
       ],
       "cloud": "#9C8A90",
       "far_island": "#5A4652",
@@ -387,59 +843,141 @@
       "accent": "#FF8A3D",
       "frame": "#5B3D35",
       "env": {
-        "lip": "rock",
-        "lip_color": "#4A3E44",
-        "falls": {
-          "kind": "lava",
-          "count": 2,
-          "deep": "#E8420E",
-          "light": "#FFB21E",
-          "foam": "#FFE9A0",
-          "emission": 2.4,
-          "speed": 0.25
+        "family": "lava",
+        "light": {
+          "key": "#FFD8B0",
+          "key_energy": 0.85,
+          "fill": "#A08CFF",
+          "fill_energy": 0.25,
+          "back": "#FF8A50",
+          "back_energy": 0.5,
+          "ambient": "#7A5A6E",
+          "ambient_energy": 0.45,
+          "saturation": 1.15,
+          "contrast": 1.08,
+          "brightness": 1.0,
+          "shadow_tint": "#5A3050"
         },
-        "under": [
-          "shards"
+        "sky": {
+          "cloud": "#C89088",
+          "cloud_shade": "#6A4050",
+          "mountains": "#4A3040",
+          "mountain_amount": 0.85,
+          "sun": 0.4
+        },
+        "haze": "#8A5A60",
+        "cap": {
+          "color": "#4E4448",
+          "light": "#6B6064",
+          "dark": "#2F2729",
+          "depth": 0.1,
+          "drip": 0.06
+        },
+        "body": {
+          "color": "#3A3236",
+          "dark": "#1E1819",
+          "pebbles": 0.3
+        },
+        "strata": [
+          "#3E3539",
+          "#312A2D",
+          "#262022"
         ],
-        "dressing": [
+        "rock_glow": 2.2,
+        "glow_color": "#FF6A1A",
+        "tile": {
+          "color": "#7A6E70",
+          "grout": "#2A2224"
+        },
+        "rim": [
+          {
+            "kind": "basalt",
+            "tint": "#7A6A70",
+            "weight": 3
+          },
+          {
+            "kind": "lava_pool",
+            "tint": "#3A3236",
+            "weight": 1
+          },
           {
             "kind": "rock",
-            "weight": 3,
-            "tint": "#4A4046"
+            "tint": "#8A7A80",
+            "weight": 2
           },
           {
             "kind": "crystal",
-            "weight": 2,
-            "tint": "#8A5AD6",
-            "glow": 1.2
+            "tint": "#FF7A2A",
+            "glow": 1.4,
+            "weight": 0.8,
+            "tall": false,
+            "scale": [
+              0.5,
+              0.8
+            ]
           }
         ],
-        "backdrop": [
+        "rim_density": 2.4,
+        "hang": [
           {
-            "kind": "crystal",
-            "weight": 3,
-            "tint": "#7A4FC4",
-            "glow": 1.2
-          },
-          {
-            "kind": "rock",
-            "weight": 2,
-            "tint": "#3A3236"
+            "kind": "lava_drip",
+            "tint": "#3A3236",
+            "count": 24
           }
-        ]
+        ],
+        "far": [
+          "volcano",
+          "basalt",
+          "volcano",
+          "crystals"
+        ],
+        "far_cap": "#4E4448",
+        "far_rock": "#3A3236",
+        "falls": {
+          "deep": "#FF5A10",
+          "light": "#FFB040",
+          "foam": "#FFE08A",
+          "emission": 2.0
+        }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#7A3A30",
+        "haze_strength": 0.35,
+        "warm_tint": "#FFEBD0",
+        "ao_tint": "#4A2A40",
+        "outline_color": "#2A1020",
+        "bloom_strength": 0.55,
+        "bloom_threshold": 0.7,
+        "bloom_tint": "#FF9A4A",
+        "vignette_color": "#2A0A14",
+        "glow_intensity": 0.8,
+        "glow_bloom": 0.08,
+        "glow_hdr_threshold": 0.85,
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "shadow_lift": 0.01
       }
     },
     "forest": {
       "block": {
         "style": "forest",
-        "cap_color": "#6E9E3A",
-        "cap_depth": 0.08,
+        "cap_color": "#5E8E30",
+        "cap_depth": 0.0,
         "cap_drip": 0.12,
-        "body_color": "#8A5E3A",
-        "body_mix": 0.75,
-        "gloss": 0.15,
+        "body_color": "#7A5232",
+        "body_mix": 0.7,
+        "gloss": 0.12,
         "rim": 0.08,
-        "brightness": 1.2
+        "brightness": 0.95,
+        "topper": "leaf",
+        "topper_rate": 0.15,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26
       },
       "sky": [
         "#9CC8A8",
@@ -465,67 +1003,139 @@
       "accent": "#E9C46A",
       "frame": "#5E7D3A",
       "env": {
-        "lip": "grass",
-        "lip_color": "#66A048",
-        "falls": {
-          "kind": "water",
-          "count": 1,
-          "deep": "#3C9AD8",
-          "light": "#A9E2FF",
-          "foam": "#FFFFFF",
-          "emission": 0.0,
-          "speed": 0.7
+        "family": "meadow",
+        "light": {
+          "key": "#FFF0D6",
+          "key_energy": 0.9,
+          "fill": "#B8C4FF",
+          "fill_energy": 0.2,
+          "back": "#FFE0A8",
+          "back_energy": 0.3,
+          "ambient": "#C9C3E6",
+          "ambient_energy": 0.42,
+          "saturation": 1.28,
+          "contrast": 1.06,
+          "brightness": 1.02,
+          "shadow_tint": "#6B5C9E"
         },
-        "under": [
-          "roots"
+        "sky": {
+          "cloud": "#FFFBF4",
+          "cloud_shade": "#D4DAF2",
+          "mountains": "#7FAE96",
+          "mountain_amount": 0.75,
+          "mesa_amount": 0.8,
+          "cloud_bank": 0.7,
+          "mesa_top": "#4F8A34",
+          "mesa_rock": "#8A6444"
+        },
+        "haze": "#D6E4F8",
+        "cap": {
+          "color": "#4F8A34",
+          "light": "#86C04E",
+          "dark": "#24521C",
+          "depth": 0.15,
+          "drip": 0.14
+        },
+        "body": {
+          "color": "#A07650",
+          "dark": "#6B4A33"
+        },
+        "strata": [
+          "#8A6444",
+          "#76533A",
+          "#5E4230"
         ],
-        "dressing": [
+        "tile": {
+          "color": "#C2B8A8",
+          "grout": "#6E6258"
+        },
+        "rim": [
           {
             "kind": "mushroom",
-            "weight": 3,
-            "tint": "white"
+            "tint": "#D9534F",
+            "weight": 2
           },
           {
-            "kind": "bush",
-            "weight": 3,
-            "tint": "rim"
+            "kind": "clover",
+            "tint": "#5FAE44",
+            "weight": 3
           },
           {
-            "kind": "flowers",
-            "weight": 2,
-            "tint": "top"
+            "kind": "tuft",
+            "tint": "#6AAE42",
+            "weight": 3
           },
           {
-            "kind": "rock",
-            "weight": 1,
-            "tint": "cliff"
-          }
-        ],
-        "backdrop": [
+            "kind": "flower_white",
+            "weight": 2
+          },
           {
             "kind": "tree",
-            "weight": 4,
-            "tint": "rim",
-            "sway": 0.03
+            "tint": "#4F8A34",
+            "weight": 1
+          }
+        ],
+        "rim_density": 4.0,
+        "hang": [
+          {
+            "kind": "root",
+            "tint": "#7A5638",
+            "count": 26
           },
           {
-            "kind": "mushroom",
-            "weight": 1,
-            "tint": "white"
+            "kind": "strand",
+            "tint": "#5C9E38",
+            "count": 30,
+            "size": 0.9
           }
-        ]
+        ],
+        "far": [
+          "trees",
+          "pine",
+          "waterfall",
+          "trees"
+        ],
+        "far_cap": "#4F8A34",
+        "far_rock": "#A07650",
+        "far_accent": "#6A7FD0",
+        "falls": {
+          "deep": "#3C9AD8",
+          "light": "#A9E2FF",
+          "foam": "#FFFFFF"
+        }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#BFE0C0",
+        "warm_tint": "#FFF4DA",
+        "ao_tint": "#3A5A50",
+        "outline_color": "#1E3A2A",
+        "vignette_color": "#1E3A30",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "cave": {
       "block": {
         "style": "cave",
         "cap_depth": 0.0,
-        "body_color": "#7A7488",
+        "body_color": "#686277",
         "body_mix": 0.6,
-        "accent_color": "#B783F2",
+        "accent_color": "#B07CF0",
         "glow": 0.6,
         "gloss": 0.3,
-        "rim": 0.12
+        "rim": 0.12,
+        "topper": "crystal",
+        "topper_rate": 0.15,
+        "brightness": 0.85,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26
       },
       "sky": [
         "#2E2943",
@@ -550,53 +1160,126 @@
       "accent": "#B783F2",
       "frame": "#5A4E78",
       "env": {
-        "lip": "rock",
-        "lip_color": "#6E6880",
-        "falls": {
-          "kind": "none",
-          "count": 0
+        "family": "lava",
+        "light": {
+          "key": "#E9DCFF",
+          "key_energy": 0.85,
+          "fill": "#8A7CFF",
+          "fill_energy": 0.35,
+          "back": "#FFD890",
+          "back_energy": 0.45,
+          "ambient": "#6A5A9E",
+          "ambient_energy": 0.5,
+          "saturation": 1.25,
+          "contrast": 1.08,
+          "brightness": 1.0,
+          "shadow_tint": "#4A3A86"
         },
-        "under": [
-          "shards"
+        "sky": {
+          "cloud": "#7A6C93",
+          "cloud_shade": "#3A3456",
+          "mountains": "#3A3456",
+          "mountain_amount": 0.8,
+          "stars": 0.5,
+          "sun": 0.0
+        },
+        "haze": "#4A4166",
+        "cap": {
+          "color": "#6E6880",
+          "light": "#8C86A0",
+          "dark": "#4A4560",
+          "depth": 0.1,
+          "drip": 0.06
+        },
+        "body": {
+          "color": "#4A4560",
+          "dark": "#302C42",
+          "pebbles": 0.5
+        },
+        "strata": [
+          "#4E4964",
+          "#423E58",
+          "#36324A"
         ],
-        "dressing": [
+        "rock_glow": 0.0,
+        "glow_color": "#FF6A1A",
+        "tile": {
+          "color": "#A39BBE",
+          "grout": "#3A3456"
+        },
+        "rim": [
           {
             "kind": "crystal",
-            "weight": 3,
-            "tint": "accent",
-            "glow": 1.4
-          },
-          {
-            "kind": "mushroom",
-            "weight": 2,
-            "tint": "#7FE0D0",
-            "glow": 1.0
+            "tint": "#B47CFF",
+            "glow": 1.0,
+            "weight": 2
           },
           {
             "kind": "rock",
-            "weight": 2,
-            "tint": "#6E6880"
+            "tint": "#6E6880",
+            "weight": 3
+          },
+          {
+            "kind": "mushroom",
+            "tint": "#7CE0FF",
+            "weight": 1
           }
         ],
-        "backdrop": [
+        "rim_density": 2.4,
+        "hang": [
           {
-            "kind": "crystal",
-            "weight": 4,
-            "tint": "accent",
-            "glow": 1.4
+            "kind": "crystal_down",
+            "tint": "#B47CFF",
+            "glow": 1.0,
+            "count": 24
           }
-        ]
+        ],
+        "far": [
+          "crystals",
+          "mountain",
+          "crystals"
+        ],
+        "far_cap": "#6E6880",
+        "far_rock": "#4A4560",
+        "falls": {
+          "deep": "#FF5A10",
+          "light": "#FFB040",
+          "foam": "#FFE08A",
+          "emission": 2.0
+        }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#6A5A9A",
+        "haze_strength": 0.35,
+        "warm_tint": "#FFF0F8",
+        "ao_tint": "#3A2A6A",
+        "bloom_strength": 0.4,
+        "bloom_tint": "#C8A0FF",
+        "vignette_color": "#1A0E3A",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "shadow_lift": 0.01
       }
     },
     "clockwork": {
       "block": {
         "style": "clockwork",
         "cap_depth": 0.0,
-        "body_color": "#2E3F6E",
+        "body_color": "#2E4170",
         "body_mix": 0.55,
-        "accent_color": "#D4A645",
+        "accent_color": "#A8792C",
         "gloss": 0.55,
-        "rim": 0.15
+        "rim": 0.15,
+        "topper": "gear",
+        "topper_rate": 0.12,
+        "brightness": 0.9,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26
       },
       "sky": [
         "#C9A57A",
@@ -621,58 +1304,116 @@
       "accent": "#D4A645",
       "frame": "#8C6A3A",
       "env": {
-        "lip": "rock",
-        "lip_color": "#B08F55",
-        "falls": {
-          "kind": "none",
-          "count": 0
+        "family": "celestial",
+        "light": {
+          "key": "#FFF0D6",
+          "key_energy": 0.9,
+          "fill": "#B8C4FF",
+          "fill_energy": 0.2,
+          "back": "#FFE0A8",
+          "back_energy": 0.3,
+          "ambient": "#C9C3E6",
+          "ambient_energy": 0.42,
+          "saturation": 1.28,
+          "contrast": 1.06,
+          "brightness": 1.02,
+          "shadow_tint": "#6B5C9E"
         },
-        "under": [
-          "gears"
+        "sky": {
+          "cloud": "#FFF6E8",
+          "cloud_shade": "#D8BE9C",
+          "mountains": "#B08F65",
+          "mountain_amount": 0.6
+        },
+        "haze": "#E8CFA7",
+        "cap": {
+          "color": "#B9A27C",
+          "light": "#D8C49E",
+          "dark": "#7E6A4C",
+          "depth": 0.18,
+          "drip": 0.0
+        },
+        "body": {
+          "color": "#8E7A60",
+          "dark": "#5A4A38",
+          "pebbles": 0.0
+        },
+        "strata": [
+          "#8A7458",
+          "#74604A",
+          "#5E4C3A"
         ],
-        "dressing": [
+        "tile": {
+          "color": "#E2D3B4",
+          "grout": "#6E5A44"
+        },
+        "inlay": "#C9A040",
+        "rim": [
           {
             "kind": "gear",
-            "weight": 2,
-            "tint": "white",
-            "spin": 0.6
+            "tint": "#D8B060",
+            "weight": 3
           },
           {
-            "kind": "rock",
-            "weight": 2,
-            "tint": "#9C8A6A"
+            "kind": "rubble",
+            "tint": "#B9A27C",
+            "weight": 2
           },
           {
             "kind": "pillar",
-            "weight": 1,
-            "tint": "#C9A46A"
+            "tint": "#C9B48C",
+            "weight": 1
           }
         ],
-        "backdrop": [
+        "rim_density": 2.2,
+        "hang": [
           {
-            "kind": "gear",
-            "weight": 3,
-            "tint": "white",
-            "spin": 0.4
-          },
-          {
-            "kind": "pillar",
-            "weight": 2,
-            "tint": "#C9A46A"
+            "kind": "stalactite",
+            "tint": "#8A7458",
+            "count": 20
           }
-        ]
+        ],
+        "far": [
+          "castle",
+          "pillars",
+          "mountain"
+        ],
+        "far_cap": "#B9A27C",
+        "far_rock": "#8A7458",
+        "planet": "#B87AD8"
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#D8C8A0",
+        "warm_tint": "#FFF0D0",
+        "ao_tint": "#4A3A50",
+        "outline_color": "#2A1E30",
+        "bloom_tint": "#FFD08A",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "neon": {
       "block": {
         "style": "neon",
         "cap_depth": 0.0,
-        "body_color": "#3A2C8C",
+        "body_color": "#2A1E78",
         "body_mix": 0.55,
         "glow_color": "#3FF2E0",
         "glow": 1.6,
         "gloss": 0.75,
-        "rim": 0.3
+        "rim": 0.3,
+        "topper": "",
+        "topper_rate": 0.0,
+        "brightness": 0.9,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26
       },
       "sky": [
         "#140F33",
@@ -696,48 +1437,119 @@
       "accent": "#3FF2E0",
       "frame": "#5B3FB0",
       "env": {
-        "lip": "rock",
-        "lip_color": "#3D3480",
-        "falls": {
-          "kind": "neon",
-          "count": 1,
-          "deep": "#2E7BFF",
-          "light": "#5FF2FF",
-          "foam": "#E8FFFF",
-          "emission": 2.2,
-          "speed": 0.6,
-          "sparkle": 0.4
+        "family": "lava",
+        "light": {
+          "key": "#E9DCFF",
+          "key_energy": 0.85,
+          "fill": "#8A7CFF",
+          "fill_energy": 0.35,
+          "back": "#FFD890",
+          "back_energy": 0.45,
+          "ambient": "#6A5A9E",
+          "ambient_energy": 0.5,
+          "saturation": 1.25,
+          "contrast": 1.08,
+          "brightness": 1.0,
+          "shadow_tint": "#4A3A86"
         },
-        "under": [
-          "shards"
+        "sky": {
+          "cloud": "#5A3A8E",
+          "cloud_shade": "#1E1446",
+          "mountains": "#2C1E5E",
+          "mountain_amount": 0.6,
+          "stars": 1.0,
+          "nebula": 0.6,
+          "nebula_a": "#E04AC8",
+          "nebula_b": "#3AE0FF",
+          "sun": 0.0
+        },
+        "haze": "#2C1E5E",
+        "cap": {
+          "color": "#6E6880",
+          "light": "#8C86A0",
+          "dark": "#4A4560",
+          "depth": 0.1,
+          "drip": 0.06
+        },
+        "body": {
+          "color": "#4A4560",
+          "dark": "#302C42",
+          "pebbles": 0.5
+        },
+        "strata": [
+          "#4E4964",
+          "#423E58",
+          "#36324A"
         ],
-        "dressing": [
+        "rock_glow": 0.0,
+        "glow_color": "#FF6A1A",
+        "tile": {
+          "color": "#5A4CA6",
+          "grout": "#1A143A",
+          "edge_glow": "#46E6FF"
+        },
+        "rim": [
           {
             "kind": "crystal",
-            "weight": 2,
-            "tint": "#5FF2FF",
-            "glow": 1.8
+            "tint": "#46E6FF",
+            "glow": 1.6,
+            "weight": 2
           },
           {
             "kind": "pillar",
-            "weight": 2,
-            "tint": "#3E3284"
-          }
-        ],
-        "backdrop": [
-          {
-            "kind": "pillar",
-            "weight": 3,
-            "tint": "#3E3284"
+            "tint": "#5A4CA6",
+            "weight": 1
           },
           {
-            "kind": "crystal",
-            "weight": 2,
-            "tint": "#FF5FD8",
-            "glow": 1.8
+            "kind": "rock",
+            "tint": "#3D3480",
+            "weight": 2
           }
         ],
-        "tile_glow": "#5FF2FF"
+        "rim_density": 2.4,
+        "hang": [
+          {
+            "kind": "crystal_down",
+            "tint": "#E04AC8",
+            "glow": 1.4,
+            "count": 22
+          }
+        ],
+        "far": [
+          "pillars",
+          "crystals",
+          "arch"
+        ],
+        "far_cap": "#3D3480",
+        "far_rock": "#1F1A45",
+        "falls": {
+          "deep": "#FF5A10",
+          "light": "#FFB040",
+          "foam": "#FFE08A",
+          "emission": 2.0
+        }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#4A2A8A",
+        "haze_strength": 0.35,
+        "warm_tint": "#F8F0FF",
+        "ao_tint": "#2A1A6A",
+        "outline_color": "#120A2A",
+        "bloom_strength": 0.7,
+        "bloom_threshold": 0.6,
+        "bloom_tint": "#7AF0FF",
+        "vignette_color": "#0E0630",
+        "glow_intensity": 0.9,
+        "glow_bloom": 0.1,
+        "glow_hdr_threshold": 0.8,
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "shadow_lift": 0.01
       }
     },
     "celestial": {
@@ -749,12 +1561,17 @@
         "accent_color": "#B486F0",
         "glow": 1.2,
         "gloss": 0.6,
-        "rim": 0.35
+        "rim": 0.35,
+        "topper": "star",
+        "topper_rate": 0.15,
+        "brightness": 0.9,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26
       },
       "sky": [
-        "#1A1240",
-        "#3B2A78",
-        "#7A5AB0"
+        "#140F3A",
+        "#4B2F86",
+        "#6A3F9E"
       ],
       "cloud": "#5A4A9A",
       "far_island": "#DAD3C3",
@@ -774,66 +1591,142 @@
       "accent": "#F2D27A",
       "frame": "#6A4AB0",
       "env": {
-        "lip": "rock",
-        "lip_color": "#E2C26A",
-        "falls": {
-          "kind": "stardust",
-          "count": 1,
-          "deep": "#8A6AE0",
-          "light": "#E6D9FF",
-          "foam": "#FFF6D8",
-          "emission": 1.4,
-          "speed": 0.35,
-          "sparkle": 0.6
+        "family": "celestial",
+        "light": {
+          "key": "#E9DCFF",
+          "key_energy": 0.85,
+          "fill": "#8A7CFF",
+          "fill_energy": 0.35,
+          "back": "#FFD890",
+          "back_energy": 0.45,
+          "ambient": "#6A5A9E",
+          "ambient_energy": 0.5,
+          "saturation": 1.25,
+          "contrast": 1.08,
+          "brightness": 1.0,
+          "shadow_tint": "#4A3A86"
         },
-        "under": [
-          "shards"
+        "sky": {
+          "cloud": "#B9A6E8",
+          "cloud_shade": "#5C4596",
+          "cloud_amount": 0.55,
+          "mountain_amount": 0.0,
+          "stars": 1.0,
+          "nebula": 1.0,
+          "nebula_a": "#B05AC8",
+          "nebula_b": "#4A6AD8",
+          "sun": 0.0
+        },
+        "haze": "#4B3A8A",
+        "cap": {
+          "color": "#E9E3D6",
+          "light": "#FFFFFF",
+          "dark": "#B8AE9C",
+          "depth": 0.22,
+          "drip": 0.0
+        },
+        "body": {
+          "color": "#D2CABB",
+          "dark": "#A0988A",
+          "pebbles": 0.0
+        },
+        "strata": [
+          "#D6CEC0",
+          "#C0B7A7",
+          "#A69D8D"
         ],
-        "dressing": [
+        "tile": {
+          "color": "#E2DACB",
+          "grout": "#8E8575"
+        },
+        "inlay": "#E8C25A",
+        "rim": [
+          {
+            "kind": "rubble",
+            "tint": "#ECE6DA",
+            "weight": 3
+          },
           {
             "kind": "star",
-            "weight": 2,
-            "tint": "white",
-            "glow": 1.2,
-            "spin": 0.3
+            "weight": 1.5
           },
           {
             "kind": "pillar",
-            "weight": 2,
-            "tint": "white"
+            "tint": "#F2EDE4",
+            "weight": 1,
+            "scale": [
+              0.9,
+              1.15
+            ]
           },
           {
-            "kind": "crystal",
-            "weight": 1,
-            "tint": "#B9A6E0",
-            "glow": 1.0
+            "kind": "pillar_broken",
+            "tint": "#F2EDE4",
+            "weight": 1.3
           }
         ],
-        "backdrop": [
+        "rim_density": 2.2,
+        "hang": [
           {
-            "kind": "pillar",
-            "weight": 4,
-            "tint": "white"
+            "kind": "stalactite",
+            "tint": "#CFC7B8",
+            "count": 20
           },
           {
-            "kind": "star",
-            "weight": 1,
-            "tint": "white",
+            "kind": "crystal_down",
+            "tint": "#FFD86A",
             "glow": 1.2,
-            "spin": 0.3
+            "count": 10,
+            "size": 0.8
           }
-        ]
+        ],
+        "far": [
+          "planet",
+          "arch",
+          "pillars",
+          "arch",
+          "pillars"
+        ],
+        "far_cap": "#E9E3D6",
+        "far_rock": "#CFC7B8",
+        "planet": "#B87AD8"
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#B8A0F0",
+        "warm_tint": "#FFF2FF",
+        "ao_tint": "#4A3A9A",
+        "outline_color": "#2A1E5A",
+        "bloom_strength": 0.5,
+        "bloom_threshold": 0.7,
+        "bloom_tint": "#FFE8A0",
+        "vignette_color": "#1E1050",
+        "glow_intensity": 0.75,
+        "glow_hdr_threshold": 0.85,
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "carnival": {
       "block": {
         "style": "carnival",
         "cap_depth": 0.0,
-        "body_color": "#F07A9C",
-        "body_mix": 0.75,
-        "accent_color": "#FBF1DE",
+        "body_color": "#F06E96",
+        "body_mix": 0.6,
+        "accent_color": "#F7E8CF",
         "gloss": 0.6,
-        "rim": 0.2
+        "rim": 0.2,
+        "topper": "ticket",
+        "topper_rate": 0.12,
+        "brightness": 0.9,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26
       },
       "sky": [
         "#F7A97A",
@@ -858,55 +1751,284 @@
       "accent": "#EDC873",
       "frame": "#C25A7A",
       "env": {
-        "lip": "grass",
-        "lip_color": "#F5B3C6",
-        "falls": {
-          "kind": "syrup",
-          "count": 1,
-          "deep": "#E98AA6",
-          "light": "#FFD0DC",
-          "foam": "#FFF8F0",
-          "emission": 0.0,
-          "speed": 0.4
+        "family": "candy",
+        "light": {
+          "key": "#FFF0D6",
+          "key_energy": 0.9,
+          "fill": "#B8C4FF",
+          "fill_energy": 0.2,
+          "back": "#FFE0A8",
+          "back_energy": 0.3,
+          "ambient": "#C9C3E6",
+          "ambient_energy": 0.42,
+          "saturation": 1.28,
+          "contrast": 1.06,
+          "brightness": 1.02,
+          "shadow_tint": "#6B5C9E"
         },
-        "under": [
-          "roots"
+        "sky": {
+          "cloud": "#FFF8F0",
+          "cloud_shade": "#F2C8B0",
+          "mountains": "#F0B890",
+          "mountain_amount": 0.5,
+          "mesa_amount": 0.8,
+          "cloud_bank": 0.7,
+          "mesa_top": "#8CC860",
+          "mesa_rock": "#C99A7A"
+        },
+        "haze": "#F9CFA6",
+        "cap": {
+          "color": "#8CC860",
+          "light": "#B8E07E",
+          "dark": "#4E8A34",
+          "depth": 0.14,
+          "drip": 0.12
+        },
+        "body": {
+          "color": "#D09070",
+          "dark": "#9C624D",
+          "pebbles": 0.0
+        },
+        "strata": [
+          "#F2A6C4",
+          "#D9A07E",
+          "#B9785E"
         ],
-        "dressing": [
+        "tile": {
+          "color": "#FBEBDD",
+          "grout": "#C99A8A"
+        },
+        "rim": [
           {
-            "kind": "balloon",
-            "weight": 2,
-            "tint": "white"
+            "kind": "flower_pink",
+            "weight": 3
           },
           {
-            "kind": "flowers",
-            "weight": 3,
-            "tint": "top"
+            "kind": "flower_yellow",
+            "weight": 2
           },
           {
-            "kind": "bush",
-            "weight": 2,
-            "tint": "#9CC79A"
+            "kind": "gumdrop",
+            "tint": "#E98AA6",
+            "weight": 2
           },
           {
             "kind": "lollipop",
-            "weight": 1,
-            "tint": "white"
+            "tint": "#9CC3DE",
+            "weight": 1
+          },
+          {
+            "kind": "tuft",
+            "tint": "#8CC860",
+            "weight": 2
           }
         ],
-        "backdrop": []
+        "rim_density": 4.0,
+        "hang": [
+          {
+            "kind": "stalactite",
+            "tint": "#FFB6D0",
+            "count": 24
+          }
+        ],
+        "far": [
+          "candy",
+          "castle",
+          "trees"
+        ],
+        "far_cap": "#8CC860",
+        "far_rock": "#D09070",
+        "far_accent": "#F07AA8",
+        "far_stone": "#FFF0F4",
+        "falls": {
+          "deep": "#F07AA8",
+          "light": "#FFC4DA",
+          "foam": "#FFFFFF"
+        }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#FFD8C0",
+        "warm_tint": "#FFF3DC",
+        "ao_tint": "#7A4A70",
+        "bloom_strength": 0.35,
+        "bloom_tint": "#FFC070",
+        "vignette_color": "#4A2040",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
+      }
+    },
+    "pirate": {
+      "block": {
+        "style": "forest",
+        "cap_color": "#E6D3B0",
+        "cap_depth": 0.0,
+        "cap_drip": 0.0,
+        "body_color": "#CDB48E",
+        "body_mix": 0.65,
+        "accent_color": "#B88A4A",
+        "gloss": 0.1,
+        "rim": 0.08,
+        "brightness": 1.0,
+        "topper": "dome",
+        "topper_rate": 0.1,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26
+      },
+      "sky": [
+        "#2FB5B0",
+        "#7FDCD2",
+        "#CFF3EA"
+      ],
+      "cloud": "#F8FFFC",
+      "far_island": "#5FB89A",
+      "island": {
+        "top": "#F0DDB0",
+        "rim": "#E2C88F",
+        "cliff": "#A47B52",
+        "cliff_dark": "#6E4F34",
+        "tile": "#E9D7AE",
+        "tile_alt": "#DCC79A"
+      },
+      "props": [
+        "palm",
+        "shell",
+        "rock"
+      ],
+      "notes": "Stand-ins until art lands. Block: wanted style 'pirate' (new id 13) = sun-bleached driftwood planks with rope bands and brass studs; uses 'forest' (bark slabs, closest wood) with a bleached body colour; shader branch NOT added. Topper: wanted anchor or friendly skull-and-bones; uses 'dome'. Island: palm, treasure chest and wrecked-ship plank rim/prop kinds do not exist; rim uses tree/shell/rock/tuft.",
+      "accent": "#F2B544",
+      "frame": "#8A5E36",
+      "env": {
+        "family": "meadow",
+        "light": {
+          "key": "#FFF2D6",
+          "key_energy": 0.95,
+          "fill": "#9FE0F0",
+          "fill_energy": 0.25,
+          "back": "#FFE0A8",
+          "back_energy": 0.35,
+          "ambient": "#B8DCDC",
+          "ambient_energy": 0.45,
+          "saturation": 1.25,
+          "contrast": 1.05,
+          "brightness": 1.03,
+          "shadow_tint": "#3E7A8E"
+        },
+        "sky": {
+          "cloud": "#FFFFFF",
+          "cloud_shade": "#B8E6E2",
+          "mountains": "#4FA89A",
+          "mountain_amount": 0.4,
+          "sun": 0.5,
+          "mesa_amount": 0.6,
+          "cloud_bank": 0.6,
+          "mesa_top": "#5FB86A",
+          "mesa_rock": "#A47B52",
+          "mesa_falls": 0.0
+        },
+        "haze": "#7FDCD2",
+        "cap": {
+          "color": "#F0DDB0",
+          "light": "#FFF2D0",
+          "dark": "#CDB07C",
+          "depth": 0.12,
+          "drip": 0.06
+        },
+        "body": {
+          "color": "#A47B52",
+          "dark": "#6E4F34"
+        },
+        "strata": [
+          "#B08A5E",
+          "#93704A",
+          "#6E4F34"
+        ],
+        "tile": {
+          "color": "#C2B8A8",
+          "grout": "#6E6258"
+        },
+        "rim": [
+          {
+            "kind": "tree",
+            "tint": "#3FA35A",
+            "weight": 2
+          },
+          {
+            "kind": "shell",
+            "tint": "#F6DCE6",
+            "weight": 2
+          },
+          {
+            "kind": "rock",
+            "tint": "#C9B08A",
+            "weight": 2
+          },
+          {
+            "kind": "tuft",
+            "tint": "#7DBF5A",
+            "weight": 2
+          }
+        ],
+        "rim_density": 3.5,
+        "hang": [
+          {
+            "kind": "root",
+            "tint": "#8A6A44",
+            "count": 18
+          }
+        ],
+        "far": [
+          "trees",
+          "castle",
+          "mountain"
+        ],
+        "far_cap": "#5FB86A",
+        "far_rock": "#A47B52",
+        "far_accent": "#2FB5B0",
+        "falls": {
+          "deep": "#1FA3B5",
+          "light": "#9FF0EA",
+          "foam": "#FFFFFF"
+        }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#A8D0E0",
+        "warm_tint": "#FFF2DA",
+        "ao_tint": "#3A4A70",
+        "outline_color": "#2A1E24",
+        "vignette_color": "#1A2A4A",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "dune": {
       "block": {
         "style": "dune",
         "cap_depth": 0.0,
-        "body_color": "#E3C79A",
+        "body_color": "#D7A468",
         "body_mix": 0.6,
-        "accent_color": "#2E9C99",
+        "accent_color": "#2A9A96",
         "glow_color": "#C8722E",
         "gloss": 0.3,
-        "rim": 0.1
+        "rim": 0.1,
+        "topper": "dome",
+        "topper_rate": 0.12,
+        "brightness": 0.85,
+        "side_shade": 0.9,
+        "shade_side_extra": 0.26
       },
       "sky": [
         "#E9A86A",
@@ -931,48 +2053,110 @@
       "accent": "#2E9C99",
       "frame": "#B97A3E",
       "env": {
-        "lip": "grass",
-        "lip_color": "#E2C48E",
-        "falls": {
-          "kind": "none",
-          "count": 0
+        "family": "meadow",
+        "light": {
+          "key": "#FFE8C8",
+          "key_energy": 0.95,
+          "fill": "#B8C4FF",
+          "fill_energy": 0.2,
+          "back": "#FFD090",
+          "back_energy": 0.35,
+          "ambient": "#D8C4C8",
+          "ambient_energy": 0.42,
+          "saturation": 1.2,
+          "contrast": 1.05,
+          "brightness": 1.02,
+          "shadow_tint": "#8A5C7E"
         },
-        "under": [
-          "roots"
+        "sky": {
+          "cloud": "#FFF8EC",
+          "cloud_shade": "#EAC8A0",
+          "mountains": "#D7A46A",
+          "mountain_amount": 0.75,
+          "mesa_amount": 0.8,
+          "cloud_bank": 0.7,
+          "mesa_top": "#E8CFA0",
+          "mesa_rock": "#C49464",
+          "mesa_falls": 0.0
+        },
+        "haze": "#F4CF9C",
+        "cap": {
+          "color": "#E8CFA0",
+          "light": "#F8E6C0",
+          "dark": "#C4A070",
+          "depth": 0.12,
+          "drip": 0.08
+        },
+        "body": {
+          "color": "#B98A5A",
+          "dark": "#8A5F3A"
+        },
+        "strata": [
+          "#C49464",
+          "#A87A4E",
+          "#8A5F3A"
         ],
-        "dressing": [
-          {
-            "kind": "palm",
-            "weight": 2,
-            "tint": "white",
-            "sway": 0.02
-          },
-          {
-            "kind": "pot",
-            "weight": 2,
-            "tint": "white"
-          },
+        "tile": {
+          "color": "#C2B8A8",
+          "grout": "#6E6258"
+        },
+        "rim": [
           {
             "kind": "rock",
-            "weight": 2,
-            "tint": "#C9A06E"
-          }
-        ],
-        "backdrop": [
-          {
-            "kind": "palm",
-            "weight": 3,
-            "tint": "white",
-            "sway": 0.02
+            "tint": "#C49464",
+            "weight": 3
           },
           {
-            "kind": "pot",
-            "weight": 1,
-            "tint": "white"
+            "kind": "tuft",
+            "tint": "#9AAE5A",
+            "weight": 2
+          },
+          {
+            "kind": "blob",
+            "tint": "#E8CFA0",
+            "weight": 1
           }
-        ]
+        ],
+        "rim_density": 4.0,
+        "hang": [
+          {
+            "kind": "stalactite",
+            "tint": "#B98A5A",
+            "count": 20
+          }
+        ],
+        "far": [
+          "mountain",
+          "pillars",
+          "mountain"
+        ],
+        "far_cap": "#E8CFA0",
+        "far_rock": "#B98A5A",
+        "far_accent": "#6A7FD0",
+        "falls": {
+          "deep": "#3C9AD8",
+          "light": "#A9E2FF",
+          "foam": "#FFFFFF"
+        }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#FFE0B0",
+        "haze_strength": 0.35,
+        "warm_tint": "#FFF0D0",
+        "ao_tint": "#7A4A40",
+        "outline_color": "#4A2A20",
+        "bloom_tint": "#FFD090",
+        "vignette_color": "#5A2A20",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "shadow_lift": 0.01
       }
     }
   },
-  "env_notes": "biomes.*.env: lip = grass|snow|rock; falls.kind = water|syrup|lava|neon|stardust|none; under = roots|gears|shards|icicles|kelp; dressing/backdrop kinds = assets/models/env/prop_<kind>.glb, tint = white|top|rim|cliff|accent|#hex (WtIslandBuilder)."
+  "env_notes": "biomes.*.env (WtIslandBuilder, design/art/style-techniques.md §2/§5): light = cookbook preset (key/fill/back colour+energy, ambient, saturation/contrast/brightness, shadow_tint); sky = backdrop shader extras (cloud, cloud_shade, mountains, mountain_amount, mesa_amount, mesa_top, mesa_rock, mesa_falls, cloud_bank, stars, nebula, nebula_a/b, sun); haze = horizon colour for distant props; cap/body/strata/tile = island paint; inlay = gold ring round the board; rock_glow/glow_color = lava cracks; rim = [{kind, tint, weight, scale, glow, tall, edge (spill over the rim), spacing}] kinds: tuft clover flower_white|lilac|pink|yellow bush mound shrub tree tree_white pine rock rubble pillar pillar_broken star blob gumdrop lollipop basalt lava_pool crystal mushroom coral shell gear; hang = [{kind, tint, count, size, glow}] kinds: root strand icicle stalactite lava_drip crystal_down; far = up to 6 landmarks: trees waterfall pine castle arch pillars planet mountain volcano candy crystals basalt; far_cap/far_rock/far_accent/far_stone/planet = landmark colours; falls = waterfall colours. `sky` (top, horizon, low) and `frame` stay at biome level."
 }

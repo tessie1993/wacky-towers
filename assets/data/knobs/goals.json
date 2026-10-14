@@ -232,6 +232,61 @@
       "allows_zero": true,
       "rule_adjustable": false,
       "source": "design/levels/meadow.md#picnic-puzzle"
+    },
+    {
+      "id": "goal.spawn_rescue_max",
+      "type": "count",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "production/qa/quality-review/2026-10-14-levels-mechanics.md#D2-D14",
+      "note": "Free spawn-blocked rescue wipes per attempt when goal.top_out is rescue; 0 disables"
+    },
+    {
+      "id": "goal.near_miss_margin",
+      "type": "count",
+      "default": 2,
+      "min": 0,
+      "max": 8,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "production/qa/quality-review/2026-10-14-levels-mechanics.md#D2-D14",
+      "note": "A clear while headroom (layers left below the limit) is at or under this emits NEAR_MISS"
+    },
+    {
+      "id": "goal.danger_margin_1",
+      "type": "count",
+      "default": 4,
+      "min": 0,
+      "max": 12,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "production/qa/quality-review/2026-10-14-levels-mechanics.md#D2-D14",
+      "note": "Headroom at or under this = danger level 1"
+    },
+    {
+      "id": "goal.danger_margin_2",
+      "type": "count",
+      "default": 2,
+      "min": 0,
+      "max": 12,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "production/qa/quality-review/2026-10-14-levels-mechanics.md#D2-D14",
+      "note": "Headroom at or under this = danger level 2"
+    },
+    {
+      "id": "goal.danger_margin_3",
+      "type": "count",
+      "default": 1,
+      "min": 0,
+      "max": 12,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "production/qa/quality-review/2026-10-14-levels-mechanics.md#D2-D14",
+      "note": "Headroom at or under this = danger level 3 (critical)"
     }
   ]
 }

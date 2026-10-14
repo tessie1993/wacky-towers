@@ -51,6 +51,7 @@ var _touched: Dictionary = {} # cell index -> true; written since the last take_
 var _status: Dictionary = {} # cell index -> {status_id, counter, rule_id}; moves with the block (ADR-0002 §2)
 var _overlay: Dictionary = {} # cell index -> {type_id, data}; stays with the cell
 var _floor_layer: int = 0
+var _revision: int = 0 # bumped by every logged mutation; lets observers (e.g. fog) cache derived data
 
 
 ## Allocates the board from a validated spec: expands the mask over every layer and writes starting contents.
@@ -292,6 +293,12 @@ func limit_layer() -> int:
 ## True if any solid content sits at layer >= limit_layer(). Usage: if b.over_limit(): top_out()
 func over_limit() -> bool:
 	return stack_height() >= limit_layer()
+
+
+## Monotonic mutation counter: changes whenever any cell is written, removed, moved, restyled or re-laid-out.
+## Observers cache derived data against it. Usage: if b.revision() != seen: rebuild()
+func revision() -> int:
+	return _revision
 
 
 ## Cells written since the last take_delta(), unordered, no duplicates. Rules start their searches here.
@@ -544,6 +551,7 @@ func _relocate(from: int, kf: int, to: int, kt: int) -> void:
 
 
 func _log(op: int, a: int, b: int) -> void:
+	_revision += 1
 	_delta.append(op)
 	_delta.append(a)
 	_delta.append(b)

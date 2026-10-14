@@ -4,7 +4,7 @@ extends Control
 signal intent(id: StringName, args: Dictionary)
 const INK := Color("243b4d")
 const CREAM := Color("fff8e7")
-const MINT := Color("b8ddc7")
+const MINT := WtStorybook.MINT
 const ORANGE := Color("eaa05b")
 const Art := preload("res://src/view/wt_minigame_art.gd")
 const NAMES := ["Hole in the Wall", "Copycat", "Colour Rush", "Perfect Stack", "Crane Tower", "Mascot Bridge Race", "Box Packers", "Gift Exchange", "Speed Sort", "Shadow Duel", "Memory Tower", "Spin Cycle", "Floor Is Lava", "Hot Block", "Catch Tower", "Rhythm Stack", "Magnet Maze", "Balloon Volley", "Gem Grab", "Paint Dash", "Balance Budget"]

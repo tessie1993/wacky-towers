@@ -1,0 +1,39 @@
+{
+  "source": "design/gdd/physics-mode.md",
+  "layers": { "world": 1, "pieces": 2, "meteors": 4 },
+  "piece": {
+    "mass_per_cube": 1.0,
+    "linear_damp": 0.25,
+    "angular_damp": 0.6,
+    "friction": 0.8,
+    "bounce": 0.05,
+    "ccd": true,
+    "max_contacts_reported": 16,
+    "cube_collider_size": 0.98
+  },
+  "world": { "friction": 0.8, "bounce": 0.05, "fall_kill_y": -3.0 },
+  "descent": {
+    "default_g": 1.8,
+    "soft_mult": 4.0,
+    "hard_mult": 12.0,
+    "approach_ticks": 3.0,
+    "approach_min_speed": 1.5,
+    "ray_start_offset": 0.51,
+    "ray_floor_y": -4.0
+  },
+  "settle": {
+    "linear_speed": 0.2,
+    "angular_speed_deg": 10.0,
+    "still_seconds": 0.4,
+    "max_seconds": 3.0
+  },
+  "freeze": { "depth": 4.0, "depth_low_fps": 3.0, "low_fps": 50, "low_fps_after": 3.0, "max_active": 39 },
+  "meteor": {
+    "mass": 2.0, "radius": 0.38, "spawn_height": 16.0, "spawn_spread": 2.5,
+    "interval": 3.0, "lifetime": 12.0, "ccd": true, "max_contacts_reported": 8
+  },
+  "seesaw": { "plank_mass": 6.0, "linear_damp": 0.6, "angular_damp": 0.8 },
+  "wind": { "period": 7.0, "gust_after": 4.5, "gust_freq": 2.1, "gust_force": 3.7 },
+  "domino": { "push_strength": 6.0, "min_pieces": 3 },
+  "squash": { "amount": 0.14, "squash_seconds": 0.06, "recover_seconds": 0.22 }
+}

@@ -1,0 +1,128 @@
+{
+ "schema_version": 1,
+ "fallback_track": "meadow",
+ "menu_track": "title_theme",
+ "party_track": "party_theme",
+ "tracks": {
+  "meadow": {
+   "file": "res://assets/audio/music/meadow.wav",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "candy": {
+   "file": "res://assets/audio/music/candy.wav",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "ice": {
+   "file": "res://assets/audio/music/ice.wav",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "underwater": {
+   "file": "res://assets/audio/music/underwater.wav",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "lava": {
+   "file": "res://assets/audio/music/lava.wav",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "forest": {
+   "file": "res://assets/audio/music/forest.wav",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "cave": {
+   "file": "res://assets/audio/music/cave.wav",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "neon": {
+   "file": "res://assets/audio/music/neon.wav",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "celestial": {
+   "file": "res://assets/audio/music/celestial.wav",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "clockwork": {
+   "file": "res://assets/audio/music/clockwork.wav",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "carnival": {
+   "file": "",
+   "fallback": "meadow",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "pirate": {
+   "file": "",
+   "fallback": "underwater",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "title_theme": {
+   "file": "res://assets/audio/music/title.wav",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  "party_theme": {
+   "file": "res://assets/audio/music/party.wav",
+   "volume_db": -6.0,
+   "loop": true
+  }
+ },
+ "keys": {
+  "mus_meadow_default": "meadow",
+  "mus_candy_default": "candy",
+  "mus_ice_default": "ice",
+  "mus_underwater_default": "underwater",
+  "mus_lava_default": "lava",
+  "mus_forest_default": "forest",
+  "mus_cave_default": "cave",
+  "mus_neon_default": "neon",
+  "mus_celestial_default": "celestial",
+  "mus_clockwork_default": "clockwork"
+ },
+ "key_prefixes": {
+  "meadow": "meadow",
+  "mus_meadow": "meadow",
+  "candy": "candy",
+  "mus_candy": "candy",
+  "ice": "ice",
+  "mus_ice": "ice",
+  "underwater": "underwater",
+  "mus_underwater": "underwater",
+  "lava": "lava",
+  "mus_lava": "lava",
+  "forest": "forest",
+  "mus_forest": "forest",
+  "cave": "cave",
+  "mus_cave": "cave",
+  "neon": "neon",
+  "mus_neon": "neon",
+  "celestial": "celestial",
+  "mus_celestial": "celestial",
+  "clockwork": "clockwork",
+  "mus_clockwork": "clockwork",
+  "carnival": "carnival",
+  "mus_carnival": "carnival",
+  "pirate": "pirate",
+  "mus_pirate": "pirate"
+ },
+ "jingles": {
+  "stage_clear": {
+   "file": "res://assets/audio/music/stage_clear.wav",
+   "volume_db": -6.0
+  },
+  "pack_fanfare": {
+   "file": "res://assets/audio/music/pack_fanfare.wav",
+   "volume_db": -6.0
+  }
+ }
+}

@@ -9,3 +9,4 @@ listed here with its author, licence, URL and what it is used for.
 
 | Asset | Author | Licence | URL | Used for |
 |---|---|---|---|---|
+| (none added 2026-10-14) | n/a | n/a | n/a | Asset Library and GitHub were surveyed for outline, toon, post-process, cloud and particle addons (see docs/architecture/adr-0020-painted-post-process.md). None met the Mobile+Compatibility, depth-aware requirement, so the post-process and sparkle FX are first-party code. |

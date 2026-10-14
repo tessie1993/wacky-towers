@@ -1,4 +1,7 @@
 class_name WtStage extends Node3D
+
+## Orthographic camera distance from the board centre (also the post-process focus plane).
+const CAMERA_DISTANCE := 35.0
 ## Toy-box diorama. Simulation owns the board; this node only reads and presents it.
 ## Blocks use the repository's original bevelled GLB cube geometry and MultiMeshes.
 
@@ -42,7 +45,10 @@ var _boss: WtToyActor
 var _character_root: Node3D
 var _story_context: Dictionary = {}
 var _environment: Environment
+var _post: WtPostProcess
 var _key_light: DirectionalLight3D
+var _rig: Array[DirectionalLight3D] = []
+var _far: Node3D
 var _syrup_preview: Array[Vector3i] = []
 var _syrup_root: Node3D
 var _story_props: Node3D
@@ -54,6 +60,7 @@ var _key_stamp: Dictionary = {}
 var _key_uid: int = -1
 var _keyholes: Dictionary = {}
 var _content_views: Dictionary = {}
+var _toppers: MultiMeshInstance3D ## Biome toppers on some exposed block tops (WtBlockToppers).
 var _content_cells: Dictionary = {}
 var _hazard_view: MultiMeshInstance3D
 var _hazard_cells: Dictionary = {}
@@ -73,6 +80,7 @@ var _danger: MeshInstance3D
 var _danger_mat: StandardMaterial3D
 var _fx: Array[Dictionary] = []
 var _confetti: MultiMeshInstance3D
+var _sparkles: WtSparkleFx
 var _fx_material: StandardMaterial3D
 var _last_piece_uid: int = -1
 var _last_piece_shape: StringName = &""
@@ -110,6 +118,7 @@ func setup(sim: BoardSim, biome: StringName, settings: Dictionary = {}) -> void:
 	_build_characters()
 	_build_props()
 	_build_camera()
+	_build_post()
 	_build_fx()
 	_audio = WtAudio.new()
 	add_child(_audio)
@@ -356,6 +365,9 @@ func apply_settings(settings: Dictionary) -> void:
 
 ## Visible celebratory particles, pooled in one MultiMesh (reduced motion disables them).
 func burst(origin: Vector3, tint: Color, count: int = 30) -> void:
+	if _sparkles != null:
+		_sparkles.sparkle(origin, tint, maxi(6, count / 2), 1.2 + float(count) * 0.02)
+		if count <= 20: _sparkles.dust(Vector3(origin.x, 0.1, origin.z), Color(1, 0.95, 0.85), 5)
 	for i: int in mini(count, 120 - _fx.size()):
 		var angle: float = float(i) * 2.399963
 		var speed: float = 1.4 + float(i % 7) * 0.23
@@ -380,6 +392,7 @@ func _process(delta: float) -> void:
 	if _danger.visible:
 		_danger_mat.albedo_color.a = 0.8 if _reduced() else 0.55 + 0.25 * sin(_time * 4.0)
 	_update_fx(delta)
+	if _sparkles != null: _sparkles.step(delta)
 	_update_marks()
 
 
@@ -422,61 +435,35 @@ func _occlusion_mode() -> String:
 
 
 func _build_light() -> void:
-	# Warm soft key, sky-coloured fill, ambient from the biome sky (biome_looks.json `sky`),
-	# and glow tuned so only emission above ~1 (lava, neon, crystals, falls) blooms.
-	var look: Array = BIOME_LOOKS.get(str(_biome), BIOME_LOOKS["meadow"])
-	var sky: Array = WtBlockMaterials.look(_biome).get("sky", ["#8EC9F0", "#D9EEF8", "#F7F1DE"])
-	var sky_top := Color(String(sky[0]))
-	var sky_mid := Color(String(sky[1]))
-	var sky_low := Color(String(sky[2]))
-	var env := Environment.new()
-	_environment=env
-	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color(look[0])
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = sky_mid.lerp(sky_low, 0.35).lerp(Color("#FFF6E8"), 0.25)
-	env.ambient_light_energy = 0.5
-	env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
-	env.glow_enabled = true
-	env.glow_normalized = false
-	env.glow_intensity = 0.7
-	env.glow_strength = 1.0
-	env.glow_bloom = 0.0
-	env.glow_hdr_threshold = 1.0
-	env.glow_hdr_scale = 2.0
-	env.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
-	for level: int in 7:
-		env.set_glow_level(level, 1.0 if level in [1, 2, 3] else 0.0)
+	# Cookbook preset + rig (design/art/style-techniques.md §2): painted canvas backdrop (BG_CANVAS),
+	# flat lilac ambient, AgX, soft-light glow for emissives only, no global fog, and the
+	# camera-relative warm key / cool fill / warm back lights (re-aimed in _update_camera).
 	var builder := WtIslandBuilder.new(_biome)
 	builder.motion = 0.0 if _reduced() else 1.0
+	var env := builder.make_environment()
+	_environment = env
 	builder.build_sky(self, env)
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
-	var key := DirectionalLight3D.new()
-	_key_light=key
-	key.rotation_degrees = Vector3(-50, -32, 0)
-	key.light_color = Color("#FFE7C2")
-	key.light_energy = 0.95
-	key.shadow_enabled = true
-	key.shadow_blur = 1.5
-	key.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
-	key.directional_shadow_max_distance = 30.0
-	add_child(key)
-	var fill := DirectionalLight3D.new()
-	fill.rotation_degrees = Vector3(-30, 145, 0)
-	fill.light_color = sky_top.lerp(Color.WHITE, 0.35)
-	fill.light_energy = 0.28
-	fill.shadow_enabled = false
-	fill.light_specular = 0.0
-	add_child(fill)
+	_rig = builder.add_light_rig(self, _yaw)
+	_key_light = _rig[0]
+
+
+## Shared painted post-process quad on the camera + per-biome glow (biome_looks.json `post`).
+func _build_post() -> void:
+	_post = WtPostProcess.new()
+	_post.attach(_camera, _environment, _biome, _preference_flag("post", true))
+	_post.set_focus(CAMERA_DISTANCE)
 
 
 func _build_island() -> void:
 	var builder := WtIslandBuilder.new(_biome)
 	builder.motion = 0.0 if _reduced() else 1.0
 	builder.build_island(_world, _size, func(x: int, z: int) -> bool: return _board.is_active(_board.index(Vector3i(x, 0, z))))
-	builder.build_dressing(_world, _size)
+	if not WtPropScatter.new(_biome, builder).build(_world, _size):
+		builder.build_dressing(_world, _size)
+	_far = builder.build_far(_world)
 
 
 func _build_board() -> void:
@@ -491,7 +478,7 @@ func _build_board() -> void:
 	if cube == null: cube = BoxMesh.new()
 	_active = _multimesh(cube, 64, _block_material())
 	_apply_biome_block_material()
-	_ghost = _multimesh(BoxMesh.new(), 64, _ghost_material())
+	_ghost = _multimesh(WtBlockMesh.cube(), 64, WtBlockMaterials.ghost_material())
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(0.88, 0.88)
 	_landing = _multimesh(plane, 64, _mat(Color("#F3D784"), true))
@@ -531,6 +518,9 @@ func _refresh_content_views() -> void:
 		if not records.has(kind):(_content_views[kind] as MultiMeshInstance3D).multimesh.visible_instance_count=0
 	_content_cells=records
 	_refresh_status_views()
+	if _toppers!=null:_toppers.queue_free()
+	_toppers=WtBlockToppers.build_for_cells(_biome,WtBlockToppers.exposed_tops(_board))
+	if _toppers!=null:add_child(_toppers)
 
 
 func _refresh_content_visibility() -> void:
@@ -736,8 +726,12 @@ func _update_camera() -> void:
 	var target := Vector3(0, _board.h_play() * .36, 0)
 	var yaw: float = deg_to_rad(_yaw)
 	var elev: float = deg_to_rad(_elevation)
-	_camera.position = target + Vector3(sin(yaw) * cos(elev), sin(elev), cos(yaw) * cos(elev)) * 35.0
+	_camera.position = target + Vector3(sin(yaw) * cos(elev), sin(elev), cos(yaw) * cos(elev)) * CAMERA_DISTANCE
 	_camera.look_at(target, Vector3.UP)
+	WtIslandBuilder.orient_rig(_rig, _yaw)
+	WtIslandBuilder.update_facing(_world, _yaw)
+	if _far != null and is_inside_tree():
+		WtIslandBuilder.layout_far(_far, target, _yaw, _elevation, _camera.size, get_viewport().get_visible_rect().size.aspect())
 	_update_status_orientation()
 	var quadrant := Vector2i(-1 if sin(yaw)>=0 else 1,-1 if cos(yaw)>=0 else 1)
 	if quadrant != _guide_quadrant:
@@ -757,10 +751,12 @@ func set_story_context(context: Dictionary) -> void:
 	_build_story_props()
 	var lighting: Dictionary=WtStoryData.lighting(StringName(context.get("level_id","")))
 	if not lighting.is_empty():
+		# Authored time of day scales the cookbook preset (0.65 key / 0.32 ambient = neutral day).
+		var base: Dictionary=WtIslandBuilder.new(_biome).preset()
 		_environment.background_color=Color(lighting.sky)
-		_environment.ambient_light_energy=float(lighting.ambient)
+		_environment.ambient_light_energy=float(base.ambient_energy)*float(lighting.ambient)/.32
 		_key_light.light_color=Color(lighting.key)
-		_key_light.light_energy=float(lighting.key_energy)
+		_key_light.light_energy=float(base.key_energy)*float(lighting.key_energy)/.65
 		set_meta("authored_time_of_day",lighting.time)
 
 
@@ -1098,6 +1094,8 @@ func _build_fx() -> void:
 	_fx_material = _mat(Color.WHITE,true)
 	_fx_material.vertex_color_use_as_albedo=true
 	_confetti=_multimesh(box,120,_fx_material)
+	_sparkles=WtSparkleFx.new()
+	add_child(_sparkles)
 	var ring := TorusMesh.new()
 	ring.inner_radius=.38;ring.outer_radius=.47;ring.rings=20;ring.ring_segments=6
 	var mark_material := _mat(Color.WHITE,true)

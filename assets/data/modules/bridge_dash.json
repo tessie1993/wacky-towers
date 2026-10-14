@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "id": "bridge_dash",
+  "role": "primary",
+  "title": "Bridge Bashers",
+  "name_key": "MODULE_BRIDGE_DASH",
+  "verb": "Span the gap",
+  "source": [
+    "design/gdd/modules-framework.md",
+    "design/gdd/campaign-minigames.md#module-catalogue",
+    "design/gdd/minigame-mechanics-wave4.md#a3-span_goal"
+  ],
+  "builder": "bridge_dash",
+  "goal": "span",
+  "until": ["walker_at_end"],
+  "board_min": {"width": 8, "depth": 8, "h_play": 8},
+  "params": {
+    "gap_cells": {"type": "int", "default": 6, "min": 2, "max": 12, "note": "empty pit columns between the pillars"},
+    "pillar_cells": {"type": "int", "default": 1, "min": 1, "max": 3, "note": "width of each pillar along x"},
+    "pillar_height": {"type": "int", "default": 3, "min": 1, "max": 6, "note": "pillar top is layer pillar_height - 1"},
+    "lane_z": {"type": "int", "default": -1, "min": -1, "max": 31, "note": "-1 = centre row (depth - 1) / 2"},
+    "step_max": {"type": "int", "default": 1, "min": 1, "max": 2, "note": "A3; 2 makes bridges trivially easy"},
+    "walk_layer_min": {"type": "int", "default": 0, "min": 0, "max": 15, "note": "A3; columns lower than this block"},
+    "walk_ms": {"type": "int", "default": 250, "min": 150, "max": 600, "note": "A3; ms per walker step"},
+    "hold_ms": {"type": "int", "default": 500, "min": 0, "max": 2000, "note": "A3; path must stay intact this long before the walk"}
+  },
+  "level_knobs": {"clear.enabled": false},
+  "compatible_overlays": ["rising_hazard", "pace_mascot", "gust_wind"],
+  "skins": ["meadow", "lava", "ice", "candy", "forest", "celestial", "pirate", "clockwork", "underwater", "cave", "neon"]
+}

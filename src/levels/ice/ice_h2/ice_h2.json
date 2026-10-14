@@ -40,7 +40,7 @@
     ]
   },
   "knobs": {
-    "fall.g0": 1.0,
+    "fall.g0": 1.05,
     "goal.warnings_max": 1,
     "control.verb": "curling_flick",
     "control.flick_per_piece": 1
@@ -67,6 +67,23 @@
       }
     }
   ],
+  "variation": {
+    "note": "Per-attempt layout from the attempt seed (LevelVariation). Symmetry keeps the puzzle isomorphic; jitter nudges sparse features and is re-checked for a clearable layer.",
+    "symmetries": [
+      "identity",
+      "mirror_x",
+      "mirror_z",
+      "rot90",
+      "rot180",
+      "rot270",
+      "transpose",
+      "anti_transpose"
+    ],
+    "jitter": {
+      "glyphs": "#",
+      "radius": 1
+    }
+  },
   "stars": {
     "t2": 400000,
     "t3": 285000
@@ -157,6 +174,11 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 4x8 -> 8x8 (offset x2 z0); clear_n 4 -> 3; time stars x1.50"
+      },
+      {
+        "date": "2026-10-14",
+        "source": "production/qa/level-curve-2026-10-14.md",
+        "change": "fall.g0 1.0 -> 1.05 (curve inversion vs previous tier)"
       }
     ]
   }

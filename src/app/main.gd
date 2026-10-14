@@ -44,6 +44,10 @@ var _minigame: WtMinigameRound
 ## Rolls a fresh seed per attempt so the next block is never the same fixed order.
 ## Level JSON seeds remain only for tests, replays and the campaign verifier.
 var _attempt_rng := RandomNumberGenerator.new()
+## `--wt-attempt-seed=N` (user arg) replays a logged WT_ATTEMPT seed: same queue, same layout variant.
+var _forced_attempt_seed: int = -1
+## Seed of the running attempt (logged so a run can be replayed).
+var _attempt_seed: int = -1
 
 func _ready() -> void:
 	WtPlayerInput.install_actions()
@@ -72,6 +76,9 @@ func _ready() -> void:
 	_smoke = OS.get_cmdline_user_args().has("--smoke-game")
 	if _smoke: _attempt_rng.seed = 1729
 	else: _attempt_rng.randomize()
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--wt-attempt-seed=") and arg.get_slice("=", 1).is_valid_int():
+			_forced_attempt_seed = maxi(0, arg.get_slice("=", 1).to_int())
 	if _smoke:
 		if _store.active_profile() == null: _store.create("QA Builder")
 		_start_level(DEFAULT_LEVEL)
@@ -360,11 +367,20 @@ func _start_level(id: StringName) -> void:
 	_level_id = id
 	var raw: Dictionary = _content.raw_level(id)
 	_preview_level = not raw.get("metadata", {}).get("blocking_gameplay", []).is_empty()
-	var level: LevelData = LevelLoader.parse_level(raw, _catalog).level
+	# One seed drives both the piece bag and the opt-in layout variant, so WT_ATTEMPT replays both.
+	var attempt_seed: int = _fresh_seed()
+	var varied: Dictionary = LevelVariation.apply(raw, attempt_seed, _catalog.variation_config, LevelVariation.nonfill_glyphs(_catalog.content))
+	var level: LevelData = LevelLoader.parse_level(varied.raw, _catalog).level
+	if level == null and raw.has(LevelVariation.KEY):
+		varied = {"symmetry": "authored", "moved": 0}
+		var authored: Dictionary = raw.duplicate(true)
+		authored.erase(LevelVariation.KEY)
+		level = LevelLoader.parse_level(authored, _catalog).level
 	if level == null:
 		_ui.show_toast(tr("This level could not be loaded. Check the content validation report."))
 		return
-	_begin_session(level)
+	print("WT_ATTEMPT level=%s seed=%d variant=%s moved=%d" % [id, attempt_seed, varied.symmetry, varied.moved])
+	_begin_session(level, attempt_seed)
 
 func _start_arcade(biome: StringName) -> void:
 	_selected_biome = biome
@@ -438,7 +454,8 @@ func _minigame_tick() -> void:
 		"next_available": round_end.get("phase", "") != "finished", "standings": _modes.standings(), "mode": "tournament",
 		"message": String(round_end.get("message", "Fresh boards. Fresh chances."))})
 
-func _begin_session(level: LevelData) -> void:
+## Starts a run. attempt_seed >= 0 forces the round seed (campaign attempts pass their logged seed).
+func _begin_session(level: LevelData, attempt_seed: int = -1) -> void:
 	_clear_session()
 	_level = level
 	if _mode == &"campaign": _store.record_encounter(String(level.id))
@@ -450,7 +467,8 @@ func _begin_session(level: LevelData) -> void:
 	# Campaign attempts reshuffle every time; party rounds keep the round's shared seed so
 	# every player (and bot) faces the same random sequence.
 	var shared: bool = _mode in [&"tournament", &"lan"] and level.seed != LevelData.NO_SEED
-	_sim = BoardSim.new(level, level.seed if shared else _fresh_seed(), _catalog)
+	_attempt_seed = attempt_seed if attempt_seed >= 0 else (level.seed if shared else _fresh_seed())
+	_sim = BoardSim.new(level, _attempt_seed, _catalog)
 	_abilities = WtAbilities.new()
 	_abilities.setup(level, _catalog, _sim.get_api(), _ability_character(), (&"tournament" if _mode == &"lan" else _mode))
 	_abilities.set_charge_perks(_session_effects())
@@ -479,7 +497,7 @@ func _begin_session(level: LevelData) -> void:
 	_store.set_playing(true)
 	_tick_counter = 0
 	_paused = false
-	_architecture.lifecycle(&"session_countdown" if _sim.get_phase() == BoardSim.Phase.COUNTDOWN else &"session_begin", {"mode": _mode, "level_id": level.id})
+	_architecture.lifecycle(&"session_countdown" if _sim.get_phase() == BoardSim.Phase.COUNTDOWN else &"session_begin", {"mode": _mode, "level_id": level.id, "seed": _attempt_seed})
 	_ui.show_hud(_hud_snapshot())
 	_stage.set_board_area(_ui.board_area())
 
@@ -842,6 +860,7 @@ func _goal_text(goal: Dictionary) -> String:
 
 ## A new non-negative seed for one attempt or one party round.
 func _fresh_seed() -> int:
+	if _forced_attempt_seed >= 0: return _forced_attempt_seed
 	return int(_attempt_rng.randi() & 0x7fffffff)
 
 static func _format_ms(ms: int) -> String:

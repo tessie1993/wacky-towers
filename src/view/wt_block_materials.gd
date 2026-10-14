@@ -5,6 +5,7 @@ class_name WtBlockMaterials extends RefCounted
 
 const LOOKS_PATH := "res://assets/data/biome_looks.json"
 const SHADER_PATH := "res://src/view/shaders/spatial_block_biome.gdshader"
+const GHOST_SHADER_PATH := "res://src/view/shaders/spatial_block_ghost.gdshader"
 
 static var _looks: Dictionary = {}
 
@@ -29,15 +30,33 @@ static func for_biome(biome: StringName) -> ShaderMaterial:
 	for key: String in ["cap_color", "body_color", "accent_color", "glow_color"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), Color(String(record[key])))
-	for key: String in ["cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt"]:
+	for key: String in ["cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt", "translucency",
+			"piece_sat", "piece_value", "piece_linear", "cap_hue_min_sat", "stone_value", "stone_sat", "stone_crack", "cap_body_mix", "side_shade", "shade_side_extra"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), float(record[key]))
+	if record.has("piece_hue_range"):
+		var hr: Array = record["piece_hue_range"]
+		material.set_shader_parameter(&"piece_hue_range", Vector2(float(hr[0]), float(hr[1])))
+	# cap_hues: [[lo, hi], ...] HSV hue bands (0..1, authored piece colour) that keep the cap; the shader
+	# takes one band. Absent = every piece keeps the cap (other biomes unchanged).
+	if record.has("cap_hues"):
+		var bands: Array = record["cap_hues"]
+		if not bands.is_empty() and bands[0] is Array:
+			material.set_shader_parameter(&"cap_hue_range", Vector2(float(bands[0][0]), float(bands[0][1])))
 	# Sky-tinted rim and fake reflection: the biome's horizon colour, lifted toward white.
 	var sky: Array = look(biome).get("sky", [])
 	if record.has("rim_color"):
 		material.set_shader_parameter(&"rim_color", Color(String(record["rim_color"])))
 	elif sky.size() >= 2:
 		material.set_shader_parameter(&"rim_color", Color(String(sky[1])).lerp(Color.WHITE, 0.25))
+	return material
+
+
+## Glassy landing-ghost material: translucent body, fresnel sheen and a glowing edge in the
+## piece colour (instance COLOR). Usage: mmi.material_override = WtBlockMaterials.ghost_material()
+static func ghost_material() -> ShaderMaterial:
+	var material := ShaderMaterial.new()
+	material.shader = load(GHOST_SHADER_PATH) as Shader
 	return material
 
 

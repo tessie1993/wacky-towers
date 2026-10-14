@@ -1,6 +1,6 @@
 // spatial_env_fall: waterfall / lavafall / syrup / light ribbon off the island lip (technical art, 2026-10-13).
-// Mesh: assets/models/env/env_fall_ribbon.glb, UV.y runs down the flow, UV.x across it,
-// vertex alpha = edge and end fade. Opaque with alpha scissor (no sorting, no blended overdraw).
+// Mesh: a QuadMesh from WtIslandBuilder (UV.y runs down the flow, UV.x across it); vertex alpha
+// (or 1 when absent) = edge and end fade. Opaque with alpha scissor (no sorting, no blended overdraw).
 // Cost: 2 value-noise octaves + foam bands. Emission > 1 blooms with Environment glow (lava, neon).
 shader_type spatial;
 render_mode cull_disabled, diffuse_burley, specular_schlick_ggx;
@@ -17,6 +17,9 @@ uniform float speed : hint_range(0.0, 3.0) = 0.7;
 uniform float motion : hint_range(0.0, 1.0) = 1.0;
 /** Sparkle density for stardust/neon falls (0 = off). */
 uniform float sparkle : hint_range(0.0, 1.0) = 0.0;
+/** Aerial haze for distant falls (FOG write; no global fog). */
+uniform vec3 haze_color : source_color = vec3(0.84, 0.89, 0.97);
+uniform float haze : hint_range(0.0, 1.0) = 0.0;
 group_uniforms;
 
 float hash21(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
@@ -46,4 +49,5 @@ void fragment() {
 	// Edge and end dissolve through the noise instead of a hard ribbon edge.
 	ALPHA = clamp(COLOR.a * 1.6 - (1.0 - streak) * 0.55, 0.0, 1.0);
 	ALPHA_SCISSOR_THRESHOLD = 0.35;
+	FOG = vec4(haze_color, haze);
 }

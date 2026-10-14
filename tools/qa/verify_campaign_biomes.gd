@@ -1,6 +1,7 @@
 extends SceneTree
 ## Ordered real-engine campaign evidence. Passing smoke checks never claims a full human playthrough.
 const OUTPUT := "res://production/qa/evidence/full-build/biome-level-verification.json"
+const VARIATION_SEEDS: Array[int] = [1729, 1, 2, 3, 4, 5, 6, 7]
 const HOOKS := [&"on_level_start",&"on_spawn",&"on_piece_enter",&"on_tick",&"on_command",&"on_fall_step",&"on_land",&"on_lock",&"on_enter",&"on_clear",&"on_resolve_end",&"on_goal_check",&"on_top_out"]
 var _content := WtContent.new()
 var _catalog: GameCatalog
@@ -98,11 +99,39 @@ func _verify(entry: Dictionary)->Dictionary:
 	if flick_expected and not row.ice_flick_reachable:row.failures.append("ice_flick landing action inaccessible")
 	if _proofs.has(entry.id):row.puzzle=_replay(level,_proofs[entry.id])
 	if row.get("puzzle",{}).get("status","")=="FAIL":row.failures.append("constructive packing did not win in BoardSim")
+	var raw_source: Dictionary=_content.raw_level(String(entry.id))
+	if raw_source.has(LevelVariation.KEY):
+		row.variation=_verify_variation(String(entry.id),raw_source)
+		for failure: String in row.variation.failures:row.failures.append(failure)
 	if descriptor!=null:descriptor.queue_free();await process_frame
 	row.smoke_status="PASS" if row.failures.is_empty() else "FAIL"
 	row.completion_status="FINITE_PUZZLE_PROVED" if row.get("puzzle",{}).get("status","")=="WIN" else "FULL_PLAYTHROUGH_NOT_ASSESSED"
 	print("LEVEL ",entry.id," ",row.smoke_status," locks=",row.locks," embeddedWorld=",row.embedded_world)
 	return row
+## Opt-in layout variation: proof levels never vary; sampled attempt seeds must parse, spawn legally and lock.
+func _verify_variation(id: String,raw: Dictionary)->Dictionary:
+	var out: Dictionary={"variants":[],"failures":[]}
+	if _proofs.has(id):out.failures.append("variation on a constructive-proof level");return out
+	var nonfill: String=LevelVariation.nonfill_glyphs(_catalog.content)
+	for attempt_seed: int in VARIATION_SEEDS:
+		var varied: Dictionary=LevelVariation.apply(raw,attempt_seed,_catalog.variation_config,nonfill)
+		var parsed: LoadResult=LevelLoader.parse_level(varied.raw,_catalog)
+		var note: Dictionary={"seed":attempt_seed,"symmetry":varied.symmetry,"moved":varied.moved,"legal_spawn":false,"locks":0}
+		out.variants.append(note)
+		if parsed.level==null:out.failures.append("variant seed %d does not load: %s"%[attempt_seed,str(parsed.issues)]);continue
+		var sim:=BoardSim.new(parsed.level,attempt_seed,_catalog)
+		for tick: int in 360:
+			if sim.get_piece()!=null or sim.result()!=null:break
+			sim.step()
+		note.legal_spawn=sim.get_piece()!=null and sim.board().can_place(sim.get_piece().cells())
+		if not note.legal_spawn:out.failures.append("variant seed %d (%s): no legal first spawn"%[attempt_seed,varied.symmetry]);continue
+		sim.queue_command(SimCommand.make(SimEvents.CMD_HARD_DROP))
+		for tick: int in 300:
+			sim.step()
+			if sim.goal_state().locks>0:break
+		note.locks=sim.goal_state().locks
+		if note.locks<1:out.failures.append("variant seed %d (%s): no completed lock"%[attempt_seed,varied.symmetry])
+	return out
 func _replay(level: LevelData,proof: Dictionary)->Dictionary:
 	var sim:=BoardSim.new(level,42,_catalog)
 	for placement: Dictionary in proof.placements:

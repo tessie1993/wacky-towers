@@ -1,0 +1,10 @@
+{
+ "texture": "frame_purple_vine.png",
+ "scale": 2,
+ "margin_left": 316,
+ "margin_top": 316,
+ "margin_right": 316,
+ "margin_bottom": 316,
+ "axis_stretch": "stretch",
+ "content_inset_px": 218
+}

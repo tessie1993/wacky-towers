@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "source": "design/gdd/modules-framework.md#tuning-knobs",
+  "min_board_side": 8,
+  "max_overlays_per_phase": 2,
+  "phase_banner_ms": 1500
+}

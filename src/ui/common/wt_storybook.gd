@@ -1,26 +1,63 @@
 class_name WtStorybook extends RefCounted
-## Storybook UI kit: painted-wood frames, parchment panels, gold pills, plum ink.
-## Reference: assets/art/reference/title_screen_ref.png, screens_flow_ref.png,
-## tournament_flow_ref.png. Used by GameUi for every screen and the HUD.
+## Storybook UI kit: open purple-wood frames over a painted scene, translucent plum glass and
+## wood-plank content groups, gold / purple / wood pills, cream lettering with a plum outline.
+## No parchment fill: the user rejected beige interiors (refs 05 open frame, 04 wood planks).
+## Reference: assets/art/reference/style/05, 06, 04, 08, 14, 15. Colours are the art-bible
+## tokens (design/art/art-bible.md section 2). Used by GameUi for every screen and the HUD.
+##
+## Kit v2 pieces in use (assets/art/ui/kit/x1, built by assets/source/blender/ui/build_ui_kit.py):
+## frame_purple_open, panel_wood, plaque_title, btn_gold, btn_close, toggle_on, slider_track,
+## slider_star_thumb, sign_heading. RETIRED until re-rendered without beige: panel_parchment,
+## frame_purple (parchment centre), btn_cream, chip_hud*, tray_slot, toggle_off. Their roles are
+## filled by flat plum-glass / purple-wood StyleBoxes below (glass_box, chip_flat, slot_flat, gem).
 
-const PLUM := Color("3b2346")
+const PLUM := Color("3b2346")          # ink
 const PLUM_SOFT := Color("6e5578")
-const PARCHMENT := Color("fbf1dc")
-const PARCHMENT_DEEP := Color("efdfbd")
-const WOOD := Color("8a5a34")
-const WOOD_DARK := Color("5b3920")
-const GOLD := Color("f7c548")
-const GOLD_DEEP := Color("c98a1e")
-const CREAM_PILL := Color("fff4dc")
-const STAR_ON := Color("f6b92b")
-const STAR_OFF := Color("cdbfa6")
+const WOOD := Color("8a5a34")          # wood_brown
+const WOOD_DARK := Color("4e2f1a")     # wood_brown_dark
+const WOOD_PURPLE := Color("6b4a8a")
+const WOOD_PURPLE_DARK := Color("3f2a55")
+const WOOD_PURPLE_LIGHT := Color("9a78b8")
+const GOLD := Color("f8c840")
+const GOLD_DEEP := Color("c98418")
+const GOLD_GLINT := Color("fff3b0")
+const VINE_GREEN := Color("4f9a3a")
+const LEAF_LIGHT := Color("8fd05a")
+const DANGER_RED := Color("e0483c")
+const GO_GREEN := Color("4cc04a")
+const STAR_ON := Color("f8c840")
+## Unearned star: dim lilac, reads as "empty" on plum glass without any beige.
+const STAR_DIM := Color("7d6a96")
+## Highlight green for minigame lanes and windows (was duplicated as MINT in three scripts).
+const MINT := Color("b8ddc7")
+## Lettering on the scene, glass and wood: cream face, plum outline (AA on every kit surface).
+const TEXT := Color("fff6e6")
+const TEXT_SOFT := Color("e6dcf7")
+const TEXT_OUTLINE := Color("2a1838")
+## Translucent plum glass for content groups and the soft lilac rim inside it.
+const GLASS := Color(0.247, 0.165, 0.333, 0.82)
+const GLASS_RIM := Color(0.604, 0.471, 0.722, 0.6)
+## Wood plank strip (ref 04 rows): darkened wood so cream text clears 4.5:1.
+const PLANK := Color("6e4426")
+const PLANK_EDGE := Color("3a2212")
+## Plum ramp that replaces parchment pixels in kit pieces (dark end, light end).
+const PLUM_RAMP_DARK := Color("2e1d40")
+const PLUM_RAMP_LIGHT := Color("5a3f78")
+## Purple pill ramp (secondary buttons, unselected tabs).
+const PILL_RAMP_DARK := Color("2a1838")
+const PILL_RAMP_LIGHT := Color("8a68ad")
+## Multicolour display-title letters, cycled per glyph (orange, cream, blue, green, lilac, pink).
+const TITLE_COLORS: Array[Color] = [Color("f08a2c"), Color("f6e2b8"), Color("4aa8e8"), Color("6cc04a"), Color("b48ad8"), Color("ee6aa0")]
+## HUD frame / chip rim colours [rail, glint] per biome (ref 15: vine green, frost blue,
+## celestial violet-gold, iron for lava, frosting pink for candy). Others use the look's "frame".
+const BIOME_RIMS := {"meadow": ["6f8f3a", "a8d060"], "ice": ["5f8fd0", "cfe6ff"], "celestial": ["4a3590", "f8c840"], "lava": ["3a2c2c", "e07a4a"], "candy": ["d0679a", "ffd0e4"]}
 const FONT_PATH := "res://assets/fonts/fredoka/fredoka-600.woff2"
 const FONT_BOLD_PATH := "res://assets/fonts/fredoka/fredoka-700.woff2"
 const SKY_SHADER := "res://src/view/shaders/canvas_env_sky.gdshader"
 const SPRITES := "res://assets/art/ui/"
-## Blender-rendered nine-patch kit (2x renders; margins in ninepatch.json).
+## Blender-rendered nine-patch kit: 1x copies of the 2x renders, margins in x1 pixels.
 const KIT_JSON := "res://assets/art/ui/kit/x1/ninepatch_x1.json"
-## Kit textures are rendered at 2x; drawn at half size for crisp 1x layouts.
+## 2x masters live in kit/x2; the x1 files are already downscaled, so they draw 1:1.
 const KIT_SCALE := 0.5
 
 static var _kit: Dictionary = {}
@@ -61,20 +98,192 @@ static func kit_box(name: String, content: float = 12.0) -> StyleBoxTexture:
 	return box
 
 
-## A kit texture by name (icons, timer, slot), or null.
+## A kit texture by name (btn_close, toggle_on, slider_star_thumb...), or null.
 static func kit_texture(name: String) -> Texture2D:
-	var path: String = "res://assets/art/ui/kit/%s.png" % name
-	return load(path) as Texture2D if ResourceLoader.exists(path) else null
+	for path: String in ["res://assets/art/ui/kit/x1/%s.png" % name, "res://assets/art/ui/kit/%s.png" % name]:
+		if ResourceLoader.exists(path): return load(path) as Texture2D
+	return null
 
 
-## Parchment panel inside a painted-wood frame (Blender kit), flat fallback otherwise.
+## Content group: translucent plum glass (wood=false) or the rope-bordered plank panel (wood=true).
 static func panel_box(wood: bool = false) -> StyleBox:
-	var box: StyleBoxTexture = kit_box("panel_wood" if wood else "panel_parchment", 16.0)
-	return box if box != null else panel()
+	if not wood: return glass_box()
+	var box: StyleBoxTexture = kit_box("panel_wood", 16.0)
+	return box if box != null else plank_box()
 
 
-## Parchment panel inside a painted-wood frame, with a soft drop shadow.
-static func panel(fill: Color = PARCHMENT, frame: Color = WOOD, radius: int = 20, frame_width: int = 5) -> StyleBoxFlat:
+## Main window: thick purple-wood frame with star caps and vines (refs 05/06). The centre is
+## open by default so the painted scene shows through; `open = false` fills it with plum glass.
+static func frame_box(open: bool = true) -> StyleBox:
+	var box: StyleBoxTexture = kit_box("frame_purple_open", 24.0)
+	if box == null: return panel(Color(0, 0, 0, 0) if open else GLASS, WOOD_PURPLE, 24, 10)
+	box.draw_center = not open
+	if not open: box.modulate_color = Color(1, 1, 1, 1)
+	return box
+
+
+## Translucent plum glass panel for content groups on the scene: WOOD_PURPLE_DARK at `alpha`,
+## a soft lilac inner rim and a plum drop shadow. Cream text on it is above 7:1.
+static func glass_box(alpha: float = GLASS.a, radius: int = 18) -> StyleBoxFlat:
+	var s := panel(Color(GLASS, alpha), GLASS_RIM, radius, 2)
+	s.border_width_bottom = 2
+	s.shadow_color = Color(0.1, 0.04, 0.16, 0.3)
+	s.shadow_size = 8
+	s.shadow_offset = Vector2(0, 4)
+	return s
+
+
+## Wood plank strip (ref 04 settings rows): dark wood face, a deeper bottom lip, rounded ends.
+static func plank_box(radius: int = 12) -> StyleBoxFlat:
+	var s := panel(PLANK, PLANK_EDGE, radius, 2)
+	s.border_width_bottom = 5
+	s.shadow_size = 3
+	s.shadow_offset = Vector2(0, 2)
+	s.content_margin_left = 16
+	s.content_margin_right = 16
+	s.content_margin_top = 8
+	s.content_margin_bottom = 10
+	return s
+
+
+## Cream lettering with a plum outline (and soft shadow) for text on the scene, glass or wood.
+static func outline(control: Control, font_size: int = 18, color: Color = TEXT) -> void:
+	control.add_theme_color_override("font_color", color)
+	control.add_theme_color_override("font_outline_color", TEXT_OUTLINE)
+	control.add_theme_constant_override("outline_size", clampi(roundi(font_size / 4.0), 4, 12))
+	control.add_theme_color_override("font_shadow_color", Color(TEXT_OUTLINE, 0.45))
+	control.add_theme_constant_override("shadow_offset_x", 0)
+	control.add_theme_constant_override("shadow_offset_y", maxi(2, font_size / 12))
+
+
+## True for the warm light pixels of the kit's parchment paint (cream, ivory, sand).
+static func is_parchment(c: Color) -> bool:
+	return c.a > 0.02 and c.r > 0.78 and c.g > 0.62 and c.b > 0.42 and c.r - c.b < 0.5 and c.r >= c.g - 0.02
+
+
+## Gradient-maps pixels (all, or only parchment ones when `parchment_only`) to `dark`..`light`
+## by luminance, keeping each pixel's alpha times `alpha`. `region` (normalised) limits the
+## change, e.g. the track of toggle_off but not its knob. Returns a new RGBA8 image.
+static func recolor_image(source: Image, dark: Color, light: Color, parchment_only: bool = true, alpha: float = 1.0, region: Rect2 = Rect2(0, 0, 1, 1)) -> Image:
+	var image := source.duplicate() as Image
+	if image.is_compressed(): image.decompress()
+	image.convert(Image.FORMAT_RGBA8)
+	var w := image.get_width()
+	var h := image.get_height()
+	var x0 := floori(region.position.x * w)
+	var x1 := ceili(region.end.x * w)
+	var y0 := floori(region.position.y * h)
+	var y1 := ceili(region.end.y * h)
+	var low := 0.7 if parchment_only else 0.25
+	for y: int in range(y0, mini(y1, h)):
+		for x: int in range(x0, mini(x1, w)):
+			var c := image.get_pixel(x, y)
+			if c.a <= 0.0 or (parchment_only and not is_parchment(c)): continue
+			var lum := c.r * 0.3 + c.g * 0.55 + c.b * 0.15
+			var t := clampf((lum - low) / (1.0 - low), 0.0, 1.0)
+			var out := dark.lerp(light, t)
+			out.a = c.a * alpha
+			image.set_pixel(x, y, out)
+	return image
+
+
+## HUD chip (SCORE, NEXT, tray, pause gem): plum glass face in a thick biome-tinted rim.
+static func chip_box(biome: String = "meadow") -> StyleBox:
+	return chip_flat(biome)
+
+
+## Rim colours [rail, glint] for a biome's HUD frame and chips.
+static func biome_rim(biome: String) -> Array[Color]:
+	if BIOME_RIMS.has(biome):
+		var pair: Array = BIOME_RIMS[biome]
+		return [Color(String(pair[0])), Color(String(pair[1]))]
+	var rail := biome_frame(biome)
+	return [rail, rail.lightened(0.45)]
+
+
+## Plum glass chip in a 5 px biome rim with a heavier bottom lip (HUD SCORE / NEXT / goal).
+static func chip_flat(biome: String = "meadow", lit: bool = false) -> StyleBoxFlat:
+	var rim := biome_rim(biome)
+	var s := panel(Color(WOOD_PURPLE_DARK, 0.9) if not lit else Color(WOOD_PURPLE, 0.95), GOLD if lit else rim[0], 16, 5)
+	s.border_width_bottom = 8
+	s.shadow_color = Color(0.1, 0.04, 0.16, 0.35)
+	s.shadow_size = 6
+	s.shadow_offset = Vector2(0, 3)
+	return s
+
+
+## Tray / item slot: plum glass in a biome rim; `lit` (hold, selected) glows purple with gold.
+static func slot_flat(biome: String = "meadow", lit: bool = false) -> StyleBoxFlat:
+	var s := chip_flat(biome, lit)
+	s.set_corner_radius_all(14)
+	s.set_border_width_all(4)
+	s.border_width_bottom = 6
+	return s
+
+
+## Round gem button face (HUD icon bar, ref 15 pause gem): purple wood with a gold rim.
+## `round` false gives a lozenge (landscape clusters). `state` is normal/hover/pressed/disabled.
+static func gem(state: String = "normal", round: bool = true, fill: Color = WOOD_PURPLE) -> StyleBoxFlat:
+	var face := fill
+	if state == "hover": face = fill.lightened(0.12)
+	elif state == "pressed": face = fill.darkened(0.15)
+	elif state == "disabled": face = fill.lerp(PLUM_SOFT, 0.6).darkened(0.25)
+	var s := pill(face, GOLD_DEEP, state == "pressed", 999 if round else 18)
+	s.border_color = GOLD if state != "disabled" else PLUM_SOFT
+	s.set_border_width_all(3)
+	s.border_width_bottom = 3 if state == "pressed" else 6
+	for side: int in [SIDE_LEFT, SIDE_RIGHT]: s.set_content_margin(side, 6)
+	s.content_margin_top = 4 + (3 if state == "pressed" else 0)
+	s.content_margin_bottom = 6
+	return s
+
+
+## Full-screen HUD frame in the biome's rim colour: a thick rounded rail (centre not drawn).
+static func hud_frame(biome: String = "meadow") -> StyleBoxFlat:
+	var rim := biome_rim(biome)
+	var s := StyleBoxFlat.new()
+	s.draw_center = false
+	s.border_color = rim[0]
+	s.set_border_width_all(9)
+	s.set_corner_radius_all(26)
+	s.shadow_color = Color(rim[1], 0.35)
+	s.shadow_size = 3
+	s.anti_aliasing = true
+	return s
+
+
+## The palette as one Theme type ("Palette") plus the panel type variations screens use:
+## PlumPanel (content group glass), PlankRow (settings strip), HudChip (meadow chip).
+## Screens set `theme_type_variation` instead of overriding colours node by node.
+static func apply_palette(t: Theme) -> void:
+	for entry: Array in [["ink", PLUM], ["ink_soft", PLUM_SOFT], ["text", TEXT], ["text_soft", TEXT_SOFT], ["outline", TEXT_OUTLINE],
+			["glass", GLASS], ["glass_rim", GLASS_RIM], ["plank", PLANK], ["wood", WOOD], ["wood_dark", WOOD_DARK],
+			["purple", WOOD_PURPLE], ["purple_dark", WOOD_PURPLE_DARK], ["purple_light", WOOD_PURPLE_LIGHT],
+			["gold", GOLD], ["gold_deep", GOLD_DEEP], ["gold_glint", GOLD_GLINT], ["star_on", STAR_ON], ["star_dim", STAR_DIM],
+			["danger", DANGER_RED], ["go", GO_GREEN], ["mint", MINT]]:
+		t.set_color(String(entry[0]), &"Palette", entry[1])
+	t.set_type_variation(&"PlumPanel", &"PanelContainer")
+	t.set_stylebox(&"panel", &"PlumPanel", glass_box())
+	t.set_type_variation(&"PlankRow", &"PanelContainer")
+	t.set_stylebox(&"panel", &"PlankRow", plank_box())
+	t.set_type_variation(&"HudChip", &"PanelContainer")
+	t.set_stylebox(&"panel", &"HudChip", chip_flat())
+
+
+## Carved brown signboard for section headings ("AUDIO", card labels).
+static func sign_box() -> StyleBox:
+	var box: StyleBoxTexture = kit_box("sign_heading", 8.0)
+	return box if box != null else pill(WOOD, WOOD_DARK, false, 12)
+
+
+## Purple-wood title plaque with gold trim and curls ("SELECT MODE").
+static func plaque_box() -> StyleBox:
+	var box: StyleBoxTexture = kit_box("plaque_title", 12.0)
+	return box if box != null else panel(WOOD_PURPLE, GOLD, 40, 6)
+
+
+## Flat panel (plum glass by default) inside a painted-wood frame, with a soft drop shadow.
+static func panel(fill: Color = GLASS, frame: Color = WOOD, radius: int = 20, frame_width: int = 5) -> StyleBoxFlat:
 	var s := StyleBoxFlat.new()
 	s.bg_color = fill
 	s.border_color = frame
@@ -109,13 +318,14 @@ static func pill(fill: Color, lip: Color, pressed: bool = false, radius: int = 4
 	return s
 
 
-## Applies gold (primary) or cream (secondary) pill styles to a button.
+## Applies gold (primary) or purple (secondary) pill styles to a button (flat fallback when the
+## kit's btn_cream piece is missing it is used unchanged only as a gold pill).
 static func style_button(button: Button, primary: bool, radius: int = 40) -> void:
-	var kit_name: String = "btn_gold_pill" if primary else ("btn_cream_pill" if radius >= 22 else "btn_wood_square")
-	var normal: StyleBoxTexture = kit_box(kit_name, 10.0)
+	var normal: StyleBoxTexture = kit_box("btn_gold", 10.0) if primary else null
 	if normal != null:
-		var pressed: StyleBoxTexture = kit_box("btn_wood_square_pressed" if kit_name == "btn_wood_square" else kit_name, 10.0)
-		if kit_name != "btn_wood_square": pressed.modulate_color = Color(0.9, 0.88, 0.85)
+		var pressed: StyleBoxTexture = kit_box("btn_gold", 10.0)
+		pressed.modulate_color = Color(0.88, 0.85, 0.82)
+		pressed.content_margin_top += 3.0
 		var hover: StyleBoxTexture = normal.duplicate()
 		hover.modulate_color = Color(1.08, 1.08, 1.08)
 		var disabled: StyleBoxTexture = normal.duplicate()
@@ -130,8 +340,8 @@ static func style_button(button: Button, primary: bool, radius: int = 40) -> voi
 		button.add_theme_color_override("font_pressed_color", PLUM)
 		button.add_theme_color_override("font_hover_color", PLUM)
 		return
-	var fill: Color = GOLD if primary else CREAM_PILL
-	var lip: Color = GOLD_DEEP if primary else WOOD
+	var fill: Color = GOLD if primary else WOOD_PURPLE
+	var lip: Color = GOLD_DEEP if primary else WOOD_PURPLE_DARK
 	button.add_theme_stylebox_override("normal", pill(fill, lip, false, radius))
 	button.add_theme_stylebox_override("hover", pill(fill.lightened(0.08), lip, false, radius))
 	button.add_theme_stylebox_override("pressed", pill(fill, lip, true, radius))
@@ -139,22 +349,33 @@ static func style_button(button: Button, primary: bool, radius: int = 40) -> voi
 	var focus := pill(Color(0, 0, 0, 0), Color("ffffff"), false, radius)
 	focus.draw_center = false
 	button.add_theme_stylebox_override("focus", focus)
-	button.add_theme_color_override("font_color", PLUM if primary else PLUM)
-	button.add_theme_color_override("font_outline_color", Color(1, 1, 1, 0.55) if primary else Color(0, 0, 0, 0))
-	button.add_theme_constant_override("outline_size", 2 if primary else 0)
+	button.add_theme_color_override("font_color", PLUM if primary else TEXT)
+	button.add_theme_color_override("font_outline_color", Color(1, 1, 1, 0.55) if primary else TEXT_OUTLINE)
+	button.add_theme_constant_override("outline_size", 2 if primary else 4)
 
 
-## Full-screen painted sky (lavender storybook default, or a biome's sky colours).
-static func backdrop(colors: Array = ["#b7a1e6", "#e6dbf6", "#fbefe0"], cloud: String = "#ffffff", far: String = "#c8b8e8") -> ColorRect:
+## Painted scene for a biome (sky gradient, sun haze, cloud wisps, rounded mesas with
+## waterfalls, cloud sea): the in-game sky shader with the biome's `env.sky` spec from
+## biome_looks.json, so menus and mode cards share the level art. `motion` 0 freezes clouds.
+static func backdrop(biome: String = "meadow", motion: float = 1.0) -> ColorRect:
 	var rect := ColorRect.new()
 	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var record: Dictionary = WtBlockMaterials.look(StringName(biome))
+	var sky: Array = record.get("sky", ["#4F94E6", "#CFE6FB", "#FFF4E6"])
+	var spec: Dictionary = (record.get("env", {}) as Dictionary).get("sky", {})
 	var material := ShaderMaterial.new()
 	material.shader = load(SKY_SHADER) as Shader
-	material.set_shader_parameter(&"top", Color(String(colors[0])))
-	material.set_shader_parameter(&"middle", Color(String(colors[1])))
-	material.set_shader_parameter(&"bottom", Color(String(colors[2])))
-	material.set_shader_parameter(&"cloud", Color(cloud))
-	material.set_shader_parameter(&"far_island", Color(far))
+	material.set_shader_parameter(&"top", Color(String(sky[0])))
+	material.set_shader_parameter(&"horizon", Color(String(sky[mini(1, sky.size() - 1)])))
+	material.set_shader_parameter(&"low", Color(String(sky[sky.size() - 1])))
+	for key: String in ["cloud", "cloud_shade", "mountains", "nebula_a", "nebula_b", "mesa_top", "mesa_rock", "peak_rock", "peak_snow", "castle_color", "castle_roof"]:
+		if spec.has(key): material.set_shader_parameter(StringName(key), Color(String(spec[key])))
+	for key: String in ["cloud_amount", "mountain_amount", "stars", "nebula", "sun", "sea_line", "mesa_amount", "mesa_falls", "cloud_bank", "mesa_round", "peaks", "castle"]:
+		if spec.has(key): material.set_shader_parameter(StringName(key), float(spec[key]))
+	if spec.has("castle_pos"):
+		var cp: Array = spec["castle_pos"]
+		material.set_shader_parameter(&"castle_pos", Vector2(float(cp[0]), float(cp[1])))
+	material.set_shader_parameter(&"motion", motion)
 	rect.material = material
 	return rect
 

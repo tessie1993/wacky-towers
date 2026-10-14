@@ -225,6 +225,10 @@ func record_at(c: Vector3i) -> Dictionary:
 func down_vector() -> Vector3i:
 	return _board.down_vector()
 
+## Board mutation counter (see BoardState.revision). Usage: if api.board_revision() != seen: rebuild_cache()
+func board_revision() -> int:
+	return _board.revision()
+
 func layer_count() -> int:
 	return _board.layer_count()
 

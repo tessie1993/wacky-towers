@@ -10,6 +10,9 @@ const VARIANTS := {
 	"windy_tower":"Windy Tower", "meteor_shower":"Meteor Shower", "tallest_in_time":"Tallest in Time",
 	"gentle_drop":"Gentle Drop", "moving_platform":"Moving Platform", "domino_chain":"Domino Chain", "reach_out":"Reach Out"}
 const SOURCE: String = "res://design/gdd/physics-mode.md"
+## Every physics number lives here (design/gdd/physics-mode.md); nothing below hardcodes a tuning value.
+const TUNING_PATH: String = "res://assets/data/physics_tuning.json"
+const EMPTY_OFFSETS: Array[Vector3i] = []
 var variant: String = "tower_race"
 var _config: Dictionary = {}
 var _built: bool = false
@@ -50,7 +53,11 @@ var _chain_started: bool = false
 var _target: float = 8.0
 var _limit: float = 90.0
 var _bridge_walking: bool = false
-var _ray_mask: int = 1
+var _tuning: Dictionary = {}
+var _layer_world: int = 1
+var _layer_pieces: int = 2
+var _layer_meteors: int = 4
+var _ray_mask: int = 3
 var _settings: Dictionary = {}
 var _wind_flag: Node3D
 var _flag_target: Vector3 = Vector3(4.4,2.2,0)
@@ -59,6 +66,7 @@ var _next_probe_drop: float = 1.0
 
 
 func setup(config: Dictionary = {}) -> void:
+	_load_tuning()
 	_config=config.duplicate(true)
 	variant=str(config.get("variant","tower_race"))
 	if not VARIANTS.has(variant):variant="tower_race"
@@ -80,6 +88,7 @@ func _ready() -> void:
 func _build() -> void:
 	if _built:return
 	_built=true
+	_load_tuning()
 	_bank=load("res://assets/data/shapes/shape_bank.tres") as ShapeBank
 	for shape: ShapeDef in _bank.shapes:
 		if shape.cube_count>=3 and shape.cube_count<=5 and shape.family in [&"tetromino",&"flat"]:_choices.append(shape)
@@ -104,6 +113,31 @@ func _build_behaviour() -> void:
 		var action:=WtPhysicsAction.new();action.phase=phase;action.name="Advance_"+str(phase)
 		sequence.add_child(condition);sequence.add_child(action);selector.add_child(sequence)
 	_tree.add_child(selector);add_child(_tree)
+
+
+## Loads assets/data/physics_tuning.json once and resolves the collision layer bits.
+func _load_tuning() -> void:
+	if not _tuning.is_empty():return
+	var parsed: Variant=JSON.parse_string(FileAccess.get_file_as_string(TUNING_PATH))
+	if parsed is not Dictionary:
+		push_error("WtPhysicsChallenge: cannot read "+TUNING_PATH);return
+	_tuning=parsed
+	_layer_world=int(_tune("layers","world"));_layer_pieces=int(_tune("layers","pieces"));_layer_meteors=int(_tune("layers","meteors"))
+	_ray_mask=_layer_world|_layer_pieces
+
+
+## Reads one tuning number. Missing keys are reported once per call site and read as 0.
+func _tune(section: String, key: String) -> float:
+	var block: Variant=_tuning.get(section,null)
+	if block is Dictionary and (block as Dictionary).has(key):return float((block as Dictionary)[key])
+	push_error("WtPhysicsChallenge: missing tuning %s.%s"%[section,key])
+	return 0.0
+
+
+## True when reduced motion is on in the settings handed to setup() ("on" or a legacy bool).
+func _reduced_motion() -> bool:
+	var motion: Variant=_settings.get("reduced_motion","system")
+	return motion if motion is bool else str(motion)=="on"
 
 
 func behaviour_phase() -> StringName:
@@ -142,8 +176,9 @@ func _build_platform() -> void:
 			_static_box(Vector3(3.25,-.4,0),Vector3(3,.8,4),Color("#9CAA87"))
 		"seesaw":
 			var pivot:=StaticBody3D.new();pivot.name="Pivot";add_child(pivot)
-			_plank=RigidBody3D.new();_plank.name="PivotingPlank";_plank.mass=6;_plank.position=Vector3(0,-.18,0)
-			_plank.angular_damp=.8;_plank.linear_damp=.6;add_child(_plank)
+			_plank=RigidBody3D.new();_plank.name="PivotingPlank";_plank.mass=_tune("seesaw","plank_mass");_plank.position=Vector3(0,-.18,0)
+			_plank.collision_layer=_layer_world;_plank.collision_mask=_layer_pieces
+			_plank.angular_damp=_tune("seesaw","angular_damp");_plank.linear_damp=_tune("seesaw","linear_damp");add_child(_plank)
 			_add_box(_plank,Vector3.ZERO,Vector3(6,.36,3.5),Color("#BFA987"),true)
 			var hinge:=HingeJoint3D.new();hinge.name="ActualSeesawHinge";add_child(hinge)
 			hinge.node_a=pivot.get_path();hinge.node_b=_plank.get_path()
@@ -159,7 +194,7 @@ func _build_platform() -> void:
 		for x: float in [-2.65,2.65]:_static_box(Vector3(x,.9,0),Vector3(.3,2.4,5.6),Color("#B4B09A"))
 		for z: float in [-2.65,2.65]:_static_box(Vector3(0,.9,z),Vector3(5.6,2.4,.3),Color("#B4B09A"))
 	if variant=="domino_chain":
-		_bell=Area3D.new();_bell.name="RingableBell";_bell.position=Vector3(4.15,.75,0);_bell.collision_mask=1;add_child(_bell)
+		_bell=Area3D.new();_bell.name="RingableBell";_bell.position=Vector3(4.15,.75,0);_bell.collision_layer=0;_bell.collision_mask=_layer_pieces;add_child(_bell)
 		var shape:=CollisionShape3D.new();var sphere:=SphereShape3D.new();sphere.radius=.46;shape.shape=sphere;_bell.add_child(shape)
 		var mesh:=SphereMesh.new();mesh.radius=.46;mesh.height=.66;_mesh(_bell,mesh,Vector3.ZERO,Color("#C1AA79"))
 		_bell.body_entered.connect(_ring_bell)
@@ -211,28 +246,35 @@ func _spawn_piece() -> void:
 	if _moving!=null:body.position.x+=_moving.position.x
 	_controlled=body;_hard=false;_released_time=0;_still_time=0;_move_remaining=0
 	body.body_entered.connect(_first_contact.bind(body))
+	body.body_entered.connect(_squash_piece.bind(body),CONNECT_ONE_SHOT)
 
 
 func _make_body(offsets: Array[Vector3i], hue: int) -> RigidBody3D:
-	var body:=RigidBody3D.new();body.mass=maxf(1,offsets.size());body.linear_damp=.8;body.angular_damp=.9
-	body.continuous_cd=true;body.contact_monitor=true;body.max_contacts_reported=16;body.collision_layer=1;body.collision_mask=1
-	var material:=PhysicsMaterial.new();material.friction=.8;material.bounce=.05;body.physics_material_override=material
+	var body:=RigidBody3D.new();body.mass=maxf(1,offsets.size())*_tune("piece","mass_per_cube")
+	# REPLACE: the damping below is the whole damping, the project-wide default is not added on top.
+	body.linear_damp_mode=RigidBody3D.DAMP_MODE_REPLACE;body.angular_damp_mode=RigidBody3D.DAMP_MODE_REPLACE
+	body.linear_damp=_tune("piece","linear_damp");body.angular_damp=_tune("piece","angular_damp")
+	body.continuous_cd=_tune("piece","ccd")>0.0;body.contact_monitor=true;body.max_contacts_reported=int(_tune("piece","max_contacts_reported"))
+	body.collision_layer=_layer_pieces;body.collision_mask=_layer_world|_layer_pieces|_layer_meteors
+	var material:=PhysicsMaterial.new();material.friction=_tune("piece","friction");material.bounce=_tune("piece","bounce");body.physics_material_override=material
 	body.set_meta("offsets",offsets.duplicate());body.set_meta("hue",hue);body.set_meta("settled",false);body.set_meta("dropped",false)
 	var mm:=MultiMesh.new();mm.transform_format=MultiMesh.TRANSFORM_3D;mm.use_colors=true;mm.mesh=_art.cube_mesh();mm.instance_count=offsets.size()
 	var view:=MultiMeshInstance3D.new();view.multimesh=mm
-	var mat:=StandardMaterial3D.new();mat.vertex_color_use_as_albedo=true;mat.roughness=.75;view.material_override=mat;body.add_child(view)
+	var mat:=StandardMaterial3D.new();mat.vertex_color_use_as_albedo=true;mat.roughness=.75;view.material_override=mat;body.add_child(view);body.set_meta("view",view)
 	for i: int in offsets.size():
 		mm.set_instance_transform(i,Transform3D(Basis.from_scale(Vector3.ONE*_art.cube_scale()*.98),Vector3(offsets[i])))
 		mm.set_instance_color(i,_palette.color(hue))
-		var shape:=CollisionShape3D.new();var cube:=BoxShape3D.new();cube.size=Vector3.ONE*.98;shape.shape=cube;shape.position=Vector3(offsets[i]);body.add_child(shape)
+		var shape:=CollisionShape3D.new();var cube:=BoxShape3D.new();cube.size=Vector3.ONE*_tune("piece","cube_collider_size");shape.shape=cube;shape.position=Vector3(offsets[i]);body.add_child(shape)
 	add_child(body);_bodies.append(body);return body
 
 
 func _control_descent(delta: float) -> void:
 	if not is_instance_valid(_controlled):return
-	var g: float=float(_config.get("g",1.8))
-	var speed: float=g*(12.0 if _hard else (4.0 if _soft else 1.0))
+	var g: float=float(_config.get("g",_tune("descent","default_g")))
+	var speed: float=g*(_tune("descent","hard_mult") if _hard else (_tune("descent","soft_mult") if _soft else 1.0))
+	# Gentle Drop judges the commanded speed, so the approach slow-down below never softens the fragility rule.
 	_controlled.set_meta("impact_speed",speed)
+	if _hard:speed=minf(speed,_approach_speed(delta))
 	var velocity:=Vector3(0,-speed,0)
 	if _move_remaining>0:
 		var remaining: float=maxf(delta,_move_remaining)
@@ -240,6 +282,37 @@ func _control_descent(delta: float) -> void:
 		velocity.z=(_move_goal.z-_controlled.position.z)/remaining
 		_move_remaining=maxf(0,_move_remaining-delta)
 	_controlled.linear_velocity=velocity;_controlled.angular_velocity=Vector3.ZERO
+
+
+## Caps a hard drop so one physics tick never carries the piece further than a share of the raycast
+## landing gap (the same raycast the ghost uses): the piece decelerates onto the surface instead of slamming through it.
+func _approach_speed(delta: float) -> float:
+	var gap: float=_landing_gap(get_world_3d().direct_space_state)
+	if gap>=99.0:return INF
+	return maxf(_tune("descent","approach_min_speed"),gap/(maxf(delta,0.0001)*_tune("descent","approach_ticks")))
+
+
+## Smallest vertical distance between the controlled piece and whatever it would land on (100 when nothing is below).
+func _landing_gap(space: PhysicsDirectSpaceState3D) -> float:
+	var offsets: Array[Vector3i]=_controlled.get_meta("offsets",EMPTY_OFFSETS);var gap: float=100.0
+	var start: float=_tune("descent","ray_start_offset");var floor_y: float=_tune("descent","ray_floor_y")
+	for cell: Vector3i in offsets:
+		var p: Vector3=_controlled.global_transform*Vector3(cell)
+		var query:=PhysicsRayQueryParameters3D.create(Vector3(p.x,p.y-start,p.z),Vector3(p.x,floor_y,p.z),_ray_mask,[_controlled.get_rid()])
+		var hit: Dictionary=space.intersect_ray(query)
+		if not hit.is_empty():gap=minf(gap,p.y-.5-float(hit.position.y))
+	return gap
+
+
+## Visual-only landing squash: scales the block mesh child, never the collider. Skipped under reduced motion.
+func _squash_piece(_other: Node, body: RigidBody3D) -> void:
+	if _reduced_motion() or not is_instance_valid(body):return
+	var node: Node3D=body.get_meta("view",null) as Node3D
+	if node==null:return
+	var amount: float=_tune("squash","amount")
+	var tween: Tween=node.create_tween()
+	tween.tween_property(node,"scale",Vector3(1.0+amount,1.0-amount,1.0+amount),_tune("squash","squash_seconds")).set_ease(Tween.EASE_OUT)
+	tween.tween_property(node,"scale",Vector3.ONE,_tune("squash","recover_seconds")).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
 
 func _first_contact(other: Node, body: RigidBody3D) -> void:
@@ -257,19 +330,25 @@ func _first_contact(other: Node, body: RigidBody3D) -> void:
 func _observe_settle(delta: float) -> void:
 	if not is_instance_valid(_controlled):return
 	_released_time+=delta
-	if _controlled.linear_velocity.length()<.2 and _controlled.angular_velocity.length()<deg_to_rad(10):_still_time+=delta
+	if _is_at_rest(_controlled):_still_time+=delta
 	else:_still_time=0
-	if _still_time>=.4 or _released_time>=3.0:_settle(_controlled)
+	if _still_time>=_tune("settle","still_seconds") or _released_time>=_tune("settle","max_seconds"):_settle(_controlled)
+
+
+## True when the body is slower than the settle velocity (linear and angular).
+func _is_at_rest(body: RigidBody3D) -> bool:
+	return body.linear_velocity.length()<_tune("settle","linear_speed") and body.angular_velocity.length()<deg_to_rad(_tune("settle","angular_speed_deg"))
 
 
 func _settle(body: RigidBody3D) -> void:
 	if not is_instance_valid(body) or bool(body.get_meta("dropped",false)):return
 	body.set_meta("settled",true);body.set_meta("controlled",false);_pieces+=1
+	body.contact_monitor=false # settled pieces no longer report contacts
 	if variant=="grid_settle":
-		var basis: Basis=body.basis.orthonormalized();var best: int=0;var best_score: float=-10
+		var current: Basis=body.basis.orthonormalized();var best: int=0;var best_score: float=-10
 		for i: int in Orientations.COUNT:
 			var candidate: Basis=_orientation_basis(i)
-			var score: float=basis.x.dot(candidate.x)+basis.y.dot(candidate.y)+basis.z.dot(candidate.z)
+			var score: float=current.x.dot(candidate.x)+current.y.dot(candidate.y)+current.z.dot(candidate.z)
 			if score>best_score:best_score=score;best=i
 		body.basis=_orientation_basis(best);body.position=Vector3(roundf(body.position.x-.5)+.5,roundf(body.position.y-.5)+.5,roundf(body.position.z-.5)+.5)
 		_grid_clear_layers()
@@ -290,7 +369,7 @@ func _count_drop(body: RigidBody3D, reason: String = "fell") -> void:
 func _world_rules(delta: float) -> void:
 	for body: RigidBody3D in _bodies.duplicate():
 		if not is_instance_valid(body):_bodies.erase(body);continue
-		if body.position.y< -3:_count_drop(body)
+		if body.position.y<_tune("world","fall_kill_y"):_count_drop(body)
 		elif variant=="bowl_fill" and body.position.y<2.1 and (absf(body.position.x)>3.1 or absf(body.position.z)>3.1):_count_drop(body,"spill")
 	if _moving!=null:_moving.position.x=sin(_time*.43)*1.8
 	if _plank!=null:
@@ -298,16 +377,17 @@ func _world_rules(delta: float) -> void:
 		_tilt_time=_tilt_time+delta if tilt>25 else 0.0
 		if _tilt_time>=2:_finish(false)
 	if variant=="windy_tower":
-		var gust: float=sin(_time*2.1)*3.7 if fmod(_time,7.0)>4.5 else 0.0
+		var gust: float=sin(_time*_tune("wind","gust_freq"))*_tune("wind","gust_force") if fmod(_time,_tune("wind","period"))>_tune("wind","gust_after") else 0.0
 		_wind_flag.rotation.y=gust*.13
 		for body: RigidBody3D in _bodies:
 			if not body.freeze and not bool(body.get_meta("controlled",false)):body.apply_central_force(Vector3(gust*body.mass,0,0))
-	if variant=="meteor_shower" and _time-_last_meteor>=3:
+	if variant=="meteor_shower" and _time-_last_meteor>=_tune("meteor","interval"):
 		_last_meteor=_time;_spawn_meteor()
 	if variant=="reach_out" and _pieces>=3:
 		for body: RigidBody3D in _bodies:
 			if not bool(body.get_meta("honey_anchored",false)):continue
-			for cell: Vector3i in body.get_meta("offsets"):
+			var offsets: Array[Vector3i]=body.get_meta("offsets",EMPTY_OFFSETS)
+			for cell: Vector3i in offsets:
 				if (body.global_transform*Vector3(cell)).distance_to(_flag_target)<.9:_finish(true)
 
 
@@ -320,19 +400,26 @@ func _measure_height() -> void:
 func _body_top(body: RigidBody3D) -> float:
 	var top: float=-100
 	var half: float=(absf(body.basis.x.y)+absf(body.basis.y.y)+absf(body.basis.z.y))*.5
-	for cell: Vector3i in body.get_meta("offsets",[]):top=maxf(top,(body.global_transform*Vector3(cell)).y+half)
+	var offsets: Array[Vector3i]=body.get_meta("offsets",EMPTY_OFFSETS)
+	for cell: Vector3i in offsets:top=maxf(top,(body.global_transform*Vector3(cell)).y+half)
 	return top
 
 
 func _freeze_budget() -> void:
 	var active: Array[RigidBody3D]=[]
-	var depth: float=3.0 if Engine.get_frames_per_second()<50 and _time>3 else 4.0
+	var tops: Dictionary={} # RigidBody3D -> top height, computed once per body per tick
+	var low_fps: bool=Engine.get_frames_per_second()<_tune("freeze","low_fps") and _time>_tune("freeze","low_fps_after")
+	var depth: float=_tune("freeze","depth_low_fps") if low_fps else _tune("freeze","depth")
 	for body: RigidBody3D in _bodies:
-		if not bool(body.get_meta("settled",false)):continue
-		if _body_top(body)<_height-depth:body.freeze=true
-		elif not body.freeze:active.append(body)
-	active.sort_custom(func(a: RigidBody3D,b: RigidBody3D)->bool:return _body_top(a)<_body_top(b))
-	while active.size()>39:
+		if not bool(body.get_meta("settled",false)) or body.freeze:continue
+		# Never freeze a body that is still moving (mid-topple); it is retried on a later tick.
+		if not _is_at_rest(body):continue
+		var top: float=_body_top(body);tops[body]=top
+		if top<_height-depth:body.freeze=true
+		else:active.append(body)
+	active.sort_custom(func(a: RigidBody3D,b: RigidBody3D)->bool:return float(tops[a])<float(tops[b]))
+	var budget: int=int(_tune("freeze","max_active"))
+	while active.size()>budget:
 		var body: RigidBody3D=active.pop_front();body.freeze=true
 
 
@@ -354,10 +441,11 @@ func _check_goal(delta: float) -> void:
 func _check_bridge() -> void:
 	if _bridge_walking or _pieces<2:return
 	var previous: float=-100
+	var space: PhysicsDirectSpaceState3D=get_world_3d().direct_space_state
 	for i: int in 21:
 		var x: float=-3.3+i*.33
-		var query:=PhysicsRayQueryParameters3D.create(Vector3(x,5,0),Vector3(x,-1,0),1)
-		var hit: Dictionary=get_world_3d().direct_space_state.intersect_ray(query)
+		var query:=PhysicsRayQueryParameters3D.create(Vector3(x,5,0),Vector3(x,-1,0),_ray_mask)
+		var hit: Dictionary=space.intersect_ray(query)
 		if hit.is_empty():return
 		if hit.collider is RigidBody3D and not bool(hit.collider.get_meta("settled",false)):return
 		if previous> -90 and absf(previous-hit.position.y)>1.05:return
@@ -367,18 +455,20 @@ func _check_bridge() -> void:
 
 
 func _spawn_meteor() -> void:
-	var meteor:=RigidBody3D.new();meteor.mass=2;meteor.position=Vector3(_rng.randf_range(-2.5,2.5),16,_rng.randf_range(-2.5,2.5))
-	meteor.contact_monitor=true;meteor.max_contacts_reported=8;meteor.continuous_cd=true
-	var shape:=CollisionShape3D.new();var sphere:=SphereShape3D.new();sphere.radius=.38;shape.shape=sphere;meteor.add_child(shape)
-	var mesh:=SphereMesh.new();mesh.radius=.38;mesh.height=.76;_mesh(meteor,mesh,Vector3.ZERO,Color("#A99B92"));add_child(meteor)
+	var radius: float=_tune("meteor","radius");var spread: float=_tune("meteor","spawn_spread")
+	var meteor:=RigidBody3D.new();meteor.mass=_tune("meteor","mass");meteor.position=Vector3(_rng.randf_range(-spread,spread),_tune("meteor","spawn_height"),_rng.randf_range(-spread,spread))
+	meteor.contact_monitor=true;meteor.max_contacts_reported=int(_tune("meteor","max_contacts_reported"));meteor.continuous_cd=_tune("meteor","ccd")>0.0
+	meteor.collision_layer=_layer_meteors;meteor.collision_mask=_layer_world|_layer_pieces
+	var shape:=CollisionShape3D.new();var sphere:=SphereShape3D.new();sphere.radius=radius;shape.shape=sphere;meteor.add_child(shape)
+	var mesh:=SphereMesh.new();mesh.radius=radius;mesh.height=radius*2.0;_mesh(meteor,mesh,Vector3.ZERO,Color("#A99B92"));add_child(meteor)
 	meteor.body_entered.connect(func(body: Node)->void:
 		if body is RigidBody3D and body!=meteor:body.freeze=false)
-	get_tree().create_timer(12).timeout.connect(func()->void:
+	get_tree().create_timer(_tune("meteor","lifetime")).timeout.connect(func()->void:
 		if is_instance_valid(meteor):meteor.queue_free())
 
 
 func _ring_bell(body: Node) -> void:
-	if _chain_started and _pieces>=3 and body is RigidBody3D:_finish(true)
+	if _chain_started and _pieces>=int(_tune("domino","min_pieces")) and body is RigidBody3D:_finish(true)
 
 
 func _grid_clear_layers() -> void:
@@ -387,9 +477,10 @@ func _grid_clear_layers() -> void:
 	for body: RigidBody3D in _bodies:
 		if not bool(body.get_meta("settled",false)):continue
 		var cells: Array[Vector3i]=[]
-		for cell: Vector3i in body.get_meta("offsets"):
-			var position: Vector3=body.global_transform*Vector3(cell)
-			var global_cell:=Vector3i(roundi(position.x-.5),roundi(position.y-.5),roundi(position.z-.5));cells.append(global_cell)
+		var body_offsets: Array[Vector3i]=body.get_meta("offsets",EMPTY_OFFSETS)
+		for cell: Vector3i in body_offsets:
+			var world_pos: Vector3=body.global_transform*Vector3(cell)
+			var global_cell:=Vector3i(roundi(world_pos.x-.5),roundi(world_pos.y-.5),roundi(world_pos.z-.5));cells.append(global_cell)
 			if global_cell.x>=-2 and global_cell.x<2 and global_cell.z>=-2 and global_cell.z<2:
 				if not layers.has(global_cell.y):layers[global_cell.y]={}
 				layers[global_cell.y][Vector2i(global_cell.x,global_cell.z)]=true
@@ -412,19 +503,15 @@ func _grid_clear_layers() -> void:
 					if remaining.has(cell+dir):connected.append(cell+dir);remaining.erase(cell+dir)
 			var origin: Vector3i=connected[0];var offsets: Array[Vector3i]=[]
 			for cell: Vector3i in connected:offsets.append(cell-origin)
-			var chunk: RigidBody3D=_make_body(offsets,hue);chunk.position=Vector3(origin)+Vector3.ONE*.5;chunk.set_meta("settled",true)
+			var chunk: RigidBody3D=_make_body(offsets,hue);chunk.position=Vector3(origin)+Vector3.ONE*.5;chunk.set_meta("settled",true);chunk.contact_monitor=false
 	_audio.cue(&"clear")
 
 
 func _update_ghost() -> void:
 	if not is_instance_valid(_controlled) or not bool(_controlled.get_meta("controlled",false)):
 		_ghost.multimesh.visible_instance_count=0;return
-	var cells: Array=_controlled.get_meta("offsets",[]);var shift: float=100
-	for cell: Vector3i in cells:
-		var p: Vector3=_controlled.global_transform*Vector3(cell)
-		var query:=PhysicsRayQueryParameters3D.create(Vector3(p.x,p.y-.51,p.z),Vector3(p.x,-4,p.z),_ray_mask,[_controlled.get_rid()])
-		var hit: Dictionary=get_world_3d().direct_space_state.intersect_ray(query)
-		if not hit.is_empty():shift=minf(shift,p.y-.5-hit.position.y)
+	var cells: Array[Vector3i]=_controlled.get_meta("offsets",EMPTY_OFFSETS)
+	var shift: float=_landing_gap(get_world_3d().direct_space_state)
 	if shift>=99:_ghost.multimesh.visible_instance_count=0;return
 	for i: int in mini(64,cells.size()):
 		var p: Vector3=_controlled.global_transform*Vector3(cells[i]);p.y-=maxf(0,shift)
@@ -436,11 +523,14 @@ func command(action: String, value: Variant = null) -> void:
 	if action=="back":return_requested.emit();return
 	if action=="restart":get_tree().reload_current_scene();return
 	if action=="view":_view=posmod(_view+int(value),12);_update_camera();return
-	if action=="push" and variant=="domino_chain" and _pieces>=3:
+	if action=="push" and variant=="domino_chain" and _pieces>=int(_tune("domino","min_pieces")):
 		_chain_started=true
+		# Push only: one impulse at the TOP of the first settled column; column spacing is never touched.
 		for body: RigidBody3D in _bodies:
 			if bool(body.get_meta("settled",false)):
-				body.freeze=false;body.apply_impulse(Vector3(6,0,0),Vector3(0,1.4,0));break
+				var offsets: Array[Vector3i]=body.get_meta("offsets",EMPTY_OFFSETS);var top_y: float=0.0
+				for cell: Vector3i in offsets:top_y=maxf(top_y,float(cell.y))
+				body.freeze=false;body.apply_impulse(Vector3(_tune("domino","push_strength"),0,0),body.global_basis*Vector3(0,top_y,0));break
 		return
 	if not is_instance_valid(_controlled) or not bool(_controlled.get_meta("controlled",false)) or _done:return
 	match action:
@@ -513,20 +603,20 @@ func _update_hud() -> void:
 	snapshot_changed.emit(snapshot())
 
 
-func _static_box(position: Vector3,size: Vector3,color: Color) -> StaticBody3D:
-	var body:=StaticBody3D.new();body.position=position;add_child(body);_add_box(body,Vector3.ZERO,size,color,true)
-	var material:=PhysicsMaterial.new();material.friction=.8;material.bounce=.05;body.physics_material_override=material;return body
+func _static_box(pos: Vector3,size: Vector3,color: Color) -> StaticBody3D:
+	var body:=StaticBody3D.new();body.position=pos;body.collision_layer=_layer_world;body.collision_mask=0;add_child(body);_add_box(body,Vector3.ZERO,size,color,true)
+	var material:=PhysicsMaterial.new();material.friction=_tune("world","friction");material.bounce=_tune("world","bounce");body.physics_material_override=material;return body
 
 
-func _add_box(parent: Node3D, position: Vector3,size: Vector3,color: Color,collision: bool) -> MeshInstance3D:
-	var box:=BoxMesh.new();box.size=size;var view: MeshInstance3D=_mesh(parent,box,position,color)
+func _add_box(parent: Node3D, local_pos: Vector3,size: Vector3,color: Color,collision: bool) -> MeshInstance3D:
+	var box:=BoxMesh.new();box.size=size;var view: MeshInstance3D=_mesh(parent,box,local_pos,color)
 	if collision:
-		var shape:=CollisionShape3D.new();var cube:=BoxShape3D.new();cube.size=size;shape.shape=cube;shape.position=position;parent.add_child(shape)
+		var shape:=CollisionShape3D.new();var cube:=BoxShape3D.new();cube.size=size;shape.shape=cube;shape.position=local_pos;parent.add_child(shape)
 	return view
 
 
-func _mesh(parent: Node3D, mesh: Mesh,position: Vector3,color: Color) -> MeshInstance3D:
-	var view:=MeshInstance3D.new();view.mesh=mesh;view.position=position
+func _mesh(parent: Node3D, mesh: Mesh,local_pos: Vector3,color: Color) -> MeshInstance3D:
+	var view:=MeshInstance3D.new();view.mesh=mesh;view.position=local_pos
 	var material:=StandardMaterial3D.new();material.albedo_color=color;material.roughness=.85;view.material_override=material;parent.add_child(view);return view
 
 

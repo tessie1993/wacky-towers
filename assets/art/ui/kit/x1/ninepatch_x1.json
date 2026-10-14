@@ -1,0 +1,253 @@
+{
+ "scale": 1,
+ "source_scale": 2,
+ "patches": {
+  "panel_parchment": {
+   "file": "res://assets/art/ui/kit/x1/panel_parchment.png",
+   "left": 30,
+   "top": 30,
+   "right": 30,
+   "bottom": 32,
+   "size": [
+    128,
+    128
+   ]
+  },
+  "frame_purple": {
+   "file": "res://assets/art/ui/kit/x1/frame_purple.png",
+   "left": 118,
+   "top": 118,
+   "right": 118,
+   "bottom": 118,
+   "size": [
+    256,
+    256
+   ]
+  },
+  "frame_purple_open": {
+   "file": "res://assets/art/ui/kit/x1/frame_purple_open.png",
+   "left": 118,
+   "top": 118,
+   "right": 118,
+   "bottom": 118,
+   "size": [
+    256,
+    256
+   ]
+  },
+  "panel_wood": {
+   "file": "res://assets/art/ui/kit/x1/panel_wood.png",
+   "left": 36,
+   "top": 36,
+   "right": 36,
+   "bottom": 38,
+   "size": [
+    192,
+    192
+   ]
+  },
+  "plaque_title": {
+   "file": "res://assets/art/ui/kit/x1/plaque_title.png",
+   "left": 75,
+   "top": 32,
+   "right": 75,
+   "bottom": 32,
+   "size": [
+    320,
+    100
+   ]
+  },
+  "btn_gold": {
+   "file": "res://assets/art/ui/kit/x1/btn_gold.png",
+   "left": 32,
+   "top": 22,
+   "right": 32,
+   "bottom": 27,
+   "size": [
+    160,
+    64
+   ]
+  },
+  "btn_cream": {
+   "file": "res://assets/art/ui/kit/x1/btn_cream.png",
+   "left": 32,
+   "top": 22,
+   "right": 32,
+   "bottom": 27,
+   "size": [
+    160,
+    64
+   ]
+  },
+  "btn_close": {
+   "file": "res://assets/art/ui/kit/x1/btn_close.png",
+   "left": 24,
+   "top": 24,
+   "right": 24,
+   "bottom": 24,
+   "size": [
+    72,
+    72
+   ]
+  },
+  "chip_hud": {
+   "file": "res://assets/art/ui/kit/x1/chip_hud.png",
+   "left": 37,
+   "top": 37,
+   "right": 37,
+   "bottom": 37,
+   "size": [
+    128,
+    128
+   ]
+  },
+  "chip_hud_ice": {
+   "file": "res://assets/art/ui/kit/x1/chip_hud_ice.png",
+   "left": 37,
+   "top": 37,
+   "right": 37,
+   "bottom": 37,
+   "size": [
+    128,
+    128
+   ]
+  },
+  "chip_hud_celestial": {
+   "file": "res://assets/art/ui/kit/x1/chip_hud_celestial.png",
+   "left": 37,
+   "top": 37,
+   "right": 37,
+   "bottom": 37,
+   "size": [
+    128,
+    128
+   ]
+  },
+  "tray_slot": {
+   "file": "res://assets/art/ui/kit/x1/tray_slot.png",
+   "left": 28,
+   "top": 28,
+   "right": 28,
+   "bottom": 28,
+   "size": [
+    96,
+    96
+   ]
+  },
+  "toggle_on": {
+   "file": "res://assets/art/ui/kit/x1/toggle_on.png",
+   "left": 22,
+   "top": 15,
+   "right": 22,
+   "bottom": 15,
+   "size": [
+    96,
+    48
+   ]
+  },
+  "toggle_off": {
+   "file": "res://assets/art/ui/kit/x1/toggle_off.png",
+   "left": 22,
+   "top": 15,
+   "right": 22,
+   "bottom": 15,
+   "size": [
+    96,
+    48
+   ]
+  },
+  "slider_track": {
+   "file": "res://assets/art/ui/kit/x1/slider_track.png",
+   "left": 20,
+   "top": 15,
+   "right": 20,
+   "bottom": 15,
+   "size": [
+    192,
+    36
+   ]
+  },
+  "slider_star_thumb": {
+   "file": "res://assets/art/ui/kit/x1/slider_star_thumb.png",
+   "left": 0,
+   "top": 0,
+   "right": 0,
+   "bottom": 0,
+   "size": [
+    56,
+    56
+   ]
+  },
+  "sign_heading": {
+   "file": "res://assets/art/ui/kit/x1/sign_heading.png",
+   "left": 24,
+   "top": 17,
+   "right": 24,
+   "bottom": 18,
+   "size": [
+    160,
+    48
+   ]
+  },
+  "btn_gold_pill": {
+   "file": "res://assets/art/ui/kit/x1/btn_gold.png",
+   "left": 32,
+   "top": 22,
+   "right": 32,
+   "bottom": 27,
+   "size": [
+    160,
+    64
+   ],
+   "alias_of": "btn_gold"
+  },
+  "btn_cream_pill": {
+   "file": "res://assets/art/ui/kit/x1/btn_cream.png",
+   "left": 32,
+   "top": 22,
+   "right": 32,
+   "bottom": 27,
+   "size": [
+    160,
+    64
+   ],
+   "alias_of": "btn_cream"
+  },
+  "btn_wood_square": {
+   "file": "res://assets/art/ui/kit/x1/btn_cream.png",
+   "left": 32,
+   "top": 22,
+   "right": 32,
+   "bottom": 27,
+   "size": [
+    160,
+    64
+   ],
+   "alias_of": "btn_cream"
+  },
+  "btn_wood_square_pressed": {
+   "file": "res://assets/art/ui/kit/x1/btn_cream.png",
+   "left": 32,
+   "top": 22,
+   "right": 32,
+   "bottom": 27,
+   "size": [
+    160,
+    64
+   ],
+   "alias_of": "btn_cream"
+  },
+  "chip_hud_meadow": {
+   "file": "res://assets/art/ui/kit/x1/chip_hud.png",
+   "left": 37,
+   "top": 37,
+   "right": 37,
+   "bottom": 37,
+   "size": [
+    128,
+    128
+   ],
+   "alias_of": "chip_hud"
+  }
+ }
+}

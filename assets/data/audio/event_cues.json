@@ -1,0 +1,239 @@
+{
+ "schema_version": 1,
+ "board_events": {
+  "magnet_warning": "SFX_W3_MAGNET_HUM",
+  "magnet_pull": "SFX_W3_MAGNET_PULL",
+  "tile_cracking": "SFX_W3_TILE_CRACK",
+  "tile_crumbled": "SFX_W3_TILE_CRUMBLE",
+  "chameleon": "SFX_W3_CHAMELEON",
+  "anvil_spawned": "SFX_W3_ANVIL_WHISTLE",
+  "anvil_crush": "SFX_W3_ANVIL_CLANG",
+  "queue_jumble_warning": "SFX_W3_JUMBLE_WARN",
+  "queue_jumbled": "SFX_W3_QUEUE_JUMBLE",
+  "mystery_reveal": "SFX_W3_MYSTERY_REVEAL",
+  "pressure": "SFX_W3_PRESSURE_HISS",
+  "pressure_release": "SFX_W3_PRESSURE_RELEASE",
+  "coin_collected": "SFX_W3_COIN",
+  "echo": "SFX_W3_ECHO",
+  "hinge_stuck": "SFX_W3_HINGE_STUCK",
+  "bolt_warning": "SFX_W3_BOLT_WARNING",
+  "bolt_strike": "SFX_W3_BOLT_STRIKE",
+  "bolt_fizzle": "SFX_W3_BOLT_FIZZLE",
+  "confetti": "SFX_W3_CONFETTI",
+  "quicksand_warning": "SFX_W3_QUICKSAND_WARN",
+  "quicksand_sink": "SFX_W3_QUICKSAND_SINK",
+  "fever_start": "SFX_W3_FEVER_START",
+  "fever_end": "SFX_W3_FEVER_END",
+  "gold_layer": "SFX_W3_GOLD_ROW",
+  "gold_cleared": "SFX_W3_GOLD_CLEAR",
+  "gust": "SFX_EV_GUST",
+  "wind": "SFX_EV_GUST",
+  "gust_warning": "SFX_EV_WARNING",
+  "gust_telegraph": "SFX_EV_WARNING",
+  "flip_warning": "SFX_EV_WARNING",
+  "boss_windup": "SFX_EV_WARNING",
+  "windup": "SFX_EV_WARNING",
+  "gravity_flip": "SFX_EV_FLIP",
+  "gravity_changed": "SFX_EV_FLIP"
+ },
+ "sim_events": {
+  "piece_moved": {
+   "when": {
+    "cause": "move"
+   },
+   "cues": [
+    "SFX_PIECE_MOVE"
+   ]
+  },
+  "piece_blocked": {
+   "cues": [
+    "SFX_PIECE_BLOCKED"
+   ]
+  },
+  "piece_rotated": {
+   "handler": "rotate"
+  },
+  "piece_locked": {
+   "cues": [
+    "SFX_PIECE_LOCK"
+   ],
+   "extra": [
+    {
+     "when": {
+      "cause": "hard_drop"
+     },
+     "cues": [
+      "SFX_DROP_HARD"
+     ]
+    }
+   ],
+   "handler": "near_miss"
+  },
+  "layers_cleared": {
+   "handler": "clear"
+  },
+  "secret_collected": {
+   "cues": [
+    "SFX_SECRET_COLLECT"
+   ]
+  },
+  "top_out_warning": {
+   "cues": [
+    "SFX_GOAL_WARNING"
+   ]
+  },
+  "level_failed": {
+   "cues": [
+    "SFX_GOAL_LOSE"
+   ]
+  },
+  "goal_reached": {
+   "cues": [
+    "SFX_GOAL_WIN"
+   ]
+  },
+  "rescue_wiped": {
+   "cues": [
+    "SFX_GOAL_RESCUE"
+   ]
+  }
+ },
+ "scaling": {
+  "ripple_st": [
+   0,
+   2,
+   4,
+   7,
+   9,
+   12
+  ],
+  "clear_stagger_ms": 100,
+  "tier_cues": [
+   "SFX_CLEAR_1",
+   "SFX_CLEAR_2",
+   "SFX_CLEAR_3",
+   "SFX_CLEAR_4"
+  ],
+  "tier_gain_db": [
+   0.0,
+   1.0,
+   2.0,
+   3.0
+  ],
+  "tier_extra": {
+   "4": [
+    "SFX_CLEAR_4_POP"
+   ]
+  },
+  "combo_cue": "SFX_CLEAR_COMBO",
+  "combo_step_st": 1.0,
+  "combo_cap_st": 6.0,
+  "combo_min_round": 2,
+  "rotation_st": {
+   "turn": 5.0,
+   "flip": 2.0,
+   "roll": -1.0
+  },
+  "danger_cue": "SFX_GOAL_DANGER",
+  "danger_margin_cells": 2,
+  "nearmiss_cue": "SFX_GOAL_NEARMISS",
+  "star_st": [
+   0,
+   3,
+   7
+  ],
+  "star_spacing_ms": 300,
+  "toggle_st": {
+   "on": 2.0,
+   "off": -2.0
+  }
+ },
+ "stage_legacy_ids": [
+  "lock",
+  "clear",
+  "rotate",
+  "warning",
+  "win",
+  "lose",
+  "SFX_PIECE_LOCK",
+  "SFX_CLEAR_LAYER",
+  "SFX_ROTATE",
+  "SFX_GOAL_WARNING",
+  "SFX_GOAL_WIN",
+  "SFX_GOAL_LOSE"
+ ],
+ "ui": {
+  "tap": "SFX_UI_TAP",
+  "back": "SFX_UI_BACK",
+  "confirm": "SFX_UI_CONFIRM",
+  "toggle": "SFX_UI_TOGGLE",
+  "whoosh": "SFX_UI_WHOOSH",
+  "star": "SFX_UI_STAR",
+  "unlock": "SFX_UI_UNLOCK",
+  "focus": "SFX_UI_FOCUS",
+  "wizard": "SFX_UI_WIZARD",
+  "back_names": [
+   "back",
+   "cancel",
+   "close"
+  ],
+  "confirm_names": [
+   "play",
+   "confirm",
+   "continue",
+   "start"
+  ]
+ },
+ "minigame": {
+  "events": {
+   "mg_bowl_release": "SFX_MG_BOWL_ROLL",
+   "mg_strike": "SFX_MG_STRIKE",
+   "mg_spare": "SFX_MG_PIN_KNOCK",
+   "mg_simon_miss": "SFX_MG_WRONG",
+   "mg_quick_drop_bonus": "SFX_GOAL_GO",
+   "mg_false_start": "SFX_MG_FALSE_START",
+   "mg_count_correct": "SFX_MG_CORRECT",
+   "mg_count_wrong": "SFX_MG_WRONG",
+   "mg_odd_wrong": "SFX_MG_WRONG",
+   "mg_dodge_hit": "SFX_MG_DODGE_HIT",
+   "mg_slide_solved": "SFX_MG_SPIN_MATCH",
+   "mg_mirror_scored": "SFX_MG_CARD_MATCH",
+   "mg_plinko_landed": "SFX_MG_PLINKO_BUCKET",
+   "mg_tower_toppled": "SFX_MG_TOPPLE",
+   "mg_treasure_found": "SFX_MG_TREASURE",
+   "mg_setup_error": "",
+   "mg_send": "SFX_MG_SEND",
+   "mg_send_charged": "SFX_MG_SEND",
+   "mg_attack_warning": "SFX_MG_ATTACK_WARNING",
+   "mg_receive_attack": "SFX_MG_ATTACK_WARNING",
+   "mg_attack_applied": "SFX_MG_DODGE_HIT",
+   "mg_tap": "SFX_MG_PARADE_TICK",
+   "mg_pick": "SFX_MG_ODD_PICK",
+   "mg_answer": "SFX_MG_ODD_PICK",
+   "mg_flip": "SFX_MG_CARD_FLIP",
+   "mg_step": "SFX_MG_PARADE_TICK",
+   "mg_slide": "SFX_MG_SLIDE_TILE",
+   "mg_paint": "SFX_MG_PAINT_DAB",
+   "mg_whack": "SFX_MG_WHACK_BONK",
+   "mg_pull": "SFX_MG_JENGA_PULL",
+   "mg_rotate": "SFX_MG_SPIN_CLICK",
+   "mg_aim": "SFX_MG_SPIN_CLICK",
+   "mg_dig": "SFX_MG_DIG_SHOVEL"
+  },
+  "simon_pads": [
+   "SFX_MG_SIMON_0",
+   "SFX_MG_SIMON_1",
+   "SFX_MG_SIMON_2",
+   "SFX_MG_SIMON_3"
+  ],
+  "whack": {
+   "block": "SFX_MG_WHACK_BONK",
+   "bomb": "SFX_MG_WHACK_BOMB",
+   "golden": "SFX_MG_WHACK_GOLDEN"
+  },
+  "plinko_jackpot": "SFX_CLEAR_4",
+  "plinko_bucket": "SFX_MG_PLINKO_BUCKET",
+  "card_match": "SFX_MG_CARD_MATCH",
+  "card_flip": "SFX_MG_CARD_FLIP"
+ }
+}

@@ -117,9 +117,17 @@ wt_restart={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="world"
+3d_physics/layer_2="pieces"
+3d_physics/layer_3="meteors"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
+jolt_physics_3d/simulation/position_steps=4
+jolt_physics_3d/simulation/sleep_velocity_threshold=0.05
 
 [rendering]
 

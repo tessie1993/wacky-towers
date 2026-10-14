@@ -45,5 +45,25 @@ const RESCUE_WIPED := &"rescue_wiped"
 const KIT_CHANGED := &"kit_changed"
 const TURN_RESTORED := &"turn_restored"
 
+## --- Juice / feel events (review D14; presentation agents subscribe, the sim never depends on them) ---
+## COMBO_CHANGED {combo:int, previous:int}: consecutive clearing locks changed (0 = combo ended).
+const COMBO_CHANGED := &"combo_changed"
+## NEAR_MISS {height_before:int, headroom:int, limit:int, rows_cleared:int}: a clear landed while the stack was within
+## goal.near_miss_margin layers of the limit (headroom = limit_layer - 1 - stack_height, measured before the clear).
+const NEAR_MISS := &"near_miss"
+## PERFECT_CLEAR {layers:int, pieces_placed:int}: the board is completely empty after a clearing lock.
+const PERFECT_CLEAR := &"perfect_clear"
+## DANGER_CHANGED {level:int 0..3, previous:int, headroom:int, stack_height:int, limit:int}: graded stack-height tension.
+## Thresholds are goal.danger_margin_1..3. Fires only when the level changes (after locks, clears and rescues).
+const DANGER_CHANGED := &"danger_changed"
+## LOCK_RESET {uid:int, resets_left:int, resets_max:int}: a move/rotate while resting restarted the lock-delay timer.
+const LOCK_RESET := &"lock_reset"
+## SPAWN_RESCUED {kind:StringName ("swap_shape"|"wipe"), shape_id, replaced, k, n_cubes}: spawn safety stepped in
+## instead of ending the level (see BoardSim._ensure_safe_spawn).
+const SPAWN_RESCUED := &"spawn_rescued"
+
+## LAYERS_CLEARED payload (additive; older keys unchanged): {indices, layers, layer_indices (PackedInt32Array, layer
+## index along the down axis, 0 = floor end, ascending), count (int, same as n_layers), n_layers, chain_round, cells}.
+
 ## Original cube record emitted only when ordinary clear or structural damage actually removes it.
 const CUBE_CLEARED := &"cube_cleared"

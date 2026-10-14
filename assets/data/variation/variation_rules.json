@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "source": "production/qa/level-curve-2026-10-14.md#procedural-variation",
+  "note": "Per-attempt layout variation (LevelVariation). Levels opt in with a top-level \"variation\" block. This file says how rule params move with the board, and which rules make a layout too positional to vary.",
+  "symmetries": ["identity", "mirror_x", "mirror_z", "rot90", "rot180", "rot270", "transpose", "anti_transpose"],
+  "square_only": ["rot90", "rot270", "transpose", "anti_transpose"],
+  "defaults": {
+    "jitter_radius": 1,
+    "keep_spawn_clear": true,
+    "rule_tiles": true
+  },
+  "limits": {
+    "jitter_radius_max": 2,
+    "validator_seed_samples": 12
+  },
+  "rule_params": {
+    "rock_obstacle": { "cells": "cells_xyz" },
+    "anchored_shelf": { "cells": "cells_xyz" },
+    "angle_gem": { "cell": "cell_xyz" },
+    "quicksand": { "tiles": "tiles_xz" },
+    "gust": { "wind_dir": "dir" },
+    "snowball": { "slope_dir": "dir" },
+    "ice_slide": { "slide_dir": "dir" },
+    "flip": { "flip_to_axis": "dir" }
+  },
+  "positional_rules": ["magnet_pull", "piston_punch", "syrup_band", "thin_ice", "climber_boss", "crumble_tiles"]
+}

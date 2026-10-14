@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "id": "pirate_09",
+  "biome": "pirate",
+  "tier": 9,
+  "name": "LVL_PIRATE_09_TITLE",
+  "board": {
+    "width": 8,
+    "depth": 8,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": [
+      "i",
+      "o",
+      "t",
+      "l",
+      "s",
+      "tripod",
+      "screw_left",
+      "screw_right"
+    ]
+  },
+  "knobs": {
+    "fall.g0": 1.15,
+    "goal.warnings_max": 1
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 4
+  },
+  "rules": [
+    {
+      "id": "race_rival",
+      "params": {
+        "rival_rate": 0.2,
+        "rubber_band": 0.5,
+        "rival_warn_pct": 80
+      }
+    }
+  ],
+  "stars": {
+    "t2": 580000,
+    "t3": 410000
+  },
+  "music": "mus_underwater_default",
+  "seed": null,
+  "metadata": {
+    "level_type": "twist",
+    "theme": "cannonballs",
+    "display_name": "Fort Blast",
+    "source": "design/levels/mockup-alignment.md (row 10 Fort Blast; section 2.3)",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "premise": "Two cliff forts face off across the bay. Each clear loads a soft cannonball; out-build the rival ship's fort before it finishes.",
+      "intended_modules": [
+        "fort_siege",
+        "siege_shot",
+        "material_hp"
+      ],
+      "stand_in": "race_rival (rival fort builder) with clear_n; no projectiles until siege_shot exists",
+      "skin_needed": [
+        "rival ship/fort progress skin for race_rival",
+        "topple meter instead of Fort HP (narrative review)"
+      ]
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "tuning": "Initial estimates from clockwork_07 race pacing; no playtest medians; 2026-10-14 balance pass: Pirate g0 curve 0.80->1.20, clear-count stars at ~145 s/103 s per clear"
+  }
+}
