@@ -581,7 +581,7 @@ These powers ride on a single falling piece through a spawn tag or piece flag. P
 
 **BK-28 ember piece (`ember` tag)**
 - **What.** A hot piece that burns down into the stack when it lands.
-- **Rule.** Trigger: on lock. Effect: for each cube with nothing under it in the piece, remove cells below to depth `drill_depth` (default 1, clamp 1 to 3) as damage (`ember.gd:21-28`), then `request_settle` so the stack above falls (`:29`). Emits `ember_melt`. Fill: normal. Gravity: settle collapse follows. Other specials: it removes any kind including frosting and keys? It does `remove_cell` on any non-empty target (`:26-28`); anchored shelves and rocks should be skipped: `ART-CHECK`. Rescue and top-out: the melt can lower height, which is helpful.
+- **Rule.** Trigger: on lock. Effect: for each cube with nothing under it in the piece, remove cells below to depth `drill_depth` (default 1, clamp 1 to 3) as damage (`ember.gd:21-28`), then `request_settle` so the stack above falls (`:29`). Emits `ember_melt`. Fill: normal. Gravity: settle collapse follows. Other specials (resolved, 3.1b): it removes every non-empty target with cause DAMAGE (`:28`). `fixed` cells (rock, shelf, sponge) survive. `anchored`-only cells (licorice, climber boss) are removed, and a `blast_safe` goal object survives. Frosting and locked cubes are removed. Rescue and top-out: the melt can lower height, which is helpful.
 - **Look.** Orange glowing cracks and a flame wisp on the top face, trailing sparks while falling, scorch mark below after the melt.
 - **Audio.** Proposed `SFX_SP_EMBER_MELT` (sizzle).
 - **Fits.** Lava, clockwork furnace, candy (hot caramel), pirate (powder).
@@ -1206,7 +1206,7 @@ Item cube (the carrier): `p_item` 0.12 per spawned non-injected piece, clamped t
 - **Rule.** Self, up to 20 s or one hit. The next `defend_core` hit, `storm_bolt`, `crab_claw`, `quake`, `woodpecker_knock`, `squirrel_heist`, boulder or countdown blast is cancelled. Does not stop terrain (lava floor). Weight 8, bias +0.5.
 - **Look.** A cyan soap-bubble over the platform with a shine; pops with a ring.
 - **Audio.** Proposed `SFX_SP_ITEM_SHIELD`.
-- **Fits.** Defender levels (meadow_02, 05, 10).
+- **Fits (r2, Appendix E: items from Chapter 2).** Defender levels from biome 5 on (pirate: cannon and tentacle hazards), unlock level in the item table in 3.4. Not in any Meadow level.
 - **Intro and teach.** Defender tier.
 - **Fairness.** Never required.
 - **Engine.** NEW. 2 days (a hook on each attack's apply step).
@@ -1217,7 +1217,7 @@ Item cube (the carrier): `p_item` 0.12 per spawned non-injected piece, clamped t
 - **Rule.** Self, instant. Restores the board state before the last lock and returns the piece to the queue front (turn snapshots exist, `undo_reset.gd`). Only if no clear occurred in that resolve (otherwise "no effect"). Limit 1 per level. Weight 6, bias -0.5.
 - **Look.** A rewind-arrow icon; a blue time-ripple.
 - **Audio.** Proposed `SFX_SP_ITEM_REWIND`.
-- **Fits.** Puzzle levels and fill levels (meadow_06).
+- **Fits (r2).** Puzzle and fill levels from Chapter 2 on (cave and clockwork, item table in 3.4). Not in meadow_06 or any Meadow level.
 - **Intro and teach.** Fill levels.
 - **Fairness.** Replays stay deterministic because the snapshot is the state.
 - **Engine.** PARTIAL. `UndoResetRule` activates snapshots for authored puzzles (`undo_reset.gd:2`). A live-play item is NEW, 2 days.
@@ -1228,7 +1228,7 @@ Item cube (the carrier): `p_item` 0.12 per spawned non-injected piece, clamped t
 - **Rule.** Self, next piece. Cancels the next gust push, bounce hop, ice slide, magnet pull and jelly hop for that piece, and locks with delay 0 after rest (honey-like). Weight 8, bias 0.
 - **Look.** A gold glue-drip badge on the piece, with a sticky shine.
 - **Audio.** Proposed `SFX_SP_ITEM_GRIP`.
-- **Fits.** Levels with wind, ice, bounce (meadow_08, 09).
+- **Fits (r2).** Levels with belts, ice, current, gust or bounce from Chapter 2 on (clockwork first, item table in 3.4). Not in meadow_08 or meadow_09. It uses the landing arbiter R-2 (the `braced` flag, SH-06).
 - **Intro and teach.** In the bounce level.
 - **Fairness.** Pure help.
 - **Engine.** NEW. 1.5 days.
