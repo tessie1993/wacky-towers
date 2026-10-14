@@ -17,7 +17,8 @@ Fix numbers are those of the merged list in the round 1 report.
 - Batch 5 DONE: formulas F1, F3, F3b, F5, F6b, F7, F8, F9, F11; edge cases 31 to 35; knobs and specials.json skeleton (fix 3, 6).
 - Batch 6 DONE: acceptance, 8.1 with h2 and h3, Appendices B, C, D, E, F (fix 1, 3, 10).
 - All r2 batches are written. Not done: no skill load (no Skill tool), art-file read for GAP-9.
-- Other files were not edited. The registry and other GDDs still need the follow-up edits (see Appendix B, decision 5).
+- Post-r2 user decisions (all five recommended options) are recorded in Appendix B and Appendix E and applied in 3.1b, SH-01, BK-07, 3.3, 3.4a, 3.7 and the acceptance list.
+- Other files were not edited. The registry and other GDDs still need the follow-up edits (Appendix C lists the facts).
 
 ## 1. Overview
 
@@ -72,7 +73,7 @@ Pillars served: P2 "the stack is the answer" (every special is solved by stackin
 5. **Rescue.** The soft rescue calls `wipe_bottom`, which removes cells with `Cause.RESCUE` (`board_state.gd:601-608`). `fixed` and `anchored` cells are NOT wiped (`can_remove`, `:685-688`). Everything else in the wiped layers is wiped, including gems, eggs, moles and locked cubes. The status-by-cause table in 3.1b is the one source of truth. A rescue never collects an item cube or a gem (a wipe is not a clear). A NEW flag `rescue_safe` protects goal objects (3.1b).
 6. **Top-out line.** A special inside the danger band counts as stack height like any cube, unless it is `static_geometry` (then it adds none, as the masked columns of meadow_01 do).
 7. **Audio ids.** The cue list uses `SFX_<AREA>_<THING>` with areas `SP` (special piece), `EV` (level event), `PL` (physics or landing twist), `FT` (fail type), `BOSS`, `MASCOT` (`sfx-cue-list.md` section 1). Where a cue already exists it is cited by that id (for example `SFX_SP_EGG_HATCH`, `SFX_SP_CHICK_HOP`, `SFX_SP_EGG_BONUS`, `SFX_EV_MUSHROOM_POP`, `SFX_PL_STICKY_SPLAT`, `SFX_SP_FOG_GHOST`, `SFX_PL_WOBBLE_SLIP`). Where it does not, entries give a proposal `SFX_SP_<NAME>` and mark it `AUDIO-NEW`. Short names in the shape entries above (for example `ring_fit_chime`) are shorthand for `SFX_SP_RING_FIT` and so on. The count of 79 rows in the cue list must be updated by the audio director when these are accepted. Style rule from the cue list: cute toybox, soft, wood, felt, rubber, bells; no gore or horror.
-8. **Biome skins.** A kind keeps one silhouette and one badge in every biome. The biome only changes material and palette. The block sheet `biome_block_materials_ref.png` shows 12 skins: meadow, candy, ice, underwater, lava, forest, cave, clockwork, neon, celestial, plus Tumble Fair (striped tent) and Dune Bazaar (sandstone). The sheet has NO pirate skin. The campaign has 12 biomes including pirate and carnival (`catalog.json:3-16`). So pirate needs a block skin (gap, art-director; Appendix 3.4 lists it) and carnival can reuse the Tumble Fair skin. Skin names below are proposals.
+8. **Biome skins.** A kind keeps one silhouette and one badge in every biome. The biome only changes material and palette. The block sheet `biome_block_materials_ref.png` shows 12 skins: meadow, candy, ice, underwater, lava, forest, cave, clockwork, neon, celestial, plus Tumble Fair (striped tent) and Dune Bazaar (sandstone). The sheet has NO pirate skin. The campaign has 12 biomes including pirate and carnival (`catalog.json:3-16`). **DECIDED (user, after r2):** commission a pirate block skin (driftwood planks, rope, brass) before pirate levels start (art-director, technical-artist; 3.4a row 5, GAP-9). Carnival reuses the Tumble Fair skin. Skin names below are proposals.
 9. **Readability rules (r2).** Three more rules apply to every entry; section 3.6 has the detail.
    - **See-through:** a goal object (gem, key, critter, cargo, core) draws a gold silhouette outline through cubes in front of it.
    - **Badge sheet:** each special has one badge shape that no other special and no biome hero ornament shares. The badge list is in 3.6. Where an entry below names a badge, it is the 3.6 badge.
@@ -123,11 +124,11 @@ The cells the engine already builds, from their code:
 
 Rules taken from the table (they replace the r1 text):
 1. **`anchored` is a "stay put" flag, not a "survive everything" flag.** It blocks clears, rescue, displacement and trim. It does not block DAMAGE. So a blast, the item bomb, Smash and ember all remove anchored cells. `earned_specials.gd:18` skips anchored cells on purpose; the item bomb and Smash do not (`wt_abilities.gd:202` skips only `fixed` and `locked`). This is a gap (3.7, GAP-3).
-2. **`anchored` cannot be used for a hung cube or a protected gem.** An anchored cell can never be cleared. A hung cube must still clear, and a gem must be collected by a clear. So the doc uses three NEW flags, each one line in `can_remove` and `can_move`. Size 0.5 day, owner lead-programmer (core file), gameplay-programmer (tests).
+2. **DECIDED (user, after r2): all three flags are approved, with lead-programmer sign-off.** **`anchored` cannot be used for a hung cube or a protected gem.** An anchored cell can never be cleared. A hung cube must still clear, and a gem must be collected by a clear. So the doc uses three NEW flags, each one line in `can_remove` and `can_move`. Size 0.5 day, owner lead-programmer (core file), gameplay-programmer (tests).
    - `hung`: blocks DISPLACED, TRIM and moves. It does not block CLEAR, DAMAGE or RESCUE. It has a lock counter (`hung_locks`) and the rule that sets it removes it.
    - `blast_safe`: blocks DAMAGE only.
    - `rescue_safe`: blocks RESCUE only.
-   - A level sets `blast_safe` and `rescue_safe` together as `goal_object` on gems, keys, critters and cargo while a goal needs them.
+   - A level sets `blast_safe` and `rescue_safe` together as `goal_object` on gems, keys, critters and cargo while a goal needs them. DECIDED: a rescue never wipes a `goal_object`.
 3. **A hung cube floats.** `hung` blocks moves, so if the cubes below clear, the hung cube stays in place until the lock counter ends, then the rule requests a settle. That is the intended read: the cube "hangs".
 4. **Rescue does not wipe `fixed` or `anchored` cells.** It does wipe gems, eggs, chicks, moles, goo, frosting, locked cubes and plain cubes unless they carry `rescue_safe`.
 5. **`on_clear` hooks run before the removal test** (`board_sim.gd:1421-1430`). So frosting peel, locked unlock and licorice untie run when a layer is full even though those cells survive the clear.
@@ -145,7 +146,7 @@ The bank has 67 shapes in 10 families (`assets/data/shapes/families.json:4-92`, 
 - **Rule.** The hole is made of ordinary empty cells. An enclosed empty cell is an active cell that is not filled, so its layer cannot be full until something fills it (`board_state.gd:200-201`). That is a real hazard:
   - A flat ring (hole axis vertical) leaves an open shaft. Only a 1x1 cross-section fills it (mono, or the end of a standing i or duo).
   - An upright ring (hole axis horizontal) leaves a pocket no falling piece can reach. It blocks its layer until a rescue wipes it.
-  - So the validator rejects any bag with a hollow piece unless the level has a `peg` goal (below) or sets `pocket_ok` and the solver (G5) proves a way out. `mascot_catch` (README line 27) can veto one covered-hole lock per catch.
+  - **DECIDED (user, after r2):** hollow shapes (SH-01 to SH-04) appear ONLY in levels with a peg goal (`ring_toss`), first in the candy bonus. The validator rejects any bag with a hollow piece in any other level. The `pocket_ok` escape is cut. `mascot_catch` (README line 27) can still veto one covered-hole lock per catch.
   - NEW fit rule with a goal behind it: a `peg` (BK-40) is a solid post. No piece may overlap it, except a hollow piece whose hole axis lines up with it. A ring that locks around a peg is a "fit". It emits `ring_fit`, scores `fit_points` (150) and adds 1 to the `ring_toss` counter. A new goal evaluator `ring_toss` wins when `pegs_needed` pegs each hold a ring.
   - Peg cells are `static_geometry`, so a fitted ring leaves no pocket.
   - Lock timing is not changed (the r1 "locks early" line is removed).
@@ -348,7 +349,7 @@ Baseline kinds that are not special (listed so the registry is complete): `block
 **BK-07 goo (kind 9, glyph `g`)**
 - **What.** Naughty sticky goo. It blocks the layer it sits in, makes pieces stick where they land, and spreads. A clear next to it washes it off.
 - **Today (the engine).** `goo_spread` copies goo into one free face neighbour per quiet lock (`goo_spread.gd:23-33`). It skips a spread after a clear (`:15-18`). The goo cell is `fills_layer` true (`blocks.json:83-92`), so today goo FILLS layers, which helps the player. It never touches a falling piece. The kind is a twist-layer rule (`assets/data/rules/goo_spread.json:5`). The r1 panel was right: as built, goo has no threat.
-- **Rule (r2 redesign, one job: stick and block).**
+- **Rule (r2 redesign, DECIDED by the user after r2: goo is a sticky blocker, one job: stick and block).**
   1. **Block.** Goo cells carry the status `fills_layer` false (`_update_fill_status` honours a status override, `board_state.gd:697-706`). An active cell with `fills_layer` false that holds a cube is not filled, so its layer cannot be full (convention 4). Goo blocks its layer until it is washed off. This is the same mechanism the grumpy moody cube uses.
   2. **Wash.** NEW `on_clear` step: when a clear removes a cell, each face-adjacent goo cell is removed once per resolve (cause CLEAR, like the pest shoo in `pest.gd:19-29`). A goo cell in layer k is washed by a clear in layer k-1 or k+1 (it cannot be washed by its own layer, which it blocks).
   3. **Stick.** NEW rule R-12: a piece that comes to rest with a cube directly above a goo cell locks at once (lock delay 0, the piece flag `lock_now`, as `fog_ghost.gd:30` sets) and receives no bounce, jelly or ice displacement. This is the honey behaviour of `block-status-effects.md`.
@@ -1395,7 +1396,7 @@ Rows: **MSH** mushroom, hail, geyser spawn; **GOO** goo spread; **SPR** sprout g
 | more than 2 hazards from different families at once (F3 pressure ratio above 1 for any) | pressure check F3 and F3b |
 | a hazard whose warning is shorter than `T_warn_min` (F3b) | unreadable hidden-timer hazard |
 | any hazard that can only be answered by a special the level does not spawn | unfair by construction |
-| a hollow piece in the bag with no peg goal and no `pocket_ok` | SH-01 pocket blocks its layer |
+| a hollow piece in the bag of any level without a `ring_toss` peg goal (user decision) | SH-01 pocket blocks its layer |
 
 ### 3.4 Biome spread, introduction order and item unlock (r2)
 
@@ -1409,7 +1410,7 @@ Biome order and ids come from `assets/data/campaign/catalog.json:3-16` and `desi
 | 2 | candy | 02 BK-09 gumdrop hail; 03 OB-21 syrup band; 04 BK-31 jelly; 05 BK-10/11 frosting (with BK-12 sponge); 06 BK-14 moody; 07 BK-29 rainbow; 08 BK-07 goo; 09 BK-15 candy bomb; 10 BK-17 climber boss; bonus SH-01/02/03 hollow shapes with BK-40 peg and the `ring_toss` goal (lollipop pegs); h1 BK-16 countdown bomb; h2 BK-13 licorice; h3 OB-22 speed bump | BK-05 pad, BK-03 egg | fog, tilt | sheet skin exists |
 | 3 | ice | 02 OB-20 ice slide; 03 BK-06 snowball; 04 OB-19 thin ice; 05 BK-35 ice cube; 06 BK-23a frozen; bonus OB-27 penguins (recall herd) | OB-02 gust, BK-05 | goo, fire | sheet skin exists |
 | 4 | underwater | 01 BK-27 bubble; 02 OB-12 crab claw; 03 SH-06 claw piece with a current; 04 BK-05 pad as jellyfish (recall); 06 BK-33 pearl gems; 07 OB-06 fog (recall, ink cloud); 09 OB-08 turntable (whirlpool); 10 OB-01 core (clam) with OB-12 | BK-26 balloon | fire, snowball | sheet skin exists |
-| 5 | pirate | 01 BK-26 balloon piece (parrot carry, `pirate_01` data); 02 BK-30 anvil (cannonball); 03 OB-04 tilt (recall) with SH-10; 05 BK-23f spiked; 06 OB-23 golden row; 08 OB-11 squirrel (parrot); 10 OB-12 tentacle with OB-35 cannon (recall) | OB-01, OB-03, OB-04, BK-16 | goo | **MISSING: no pirate block skin on the sheet (art gap)** |
+| 5 | pirate | 01 BK-26 balloon piece (parrot carry, `pirate_01` data); 02 BK-30 anvil (cannonball); 03 OB-04 tilt (recall) with SH-10; 05 BK-23f spiked; 06 OB-23 golden row; 08 OB-11 squirrel (parrot); 10 OB-12 tentacle with OB-35 cannon (recall) | OB-01, OB-03, OB-04, BK-16 | goo | **DECIDED: commission a pirate block skin (driftwood planks, rope, brass) before pirate levels start; the sheet has none** |
 | 6 | lava | 02 BK-28 ember; 03 OB-13 floor rise; 04 OB-16 geyser (with BK-18 rock); 05 BK-18 rock; 06 BK-36 fire tile; 08 OB-15 quake; 09 BK-20 locked cube; BK-23c burning in h1 | OB-06 fog | ice, snowball | sheet skin exists |
 | 7 | forest | 01 BK-21 shelf; 02 BK-22 vines; 03 BK-23b honey (sap); 04 OB-11 squirrel; 05 BK-08 pest; 07 SH-05 hook with BK-42 hang point (a gust level); 08 OB-10 woodpecker | BK-01 mushroom | fire, lava | sheet skin exists |
 | 8 | cave | 01 BK-18 rock (recall); 02 BK-33 gems; 03 BK-19 mole (dig goal); 04 OB-38 boulder; 05 OB-39 sleeping guard; 06 BK-23d crumbling; 07 IT-15 rewind unlock | BK-20 | gust | sheet skin exists |
@@ -1555,7 +1556,7 @@ Sizes are working days. Basis: a plugin edit with a unit test is 0.25 to 1 day; 
 | Contingency (25 percent of GAP-2, 3, 6 = 14.0) | | | +3.5 |
 | **Total with contingency** | | | **118.6 (about 119)** |
 
-Of the 118.6 days, 35.5 are the `levels.md` gaps already estimated there (G1 5.5, G7 7, G8 13.5, G9 4, G10 3, G12 2.5). Anything in this list that touches `board_state.gd`, `board_sim.gd` or movement needs lead-programmer sign-off before work starts.
+Of the 118.6 days, 35.5 are the `levels.md` gaps already estimated there (G1 5.5, G7 7, G8 13.5, G9 4, G10 3, G12 2.5). Anything in this list that touches `board_state.gd`, `board_sim.gd` or movement needs lead-programmer sign-off before work starts. The user approved the three board flags (GAP-3) and the goo redesign on the condition of that sign-off; the pirate skin is a commissioned art task, scheduled before pirate levels (GAP-9). Order of work: GAP-3 first (it unblocks `hung`, `rescue_safe`, `blast_safe`), then GAP-2 (landing arbiter and sticky goo), then the goo edits, then GAP-6 (peg and `ring_toss`) for the candy bonus.
 
 ## 4. Formulas
 
@@ -1812,7 +1813,7 @@ Each case states what happens. "Rescue" means the soft top-out rescue that wipes
 
 ## 6. Dependencies
 
-This catalogue reads from the systems below and must be listed in each as a dependency (bidirectional rule, `.claude/rules/design-docs.md`). Those edits are not made here; they are a scheduled follow-up task after round 2 passes and the user confirms the Appendix B open decisions.
+This catalogue reads from the systems below and must be listed in each as a dependency (bidirectional rule, `.claude/rules/design-docs.md`). Those edits are not made here; they are a scheduled follow-up task after round 2 passes (the Appendix B decisions are all made).
 
 | System or file | Direction | What flows | Hard or soft |
 |---|---|---|---|
@@ -1832,7 +1833,7 @@ This catalogue reads from the systems below and must be listed in each as a depe
 
 **Code touched when this is built** (owners as in section 3.2). `assets/data/content/blocks.json` (next `kind_id` 25), `assets/data/rules/*.json` (one per new rule), `assets/data/knobs/*.json` (new `specials.json`), `src/mechanics/**` (new plugins), `src/view/wt_block_materials.gd` and `assets/data/biome_looks.json` (skins and badges), `src/core/rules/plugin_registry.gd` (registers each `PLUGIN_ID`), `tools/qa/block_gallery.gd` (gallery of every special per biome, 12 biomes), `tools/qa/verify_campaign_biomes.gd` (validator checks in section 8).
 
-**Registry.** `design/registry/entities.yaml` exists (version 1, 2026-10-10). It holds only the four playable characters today, and no special block, kind or item. Nothing here conflicts with it. This doc does not edit it. Cross-system facts introduced here are listed in Appendix C, and they will be added after the user confirms the open decisions in Appendix B.
+**Registry.** `design/registry/entities.yaml` exists (version 1, 2026-10-10). It holds only the four playable characters today, and no special block, kind or item. Nothing here conflicts with it. This doc does not edit it. Cross-system facts introduced here are listed in Appendix C, and they will be added to the registry after round 2 passes (the Appendix B decisions are all made).
 
 ## 7. Tuning Knobs
 
@@ -1940,6 +1941,9 @@ Only `rule_adjustable: false` knobs are fixed per level, so a level cannot loose
 19. [U] Hang (r2): a hook piece that locks beside a `hang` point gets `hung` for exactly `hang_locks` locks. During that time `can_remove` is false for DISPLACED and TRIM, `can_move` is false, and `can_remove` is true for CLEAR, DAMAGE and RESCUE (3.1b). After the counter ends `hung` is gone and a settle is requested.
 19b. [U] Status by cause (r2): for every row of the 3.1b table, `can_remove` returns exactly the Y and N values listed, for each of the six causes (copy of `board_state.gd:681-695`).
 20. [U] Ring fit: a hollow piece may overlap a peg cell only when its hole axis aligns; any other piece is blocked.
+20b. [V] Hollow gating (user decision after r2): GIVEN any level whose bag holds SH-01 to SH-04 and has no `ring_toss` goal with at least one peg, THEN validation fails; the first level that passes is the candy bonus.
+20c. [V] Pirate skin (user decision after r2): GIVEN a level with biome `pirate`, THEN validation reports NOT ASSESSED for art until the pirate block skin exists in `biome_looks.json` and the block gallery; it never reports pass.
+20d. [U] Goo (user decision after r2): see 29c; AC29c is the acceptance test for the sticky-blocker design.
 21. [U] Switch and gate: covering a `switch` cell with a lock fires its effect once (`once: true`); a gate toggles `request_mask` for its cells.
 22. [U] Shield item: the next `defend_core`, `storm_bolt` or `crab_claw` hit is cancelled once, then the shield is gone.
 
@@ -1953,7 +1957,7 @@ Only `rule_adjustable: false` knobs are fixed per level, so a level cannot loose
 26. [V] No gem, key, critter or cargo is placed in a pocket, above `gem_max_layer`, or above a level's lowest `arch_gap` unless `arch_safe`.
 27. [V] The tiling solver (gap G5) passes with every special shape in the level's bag, 1-lookahead bot, no hold.
 28. [U] Determinism: two runs with the same seed give identical snapshots for every new rule (`snapshot()` equal).
-29. [U] Rescue (r2): GIVEN a goal object with `rescue_safe`, THEN `wipe_bottom` skips it; without the flag it is wiped (the engine does this today for plain cubes) and no item is collected. `fixed` and `anchored` cells are never wiped (3.1b). This depends on the user confirming the flag (Appendix B, decision 3).
+29. [U] Rescue (r2): GIVEN a goal object with `rescue_safe`, THEN `wipe_bottom` skips it; without the flag it is wiped (the engine does this today for plain cubes) and no item is collected. `fixed` and `anchored` cells are never wiped (3.1b). DECIDED by the user (Appendix B, decision 5): the flag is approved. Test both cases: a `rescue_safe` gem, egg, mole and cargo survive a wipe and settle; an unflagged plain cube is wiped.
 29b. [U] Matrix cells (r2): each `[C]` cell of Matrices A, B and C has a test that reproduces the cited line; each `[G n]` cell has a test written FIRST (expected to fail) that becomes the acceptance test of the NEW rule R-n.
 29c. [U] Goo (r2): a goo cell blocks its layer (`layer_full` false while goo is present), is removed by a clear of a face-adjacent cell once per resolve, never spreads into an unsupported cell, and never exceeds `goo_max`; a piece resting on goo locks at once (R-12).
 
@@ -2068,27 +2072,12 @@ Every image below was opened with Read. Each line lists what special blocks or o
 3. **Items in the campaign.** DECIDED: "From Chapter 2". Chapter 1 uses skills only. Unlocks are in 3.4c.
 4. **Next step.** DECIDED: "3-expert review first". Round 1 failed (`production/qa/quality-review/2026-10-14-special-blocks-r1.md`). This is r2.
 
-**Still open (decisions for the user, recommended option first).**
-1. **Should a soft rescue ever wipe a goal object (gem, key target, critter, cargo)?** The engine wipes every non-`fixed`, non-`anchored` cell (3.1b).
-   - Never: add `rescue_safe` (inside `goal_object`) so the wipe skips them (Recommended). 1 day in a core file (GAP-3).
-   - Wipe them but refund a replacement.
-   - Wipe them and count it as a lost warning.
-2. **Goo's job.** The r1 panel found goo harmless (it fills layers).
-   - Make goo block its layer, stick landing pieces, and wash off with an adjacent clear (Recommended, BK-07). About 2 days plus the landing arbiter.
-   - Keep goo as free fill and cut it from the catalogue.
-   - Make goo only a slow-fall zone (no layer block).
-3. **Core-file flags.** Three new status flags (`hung`, `blast_safe`, `rescue_safe`) change `board_state.gd`.
-   - Approve all three, 2.5 days with lead-programmer sign-off (Recommended).
-   - Approve only `rescue_safe` and `blast_safe` and drop the hang and pin powers (SH-05, SH-06 hang part, SH-07).
-   - Keep the board file unchanged and cut every protection idea.
-4. **Hollow shapes in the bag.** Upright rings can block a layer for good (SH-01).
-   - Allow hollow shapes only in levels with a peg goal, first in the candy bonus (Recommended).
-   - Allow them anywhere with the solver (G5) checking.
-   - Cut the hollow family powers and keep the shapes plain.
-5. **Pirate block skin.** The 12-biome block sheet has none for pirate.
-   - Commission the pirate skin before pirate levels start (Recommended).
-   - Reuse the underwater skin with a wood overlay.
-   - Move pirate levels after the art lands.
+**Decided by the user (2026-10-14, after r2).** All five r2 questions are closed. Each takes the recommended option. Nothing in this appendix is open.
+5. **Rescue and goal objects.** DECIDED: a soft rescue NEVER wipes a goal object (gem, key target, critter, cargo). The NEW `rescue_safe` flag, inside `goal_object`, makes `wipe_bottom` skip them (3.1b, edge case 13, AC29).
+6. **Goo's job.** DECIDED: goo is a sticky blocker. It blocks its layer, sticks landing pieces (R-12), spreads only onto supported cells with a warning and a cap, and washes off with an adjacent clear (BK-07, F5, AC29c).
+7. **Core-file flags.** DECIDED: approve all three flags (`hung`, `blast_safe`, `rescue_safe`) in `board_state.gd`, with lead-programmer sign-off (GAP-3, 2.5 days). The hang, claw-brace and jack-pin powers (SH-05, SH-06, SH-07) stay.
+8. **Hollow shapes in the bag.** DECIDED: hollow shapes (SH-01 to SH-04) appear only in levels with a peg goal (`ring_toss`), first in the candy bonus (SH-01, 3.4a, banned-combination table, AC20).
+9. **Pirate block skin.** DECIDED: commission a pirate block skin (driftwood planks, rope, brass) before any pirate level starts (3.4a row 5, convention 8, GAP-9).
 
 ## Appendix C. Cross-system facts introduced (for the registry, not yet added)
 
@@ -2137,5 +2126,12 @@ Status: E = exists, P = partial, N = new.
 - **Items in the campaign:** "From Chapter 2." Starter items and new items unlock in the campaign from Chapter 2 on.
   Chapter 1 uses character skills only.
 - **Next step:** "3-expert review first." The document goes to three blind experts before any new kind is added to the data.
+
+**Five more user decisions (2026-10-14, after r2), each the recommended option:**
+- **Rescue and goal objects:** rescue never wipes goal objects; `rescue_safe` inside `goal_object`.
+- **Goo:** a sticky blocker that blocks its layer, sticks landing pieces and washes off with an adjacent clear.
+- **Core flags:** all three (`hung`, `blast_safe`, `rescue_safe`) approved, with lead-programmer sign-off.
+- **Hollow shapes:** only in levels with a peg goal, first in the candy bonus.
+- **Pirate skin:** commission it (driftwood planks, rope, brass) before pirate levels.
 
 **Applied in r2.** Chapter 1 specials: 8.1 (h2 mushroom, h3 egg, no non-core special in 01 to 10). Hidden timer: the clock note in 3.2.c, OB-13 to OB-16, F3b, acceptance 23 and 23b, section 7. Items from Chapter 2: 3.4c, F8, acceptance 24b, IT-14 to IT-16 Fits. Next step: round 1 report is `production/qa/quality-review/2026-10-14-special-blocks-r1.md`.
