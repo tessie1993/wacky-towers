@@ -752,12 +752,15 @@ Every entry here is a proposal for the user to accept, change or cut. Each needs
 
 Objects are not falling pieces. Some are grid cells (a kind). Most are rule props: a marker, a column, a tile or an actor that a rule reads. The Entry fields are shorter here. All share conventions 1 to 8.
 
-A note on clocks. Several rules below run on wall-clock milliseconds (`lava_rise`, `lava_lid`, `quake`, `crab_claw`, `storm_bolt`, `magnet_pull`, `gust`, `defend_core`, `race_rival`, `thin_ice`). The frame's timer rule (`levels.md:23`) bans a visible countdown on Tetris-variant levels and removed the rising-water hazard for that reason (`levels.md:565`). Attacks in a wave schedule are allowed, because the wave is a story event. Open question 3 asks the user to rule on a lock-count schedule mode.
+A note on clocks. Several rules below run on wall-clock milliseconds (`lava_rise`, `lava_lid`, `quake`, `crab_claw`, `storm_bolt`, `magnet_pull`, `gust`, `defend_core`, `race_rival`, `thin_ice`). The frame's timer rule (`levels.md:23`) bans a visible countdown on Tetris-variant levels and removed the rising-water hazard for that reason (`levels.md:565`). Attacks in a wave schedule are allowed, because the wave is a story event.
+
+**User ruling (Appendix E, "Hidden timer"):** millisecond schedules stay on Tetris-variant levels, but the HUD shows no countdown. The telegraph is an actor tell plus a sound before every hazard. So this doc does NOT add a lock-count schedule mode (the r1 proposal `schedule_mode: locks` is removed). The fairness of a hidden ms schedule is checked by F3b (reaction time and interval versus piece time), and a hazard may not use a warning shorter than `T_warn_min` (F3b). Assists: every ms hazard pauses during a rescue animation, a pause menu and the level intro (framework "Suspended", `buffs-debuffs.md` rule 4), and a settings option "Slower hazards" multiplies every hazard interval by 1.5 and every warning by 1.25 (knob `assist.hazard_slow`, 3.7). Accessibility: the sound cue and the actor tell are both required; a deaf player relies on the tell, a blind player on the sound.
 
 **OB-01 defend core (the thing under attack)**
 - **What.** A small thing with hit points that attacks aim at: the sprout in meadow_02.
-- **Rule.** A core tile group on layer 0 (default the 2x2 board centre) with `core_hp` (3). Every `attack_every_ms` a shot is announced `warn_ms` (2000) earlier, enters at a seeded edge column and travels inward. The first column with cubes loses its top cube (armour). An empty core column deals `core_damage`. At 0 hp the run fails (`defend_core.gd:3-10,24-40`). Fill: core tiles are not cells that count toward layers (`ART-CHECK`). Rescue: a rescue never heals the core. Top-out: normal.
-- **Look.** A sprout in a small mound, leaning with each hit; three leaf pips for hp. Wind line shown across the board before each shot.
+- **Rule.** A core tile group on layer 0 with `core_hp` (3). The tiles are a `core` list of `[x, z]` pairs in the level params, with the 2x2 board centre as the default (`defend_core.gd:3-5`). **For meadow_02 the core sits in the inner curve of the crescent ledge** (`levels.md:106,122`), so the level sets `core` to those cells, not the centre. Every `attack_every_ms` a shot is announced `warn_ms` (2000) earlier, enters at a seeded edge column and travels inward along its lane. The first column with cubes loses its top cube (armour). A lane that reaches an empty core column deals `core_damage`. At 0 hp the run fails (`defend_core.gd:3-10,24-40`). Fill: core tiles are floor markers, not cubes (they are listed in `core_tiles(api)`, not placed as cells), so the cells above them are ordinary cells and count for layers normally. Rescue: a rescue never heals the core. Top-out: normal.
+  - **Readability (r2):** a buried core is a risk, because the wall the player builds hides the sprout. The sprout stands taller than the wall height needed to shelter it (a 3-cell stalk with a bloom), and the see-through rule draws a gold outline through blocks in front of it (3.6).
+- **Look.** A sprout in a small mound, leaning with each hit; three leaf pips for hp. A wind line is shown across the board before each shot.
 - **Audio.** Proposed `SFX_EV_DEFEND_WARN`, `SFX_EV_DEFEND_HIT`.
 - **Fits.** meadow_02 Windbreak (core: sprout, 3 hp, `levels.md:98-127`), meadow_10 phase 1, ice (igloo), pirate (treasure), lava (egg).
 - **Intro and teach.** meadow_02. Weathervane star spins before each gust (teach by showing the line).
@@ -770,7 +773,7 @@ A note on clocks. Several rules below run on wall-clock milliseconds (`lava_rise
 - **Rule.** A seeded gust schedule; a gust due with no falling piece is dropped (`gust.gd:2`). Warning arrow and wind sound ahead (`sfx-cue-list.md:82-83`, `SFX_EV_GUST_TELEGRAPH`, 1 s). Effect: one cell push of the active piece (not a stack write). Gravity: unaffected. Other specials: bounce, ice slide and balloon apply their effects around it; balloon bob and gust do not cancel each other. Rescue and top-out: none.
 - **Look.** Streaked arrow across the grass, grass bends, leaf and dandelion particles, the gold star weathervane spins to the direction.
 - **Audio.** `SFX_EV_GUST_TELEGRAPH`, `SFX_EV_GUST`.
-- **Fits.** meadow_02, 03 (legacy), 09, 10, bonus (wind lanes). Celestial, ice (blizzard), pirate (storm), cave (draft).
+- **Fits.** meadow_02 (the attack of `defend_core`), meadow_09 (the sail wind), meadow_10 phase 1 (`levels.md:518`). The bonus wind lanes are track events (OB-32), not this rule. Celestial, ice (blizzard), pirate (storm), cave (draft).
 - **Intro and teach.** meadow_02, via the weathervane.
 - **Fairness.** Always telegraphed; one cell; the landing marker updates after a gust.
 - **Engine.** EXISTS (`src/mechanics/behaviour/gust.gd`). Weathervane view: NEW, 1.5 days (G9 group), technical-artist.
@@ -795,7 +798,7 @@ A note on clocks. Several rules below run on wall-clock milliseconds (`lava_rise
 - **Fits.** meadow_09 Tilting Hill (slip line 0.7 to 0.5, `levels.md:343`), meadow_10 phase 3, pirate (rocking ship), carnival (see-saw), cake plate (`mockup_05.jpg`).
 - **Intro and teach.** meadow_09. Gauge plus "stack on the high side".
 - **Fairness.** A warning always comes first. The preview of the landing tilt (ghost weight) is proposed.
-- **Engine.** PARTIAL. Grid rule EXISTS (`src/mechanics/wave4/tilt_plate.gd:14`). Visible tilt view is gap G9; heavy-weight support: `weighted_cells` exists (`:57`) and could take a weight per kind (1 day).
+- **Engine.** PARTIAL. Grid rule EXISTS (`src/mechanics/wave4/tilt_plate.gd:14`). The visible tilt view is gap G9. Heavy weights are a signature change, not a tweak: `measure(size, cells)` is static and takes cells only (`:72-86`) and `weighted_cells` returns a cell list (`:57-68`), so both need a weight per cell (GAP-5, 1.5 days, gameplay-programmer).
 - **Source.** The spring and tilt plates in `party_modes_ref.jpg`, `party_minigames_ref.jpg` (Wobble Builders), `mockup_03.jpg` (Tumbling Towers) and `mockup_05.jpg` (Cake Stackers).
 
 **OB-05 rival marker (`race_rival`)**
