@@ -445,6 +445,109 @@ Source for all: `src/mechanics/candy/` and `blocks.json`. Candy levels are not i
 - **Engine.** See the per-shell list above.
 - **Source.** The art bible shells and the ice and lava block skins in `biome_block_materials_ref.png`.
 
+#### 3.2.b Special BLOCK KINDS, part 4: piece powers (a tag on one falling piece)
+
+These powers ride on a single falling piece through a spawn tag or piece flag. Per `piece-set.md` Core Rule 6 the tag never changes the shape. They are the "block with a power" family the user asked about: ghost, balloon, bubble, ember, wildcard, key, anvil, jelly. A level turns each on through a rule in its `rules` list. All eight exist in the engine.
+
+**BK-24 key piece (key stamp) with keyholes**
+- **What.** A piece with a gold key printed on one face. Put that face against a keyhole in the wall to wind it up.
+- **Rule.** Trigger: at spawn, `key_per_bag` (default 2) pieces of each dealt bag carry one key stamp on a random outward face (`key_stamp.gd:8-31`). Injected pieces never carry one (`:12`). Trigger 2: on lock, goal `wind_keys` checks whether the stamped cube is at the keyhole's exact cell and the rotated stamp face matches the wall normal (`wind_keys_goal.gd:11-34`). Effect: the hole is "wound" (stays wound, `_wound`), `keys_wound` rises. Win: `keys_needed` (default 4) wound (`:35-36`). Fill: the piece is normal. Gravity: normal. Rescue: wiped keys do not unwind wound holes ("wound holes persist", class comment). Top-out: normal.
+- **Look.** Key stamp is a big gold key emblem on one face, with a glow pulse. Keyholes are lit rings on the wall with a keyhole symbol and a count. Skins: meadow brass key on a gate, pirate chest key, clockwork winding key, cave rune key, celestial star-key.
+- **Audio.** Proposed `SFX_SP_KEY_WIND` (ratchet clicks) and `SFX_SP_KEYHOLE_OPEN`.
+- **Fits.** Clockwork (winding), pirate (chest), cave, meadow gate levels. Mockup: Maze Heist keys.
+- **Intro and teach.** A first key level shows one keyhole and a 3-second loop of turning the key face to the wall. Hint: "Face the key at the hole!"
+- **Fairness.** Risk: a piece must be rotated so the face and cell both match; frustrating if the stamped face is hidden. Counterplay: the ghost shows an arrow when the face aligns; `key_per_bag` 2 gives two tries per bag; rotation is free of cost.
+- **Engine.** EXISTS (`key_stamp.gd`, `wind_keys_goal.gd`). Gap: key face art, keyhole wall art and ghost alignment arrow, 3 days, technical-artist plus ui-programmer.
+- **Source.** The big glowing keys and key counter in `mockup_02.jpg` (Maze Heist). The wall keyholes are our own.
+
+**BK-25 ghost piece (`fog_ghost` tag)**
+- **What.** A see-through piece that falls through the stack until you tap it solid.
+- **Rule.** Trigger: spawn with tag `fog_ghost` sets flag `intangible` (`fog_ghost.gd:12-17`). While intangible the piece passes through locked cubes. Trigger 2: hard drop, pick_cell, tap or solidify commands, or landing, makes it solid (`:18-23`). Effect: `place_nearest_up()` moves it to the nearest legal free place upward (`:29`); lock is immediate for taps (`lock_now`). Fill: normal after solid. Gravity: normal fall while ghost. Other specials: the `fog` rule lights the ghost neighbourhood at every height (README line 33). Rescue: not applicable while falling. Top-out: it cannot become solid inside the top-out band; `place_nearest_up` fails then spawn is blocked (edge case).
+- **Look.** Blue-white translucent outline with a soft pulse and a faint trail; a spirit-face badge on the top face. Solid state snaps to the normal material with a flash.
+- **Audio.** `SFX_SP_FOG_GHOST` (loop) and `SFX_SP_FOG_GHOST_SOLID` (`sfx-cue-list.md:94-95`).
+- **Fits.** meadow_07 Fog Frolic (a candidate; the frame says fog hides the top, `levels.md:259-286`), celestial, cave, neon.
+- **Intro and teach.** A fog level. Hint: "Tap to make the ghost solid."
+- **Fairness.** Risk: solidifying inside crowded space fails. Counterplay: nearest-up placement and a visible solid preview.
+- **Engine.** EXISTS (`src/mechanics/behaviour/fog_ghost.gd`).
+- **Source.** None; fits the translucent glass-cube bridges in `mockup_04.jpg` (Chroma Sky Climb).
+
+**BK-26 balloon piece (`balloon` twist)**
+- **What.** A piece tied to a balloon. It drifts down at half speed and bobs up once before it settles.
+- **Rule.** Trigger: `balloon_per_bag` (default 1) pieces per bag, chosen from the dealt bag (`balloon.gd:15-28`). Effect: gravity scale is multiplied by `balloon_g_mult` (default 0.5) (`:31`). After `balloon_drift_ms` (3000 ms) the piece bobs up one cell if it has dropped below its spawn layer and you are not soft-dropping (`:48-56`); a warning shows 500 ms before the bob (`:49-51`). Hard drop cancels the bob and restores gravity (`:39-41`); soft drop restores normal gravity while held (`:42-44`). Lock restores everything (`:57`). Fill, clears: none changed. Rescue and top-out: none.
+- **Look.** A bright balloon on a string tied to the piece's top cube. The string tightens on the warning. Colour per balloon varies; pastel.
+- **Audio.** Proposed `SFX_SP_BALLOON_BOB` (soft rubber squeak).
+- **Fits.** Meadow (`src/levels/meadow/meadow_01/meadow_01.json:41` uses `balloon` in its legacy plan), carnival, celestial, kite bonus (a basket under a kite). The levels.md frame does not use it in meadow_01.
+- **Intro and teach.** Easy first twist: slower fall is a gift. Hint: "Balloon pieces float."
+- **Fairness.** Risk: low. Slow time is beneficial; the bob can lift a piece once.
+- **Engine.** EXISTS (`balloon.gd`). Balloon art: gap, 1 day.
+- **Source.** The Balloon Race carts in `mockup_16.jpg`.
+
+**BK-27 bubble piece (`bubble` tag)**
+- **What.** A piece that floats up instead of locking down. It pops at the ceiling.
+- **Rule.** Trigger: on lock a bubble-tagged piece does not stay. It rises rigidly to the next occupied surface above or the ceiling (`bubble.gd:20-22`). If it reaches within 4 layers of the top (`layer_count()-4`), it is removed as displaced and emits `bubble_pop` (`:23-30`). Otherwise it lodges under the surface it met. Fill: normal if it lodges. Gravity: upward. Other specials: it can rise through gaps only. Rescue: wiped if lodged. Top-out: it never adds height at the top because it pops there.
+- **Look.** Clear soap bubble around the piece with a rainbow sheen, wobble while falling. The pop is a spray of droplets.
+- **Audio.** Proposed `SFX_SP_BUBBLE_POP`.
+- **Fits.** Underwater (mockup `Deep Sea Bubble Build` uses bubble blocks), ice, candy (bubble gum).
+- **Intro and teach.** Underwater_01. The preview arrow points up.
+- **Fairness.** Risk: it fills a hole you need empty. Counterplay: preview of the rise end; a bubble piece is always a small shape (helper family) in tutorial levels.
+- **Engine.** EXISTS (`bubble.gd`). Preview of the rise end: NEW, 1 day, ui-programmer.
+- **Source.** `mockup_10.jpg` Deep Sea Bubble Build and the bubble-gem underwater cube in `biome_block_materials_ref.png`.
+
+**BK-28 ember piece (`ember` tag)**
+- **What.** A hot piece that burns down into the stack when it lands.
+- **Rule.** Trigger: on lock. Effect: for each cube with nothing under it in the piece, remove cells below to depth `drill_depth` (default 1, clamp 1 to 3) as damage (`ember.gd:21-28`), then `request_settle` so the stack above falls (`:29`). Emits `ember_melt`. Fill: normal. Gravity: settle collapse follows. Other specials: it removes any kind including frosting and keys? It does `remove_cell` on any non-empty target (`:26-28`); anchored shelves and rocks should be skipped: `ART-CHECK`. Rescue and top-out: the melt can lower height, which is helpful.
+- **Look.** Orange glowing cracks and a flame wisp on the top face, trailing sparks while falling, scorch mark below after the melt.
+- **Audio.** Proposed `SFX_SP_EMBER_MELT` (sizzle).
+- **Fits.** Lava, clockwork furnace, candy (hot caramel), pirate (powder).
+- **Intro and teach.** A lava level where the stack is too high. Hint: "Embers burn what they land on."
+- **Fairness.** Risk: it melts a supporting cube. Counterplay: the shaft preview, `drill_depth` 1 by default.
+- **Engine.** EXISTS (`ember.gd`). Gap: skip protected cells (0.25 day) and shaft preview (1 day).
+- **Source.** The lava cube skin in `biome_block_materials_ref.png` and the volcanic vent in `volcanic_biome_sheet_ref.png`.
+
+**BK-29 rainbow piece (`rainbow` tag)**
+- **What.** A wildcard piece. Its cubes match any colour.
+- **Rule.** Trigger: spawn with tag `rainbow` emits `rainbow_piece` (`rainbow_piece.gd:12-16`). On lock each cube gets status `rainbow: true`, id 27 (`:19-20`). Effect: in `colour_connect` and flavour `shape` goals (README lines 11 and 20) a rainbow cube matches any flavour; in plain layer clears it counts as a normal cube. Fill: normal. Gravity: normal. Rescue and top-out: normal.
+- **Look.** A shimmering rainbow gradient on the whole piece, with a sparkle wipe every 1 s and a prism badge. Never a single hue.
+- **Audio.** Proposed `SFX_SP_RAINBOW_SPARKLE`.
+- **Fits.** Candy (flavour levels), neon, celestial, carnival.
+- **Intro and teach.** Candy tier 2 where colours matter. Hint: "Rainbow fits any colour."
+- **Fairness.** Pure help.
+- **Engine.** EXISTS (`rainbow_piece.gd`).
+- **Source.** Rainbow roads on the party boards (the user's note about the glowing glass grid in `party_biome_islands_ref.jpg`).
+
+**BK-30 anvil piece (`anvil_drop`, wave 3)**
+- **What.** A heavy piece that squashes gaps under it.
+- **Rule.** Trigger: every `every` (default 6) non-injected spawn is flagged `anvil` (`anvil_drop.gd:14-21`). On lock it crushes up to `max_crush` gap cells under each of its columns (`:22-30` and README line 92). Fill: normal. Gravity: the crush closes air gaps, so cubes above fall. Other specials: a locked cube sits in a closed gap fine; a critter in a gap would be crushed (counterplay: critters are anchored, see Edge Cases). Rescue and top-out: it can lower the stack (it may help).
+- **Look.** Black cast-iron look with a heavy "weight" label on the top face and a falling shadow that is darker than normal pieces; shakes the camera lightly.
+- **Audio.** `heavy_land_thud` proposal (`SFX_SP_HEAVY_THUD`, AUDIO-NEW). `SFX_PIECE_LOCK_BIG` is a possible stand-in (`sfx-cue-list.md:41`).
+- **Fits.** Clockwork, pirate, cave, meadow_09 (weights).
+- **Intro and teach.** Early. Hint: "Anvils squash the gaps."
+- **Fairness.** It can erase a gap you saved. Counterplay: pre-flag in the NEXT strip.
+- **Engine.** EXISTS (`anvil_drop.gd`).
+- **Source.** The big weight hammer and gear machines in `mockup_02.jpg` and `mockup_13.jpg`.
+
+**BK-31 jelly piece (`jelly` tag)**
+- **What.** A bouncy gummy piece. It hops one extra cell when it lands and a cube may slump after.
+- **Rule.** Trigger: on land, once per piece (`jelly_piece.gd:16-17`). Effect: it translates along the last move direction by `jelly_bounce` (default 1) plus `jelly_bonus` goal counter, clamped 0 to 3 (`:18-23`). On lock, one locked cube may slump down (`:24-25`). Fill: normal. Gravity: normal. Rescue and top-out: normal.
+- **Look.** Wobbling translucent gummy with a shine; squash and stretch on landing; a spring-coil badge.
+- **Audio.** Proposed `SFX_SP_JELLY_BOING`.
+- **Fits.** Candy, carnival, underwater jelly.
+- **Intro and teach.** Candy. Hint: "Jelly hops when it lands."
+- **Fairness.** The hop follows the last move: you can control it. Counterplay: stop moving before landing.
+- **Engine.** EXISTS (`src/mechanics/candy/jelly_piece.gd`).
+- **Source.** The jelly pieces in `mockup_08.jpg` (Sugar Rush Stack).
+
+**BK-32 mystery piece (`mystery_piece`, wave 3)**
+- **What.** A "?" piece. It is announced earlier in the preview, then swapped for a surprise shape from the level's pool.
+- **Rule.** Every Nth spawn is swapped for a seeded pool shape and announced earlier by `mystery_preview` (README Wave 3 table). Fill, gravity: the swapped piece is normal. Fairness is kept by the preview.
+- **Look.** A purple "?" gift-box skin on the preview card and a sparkle when it reveals.
+- **Audio.** Proposed `SFX_SP_MYSTERY_REVEAL`.
+- **Fits.** Carnival, party tournaments.
+- **Intro and teach.** Party play. Hint: "Surprise piece next!"
+- **Fairness.** All players share the seed (party rule 8).
+- **Engine.** EXISTS (`src/mechanics/wave3/mystery_piece.gd`).
+- **Source.** The party boards' "next item" slots (`mockup_12.jpg`).
+
 #### 3.2.b (continues below as more entries are added)
 
 ### 3.3 Interaction matrix
@@ -505,6 +608,11 @@ Every image below was opened with Read. Each line lists what special blocks or o
 - `mockup_15.jpg` (portrait, 4 panels): a meadow island where gnomes and sheep are herded into a fenced pen (wooden fence, flower cluster props, waterfalls off the rim); a candy path with peppermint swirl bumpers and a candy-warning icon; a glacier floor with gold STARS to collect and penguins; hex tiles with virus enemies and a shield. Ideas: fence, sheep, penguin, collectible stars on the floor, enemy bugs. This panel is the direct source for meadow_04's herd.
 - `mockup_16.jpg` (Party Quest hub, logo not reused): glass-cube bridge builders; a big BOMB on a gear platform with red and blue cubes around it ("Bomb Defuse"); balloon-lifted block carts on a cloud track ("Balloon Race"); a volcano with a stack of glowing lava cubes ("Lava Escape"). Ideas: central bomb with colour-coded cubes, balloons that lift a block, lava cube skin.
 - `mockup_17.jpg`: hex sci-fi board with high-tech cubes with core lights, a gear housing and a next-block screen. Idea: sci-fi cube skin with a lit core (neon biome).
+
+**Party and biome boards, second set**
+- `party_biome_islands_ref.jpg` (4 boards; the Nintendo figurines, castle, pipes and titles are NOT used, per `index.md`): a meadow island with the board inset and themed props around the rim (tall spotted mushroom pillars, round bushes, flowers); two lava keeps with angry stone-face statues standing at the board edge, fire tiles and floor holes inside the board, a lava moat and lava falls off the island, a stone idol on the rim; a glass board at a rainbow-road crossing with a neon grid. Ideas used: edge statue hazard (OB-hazard statue), fire tile (floor tile), floor hole (mask), lava moat, glass grid. These are the exact items the user ruled "relevant".
+- `party_versus_ref.jpg`: Block Bridge Dash split screen with a checkered finish flag, stability meters and a "Speed Boost" gem button; Wonky Tower Builders on spring bases with stability meters; Island Claim Battle (floor tiles coloured blue and red by who claimed them, tiki and palm props, fruit props). Ideas: finish flag, extra-verb gem button, claimed-tile floor.
+- `biome_screens_ref.jpg` (4 biome scenes): candy (wafer-tile board, gumdrop and jelly cubes, chocolate cubes, gummy-bear critters, candy castle); lava (cracked-lava stone board with glowing seams, big gem crystals, a dragon and a fire sprite, lava falls); underwater (glowing dark tiles, shells and jellyfish standing on tiles, an octopus at a DJ deck, shipwreck); neon (circuit-board plinth, arcade cabinets, a robot wizard on a stone tower). Ideas: jellyfish and shell critters on tiles, gem crystals, gummy bear as critter.
 
 More boards are added to this list as they are opened (see the work log).
 

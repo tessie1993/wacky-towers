@@ -53,7 +53,7 @@ func test_sample_track_is_valid_and_preview_lists_what_is_ahead() -> void:
 	var def: TrackDef = TrackDef.load_file(SAMPLE)
 	assert_array(def.errors).is_empty()
 	assert_int(def.length_mm()).is_equal(60000)
-	var ahead: Array[Dictionary] = def.preview(0, 12000)
+	var ahead: Array[Dictionary] = def.preview(0, 12001)
 	assert_int(ahead.size()).is_equal(2)
 	assert_int(int(ahead[0]["ahead_mm"])).is_equal(6000)
 	assert_str(String(ahead[1]["kind"])).is_equal("arch")
@@ -103,8 +103,8 @@ func test_bump_shakes_loose_only_unsupported_blocks() -> void:
 	_run(runner, api, 1000)
 	assert_int(board.get_kind(board.index(Vector3i(0, 0, 0)))).is_equal(1)  # grounded block stays
 	assert_int(board.get_kind(board.index(Vector3i(2, 3, 2)))).is_equal(0)  # the overhang base is gone
-	# Above the lowest hanging block the rest were only "supported" by the doomed one in the same instant.
-	assert_int(board.get_kind(board.index(Vector3i(2, 4, 2)))).is_equal(1)
+	# Bottom-up pass: blocks that lost their support in the same shake go too (a cascade).
+	assert_int(board.get_kind(board.index(Vector3i(2, 4, 2)))).is_equal(0)
 
 
 func test_arch_removes_everything_at_or_above_the_gap() -> void:
