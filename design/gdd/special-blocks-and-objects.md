@@ -198,14 +198,15 @@ The bank has 67 shapes in 10 families (`assets/data/shapes/families.json:4-92`, 
 - **Source.** The crab and shell props on `underwater_biome_sheet_ref.png` for the look only. The rule is ours.
 
 **SH-07 jack (chunky)**
-- **What.** A 7-cube cross with one orientation (`shape_bank.tres:298-307`, `families.json:67`). A centre cube with an arm on each of 6 faces, as read from "7 cubes, 1 distinct orientation". `ART-CHECK` to confirm the arm length.
-- **Rule.** Existing: it spans 3 layers. The centre layer receives 5 cubes. The top and bottom layers receive 1 cube each. NEW power "pin": when a jack's lowest arm lands in a 1-cell hole, it locks at once ("pinned") and cannot slide, bounce, or wobble off. A jack never rotates visibly (one orientation), so it never changes shape under a rotate input, which makes it a perfect rule-reading teacher.
-- **Look.** Cocoa `#9A6A4A` family, but jacks get a bright orange centre bead so the centre reads.
-- **Audio.** `jack_pin_thunk`.
-- **Fits.** Carnival (toy jacks), meadow bonus, cave.
-- **Intro and teach.** Chapter 2 or later. Teach on a platform with a single 1-cell hole.
-- **Fairness.** Risk: 3 layers tall. Do not spawn when fewer than 3 free layers exist (spawn gate, as SH-04).
-- **Engine.** Shape EXISTS. Pin rule NEW, 1 day, gameplay-programmer.
+- **What.** A 7-cube cross with one orientation (`shape_bank.tres:298-307`, `families.json:67`): a centre cube with one cube on each of its 6 faces.
+- **Rule.** Resolved from the shape data: the jack is a centre cube with one cube on each of its 6 faces, 7 cubes in a 3x3x3 box, with 1 distinct orientation (`shape_bank.tres:298-307`). It spans 3 layers: the middle layer gets 5 cubes, the top and bottom get 1. NEW power "pin": when the jack's lowest arm lands in a 1-cell hole, the whole piece gets `hung` for 3 locks (3.1b: blocks belt moves, quake, tilt slip, and settle). It still clears, still takes blasts, and is still wiped by rescue.
+  - The stake: in a belt or conveyor level (clockwork_03 Tram Street) a pinned jack is the one piece the belt cannot move.
+- **Look.** Cocoa `#9A6A4A` family, with a bright orange centre bead so the centre reads. Badge: a pin icon.
+- **Audio.** `SFX_SP_JACK_PIN` (AUDIO-NEW).
+- **Fits.** clockwork (belt), carnival (toy jacks), cave.
+- **Intro and teach.** clockwork_03 (3.4), a platform with a single 1-cell hole at the belt start.
+- **Fairness.** Risk: 3 layers tall. It only spawns when at least 3 free layers exist above the stack (spawn gate, as SH-04).
+- **Engine.** PARTIAL. Shape EXISTS. The pin rule uses the NEW `hung` flag (3.7, GAP-3). The arm length ART-CHECK is closed above.
 - **Source.** None.
 
 **SH-08 pole (long bar)**
@@ -232,24 +233,25 @@ The bank has 67 shapes in 10 families (`assets/data/shapes/families.json:4-92`, 
 
 **SH-10 big_cube, giant_mega_cube, giant_slab, giant_fridge (heavy shapes)**
 - **What.** Big blocks: big_cube is 8 cubes (2x2x2, 1 orientation, `shape_bank.tres:36-45`). giant_mega_cube is 27 (3x3x3, `:202-211`). giant_slab is 9 and giant_fridge is 12 (`:188-239`).
-- **Rule.** NEW tag "heavy": a heavy piece counts each cube as `heavy_weight` (2) in the tilt plate and wobble sums (`tilt_plate.gd`, `wobble.gd`). On landing, a heavy piece closes up to `max_crush` gap cells under itself in each column, as `anvil_drop.gd` already does for flagged spawns (README Wave 3 table). Existing `anvil_drop` is the same effect as a flag; heavy shapes make the flag permanent per shape.
-- **Look.** Blackberry or Lemon, with a cast-iron weight stripe and a "kg" badge. Landing shakes the camera by a small amount (reduced under reduced motion).
-- **Audio.** `heavy_land_thud`.
-- **Fits.** Meadow 09 (tilting hill counterweights), clockwork (weights), pirate (cargo), cave.
-- **Intro and teach.** Meadow 09 is the natural first use: "stack counterweights on the high side".
-- **Fairness.** Risk: a heavy piece in the wrong place tips the plate at once. Counterplay: the tilt gauge previews the landing tilt with the ghost.
-- **Engine.** PARTIAL. `anvil_drop` EXISTS (`src/mechanics/wave3/anvil_drop.gd`). Heavy tag in tilt sums NEW, 1.5 days, gameplay-programmer.
+- **Rule.** NEW tag "heavy": a heavy piece counts each cube as `heavy_weight` (2) in the tilt plate sum (F7). The engine counts every cube as 1 today: `measure` takes cells only (`tilt_plate.gd:72-86`) and `weighted_cells` returns cells (`:57-68`), so weights need a signature change (3.7, GAP-5). On landing, a heavy piece closes up to `max_crush` (default 3, `anvil_drop.gd:37`) gap cells under each column, as `anvil_drop` does for flagged spawns. Heavy shapes make the flag permanent per shape.
+  - **Spawn gate for ALL heavy and giant shapes** (r2): a heavy shape spawns only when the plate tilt `tau` after a worst-case landing would stay under the warning line (`warn_at` x `slip_threshold`), computed with F7 for the shape's cube count at weight 2 on the heavy side. The level validator also caps heavy shapes at `heavy_per_bag` 1. The 8-cube big_cube at weight 2 is 16 weight units; the 27-cube mega cube is 54, which tips most plates at once, so it is never allowed in a tilt level.
+- **Look.** Blackberry or Lemon, with a cast-iron weight stripe and a kg badge. Landing shakes the camera a little (reduced under reduced motion).
+- **Audio.** `SFX_SP_HEAVY_THUD` (AUDIO-NEW).
+- **Fits.** meadow_09 (counterweights on the high side), clockwork (weights), cave. Pirate (cargo) once its skin exists.
+- **Intro and teach.** In meadow_09 the player teaches themselves with the tilt gauge (the frame's "new thing" is `tilt_plate`). Heavy shapes are held back to meadow_10 phase 3 and clockwork, so meadow_09 has one new package (F1, Appendix E).
+- **Fairness.** Risk: a heavy piece in the wrong place tips the plate at once. Counterplay: the spawn gate above and the tilt gauge previewing the landing tilt with the ghost (3.7, GAP-8).
+- **Engine.** PARTIAL. `anvil_drop` EXISTS (`src/mechanics/wave3/anvil_drop.gd`). The heavy tag in tilt sums is NEW (GAP-5).
 - **Source.** None.
 
 **SH-11 dented_cube (chunky)**
 - **What.** A 7-cube block with a dent (`shape_bank.tres:147-156`, 8 orientations). The dent is a ready-made pocket for a small thing (egg, gem, key).
-- **Rule.** NEW optional: an egg, gem or key placed in the dent (through the `drop_in` rule of the level) is "nested" and cannot be touched by goo, pests, or hail until the piece clears.
+- **Rule.** No new rule (r2: the r1 "nest" power is cut, it had no way to place an egg in the dent). The dent is an open one-cell hollow with a floor, a shape for level designers. A level may place an egg (BK-03), gem (BK-33) or key piece target in a dent cell with `starting_contents`, or spawn an egg into it with `mushroom_popup` and `object_kind: egg`, which already picks free supported cells (`mushroom_popup.gd:29-31`). Protection comes from the normal flags: a gem or egg there can carry `goal_object` (3.1b).
 - **Look.** Cocoa, with a visible bowl-shaped dent and a soft inner light.
-- **Audio.** `nest_settle`.
-- **Fits.** Meadow (nest), forest, candy (cupcake).
-- **Intro and teach.** With the egg object (OB-02).
+- **Audio.** Normal land.
+- **Fits.** meadow (nest), forest, candy (cupcake).
+- **Intro and teach.** With the egg kind (BK-03) in meadow_h3 (3.4).
 - **Fairness.** Pure help.
-- **Engine.** Shape EXISTS. Nest rule NEW, 1 day.
+- **Engine.** EXISTS (shape only, no rule).
 - **Source.** None.
 
 **SH-12 party set: heart, mushroom, rocket, dog_bone, crown, snake_left, snake_right**
