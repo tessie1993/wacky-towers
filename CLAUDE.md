@@ -48,6 +48,12 @@ the reference boards in `assets/art/reference/`, scoring at least 8/10 from the 
 There must be no beige or parchment UI. Reviewers instruct, makers fix, and nothing is done below the bar.
 Read `.claude/docs/reference-quality-bar.md`. This is enforced by `.claude/hooks/reference-quality-gate.sh` (Stop).
 
+## Clickable Questions
+
+User rule (2026-10-14): **every question for the user goes through the AskUserQuestion tool**,
+with clickable options and the recommended option first. Never end a reply with plain "?" questions.
+This is enforced by `.claude/hooks/clickable-questions.sh` (Stop).
+
 ## Coordination Rules
 
 @.claude/docs/coordination-rules.md
