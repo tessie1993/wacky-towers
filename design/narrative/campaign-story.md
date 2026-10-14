@@ -72,23 +72,23 @@ The party travels together; "Who is there" in each beat lists who is on screen. 
 | Hero | Looks (art bible 5) | Arc | Featured chapters | Resolution |
 |---|---|---|---|---|
 | **Dame Ada** (knight, silver and red plume, shield) | earnest, brave, rule-follower with a soft heart; Stitch-style protector | believes a tower is held by rules and a straight line; fears one wobble means failure | **1** tutor, **3** cold and cared for, **5** leads the rescue, **8** learns order is not stiffness, **9** low point ("I cannot hold the line"), **10** speaks to Huffle first, **11** cannon captain, **12** | the final block wobbles and she laughs |
-| **Bram** (dwarf, ginger braids, steel helm, hammer) | gruff, cheerful smasher | solves things by breaking them; learns to build and to accept help | **2** bakery, **4** jellyfish, **6** trapped on the crust, **8** digs from the far side, **9** patience, **10** builds gently, **12** | builds the cake tier without his hammer |
-| **Sif** (elf, blond, green hood, slingshot) | curious, quick, a cheeky "borrower" | collects small shiny things because she never felt she belonged | **4** the pearls, **5** heist, **7** the secret treehouse, **8** alone in the dark, **10** gives a treasure away, **11** | the shelf of borrowed things becomes the Fair's prizes; she is home |
+| **Bram** (dwarf, ginger braids, steel helm, hammer) | gruff, cheerful smasher | solves things by breaking them; learns to build and to accept help | **2** bakery, **4** jellyfish, **5** trapped on the crust, **7** digs from the far side, **8** patience, **9** builds gently, **12** | builds the cake tier without his hammer |
+| **Sif** (elf, blond, green hood, slingshot) | curious, quick, a cheeky "borrower" | collects small shiny things because she never felt she belonged | **4** the pearls, **6** the secret treehouse, **7** alone in the dark, **9** gives a treasure away, **10** hands Huffle the fallen rattle, **11** heist, **12** | the shelf of borrowed things becomes the Fair's prizes; she is home |
 
 ### 2.3 The NPCs
 
 | NPC | Species and look (art input; art-director decides) | Debut | Role | Cameos |
 |---|---|---|---|---|
-| **Lana** | alpaca, cream and rose wool, oversized knit cardigan, trailing golden yarn, needles | Ch 3 Ice | **Thread-keeper.** Knits and ties the Tether between Keystones; cares for the heroes. Her help sometimes overdoes it (a scarf too warm for a snowman). | Ch 4 bubble hats, 5 hull patch, 7 nets, 10 re-ties the dark thread, 11 star blanket, 12 bunting |
-| **Boulder** | hippo, slate blue, orange hard hat, rock cart, sledgehammer | Ch 6 Lava | **Heavy lifter and gentle demolisher.** Steadies wobbly things by sitting on them; sometimes smashes by accident. | Ch 8 clears rubble, 9 counterweight, 11 braces the star stair, 12 strongman booth |
-| **Glim** | **a mole**, teal and cream, round, miner's headlamp cap, blueprint scrolls in his cheeks | Ch 8 Cave | **Planner and light.** His blueprints are why the landing ghost exists. Over-plans, trips on his scrolls. | Ch 9 plans the clock, 10 lights the dark town, 11 star map, 12 ticket booth |
+| **Lana** | alpaca, cream and rose wool, oversized knit cardigan, trailing golden yarn, needles | Ch 3 Ice | **Thread-keeper.** Knits and ties the Tether between Keystones; cares for the heroes. Her help sometimes overdoes it (a scarf too warm for a snowman). | Ch 4 bubble hats, 6 nets, 9 re-ties the dark thread, 10 star blanket, 11 sail patch, 12 bunting |
+| **Boulder** | hippo, slate blue, orange hard hat, rock cart, sledgehammer | Ch 5 Lava | **Heavy lifter and gentle demolisher.** Steadies wobbly things by sitting on them; sometimes smashes by accident. | Ch 7 clears rubble, 8 counterweight, 10 braces the star stair, 11 ballast, 12 strongman booth |
+| **Glim** | **a mole**, teal and cream, round, miner's headlamp cap, blueprint scrolls in his cheeks | Ch 7 Cave | **Planner and light.** His blueprints are why the landing ghost exists. Over-plans, trips on his scrolls. | Ch 8 plans the clock, 9 lights the dark town, 10 star map, 11 charts, 12 ticket booth |
 
 ### 2.4 Huffle (the force)
 
 A huge, round, lilac baby cloud in a blanket of cloud, big wet eyes, puffed cheeks (art bible: furious wind cloud softened to a
 sulking toddler). She loves knocking blocks over and hearing them clatter. She hoards shiny blocks, so she still holds
 **Keystone twelve**. She appears as a shadow from chapter 1 (a distant huff, a lilac swirl at the edge of each island's sky) and
-is met in chapter 11.
+is met in chapter 10.
 
 ## 3. Text, tone and hand-off rules
 
