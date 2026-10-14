@@ -1,143 +1,134 @@
 # Level 1: meadow_01 "Stump Day"
 
-Status: DRAFT r2 for user review (goal changed by the user). Author: level designer. Date: 2026-10-14.
-The user's decisions for level 1 are binding and override `design/levels/plans/campaign-vision.md`:
-minigame "Build to the mark", scene "Giant tree stump", board "Round", HUD "Minimal".
-r2 user decisions: the goal is "layer clearer with obstacles, on a timer"; a stack that gets too high gets a soft
-rescue plus a grace knob; campaign single player (no multiplayer); the wobble-giggle is cosmetic only.
-Story source: `design/narrative/beats/meadow.md` (meadow_01) and `design/narrative/campaign-story.md`.
-Ruling on words: the headline names the story, not a row count. The objective line may say "Clear 3 layers before time runs out".
-This overrides vision rule U15 (no counter goals) for this level, by the user's choice.
+Status: DRAFT r3 for user review. Author: level designer. Date: 2026-10-14.
+r3 replaces r2. Reason: r2 broke the level rules (a counter goal, a fixed opening, no story action by the stack).
+Rules read for r3: `design/levels/plans/level-identity-spec.md`, `design/levels/plans/minigame-party-rules.md`,
+`design/levels/level-type-mix.md` and `design/levels/plans/campaign-vision.md`. See "Rules compliance" at the end.
+
+User decisions (binding):
+- **Story goal:** "Free the Hearth Stump". Roots (left) and stones (right) choke the old stump. Each full layer the player clears makes the stump shake one grip loose. The walls shrink and the play space changes. Win: freed before sunset (2:00). The stump wakes, glows green and rings its bell.
+- **HUD objective:** "Free the Hearth Stump before sunset." The words "clear N layers" never appear anywhere the player can see.
+- **Pieces:** a fair seeded random bag on every attempt. Never a fixed list. No fixed opening.
+- **Kept:** soft rescue on top-out, +30 s soft retry once, cosmetic giggle, campaign single player, the round 52-cell stump, the Minimal HUD, the sundial medallion as the timer.
+- Earlier: scene "Giant tree stump" built from PolyHaven/BlendKit assets; HUD "Minimal".
 
 Facts checked in code (2026-10-14):
-- `clear_n` goal: wins when `layers_cleared >= n`. HUD progress is `{done, target}` (`src/mechanics/goal/clear_n_goal.gd`).
-- Timer: `goal.time_limit_ms` exists as a goal field and a knob (`board_sim.gd` `_timed_out`). Today a timeout is a LOSS (`time_limit`). A "+30 s once" soft retry does NOT exist (NEW-1).
-- Obstacles: the `rock` content kind (glyph `R`) has `fills_layer = false`. The `rock_obstacle` rule places rocks from a `cells` list of `[x, y, z]` and marks them fixed, anchored, clear-protected and excluded from the clear denominator (`src/mechanics/lava/rock_obstacle.gd`).
-- Clearing: `BoardState.shift_layers` empties each full layer, then drops every layer above by the number of cleared layers beneath. Cells that cannot move (rocks) stay, and blocks above them stop on them.
-- Plain `starting_contents` with `R` would place rocks WITHOUT the protected status flags. So use the `rock_obstacle` rule, not `starting_contents`.
-- Board mask rows are strings. `#` = cell, `.` = cut (`src/core/board/ascii_grid.gd`). Row = z, char = x.
-- Stars: time stars `t2`/`t3` compare `level_ms`. 3 stars also need no warning used and no cells trimmed (`src/core/sim/star_rater.gd`).
-- The old `meadow_01.json` is wrong for this design (balloon rule, no mask, no timer, a stale `metadata.design_spec`).
+- Under the hood the goal is `clear_n` (`src/mechanics/goal/clear_n_goal.gd`). It is only the engine goal. The player never sees it.
+- `rock_obstacle` places permanent rocks. It sets `fixed`, `anchored` and `clear_protected` (`src/mechanics/lava/rock_obstacle.gd:20`). A `fixed` cell can never be removed (`src/core/board/board_state.gd:685-686`). So `rock_obstacle` cannot shrink. A new rule is needed (section 10).
+- Precedent for removing a rock: `lava_rock_spawn.gd:58` uses `api.remove_cell(cell, BoardState.Cause.DAMAGE)` on a rock that is not `fixed`. Precedent for reacting once per clear: `lava_rock_spawn.gd:49,55` stamps `clear_count` from the `on_clear` hook.
+- Rocks (`rock` kind, glyph `R`) have `fills_layer = false`, so they are outside the clear denominator (`assets/data/content/blocks.json`).
+- The timer exists: `goal.time_limit_ms`. A timeout today is a LOSS (`src/core/sim/board_sim.gd:751-752,763-764`). The +30 s retry is new.
+- Pieces are flat (spin axis only), so one piece fills one layer. A layer can only be filled exactly if its free area is a multiple of 4. All stages below obey this.
+- The HUD icon for `clear_n` is "layers" (`src/ui/common/snapshots/hud_snapshot.gd:13`). It must be replaced by the story objective for this level (NEW-8).
 
 ---
 
 ## 1. One-line pitch and objective
 
-**Pitch.** Fill the gaps between the old roots and stones on a giant stump, and each full layer lights the meadow awake.
+**Pitch.** An old stump is choked by roots and stones, and every full layer you stack makes it shake one grip loose.
 
-**On-screen objective (10 words):** "Clear 3 layers before time runs out." Shown once, on the plaque, for 4 seconds.
-
-**Goal plaque headline (6 words, from the beat):** "Plant the Hearth Tower's first course".
+**On-screen objective (6 words):** "Free the Hearth Stump before sunset."
 
 Level card facts:
-- Level name: Stump Day. Biome: meadow. Tier 1. Role: teach.
-- Verb: build. Mechanics: layer clearing (`clear_n`) with permanent rock obstacles, plus `sticky_landing`.
-- Place and time: Hearth Stump, dawn. Cast: Wizard, Ada.
-- Estimated play time: 60 to 120 s for a first-time player. Hard cap 2:30 with the soft retry.
-- Ending pattern: plain. Opening event id: `spoon_pops_block_hums`.
+- Name: Stump Day. Biome: meadow. Tier 1. Role: teach.
+- Verb: build. One mechanic: `grip_release` (walls that loosen with each full layer). That is the level's twist (`level_type`).
+- Place and time: Hearth Stump, dawn, sliding toward sunset over 2:00. Cast: Wizard, Ada.
+- Estimated play time: 60 to 120 s. Hard cap 2:30 with the soft retry.
+- `metadata.signature` (13 words): "The Wizard's spoon pops out, and the choked old stump shakes itself free."
+- `metadata.ending`: `plain`. Why: level 1 may not hide its goal, and the user's quota needs only 4 non-plain endings in the biome, placed from 04 on (vision U16, `campaign-vision.md:277-282`). The surprise in level 1 is the wall change after each clear, not a hidden goal.
+- Opening event id: `spoon_pops_block_hums`.
 
 ---
 
-## 2. Minigame: Clear 3 layers before the timer
+## 2. Minigame: Free the Hearth Stump
 
-**Verb.** Build. Drop a block. Turn a block. Fill the gaps.
+**Verb.** Build. Drop a block. Turn a block. Fill the pit. Free the stump.
 
 **Core loop.**
 1. A block tumbles from the Wizard's hat brim.
-2. Slide it, turn it, and drop it into the lane between the roots and stones.
+2. Slide it, turn it, drop it into the pit between the roots and stones.
 3. It locks with a warm hum.
-4. When a whole layer is full, it clears: the blocks pop, the layers above settle, the Hearth Hum grows.
-5. Repeat until 3 layers are cleared.
+4. When a whole layer of the pit is full, it clears. The stump shakes and one grip lets go: a root snaps back or a stone rolls off. The pit gets wider.
+5. Three grips free the stump. The sundial medallion shows how much of the day is left.
 
-**Win condition (exact).** `clear_n`, `n = 3`, `time_limit_ms = 120000`.
-- Win when 3 layers have been cleared before the clock reaches 2:00.
-- Any full layer counts, not only the bottom one.
-- Why `clear_n`: it is the engine's native layer-clear goal. Zero new goal code. The "mark" is now the glowing ring of light that sweeps the layer on each clear (see section 7).
+**Win condition.** Free the stump: 3 full layers cleared before 2:00. Under the hood: `clear_n`, `n = 3`, `time_limit_ms = 120000`. The player sees only the story:
+- The meter "Stump Grip" has three knots. Each cleared layer loosens one knot.
+- When the third knot lets go, the stump is free. No number is ever shown.
 
-**Layer size and workload (see section 4).** The lane is 32 cells. That is 8 pieces per layer. The minimum is 24 pieces for 3 clears. A first-timer needs about 26 to 30 pieces. Pieces that overfill a cleared layer drop down and count toward the next one, so over-stacking is not wasted.
+**What the stack does in the story.** Each cleared layer is a pull on the stump. The stump shakes, a grip breaks, the walls shrink, and the play space grows.
 
 **Fail condition.**
-- Time runs out: soft retry, once. See below.
-- Stack too high: soft rescue only. `goal.top_out = rescue`, `goal.warnings_max = 3`. The Wizard's cloud scoops the top blocks with a giggle. Never a restart. The comic reaction if it ever fully fails: blocks giggle back into their box, restart in 2 s or less.
-- With a 4-wide lane and 8 playable layers, a top-out needs a very sloppy tower.
+- Sunset (2:00) without freeing the stump: soft retry once. The Wizard tips his hat and holds the sun back. The sundial shadow winds back 30 s. The stack stays. If the extra 30 s also runs out, the sun sets, the stump yawns, blocks giggle into their box, and the level restarts in 2 s or less.
+- Stack too high: soft rescue only. `goal.top_out = rescue`, `goal.warnings_max = 3`. The Wizard's cloud scoops the top blocks with a giggle. Never a restart.
+- With walls up to the top and a pit that is at least 4 wide, a top-out is very unlikely.
 
-**Soft retry (NEW-1).** At 2:00, if the goal is not met, the game does not end. The Wizard yawns, a sandglass refills, and the clock gets +30 s once. The stack stays as it is. If the extra 30 s also runs out, blocks giggle into the box and the level restarts in 2 s or less. Using the retry caps the run at 1 star (the finish time is over 90 s).
-
-**30-second grace.**
-- For the first 30 seconds there is no top-out check, no warning and no red flash. The new knob `goal.grace_ms = 30000` makes it a rule (NEW-2).
-- The timer cannot run out in that window either (2:00 limit).
+**30-second grace.** For the first 30 seconds there is no top-out check, no warning and no red flash (`goal.grace_ms = 30000`, NEW-2). The sunset cannot arrive in that time either.
 
 **Stars (the Wizard's thanks).**
 
 | Stars | Rule | Reasoning |
 |---|---|---|
-| 1 | Win, with or without the retry. | A first-time player never leaves with nothing. |
-| 2 | 3 clears in 90 s or less (`t2 = 90000`). | 24 to 28 pieces at about 3.5 s each. Needs the drop gesture most of the time. |
-| 3 | 3 clears in 60 s or less (`t3 = 60000`), with no warning and no trim. | The minimum is 24 pieces, so about 2.5 s per piece with hard drops and almost no gaps. Hard but fair for a fast, tidy player. |
+| 1 | Free the stump, with or without the retry. | A guest never leaves with nothing. |
+| 2 | Freed in 90 s or less (`t2 = 90000`). | The minimum is 18 pieces (4 + 6 + 8). At 4.5 s per piece that is 81 s. A calm player who drops often gets it. |
+| 3 | Freed in 60 s or less (`t3 = 60000`), no warning, no trim. | 18 pieces in 60 s is 3.3 s per piece. It needs hard drops and tidy fits. |
 
-Notes: a calm first-timer at about 4.5 s per piece lands near 110 to 120 s, which is the 1-star zone, and the +30 s retry catches the slow ones. All values are first estimates and need playtest medians. `t3 <= t2` holds, as the validator requires. The engine's 3-star rule also needs `warnings_used == 0` and `cells_trimmed == 0`.
+Notes: the sums assume a random bag, so real runs will use 20 to 26 pieces. Overfilled blocks drop down and count for the next layer. First estimates; replace with playtest medians. A run that used the retry is capped at 1 star because its time is over 90 s.
 
 ---
 
 ## 3. Teaching beats, second by second
 
-Rules for all beats: no text walls. Icons, glow, motion and sound only. The only words on screen are the objective on the plaque (once) and the headline.
-Input is open from second 2. No beat blocks play.
+Rules for all beats: no text walls. Icons, glow, motion and sound only. The only words on screen are the objective on the plaque. Input is open from second 2. No beat blocks play.
+
+The pieces are random, so hints adapt. The game checks the current piece against the pit. Hints appear only when they would help.
 
 | Time | What happens | What the player learns | How the game shows it |
 |---|---|---|---|
-| 0.0 s | Dawn light. Camera rests on the stump. Roots and stones frame a lane of bare tree rings. | There is a lane to fill. | The lane is the brightest, flattest area. The plaque slides in with the objective. |
-| 0.8 s | The Wizard's cloud floats in. He tips his hat. | Someone is helping. | Wizard pose "point". |
-| 1.4 s | Out plops a wooden spoon. He flings it into his sack. Plink. | Tone: silly and kind. | The spoon gag. Not a tutorial step. |
-| 2.2 s | The first block (an O, a plain 2x2) tumbles from the hat brim. A warm hum starts. | A block is coming and it is mine. | The block glows gold. The NEXT slot shows the following piece. |
-| 2.2 to 7 s | The block falls slowly. A soft landing shadow shows in the lane. | Where it will land. | The landing marker is a bright disc on the wood, high contrast. |
-| 4 s, if no input | A glowing arrow-and-finger loop shows a slide. | Slide the block. | Icon only, near the block. Fades on first input. |
-| 7 s, or on drop | **First lock.** The block lands. | **Drop and lock.** | Warm hum note. A gold ripple runs through the tree rings. Ada cheers. |
-| lock + 0.4 s | The second block, an I (1x4 bar), arrives. A glowing 1x4 outline lies in the lane at a right angle to the bar. | The bar can match the outline. | The outline is an invitation, not a rule. It does not block anything. |
-| +3 s, if no turn | A curved turn arrow pulses on the bar. | **Turn the block.** | Icon only. |
-| on first turn | The outline turns green. A small chime sounds. | Turning fixes things. | Green is shape plus colour plus sound. |
-| on drop of block 2 | **First turn done.** It snaps into the outline. | Turning matters. | Sparkle, hum. Ada points at the lane. |
-| block 3 | An L arrives. No hint. | The player now chooses alone. | Hints stay off after the first turn. |
-| around block 4 to 6 | If a block locks with a hanging cell, it wobbles and giggles. | Neat stacks look good. | See section 7. Cosmetic only. |
-| when 8 or fewer lane cells are empty | The empty cells pulse softly gold. | **Fill these to clear the layer.** | A glow on the empty cells. No text. |
-| about 35 to 50 s | **The first clear.** The last cell fills. | **Full layer = clear. This is the big lesson.** | See the clear beat below. |
-| after the first clear | The second and third layers have no hints. | The player repeats it alone. | The empty-cell pulse stays on for each layer (it is not text). |
-| 30 s | Grace ends. Nothing visible changes. | Nothing to learn. | The player never sees a grace countdown. |
-| about 75 to 110 s | The third clear. | Done. | See section 6. |
+| 0.0 s | Dawn. The camera looks down at the stump in its cage of roots and stones. The sundial medallion shows a short shadow. | The stump is trapped. | The cage is tight and dark. The pit is the bright, flat tree-ring floor. The plaque slides in: "Free the Hearth Stump before sunset." |
+| 0.8 s | The Wizard's cloud floats in. He tips his hat. | Someone is helping. | Wizard pose "point" at the stump. |
+| 1.4 s | Out plops a wooden spoon. He flings it into his sack. Plink. | Tone: silly and kind. | The spoon gag. |
+| 2.2 s | The first block tumbles from the hat brim. A warm hum starts. **(event in the first 10 s)** | A block is coming and it is mine. | The block glows gold. NEXT shows the following piece. |
+| 3.5 s | A root creaks and tightens. A stone wobbles. | These are the problem. | A small camera nudge and a creak sound. Cosmetic. |
+| 2.2 to 9 s | The block falls slowly. A bright landing marker shows in the pit. | Where it will land. | The marker is a high-contrast disc on the wood. |
+| 4 s with no input | A finger-and-arrow loop near the block. | Slide the block. | Icon only. Fades on first input. |
+| 8 s with no drop | A down-arrow pulse on the block. | Drop the block. | Icon only. At the baseline gravity a piece takes about 7 s to land alone, so a player who learns to drop saves time. |
+| first lock (about 9 s, or when dropped) | **First lock.** | **Drop and lock.** | Warm hum note. A gold ripple runs through the tree rings. Ada cheers. |
+| first piece that needs a turn | A faint glowing outline shows the best fit. A curved arrow pulses on the block after 3 s. | **Turn the block.** | Icon only. The outline turns green when the block matches. A chime. Shown for at most the first 2 such pieces. |
+| when the pit has 8 or fewer empty cells | The empty cells pulse softly gold. | Fill these to finish the layer. | A glow on the empty cells. |
+| about 20 to 30 s | **First full layer.** | **The big lesson: a full layer shakes a grip loose.** | See below. |
+| after that | No hints unless the player idles for 6 s. | The player does it alone. | The empty-cell pulse stays. |
+| 30 s | Grace ends. Nothing visible changes. | | |
 
-**The first clear (about 2.5 s). The big teaching moment.**
-1. The last cell fills. The whole layer glows white-gold.
-2. A ring of light sweeps across the layer from the centre outward and chimes.
-3. The blocks pop into sparkles. Any blocks above settle down one layer with a soft bounce.
-4. The roots and stones do not move. They stay where they are.
-5. The first tree ring of the stump lights green. The Hearth Hum gains one third.
-6. Ada cheers. The Wizard points at the meter.
-
-**First piece.** An O. It cannot be placed wrongly and needs no turn.
-**First turn.** The I piece, with its outline.
-**First lock.** About 5 seconds of unaided fall at the start, or earlier if the player drops it.
+**The first free (about 3 s). The big teaching moment.**
+1. The last cell fills. The layer glows white-gold.
+2. A ring of light sweeps across the layer. The blocks pop into sparkles. Blocks above settle down one step.
+3. The stump shudders. Ada hauls on a root rope. The left roots snap back and spring away.
+4. The first knot on the Stump Grip meter turns green and drops off.
+5. The pit is now 6 wide. Wizard pose "point" at the new space.
+6. Everything that moved shows why: a wall is gone, so there is more room.
 
 **Pacing chart (intensity 0 to 5).**
 
 | Time | Intensity | Note |
 |---|---|---|
 | 0 to 2 s | 1 | Intro, spoon gag. |
-| 2 to 30 s | 1 | Teaching. Timer is far away. |
-| 30 to 50 s | 2 | The first clear. Reward spike (3 for 2 s). |
-| 50 to 90 s | 2 to 3 | Second clear. The timer becomes visible in the last 30 s. |
-| 90 to 120 s | 3 | Third clear, the push. |
-| win | 3 | Bell, glow, cheer. |
+| 2 to 25 s | 1 | A small pit, no pressure. |
+| 25 to 30 s | 3 | First grip breaks. Reward spike. |
+| 30 to 60 s | 2 | A wider pit. The player chooses. |
+| 60 to 90 s | 2 to 3 | Second grip breaks (stones roll off). The sun is lower. |
+| 90 to 120 s | 3 | Third layer. The sky turns gold. |
+| win | 4 | The whole stump frees. |
 | 3 s after | 0 | Result card. |
 
-Level 1 has no enemies. Encounter list: none. The "encounter" is the lane and the clock.
+Encounter list: none. The "encounter" is the cage and the sun.
 
 ---
 
-## 4. Board: Round, with obstacles
+## 4. Board: the round stump in a cage
 
-**Size.** `width 8`, `depth 8`, `h_play 8`.
+**Size.** `width 8`, `depth 8`, `h_play 8`. The board height is 12 layers with the spawn clearance.
 
-**Mask** (1 = cell, 0 = cut). Row = z from back to front, column = x. The mask is unchanged from r1.
+**Mask** (1 = cell, 0 = cut). Unchanged: the round 52-cell stump.
 
 ```
       x: 0 1 2 3 4 5 6 7
@@ -151,152 +142,161 @@ z=6      0 1 1 1 1 1 1 0     6 cells
 z=7      0 0 1 1 1 1 0 0     4 cells
 ```
 
-JSON rows (`#` = cell, `.` = cut):
-`["..####..", ".######.", "########", "########", "########", "########", ".######.", "..####.."]`
+JSON rows: `["..####..", ".######.", "########", "########", "########", "########", ".######.", "..####.."]`
 
-**Playable cells per layer:** 52. After obstacles: **32 free cells per layer** (see below).
-
-**Obstacle layout.** `R` = a permanent rock column (stone or root knot). `.` = free lane. `-` = cut.
+**The cage (stage 0).** `.` = free pit. `r` = root column. `s` = stone column. `-` = cut. The roots (left) and stones (right) are full-height columns, 12 layers. 36 columns. 16 free cells.
 
 ```
       x: 0 1 2 3 4 5 6 7
-z=0      - - . . . . - -
-z=1      - R . . . . R -
-z=2      R R . . . . R R
-z=3      R R . . . . R R
-z=4      R R . . . . R R
-z=5      R R . . . . R R
-z=6      - R . . . . R -
-z=7      - - . . . . - -
+z=0      - - r r s s - -
+z=1      - r r r s s s -
+z=2      r r . . . . s s
+z=3      r r . . . . s s
+z=4      r r . . . . s s
+z=5      r r . . . . s s
+z=6      - r r r s s s -
+z=7      - - r r s s - -
 ```
 
-- 20 rock columns: 2 + 4 + 4 + 4 + 4 + 2 = 20 (left flank 10, right flank 10).
-- The free lane is columns 2 to 5 on every row: 4 wide, 8 long, 32 cells = 8 pieces exactly.
-- Left flank is skinned as twisting roots. Right flank is skinned as mossy stones. This is a cosmetic choice (NEW-5). Both are the `rock` kind.
-- Each rock column is 8 layers tall (the full `h_play`). See why below.
+**How the walls shrink per clear (exact cells).** Three grips. Each release removes whole columns, in every layer.
 
-**Rules for the obstacles (what the engine does).**
-- Does clearing a layer remove obstacles in it? **No.** Rocks are clear-protected and anchored. They never clear and never move.
-- How do layers above fall? Each layer above a cleared layer drops one step. Lane cells drop freely. Rock columns stay, and nothing needs to drop through them.
-- Do rocks count in the clear? **No.** The `rock` kind has `fills_layer = false`, so it is excluded from the denominator. A layer is full when all 32 lane cells are filled.
-- Why the walls are full height: if the rocks were only 1 layer high, layer 2 would have 20 extra flank cells that must be filled. Layers 2 and up would need 52 cells and be much slower. Full-height columns keep every layer at 32 cells, so any layer can clear.
-- Why that also prevents a trap: with 1-high rocks a piece could rest on a rock and hang over the lane. That makes a covered hole. Full-height walls block pieces from sliding sideways over the flanks at all.
-- Pieces above `h_play` (in the spawn clearance zone) could still slide over a flank. Cover this by making the rock columns run to the top of the board, 12 layers. Confirm with the Godot master that rocks can sit in the clearance zone (open point).
+| Grip | Trigger | What the player sees | Cells freed | Free pit after | Size |
+|---|---|---|---|---|---|
+| 1. Left roots | 1st cleared layer | The left roots snap back. | x 0 and 1, z 2 to 5 (8 columns) | x 0 to 5, z 2 to 5 | 6 x 4 = 24 cells (6 pieces) |
+| 2. Right stones | 2nd cleared layer | The right stones roll off the stump. | x 6 and 7, z 2 to 5 (8 columns) | x 0 to 7, z 2 to 5 | 8 x 4 = 32 cells (8 pieces) |
+| 3. The rim | 3rd cleared layer (the win) | The last roots and stones (front and back) tumble away. The round stump shows. | z 0, 1, 6, 7: 20 columns | the whole 52-cell stump | the win beat, no play |
 
-**Fairness: no unfillable layer.**
-- Every free cell is in one connected region. There is no pocket.
-- The free region is a plain 4 x 8 rectangle. An I (1x4) fits across it or along it. An O fits anywhere. An L or T fits anywhere. A 4 x 8 rectangle can be tiled exactly with I, O, L and T alone.
-- The lane is 4 wide. The vision doc asks for at least 4 wide at spawn rows and 3 wide elsewhere. Both hold.
-- Rocks only touch the lane on straight edges. There are no 1-wide notches or channels.
-- The spawn anchor `(3, 3)` is in the lane. Pieces spawn in columns 2 to 5, which is exactly the lane.
-- A covered hole made by the player blocks only that layer. Another full layer still counts. The rescue trims a too-high stack.
+Stage 1 (after grip 1):
+```
+      x: 0 1 2 3 4 5 6 7
+z=2      . . . . . . s s
+z=3      . . . . . . s s
+z=4      . . . . . . s s
+z=5      . . . . . . s s
+```
+Stage 2 (after grip 2): z 2 to 5 are all free, 8 wide. The rim rows (z 0, 1, 6, 7) stay walled until the win.
 
-**Why the round edge is fair.**
-- The cut corners of the octagon never touch the lane. They sit behind the rock flanks.
-- The round shape shows in the scene as the stump's outline and the curved root walls.
+**Rules for the cage (what the engine does).**
+- Does clearing a layer remove obstacles in it? **Yes, by design.** A cleared layer releases the next grip. The cleared layer's blocks are removed as usual. The released columns are removed in all layers, not only in the cleared one.
+- How do the layers above fall? As usual: each layer above drops one step. The released columns are empty in every layer, so blocks never land on a vanished wall.
+- Do wall columns count in the clear? **No.** The `rock` kind has `fills_layer = false`. A layer is full when every free cell in the current pit is filled.
+- When the pit widens, the new empty cells appear in all layers. A layer that was part full now needs the new cells too. That is the intended change in play.
 
-**Later levels** can add stones inside the lane. Level 1 keeps it a clean lane so the clear is easy to read.
+**Fairness (no unfillable layer).**
+- Every stage is a plain rectangle: 4x4, 6x4, 8x4. No pocket, no channel, no notch.
+- Free area is 16, 24, 32. All are multiples of 4, so a layer can be filled exactly with 4-cell pieces. This is a hard rule for the level data.
+- The pit is always at least 4 wide and 4 long. A piece can rotate in it. Spawn columns x 2 to 5 are always free. The vision's spawn run of 4 (`campaign-vision.md:239`) holds.
+- Walls are full height (12 layers), so a piece cannot slide over a wall and land on it, and no covered hole forms by resting on a wall.
+- Any full layer counts, not only the bottom one. A hole in layer 1 does not block clearing layer 2.
+- A solver checks that each stage can be tiled by the four shapes (O, I, L, T) and that a bag of 4 pieces leaves a winning line in at least 98 percent of seeds (see section 11).
+
+**Why the round edge is fair.** The cut corners sit behind the rim columns and are never touched in play. The stump's round outline stays visible, and the full 52-cell round stump is revealed when the last grip lets go. The player never meets a narrow round-edge pocket.
 
 ---
 
 ## 5. Pieces
 
-**Shapes (4 only):** O, I, L, T. S is dropped on purpose. Its skew is fiddly for a first-time player. S joins in level 3 or later.
-JSON: `"shapes": ["o","i","l","t"]`, equal weights, `spawn.randomizer = bag` (the default, a fair shuffle).
+**Shapes (4 only):** O, I, L, T. S is dropped. Its skew is fiddly for a first-time player. S joins in level 3 or later.
 
-**Opening set:** `["o","i","l"]`, `opening_count 3`. The first three pieces are fixed: O (drop), I (turn), L (free choice). Then the bag takes over.
+**Order.** A seeded random bag, new on every attempt (`spawn.randomizer = bag`, the default). Each bag holds one of each shape in a random order. The seed is logged for replay. There is no `fixed_list`, no `opening_set` and no fixed opening. The loader accepts a missing `opening_set` (it defaults to empty).
 
-**Preview.** `spawn.preview_count = 1`. Only one NEXT slot shows. `spawn.hold_enabled = false`.
+**Preview.** `spawn.preview_count = 1`. One NEXT slot. `spawn.hold_enabled = false`.
 
-**Fall speed.** `fall.g0 = 0.9` (default 1.0, minimum 0.3). `sticky_landing` with `sticky_gravity_scale = 0.8`. No speed-up: leave `fall.ramp_per_min` and `fall.ramp_per_clear` at 0 for this level (confirm the defaults). Design target: about 5 s of unaided fall per piece. A piece that is dropped lands in about 1 s. The units of `g0` are not confirmed, so these are targets to measure in a playtest.
+**Fall speed.** `fall.g0 = 0.6`. This is the tier-1 baseline. The campaign levels 01 use 0.60 (meadow), 0.65 (candy), 0.72 (ice), 0.75 (underwater), 0.80 (pirate), 0.85 (lava, forest), 0.95 (cave, neon), 0.97 (clockwork), 1.14 (celestial), 1.20 (carnival). Meadow is first, so it takes the lowest value (current `meadow_01.json`: 0.6). No ramp in this level.
+- Risk: at 0.6 a piece may take about 7 s to land alone, so the 2:00 timer pushes the player to use the drop gesture. That is the point of the level, but it must be tested. If first-timers fail the clock, lengthen the retry (+45 s) before touching `g0`. This is a playtest knob, not an open question.
+- Units of `g0` are not confirmed in the data. The 7 s is a target to measure.
 
-**Lock delay.** `fall.lock_delay_ms = 900` (default 500), `fall.lock_resets_max = 15` (default 10). A guest has time to nudge a block after it touches down.
+**Lock delay.** `fall.lock_delay_ms = 900` (default 500), `fall.lock_resets_max = 15` (default 10). A guest has time to nudge a block.
 
-**Pause between pieces:** `fall.entry_delay_ms = 300` (default 200), so the lock hum can finish. Shorter than r1 because the timer is now running.
+**Pause between pieces.** `fall.entry_delay_ms = 300` (default 200).
 
-**Controls.** Slide, turn (spin axis only: `control.rotation_axes_enabled = ["spin"]`), soft drop and hard drop. Gestures or standard pad buttons, not extra HUD buttons.
+**Rules in the pill:** one only, `grip_release`. `sticky_landing` (named in the beat's minigame line) is dropped to obey one mechanic per level 1 (`campaign-vision.md:442`, U10). Its gentle feel comes from `g0` and the lock delay instead.
+
+**Controls.** Slide, turn (spin only: `control.rotation_axes_enabled = ["spin"]`), soft drop and hard drop. Standard controls. No extra gem button.
 
 ---
 
-## 6. Hearth Hum meter
+## 6. Stump Grip meter (replaces "Hearth Hum")
 
-**What fills it.** Layer clears. Each clear is one third. Three clears = Done.
-- The `clear_n` goal already reports `{done, target}`, so the meter works with no new data.
-- Optional smooth fill (NEW-3): between clears, the current layer's fill adds up to 90 percent of one third. It makes the meter move on every lock. If skipped, the meter moves in three steps and each lock only plays a hum note.
+**Proposed name: "Stump Grip".** The old name "Hearth Hum" described a hum that fills. Now the stump loses its grip. A meter that fills would also read like a counter. The new meter shows three bark knots that let go.
+Alternatives: "Bark Bind", "Hearth Wake". The beat file lists "Hearth Hum" in `hud_meter` and needs a one-word update by the narrative director (open question 1).
 
-**Visual states.** The meter is a small hearth-flame glyph in a purple-wood frame, with a ring of three notes around it.
+**What it shows.** Three knots on a bark ring around a small stump glyph. No numbers.
+- Tight: 3 brown knots, the glyph is dark.
+- Each cleared layer: one knot glows green, then drops off the ring with a snap.
+- Between clears, the ring creaks louder as the current layer fills (optional, NEW-3).
+- Free: no knots, the glyph glows green.
 
-| State | Clears | Meter look | Scene look and sound |
+**Visual states.**
+
+| State | Knots left | Meter look | Scene look and sound |
 |---|---|---|---|
-| Quiet | 0 | Dim ember. | Dawn light. Wind and birds. Each lock adds a hum note. |
-| Hum | 1 | Small steady flame. Note 1 lit. | The inner tree ring glows green. A warm chord joins. |
-| Warm | 2 | Bigger flame. Note 2 lit. | The middle tree ring glows green. The cottage chimney starts a thin smoke curl. |
-| Done | 3 | Flame bursts. All notes lit. | The end beat below. |
+| Tight | 3 | Dark bark ring. | Roots and stones hug the stump. Dawn light. A low creak per lock. |
+| Loosening | 2 | One knot gone. | Left roots are gone. A warm chord joins. The sundial shadow is longer. |
+| Nearly free | 1 | Two knots gone. | Right stones are gone. The cottage chimney starts to smoke. Light turns gold. |
+| Free | 0 | Glyph glows green. | The end beat. |
 
-**End beat (about 4 s).**
-1. The third layer clears. The ring of light sweeps out and does not stop at the lane edge. It races to the rim of the stump.
-2. The outer tree ring lights green. The whole stump glows green.
-3. The stump bell rings. A big clear bell note, and the hum chord resolves. (Set-piece action `bell_ring`.)
-4. The grass greens and the wildflowers open. The cottage chimney puffs. The waterfall sparkles.
-5. Wizard pose "point" at the tower, Ada pose "cheer". The result card with stars appears 3 s after the bell.
+**Timer: the sundial medallion.** A round bronze-and-purple medallion on the goal plaque. A shadow sweeps from dawn to sunset over 2:00. In the last 30 s the shadow pulses gently. In the last 10 s a soft tick sounds. Never red or loud. The scene's light also warms from dawn gold toward sunset gold (not darker) as time passes. After the retry, the shadow winds back 30 s.
 
-World change on win (from the beat): the first block hums and the stump glows green.
+**End beat (about 4 s). The payoff on the win.**
+1. The third layer clears. The ring of light races to the rim.
+2. The rim roots and stones tumble away. Grip 3 lets go. The whole round stump shows, with its tree rings.
+3. The stump wakes: it shudders like a yawn, then the tree rings glow green from the centre outward.
+4. The stump bell rings. A big clear bell note.
+5. The grass greens and the wildflowers open. The cottage chimney puffs. The waterfall sparkles.
+6. The Wizard points at the stump. Ada cheers.
+7. The result card appears 3 s after the bell.
 
-**Timer display.** See section 9. In the last 30 s the timer pulses gently. In the last 10 s a soft tick sounds. It is never red or loud.
+World change on win: the first block hums and the stump glows green.
 
 **Audio cues.**
-- Start: soft dawn pad and birds.
-- Each lock: one warm hum note (pitch rises with clears).
+- Start: soft dawn pad, birds, a creaking cage.
+- Each lock: a warm hum note.
 - First turn: a small green chime.
-- Each clear: a chime and a light sweep sound.
-- Last 30 s: a gentle pulse under the music. Last 10 s: soft ticks.
-- Soft retry: a yawn and a sand-pour sound.
-- Win: bell, chord resolves, short joyful sting, then a calm loop under the result card.
+- Each free: a stump groan, a snap or a rumble, then a bright chord step.
+- Last 30 s: a gentle pulse. Last 10 s: soft ticks.
+- Soft retry: a yawn and a long sun-hold note.
+- Win: bell, chord resolves, short joyful sting, then a calm loop.
 
 ---
 
 ## 7. Moments of delight
 
-1. **The spoon gag (0.8 to 2 s).** The Wizard tips his hat. A wooden spoon plops out. He flings it over his shoulder into the Wrong Sack tied to his cloud. Plink. The sack bulges. This is the first item of the Hat Dip running gag (`campaign-story.md`, chapter 1, wooden spoon). It plays once and never blocks input.
-2. **The wobble-giggle block.** When a block locks with a hanging cell (fewer than 2 of its cells have support below), it wobbles for 0.6 s and giggles. A tidy neighbour keeps its glow and hums. It is purely cosmetic (user decision). It never moves a cell and never costs anything. The `wobble` rule is not used.
-3. **The ring flash.** Each layer clear sends a ring of light across the layer, like a tree ring. Ring 1, 2 and 3 light the three tree rings green. The last one rushes to the rim and the bell rings.
-4. **The sandglass yawn** (soft retry). The Wizard yawns, the sandglass refills, and Ada gives a thumbs up. It turns a near-fail into a laugh.
-
-Small extras (no cost, optional):
-- Ada waves at the tower after the first lock.
-- A butterfly lands on the first block.
-- The roots shift a little when a layer clears, as if cheering.
+1. **The spoon gag (0.8 to 2 s).** The Wizard tips his hat. A wooden spoon plops out. He flings it into the Wrong Sack tied to his cloud. Plink. This is item 1 of the Hat Dip gag (`campaign-story.md`, chapter 1). It never blocks input.
+2. **The wobble-giggle block.** A block that locks with a hanging cell wobbles for 0.6 s and giggles. A tidy neighbour keeps its glow. It is cosmetic only: no cell moves, nothing is lost. The `wobble` rule is not used.
+3. **The ring flash.** Each cleared layer sends a ring of light across the pit, like a tree ring. The third ring races to the rim and the bell rings.
+4. **The root snap and the stone roll.** Roots whip back with a twang. A mossy stone rolls off the stump edge and bounces down the island. Ada hauls on the rope.
+5. **The sun-hold.** At the retry, the Wizard tips his hat and the sun stops. A bird lands on the sundial.
 
 ---
 
-## 8. Mode: campaign, single player
+## 8. Party play
 
-**Decision (user, 2026-10-14): level 1 is a campaign level and is NOT multiplayer.** One player, one stump. There is no
-party or split-screen variant of this level. Party play belongs to the party modes, not the campaign.
+The user decided: campaign is single player. Level 1 has no party mode.
+For later use, side by side with the same seed would work natively, because the engine gives one board per player. The cage and the wall release are per board, so each player would free their own stump. No work is planned now.
+
+---
 
 ## 9. HUD contract (Minimal)
 
-Only these four elements show. Nothing else is on the screen.
+Only these four elements show. Nothing else.
 
 | Element | Shows | Position | Notes |
 |---|---|---|---|
-| Goal plaque | "Plant the Hearth Tower's first course". For the first 4 s also the objective "Clear 3 layers before time runs out." After that it shrinks to the headline plus a thin sunrise bar (the timer, see below) and 3 small layer pips. | Top centre | Purple wood, gold plaque, cream caps text. Not parchment. |
+| Goal plaque | "Free the Hearth Stump before sunset." for the first 4 s. Then the short headline "Free the Hearth Stump". The sundial medallion sits on its right end. | Top centre | Purple wood, gold plaque, cream caps text. Not parchment. The medallion is part of the plaque, not a fifth element. |
 | NEXT piece | One piece, drawn as the real block, in a small round frame. | Top right | `spawn.preview_count = 1`. |
-| Hearth Hum meter | The flame glyph with the three-note ring (section 6). | Left edge or bottom left | No number. A fill and a glow only. |
+| Stump Grip meter | Three bark knots around a stump glyph (section 6). | Left edge or bottom left | No number. |
 | Pause | A round pause button. | Top left | Standard. |
 
-**Timer on a Minimal HUD.** The timer is part of the plaque, not a fifth element: a thin sunrise bar under the headline. A small sun slides along the bar from the left to the right edge over 2:00. Seconds are shown only in the last 10 s. This is an open question for the user (section 12).
-
-The three layer pips show cleared layers (a lit pip per clear). They repeat the meter and are optional.
-
-Hidden until later levels teach them: Hold, items, score, rule pills, extra buttons.
-The teaching icons (slide arrow, turn arrow) are scene hints near the block, not HUD elements. They disappear after first use.
+Hidden until later levels: Hold, items, score, rule pills, extra buttons.
+The teaching icons (slide, drop, turn, outline) are scene hints near the block. They are not HUD.
+Player-facing text rule: no screen, tooltip, pause card, level card or result card may say "clear", "layers" or a count of layers. They use the story line.
 
 ---
 
 ## 10. Data: proposed level JSON diff
 
-Fields that already exist are marked EXISTS. New work is marked NEW with a size estimate.
+EXISTS = already in the engine. NEW = work needed, with a size.
 
 ```diff
  {
@@ -317,16 +317,14 @@ Fields that already exist are marked EXISTS. New work is marked NEW with a size 
 -    "shapes": ["i","o","t","l","s"],
 -    "opening_set": ["o","i"],
 -    "opening_count": 2
-+    "shapes": ["o","i","l","t"],
-+    "opening_set": ["o","i","l"],
-+    "opening_count": 3
++    "shapes": ["o","i","l","t"]
    },
    "knobs": {
--    "fall.g0": 0.6,
-+    "fall.g0": 0.9,
+     "fall.g0": 0.6,
 +    "fall.lock_delay_ms": 900,
 +    "fall.lock_resets_max": 15,
 +    "fall.entry_delay_ms": 300,
++    "spawn.randomizer": "bag",
 +    "spawn.preview_count": 1,
 +    "spawn.hold_enabled": false,
 +    "goal.intro_card_ms": 2000,
@@ -346,8 +344,14 @@ Fields that already exist are marked EXISTS. New work is marked NEW with a size 
    },
    "rules": [
 -    { "id": "balloon", "params": { ... } }
-+    { "id": "sticky_landing", "params": { "sticky_gravity_scale": 0.8 } },
-+    { "id": "rock_obstacle", "params": { "cells": [ /* 20 columns x layers 0..7, see below */ ] } }
++    { "id": "grip_release", "params": {
++        "height": "full",
++        "base_columns": [ ... 36 columns, see below ... ],
++        "grips": [
++          { "id": "roots_left",   "on_clear": 1, "skin": "roots",  "columns": [[0,2],[1,2],[0,3],[1,3],[0,4],[1,4],[0,5],[1,5]] },
++          { "id": "stones_right", "on_clear": 2, "skin": "stones", "columns": [[6,2],[7,2],[6,3],[7,3],[6,4],[7,4],[6,5],[7,5]] },
++          { "id": "rim",          "on_clear": 3, "skin": "mixed",  "columns": [[2,0],[3,0],[4,0],[5,0],[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[1,6],[2,6],[3,6],[4,6],[5,6],[6,6],[2,7],[3,7],[4,7],[5,7]] }
++        ] } }
    ],
    "stars": {
 -    "t2": 290000,
@@ -355,48 +359,53 @@ Fields that already exist are marked EXISTS. New work is marked NEW with a size 
 +    "t2": 90000,
 +    "t3": 60000
    },
+   "story": {
+     "title_key": "LVL_MEADOW_01_TITLE",
+     "premise_key": "LVL_MEADOW_01_PREMISE",
++    "objective_key": "LVL_MEADOW_01_OBJECTIVE",
+     "mascot_role": "helper",
+     "icon": "sprout"
+   },
++  "look": { "time_of_day": "dawn", "weather": "petals", "set_piece": "hearth_stump", "set_piece_side": "back", "camera": "high", "dressing": "lush" },
 ```
 
-**Rock cells (`[x, y, z]`).** For each column below, one entry per layer y = 0 to 7 (160 triples). Extend to y = 11 if rocks must fill the clearance zone.
+`base_columns` is the union of the three grips, so the data lists each column once. In practice the rule builds the cage from the `grips` lists: all `columns` in all grips are rock columns at level start. No separate `base_columns` is needed (remove it from the final JSON).
 
-| z | rock columns x |
-|---|---|
-| 0 | none |
-| 1 | 1, 6 |
-| 2 | 0, 1, 6, 7 |
-| 3 | 0, 1, 6, 7 |
-| 4 | 0, 1, 6, 7 |
-| 5 | 0, 1, 6, 7 |
-| 6 | 1, 6 |
-| 7 | none |
+Strings: `LVL_MEADOW_01_OBJECTIVE` = "Free the Hearth Stump before sunset." (6 words).
 
-Also: delete `metadata.design_spec` (stale 4x4 copy). Set `metadata.ending = "plain"`, `metadata.level_type = "build"` (old value was `funny`). Add footprint `octagon` and `signature` ("The Wizard's spoon pops out and the first block hums").
+Also: delete `metadata.design_spec` (stale 4x4 copy). Set:
+- `metadata.signature` = "The Wizard's spoon pops out, and the choked old stump shakes itself free."
+- `metadata.ending` = `plain`
+- `metadata.level_type` = `twist` (see Rules compliance and the flag below).
+- `metadata.scene` = `{ "terrain": "stump_top", "set_piece": "hearth_stump", "set_piece_action": "grip_release", "cast_on_stage": "Wizard:point, Ada:haul", "hud_meter": "Stump Grip" }`.
+- `metadata.footprint` = `octagon 8x8`.
+- Note: `scene` is not a top-level key in the loader (`KEYS_TOP`, `src/data/level_loader.gd:7`). `look` is. Use `metadata.scene` until a top-level key is added (NEW-9).
 
-**EXISTS (no work):** `board.mask`, the `clear_n` goal with `n`, the timer field `goal.time_limit_ms` (a timeout currently LOSES), `rock_obstacle` rule and `rock` kind, `sticky_landing`, `fall.*` knobs, `spawn.preview_count`, `spawn.hold_enabled`, `goal.top_out = rescue`, `goal.warnings_max`, `goal.intro_card_ms`, `stars.t2/t3`, clear_n HUD progress `{done, target}`.
+**EXISTS (no work):** `board.mask`, `clear_n` with `n`, `goal.time_limit_ms`, `fall.*` knobs, `spawn.randomizer`, `spawn.preview_count`, `spawn.hold_enabled`, `goal.top_out = rescue`, `goal.warnings_max`, `goal.intro_card_ms`, `stars.t2/t3`, the `rock` kind and its `fills_layer = false`, the `on_clear`, `on_level_start` and `on_resolve_end` hooks, `api.remove_cell`, `api.set_status`, `api.emit`.
 
-**To confirm with the Godot master before build** (I could not verify):
-- That a layer containing rock columns clears when all non-rock cells are full (the code comments say rocks are excluded from the denominator).
-- That `rock_obstacle.cells` accepts 160 to 240 entries and can reach the spawn clearance zone (y up to 11).
-- The goal block accepts the new keys `time_extension_ms` and `time_extensions_max` (the validator may reject unknown goal keys).
-- `fall.g0` units, the `sticky_landing` scale meaning, what `rescue` does on a top-out (see `design/gdd/level-goals-fail-states.md`, not read).
-- That `opening_set` plays pieces in the listed order, and the spawn orientation of the I.
+**To confirm with the Godot master (I could not verify):**
+- That the clear check treats removed rock cells correctly: after a rock column is removed, its cell becomes an empty active cell, so the layer needs it filled. The layer counters must update (`BoardState._layer_filled`, `active_in_layer`).
+- That rocks can be placed in the clearance zone (layers 8 to 11).
+- That the validator accepts the new goal keys (`time_extension_ms`, `time_extensions_max`) and a missing `opening_set`.
+- What `rescue` does on a top-out (`design/gdd/level-goals-fail-states.md`, not read).
+- `fall.g0` units.
 
 **NEW / engine gaps:**
 
 | ID | Gap | Size | Owner |
 |---|---|---|---|
-| NEW-1 | Soft retry: on timeout, add `time_extension_ms` once instead of losing (two `_finish(LOST, time_limit)` sites in `board_sim.gd`), plus a sandglass event for the UI. | 1 day | gameplay-programmer |
+| NEW-1 | Soft retry: on timeout, add `time_extension_ms` once instead of losing (two `_finish(LOST, time_limit)` sites, `board_sim.gd:751,763`), plus a sun-hold event for the UI. | 1 day | gameplay-programmer |
 | NEW-2 | `goal.grace_ms` knob: no top-out check and no warnings for the first N ms. | 0.5 to 1 day | gameplay-programmer |
-| NEW-3 | Optional smooth Hum fill: the current layer's fill adds to the meter. Needs a layer-fill value from the board. | 0.5 day | gameplay-programmer |
-| NEW-4 | Teaching hints: the 1x4 outline for block 2, slide and turn icons after idle, a pulse on the last empty cells of the layer. Check if `mascot_hint` already does part of it. | 2 days | gameplay-programmer + ui-programmer |
-| NEW-5 | Rock skins: two looks (roots, stones) for the `rock` kind, chosen per column. Optional compact param `columns: [[x, z, height]]` instead of 160 triples. | 1 day (art) + 0.5 day (param) | technical-artist + gameplay-programmer |
-| NEW-6 | Cosmetic giggle on a lock with a hanging cell. No board change. | 1 day | gameplay-programmer + technical-artist |
-| NEW-7 | Clear sweep ring, three-tree-ring green lighting, bell and rim rush (set piece `hearth_stump`, action `bell_ring`). | 3 days | technical-artist |
-| NEW-8 | Intro (Wizard hat-tip, spoon gag, sandglass yawn) plus poses Wizard:point and Ada:cheer, shared later. Scene build "Giant tree stump" from PolyHaven/BlendKit assets (stump top with rings and the round rim, floating meadow island with grass, wildflowers and rocks, distant islands, cottage with chimney smoke, waterfall, bell post, Wrong Sack). | 2 days (intro) + 5 to 8 days (scene) | technical-artist + art-director |
-| NEW-9 | Timer on the plaque (sunrise bar) and the 12-word objective line UI (overlaps the vision gap "per-level tutorial preview and 12-word line UI"). | 2 days (shared) | ui-programmer |
-| NEW-10 | (removed: level 1 is single player) | 0 | - |
+| NEW-3 | New rule `grip_release`. `rock_obstacle` cannot be extended in place: it marks cells `fixed`, and a fixed cell can never be removed (`board_state.gd:685-686`), and it has no `on_clear` hook. The new rule: builds the cage at `on_level_start` (rock kind, `anchored`, `clear_protected`, `fills_layer = false`, NOT `fixed`), counts clears with the `clear_count` stamp at `on_clear` (as `lava_rock_spawn.gd:49,55`), and releases the next grip at `on_resolve_end` by `remove_cell(cell, Cause.DAMAGE)` on every layer of each column. It emits `grip_loosened {id, cells, skin}` for the view. It takes a `columns` list and `height: "full"` so the data is 36 columns, not 432 cells. Needs a rule JSON in `assets/data/rules/` and unit tests (release order, no release twice, layer counters). Also a handbook entry (it counts toward U10). | 2 days | gameplay-programmer |
+| NEW-4 | Adaptive hints: best-fit outline for the current piece, slide, drop and turn icons, and the pulse on the last empty cells. Show a hint only when it helps. Check if `mascot_hint` already covers part of it. | 2 to 3 days | gameplay-programmer + ui-programmer |
+| NEW-5 | Cosmetic giggle on a lock with a hanging cell. No board change. | 1 day | gameplay-programmer + technical-artist |
+| NEW-6 | Set piece `hearth_stump` in action: root snap, stone roll, rim tumble, tree-ring green spread, bell. Poses Wizard:point and Ada:haul and Ada:cheer. Scene build "Giant tree stump" from PolyHaven/BlendKit assets. Art list: stump top with visible rings and a round rim; the root and stone cage with two skins; a floating meadow island with grass, wildflowers and rocks; distant islands; the cottage with chimney smoke; the waterfall; the bell; the Wrong Sack. | 3 days (animations) + 2 days (intro) + 5 to 8 days (scene) | technical-artist + art-director |
+| NEW-7 | Sundial medallion timer on the plaque, plus the dawn-to-sunset light grade. | 2 days | ui-programmer + technical-artist |
+| NEW-8 | Story-objective HUD text per level: show `story.objective_key` instead of the `clear_n` "layers" icon and counter. Also for the pause, level and result cards. Plus the 3-second looping preview that shows a layer filling and a root snapping. This overlaps vision gaps "story-objective HUD text" (1 day) and "tutorial preview and 12-word line UI" (2 days). | 3 days (shared) | ui-programmer |
+| NEW-9 | Add `scene` as a top-level key in `KEYS_TOP` and validate it (otherwise keep `metadata.scene`). | 0.25 day | gameplay-programmer |
+| NEW-10 | Optional smooth meter creak between clears (layer fill value to the HUD). | 0.5 day | gameplay-programmer |
 
-Scene art must beat the reference boards in `assets/art/reference/`. No beige, no parchment. Dawn lighting with a warm rim light.
+Total engine work: about 12 to 14 days of code and UI, plus about 10 to 13 days of art.
 
 ---
 
@@ -404,47 +413,74 @@ Scene art must beat the reference boards in `assets/art/reference/`. No beige, n
 
 Automated:
 1. `meadow_01.json` loads with `LevelLoader.load_level` and returns no errors.
-2. The board mask has 52 active cells and the exact rows in section 4. The default spawn anchor (3,3) is active.
-3. There are exactly 20 rock columns at the listed positions. All rocks are fixed and clear-protected. The free lane is 32 cells per layer.
-4. Goal is `clear_n` with `n 3` and a 120000 ms limit. Filling all 32 lane cells of one layer clears that layer, leaves every rock in place, and drops the layers above by one.
-5. After a clear, no rock has moved and no block sits inside a rock cell.
-6. The first three pieces are O, I, L in that order. All later pieces are from O, I, L, T only. No S appears in 200 seeded pieces.
-7. Tiling check: a solver can tile the 4 x 8 lane with the shape set (the 3 clears are always reachable).
-8. A bot that never turns and only drops still clears 3 layers within 120 s in at least 90 percent of 500 seeded runs. (Turning is taught, not required.)
-9. A bot with unlimited time wins 500 of 500 seeded runs, including with the retry (the vision doc asks for 98 percent or more).
-10. At 120000 ms with fewer than 3 clears, the game adds 30000 ms once and does not end. A second timeout loses. (Needs NEW-1.)
-11. With `goal.grace_ms = 30000`, a forced top-out stack at t = 29 s produces no warning and no loss. (Needs NEW-2.)
-12. Stars: 3 clears in 90 s or less gives 2 stars. In 60 s or less with no warning and no trim gives 3. Any win gives at least 1. A run that used the retry gives 1.
-13. The Hum meter is monotone non-decreasing and equals full at the win.
+2. The mask has 52 active cells and the rows in section 4. The default spawn anchor (3,3) is active and free.
+3. At level start there are exactly 36 rock columns, 12 layers each. The free pit is x 2 to 5, z 2 to 5 (16 cells per layer). No rock is `fixed`.
+4. After the 1st cleared layer, columns x 0 and 1, z 2 to 5 are empty in all 12 layers. After the 2nd, x 6 and 7, z 2 to 5. After the 3rd, the rim columns. No grip releases twice. No grip releases without a clear. Grips release in the order roots, stones, rim.
+5. Free area per layer is 16, then 24, then 32. Each is a rectangle and a multiple of 4.
+6. A layer with all free cells filled clears and the layers above drop one step. A layer is not full while any free pit cell is empty. Newly freed cells count as empty cells.
+7. Any full layer counts: a hole in layer 1 does not stop layer 2 from clearing and releasing a grip.
+8. The pieces are only O, I, L, T. The sequence differs between attempts (two different seeds give two different first 12 pieces). No `fixed_list` and no `opening_set` in the file. The seed is logged.
+9. The same seed gives the same sequence on replay.
+10. A solver finds a winning line (3 clears) for at least 98 percent of 500 seeded bags; a loss counts only if no legal winning line existed (`campaign-vision.md:111`).
+11. A bot that only drops (never turns) frees the stump within 120 s in at least 90 percent of 500 seeded runs. Turning is taught, not required.
+12. At 120000 ms without the 3rd free, the game adds 30000 ms once and does not end. A second timeout loses and restarts in 2 s or less. (NEW-1)
+13. With `goal.grace_ms = 30000`, a forced top-out stack at 29 s gives no warning and no loss. (NEW-2)
+14. Stars: freed in 90 s or less gives 2. In 60 s or less with no warning and no trim gives 3. Any win gives at least 1. A retry run gives 1.
+15. The Stump Grip meter loses knots monotonically and shows no knots at the win.
+16. String check: no player-facing string in the level (plaque, pause, level card, result card, hints, tooltips) contains "clear" or "layers" or a count of layers. The objective string is 12 words or fewer.
+17. Hint check: the turn hint appears only when a turn improves the fit for the current piece. It never appears on a piece that fits in its spawn orientation.
+18. `metadata.signature` is set (13 words), `metadata.ending` is `plain`, and `metadata.level_type` is set.
 
 Observed (retained screenshots in `production/qa/evidence/`):
-14. Start frame at 720x1280: the lane, the roots and stones, the plaque with the objective, the timer bar, one NEXT piece, the meter and pause. Nothing else HUD-like. No beige or parchment.
-15. Frames at the first lock, the first turn (green outline), a giggle block, the pulse on the last empty cells, the first clear sweep, the Warm state, the sandglass retry, the win flash and the green stump.
-16. Playtest with 5 first-time players: at least 4 say what to do from the start frame in 10 seconds. At least 4 of 5 turn a block by the third piece without being told in words. At least 4 of 5 can say "a full row clears" after the first clear. Median finish time between 70 and 120 s. At most 1 of 5 needs the retry.
-17. In a 4-player side-by-side run, all four stumps, timers and bell lights are readable. The first finisher's bell is audible and visible to all.
-18. No text appears over the board. The objective line is 12 words or fewer.
+19. Start frame at 720x1280: the stump in its root and stone cage, the pit, the plaque with the objective and the sundial medallion, one NEXT piece, the meter and pause. Nothing else HUD-like. Scene pixels (not board, not HUD, not plain sky) are at least 60 percent of the board's pixel area (P1c, `campaign-vision.md:85`). No beige or parchment.
+20. Frames at: the spoon gag, the first lock, the first turn hint, the pulse on the last empty cells, the first free (roots snapping), the second free (stone rolling), the rim tumble and green stump, the sun-hold retry and the sunset fail.
+21. Playtest with 5 first-time players: at least 4 say what to do from the start frame in 10 seconds (P3a, `campaign-vision.md:106`). At least 4 of 5 can say "a full layer frees the stump" after the first free. Median finish time between 70 and 120 s. At most 1 of 5 needs the retry.
+22. The wall change is readable: after each free, the new space is visible and the player uses it within 5 s.
+23. No text over the board. Wizard and Ada are posed on stage and act (point, haul, cheer).
 
 ---
 
-## 12. Open questions for the user
+## 12. Rules compliance
+
+| Rule | How this spec meets it | Rule at |
+|---|---|---|
+| No mundane "clear N layers". The HUD shows a story objective, never a layer count. | The objective is "Free the Hearth Stump before sunset." The meter has bark knots, not numbers. Section 9 forbids "clear" and "layers" in any player-facing string. `clear_n` is only the engine means. | `level-identity-spec.md:64-68`; `campaign-vision.md:272-276` (U15) |
+| Never mundane: an event in the first 10 s, a payoff on the win. | Event: the spoon gag at 0.8 to 2 s, the first block hum, the root creak at 3.5 s. Payoff: the stump wakes, glows green, the rim tumbles, the bell rings. | `level-identity-spec.md:81-82`; `campaign-vision.md:96` (P2a) |
+| A level is a scene, not a grid. The board lives in a place; the cast is on stage; the set piece acts; a themed meter. | Place: the stump in a root and stone cage on a meadow island. Cast: Wizard:point, Ada:haul then cheer. Set piece: `hearth_stump` frees itself (root snap, stone roll, bell). Meter: Stump Grip. | `level-identity-spec.md:86-108`; `minigame-party-rules.md:21-23`; `campaign-vision.md:79-84` (P1b) |
+| Closed lists for terrain and action ids. | Needs two change requests: terrain `stump_top` and action `grip_release` (a rule, because it removes blocks). Neither is on the list yet (`scene-vocabulary.md:21-37,41-53`). Flagged as open question 3. | `campaign-vision.md:283-294` (U17) |
+| Fairness: random next block, never `fixed_list`. | A seeded bag per attempt. No fixed list and no fixed opening. | `level-identity-spec.md:25-26`; `minigame-party-rules.md:29-30`; `campaign-vision.md:418` |
+| Teach in 3 seconds with a sentence of 12 words or fewer. | The objective is 6 words. A 3-second looping preview shows a layer filling and a root snapping (NEW-8). No text tutorial. | `minigame-party-rules.md:14-15`; `campaign-vision.md:100` (P2d) |
+| Standard controls, at most one extra verb. | Slide, turn, drop. No extra gem button. | `minigame-party-rules.md:16-18` |
+| Built on stacking: the stack does something in the story. | Each full layer frees one grip of the stump. | `minigame-party-rules.md:19-20`; `campaign-vision.md:93` (P2) |
+| One signature sentence. | `metadata.signature` = "The Wizard's spoon pops out, and the choked old stump shakes itself free." (13 words, 4 to 14 allowed). | `level-identity-spec.md:21-22`; `campaign-vision.md:224` (U4) |
+| Ending pattern recorded; level 1 may not hide its goal. | `metadata.ending = plain`. Reason in section 1. | `level-identity-spec.md:69-80`; `campaign-vision.md:277-282` (U16) |
+| No standard rules: every level has a twist rule. | The rule `grip_release` is the twist. `level_type = twist` (layer clearing plus an unusual rule). | `level-type-mix.md:4,16` |
+| At most one new mechanic; level 01 has one mechanic and a gentle `g0`. | One rule, `grip_release`. `sticky_landing` is dropped. `fall.g0 = 0.6` is the biome 1 baseline. | `campaign-vision.md:253` (U10), `campaign-vision.md:109` (P3c), `campaign-vision.md:442` |
+| Spawn run of 4 wide; arms 3 wide; no dead-end pockets. | The pit is a rectangle, 4 wide at minimum, in every stage. Spawn columns x 2 to 5 are always free. | `campaign-vision.md:233-246` (U7) |
+| Comic fail, restart in 2 s or less. | Second sunset: the stump yawns, blocks giggle into their box, restart. | `campaign-vision.md:108` (P3b) |
+| Readability: target visible from frame 0; the active piece differs from the stack; high-contrast landing marker. | The cage and the sundial are visible at frame 0. The marker is a bright disc. | `campaign-vision.md:440` |
+| Unique opening event id. | `spoon_pops_block_hums`. | `campaign-vision.md:248` (U8) |
+
+**Flags for other owners (not changed here):**
+- The beat file `design/narrative/beats/meadow.md` (meadow_01) still says `headline_objective: Plant the Hearth Tower's first course`, `hud_meter: Hearth Hum`, `problem: The island has a bare stump...` and `minigame: base: build_tower + sticky landing`. The narrative director should update it to match this spec.
+- `level-type-mix.md` lists meadow_01 as `funny` (balloon) and counts it as the biome's only funny main level. Setting it to `twist` leaves meadow with no main-level `funny`, which breaks the mix target at `level-type-mix.md:21`. Another meadow level (for example 06 or 09) would need a `funny` twist, or meadow_01 stays tagged `funny`. Owner: game-designer.
+- `scene.terrain` and `scene.set_piece_action` need new ids (technical artist).
+
+---
+
+## 13. Open questions for the user
 
 Three questions. Each has a recommended option first.
 
-1. **Where does the 2:00 timer live on the Minimal HUD?**
-   - (Recommended) A thin sunrise bar inside the goal plaque. It keeps the four elements and fits the dawn story.
-   - Diegetic only: a big sun climbing the sky behind the stump, no HUD bar. Prettier, but hard to read on a split screen.
-   - A fifth HUD element: a classic number clock. Clear, but it breaks "Minimal".
-2. **How do the obstacles look and block?**
-   - (Recommended) Two full-height root and stone walls that frame a 4-wide lane. Every layer stays 32 cells, no trap holes, easy to read.
-   - Low scattered stones and roots (1 high) across the whole stump. Looks more natural, but every layer above grows to 52 cells and the level gets too long for 2:00.
-   - The walls plus a few stones inside the lane. More variety, but 1-wide gaps appear and the first clear gets harder to teach.
-3. **If first-timers miss 2:00 in the playtest, what do we change first?**
-   - (Recommended) Make the soft retry +45 s. No change to the goal or the layout.
-   - Raise the limit to 2:30.
-   - Cut the goal to 2 clears.
-
-## User decisions (2026-10-14, round 3)
-
-- **Timer:** "fitting theme". The 2:00 timer is shown with a themed, in-world look that fits the meadow and the Hearth story, not a plain number clock. The art director designs it (for example a carved sundial or a hearth candle that burns down), and it stays readable at a glance. It replaces the "sunrise bar" option.
-- **Obstacles:** two full-height walls (roots left, stones right) framing a 4-wide lane, 32 cells per layer.
-- **Playtest tuning:** "nothing". The 2:00 limit, the 3-clear goal and the +30 s soft retry stay as designed. No pre-planned fallback.
+1. **What is the new meter called?**
+   - "Stump Grip" (Recommended): says what the player sees, the grip loosening.
+   - "Bark Bind": cosier and more rhyming, less clear.
+   - Keep "Hearth Hum": the beat file stays unchanged, but the name no longer fits a meter that empties.
+2. **How does the play space grow?**
+   - Rectangles: 4x4, then 6x4, then 8x4, then the round stump appears at the win (Recommended). Always tileable, always fair, 18 pieces minimum.
+   - Round at the end: stage 2 becomes the 44-cell octagon minus the end rows. The round shape is played, not just revealed. More pieces (about 21 minimum) and edge steps that need a tiling check.
+   - Start bigger: a 4x6 first pit. More pieces (22 minimum) and a slower first clear.
+3. **Which scene ids do we add to the closed lists?**
+   - New terrain `stump_top` and new rule action `grip_release` (Recommended): honest, because the action removes blocks and counts as a rule.
+   - Reuse terrain `floating_island` (as in the beat) with the new action: scores 0 on the "same floating island" test (P1b).
+   - Treat the root and stone moves as cosmetic `root_whip`: not allowed, because they remove blocks.
