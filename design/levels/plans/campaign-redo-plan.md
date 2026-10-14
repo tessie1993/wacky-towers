@@ -117,3 +117,4 @@ owner revises and the gate re-runs. No phase starts before the one it depends on
   modules, animated cast, set-piece actors) for "a level is a scene, not a grid".
 - Tech debt (Anara audit, production/qa/godot-analyst-2026-10-14.md): split game_ui.gd per screen,
   remove the src/_staging trees, type the HUD snapshot, and add a handler table to main.gd.
+- 2026-10-14: minigames follow `design/levels/plans/minigame-party-rules.md` (godot-genre-party), with agents asking the Godot master when unsure (user).

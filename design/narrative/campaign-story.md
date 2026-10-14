@@ -33,7 +33,7 @@ the next piece waits at the brim). His showy hands cannot place them true. You c
 
 **Why the order matters.** Huffle's huff blew the Keystones outward in a spiral, nearest first. Each Keystone you set hums one
 more note of the **Sky Lullaby** and its Tether points to the next island. The order is Meadow to Carnival because that is the
-order the wind dropped them, and because Huffle's own lullaby is the last note.
+order the wind dropped them (Pirate Cove, flung farthest out to sea, is eleventh), and because Huffle's own lullaby is the last note.
 
 **Why it is not an errand quest.** Every chapter has its own villain with a stacking problem, a local ally and a feeling. The
 Keystone is a payoff, never the plot of a level.
@@ -44,14 +44,15 @@ Keystone is a payoff, never the plot of a level.
 
 | Ch | Beat |
 |---|---|
-| 1-5 | Cheery. Blames "a sneeze" and fake-sneezes on cue. Tries to put his own star on every tower; the allies' marks win instead. |
+| 1-4 | Cheery. Blames "a sneeze" and fake-sneezes on cue. Tries to put his own star on every tower; the allies' marks win instead. |
 | 3 | Sir Shiver still guards the gate on an old order the Wizard forgot he gave. The first sign: someone is waiting for him. |
-| 5 | Meets his twin in vanity, Captain Bea, and they race for the tallest lookout. |
-| 6 | Midpoint reversal. His hat fails Bram in the crisis, and the heroes find his star stamped into the forge anvil. The sneeze story cracks. |
-| 7 | Campfire confession in the treehouse: the tower, the shooing, the lie. The heroes forgive him, wordlessly. |
-| 9 | Tries a rewind spell on Madame Cuckoo's clock. It breaks the tower clock and he slips off, ashamed, to talk to Huffle alone. |
-| 10 | Absent. The loss beat. He left his hat on the tram seat. |
-| 11 | Returns, gets shooed again, and finally listens: the baby rattle that fell from his hat is the first thing Huffle smiles at. |
+| 5 | Lava, the midpoint reversal. His hat fails Bram in the crisis, and the heroes find his star stamped into the forge anvil. The sneeze story cracks. |
+| 6 | Forest: campfire confession in the treehouse: the tower, the shooing, the lie. The heroes forgive him, wordlessly. |
+| 7 | Cave: stays with Ada and Bram on the far side of the cave-in, holding a lantern and trying to be useful. His kazoo wakes the bats. |
+| 8 | Clockwork: tries a rewind spell on Madame Cuckoo's clock. It breaks the tower clock and he slips off, ashamed, to talk to Huffle alone. |
+| 9 | Neon: absent. The loss beat. He left his hat on the tram seat. |
+| 10 | Celestial: returns, gets shooed again, and finally listens: the baby rattle that fell from his hat is the first thing Huffle smiles at. |
+| 11 | Pirate: humbled and funny. Face to face with Captain Bea, his vain twin, he starts to boast, stops himself, and helps build the shared lookout. |
 | 12 | Gives Huffle the promised gift, lets someone else ride his cloud, and lets the allies' marks stand on the wheel. |
 
 **The Hat Dip (visual running gag).** In each chapter the Wizard fishes in his hat for the fix and pulls out a wrong object, then
@@ -59,9 +60,9 @@ quietly drops it in the Wrong Sack tied to his cloud. The sack gets heavier. Nev
 
 | Ch | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Wrong object | wooden spoon | single sock | trombone | teapot | frying pan | boot | umbrella | kazoo | alarm clock | nothing (Ada dips the left-behind hat) | baby rattle | a small star-carved block in a faded ribbon |
+| Wrong object | wooden spoon | single sock | trombone | teapot | boot | umbrella | kazoo | alarm clock | nothing (Ada dips the left-behind hat) | baby rattle | frying pan (he laughs; Tuppence wears it) | a small star-carved block in a faded ribbon |
 
-The ten wrong objects (spoon to alarm clock) and the rattle gather into the Great Heap in chapter 12. The right object, at last,
+The ten wrong objects (spoon, sock, trombone, teapot, boot, umbrella, kazoo, alarm clock, rattle, frying pan; Neon's empty hat adds none) gather into the Great Heap in chapter 12. The right object, at last,
 is the promised birthday block.
 
 ### 2.2 The heroes (each is a featured hero in 6 or more chapters)
@@ -70,7 +71,7 @@ The party travels together; "Who is there" in each beat lists who is on screen. 
 
 | Hero | Looks (art bible 5) | Arc | Featured chapters | Resolution |
 |---|---|---|---|---|
-| **Dame Ada** (knight, silver and red plume, shield) | earnest, brave, rule-follower with a soft heart; Stitch-style protector | believes a tower is held by rules and a straight line; fears one wobble means failure | **1** tutor, **3** cold and cared for, **5** cannon captain, **6** leads the rescue, **9** learns order is not stiffness, **10** low point ("I cannot hold the line"), **11** speaks to Huffle first, **12** | the final block wobbles and she laughs |
+| **Dame Ada** (knight, silver and red plume, shield) | earnest, brave, rule-follower with a soft heart; Stitch-style protector | believes a tower is held by rules and a straight line; fears one wobble means failure | **1** tutor, **3** cold and cared for, **5** leads the rescue, **8** learns order is not stiffness, **9** low point ("I cannot hold the line"), **10** speaks to Huffle first, **11** cannon captain, **12** | the final block wobbles and she laughs |
 | **Bram** (dwarf, ginger braids, steel helm, hammer) | gruff, cheerful smasher | solves things by breaking them; learns to build and to accept help | **2** bakery, **4** jellyfish, **6** trapped on the crust, **8** digs from the far side, **9** patience, **10** builds gently, **12** | builds the cake tier without his hammer |
 | **Sif** (elf, blond, green hood, slingshot) | curious, quick, a cheeky "borrower" | collects small shiny things because she never felt she belonged | **4** the pearls, **5** heist, **7** the secret treehouse, **8** alone in the dark, **10** gives a treasure away, **11** | the shelf of borrowed things becomes the Fair's prizes; she is home |
 
