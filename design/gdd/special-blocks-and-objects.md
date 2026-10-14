@@ -993,6 +993,159 @@ These are the level actors and props named in `levels.md` that do not exist yet,
 
 #### 3.2.d Power-ups and items the player triggers
 
+Two systems exist. **Items** (`items.md`, `src/mechanics/behaviour/items.gd`): earned by clearing the layer that holds an item cube, held in 2 slots (1 to 3), one tap to use. In the campaign, debuffs are removed from the table (`items.md` rule 11, `items.gd:60-65` `solo`). **Skills** (`skills.md`, `src/game/abilities/wt_abilities.gd`): one per character, a charge meter in the campaign. Both are bundles of framework rules at layer `item_buff`: they never beat a level's own mechanic. Numbers are from `assets/data/items/starter.json` and `assets/data/meta/abilities_runtime.json`.
+
+Item cube (the carrier): `p_item` 0.12 per spawned non-injected piece, clamped to 0.5 max, one random cube of the piece (`items.gd:53-58,115`); collected only by a genuine clear, lost on bomb, rescue or displaced removal. Look: a gold "?" bubble sticker on one cube, bobbing. Teach: first collection in a level that turns items on shows the item flying to the slot.
+
+**IT-01 Slow Time (buff)**
+- **What.** The pieces fall at half speed for a while.
+- **Rule.** Self, 10 s, `gravity_scale x 0.5`. Weight 10, bias 0. Refreshes, never stacks. Loses to Sticky Landing's set (no-effect pop, refunded once). Interacts with the speed ramp: it multiplies it, so it cannot reduce the ramp below `0.3` of base (knob range 0.3 to 0.8). No effect on clears. Rescue: pauses during warnings.
+- **Look.** Cyan chevron badge with a duration ring; clock icon; falling piece leaves a slow-motion trail.
+- **Audio.** `buff_on`, `effect_end` (buff and debuff cues in `buffs-debuffs.md`); proposed `SFX_SP_ITEM_SLOW`.
+- **Fits.** All biomes; clockwork (a gear-clock icon).
+- **Intro and teach.** First item in the campaign: Slow Time (weight and standing make it the safest).
+- **Fairness.** Pure help.
+- **Engine.** EXISTS (`items.gd`, `starter.json`).
+- **Source.** The stopwatch icon in `mockup_03.jpg`, `party_versus_ref.jpg` (Speed Boost clock).
+
+**IT-02 Bomb (buff)**
+- **What.** Your next piece blows up a 3x3x3 area when it locks.
+- **Rule.** Self, next piece. The piece gets a `bomb` tag; on lock every cube in `(2r+1)^3` (r = `bomb_radius` 1, so 27 cells) around the piece's centre cube is removed, including its own; rocks take 2 damage; pillars are immune; not counted as layer clears (`buffs-debuffs.md` rule 6, F2). Weight 8, bias +0.5. The blast runs at `on_lock`, after the cubes are written and before the clear check. Gravity: slice mode leaves holes; cascade mode settles. Other specials: critters and keys must be `anchored` to survive; locked cubes unlock only by clears, not by blast; frosting is removed; the gem is lost.
+- **Look.** Fuse sticker on the piece's top, spark trail; cartoon puff with confetti on blast.
+- **Audio.** `bomb_blast` (from `buffs-debuffs.md`); `SFX_SP_BOMB_BLAST` proposal.
+- **Fits.** Any biome; reskinned as a powder keg, firework, ice bomb.
+- **Intro and teach.** Second item. Hint: "Your next piece goes boom."
+- **Fairness.** Preview outline of the blast box on the ghost (proposed, 1 day).
+- **Engine.** EXISTS (`items.gd`). Blast preview NEW.
+- **Source.** The big bomb in `mockup_16.jpg` (Bomb Defuse), `mockup_19.jpg`.
+
+**IT-03 Helper Drop (buff)**
+- **What.** Three small helper pieces go to the front of your queue.
+- **Rule.** Self, instant. `helper_drop_count` 3 of mono, duo, tri_straight, tri_corner, chosen by the effect's own stream, injected outside the bag. Weight 10, bias 0. Pieces injected never carry item cubes.
+- **Look.** Three small pieces pop into the NEXT strip with a mint sparkle.
+- **Audio.** `buff_on`.
+- **Fits.** All.
+- **Intro and teach.** Early.
+- **Fairness.** Pure help.
+- **Engine.** EXISTS.
+- **Source.** None.
+
+**IT-04 Preview Peek (buff)**
+- **What.** Shows two more next pieces and turns on hold for a while.
+- **Rule.** Self, 20 s. `preview_count + 2` (max 3), `hold_enabled` true. A held piece returns to the queue front at the next spawn when it ends. Weight 10, bias -0.5.
+- **Look.** The NEXT plate extends with a sparkle and a hand icon.
+- **Audio.** `buff_on`.
+- **Fits.** All; best in race and fog levels.
+- **Intro and teach.** Early.
+- **Fairness.** Pure help.
+- **Engine.** EXISTS.
+- **Source.** The "Next Block" stacks in `mockup_33.jpg`, `mockup_35.jpg`.
+
+**IT-05 Junk Rain, IT-06 Fog, IT-07 Speed Up, IT-08 Spin Lock (debuffs)**
+- **What.** Four attacks on the leader: a grey junk layer pushed under their stack, mist over their blocks, faster fall, no tilt or roll.
+- **Rule.** Opponent only. Junk Rain instant (`junk_rain_layers` 1, one random gap), Fog 10 s (`visible_ms` 1 000), Speed Up 15 s (`gravity_scale x 1.5`), Spin Lock 10 s (vetoes tilt and roll). Weights 8, 6, 8, 6; biases +1.0, +0.5, +1.0, +0.5 so trailing players draw more attacks (F2 in `items.md`). Never in the solo campaign (`solo` zeroes debuff weights, `items.gd:62-64`). Gravity and clears are normal. Other specials: Fog stacks with `fog` as a twist (twist wins); Spin Lock has no effect on spin-only levels (no-effect pop).
+- **Look.** Magenta chevron on the target HUD and a magenta streak from attacker to target board edge; the board edge glows magenta, never the cubes.
+- **Audio.** `debuff_on`, `junk_rise`.
+- **Fits.** Versus, tournament, arcade.
+- **Intro and teach.** Versus tutorial.
+- **Fairness.** Targets the leader, never a player who is out.
+- **Engine.** EXISTS. Netplay: host fixes the target at send time (README line 63).
+- **Source.** Party versus boards (`party_modes_ref.jpg`, `party_versus_ref.jpg`).
+
+**IT-09 Calm Skies (skill, C1 cloud wizard, tempo)**
+- **What.** Time slows way down for 8 s.
+- **Rule.** Self 8 s: `gravity x 0.25` (`calm_gravity_milli` 250) and lock delay x 1.5 (`calm_lock_milli` 1500, `abilities_runtime.json`). Versus rider: Speed Up for 8 s. Charge: `q` per resolve = `(0.125 n + 0.03 max(0,k-1)) x m_rate x m_rank` (`skills.md` F1); campaign default `charge`, 1 to 2 uses per level.
+- **Look.** A soft blue haze and clock hands slowing; cloud icon button.
+- **Audio.** Proposed `SFX_SP_SKILL_CALM`.
+- **Fits.** Campaign, arcade.
+- **Intro and teach.** Level 1 charge meter introduces it.
+- **Fairness.** Star times assume no skills (`skills.md` overview).
+- **Engine.** EXISTS (`wt_abilities.gd`).
+- **Source.** None.
+
+**IT-10 Stitch (skill, C2 Lana, protect)**
+- **What.** Your stack is pinned for 10 s. Nothing can move or remove locked cubes.
+- **Rule.** Self 10 s. Vetoes `stack.shift` and `stack.remove` at rank 3: beats twists and content (rank 2), loses to level mechanics (rank 4). Queued structure changes wait until it ends (`skills.md` rules 14). Never blocks clears, locks, or top-out.
+- **Look.** Yarn stitches across the stack edge, a knitting-needle badge.
+- **Audio.** Proposed `SFX_SP_SKILL_STITCH`.
+- **Fits.** Quake, goo, pest, woodpecker levels (anything that moves or removes cubes).
+- **Intro and teach.** Hidden if the level has no `stack`-tagged rule (`skills.md` rule 14).
+- **Fairness.** A "rule_blocked" event shows each blocked write.
+- **Engine.** EXISTS.
+- **Source.** None.
+
+**IT-11 Smash (skill, C3 Boulder, remove)**
+- **What.** One big hit that removes a 3x3 chunk under your falling piece.
+- **Rule.** `smash_size` 3, `smash_depth` 3 (up to 27 cubes). Not a layer clear: no score, no combo, no charge, no clear-count progress. Rocks take 1 damage; pillars and masked cells are immune. Empty chunk: no effect, not spent (`skills.md` F4).
+- **Look.** An outline of the chunk follows the ghost; big fist and dust on use.
+- **Audio.** Proposed `SFX_SP_SKILL_SMASH`.
+- **Fits.** Any.
+- **Intro and teach.** After the first charge.
+- **Fairness.** Aim by moving the piece; no hidden target.
+- **Engine.** EXISTS.
+- **Source.** The hammer and wall-breaking golem in `mockup_13.jpg`, `mockup_32.jpg`.
+
+**IT-12 Redraw (skill, C4 Glim, plan)**
+- **What.** Re-rolls the next three pieces and marks the best landing spots.
+- **Rule.** `redraw_pieces` 3; up to `fit_marks` 2 perfect-fit spots per piece (`skills.md` F5; pure search in `src/game/abilities/perfect_fit.gd`). Injected pieces are not redrawn. Stays active until the last redrawn piece locks.
+- **Look.** Gold outline marks on the board; a bat-wing badge.
+- **Audio.** Proposed `SFX_SP_SKILL_REDRAW`.
+- **Fits.** Any.
+- **Intro and teach.** First character pick.
+- **Fairness.** Help only.
+- **Engine.** EXISTS.
+- **Source.** The "Next Block" and hint mechanics (`mascot_hint`, README line 49).
+
+**IT-13* Hammer (item)**
+- **What.** Tap one cube and smash it.
+- **Rule.** Self, instant. The player taps a cell (the engine already has a `pick_cell` command, `fog_ghost.gd:20`). Removes that one cube as damage; rock takes 1; anchored, `fixed`, `clear_protected` or critter cells are immune. Not a clear. Weight 8, bias +0.5. Campaign-safe buff.
+- **Look.** A big wooden mallet icon; target ring on the tapped cube.
+- **Audio.** Proposed `SFX_SP_ITEM_HAMMER`.
+- **Fits.** All. Good in repair and fog levels.
+- **Intro and teach.** After Bomb.
+- **Fairness.** Cannot remove goal objects.
+- **Engine.** NEW. 1.5 days.
+- **Source.** The hammer weapon in `mockup_13.jpg` (Boss Bash).
+
+**IT-14* Shield Bubble (item)**
+- **What.** Blocks the next hit from an attack.
+- **Rule.** Self, up to 20 s or one hit. The next `defend_core` hit, `storm_bolt`, `crab_claw`, `quake`, `woodpecker_knock`, `squirrel_heist`, boulder or countdown blast is cancelled. Does not stop terrain (lava floor). Weight 8, bias +0.5.
+- **Look.** A cyan soap-bubble over the platform with a shine; pops with a ring.
+- **Audio.** Proposed `SFX_SP_ITEM_SHIELD`.
+- **Fits.** Defender levels (meadow_02, 05, 10).
+- **Intro and teach.** Defender tier.
+- **Fairness.** Never required.
+- **Engine.** NEW. 2 days (a hook on each attack's apply step).
+- **Source.** The shield in `mockup_15.jpg` (Cyber Defender).
+
+**IT-15* Rewind (item)**
+- **What.** Undo your last lock.
+- **Rule.** Self, instant. Restores the board state before the last lock and returns the piece to the queue front (turn snapshots exist, `undo_reset.gd`). Only if no clear occurred in that resolve (otherwise "no effect"). Limit 1 per level. Weight 6, bias -0.5.
+- **Look.** A rewind-arrow icon; a blue time-ripple.
+- **Audio.** Proposed `SFX_SP_ITEM_REWIND`.
+- **Fits.** Puzzle levels and fill levels (meadow_06).
+- **Intro and teach.** Fill levels.
+- **Fairness.** Replays stay deterministic because the snapshot is the state.
+- **Engine.** PARTIAL. `UndoResetRule` activates snapshots for authored puzzles (`undo_reset.gd:2`). A live-play item is NEW, 2 days.
+- **Source.** None.
+
+**IT-16* Grip (item)**
+- **What.** Your next piece lands without sliding, bouncing or being pushed.
+- **Rule.** Self, next piece. Cancels the next gust push, bounce hop, ice slide, magnet pull and jelly hop for that piece, and locks with delay 0 after rest (honey-like). Weight 8, bias 0.
+- **Look.** A gold glue-drip badge on the piece, with a sticky shine.
+- **Audio.** Proposed `SFX_SP_ITEM_GRIP`.
+- **Fits.** Levels with wind, ice, bounce (meadow_08, 09).
+- **Intro and teach.** In the bounce level.
+- **Fairness.** Pure help.
+- **Engine.** NEW. 1.5 days.
+- **Source.** The honey shell in the status GDD.
+
+Considered and not proposed: Water Cannon, Boxing Glove, Boots and Gravity Flip (seen on `mockup_13.jpg`, `mockup_14.jpg`) need a second verb or a rival to hit, so they stay out of the campaign (party rule 3: at most one extra verb). They can be versus-only later.
+
+#### 3.2.e Catalogue gaps still open at this point
+
+The following items from the references are not yet written up because they duplicate an item above or need a user ruling: plank pieces (a skin of the plank shape, `shape_bank.tres:607`), pipe-connector pieces (a connection goal that is new and needs a game-designer ruling), rune and mud floor tiles (skins of switch plate and honey). See Open Questions.
+
 ### 3.3 Interaction matrix
 TODO
 
