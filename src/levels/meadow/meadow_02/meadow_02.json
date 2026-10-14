@@ -75,6 +75,19 @@
       }
     }
   ],
+  "variation": {
+    "note": "Per-attempt layout from the attempt seed (LevelVariation). Symmetry keeps the puzzle isomorphic.",
+    "symmetries": [
+      "identity",
+      "mirror_x",
+      "mirror_z",
+      "rot90",
+      "rot180",
+      "rot270",
+      "transpose",
+      "anti_transpose"
+    ]
+  },
   "stars": {
     "t2": 230000,
     "t3": 160000

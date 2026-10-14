@@ -47,6 +47,7 @@ func load_catalog() -> GameCatalog:
 		for veto: Dictionary in source.get("vetoes", []): rule.vetoes.append(veto)
 		rule.incompatible_with = PackedStringArray(source.get("incompatible_with", []))
 		catalog.rule_defs[rule.id] = rule
+	catalog.variation_config = _json(LevelVariation.CONFIG_PATH)
 	var manifest: Dictionary = _json("res://assets/data/campaign/catalog.json")
 	biome_order = manifest.get("biomes", [])
 	_entries.clear()

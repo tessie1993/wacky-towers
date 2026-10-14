@@ -15,3 +15,5 @@ var plugins: PluginRegistry
 var palette: PackedColorArray = PackedColorArray()
 ## Board size limits.
 var limits: BoardLimits
+## Per-attempt layout variation config (assets/data/variation/variation_rules.json); {} = load on demand.
+var variation_config: Dictionary = {}

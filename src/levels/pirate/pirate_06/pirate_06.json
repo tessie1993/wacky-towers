@@ -37,7 +37,7 @@
     "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
   },
   "knobs": {
-    "fall.g0": 0.85,
+    "fall.g0": 1.0,
     "goal.top_out": "rescue",
     "goal.warnings_max": 1
   },

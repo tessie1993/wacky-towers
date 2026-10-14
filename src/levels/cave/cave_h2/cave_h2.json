@@ -111,6 +111,23 @@
       }
     }
   ],
+  "variation": {
+    "note": "Per-attempt layout from the attempt seed (LevelVariation). Symmetry keeps the puzzle isomorphic; jitter nudges sparse features and is re-checked for a clearable layer.",
+    "symmetries": [
+      "identity",
+      "mirror_x",
+      "mirror_z",
+      "rot90",
+      "rot180",
+      "rot270",
+      "transpose",
+      "anti_transpose"
+    ],
+    "jitter": {
+      "glyphs": "R",
+      "radius": 1
+    }
+  },
   "stars": {
     "t2": 535000,
     "t3": 375000

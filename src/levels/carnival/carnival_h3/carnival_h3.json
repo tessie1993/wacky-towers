@@ -22,7 +22,7 @@
     ]
   },
   "knobs": {
-    "fall.g0": 1.45,
+    "fall.g0": 1.55,
     "goal.top_out": "rescue",
     "goal.warnings_max": 1
   },
@@ -133,6 +133,11 @@
         "date": "2026-10-13",
         "source": "user decision: single-board levels are 8x8 or bigger",
         "change": "Board 5x5 -> 8x8 (offset x1 z1); clear_n 5 -> 3; time stars x1.54"
+      },
+      {
+        "date": "2026-10-14",
+        "source": "production/qa/level-curve-2026-10-14.md",
+        "change": "fall.g0 1.45 -> 1.55 (curve inversion vs previous tier)"
       }
     ]
   }

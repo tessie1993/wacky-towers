@@ -4,7 +4,7 @@ class_name LevelLoader extends RefCounted
 ## Usage: var r: LoadResult = LevelLoader.load_level("res://src/levels/meadow/meadow_01/meadow_01.json", catalog)
 
 const MAX_LEVEL_BYTES := 262144 # ADR-0005 untrusted level file cap (tunable)
-const KEYS_TOP: Array[String] = ["schema", "id", "biome", "tier", "name", "board", "pieces", "knobs", "goal", "rules", "stars", "story", "seed", "metadata", "music", "layout", "recipe"]
+const KEYS_TOP: Array[String] = ["schema", "id", "biome", "tier", "name", "board", "pieces", "knobs", "goal", "rules", "stars", "story", "seed", "metadata", "music", "layout", "recipe", "variation"]
 const KEYS_REQUIRED: Array[String] = ["id", "board", "goal"]
 const BAG_MAX_KNOB := &"spawn.bag_max_size"
 const _LIMIT_FIELDS: Array[String] = ["min_side", "max_side", "min_height", "max_height", "max_cells", "max_errors", "min_active_per_layer"]
@@ -68,9 +68,29 @@ static func parse_level(raw: Dictionary, catalog: GameCatalog) -> LoadResult:
 	_parse_board(raw.get("board"), clearance, level, catalog, id, issues)
 	_parse_rules_stars(raw, level, id, issues)
 	issues.append_array(LevelValidator.validate(level, catalog))
+	if raw.has(LevelVariation.KEY) and not _has_error(issues):
+		_check_variation(raw, catalog, id, issues)
 	if not _has_error(issues):
 		result.level = level
 	return result
+
+
+## Opt-in per-attempt variation: block schema, clearable layer for sampled variants of every
+## allowed symmetry, and one full re-parse per symmetry so bounds/mask/anchor errors surface here.
+static func _check_variation(raw: Dictionary, catalog: GameCatalog, id: StringName, issues: Array[ValidationIssue]) -> void:
+	var config: Dictionary = catalog.variation_config if not catalog.variation_config.is_empty() else LevelVariation.load_config()
+	var nonfill: String = LevelVariation.nonfill_glyphs(catalog.content)
+	for msg: String in LevelVariation.check_variants(raw, config, catalog.content.glyphs() if catalog.content != null else "", nonfill):
+		issues.append(ValidationIssue.error(id, LevelVariation.KEY, &"variation", msg))
+	if _has_error(issues):
+		return
+	var board: Dictionary = raw.get("board", {})
+	for symmetry: String in LevelVariation.allowed_symmetries(raw[LevelVariation.KEY], config, int(board.get("width", 0)), int(board.get("depth", 0))):
+		var variant: Dictionary = LevelVariation.apply(raw, 0, config, nonfill, symmetry)
+		var parsed: LoadResult = parse_level(variant.raw, catalog)
+		for issue: ValidationIssue in parsed.issues:
+			if issue.is_error():
+				issues.append(ValidationIssue.error(id, LevelVariation.KEY, &"variation", "%s variant: %s %s" % [symmetry, issue.field, issue.message]))
 
 
 static func _has_error(issues: Array[ValidationIssue]) -> bool:
