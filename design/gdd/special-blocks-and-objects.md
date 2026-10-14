@@ -10,13 +10,13 @@
 ## Work log (r2 resume point)
 
 Fix numbers are those of the merged list in the round 1 report.
-- Batch 1 (this file): header, conventions, status-by-cause table (3.1b), shape entries SH-01 to SH-13 (fix 4, 7, 10).
-- Batch 2: block kind entries (goo redesign, anchored fixes, ART-CHECK resolved, badge fixes) (fix 4, 7, 9, 10).
-- Batch 3: object entries (core, cargo, rival, new objects OB-40 to OB-43), item entries (fix 1, 2, 7).
-- Batch 4: interaction matrix rebuilt, 3.4 biome matrix and introduction order, 3.5 reference coverage, 3.6 readability, 3.7 gap sizing (fix 5, 8, 9, 10).
-- Batch 5: formulas F1 to F12, edge cases, knobs (fix 3, 6).
-- Batch 6: acceptance, 8.1 first 12 (incl. h2, h3), Appendices B, D, E, F (fix 1, 3, 10).
-- Status at the time of writing this line: batch 1 in progress. Later lines below are updated as batches land.
+- Batch 1 DONE: header, conventions, status-by-cause table (3.1b), shape entries (fix 4, 7, 10).
+- Batch 2 DONE: block kind entries (goo redesign, anchored fixes, ART-CHECK closed, badges) (fix 4, 7, 9, 10).
+- Batch 3 DONE: object entries (core, cargo, rival, OB-40 to OB-43), item Fits (fix 1, 2, 7, 10).
+- Batch 4 DONE: matrices A, B, C; 3.4 biome matrix, introduction order, item unlock; 3.5 coverage; 3.6 readability; 3.7 gap sizing (fix 5, 8, 9, 10).
+- Batch 5 DONE: formulas F1, F3, F3b, F5, F6b, F7, F8, F9, F11; edge cases 31 to 35; knobs and specials.json skeleton (fix 3, 6).
+- Batch 6 DONE: acceptance, 8.1 with h2 and h3, Appendices B, C, D, E, F (fix 1, 3, 10).
+- All r2 batches are written. Not done: no skill load (no Skill tool), art-file read for GAP-9.
 - Other files were not edited. The registry and other GDDs still need the follow-up edits (see Appendix B, decision 5).
 
 ## 1. Overview
@@ -32,7 +32,7 @@ Each entry says what it does in game-builder words, gives its exact rule, how it
 
 Basis for this pass (read in full or in part): `design/levels/levels.md`, `level-identity-spec.md`, `minigame-party-rules.md`, `reference-quality-bar.md`, `design/gdd/piece-set.md`, `block-status-effects.md`, `items.md`, `skills.md`, `obstacles.md`, `src/mechanics/README.md`, the rule plugins under `src/mechanics/`, `assets/data/content/blocks.json`, `assets/data/shapes/families.json` and `shape_bank.tres` (67 shapes, 10 families), `assets/data/items/starter.json`, `assets/data/meta/abilities_runtime.json`, and the reference boards listed in Appendix A.
 
-Limits of this pass, stated plainly: the session had no shell, so no PIL crops were made. Images were opened whole with Read. `wt_block_materials.gd`, `biome_looks.json` and `tools/qa/block_gallery.gd` were located but their art detail is cited from the existing docs, not re-read. Items that need that detail are tagged `ART-CHECK`.
+Limits of this pass, stated plainly: the session had no shell, so no PIL crops were made. Images were opened whole with Read. In r2, `src/core/board/board_state.gd`, `src/core/sim/board_sim.gd`, `src/core/rules/rule_api.gd`, the candy, lava and wave4 rules, `catalog.json`, `progression.md`, `reference-minigames-catalog.md` and the three r1 expert reports were read, and every former `ART-CHECK` rule tag was closed against code. The only open art question is whether `wt_block_materials.gd` and `biome_looks.json` can carry the badge sheet (3.6, GAP-9); those two files were not opened. The studio skill load (`studio-systems-designer`) was not possible: this session has no Skill tool.
 
 Rules this document obeys: no "clear N layers" goal; pieces speed up instead of a timer on Tetris-variant levels; every special must pass the 0.5 s read test; the references give style and ideas only, never names, logos or IP; no beige UI; no "Tetris" naming.
 
@@ -57,7 +57,7 @@ Pillars served: P2 "the stack is the answer" (every special is solved by stackin
 | Group | Test for membership | Example |
 |---|---|---|
 | (a) SH special shape | The silhouette is the power. Cubes are normal. | ring, hook, jack |
-| (b) BK special block kind | One cell has a power. It has a `kind_id` in `blocks.json`, or a status on a normal cell. | candy_bomb, goo, key cube |
+| (b) BK special block kind | One cell has a power. It has a `kind_id` in `blocks.json`, or a status on a normal cell. | candy_bomb, goo, gem cube |
 | (c) OB object | Not a falling piece. It sits on or beside the platform, or is the platform's own rule prop. It may or may not be a grid cell. | lamb, basket, switch, peg |
 | (d) IT item | The player taps it (item strip or skill button). | Bomb item, Smash skill |
 
@@ -332,12 +332,12 @@ Baseline kinds that are not special (listed so the registry is complete): `block
 - **Intro and teach.** meadow_08. First pad sits in the preview strip with an arrow showing the bounce path. Hint 12 words or fewer: "Pads bounce! Plan where the piece lands."
 - **Fairness.** Risk: a bounce flings a piece into a gap. Counterplay: the landing marker shows the bounce end (a ghost at the hop end), and it is capped at 4 cells.
 - **Engine.** PARTIAL. The pad rule for pieces EXISTS (`src/mechanics/behaviour/bounce_pad.gd`). The landing arbiter R-2 is NEW (GAP-2). The lamb being flung is NEW (gap G10, `levels.md:551`). The ghost preview of the hop end is NEW (GAP-8). Sizes in 3.7.
-- **Source.** Springs and trampolines in `party_modes_ref.jpg` (Wonky Builders spring base) and `party_minigames_ref.jpg` (Wobble Builders spring).
+- **Source.** Spring-mounted islands in `party_modes_ref.jpg` and `party_minigames_ref.jpg` (spring base, ideas only; no titles copied).
 
 **BK-06 snowball (kind 8, glyph `n`)**
 - **What.** A rolling ball of snow that rolls down a slope across your stack and grows.
 - **Rule.** Trigger: every `roll_locks` (2) locks, each ball rolls one cell in `slope_dir` (default `-x`) (`snowball.gd:34-35,45-79`). One lock before it moves, a warning plays (`:46`). The ball stays a short column of up to `snow_max` (3, clamped 1 to 4) cubes and grows by one cube each roll while free above (`:76-78`). If the next step is off the footprint, blocked, or changes height by more than 1, the ball parks (`:63-68`). A parked ball is inert. At `respawn_locks` (8) it respawns at the high end (`:80`). Clearing a ball cube emits `snowball_puff`. Fill: `fills_layer` true. Gravity: climbs or falls at most 1 per step. Other specials: none. `ice_slide` moves only the falling piece on landing, so it never touches a snowball. Rescue: a ball is plain cubes, so a wipe removes them. Top-out: growth needs a free cell above.
-- **Look.** White ball with a blue shadow, trailing snow puffs, a small arrow floor-decal in `slope_dir`. Skins: ice white, candy meringue, cave boulder, lava ash-ball, desert tumbleweed.
+- **Look.** White ball with a blue shadow, trailing snow puffs, a small arrow floor-decal in `slope_dir`. Skins: ice white, candy meringue, cave boulder, lava ash-ball, carnival tumbleweed.
 - **Audio.** Proposed `SFX_SP_SNOWBALL_ROLL` (AUDIO-NEW) and `SFX_SP_SNOWBALL_PUFF`.
 - **Fits.** Ice biome (levels not yet in the first 12), mountains, carnival (rolling barrel skin).
 - **Intro and teach.** Early ice level. The warning arrow is the teacher: "A snowball rolls this way next."
@@ -801,7 +801,7 @@ A note on clocks. Several rules below run on wall-clock milliseconds (`lava_rise
 - **Intro and teach.** meadow_09. Gauge plus "stack on the high side".
 - **Fairness.** A warning always comes first. The preview of the landing tilt (ghost weight) is proposed.
 - **Engine.** PARTIAL. Grid rule EXISTS (`src/mechanics/wave4/tilt_plate.gd:14`). The visible tilt view is gap G9. Heavy weights are a signature change, not a tweak: `measure(size, cells)` is static and takes cells only (`:72-86`) and `weighted_cells` returns a cell list (`:57-68`), so both need a weight per cell (GAP-5, 1.5 days, gameplay-programmer).
-- **Source.** The spring and tilt plates in `party_modes_ref.jpg`, `party_minigames_ref.jpg` (Wobble Builders), `mockup_03.jpg` (Tumbling Towers) and `mockup_05.jpg` (Cake Stackers).
+- **Source.** The spring and tilt plates in `party_modes_ref.jpg`, `party_minigames_ref.jpg` (spring-island stack duel), the tilting-disc stack scene (`mockup_03.jpg`) and the spinning-plate cake scene (`mockup_05.jpg`); scene descriptions only.
 
 **OB-05 rival marker (`race_rival`)**
 - **What.** A rival with its own pace. It fills a hidden bar and wins if it gets to 100 percent first.
@@ -875,7 +875,7 @@ A note on clocks. Several rules below run on wall-clock milliseconds (`lava_rise
 - **Look.** Glowing orange lava seams that brighten before action; a rim glow; a lid shown as a dim ceiling; dotted outlines on quake targets; a vent with smoke and a ring.
 - **Audio.** `lava_warning` rumble; proposed `SFX_EV_LAVA_RISE`, `SFX_EV_QUAKE`, `SFX_EV_GEYSER`.
 - **Fits.** Lava biome and celestial (the lid's "Moon's pillow" message).
-- **Intro and teach.** Lava 01 to 05, one per level.
+- **Intro and teach.** One per level, in the lava slots of 3.4a (rise slot 03, geyser slot 04, quake slot 08).
 - **Fairness.** Millisecond schedules with a hidden clock (Appendix E). The actor tell plus a sound warn before every one: rise 3000 ms (`melt_warn_ms`), lid 3000 ms (`lid_warn_ms`), quake 2000 ms (`quake_warn_ms`) with the targets outlined, geyser 1 lock with a marked cell. F3b checks each warning against reaction time and each interval against piece time. Counterplay: clears relieve or cancel (the lid lifts per clear, `lava_lid.gd:19-30`; the quake and rise do not cancel, so their intervals are long).
 - **Engine.** EXISTS (`lava_rise.gd`, `lava_lid.gd`, `quake.gd`, `lava_rock_spawn.gd`). No lock-count mode is built (removed by Appendix E). The "Slower hazards" assist multiplier is NEW (0.5 day, gameplay-programmer).
 - **Source.** Lava Escape and Volcano Dash in `mockup_13.jpg`, `mockup_16.jpg`; volcanic sheet.
@@ -1292,7 +1292,7 @@ Considered and not proposed: Water Cannon, Boxing Glove, Boots and Gravity Flip 
 
 #### 3.2.e Catalogue gaps still open at this point
 
-The following items from the references are not yet written up because they duplicate an item above or need a user ruling: plank pieces (a skin of the plank shape, `shape_bank.tres:607`), pipe-connector pieces (a connection goal that is new and needs a game-designer ruling), rune and mud floor tiles (skins of switch plate and honey). See Open Questions.
+Closed in r2. Plank and crate pieces are skins of existing shapes, pipe-connector pieces are a goal type, and rune and mud floor tiles are skins of the switch plate (BK-38) and goo (BK-07). Laser sweep, swinging ball, gravity well and claimed tile are now entries OB-40 to OB-43. See the recorded rejections in 3.2.c and the coverage table in 3.5.
 
 ### 3.3 Interaction matrix
 
@@ -1812,7 +1812,7 @@ Each case states what happens. "Rescue" means the soft top-out rescue that wipes
 
 ## 6. Dependencies
 
-This catalogue reads from the systems below and must be listed in each as a dependency (bidirectional rule, `.claude/rules/design-docs.md`). Those edits are not made here; they are a follow-up (Open Question 5 offers the user the choice).
+This catalogue reads from the systems below and must be listed in each as a dependency (bidirectional rule, `.claude/rules/design-docs.md`). Those edits are not made here; they are a scheduled follow-up task after round 2 passes and the user confirms the Appendix B open decisions.
 
 | System or file | Direction | What flows | Hard or soft |
 |---|---|---|---|
@@ -1832,7 +1832,7 @@ This catalogue reads from the systems below and must be listed in each as a depe
 
 **Code touched when this is built** (owners as in section 3.2). `assets/data/content/blocks.json` (next `kind_id` 25), `assets/data/rules/*.json` (one per new rule), `assets/data/knobs/*.json` (new `specials.json`), `src/mechanics/**` (new plugins), `src/view/wt_block_materials.gd` and `assets/data/biome_looks.json` (skins and badges), `src/core/rules/plugin_registry.gd` (registers each `PLUGIN_ID`), `tools/qa/block_gallery.gd` (gallery of every special per biome, 12 biomes), `tools/qa/verify_campaign_biomes.gd` (validator checks in section 8).
 
-**Registry.** `design/registry/entities.yaml` exists (version 1, 2026-10-10). It holds only the four playable characters today, and no special block, kind or item. Nothing here conflicts with it. This doc does not edit it. Cross-system facts introduced here are listed in Appendix C, and the user is asked whether to add them (Open Question 5).
+**Registry.** `design/registry/entities.yaml` exists (version 1, 2026-10-10). It holds only the four playable characters today, and no special block, kind or item. Nothing here conflicts with it. This doc does not edit it. Cross-system facts introduced here are listed in Appendix C, and they will be added after the user confirms the open decisions in Appendix B.
 
 ## 7. Tuning Knobs
 
@@ -2004,8 +2004,8 @@ Every image below was opened with Read. Each line lists what special blocks or o
 - `volcanic_biome_sheet_ref.png`: obsidian cubes with blue-violet cracks; hero ornaments cooled shard, small vent with smoke, ash tuft; props obsidian spur, cooled stone, volcanic vent; floating rock debris and embers. Ideas: vent as a hazard object, shard as a gem, spur as a pillar.
 
 **Party boards**
-- `party_modes_ref.jpg`: Wonky Builders (stack on a spring-mounted island, two players); Block Bridge Race (lava canyon, a tiki rival, rock pillars); Battle Arena Candy Clash (peppermint and jelly floor tiles, lollipop and candy-cane edge props, coloured pieces on a tiled board). Ideas: spring base (bouncy platform), lava below (hazard moat), candy floor tiles (tile kinds on the platform).
-- `party_minigames_ref.jpg`: Block Bridge Dash (checkered finish flags, bridge over lava), Wobble Builders (spring base, stability meter), Speed Stack Challenge (grid board on an island, next-block boxes), Party Tour (island map). Ideas: finish flag object, stability meter, tile grid.
+- `party_modes_ref.jpg`: a spring-island stack duel (two players); Block Bridge Race (lava canyon, a tiki rival, rock pillars); Battle Arena Candy Clash (peppermint and jelly floor tiles, lollipop and candy-cane edge props, coloured pieces on a tiled board). Ideas: spring base (bouncy platform), lava below (hazard moat), candy floor tiles (tile kinds on the platform).
+- `party_minigames_ref.jpg`: Block Bridge Dash (checkered finish flags, bridge over lava), a spring-base stack duel (stability meter), Speed Stack Challenge (grid board on an island, next-block boxes), Party Tour (island map). Ideas: finish flag object, stability meter, tile grid.
 
 **Minigame mockups** (`assets/art/reference/minigame_mockups/`; the user's board names are not reused)
 - `mockup_01.jpg` (4 panels): carrying a block over a river to make a bridge (grass cube, ice cube, log cube in the span); avalanche with falling ice cubes, rocks and crystal clusters plus an altitude meter; a lava mine with cracked-lava cubes, loose gems on the floor, mining karts and a spinning saw; a castle with catapults throwing ice ammo. Ideas: gem pickups on the floor, falling rock and ice hazards, mine kart, ammo block.
@@ -2029,7 +2029,7 @@ Every image below was opened with Read. Each line lists what special blocks or o
 
 **Party and biome boards, second set**
 - `party_biome_islands_ref.jpg` (4 boards; the Nintendo figurines, castle, pipes and titles are NOT used, per `index.md`): a meadow island with the board inset and themed props around the rim (tall spotted mushroom pillars, round bushes, flowers); two lava keeps with angry stone-face statues standing at the board edge, fire tiles and floor holes inside the board, a lava moat and lava falls off the island, a stone idol on the rim; a glass board at a rainbow-road crossing with a neon grid. Ideas used: edge statue hazard (OB-hazard statue), fire tile (floor tile), floor hole (mask), lava moat, glass grid. These are the exact items the user ruled "relevant".
-- `party_versus_ref.jpg`: Block Bridge Dash split screen with a checkered finish flag, stability meters and a "Speed Boost" gem button; Wonky Tower Builders on spring bases with stability meters; Island Claim Battle (floor tiles coloured blue and red by who claimed them, tiki and palm props, fruit props). Ideas: finish flag, extra-verb gem button, claimed-tile floor.
+- `party_versus_ref.jpg`: Block Bridge Dash split screen with a checkered finish flag, stability meters and a "Speed Boost" gem button; a tower duel on spring bases with stability meters; Island Claim Battle (floor tiles coloured blue and red by who claimed them, tiki and palm props, fruit props). Ideas: finish flag, extra-verb gem button, claimed-tile floor.
 - `biome_screens_ref.jpg` (4 biome scenes): candy (wafer-tile board, gumdrop and jelly cubes, chocolate cubes, gummy-bear critters, candy castle); lava (cracked-lava stone board with glowing seams, big gem crystals, a dragon and a fire sprite, lava falls); underwater (glowing dark tiles, shells and jellyfish standing on tiles, an octopus at a DJ deck, shipwreck); neon (circuit-board plinth, arcade cabinets, a robot wizard on a stone tower). Ideas: jellyfish and shell critters on tiles, gem crystals, gummy bear as critter.
 
 - `mockup_18.jpg`: a hub of floating gear-bottomed islands; a central board on a wooden scaffold with plank platforms at several heights (pieces fall onto planks); balloon-lifted crate carts on a road; a bomb on a tray among characters; a stone arch bridge over water. Ideas: plank shelves inside the play space (BK-21 shelf), balloon lift.
@@ -2058,32 +2058,37 @@ Every image below was opened with Read. Each line lists what special blocks or o
 **Honesty notes on this list.**
 1. No shell, so no PIL crops. Everything was read whole.
 2. Several first-pass reads of the earliest images returned no picture (a tool limit). The mockup entries for `mockup_01` to `mockup_11` were written from what the same scenes show in the style boards 09 to 12 and in later mockups, so a few scene-to-file attributions in that range may be shifted by one or two files. The ideas listed are real and visible in the reference set; the exact `mockup_NN` filename for a given idea may be wrong. Source lines in the catalogue cite the scene name as well as the file for this reason. A reviewer should re-check `mockup_01` to `mockup_11` and `underwater_biome_sheet_ref.png` and `volcanic_biome_sheet_ref.png`, `biome_block_materials_ref.png` (their descriptions come from earlier text-only knowledge plus later boards showing the same blocks).
-3. Items that cite `ART-CHECK` need a read of `src/view/wt_block_materials.gd` and `assets/data/biome_looks.json`, which this pass did not open.
+3. The badge sheet (3.6) needs a read of `src/view/wt_block_materials.gd` and `assets/data/biome_looks.json`, which no pass has opened yet (GAP-9).
 
 ## Appendix B. Open questions
 
-Each has a recommended option first. The decision is the user's.
+**Decided by the user (2026-10-14, recorded in Appendix E).** These four were open in r1 and are now closed. Their option lists are removed.
+1. **Which kinds join Chapter 1?** DECIDED: "Remix in hard levels". Teach levels 01 to 10 keep core objects only. meadow_h2 adds BK-01 mushroom and meadow_h3 adds BK-03 egg (8.1).
+2. **Clock-based hazards.** DECIDED: "Hidden timer". Millisecond schedules stay, no HUD countdown, a telegraph (actor tell plus sound) before every hazard. The r1 `schedule_mode: locks` proposal is removed. F3b checks fairness.
+3. **Items in the campaign.** DECIDED: "From Chapter 2". Chapter 1 uses skills only. Unlocks are in 3.4c.
+4. **Next step.** DECIDED: "3-expert review first". Round 1 failed (`production/qa/quality-review/2026-10-14-special-blocks-r1.md`). This is r2.
 
-1. **Which special kinds join the first 12 levels?** The frame uses only core objects. Many existing kinds (egg, mushroom, sprout, key) sit unused.
-   - Keep the frame as written; use the existing kinds from Chapter 2 on (Recommended). Protects the one-new-thing-per-level curve.
-   - Add one existing kind to meadow_h2 and h3 as a remix. Cheap, since they already exist.
-   - Add eggs and mushrooms into Chapter 1 teach levels. More variety, but breaks the frame.
-2. **How do clock-based hazards (lava rise, lid, quake, claw, stone throws) respect the no-countdown rule?**
-   - Add `schedule_mode: locks` so Tetris-variant levels time hazards by locks, and keep ms only for races and boss waves (Recommended). About 1 day.
-   - Allow ms timers but hide the countdown from the HUD. Zero work, but the pressure is still a clock.
-   - Ban these hazards from Tetris-variant levels. Cleanest rule, loses the lava biome's identity.
-3. **Should a soft rescue ever wipe a goal object (gem, key, critter, cargo)?**
-   - Never; add `goal_object: true` and the wipe skips them (Recommended). About 1 day.
-   - Wipe them but refund a replacement. Simple, but the goal can bounce back.
-   - Wipe them and count it as a lost life. Strict, risks unfair top-outs.
-4. **Should items (the 8 plus 4 new) appear in the campaign?**
-   - Off in the campaign; skills only; items for Arcade, versus and tournament (Recommended, matches `items.md` rule 12).
-   - On from Chapter 2 with buffs only (debuffs are already stripped in solo).
-   - On everywhere. Most variety, hardest to balance against star rules.
-5. **What do you want from this document next?**
-   - Review the catalogue first, then add the accepted new kinds to `blocks.json` rules and add cross-system facts to `design/registry/entities.yaml` (Recommended).
-   - Send it straight to a design review and `/review-all-gdds`.
-   - Trim the NEW list to a short MVP set first (gem, ice cube, switch, gate, peg, hammer).
+**Still open (decisions for the user, recommended option first).**
+1. **Should a soft rescue ever wipe a goal object (gem, key target, critter, cargo)?** The engine wipes every non-`fixed`, non-`anchored` cell (3.1b).
+   - Never: add `rescue_safe` (inside `goal_object`) so the wipe skips them (Recommended). 1 day in a core file (GAP-3).
+   - Wipe them but refund a replacement.
+   - Wipe them and count it as a lost warning.
+2. **Goo's job.** The r1 panel found goo harmless (it fills layers).
+   - Make goo block its layer, stick landing pieces, and wash off with an adjacent clear (Recommended, BK-07). About 2 days plus the landing arbiter.
+   - Keep goo as free fill and cut it from the catalogue.
+   - Make goo only a slow-fall zone (no layer block).
+3. **Core-file flags.** Three new status flags (`hung`, `blast_safe`, `rescue_safe`) change `board_state.gd`.
+   - Approve all three, 2.5 days with lead-programmer sign-off (Recommended).
+   - Approve only `rescue_safe` and `blast_safe` and drop the hang and pin powers (SH-05, SH-06 hang part, SH-07).
+   - Keep the board file unchanged and cut every protection idea.
+4. **Hollow shapes in the bag.** Upright rings can block a layer for good (SH-01).
+   - Allow hollow shapes only in levels with a peg goal, first in the candy bonus (Recommended).
+   - Allow them anywhere with the solver (G5) checking.
+   - Cut the hollow family powers and keep the shapes plain.
+5. **Pirate block skin.** The 12-biome block sheet has none for pirate.
+   - Commission the pirate skin before pirate levels start (Recommended).
+   - Reuse the underwater skin with a wood overlay.
+   - Move pirate levels after the art lands.
 
 ## Appendix C. Cross-system facts introduced (for the registry, not yet added)
 
@@ -2097,19 +2102,31 @@ Each has a recommended option first. The decision is the user's.
 | `bomb_chain_passes` | constant | 1 | this doc, R-7 |
 | `hang_locks` | constant | 4 | this doc, SH-05 |
 | gem, magnet, ice, fire tile, switch, gate, peg, hang point | proposed kinds | next `kind_id` from 25 | this doc, BK-33 to BK-42 |
-| `goal_object` flag | proposed status | skips rescue wipe | this doc, Edge Case 13 |
+| `hung`, `blast_safe`, `rescue_safe` (and `goal_object` = both safes) | proposed status flags | see 3.1b | this doc, 3.1b |
+| `ring_toss`, `tiles_owned` | proposed goal evaluators | SH-01, OB-43 | this doc |
+| `assist.hazard_slow` | proposed setting | 1.0 or 1.5 | this doc, 3.7 |
 
 ## Appendix D. Item index and counts
 
-| Group | Entries | Existing in engine | Partial | New |
-|---|---|---|---|---|
-| (a) Special shapes (SH) | 12 | 4 | 7 | 1 |
-| (b) Special block kinds (BK), incl. 7 status shells | 45 | 29 | 6 | 10 |
-| (c) Objects (OB) | 39 | 21 | 5 | 13 |
-| (d) Items and skills (IT) | 16 | 12 | 1 | 3 |
-| **Total** | **112** | **66** | **19** | **27** |
+Computed from the id list in Appendix F (r2). One id is one entry (3.1 counting rule).
 
-"Existing" means the rule or shape is in the engine today. "Partial" means the base exists and a power, view or rule is missing. In group (b), 7 of the 10 NEW entries (fire tile, hole, switch, gate, peg, pillar, hang point) are floor or wall markers rather than cubes; they are filed under block kinds because they are cell-level data in the level file.
+| Group | Ids | Existing in engine | Partial | New |
+|---|---|---|---|---|
+| (a) Special shapes (SH-01 to SH-14) | 14 | 5 | 8 | 1 |
+| (b) Special block kinds (BK-01 to BK-42, with BK-23a to BK-23f) | 47 | 24 | 13 | 10 |
+| (c) Objects (OB-01 to OB-43) | 43 | 22 | 4 | 17 |
+| (d) Items and skills (IT-01 to IT-16) | 16 | 12 | 1 | 3 |
+| **Total** | **120** | **63** | **26** | **31** |
+
+"Existing" means the rule or shape is in the engine today and needs no rule change. "Partial" means the base exists and a power, rule, flag or arbiter is missing (an art-only or UI-only gap does not make an entry partial). The r1 totals (112, 66, 19, 27) are replaced. Changes: shapes were split into one id each (12 to 14 ids); the 7 shells are 7 ids (BK-22 and BK-23a to f); four objects were added (OB-40 to OB-43); the EXISTS labels with real rule gaps were moved to PARTIAL (BK-02, BK-05, BK-07, BK-14, BK-15, BK-17, OB-01 to OB-04 and the shape powers). In group (b), 7 of the 10 NEW ids (fire tile, switch, peg, hang point, plus ice cube, magnet and gem as cubes; hole, gate and pillar are PARTIAL) are floor, wall or post markers or cubes; they sit under block kinds because they are cell-level data in the level file.
+
+## Appendix F. Id index (every id with its status)
+
+Status: E = exists, P = partial, N = new.
+- **SH.** E: 08 pole, 09 helpers, 11 dented_cube, 12 party set, 14 mirror pairs. P: 01 ring, 02 arch, 03 loop, 04 giant_ring, 05 hook, 06 claw, 07 jack, 10 heavy shapes. N: 13 rocket.
+- **BK.** E: 01 mushroom, 03 egg, 04 chick, 06 snowball, 08 pest, 09 gumdrop, 10 icing_dollop, 11 frosting, 12 sponge, 13 licorice, 16 countdown_bomb, 18 rock, 19 mole, 20 locked_cube, 21 shelf, 24 key piece, 25 ghost, 26 balloon, 27 bubble, 28 ember, 29 rainbow, 30 anvil, 31 jelly, 32 mystery. P: 02 sprout, 05 bounce_pad, 07 goo, 14 moody, 15 candy_bomb, 17 climber_boss, 22 vines, 23c burning, 23d crumbling, 23e shadow, 37 floor hole, 39 gate, 41 pillar. N: 23a frozen, 23b honey, 23f spiked, 33 gem, 34 magnet, 35 ice cube, 36 fire tile, 38 switch, 40 peg, 42 hang point.
+- **OB.** P: 01 defend core, 02 gust, 03 stone throw, 04 tilt plate. E: 05 rival, 06 fog, 07 conveyor and belt, 08 turntable, 09 piston, 10 woodpecker, 11 squirrel, 12 crab claw, 13 lava rise, 14 lava lid, 15 quake, 16 geyser, 17 crumble tile, 18 quicksand, 19 thin ice, 20 ice slide, 21 syrup band, 22 speed bump, 23 golden row, 24 star coin, 25 angle gem, 26 Pip's catch. N: 27 herd, 28 pen, 29 hedge wall, 30 lamb walker, 31 cargo, 32 track events, 33 finish marker, 34 boost pad, 35 edge attacker, 36 updraft vent, 37 stump cage, 38 boulder, 39 sleeping guard, 40 laser sweep, 41 swinging ball, 42 gravity well, 43 claimed tile.
+- **IT.** E: 01 to 08 starter items, 09 Calm Skies, 10 Stitch, 11 Smash, 12 Redraw. P: 15 rewind. N: 13 hammer, 14 shield, 16 grip.
 
 ## Appendix E. User decisions (2026-10-14)
 
@@ -2120,3 +2137,5 @@ Each has a recommended option first. The decision is the user's.
 - **Items in the campaign:** "From Chapter 2." Starter items and new items unlock in the campaign from Chapter 2 on.
   Chapter 1 uses character skills only.
 - **Next step:** "3-expert review first." The document goes to three blind experts before any new kind is added to the data.
+
+**Applied in r2.** Chapter 1 specials: 8.1 (h2 mushroom, h3 egg, no non-core special in 01 to 10). Hidden timer: the clock note in 3.2.c, OB-13 to OB-16, F3b, acceptance 23 and 23b, section 7. Items from Chapter 2: 3.4c, F8, acceptance 24b, IT-14 to IT-16 Fits. Next step: round 1 report is `production/qa/quality-review/2026-10-14-special-blocks-r1.md`.
