@@ -110,6 +110,13 @@ owner revises and the gate re-runs. No phase starts before the one it depends on
   palette arrays.
 - Untyped Dictionaries are accepted only at serialization boundaries (lockstep and JSON snapshots).
 
+- 2026-10-14 (user, clickable answer): the story premise is **"The Twelve Keystones"**. Huffle, the baby cloud, topples the Wizard's tower.
+  The Carnival is Huffle's Birthday Fair, with the Great Heap as its boss.
+  Godot master defaults: Glim is a mole with a headlamp, and the Wizard is absent in Neon, its low point.
+- 2026-10-14 (user): the defence scenario family D1–D4 is one level flavour, with at most 2 full defence levels per biome
+  (`reference-study-defence.md`). `reference-study-mockups.md` is an input to phase 4.
+- 2026-10-14 (user): the party island board is relevant except for its Nintendo figurines (`assets/art/reference/index.md`).
+
 ## Extra tasks
 - Phase 3: `tools/qa/check_level_uniqueness.gd`, owned by tools-programmer (about 2 days). It reads the
   `level_table` blocks and reports observations only.
