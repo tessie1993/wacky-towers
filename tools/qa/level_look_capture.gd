@@ -54,6 +54,15 @@ func _run() -> void:
 		var stage: Node = main.get("_stage")
 		stage.call("apply_level_look", job["look"])
 		await _frames(30)
+		if OS.get_environment("WXDBG") != "":
+			var pp: CPUParticles3D = stage.get_node("LevelLook").get_child(stage.get_node("LevelLook").get_child_count() - 1) as CPUParticles3D
+			var mode: String = OS.get_environment("WXDBG")
+			if mode.contains("noramp"): pp.color_ramp = null
+			if mode.contains("big"): pp.scale_amount_min = 8.0; pp.scale_amount_max = 8.0
+			if mode.contains("plain"):
+				var m := StandardMaterial3D.new(); m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED; m.albedo_color = Color.RED
+				(pp.mesh as QuadMesh).material = m
+			await _frames(5)
 		var wx: Node = stage.get_node_or_null("LevelLook")
 		if wx != null:
 			for c: Node in wx.get_children():

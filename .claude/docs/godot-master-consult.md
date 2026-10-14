@@ -50,3 +50,10 @@ User: "you are in charge of coding in Godot." The main session is the **Godot bu
 - Builder rules: isolate XDG for concurrent Godot runs, end headless scripts with `quit()`, set the
   `owner` of generated scene nodes, prefer `uid://` loads, no `duplicate(true)` (use `duplicate_deep`),
   and run a headless `--import` after generating resources.
+
+## Architecture
+
+Follow `docs/architecture/composition-guide.md` (composition over inheritance, WtStage as an
+orchestrator, the planned components for the scene kit, goal phases and bosses, and the patch
+checklist). Proposing a new component? Name it and place it in the guide's tables, and ask the Godot
+master if it doesn't fit.
