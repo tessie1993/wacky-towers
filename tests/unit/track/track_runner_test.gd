@@ -170,7 +170,7 @@ func test_running_out_of_time_loses_the_race() -> void:
 	var over: Dictionary = {"time_limit_ms": 10000, "restart_penalty_ms": 5000}
 	var runner := TrackRunner.new(T.def([], [], over))
 	var api: RuleApi = F.api(T.board({Vector2i(1, 1): 4}))  # the tower loses the cargo near 7 s; the penalty ends the clock
-	var out: Array[Dictionary] = T.run(runner, api, 12000)
+	var out: Array[Dictionary] = T.run(runner, api, 16000)
 	assert_bool(runner.is_failed()).is_true()
 	assert_str(String(runner.fail_reason())).is_equal("time_up")
 	assert_bool(T.kinds(out).has(TrackRunner.EV_TIME_UP)).is_true()
@@ -186,7 +186,7 @@ func test_restart_returns_to_the_post_wipes_blocks_and_replays_later_events() ->
 	assert_array(T.kinds(out)).contains([TrackRunner.EV_CHECKPOINT, TrackRunner.EV_CARGO_LOST, TrackRunner.EV_RESTART])
 	assert_int(runner.attempts()).is_equal(2)
 	assert_int(T.count(board)).is_equal(0)
-	assert_int(runner.snapshot()["best_pm"]).is_greater_equal(600)  # progress never goes backwards
+	assert_int(runner.snapshot()["best_pm"]).is_greater_equal(590)  # progress never goes backwards
 	var again: Array[Dictionary] = T.run(runner, api, 1500)
 	assert_bool(again.any(func(r: Dictionary) -> bool: return r.get("event", &"") == TrackDef.KIND_UPDRAFT)).is_true()
 

@@ -1,16 +1,23 @@
 # Special Blocks and Objects
 
-> **Status**: DRAFT v1, complete for review (all 8 sections plus appendices). Not yet reviewed by `/design-review`.
-> **Author**: systems-designer (studio expert pass), for the user
+> **Status**: DRAFT r2 (revision after the round 1 blind panel, `production/qa/quality-review/2026-10-14-special-blocks-r1.md`). Awaiting the round 2 panel.
+> **Author**: systems-designer, for the user
 > **Date**: 2026-10-14
 > **Scope**: every special SHAPE, special BLOCK KIND, platform OBJECT and player-triggered ITEM in Wacky Towers, existing and new
-> **Decisions are the user's.** Anything marked `PROPOSED` or listed under Open Questions is a recommendation, not a ruling.
+> **Decisions are the user's.** The user decisions in Appendix E are binding. `PROPOSED` marks a recommendation, not a ruling.
+> **The 12 biomes** (`assets/data/campaign/catalog.json:3-16`, catalog order): meadow, candy, ice, underwater, pirate, lava, forest, cave, clockwork, neon, celestial, carnival. Dune Bazaar and Tumble Fair are arena skins (`design/levels/dune-bazaar.md`, `tumble-fair.md`), not campaign biomes.
 
-## Work log (resume point)
+## Work log (r2 resume point)
 
-- DONE: sections 1 to 8, 8.1 mapping, Appendices A to D. Nothing left as TODO.
-- Known weak spots for a next pass: (1) `ART-CHECK` tags (needs a read of `wt_block_materials.gd`, `biome_looks.json`, `candy_cells.gd`, `rescue_top_out.gd`); (2) mockup 01 to 11 file attributions (Appendix A note); (3) no Python crops; (4) mockups 12 to 37 were read whole; (5) lava, desert, carnival, pirate and clockwork biomes have few level files, so "Fits" lines for them are design intent, not cited to a level.
-- Other files were not edited. The registry and the other GDDs need follow-up edits for bidirectional dependencies (Open Question 5).
+Fix numbers are those of the merged list in the round 1 report.
+- Batch 1 (this file): header, conventions, status-by-cause table (3.1b), shape entries SH-01 to SH-13 (fix 4, 7, 10).
+- Batch 2: block kind entries (goo redesign, anchored fixes, ART-CHECK resolved, badge fixes) (fix 4, 7, 9, 10).
+- Batch 3: object entries (core, cargo, rival, new objects OB-40 to OB-43), item entries (fix 1, 2, 7).
+- Batch 4: interaction matrix rebuilt, 3.4 biome matrix and introduction order, 3.5 reference coverage, 3.6 readability, 3.7 gap sizing (fix 5, 8, 9, 10).
+- Batch 5: formulas F1 to F12, edge cases, knobs (fix 3, 6).
+- Batch 6: acceptance, 8.1 first 12 (incl. h2, h3), Appendices B, D, E, F (fix 1, 3, 10).
+- Status at the time of writing this line: batch 1 in progress. Later lines below are updated as batches land.
+- Other files were not edited. The registry and other GDDs still need the follow-up edits (see Appendix B, decision 5).
 
 ## 1. Overview
 
@@ -61,13 +68,69 @@ Pillars served: P2 "the stack is the answer" (every special is solved by stackin
 1. **Read test.** At 720x1280, one cube is about 28 to 60 px. A special must be identified in 0.5 s by three signals together: (1) a silhouette or top-face change, (2) a looping animation, (3) a rim colour role. Surface texture alone never counts (`block-status-effects.md` look rule). Colour roles: buff rim cyan, debuff rim magenta, hazard rim orange, danger rim red, reward gold, per the art bible override in `piece-set.md`. Every special also carries a distinct icon badge so colour-blind players can tell them apart.
 2. **Telegraph rule.** Every hazard shows a warning one lock ahead or at least 2 s ahead before it acts. This is already how `mushroom_popup`, `gumdrop_hail`, `lava_rock_spawn`, `crab_claw`, `quake` and `woodpecker_knock` work. A new hazard must follow it.
 3. **Clear rule.** A hazard must have a clear-based or placement-based answer. Where the engine has it, "clear cancels" is used (`goo_spread` `cancel_on_clear`, `crab_claw`, `squirrel_heist`).
-4. **Layer fill.** `fills_layer` true means the cell counts toward a full layer. Cells with `fills_layer` false (rock, shelf) are excluded from the denominator. Each entry states which applies.
-5. **Rescue.** The soft rescue wipes the lowest planes. It never releases a goal item and never collects an item cube (`items.md` edge cases). Specials in wiped planes are lost with no payout. Entries state exceptions only.
-6. **Top-out line.** A special inside the danger band counts as stack height like any cube, unless the entry says `static_geometry` (then it adds none, as the masked columns of meadow_01 do).
+4. **Layer fill (corrected in r2).** A layer is full when every ACTIVE cell in it is filled (`layer_full`: `_layer_active[k] > 0 and _layer_filled[k] == _layer_active[k]`, `board_state.gd:200-201`). A cell with `fills_layer` true that holds a cube is filled. An active cell with `fills_layer` false that holds a cube is NOT filled, so it BLOCKS its layer (this is how the grumpy moody cube works, `moody_cube.gd:16`). Only a cell with the status `static_geometry` leaves the active count (`board_state.gd:94-96, 373-377`), so it neither fills nor blocks. Rock and shelf are `fills_layer` false plus `static_geometry`. Each entry states which applies.
+5. **Rescue.** The soft rescue calls `wipe_bottom`, which removes cells with `Cause.RESCUE` (`board_state.gd:601-608`). `fixed` and `anchored` cells are NOT wiped (`can_remove`, `:685-688`). Everything else in the wiped layers is wiped, including gems, eggs, moles and locked cubes. The status-by-cause table in 3.1b is the one source of truth. A rescue never collects an item cube or a gem (a wipe is not a clear). A NEW flag `rescue_safe` protects goal objects (3.1b).
+6. **Top-out line.** A special inside the danger band counts as stack height like any cube, unless it is `static_geometry` (then it adds none, as the masked columns of meadow_01 do).
 7. **Audio ids.** The cue list uses `SFX_<AREA>_<THING>` with areas `SP` (special piece), `EV` (level event), `PL` (physics or landing twist), `FT` (fail type), `BOSS`, `MASCOT` (`sfx-cue-list.md` section 1). Where a cue already exists it is cited by that id (for example `SFX_SP_EGG_HATCH`, `SFX_SP_CHICK_HOP`, `SFX_SP_EGG_BONUS`, `SFX_EV_MUSHROOM_POP`, `SFX_PL_STICKY_SPLAT`, `SFX_SP_FOG_GHOST`, `SFX_PL_WOBBLE_SLIP`). Where it does not, entries give a proposal `SFX_SP_<NAME>` and mark it `AUDIO-NEW`. Short names in the shape entries above (for example `ring_fit_chime`) are shorthand for `SFX_SP_RING_FIT` and so on. The count of 79 rows in the cue list must be updated by the audio director when these are accepted. Style rule from the cue list: cute toybox, soft, wood, felt, rubber, bells; no gore or horror.
-8. **Biome skins.** A kind keeps one silhouette and one badge in every biome. The biome only changes material and palette (the 12-biome block sheet in `biome_block_materials_ref.png`: grass and clover, frosted jelly, frosted ice, bubble gem, cracked lava, bark and leaf, crystal rock, brass and gears, neon circuit, starfield, striped candy tent, patterned sandstone). Skin names below are proposals.
+8. **Biome skins.** A kind keeps one silhouette and one badge in every biome. The biome only changes material and palette. The block sheet `biome_block_materials_ref.png` shows 12 skins: meadow, candy, ice, underwater, lava, forest, cave, clockwork, neon, celestial, plus Tumble Fair (striped tent) and Dune Bazaar (sandstone). The sheet has NO pirate skin. The campaign has 12 biomes including pirate and carnival (`catalog.json:3-16`). So pirate needs a block skin (gap, art-director; Appendix 3.4 lists it) and carnival can reuse the Tumble Fair skin. Skin names below are proposals.
+9. **Readability rules (r2).** Three more rules apply to every entry; section 3.6 has the detail.
+   - **See-through:** a goal object (gem, key, critter, cargo, core) draws a gold silhouette outline through cubes in front of it.
+   - **Badge sheet:** each special has one badge shape that no other special and no biome hero ornament shares. The badge list is in 3.6. Where an entry below names a badge, it is the 3.6 badge.
+   - **Colour roles:** buff cyan, debuff magenta, hazard orange, danger red, reward gold. A reward block never takes the hazard colour. A warning mark on the board uses hazard orange, never the object's own rim.
+10. **Ids and counts (r2).** One id is one entry. Grouped headings carry several ids. Appendix F lists every id with its status; Appendix D is computed from it.
 
-**Counting rule used in the index.** "Item" means one catalogue entry. A mirror pair (hook_left and hook_right) is one entry. A family of identical-behaviour variants (frosting and frosting_three) is one entry.
+**Counting rule.** One id is one entry. A mirror pair (hook_left and hook_right) shares one id. A family of identical-behaviour variants (frosting and frosting_three, the four helpers, the four heavy shapes) shares one id. The status shells have their own ids (BK-22, BK-23a to BK-23f). Appendix F is the index.
+
+### 3.1b Removal and protection: status by cause (engine fact, r2)
+
+Source: `can_move` and `can_remove` (`src/core/board/board_state.gd:677-695`), `remove` (`:335-355`), `wipe_bottom` (`:601-608`), clear order (`src/core/sim/board_sim.gd:1421-1436`). The causes are `Cause { CLEAR, DISPLACED, DAMAGE, MASKED, TRIM, RESCUE }` (`board_state.gd:24`).
+
+What each cause means in this game:
+- **CLEAR:** a full layer clears (`board_sim.gd:1429-1435`).
+- **DISPLACED:** a rule moves or deletes a cube: quake, woodpecker, squirrel, claw, bubble pop, a `place` over an occupied cell.
+- **DAMAGE:** a bomb blast, item bomb, Smash, ember melt, pest bite, frosting peel.
+- **TRIM:** tilt slip, wobble pop-off, trim top-out.
+- **RESCUE:** the soft top-out wipe.
+- **MASKED:** a mask or floor change. Always removes (`:683-684`).
+
+| Status on the cell | CLEAR | DISPLACED | DAMAGE | TRIM | RESCUE | MASKED | Can move (slides, belts, collapse) |
+|---|---|---|---|---|---|---|---|
+| none (plain cube) | Y | Y | Y | Y | Y | Y | Y |
+| `fixed` | N | N | N | N | N | Y | N |
+| `anchored` | N | N | Y | N | N | Y | N (unless forced) |
+| `clear_protected` | N | Y | Y | Y | Y | Y | Y |
+| `locked` | N | N | Y | Y | Y | Y | N |
+| `vined` | Y | Y | Y | N | Y | Y | Y |
+| `hits_left` or `hp` above 1 | as other flags | as other flags | H (loses 1, stays) | as other flags | as other flags | Y | as other flags |
+| **NEW `hung`** | Y | N | Y | N | Y | Y | N |
+| **NEW `blast_safe`** | Y | Y | N | Y | Y | Y | Y |
+| **NEW `rescue_safe`** | Y | Y | Y | Y | N | Y | Y |
+
+Y = the cell is removed. N = blocked. H = the hit counter drops by 1 and the cell stays (`board_state.gd:341-348`).
+
+The cells the engine already builds, from their code:
+
+| Cell | Flags set (source) | Result |
+|---|---|---|
+| rock, shelf | `fixed`, `static_geometry`, `anchored`, `clear_protected`, `fills_layer` false (`rock_obstacle.gd:20`, `anchored_shelf.gd:20`) | Only MASKED removes it. Not wiped by rescue. Not an active cell. |
+| sponge | `anchored`, `clear_protected`, `fixed` via `CandyCells.protect` (`candy_cells.gd:49-50`) | Only MASKED removes it. Still an active cell that counts as filled. |
+| licorice | `anchored`, `clear_protected` (`licorice_lock.gd:9`) | Removed only by DAMAGE and MASKED. A blast or Smash removes it. A rescue does not. |
+| climber boss | `anchored`, `clear_protected`, `boss` (`climber_boss.gd:42`) | Removed by DAMAGE and MASKED. Not wiped by rescue. It cannot be `fixed` because it moves with `force` (`:52`, and `remove` refuses force on `fixed`, `board_state.gd:338`). |
+| frosting, frosting_three | `clear_protected`, `frosting_layers` (`frosting.gd:10`) | A clear does not remove it; the peel hook lowers the coat count. DAMAGE removes it at once (no `hp` key). Rescue wipes it. |
+| locked cube | `locked` (`locked_cube.gd:16`) | CLEAR and DISPLACED blocked until unlocked. DAMAGE and RESCUE remove it. A blast removes a locked cube. |
+| grumpy moody | `clear_protected`, `fills_layer` false (`moody_cube.gd:16`) | Blocks its layer. Rescue wipes it. |
+| rock from a geyser | `rock`, `clear_protected`, `fills_layer` false, `hits_left` 2 (`lava_rock_spawn.gd:27`); NOT `fixed`, NOT `anchored`, NOT `static_geometry` | Blocks its layer (active cell, not filled). CLEAR is blocked. DAMAGE counts `hits_left` down, then removes it. Rescue and DISPLACED remove it. Adjacent clears hit it (`_hit_adjacent`). |
+
+Rules taken from the table (they replace the r1 text):
+1. **`anchored` is a "stay put" flag, not a "survive everything" flag.** It blocks clears, rescue, displacement and trim. It does not block DAMAGE. So a blast, the item bomb, Smash and ember all remove anchored cells. `earned_specials.gd:18` skips anchored cells on purpose; the item bomb and Smash do not (`wt_abilities.gd:202` skips only `fixed` and `locked`). This is a gap (3.7, GAP-3).
+2. **`anchored` cannot be used for a hung cube or a protected gem.** An anchored cell can never be cleared. A hung cube must still clear, and a gem must be collected by a clear. So the doc uses three NEW flags, each one line in `can_remove` and `can_move`. Size 0.5 day, owner lead-programmer (core file), gameplay-programmer (tests).
+   - `hung`: blocks DISPLACED, TRIM and moves. It does not block CLEAR, DAMAGE or RESCUE. It has a lock counter (`hung_locks`) and the rule that sets it removes it.
+   - `blast_safe`: blocks DAMAGE only.
+   - `rescue_safe`: blocks RESCUE only.
+   - A level sets `blast_safe` and `rescue_safe` together as `goal_object` on gems, keys, critters and cargo while a goal needs them.
+3. **A hung cube floats.** `hung` blocks moves, so if the cubes below clear, the hung cube stays in place until the lock counter ends, then the rule requests a settle. That is the intended read: the cube "hangs".
+4. **Rescue does not wipe `fixed` or `anchored` cells.** It does wipe gems, eggs, chicks, moles, goo, frosting, locked cubes and plain cubes unless they carry `rescue_safe`.
+5. **`on_clear` hooks run before the removal test** (`board_sim.gd:1421-1430`). So frosting peel, locked unlock and licorice untie run when a layer is full even though those cells survive the clear.
 
 ### 3.2 Catalogue (one entry per item)
 
@@ -78,48 +141,61 @@ Field order for every entry: **What** / **Rule** (trigger, effect, duration, lay
 The bank has 67 shapes in 10 families (`assets/data/shapes/families.json:4-92`, `shape_bank.tres`). Per `piece-set.md` Core Rule 6, tags never change a shape's cubes, and biomes never add shapes. A shape is "special" here because its form gives it a rule effect or a level job. Most shape powers need a platform object to bite on (a peg, a pillar, a pocket), which is why shapes and objects are specified together.
 
 **SH-01 ring, SH-02 arch, SH-03 loop (hollow family)**
-- **What.** Pieces with a hole through them. The ring is 8 cubes (`shape_bank.tres:634-643`, 3 distinct orientations). The arch is 7 (`:22-31`, 12). The loop is 6 (`:351-360`, 4). They drop over a standing thing, and they make a pocket you cannot fill from above.
-- **Rule.** Trigger: the piece lands. Effect (existing): the hole becomes a covered hole once the ring is down. `mascot_catch` already vetoes a lock that covers a hole when a level turns it on (`src/mechanics/behaviour/mascot_catch.gd`, README line 27). Effect (NEW): a ring-type piece may be placed so its hole is around a `peg` or `pillar` (OB-14, OB-15). That counts as a "fit" and the piece locks one lock-delay early with a ring chime. The hole inside a ring is a pocket: `fills_layer` for the pocket cell stays false until filled, so a layer with a ring-pocket cannot clear until the pocket holds something. Level data must say so (`pocket_ok`), or the validator warns. Gravity: normal. Specials: a critter or key placed in the pocket is protected from hail and goo until the ring clears. Rescue: a pocket with a critter in it is wiped like anything else. Top-out: normal.
-- **Look.** Hue is Hollow lime `#9FD65B` (`piece-set.md`). The hole itself must be bright and open: a glowing inner rim and a tiny "fits here" chevron on the ghost when a peg is under it.
-- **Audio.** `ring_fit_chime` when it drops over a peg, `ring_land` otherwise.
-- **Fits.** Meadow (fence posts for ring toss), carnival (ring-toss poles), pirate (anchor rings), clockwork (washers on spindles), ice (ice-fishing holes). `piece-set.md` already lists pillar levels. Not in the first 12 levels at present (see 8.1).
-- **Intro and teach.** First in a carnival or meadow bonus level with one peg and no pressure. Teach by a looping preview of a ring dropping over a post and the hint "Drop the ring over the post!" (12 words or fewer).
-- **Fairness.** Risk: a ring makes an unfillable hole and ends a run through no fault. Counterplay: the 1-lookahead tiling check (gap G5 in `levels.md`) must pass with rings in the bag, and a ring-pocket is never counted against the player in stars. Rings never appear at weight above the knob `ring_weight` (section 7).
-- **Engine.** PARTIAL. Shapes EXIST. The peg fit and pocket flag are NEW. Size 3 days. Owner: gameplay-programmer (rule), systems-designer (validator spec).
-- **Source.** The ring and pillar idea comes from `piece-set.md` ("rings drop over pillars"). Visual idea: ring-toss and poles in the party and carnival boards `party_minigames_ref.jpg` (to be confirmed in Appendix A).
+- **What.** Pieces with a hole through them. The ring is 8 cubes (`shape_bank.tres:634-643`, 3 distinct orientations). The arch is 7 (`:22-31`, 12). The loop is 6 (`:351-360`, 4). In a ring-toss level they drop over a post and score. Anywhere else they are a risk, and the bag gate below keeps them out.
+- **Rule.** The hole is made of ordinary empty cells. An enclosed empty cell is an active cell that is not filled, so its layer cannot be full until something fills it (`board_state.gd:200-201`). That is a real hazard:
+  - A flat ring (hole axis vertical) leaves an open shaft. Only a 1x1 cross-section fills it (mono, or the end of a standing i or duo).
+  - An upright ring (hole axis horizontal) leaves a pocket no falling piece can reach. It blocks its layer until a rescue wipes it.
+  - So the validator rejects any bag with a hollow piece unless the level has a `peg` goal (below) or sets `pocket_ok` and the solver (G5) proves a way out. `mascot_catch` (README line 27) can veto one covered-hole lock per catch.
+  - NEW fit rule with a goal behind it: a `peg` (BK-40) is a solid post. No piece may overlap it, except a hollow piece whose hole axis lines up with it. A ring that locks around a peg is a "fit". It emits `ring_fit`, scores `fit_points` (150) and adds 1 to the `ring_toss` counter. A new goal evaluator `ring_toss` wins when `pegs_needed` pegs each hold a ring.
+  - Peg cells are `static_geometry`, so a fitted ring leaves no pocket.
+  - Lock timing is not changed (the r1 "locks early" line is removed).
+  - Gravity normal. Rescue wipes ring cubes like any cube. A peg is `fixed` and stays. Top-out normal.
+- **Look.** Hue is Hollow lime `#9FD65B` (`piece-set.md`). The hole is a bright open rim. The ghost shows a gold "fits here" ring on a peg, and a red dot in any enclosed cell it would leave. Badge: a ring-and-post icon (3.6).
+- **Audio.** `SFX_SP_RING_FIT` (AUDIO-NEW) on a fit, normal land otherwise.
+- **Fits.** carnival (Ring Toss Rally, `catalog.json` carnival_01), candy bonus (lollipop pegs), pirate (belaying pins). `piece-set.md` lists pillar levels. It is not in the first 12 levels (Appendix E). Intro slot: 3.4.
+- **Intro and teach.** carnival_01 (`catalog.json:2066`): one peg, no pressure, the looping preview of a ring dropping over a post, and the hint "Drop the ring over the post!" (under 12 words).
+- **Fairness.** Risk: a ring makes a pocket that blocks a layer. Counterplay: the bag gate above, the red-dot ghost, `ring_weight` 0 in levels without a peg goal, and the solver check (G5). A pocket caused by a ring never counts as a wasted piece in stars.
+- **Engine.** PARTIAL. Shapes EXIST. The peg collision rule changes the core movement path (an aligned-hole overlap exception), so it goes to lead-programmer. The `ring_toss` goal is a new evaluator. Size in 3.7 (GAP-6).
+- **Source.** `piece-set.md` ("rings drop over pillars"); ring-toss and posts at a fair (carnival plan `design/levels/plans/carnival.md`, level 01 "Ring Toss Rally"); the arch piece in play on `style/14_tournament_flow.png`.
 
 **SH-04 giant_ring (giant family)**
 - **What.** A 12-cube ring (`shape_bank.tres:216-225`). It is a boss-sized ring. It is the only shape that can surround a whole platform feature such as the Hearth Stump or a 2x2 pillar.
 - **Rule.** As SH-01, plus it spans up to 3 layers. Weight is very low (Giant family: "low weight", `piece-set.md`). Allowed only where the level lists it.
 - **Look.** Blackberry `#6E4F9E`, thick gold rim so it reads as a trophy.
 - **Audio.** `giant_ring_land` (deep thud plus chime).
-- **Fits.** Celestial finale (orbit ring around a planet prop), pirate (ship wheel), carnival finale.
-- **Intro and teach.** Never earlier than the third chapter. Shown in the NEXT strip with a "big" pulse for 2 s before it spawns.
+- **Fits.** celestial finale (orbit ring around a planet prop), carnival finale (`carnival_10`). Pirate wheel skin is optional.
+- **Intro and teach.** Only in biomes 11 and 12, after the ring-toss lesson (3.4). Shown in the NEXT strip with a "big" pulse for 2 s before it spawns. Same pocket rules as SH-01, so it only spawns in a level with a peg goal.
 - **Fairness.** Risk: 12 cubes can bury a stack. Counterplay: spawn only when the stack is at or below half height (knob `giant_max_height_frac`, section 7).
 - **Engine.** Shape EXISTS. Spawn gate NEW, 1 day, gameplay-programmer.
 - **Source.** None (ours).
 
 **SH-05 hook_left and hook_right (pento_3d)**
 - **What.** 5-cube hooks (`shape_bank.tres:258-280`, 24 orientations each). A hook can catch on a ledge, branch or rail.
-- **Rule.** Trigger: a hook cube ends one cell above a `hang_point` object (OB-16: peg, branch, rail) while another cube rests on solid. Effect (NEW): a hook with its hook-cube over a hang point locks as "hung": it gets the `anchored` status for `hang_locks` (4) locks. Anchored cubes are not moved by wobble, conveyor, wind, bounce, or quake. When the timer ends the status is removed. Never permanent. Clears: a hung cube in a full layer clears normally and the status goes with it. Rescue: wiped like any cube.
-- **Look.** Lavender `#A78BEB`. A small rope loop or brass hook icon where it hangs. The anchored cubes show a thin gold outline while anchored.
-- **Audio.** `hook_hang_clink`.
-- **Fits.** Forest (branches), pirate (rails, rope), clockwork (rails), cave (stalactite hooks), carnival (tent rope).
-- **Intro and teach.** Forest or pirate, one level where wind or tilt is the threat and a hang point is near the platform edge. Teach with the hang point glowing and a hint "Hook it on the branch!".
-- **Fairness.** Risk: players who do not know it ignore it; no harm. Because it is only a bonus, it never blocks a win.
-- **Engine.** Shapes EXIST. Hang rule and object NEW, 3 days, gameplay-programmer. Reuses `anchored` status already used by `rock_obstacle.gd:20`.
-- **Source.** Hooks and ropes from the pirate and cliff boards (`minigame_mockups`, see Appendix A).
+- **Rule.** Trigger: a hook cube locks directly under or beside a `hang` point (BK-42: branch, rail, rope loop) while another cube of the piece rests on support. Effect (NEW): the whole piece gets the NEW `hung` status for `hang_locks` (4) locks (3.1b). `hung` blocks DISPLACED, TRIM and moves. It does NOT use `anchored`, because `anchored` blocks CLEAR and RESCUE (`board_state.gd:685-688`), and a hung cube must still clear in a full layer.
+  - What a hung cube resists: quake and woodpecker (DISPLACED), tilt slip and wobble pop-off (TRIM), belt and turntable moves and settle after a clear (moves).
+  - What it does not resist: a clear, a blast, Smash, a rescue wipe (3.1b).
+  - It is never permanent. The rule removes `hung` when the counter ends and requests a settle.
+  - The stake: in a level whose threat is tilt, quake or belt, a hung piece is the player's one reliable answer. A level may require it (a "hold the beacon" cell that quake targets).
+- **Look.** Lavender `#A78BEB`. A brass hook badge. While hung, a thin gold outline and a rope line to the hang point; the outline fades over the last lock.
+- **Audio.** `SFX_SP_HOOK_CLINK` (AUDIO-NEW).
+- **Fits.** forest (branches), clockwork (rails), cave (stalactites), carnival (tent rope). Pirate (rigging) once its block skin exists.
+- **Intro and teach.** forest_07 "Leaf-Swept Branch" (`catalog.json:1213`), a wind and branch level (3.4). The hang point glows and the hint is "Hook it on the branch!".
+- **Fairness.** Risk: a player ignores it and loses to the threat. Counterplay: the level shows the threat telegraph and the hang point together, and hook pieces appear at least once per bag in that level (`hook_per_bag` 1).
+- **Engine.** PARTIAL. Shapes EXIST. The `hung` flag, the hang rule and the hang point are NEW (3.7, GAP-3 and GAP-7).
+- **Source.** Ropes and hooks on rope bridges in the jungle and pirate boards (Bridge Rush, `mockup_10.jpg` and `mockup_12.jpg`; scene names cited because file attribution for the early mockups is uncertain, Appendix A).
 
 **SH-06 claw_left and claw_right (pento_3d)**
 - **What.** 5-cube claws (`shape_bank.tres:93-115`). A claw grips a bump on the stack.
-- **Rule.** NEW, optional. A claw whose claw-cube lands beside an existing cube on the same layer, with a gap-free contact on two opposite faces, locks "gripped": lock delay 0 and immune to the next gust or bounce push (one event). One use per piece. Clears normal.
-- **Look.** Lavender, with two pincer tips tinted gold on the gripping cube.
-- **Audio.** `claw_grip_snap`.
-- **Fits.** Underwater (crab), pirate, clockwork.
-- **Intro and teach.** Underwater level 04 or later, where `crab_claw` is the hazard, so claws feel like the answer. Teach by tying it to the crab (the player's claw answers the crab's claw).
-- **Fairness.** Pure bonus. No harm.
-- **Engine.** Shapes EXIST. Grip rule NEW, 1.5 days, gameplay-programmer.
-- **Source.** Underwater sheet (crab and shell) `underwater_biome_sheet_ref.png`.
+- **Rule.** NEW. A claw piece carries the piece flag `braced` while it falls. `braced` cancels the next push on that piece: one gust, one magnet pull, one ice slide or one bounce hop (the landing arbiter R-2 reads it). It is spent by the first push it cancels. A claw whose claw-cube lands beside an existing cube with contact on two opposite faces also gets `hung` for 2 locks (3.1b). Clears normal.
+  - **What the claw answers:** push hazards. It does NOT answer the crab claw hazard. That hazard steals a top cube (`crab_claw.gd:36-40`) and is answered by a clear.
+  - The stake: in a level with a current, gust or magnet (underwater_03, `catalog.json:600`), a braced claw is the way to place a piece exactly where you aim.
+- **Look.** Lavender, with two pincer tips tinted gold. A small brace badge on the grip cube. The braced state shows a gold ring on the piece.
+- **Audio.** `SFX_SP_CLAW_GRIP` (AUDIO-NEW).
+- **Fits.** underwater (current), clockwork (belt), ice (slide), cave.
+- **Intro and teach.** underwater_03 "Current Lane" (3.4). Hint: "Claw pieces hold against the current."
+- **Fairness.** Pure help, with a stake. The first claw piece of the level arrives in the first bag.
+- **Engine.** PARTIAL. Shapes EXIST. The `braced` flag and R-2 arbiter are NEW (3.7, GAP-2).
+- **Source.** The crab and shell props on `underwater_biome_sheet_ref.png` for the look only. The rule is ours.
 
 **SH-07 jack (chunky)**
 - **What.** A 7-cube cross with one orientation (`shape_bank.tres:298-307`, `families.json:67`). A centre cube with an arm on each of 6 faces, as read from "7 cubes, 1 distinct orientation". `ART-CHECK` to confirm the arm length.
