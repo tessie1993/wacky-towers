@@ -124,7 +124,7 @@ func _cell_v2(biome: StringName) -> Control:
 		for o: Array in cells:
 			if variant.has(o[1]) and o[1] != id and (o[0] as Vector3).distance_to(c[0]) < 1.01:
 				used[variant[o[1]]] = true
-		var v: int = (id * 3) % maxi(n, 1)
+		var v: int = (id * 5 + id / 4) % maxi(n, 1)
 		for k: int in maxi(n, 1):
 			if not used.has((v + k) % maxi(n, 1)):
 				v = (v + k) % maxi(n, 1)
@@ -154,7 +154,7 @@ func _cell_v2(biome: StringName) -> Control:
 	mmi.material_override = material
 	world.add_child(mmi)
 	# Active (falling) piece: its own material copy, use_cell_alpha off.
-	var falling: ShaderMaterial = material.duplicate() as ShaderMaterial
+	var falling: ShaderMaterial = WtBlockMaterials.for_biome(biome)
 	falling.set_shader_parameter(&"use_cell_alpha", false)
 	var amm := MultiMesh.new()
 	amm.transform_format = MultiMesh.TRANSFORM_3D
