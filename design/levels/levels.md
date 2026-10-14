@@ -601,3 +601,14 @@ Each has a recommended option first.
   pieces. In races, stars come from the finishing position.
 - **Moving platform (G8):** "Start now, in parallel." Engine work begins alongside level 1, and level 3 lands last
   among 01-10 if needed.
+
+## 8. User decisions on the moving platform (2026-10-14, after the G8 r1 panel)
+
+- **Race rule: "Survive to the finish."** The cart or kite moves along the track. You win by reaching the end before
+  time runs out with the cargo intact. A race may have a clock (see the level rules). There is no rival speed race in
+  this round.
+- **Tipping: lean meter plus topple.** The platform leans towards its heavy side, and bumps and wind push the lean
+  further. A lean meter shows the danger. Past the limit, the top blocks spill off. Building on the light side
+  rights it.
+- **Cargo rides on top of your build.** The basket (or picnic hamper) sits on the highest block. You must build a
+  stable, level seat for it. It wobbles and warns before it falls, so you get a chance to save it.

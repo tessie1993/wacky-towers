@@ -844,7 +844,154 @@ A note on clocks. Several rules below run on wall-clock milliseconds (`lava_rise
 - **Engine.** EXISTS.
 - **Source.** Own cast.
 
-#### 3.2.c (continues: NEW objects below)
+#### 3.2.c OBJECTS, part 2: NEW objects (proposed, `*`)
+
+These are the level actors and props named in `levels.md` that do not exist yet, plus a few from the references. Gap ids are those of `levels.md` section 5.
+
+**OB-27* herd animal (sheep, lamb, penguin, gummy bear, chick-walker)**
+- **What.** A small animal that wanders the platform by itself. Blocks are its fences.
+- **Rule.** Gap G7 (`levels.md:548`). Each animal has a cell, a heading and a speed (`wander_cells_per_s`, default 0.6). It walks straight until the next cell is a block or a gate, then turns to a free direction, preferring cells that lead toward gaps and the pen (`herd` rule per `levels.md:179`). It never climbs more than 1 layer. It cannot walk over a hole or off the rim except by the lose rule. While a piece is falling over it the animal steps aside; a locking piece never lands on it (spawn check keeps cells free). If a lock would cover it, the lock is vetoed once and the animal is moved to the nearest free cell (`mascot_catch` style). Fill: animals are not cells and do not count for layers. Gravity: standing on the floor or on top of cubes. Clears: when its layer clears the animal drops with the stack (it stays on the surface). Rescue: a rescue never deletes animals; it teleports them to the nearest safe cell. Top-out: an animal on the top row does not count as stack height.
+- **Look.** Round, fat silhouette with a bobbing walk, a name-free pastel palette, an exclamation bubble when blocked. Sheep: cream wool, dark face. Biome skins: sheep (meadow), penguin (ice), gummy bear (candy), crab (underwater), chick (farm), rabbit (forest).
+- **Audio.** Proposed `SFX_SP_SHEEP_BLEAT`, with `SFX_SP_ANIMAL_PEN_IN` for success.
+- **Fits.** meadow_04 Sheep on the Run (`levels.md:165-192`), meadow_10 phase 2, meadow_h1 (lambs), ice (penguins).
+- **Intro and teach.** meadow_04. The pen is outlined and a looping preview shows a sheep turning at a block. Hint: "Build a lane to the pen!"
+- **Fairness.** Risk: an animal walks off the edge. Counterplay: a bounce-back with a giggle and a spent warning, the edge has a low railing visual, and the second gate closes only after 5 s of warning.
+- **Engine.** NEW. 6 to 8 days (G7), gameplay-programmer plus systems-designer for the handbook entry.
+- **Source.** The herding panel in `mockup_15.jpg` (sheep inside a fenced pen, gnomes round it) and the penguins in `mockup_15.jpg` and `party_modes_ref.jpg`.
+
+**OB-28* pen and pen gate (goal)**
+- **What.** The goal enclosure that safe animals walk into.
+- **Rule.** A mask-marked group of cells (the pen) with one or two gate cells (BK-39). An animal that steps into a pen cell is "penned" (removed from the walkers, counted in `penned`). The goal `rescue_all` or a new `herd_all` evaluator wins at all penned. Fill: pen cells are excluded floor. Rescue: gates keep their state.
+- **Look.** A wooden fence pen with a flag; the pen count shown as animal faces; a gate that swings.
+- **Audio.** `SFX_SP_ANIMAL_PEN_IN` (proposal).
+- **Fits.** meadow_04, meadow_10 phase 2, ice.
+- **Intro and teach.** meadow_04.
+- **Fairness.** The pen is always reachable by design (validator).
+- **Engine.** NEW with G7. 1 day on top.
+- **Source.** `mockup_15.jpg`.
+
+**OB-29* hedge wall with holes and a peeking sheep**
+- **What.** A wall that stones knock holes in. A sheep peers through each hole.
+- **Rule.** Gap G12 (`levels.md:553`). Wall rows are placed at level start (cells of kind `block` with a `hedge` flag, or `starter`). A stone (OB-03) removes a few cells. Each open hole that stays open for `hole_grace_s` (6 s of wave time) lets the sheep behind it slip out; `sheep_out` counts; the level fails at `sheep_out_max` (3). A hole filled by a piece closes the peek. Fill: the wall counts as normal cells; clears shorten it. Rescue: the wall is re-built by the level, not by the rescue.
+- **Look.** A leafy hedge with a round hole showing a sheep's face that blinks. The wall dims red when a hole has 2 s left.
+- **Audio.** `SFX_SP_SHEEP_BLEAT`, `SFX_SP_HEDGE_BREAK`.
+- **Fits.** meadow_05 Gnome Hedge (`levels.md:195-224`).
+- **Intro and teach.** meadow_05.
+- **Fairness.** Grace timer is data; the first hole in the level is always fixable by one piece shape in the bag.
+- **Engine.** NEW. 2.5 days (G12), gameplay-programmer plus technical-artist.
+- **Source.** Gnomes and sheep in `mockup_12.jpg`, `mockup_15.jpg`.
+
+**OB-30* lamb and bridge walker**
+- **What.** A lamb that walks across the path you build, and is flung by bounce pads.
+- **Rule.** Gap G10 (`levels.md:551`). The lamb walks along cells one layer above the platform where each step has a supporting cube. It stops at a gap and waits. A bounce pad under the lamb flings it `bounce_h` cells along its heading; it lands on the cell the path provides or falls into water (a spent warning, `levels.md:309`). Goal: reach the picnic blanket (`span` goal). Fill: not a cell. Rescue: lamb is moved to the last solid cell it stood on. Top-out: none.
+- **Look.** A lamb with a bouncy walk and squash and stretch on pads, shade leaf held by Bram.
+- **Audio.** `SFX_SP_LAMB_BOING` (proposal).
+- **Fits.** meadow_08 (`levels.md:290-318`), meadow_h1 (lambs on stalks).
+- **Intro and teach.** meadow_08. Path preview arrow.
+- **Fairness.** Landing preview arc.
+- **Engine.** NEW. 3 days.
+- **Source.** The runner on the bridge in `mockup_01.jpg` (Bridge Bashers) and `mockup_10.jpg` (Jungle Bridge Rush).
+
+**OB-31* cargo (picnic basket, hamper, treasure chest)**
+- **What.** The thing on the moving platform you must not lose.
+- **Rule.** Gap G8 (`levels.md:549`). A cargo item sits on a marked cell of the platform. A track bump shakes loose any block that is not supported, and it also pushes cargo one cell; an arch sweeps anything taller than its gap off the top, which includes cargo placed on a tall stack. The cargo is knocked off if it is pushed off the edge or swept. Fill: cargo is a cell with `fills_layer` false (it adds no layer fill) and counts as height. Rescue: a rescue never moves cargo. Top-out: cargo above the arch gap is swept (this is a fail trigger).
+- **Look.** A wicker basket with a checked cloth, bouncing on bumps; glows gold when safe at the end.
+- **Audio.** `SFX_SP_CARGO_BUMP`, `SFX_SP_CARGO_LOST` (proposals).
+- **Fits.** meadow_03 Brook Run, meadow_bonus (hamper), pirate (chest), clockwork.
+- **Intro and teach.** meadow_03. The strip shows a bump icon with a basket wobble.
+- **Fairness.** Bumps are in the track preview, never random.
+- **Engine.** NEW. Part of the 12 to 15 day G8 work.
+- **Source.** The treasure chest hanging on a crane in `mockup_03.jpg` (Tumbling Towers), the cargo and chests on ships in `mockup_08.jpg`, `mockup_13.jpg`.
+
+**OB-32* track events (bump, low arch, updraft, crosswind, cloud bump)**
+- **What.** Things on a moving track. All are known ahead on the preview strip.
+- **Rule.** Gap G8. Each event has a position on the track and an effect on the platform when it arrives: bump (shake loose unsupported cubes, shove cargo), low arch (sweep cubes above `arch_gap` layers), updraft (lift the platform, which raises its progress rate), crosswind (slide loose blocks one cell sideways), cloud bump (small shake). All are scheduled data in the level file. Fill and clears: sweeps are not clears. Rescue: the rescue wipe resets the shake. Top-out: arch sweeps are a defined loss path.
+- **Look.** Icons on the strip in a fixed shape language: round bump, rainbow arch, up-arrow wind, side-arrow wind, small cloud.
+- **Audio.** `SFX_EV_TRACK_BUMP`, `SFX_EV_ARCH_SWEEP`, `SFX_EV_UPDRAFT` (proposals).
+- **Fits.** meadow_03 (bump, arch), meadow_bonus (updraft, crosswind, cloud bump).
+- **Intro and teach.** One event type at a time in meadow_03.
+- **Fairness.** Preview 8 s ahead (knob `track_preview_s`).
+- **Engine.** NEW. Part of G8 (events 3 days, preview strip 2 days).
+- **Source.** The race track with arch gates and the "next hazard" slot in `mockup_03.jpg` (Rolling Rumble).
+
+**OB-33* finish flag and goal marker**
+- **What.** The thing at the end of a race or build goal.
+- **Rule.** A world marker that shows the goal position: the picnic lawn, the gorge edge, the lookout top. Reaching it wins when the goal is met. A race finish is a line the platform crosses. No cell effect.
+- **Look.** A checkered flag or banner, glowing gold when the goal is ready.
+- **Audio.** `SFX_GOAL_WIN` jingle (exists, `sfx-cue-list.md:56`).
+- **Fits.** meadow_03, bonus, any race.
+- **Intro and teach.** Always visible.
+- **Fairness.** Never hidden.
+- **Engine.** NEW view. 1 day.
+- **Source.** Checkered flags in `party_minigames_ref.jpg`, `party_versus_ref.jpg`.
+
+**OB-34* boost pad (race floor tile)**
+- **What.** A pad that speeds up your platform for a short burst when you cover it.
+- **Rule.** A switch-style tile (BK-38) with effect `boost`. Covering it with a lock raises the platform speed by `boost_mult` (1.25) for `boost_locks` (3) locks. It does not stack. In a rival race, it moves your progress marker only.
+- **Look.** A round blue pad with a chevron. Glows when ready.
+- **Audio.** `SFX_SP_BOOST` (proposal).
+- **Fits.** meadow_bonus, candy rails, neon.
+- **Intro and teach.** One pad in a race.
+- **Fairness.** Optional gain.
+- **Engine.** NEW. 1 day after BK-38.
+- **Source.** Boost pads in `mockup_03.jpg`, `mockup_13.jpg`, `mockup_14.jpg`.
+
+**OB-35* edge attacker (gnome, gargoyle statue, cannon, tentacle, drone, golem)**
+- **What.** A prop at the rim that is the visible source of an attack.
+- **Rule.** It owns no new logic. It is the actor that plays the telegraph and launch for an existing attack rule: `defend_core` shots, `storm_bolt` stones, `crab_claw` claws, `quake` and `gust`. Each attacker has `warn` and `fire` poses synced to the rule's events (`defend_warning`, `claw_warning`, `magnet_warning`). The statue variant stands on the rim and spits or throws when its lane is marked. Fill: none.
+- **Look.** Biome skins: gnome with stones (meadow), angry stone face (lava, the user-approved board edge statue), gargoyle (candy-free dark biomes), cannon and pirate (pirate), tentacle (underwater), drone (neon), golem (cave). Clear wind-up silhouette (0.5 s).
+- **Audio.** Each rule's warn cue plus `SFX_BOSS_WINDUP_*` style.
+- **Fits.** meadow_02, 05, 10; lava; underwater; pirate; cave.
+- **Intro and teach.** With the first level of each attack.
+- **Fairness.** The attacker's pose is the telegraph, so it must match the rule timing exactly.
+- **Engine.** NEW view. 3 to 5 days per attacker set (included in G19).
+- **Source.** The angry stone faces and big stone idol in `party_biome_islands_ref.jpg`, gnomes in `mockup_12.jpg`, kraken in `mockup_04.jpg`, gargoyles and catapults in `mockup_11.jpg`.
+
+**OB-36* updraft vent (steam, geyser of air)**
+- **What.** A vent that lifts the falling piece up one cell as it passes.
+- **Rule.** A floor cell marked `vent` with a lane (the column above it). A falling piece that overlaps the column rises one cell once per piece, after a short puff warning (the same method as a bounce). Steam is visual. It has no effect on locked cubes.
+- **Look.** A brass grate with steam puffs or a leaf swirl; a faint column glow.
+- **Audio.** `SFX_EV_UPDRAFT` (shared).
+- **Fits.** Clockwork, celestial, meadow kite lanes.
+- **Intro and teach.** One vent, with the column highlight.
+- **Fairness.** One cell, telegraphed.
+- **Engine.** NEW. 1 day.
+- **Source.** Steam vents in `mockup_10.jpg`, `mockup_08.jpg`.
+
+**OB-37* stump cage (grip release) and the Hearth Stump**
+- **What.** The meadow_01 platform feature: a stump choked by roots and stones that lets go one grip per full layer.
+- **Rule.** Gap G1 (`levels.md:542`). Masked-off columns (`static_geometry`) around a 4x4 pit are switched back on by `request_mask(x, z, true)` on all layers at each layer clear: the pit grows 4x4, 6x4, 8x4 (`levels.md:74-75`). Three grips; the third reveals the stump and wins. A rescue never releases a grip. Fill: masked cells are excluded, so layer counts rebuild at each release. Top-out: masked columns add no stack height.
+- **Look.** Roots on the left, stones on the right, three bark knots as the Stump Grip meter; the stump shakes and a root snaps on each release.
+- **Audio.** Proposed `SFX_EV_GRIP_RELEASE`, `SFX_EV_STUMP_FREE`.
+- **Fits.** meadow_01 only.
+- **Intro and teach.** It is the teach: finish a layer, the wall moves.
+- **Fairness.** Layer counts and speed step per release are data (`levels.md:87`).
+- **Engine.** NEW. 5 to 6 days (G1), lead-programmer (core), gameplay-programmer (rule), systems-designer (spec).
+- **Source.** Own level frame; root and stone cage style from `style/01_story_flow.jpg` (tutorial island).
+
+**OB-38* rolling boulder**
+- **What.** A boulder that rolls down a marked lane and knocks the tops off the columns it crosses.
+- **Rule.** Every `boulder_every_locks` (10) locks a lane (a row of the footprint) is marked with a dust trail 2 s ahead. The boulder then removes the top cube of up to `boulder_max_cols` (3) columns in that lane. A layer clear that includes the lane's top cube before impact cancels it. Fill and clears: removed cubes do not count as clears. Rescue: none. Top-out: it lowers height, so it also relieves pressure.
+- **Look.** A big grey stone with carved swirl, rolling with dust and rumble, a dotted lane preview.
+- **Audio.** `SFX_EV_BOULDER_WARN`, `SFX_EV_BOULDER_ROLL` (proposals).
+- **Fits.** Cave, dune bazaar, jungle-themed celebrate levels. Not in the Meadow.
+- **Intro and teach.** Cave 04.
+- **Fairness.** Cancel by clear, 2 s warning, 3-column cap.
+- **Engine.** NEW. 2.5 days.
+- **Source.** Rolling boulders in `mockup_06.jpg` (Temple Roller Run), `mockup_08.jpg` (Pyramid Climber), `mockup_10.jpg`, `mockup_14.jpg`.
+
+**OB-39* sleeping guard**
+- **What.** A big sleepy guard whose sleep meter drops when you do not clear.
+- **Rule.** A guard prop at the rim with a `sleep` meter 100 percent. Each lock without a clear lowers it by `sleep_drain` (8); each clear raises it by `sleep_gain` (20). At 0 it wakes, stomps once (removes the top cube of its marked column), then falls back to sleep at `sleep_reset` (50). A guard never wakes during warmup (`sleep_grace_locks`, 4).
+- **Look.** A stone golem with closed eyes and "zzz"; eyes glow when low; a meter above its head.
+- **Audio.** `SFX_EV_GUARD_SNORE` (quiet loop), `SFX_EV_GUARD_STOMP`.
+- **Fits.** Cave, clockwork, pirate. It rewards clearing, so it is a negative-feedback loop for passive play.
+- **Intro and teach.** Cave 03.
+- **Fairness.** The meter is always visible.
+- **Engine.** NEW. 2 days.
+- **Source.** The sleeping stone guard and "Guard Sleep" meter in `mockup_02.jpg` (Maze Heist).
+
+#### 3.2.d Power-ups and items the player triggers
 
 ### 3.3 Interaction matrix
 TODO
@@ -914,6 +1061,16 @@ Every image below was opened with Read. Each line lists what special blocks or o
 - `mockup_19.jpg` (4 panels): Tower Tumble (a board with plank platforms around it and glowing rainbow cubes); Bridge Builder (a stone arch bridge over water); Balloon Race (cloud with next-piece bubbles) with a small palette of six block types in a wooden frame: grass cube, carved wooden crate, mossy crate, plain crate, glass crystal cube, coiled spring; Bomb Defuse (a black bomb with a spark on a gear board with colour cubes). Ideas: the six-type palette (spring, glass, crate) is the direct inspiration for the spring skin of the bounce pad and the glass ghost block.
 - `mockup_20.jpg` (4 panels): Fruit Stack (cubes shaped as orange, banana and watermelon on a tile board); Potion Puzzle (glowing potion bottles as pieces on a stone lab table, a golem); Candy Climb (a tower of candy cubes with a crystal cube on top, a gummy-bear king and a spring "next block"). Ideas: fruit and potion skins, a crystal cube as a gem-on-top, spring as a piece.
 - `mockup_21.jpg`, `mockup_22.jpg`, `mockup_23.jpg`: opened. They show the same four-panel boards as `mockup_01` to `mockup_03` (Bridge Bashers set, Bridge Dash set, Rolling Rumble set) as far as visible at this size. No new items beyond those already listed.
+
+- `mockup_24.jpg` to `mockup_29.jpg`: opened. They repeat the boards of `mockup_04` to `mockup_09` (Clockwork Conveyor set, Galactic Grab set, Abyssal Kraken set, Pyramid Climber set, Magnetic Mash set) as far as visible. No new items.
+- `mockup_30.jpg` and `mockup_31.jpg`: opened. Repeats of `mockup_17` (Quantum Spire) and `mockup_16` (hub with bomb, balloon carts, lava stack).
+- `mockup_32.jpg`: a lava survival race on rock pillars with cracked-lava and obsidian cubes; a zero-gravity arena with beams around a central core and floating loose cubes; an ice wall vs a stone golem that punches through it (boss weak point); a physics tumble tower of wooden planks with metal corner brackets on a gear. Ideas: golem boss that hits a wall (meadow_10 Gert boss analogue), plank pieces, loose floating cubes.
+- `mockup_33.jpg` and `mockup_35.jpg` (portrait, 3 boards each): a dinosaur jungle floor with mud pits and mossy stone cubes and a log piece; a clockwork floor with loose gear tiles, pipe pieces and brass boxes; a deep sea clam shell board with treasure chests, sponge and coral pieces, and a pearl. Ideas: mud-pit floor tile, pipe connector piece, treasure chest, pearl, clam shell rim.
+- `mockup_34.jpg`: a jungle ruin with carved wooden crates, leaf cubes and vine-covered pillars; a clockwork tower with a clock, crystals and gear floor tiles; a candy castle on a frosted cake with gummy cubes and chocolate cubes. Ideas: carved crate and leaf cube skins, crystal cube, chocolate cube.
+- `mockup_36.jpg`: a mixed island map: a volcano, a ship and treasure chest, a tech lab with laser beams and hologram plates, glowing runes on forest floor, giant spotted mushrooms, slides, round coloured buttons in red, yellow and green on the path. Ideas: floor buttons (switch plate), rune glyph tiles, giant mushroom props.
+- `mockup_37.jpg`: deep sea dive with transparent bubble cubes that hold small creatures; a space station with glowing energy cubes and round red pads on the floor; a haunted mansion with ghosts, tombstones and pumpkins on the board. Ideas: bubble cube (see BK-27), red floor pads (switch), ghost props (ghost piece skin), pumpkin props.
+
+Counts: 37 of 37 mockups, 16 of 16 style boards (see the list below), and the 6 root-level party and biome boards were opened.
 
 More boards are added to this list as they are opened (see the work log).
 
