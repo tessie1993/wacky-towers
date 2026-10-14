@@ -112,8 +112,8 @@ def materials():
 ARMS = {
     "idle": {"R": ((-0.07, -0.03, -0.11), (-0.09, -0.11, -0.20)), "R_hand": "fist",
              "L": ((0.07, -0.02, -0.11), (0.08, -0.08, -0.21)), "L_hand": "fist"},
-    "cheer": {"R": ((-0.09, -0.02, 0.12), (-0.12, -0.06, 0.27)), "R_hand": "fist",
-              "L": ((0.09, -0.02, 0.12), (0.13, -0.06, 0.26)), "L_hand": "open"},
+    "cheer": {"R": ((-0.13, -0.03, 0.11), (-0.19, -0.06, 0.25)), "R_hand": "fist",
+              "L": ((0.13, -0.03, 0.11), (0.2, -0.07, 0.24)), "L_hand": "open"},
 }
 PROP_DIR = {   # direction the prop points out of the right fist
     "knight": {"idle": (-0.45, -0.25, 1.0), "cheer": (-0.25, -0.1, 1.0)},
@@ -402,13 +402,13 @@ def build_knight(pose, M, P="K_"):
     parts, lights = [], []
     h = head(P, c, semi, M, blush_dx=0.112)
     parts.append(h)
-    parts += face(P, h, c, M, pose, eye_dx=0.072, brows=None, lashes=True)
+    parts += face(P, h, c, M, pose, eye_dx=0.072, eye_dz=0.0, mouth_dz=-0.098, brows=None, lashes=True)
     # auburn fringe peeking under the helmet, short bob under the cheek guards
     els = []
     for i in range(9):
         t = -1 + 2 * i / 8
-        x, z = 0.15 * t, c.z + 0.07 - 0.025 * t * t
-        els.append(B((x, (wz.front_y(h, x, z) or -0.2) + 0.014, z), 0.036))
+        x, z = 0.15 * t, c.z + 0.078 - 0.022 * t * t
+        els.append(B((x, (wz.front_y(h, x, z) or -0.2) + 0.012, z), 0.033))
     for sx in (-1, 1):
         els += [B((sx * 0.16, c.y - 0.03, c.z - 0.085), 0.05), B((sx * 0.12, c.y + 0.03, c.z - 0.11), 0.05)]
     els.append(E((0, c.y + 0.1, c.z - 0.08), (0.15, 0.08, 0.07)))
@@ -587,7 +587,7 @@ def build_elf(pose, M, P="E_"):
     parts += shell(P + "hood", hc, hsemi, lambda p: p.z > -0.6 and not (p.y < 0.06 and p.z < 0.42), M["hood"],
                    thick=0.02, rim=0.02, rim_mat=M["hood_rim"])
     p0 = hc + Vector((0, 0.62 * hsemi[1], 0.6 * hsemi[2]))
-    tip = sweep(P + "hood_tip", [p0, p0 + Vector((0, 0.11, -0.01)), p0 + Vector((-0.02, 0.2, -0.07)), p0 + Vector((-0.07, 0.25, -0.18))],
+    tip = sweep(P + "hood_tip", [p0, p0 + Vector((0, 0.11, -0.01)), p0 + Vector((-0.05, 0.2, -0.06)), p0 + Vector((-0.15, 0.22, -0.17))],
                 [0.1, 0.07, 0.04, 0.01], ring=24, n=30, mat=M["hood"])
     add_mods(tip, smooth=None, displace=(0.06, 0.006))
     parts.append(realize(tip))
