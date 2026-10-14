@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "source": [
+    "design/gdd/narrative/story-v2.md",
+    "design/decisions/2026-10-14-story-cast-decisions.md"
+  ],
+  "panels": [
+    {"id": "S01", "title": "The Story Begins", "caption": "In the old library, a dusty Tome flutters open all by itself."},
+    {"id": "S02", "title": "Long Ago...", "caption": "The magical towers fell, and the floating islands began to drift apart."},
+    {"id": "S03", "title": "The Lost Tomes", "caption": "Every spellbook was lost. Win them back, one tower at a time!"},
+    {"id": "S04", "title": "Explore the Biomes!", "caption": "All aboard the block-cart! Next stop: somewhere wobbly."},
+    {"id": "S05", "title": "Canopy Chaos", "caption": "A bumpy jungle road, a cart of stone blocks, and cheeky monkeys!"},
+    {"id": "S06", "title": "Defend the Fort!", "caption": "Goblins! They think our cart is lunch. Build those walls, quick!"},
+    {"id": "S07", "title": "The Molten Guardian", "caption": "The forge guardian wakes up hot and grumpy. Help him cool down!"},
+    {"id": "S08", "title": "The Cosmic Gateway", "caption": "High above the stars, a glowing doorway waits for one last tower."},
+    {"id": "S09", "title": "The Cosmic Nexus", "caption": "Blocks zoom between the portals, and the way home opens wide!"},
+    {"id": "S10", "title": "The Grand Finale!", "caption": "The towers rise again, and look... the treasure was here all along!"},
+    {"id": "S11", "title": "Learn to Stack!", "caption": "Every great builder starts with one block. Let's try it!"},
+    {"id": "S12", "title": "The Angry Wind Cloud", "caption": "Whoosh! A grumpy cloud is blowing the whole sky sideways. Hold on!"},
+    {"id": "S13", "title": "The Stone Guardian", "caption": "Shh! Tiptoe past the sleepy guardian and grab the glowing keys."},
+    {"id": "S14", "title": "The Rainbow Kraken", "caption": "A giant rainbow octopus blocks the cove. It just wants to play!"},
+    {"id": "S15", "title": "Pirate Cove", "caption": "Ahoy! Golden sand, a giggly Tiki, and a brand-new treasure map."},
+    {"id": "S16", "title": "The Tumble Fair", "caption": "Step right up! Lanterns, tents, and one very proud balloon."},
+    {"id": "S17", "title": "The Tournament!", "caption": "Builders from every island, one golden trophy. May the best tower win!"},
+    {"id": "S18", "title": "The Fair Plaza", "caption": "Four bridges, four games, and a scoreboard that never stops cheering."},
+    {"id": "S19", "title": "The Last Tower", "caption": "Wait a moment... the tallest tower of all is the wizard's hat!"},
+    {"id": "S20", "title": "The Invitation", "caption": "The violet ribbons were one big invitation, and someone saved a seat!"}
+  ],
+  "heroes": {
+    "c2": {"name": "Dame Ada", "bio": "A brave young knight with a soft heart who keeps every tower standing."},
+    "c3": {"name": "Bram", "bio": "A gruff, cheerful dwarf who loves a good smash. If it's in the way, it's coming down!"},
+    "c4": {"name": "Sif", "bio": "A quick, curious elf who spots the gap and plans the next move before anyone else."}
+  }
+}

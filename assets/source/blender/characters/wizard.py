@@ -29,7 +29,7 @@ from mathutils import Matrix, Vector
 HEIGHT = 1.6           # final height of wizard + cloud, metres
 MB_SURFACE = 0.575     # an isolated metaball's surface radius / element radius (measured, 5.2.2)
 WIZ_SCALE = 1.22     # wizard size relative to the cloud
-TRI_BUDGET_WIZARD = 7300   # includes the wand star
+TRI_BUDGET_WIZARD = 6700   # includes the wand star; small parts overshoot it slightly
 TRI_BUDGET_CLOUD = 2500
 BAKE_SIZE = 1024
 
@@ -462,13 +462,13 @@ def materials():
     sw.layer_name = "swirl"
     fac = nt.nodes.new("ShaderNodeMath")
     fac.operation = "MULTIPLY"
-    fac.inputs[1].default_value = 0.75
+    fac.inputs[1].default_value = 1.0
     nt.links.new(sw.outputs["Color"], fac.inputs[0])
     mx = nt.nodes.new("ShaderNodeMix")
     mx.data_type = "RGBA"
     nt.links.new(fac.outputs[0], mx.inputs[0])
     nt.links.new(src, mx.inputs[6])
-    mx.inputs[7].default_value = lin("b9a6de")
+    mx.inputs[7].default_value = lin("a48fd4")
     nt.links.new(mx.outputs[2], b.inputs["Base Color"])
     return M
 
@@ -550,7 +550,7 @@ def build(pose_name, M):
         if not near.any():
             continue
         d = np.min(np.linalg.norm(V[near][:, None, :] - P[None, :, :], axis=2), axis=1)
-        weight[near] = np.maximum(weight[near], np.exp(-(d / 0.016) ** 2))
+        weight[near] = np.maximum(weight[near], np.exp(-(d / 0.024) ** 2))
     attr = me.color_attributes.new("swirl", "FLOAT_COLOR", "POINT")
     cols = np.repeat(weight[:, None], 4, axis=1)
     cols[:, 3] = 1.0
@@ -885,7 +885,7 @@ def tri_count(o):
     return sum(len(p.vertices) - 2 for p in o.data.polygons)
 
 
-def decimate(objs, budget, floor=60):
+def decimate(objs, budget, floor=24):
     total = sum(tri_count(o) for o in objs)
     ratio = min(1.0, budget / max(total, 1))
     out = []

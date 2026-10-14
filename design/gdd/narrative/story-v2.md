@@ -447,3 +447,15 @@ S11 is a short painted lead-in; the lesson itself is the in-world tutorial in se
 - Art-director takes the Panel template, the Tiki redesign notes and the Pirate Island biome brief.
 - Game-designer reviews the boss-fight pitches in section 3 and the tutorial order in section 5.
 - Producer approves the 20-panel scope and the roster size.
+
+---
+
+## 12. Captions
+
+> **Status**: Draft (writer, 2026-10-14), following the 2026-10-14 decision that story panels carry short captions (`design/decisions/2026-10-14-story-cast-decisions.md`).
+
+- **Data file**: `assets/data/story/captions.json` is the source of truth for the player-facing text of panels S01-S20 (`panels[]`: `id`, `title`, `caption`) and the display names and bios of the reskinned heroes C2-C4 (`heroes.c2`/`c3`/`c4`: `name`, `bio`). The caption defaults in section 7 are superseded by that file.
+- **Limits**: ribbon title 4 words or fewer; caption 12 words or fewer. Text is live UI, never baked into the art.
+- **Casing**: titles are stored in Title Case; the ribbon renders them in thick caps, so the UI does the upper-casing (localizers should not have to).
+- **Heroes**: C2 Knight **Dame Ada** (Lana's perks), C3 Dwarf **Bram** (Boulder's perks), C4 Elf **Sif** (Glim's perks; the board's label). Lana, Boulder and Glim stay as story NPCs. Bios describe personality only and state no mechanics.
+- **Not in the file yet**: plaque text (chapter numbers) and the S10 "STORY VICTORY!" banner; add keys once `src/ui/story/story_panel.gd` defines where they live.
