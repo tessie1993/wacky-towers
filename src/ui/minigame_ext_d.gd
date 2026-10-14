@@ -4,7 +4,7 @@ extends RefCounted
 const IDS: Array[String] = ["mg30", "mg31", "mg32", "mg33", "mg34", "mg35", "mg36"]
 const INK := Color("243b4d")
 const CREAM := Color("fff8e7")
-const MINT := Color("b8ddc7")
+const MINT := WtStorybook.MINT
 const ORANGE := Color("eaa05b")
 const ROSE := Color("d87967")
 const PAPER := Color("dde4d6")

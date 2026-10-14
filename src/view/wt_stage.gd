@@ -461,7 +461,8 @@ func _build_island() -> void:
 	var builder := WtIslandBuilder.new(_biome)
 	builder.motion = 0.0 if _reduced() else 1.0
 	builder.build_island(_world, _size, func(x: int, z: int) -> bool: return _board.is_active(_board.index(Vector3i(x, 0, z))))
-	builder.build_dressing(_world, _size)
+	if not WtPropScatter.new(_biome, builder).build(_world, _size):
+		builder.build_dressing(_world, _size)
 	_far = builder.build_far(_world)
 
 

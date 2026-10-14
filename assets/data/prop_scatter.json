@@ -1,0 +1,397 @@
+{
+  "schema": "WtPropScatter rules per biome (src/view/wt_prop_scatter.gd). Biomes absent here keep WtIslandBuilder.build_dressing (biome_looks.json env.rim). Units are board cells. Item keys: kind (env_v3 kit / builder recipe), tint, weight, count [min,max], ring [min,max] distance from the cluster anchor, scale [min,max], stretch [min,max] y-scale, radius = footprint diameter at scale 1 (Poisson spacing), tall (per-side culling for camera sight lines), align (0..1 lean to ground normal), tilt_deg, sway, shadow, tint_jitter.",
+  "source": "assets/art/reference/style/15_title_and_hud.png (meadow panel): clover and daisy clumps hugging the ledge, bush clumps at the corners and back sides, flowers spilling over the rounded rim.",
+  "biomes": {
+    "meadow": {
+      "seed": "meadow-scatter-v1",
+      "tries": 14,
+      "multimesh_min": 3,
+      "clearance": {
+        "board": 0.26,
+        "board_tall": 0.5,
+        "edge_inset": 0.02
+      },
+      "ground": {
+        "max_slope_deg": 70,
+        "align": 0.85,
+        "sink": 0.03
+      },
+      "exclusions": [
+        {
+          "id": "wizard",
+          "anchor": [
+            0.5,
+            0.22
+          ],
+          "offset": [
+            1.35,
+            0.0
+          ],
+          "radius": 0.6
+        },
+        {
+          "id": "mascot",
+          "anchor": [
+            -0.5,
+            0.18
+          ],
+          "offset": [
+            -1.0,
+            0.0
+          ],
+          "radius": 0.55
+        },
+        {
+          "id": "boss",
+          "anchor": [
+            -0.5,
+            -0.5
+          ],
+          "offset": [
+            -1.15,
+            -0.65
+          ],
+          "radius": 0.5
+        }
+      ],
+      "clusters": {
+        "count": [
+          13,
+          16
+        ],
+        "spacing": 1.1,
+        "anchor_clear": 0.35,
+        "corner_bias": 1.5,
+        "templates": [
+          {
+            "id": "grove",
+            "weight": 2.6,
+            "layers": [
+              {
+                "kind": "tree",
+                "tint": "#6DB043",
+                "count": [
+                  1,
+                  1
+                ],
+                "ring": [
+                  0.0,
+                  0.3
+                ],
+                "scale": [
+                  0.95,
+                  1.25
+                ],
+                "radius": 0.55,
+                "tall": true,
+                "align": 0.2,
+                "sway": 0.03,
+                "shadow": true
+              },
+              {
+                "kind": "bush",
+                "tint": "#4E9A36",
+                "count": [
+                  2,
+                  4
+                ],
+                "ring": [
+                  0.45,
+                  0.7
+                ],
+                "scale": [
+                  1.0,
+                  1.35
+                ],
+                "radius": 0.42,
+                "align": 0.5,
+                "sway": 0.015
+              },
+              {
+                "kind": "tuft",
+                "tint": "#7BC24E",
+                "count": [
+                  3,
+                  6
+                ],
+                "ring": [
+                  0.6,
+                  1.0
+                ],
+                "scale": [
+                  1.3,
+                  1.8
+                ],
+                "radius": 0.13
+              },
+              {
+                "kind": "flower_white",
+                "count": [
+                  2,
+                  4
+                ],
+                "ring": [
+                  0.7,
+                  1.2
+                ],
+                "scale": [
+                  2.3,
+                  2.9
+                ],
+                "radius": 0.15,
+                "tilt_deg": 8
+              },
+              {
+                "kind": "flower_lilac",
+                "count": [
+                  1,
+                  3
+                ],
+                "ring": [
+                  0.7,
+                  1.2
+                ],
+                "scale": [
+                  2.2,
+                  2.7
+                ],
+                "radius": 0.14,
+                "tilt_deg": 8
+              }
+            ]
+          },
+          {
+            "id": "bush_clump",
+            "weight": 2.0,
+            "layers": [
+              {
+                "kind": "bush",
+                "tint": "#5FA63C",
+                "count": [
+                  1,
+                  3
+                ],
+                "ring": [
+                  0.0,
+                  0.25
+                ],
+                "scale": [
+                  1.0,
+                  1.35
+                ],
+                "radius": 0.42,
+                "align": 0.5,
+                "sway": 0.015
+              },
+              {
+                "kind": "clover",
+                "tint": "#4FA43A",
+                "count": [
+                  3,
+                  5
+                ],
+                "ring": [
+                  0.4,
+                  0.75
+                ],
+                "scale": [
+                  2.5,
+                  3.2
+                ],
+                "radius": 0.17
+              },
+              {
+                "kind": "tuft",
+                "tint": "#6CB843",
+                "count": [
+                  3,
+                  5
+                ],
+                "ring": [
+                  0.45,
+                  0.85
+                ],
+                "scale": [
+                  1.3,
+                  1.9
+                ],
+                "radius": 0.13
+              },
+              {
+                "kind": "flower_white",
+                "count": [
+                  2,
+                  5
+                ],
+                "ring": [
+                  0.5,
+                  1.0
+                ],
+                "scale": [
+                  2.4,
+                  3.0
+                ],
+                "radius": 0.15,
+                "tilt_deg": 8
+              },
+              {
+                "kind": "flower_lilac",
+                "count": [
+                  1,
+                  3
+                ],
+                "ring": [
+                  0.5,
+                  1.0
+                ],
+                "scale": [
+                  2.2,
+                  2.8
+                ],
+                "radius": 0.14,
+                "tilt_deg": 8
+              }
+            ]
+          },
+          {
+            "id": "daisy_patch",
+            "weight": 2.4,
+            "layers": [
+              {
+                "kind": "clover",
+                "tint": "#5DB043",
+                "count": [
+                  2,
+                  4
+                ],
+                "ring": [
+                  0.0,
+                  0.3
+                ],
+                "scale": [
+                  2.5,
+                  3.2
+                ],
+                "radius": 0.17
+              },
+              {
+                "kind": "flower_white",
+                "count": [
+                  3,
+                  6
+                ],
+                "ring": [
+                  0.2,
+                  0.7
+                ],
+                "scale": [
+                  2.4,
+                  3.1
+                ],
+                "radius": 0.15,
+                "tilt_deg": 10
+              },
+              {
+                "kind": "flower_lilac",
+                "count": [
+                  1,
+                  4
+                ],
+                "ring": [
+                  0.3,
+                  0.8
+                ],
+                "scale": [
+                  2.2,
+                  2.8
+                ],
+                "radius": 0.14,
+                "tilt_deg": 10
+              },
+              {
+                "kind": "tuft",
+                "tint": "#7BC24E",
+                "count": [
+                  2,
+                  5
+                ],
+                "ring": [
+                  0.4,
+                  0.9
+                ],
+                "scale": [
+                  1.2,
+                  1.7
+                ],
+                "radius": 0.13
+              }
+            ]
+          }
+        ]
+      },
+      "fill": {
+        "spacing": 0.34,
+        "near_keep": 0.9,
+        "far_keep": 0.24,
+        "falloff": 0.45,
+        "spill_chance": 0.45,
+        "spill_band": [
+          0.03,
+          0.16
+        ],
+        "items": [
+          {
+            "kind": "clover",
+            "tint": "#4FA43A",
+            "weight": 3.0,
+            "scale": [
+              1.9,
+              2.6
+            ],
+            "radius": 0.17
+          },
+          {
+            "kind": "tuft",
+            "tint": "#6CB843",
+            "weight": 3.0,
+            "scale": [
+              1.2,
+              1.9
+            ],
+            "radius": 0.13
+          },
+          {
+            "kind": "flower_white",
+            "weight": 2.6,
+            "scale": [
+              2.2,
+              2.9
+            ],
+            "radius": 0.15,
+            "tilt_deg": 10
+          },
+          {
+            "kind": "flower_lilac",
+            "weight": 1.4,
+            "scale": [
+              2.0,
+              2.6
+            ],
+            "radius": 0.14,
+            "tilt_deg": 10
+          },
+          {
+            "kind": "flower_yellow",
+            "weight": 0.6,
+            "scale": [
+              1.4,
+              1.9
+            ],
+            "radius": 0.08,
+            "tilt_deg": 10
+          }
+        ]
+      }
+    }
+  }
+}

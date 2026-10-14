@@ -4,7 +4,7 @@ extends RefCounted
 
 const INK := Color("243b4d")
 const CREAM := Color("fff8e7")
-const MINT := Color("b8ddc7")
+const MINT := WtStorybook.MINT
 const ORANGE := Color("eaa05b")
 const PALETTE: Array[Color] = [Color("ed9d72"), Color("8dbeb5"), Color("adb1d5"), Color("e6c875")]
 
