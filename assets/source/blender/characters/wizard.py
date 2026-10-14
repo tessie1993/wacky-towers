@@ -29,7 +29,7 @@ from mathutils import Matrix, Vector
 HEIGHT = 1.6           # final height of wizard + cloud, metres
 MB_SURFACE = 0.575     # an isolated metaball's surface radius / element radius (measured, 5.2.2)
 WIZ_SCALE = 1.22     # wizard size relative to the cloud
-TRI_BUDGET_WIZARD = 7000
+TRI_BUDGET_WIZARD = 7300   # includes the wand star
 TRI_BUDGET_CLOUD = 2500
 BAKE_SIZE = 1024
 
@@ -245,7 +245,7 @@ def puffy_star(name, ro, ri, depth, mat, location, facing):
     o = mesh_obj(name, bm, mat, smooth=False)
     bv = o.modifiers.new("bevel", "BEVEL")
     bv.width = depth * 0.45
-    bv.segments = 3
+    bv.segments = 1
     bv.limit_method = "NONE"
     o.matrix_world = Matrix.Translation(location) @ Vector(facing).normalized().to_track_quat("Z", "Y").to_matrix().to_4x4()
     return realize(o)
@@ -438,9 +438,8 @@ def materials():
     M = {
         "skin": skin_mat(),
         "nose": principled("nose", "nose", rough=0.4, Subsurface_Weight=0.15, Coat_Weight=0.15),
-        "beard": plush("beard", "beard", "lilac", 0.12),
+        "beard": plush("beard", "f3e9d6", "lilac", 0.12),
         "cloud": plush("cloud", "beard", "lilac", 0.35),
-        "cloud_line": plush("cloud_line", "cloud_line", "lilac", 0.2),
         "robe": felt("robe", "robe", rough=0.85, sheen=0.55, bump=0.03),
         "hat": felt("hat", "hat", rough=0.9, sheen=0.25, bump=0.05),
         "trim": principled("trim", "trim", rough=0.38, metal=0.55),
@@ -456,6 +455,21 @@ def materials():
         "star": principled("wand_star", "f3d99c", rough=0.35, metal=0.0,
                            Emission_Color=lin("f8d488"), Emission_Strength=0.18),
     }
+    # cloud swirl shading: mix the painted swirl attribute toward a soft lilac
+    nt, b = _bsdf(M["cloud"])
+    src = b.inputs["Base Color"].links[0].from_socket
+    sw = nt.nodes.new("ShaderNodeVertexColor")
+    sw.layer_name = "swirl"
+    fac = nt.nodes.new("ShaderNodeMath")
+    fac.operation = "MULTIPLY"
+    fac.inputs[1].default_value = 0.75
+    nt.links.new(sw.outputs["Color"], fac.inputs[0])
+    mx = nt.nodes.new("ShaderNodeMix")
+    mx.data_type = "RGBA"
+    nt.links.new(fac.outputs[0], mx.inputs[0])
+    nt.links.new(src, mx.inputs[6])
+    mx.inputs[7].default_value = lin("b9a6de")
+    nt.links.new(mx.outputs[2], b.inputs["Base Color"])
     return M
 
 
@@ -506,28 +520,41 @@ def build(pose_name, M):
     for co, semi in puffs:
         g = bmesh.ops.create_uvsphere(bm, u_segments=32, v_segments=16, radius=1.0)
         bmesh.ops.transform(bm, matrix=Matrix.Translation(co) @ Matrix.Diagonal((*semi, 1.0)), verts=g["verts"])
-    bm.transform(Matrix.Diagonal((1.06, 0.96, 0.86, 1.0)))
+    bm.transform(Matrix.Diagonal((1.22, 1.0, 0.86, 1.0)))
     cloud = mesh_obj("C_cloud", bm, M["cloud"])
-    add_mods(cloud, remesh=0.012, smooth=(0.8, 30))
+    add_mods(cloud, remesh=0.014, smooth=(0.8, 30))
     cloud = realize(cloud)
     C.append(cloud)
-    # spiral swirls on the front puffs
-    for k, (x, z, r0, turn) in enumerate([(-0.45, 0.24, 0.11, 1), (0.02, 0.2, 0.10, -1), (0.55, 0.26, 0.10, -1)]):
-        loc, nrm = cast(cloud, (x, -2, z), (0, 1, 0))
+    # spiral swirls painted into a "swirl" colour attribute (soft shading, not geometry)
+    me = cloud.data
+    nv = len(me.vertices)
+    V = np.empty(nv * 3, dtype=np.float32)
+    me.vertices.foreach_get("co", V)
+    V = V.reshape(-1, 3)
+    weight = np.zeros(nv, dtype=np.float32)
+    for x, z, r0, turn in [(-0.62, 0.15, 0.13, 1), (0.0, 0.11, 0.12, -1), (0.64, 0.16, 0.12, -1),
+                           (-0.95, 0.2, 0.09, 1), (0.98, 0.2, 0.09, -1)]:
+        loc, nrm = cast(cloud, (x, -3, z), (0, 1, 0))
         if loc is None:
             continue
         u = nrm.cross(Vector((0, 0, 1))).normalized()
         v = nrm.cross(u).normalized()
-        pts, rad = [], []
-        for i in range(34):
-            t = i / 33
-            ang = turn * (t * 2.2 * math.pi)
+        pts = []
+        for i in range(140):
+            t = i / 139
+            ang = turn * (t * 2.3 * math.pi)
             rr = r0 * (1 - t * 0.85)
-            q = loc + rr * (math.cos(ang) * u + math.sin(ang) * v)
-            h, _ = cast(cloud, q + nrm * 0.15, -nrm)
-            pts.append((h if h is not None else q) + nrm * 0.002)
-            rad.append(0.012 * (1 - 0.6 * t))
-        C.append(sweep(f"C_swirl{k}", pts, rad, ring=8, n=60, mat=M["cloud_line"]))
+            pts.append(loc + rr * (math.cos(ang) * u + math.sin(ang) * v))
+        P = np.array([tuple(p) for p in pts], dtype=np.float32)
+        near = np.linalg.norm(V - np.array(loc), axis=1) < r0 * 1.6
+        if not near.any():
+            continue
+        d = np.min(np.linalg.norm(V[near][:, None, :] - P[None, :, :], axis=2), axis=1)
+        weight[near] = np.maximum(weight[near], np.exp(-(d / 0.016) ** 2))
+    attr = me.color_attributes.new("swirl", "FLOAT_COLOR", "POINT")
+    cols = np.repeat(weight[:, None], 4, axis=1)
+    cols[:, 3] = 1.0
+    attr.data.foreach_set("color", cols.ravel())
 
     # ---- head (skin metaball) + blush vertex colours
     head = realize(metaball("mb_head", [E((0, -0.02, 0.99), (0.20, 0.17, 0.185))], res=0.01), "W_head", M["skin"])
@@ -607,9 +634,9 @@ def build(pose_name, M):
 
     # mouth (cheer): open smile under the moustache
     if pose["mouth"] == "smile":
-        my = front_y(beard, 0, 0.885) or -0.22
-        W.append(ellipsoid("W_mouth", (0, my + 0.012, 0.888), (0.042, 0.02, 0.026), M["mouth"]))
-        W.append(ellipsoid("W_tongue", (0, my + 0.006, 0.875), (0.024, 0.012, 0.012), M["tongue"], seg=16))
+        my = front_y(beard, 0, 0.872) or -0.22
+        W.append(ellipsoid("W_mouth", (0, my + 0.012, 0.874), (0.062, 0.024, 0.042), M["mouth"]))
+        W.append(ellipsoid("W_tongue", (0, my + 0.002, 0.852), (0.036, 0.016, 0.017), M["tongue"], seg=16))
     elif pose["mouth"] == "o":
         my = front_y(beard, 0, 0.875) or -0.22
         W.append(ellipsoid("W_mouth", (0, my + 0.008, 0.875), (0.022, 0.014, 0.026), M["mouth"]))
@@ -702,26 +729,27 @@ def build(pose_name, M):
     spine = [(0, 0.02, 1.06), (0, 0.03, 1.22), (0.01, 0.06, 1.36), (0.05, 0.10, 1.47),
              (0.13, 0.14, 1.54), (0.22, 0.16, 1.53), (0.28, 0.15, 1.45), (0.29, 0.12, 1.37), (0.33, 0.10, 1.34)]
     radii = [0.22, 0.18, 0.13, 0.092, 0.066, 0.05, 0.038, 0.026, 0.016]
+    spine = [(x, y, 1.06 + (z - 1.06) * 1.3) for x, y, z in spine]   # taller cone vs the brim
     cone = sweep("W_hat", spine, radii, ring=36, n=70, mat=M["hat"], wobble=0.03)
     add_mods(cone, smooth=None, displace=(0.06, 0.01))
     hat_parts.append(realize(cone))
 
     def brim_z(a, r):
-        return (0.016 * math.sin(3 * a + 0.4) - 0.03 * math.cos(a) ** 2 + 0.012 * max(0.0, -math.sin(a))) * r + 0.022 * r ** 6
+        return (0.016 * math.sin(3 * a + 0.4) - 0.03 * math.cos(a) ** 2 + 0.045 * max(0.0, -math.sin(a)) ** 2) * r + 0.02 * r ** 6
 
     bm = bmesh.new()
     bmesh.ops.create_uvsphere(bm, u_segments=64, v_segments=16, radius=1.0)
     for v in bm.verts:
         a = math.atan2(v.co.y, v.co.x)
         r = math.hypot(v.co.x, v.co.y)
-        v.co = Vector((v.co.x * 0.38, v.co.y * 0.36 + 0.02, v.co.z * 0.022 + 1.095 + brim_z(a, r)))
+        v.co = Vector((v.co.x * 0.29, v.co.y * 0.275 + 0.02, v.co.z * 0.022 + 1.095 + brim_z(a, r)))
     hat_parts.append(mesh_obj("W_brim", bm, M["hat"]))
     lip = []
     for i in range(72):
         a = 2 * math.pi * i / 72
-        lip.append((0.385 * math.cos(a), 0.365 * math.sin(a) + 0.02, 1.095 + brim_z(a, 1.0) + 0.008))
-    hat_parts.append(sweep("W_brimlip", lip, [0.026] * 72, ring=14, mat=M["hat"], closed=True))
-    hs = decal_star("W_hatstar", hat_parts[0], (0, -2, 1.31), (0, 1, 0), 0.08, 0.016, M["band"], offset=0.004)
+        lip.append((0.295 * math.cos(a), 0.28 * math.sin(a) + 0.02, 1.095 + brim_z(a, 1.0) + 0.008))
+    hat_parts.append(sweep("W_brimlip", lip, [0.022] * 72, ring=14, mat=M["hat"], closed=True))
+    hs = decal_star("W_hatstar", hat_parts[0], (0, -2, 1.33), (0, 1, 0), 0.075, 0.016, M["band"], offset=0.004)
     if hs:
         hat_parts.append(hs)
     for k, (x, z) in enumerate([]):
