@@ -1,6 +1,6 @@
 # Special Blocks and Objects
 
-> **Status**: DRAFT, in progress (skeleton written first, sections filled one by one)
+> **Status**: DRAFT v1, complete for review (all 8 sections plus appendices). Not yet reviewed by `/design-review`.
 > **Author**: systems-designer (studio expert pass), for the user
 > **Date**: 2026-10-14
 > **Scope**: every special SHAPE, special BLOCK KIND, platform OBJECT and player-triggered ITEM in Wacky Towers, existing and new
@@ -8,7 +8,9 @@
 
 ## Work log (resume point)
 
-- Skeleton written. Sections still to fill are marked `TODO`.
+- DONE: sections 1 to 8, 8.1 mapping, Appendices A to D. Nothing left as TODO.
+- Known weak spots for a next pass: (1) `ART-CHECK` tags (needs a read of `wt_block_materials.gd`, `biome_looks.json`, `candy_cells.gd`, `rescue_top_out.gd`); (2) mockup 01 to 11 file attributions (Appendix A note); (3) no Python crops; (4) mockups 12 to 37 were read whole; (5) lava, desert, carnival, pirate and clockwork biomes have few level files, so "Fits" lines for them are design intent, not cited to a level.
+- Other files were not edited. The registry and the other GDDs need follow-up edits for bidirectional dependencies (Open Question 5).
 
 ## 1. Overview
 
@@ -1425,7 +1427,7 @@ This catalogue reads from the systems below and must be listed in each as a depe
 
 **Code touched when this is built** (owners as in section 3.2). `assets/data/content/blocks.json` (next `kind_id` 25), `assets/data/rules/*.json` (one per new rule), `assets/data/knobs/*.json` (new `specials.json`), `src/mechanics/**` (new plugins), `src/view/wt_block_materials.gd` and `assets/data/biome_looks.json` (skins and badges), `src/core/rules/plugin_registry.gd` (registers each `PLUGIN_ID`), `tools/qa/block_gallery.gd` (gallery of every special per biome, 12 biomes), `tools/qa/verify_campaign_biomes.gd` (validator checks in section 8).
 
-**Registry.** `design/registry/entities.yaml` was not present when this was written (the directory listing shows no `design/registry`). Cross-system facts introduced here are listed in Appendix C for the orchestrator, who may add them to a registry.
+**Registry.** `design/registry/entities.yaml` exists (version 1, 2026-10-10). It holds only the four playable characters today, and no special block, kind or item. Nothing here conflicts with it. This doc does not edit it. Cross-system facts introduced here are listed in Appendix C, and the user is asked whether to add them (Open Question 5).
 
 ## 7. Tuning Knobs
 
@@ -1483,10 +1485,73 @@ This catalogue reads from the systems below and must be listed in each as a depe
 
 ## 8. Acceptance Criteria
 
-TODO
+**[U]** automated unit test (gdUnit4, `tests/unit/mechanics/` for rules, `tests/unit/specials/` NEW for this doc). **[V]** validator check in `tools/qa/verify_campaign_biomes.gd`. **[M]** manual or screenshot check, evidence in `production/qa/evidence/`. Existing tests today: `tests/unit/mechanics/wave3_mechanics_test.gd`, `wave4_rules_test.gd`.
+
+**Catalogue integrity**
+1. [V] Every entry id in section 3.2 maps to exactly one of: a `blocks.json` kind, a shape in `shape_bank.tres`, a registered rule `PLUGIN_ID`, an item in `starter.json`, a skill, or a documented NEW item. No orphan entries (`.claude/rules/data-files.md`).
+2. [U] `blocks.json` holds 24 kinds today; GIVEN the NEW kinds are accepted, THEN `kind_id` values are unique and contiguous from 25.
+3. [U] Shape bank has 67 shapes in 10 families and every special-shape rule names a shape that exists (`shape_bank.tres`, `families.json`).
+4. [M] The block gallery (`tools/qa/block_gallery.gd`) shows every kind and every special piece in all 12 biomes at 720x1280. Reviewers identify each special in 0.5 s, 3 of 3 reviewers, using the read test (convention 1). Each failure is logged as a defect.
+
+**Rules (existing, regression)**
+5. [U] `bounce_pad`: a piece landing on a pad rises `min(bounce_h, free)` cells then moves 1 in the last move direction, once per piece (`bounce_pad.gd:24-41`).
+6. [U] `goo_spread`: after a clear in the same resolve, no spread occurs once; otherwise `per_lock` new goo cells appear on free neighbours (`goo_spread.gd:15-33`).
+7. [U] `pest`: eats only `block` and `starter`; starves after `ant_starve_acts` with no food; a clear within 1 cell shoos it once and pays `ant_shoo_bonus` (`pest.gd:19-60`).
+8. [U] `countdown_bomb`: counts down per lock, defuses on an adjacent clear, adds `blast_layers` junk at 0 (`countdown_bomb.gd:9-21`).
+9. [U] `hatching_eggs`: an egg cleared before `hatch_locks` pays `egg_bonus`; at `hatch_locks` it becomes a chick on the lowest reachable neighbour (`hatching_eggs.gd:10-47`).
+10. [U] `earned_specials`: a connected same-flavour cleared group of at least `bomb_at` leaves one bomb; its blast skips `anchored` cells (`earned_specials.gd:14-39`).
+11. [U] `frosting`: peels at most one coat per resolve (`frosting.gd:17-18`). `licorice_lock` and `locked_cube` change only on an adjacent real clear.
+12. [U] `tilt_plate.measure` returns tau 0 to 1000 and ignores `fixed_kinds` (`tilt_plate.gd:26,72-86`).
+
+**Rules (new or changed)**
+13. [U] R-2: GIVEN a piece lands on a pad above ice, THEN only the bounce fires and total travel is at most `bounce_h + 1`.
+14. [U] R-7: GIVEN two bombs adjacent, THEN a blast removes the second without detonating it; the number of blasts in one lock is at most 2.
+15. [U] F7: with W = 6, five normal cubes at x = 1,1,2,3,3 and one heavy cube at x = 5, tau = 143 (round down); with three heavy cubes at x = 5, tau = 455.
+16. [U] F5: goo count never exceeds `goo_max` over 200 quiet locks.
+17. [U] F3: a level with `objects_max` 4, E 3 and P_eff 12 FAILS validation; with `objects_max` 6 it passes.
+18. [U] Gem: a gem is collected by a real clear (+`gem_points`, +1 `gems`) and lost with no points when removed by bomb, ember or rescue.
+19. [U] Hang: a hook cube over a `hang` point gets `anchored` for exactly `hang_locks` locks, then it is removed; it still clears in a full layer.
+20. [U] Ring fit: a hollow piece may overlap a peg cell only when its hole axis aligns; any other piece is blocked.
+21. [U] Switch and gate: covering a `switch` cell with a lock fires its effect once (`once: true`); a gate toggles `request_mask` for its cells.
+22. [U] Shield item: the next `defend_core`, `storm_bolt` or `crab_claw` hit is cancelled once, then the shield is gone.
+
+**Fairness**
+23. [V] Every timed hazard in a level has a warning of at least 1 lock or 2000 ms before it acts, and a clear-based or placement-based answer.
+24. [V] F1: no level has more than `A_max(n)` active specials or more than 1 new special.
+25. [V] Banned combinations (section 3.3 table) are rejected.
+26. [V] No gem, key, critter or cargo is placed in a pocket, above `gem_max_layer`, or above a level's lowest `arch_gap` unless `arch_safe`.
+27. [V] The tiling solver (gap G5) passes with every special shape in the level's bag, 1-lookahead bot, no hold.
+28. [U] Determinism: two runs with the same seed give identical snapshots for every new rule (`snapshot()` equal).
+29. [U] Rescue: GIVEN a goal object and `goal_object: true` (if accepted, Open Question 3), THEN a rescue wipe skips it; without the flag it is wiped and no item is collected.
+
+**Teach and feel**
+30. [M] A first-time tester names each special's job within 10 s of its first appearance in 3 of 4 playtests. Each special first appears in a level where it is the only new thing (F1).
+31. [M] Reduced motion: every idle animation becomes a static badge and no information is lost (screenshot per special).
+32. [M] Colour-blind simulation (protan, deutan, tritan, greyscale): 3 of 3 reviewers tell all specials in one level apart by badge and silhouette.
+33. [M] Reference-quality gate: each special's art scores 9.7 or more from the blind panel against the boards (`reference-quality-bar.md`). Anything below is a defect.
 
 ### 8.1 First 12 levels mapping
-TODO
+
+Source of truth for the levels is `design/levels/levels.md` (frame, revision 2). That file says which core mechanic each level uses and gives a shape list only for meadow_01. All other shape lists below are PROPOSED here for the level designers to confirm (level spec rule: "name the shapes used in each level and give the reason", `level-identity-spec.md:141`). T joins a level only if the solver proves it (`levels.md:25`). Items are off in the campaign unless a level turns them on (`items.md` rule 12), so only skills apply. Skills use `charge` by default. Proposed: `off` in meadow_01 (the tutorial) and `once` in meadow_10 (the boss), allowed by `skills.md` rule 7.
+
+| Level | Specials and objects (from the frame) | Existing or new | Shapes (proposed unless stated) | Why |
+|---|---|---|---|---|
+| meadow_01 Stump Day | OB-37 stump cage with 3 grips; soft rescue; Stump Grip meter | NEW (G1) | **o, i, l only (stated, `levels.md:82`)** | Teaches drop, turn and a full layer. No T, so parity holds |
+| meadow_02 Windbreak | OB-01 defend core (sprout, 3 hp), OB-02 gust and weathervane, OB-35 edge attacker (Gert puffs) | PARTIAL (G9, G11) | o, i, l, plus duo and tri_corner helpers | Plain pieces so the wall is the lesson. Roll axis taught here (`sfx-cue-list.md:33`) |
+| meadow_03 Brook Run | OB-31 cargo (basket), OB-32 track events (bump, arch), OB-33 finish marker, Biscuit lean | NEW (G8) | o, i, l, duo; no tall shapes (arch sweeps tall stacks) | Flat, low pieces fit the arch gap |
+| meadow_04 Sheep on the Run | OB-27 herd animals, OB-28 pen, BK-39 gates | NEW (G7) | i, l, o, tri_straight, duo | Straight and L pieces make lanes and fences |
+| meadow_05 Gnome Hedge | OB-03 stone throw (`storm_bolt`), OB-29 hedge wall with peeking sheep, OB-35 gnomes | PARTIAL (G12) | o, l, tri_corner, duo, mono | Small fitting pieces patch holes |
+| meadow_06 Blanket Patch | `fill_shape` goal, terraces (per-layer masks, BK-37 holes), optional IT-15 Rewind | EXISTS rule (`fill_shape.gd`), PARTIAL masks (G16) | pento_flat family (patch tiling) and helpers; T only if solved (`levels.md:248`) | `piece-set.md` lists pento_flat for Fill Target Shape |
+| meadow_07 Fog Frolic | OB-06 fog, BK-21 shelf (scaffold), optional BK-25 ghost piece, reveal at win (G14) | EXISTS (fog, shelf, ghost); G14 NEW | i, o, l, tall_corner, tripod | Tall pieces build height; 3D pieces show off the hidden top |
+| meadow_08 Bouncy Lambs | BK-05 bounce pad (lily pads), OB-30 lamb walker, secret hoop (G15, OB-25 pattern) | EXISTS pad; NEW lamb (G10) | pole (6-long bridge, SH-08), plank, slab, i, duo | Long pieces span gaps between pads |
+| meadow_09 Tilting Hill | OB-04 tilt plate, OB-02 gust (sails), SH-10 heavy shapes (counterweights) | PARTIAL (G9) | big_cube, slab, o, l, i | Heavy pieces are counterweights |
+| meadow_10 Gert's Whirl | Recalls OB-01 plus OB-02 (phase 1), OB-27 plus OB-28 (phase 2), OB-04 (phase 3); no new special | NEW (G7, G13) plus above | union of 02, 04, 09 sets | Boss recalls the first third |
+| meadow_bonus Kite Day | OB-05 rival, OB-32 track events (updraft, crosswind, cloud bump), OB-36 vent, optional BK-26 balloon piece, SH-13 rocket boost, OB-34 boost pad, OB-31 hamper | PARTIAL (G8, G9) | o, i, l, slab; rocket only if accepted | Light, steady basket; the rocket is the single extra verb |
+| meadow_h1 Beanstalk Rescue | BK-02 sprouts (F11), OB-30 lamb walker, bridges, secret golden lamb (G15) | EXISTS sprout; NEW lamb (G10) | pole, pento_i, plank, i, duo | Long pieces make rope bridges |
+
+**Per-level special budget check (F1).** meadow_01: 1 (cage). 02: 2 (core, wind). 03: 2 (cargo, track). 04: 2 (herd, pen). 05: 2 (stones, hedge). 06: 1 to 2 (fill goal, masks). 07: 2 to 3 (fog, shelf, optional ghost). 08: 2 (pad, lamb). 09: 3 (tilt, wind, heavy). 10: boss phases. bonus: 3 or more (rival, track events, boost) which exceeds `A_cap` 3 if rocket and balloon are both on, so ship the bonus with rocket and balloon as options, not both. h1: 2. All within F1 except the bonus with both options.
+
+**Where the existing special kinds are NOT used in the first 12.** mushroom, egg, chick, snowball, goo, pest, gumdrop, frosting, sponge, licorice, moody, bombs, climber boss, rock, mole, locked cube, key, magnet and gem are not used in meadow_01 to h1. They belong to the legacy plans (`src/levels/meadow/*.json` still list older rules such as `balloon`, `mascot_catch`, `wobble`, `gust`, `dandelion_puff`, `mushroom_popup`, and `clear_n` goals). Those JSONs predate the frame and are out of scope here (the frame lists `level_type` and story updates as follow-up, `levels.md:508`). This is flagged in Open Question 1.
 
 ## Appendix A. Reference images opened
 
@@ -1539,10 +1604,68 @@ Every image below was opened with Read. Each line lists what special blocks or o
 - `mockup_36.jpg`: a mixed island map: a volcano, a ship and treasure chest, a tech lab with laser beams and hologram plates, glowing runes on forest floor, giant spotted mushrooms, slides, round coloured buttons in red, yellow and green on the path. Ideas: floor buttons (switch plate), rune glyph tiles, giant mushroom props.
 - `mockup_37.jpg`: deep sea dive with transparent bubble cubes that hold small creatures; a space station with glowing energy cubes and round red pads on the floor; a haunted mansion with ghosts, tombstones and pumpkins on the board. Ideas: bubble cube (see BK-27), red floor pads (switch), ghost props (ghost piece skin), pumpkin props.
 
-Counts: 37 of 37 mockups, 16 of 16 style boards (see the list below), and the 6 root-level party and biome boards were opened.
+**Style boards** (`assets/art/reference/style/`), all 16 opened:
+- `01_story_flow.jpg`, `02_story_beats.jpg`, `07_story_tutorial_beats.jpg`: wizard on a cloud, tutorial island with a glass-ghost preview block, a cart carrying a stack, tournament with cannons; a jungle cart with falling stone blocks and monkeys; a balance tutorial with a tilting plate and warning triangles; a goblin ambush on a fort; a molten guardian boss; a cosmic nexus with wormholes; a treasure chest finale. Ideas: ghost preview block, tilt plate with warning triangle, boss weak points, wormhole.
+- `03_choose_mode_library.jpg`, `04_settings_wide.jpg`, `05_select_mode_a.jpg`, `06_select_mode_b.jpg`, `08_settings_options_tall.jpg`, `16_settings_wizard_peek.jpg`: UI only. No specials. Used for the no-beige rule and wood and purple frame style (cited by `reference-quality-bar.md`).
+- `09_minigames_a.jpg` to `12_minigames_d.jpg`: the 16 named minigame boards (see the mockup entries above; the same scenes: Bridge Bashers, Avalanche Ascent, Rubble Rumble, Fort Frenzy, Bridge Dash, Fort Blast, Maze Heist, Summit Scramble, Clockwork Conveyor, Kraken Blockade, Digging Frenzy, Chroma Sky Climb, Rolling Rumble, Tumbling Towers, Shatter Shootout, Frenzy Footholds). Specials spotted: ice and wood and grass cubes as different materials in one bridge, gems, keys, sleeping guard, lava rise meter, boost pads, hanging chest, warning signs, magnet and grapple.
+- `13_biome_blocks.png`: 12 biome blocks (see above).
+- `14_tournament_flow.png`: Tumble Fair lobby, wheel, round, standings, win. Specials: translucent glass ghost-preview cubes on each player's island, an arch piece (hollow shape) on P4's tower. Idea: the arch piece is shown in play.
+- `15_title_and_hud.png`: title and in-level HUD for meadow, ice, celestial. Specials: every cube carries a small sprout leaf sticker on its top face; a 3-slot next-piece tray at the bottom; two round buttons at the corners in celestial (skill and item slots). Idea: the sprout leaf is the existing biome ornament, so a special's badge must differ from it (shape and colour), not copy it.
 
-More boards are added to this list as they are opened (see the work log).
+**Root-level boards also opened:** `screens_flow_ref.png` (same as board 15, 4 phone frames), `title_screen_ref.png` (title with an empty tile board and moss bushes), `title_variants_ref.jpg` (title, candy and underwater HUD, a 6-biome block palette: meadow, candy, lava, crystal cave, neon, dune bazaar), `wizard_turnaround_ref.png` (character), `tournament_flow_ref.png` (same as board 14). **Not opened:** `logo_ref.jpg` and `logo_master.jpg` (logos only, no specials; the references rule says never copy logos).
+
+**Honesty notes on this list.**
+1. No shell, so no PIL crops. Everything was read whole.
+2. Several first-pass reads of the earliest images returned no picture (a tool limit). The mockup entries for `mockup_01` to `mockup_11` were written from what the same scenes show in the style boards 09 to 12 and in later mockups, so a few scene-to-file attributions in that range may be shifted by one or two files. The ideas listed are real and visible in the reference set; the exact `mockup_NN` filename for a given idea may be wrong. Source lines in the catalogue cite the scene name as well as the file for this reason. A reviewer should re-check `mockup_01` to `mockup_11` and `underwater_biome_sheet_ref.png` and `volcanic_biome_sheet_ref.png`, `biome_block_materials_ref.png` (their descriptions come from earlier text-only knowledge plus later boards showing the same blocks).
+3. Items that cite `ART-CHECK` need a read of `src/view/wt_block_materials.gd` and `assets/data/biome_looks.json`, which this pass did not open.
 
 ## Appendix B. Open questions
 
-TODO
+Each has a recommended option first. The decision is the user's.
+
+1. **Which special kinds join the first 12 levels?** The frame uses only core objects. Many existing kinds (egg, mushroom, sprout, key) sit unused.
+   - Keep the frame as written; use the existing kinds from Chapter 2 on (Recommended). Protects the one-new-thing-per-level curve.
+   - Add one existing kind to meadow_h2 and h3 as a remix. Cheap, since they already exist.
+   - Add eggs and mushrooms into Chapter 1 teach levels. More variety, but breaks the frame.
+2. **How do clock-based hazards (lava rise, lid, quake, claw, stone throws) respect the no-countdown rule?**
+   - Add `schedule_mode: locks` so Tetris-variant levels time hazards by locks, and keep ms only for races and boss waves (Recommended). About 1 day.
+   - Allow ms timers but hide the countdown from the HUD. Zero work, but the pressure is still a clock.
+   - Ban these hazards from Tetris-variant levels. Cleanest rule, loses the lava biome's identity.
+3. **Should a soft rescue ever wipe a goal object (gem, key, critter, cargo)?**
+   - Never; add `goal_object: true` and the wipe skips them (Recommended). About 1 day.
+   - Wipe them but refund a replacement. Simple, but the goal can bounce back.
+   - Wipe them and count it as a lost life. Strict, risks unfair top-outs.
+4. **Should items (the 8 plus 4 new) appear in the campaign?**
+   - Off in the campaign; skills only; items for Arcade, versus and tournament (Recommended, matches `items.md` rule 12).
+   - On from Chapter 2 with buffs only (debuffs are already stripped in solo).
+   - On everywhere. Most variety, hardest to balance against star rules.
+5. **What do you want from this document next?**
+   - Review the catalogue first, then add the accepted new kinds to `blocks.json` rules and add cross-system facts to `design/registry/entities.yaml` (Recommended).
+   - Send it straight to a design review and `/review-all-gdds`.
+   - Trim the NEW list to a short MVP set first (gem, ice cube, switch, gate, peg, hammer).
+
+## Appendix C. Cross-system facts introduced (for the registry, not yet added)
+
+| Name | Type | Value or rule | Owner doc |
+|---|---|---|---|
+| `heavy_weight` | constant | 2 | this doc, F7 |
+| `goo_max` | constant | 12 | this doc, F5 |
+| `A_cap` | constant | 3 | this doc, F1 |
+| `E0`, `d_lvl`, `d_bio`, `E_min` | constants | 6, 0.4, 0.25, 3 | this doc, F2 |
+| `k_fair` | constant | 1.5 | this doc, F3 |
+| `bomb_chain_passes` | constant | 1 | this doc, R-7 |
+| `hang_locks` | constant | 4 | this doc, SH-05 |
+| gem, magnet, ice, fire tile, switch, gate, peg, hang point | proposed kinds | next `kind_id` from 25 | this doc, BK-33 to BK-42 |
+| `goal_object` flag | proposed status | skips rescue wipe | this doc, Edge Case 13 |
+
+## Appendix D. Item index and counts
+
+| Group | Entries | Existing in engine | Partial | New |
+|---|---|---|---|---|
+| (a) Special shapes (SH) | 12 | 4 | 7 | 1 |
+| (b) Special block kinds (BK), incl. 7 status shells | 45 | 29 | 6 | 10 |
+| (c) Objects (OB) | 39 | 21 | 5 | 13 |
+| (d) Items and skills (IT) | 16 | 12 | 1 | 3 |
+| **Total** | **112** | **66** | **19** | **27** |
+
+"Existing" means the rule or shape is in the engine today. "Partial" means the base exists and a power, view or rule is missing. In group (b), 7 of the 10 NEW entries (fire tile, hole, switch, gate, peg, pillar, hang point) are floor or wall markers rather than cubes; they are filed under block kinds because they are cell-level data in the level file.
