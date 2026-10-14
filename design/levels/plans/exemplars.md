@@ -178,7 +178,7 @@ full `look` block are present in the real spec.
 mechanic: [strike, row_cannon]   # both taught earlier (strike variant: cannon); the boss adds NO new mechanic
 extras: [tilt_plate]             # taught in pirate_06, used in phase 3
 verb: destroy
-extra_control: fire              # the one extra button: fire the reef... the deck cannon
+extra_control: fire              # the one extra button: fire the deck cannon
 id: ex_pirate_10
 tutorial_line: Wall off the cannons, then fire back with full rows.     # 10 words
 name: Crumpet's Deck
@@ -279,6 +279,7 @@ world_change: Ada sees the sheep and they trot into the pen
 ```yaml
 mechanic: [strike, row_cannon]   # both taught earlier (strike variant: tentacle); the level adds no new mechanic
 verb: defend
+extra_control: fire              # fires the reef cannon
 id: ex_underwater_09
 tutorial_line: Plug the wall, then fire back with full rows.     # 9 words
 name: Squidge at the Reef        # a working name; it passes the title script
@@ -314,6 +315,43 @@ ammo), the telegraph is an actor, the meter is named for the fiction, and the he
 rehearsal, so the boss is not resolved a level early (U9): the tier-10 finale is a different fight (Mother
 Squidge, a different arena, phases and building action).
 
+## 7c. Module-based exemplar (9.7), a level whose base is a module
+
+**Abridged:** `metadata.signature`, `look`, `target_visible` and `comic_fail` are present in the real spec.
+
+```yaml
+mechanic: [wobble_plate]         # a MODULE debut (Candy's module A); the level adds no rule
+verb: balance
+extra_control: none
+id: ex_candy_03
+tutorial_line: Stack the cake evenly so the plate stays level.     # 9 words
+name: Tipsy Cake Stand
+role: teach
+headline_objective: Keep the cake tower on its stand      # 8 words
+ending_pattern: plain
+goal_type: [height]              # the plate tilts toward the stack's centre of mass; hold it level while the tower grows
+footprint: cross 10x10           # arms 4 wide, corners 3x3 void; the plate sits under the whole cross
+mask: |
+  ...####...
+  ...####...
+  ...####...
+  ##########
+  ##########
+  ##########
+  ##########
+  ...####...
+  ...####...
+  ...####...
+canonical_mask: "10x10:...####.../...####.../...####.../##########/##########/##########/##########/...####.../...####.../...####..."
+corridor_check: min_spawn_width 4 (the centre 4 columns, 3-6, are floor in the top rows); arms 4 wide
+scene: { terrain: bakery_counter, set_piece_action: icing_drip, cast_on_stage: Lana nibbles a cake and watches (react); Bram cheers (cheer), hud_meter: Balance gauge, themed purple wood }
+world_change: the cake tower stands level and Lana claps; the counter's bell rings
+```
+
+Why: the base is a module (`wobble_plate`), so the level starts from a playable minigame (ruling A). The verb is
+balance, the meter is named for the fiction, and the footprint is a cross whose recogniser holds (corners 3x3,
+arms 4 wide). The symmetric cross is its own canonical form under all 8 transforms.
+
 ## 8. Anchors for the non-level rubrics
 
 - **N1-N3, a chapter entry (9.7):** "Chapter 11, Pirate. Problem: Captain Crumpet's crew holds the last key.
@@ -333,18 +371,19 @@ Squidge, a different arena, phases and building action).
 
 ## 9. `level_table` rows for the 9.7 exemplars (script input)
 
-Columns: id | mechanic | verb | goal_type | footprint | mask | terrain | set_piece | set_piece_action | cast_pose |
-time_of_day | weather | camera | opening_event | ending_pattern | headline_objective | role | callback_of | flavour |
-telegraph | min_spawn_width | min_dead_end_width
+Columns: id | mechanic | verb | extra_control | goal_type | footprint | mask | terrain | set_piece |
+set_piece_action | cast_pose | time_of_day | weather | camera | opening_event | ending_pattern | headline_objective
+| role | callback_of | flavour | telegraph | min_spawn_width | min_dead_end_width
 
 ```
-ex_forest_02 | vines | build | height | plain square 10x8 | 8x10:########/########/########/########/########/########/########/########/########/######## | treetop_platform | hollow_oak | bell_ring | build,react | day | petals | default | squirrel_scampers | plain | Lift the nest above the vines | teach | none | none | n/a | 10 | n/a
-ex_forest_05 | vines | build | span>survive | bridge span 14x8 | 8x14:########/########/########/########/#####.../#####.../#####.../#####.../#####.../#####.../########/########/########/######## | ravine_ledges | rotten_plank_bridge | root_whip | haul,react | golden | petals | low | goat_bell_rings | twist | Help Nanny Tuft cross the gully | twist | none | none | n/a | 4 | n/a
-ex_forest_h1 | vines | rescue | survive>span>rescue_all | stair 12x8 | 8x12:########/########/########/########/######../######../######../######../####..../####..../####..../####.... | stepped_ravine | rotten_plank_bridge | root_whip | brace | dusk | mist | wide | kid_goat_bleat | reveal | Help Nanny Tuft cross before the gale | hard | ex_forest_05 | D4 | n/a | 4 | n/a
-ex_pirate_03 | strike | defend | survive | plain square 9x9 | 9x9:#########/#########/#########/#########/#########/#########/#########/#########/######### | dock_pier | harbour_cannon | cannon_volley | brace,point | day | clear | low | gull_lands | plain | Hold the dock against the gull gun | teach | none | D1 | 3 | 9 | n/a
-ex_pirate_10 | strike,row_cannon | destroy | bonk_boss | L 8x8 | 8x8:########/########/########/########/####..../####..../####..../####.... | ship_deck | pirate_galleon | cannon_volley | brace,haul | dusk | clear | low | crumpet_laughs | guest | Win back the last key from Captain Crumpet | boss | none | D3 | 3 | 8 | 4
-ex_meadow_01 | lookout | build | height | plain square 8x8 | 8x8:########/########/########/########/########/########/########/######## | hilltop_ledge | windmill | sails_turn | point,cheer | dawn | clear | default | sheep_bleat | plain | Raise the lookout so Ada spots sheep | teach | none | none | n/a | 8 | n/a
-ex_underwater_09 | strike,row_cannon | defend | bonk_boss | funnel 10x8 | 8x10:######../#######./########/########/########/########/########/########/#######./######.. | reef_wall | coral_towers | tentacle_grab | haul,point,react | golden | bubbles | default | baby_eye_blinks | reveal | Hold the reef wall against Squidge | combine | none | D3 | 3 | 10 | n/a
+ex_forest_02 | vines | build | none | height | plain square 10x8 | 8x10:########/########/########/########/########/########/########/########/########/######## | treetop_platform | hollow_oak | bell_ring | build,react | day | petals | default | squirrel_scampers | plain | Lift the nest above the vines | teach | none | none | n/a | 10 | n/a
+ex_forest_05 | gap_runner,vines | build | none | span>survive | bridge span 12x8 | 8x12:########/########/########/########/#####.../#####.../#####.../#####.../########/########/########/######## | ravine_ledges | rotten_plank_bridge | root_whip | haul,react | golden | petals | low | goat_bell_rings | twist | Help Nanny Tuft cross the gully | twist | none | none | n/a | 4 | n/a
+ex_forest_h1 | gap_runner,vines | rescue | none | survive>span>rescue_all | stair 12x8 | 8x12:########/########/########/########/######../######../######../######../####..../####..../####..../####.... | stepped_ravine | rotten_plank_bridge | root_whip | brace | dusk | mist | wide | kid_goat_bleat | reveal | Help Nanny Tuft cross before the gale | hard | ex_forest_05 | D4 | n/a | 4 | n/a
+ex_pirate_03 | strike | defend | none | survive | plain square 9x9 | 9x9:#########/#########/#########/#########/#########/#########/#########/#########/######### | dock_pier | harbour_cannon | cannon_volley | brace,point | day | clear | low | gull_lands | plain | Hold the dock against the gull gun | teach | none | D1 | 3 | 9 | n/a
+ex_pirate_10 | strike,row_cannon | destroy | fire | bonk_boss | L 8x8 | 8x8:########/########/########/########/####..../####..../####..../####.... | ship_deck | pirate_galleon | cannon_volley | brace,haul | dusk | clear | low | crumpet_laughs | guest | Win back the last key from Captain Crumpet | boss | none | D3 | 3 | 8 | 4
+ex_meadow_01 | lookout | build | none | height | plain square 8x8 | 8x8:########/########/########/########/########/########/########/######## | hilltop_ledge | windmill | sails_turn | point,cheer | dawn | clear | default | sheep_bleat | plain | Raise the lookout so Ada spots sheep | teach | none | none | n/a | 8 | n/a
+ex_underwater_09 | strike,row_cannon | defend | fire | bonk_boss | funnel 10x8 | 8x10:######../#######./########/########/########/########/########/########/#######./######.. | reef_wall | coral_towers | tentacle_grab | haul,point,react | golden | bubbles | default | baby_eye_blinks | reveal | Hold the reef wall against Squidge | combine | none | D3 | 3 | 10 | n/a
+ex_candy_03 | wobble_plate | balance | none | height | cross 10x10 | 10x10:...####.../...####.../...####.../##########/##########/##########/##########/...####.../...####.../...####... | bakery_counter | giant_cake_stand | icing_drip | react,cheer | golden | confetti | high | cake_bell_dings | plain | Keep the cake tower on its stand | teach | none | none | n/a | 4 | n/a
 ```
 
 Notes for the script: `ex_forest_02` (plain 10x8, Forest's one plain square), `ex_pirate_03` (plain 9x9, Pirate's
