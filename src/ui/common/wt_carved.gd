@@ -4,8 +4,10 @@ class_name WtCarved extends RefCounted
 ## gradient-mapped at load: wood becomes purple wood, parchment becomes plum glass, vine greens
 ## and flower petals are kept. Result is cached per (kit piece, tint, scale).
 
-const KIT_2X := "res://assets/art/ui/kit/x1/%s.png"
-const KIT_MARGIN := {"chip_hud": 37, "tray_slot": 28}
+const KIT_2X := "res://assets/art/ui/kit/x2/%s.png"
+## Margins in the final (scaled) texture: the x2 master is drawn at SCALE for a chunkier bevel.
+const SCALE := 0.75
+const KIT_MARGIN := {"chip_hud": 56, "tray_slot": 42}
 const ALPHA_FLOOR := 24.0
 ## Plum face ramp (dark at the rim, lighter in the middle).
 const FACE_DARK := Color("2b1a3d")
@@ -28,7 +30,7 @@ static func plaque_box(kit_piece: String = "chip_hud", rim_tint: Color = Color.W
 	box.texture = texture
 	for side: int in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
 		box.set_texture_margin(side, float(KIT_MARGIN.get(kit_piece, 37)))
-		box.set_content_margin(side, margin * 0.75)
+		box.set_content_margin(side, margin * 0.55)
 	box.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_STRETCH
 	box.axis_stretch_vertical = StyleBoxTexture.AXIS_STRETCH_MODE_STRETCH
 	return box
@@ -57,6 +59,7 @@ static func _texture(kit_piece: String, rim_tint: Color, lit: bool) -> Texture2D
 	var image := source.duplicate() as Image
 	if image.is_compressed(): image.decompress()
 	image.convert(Image.FORMAT_RGBA8)
+	image.resize(roundi(image.get_width() * SCALE), roundi(image.get_height() * SCALE), Image.INTERPOLATE_LANCZOS)
 	var gain := 255.0 / (255.0 - ALPHA_FLOOR)
 	var wood_dark := WOOD_DARK.lerp(rim_tint, 0.18) if rim_tint != Color.WHITE else WOOD_DARK
 	var wood_light := WOOD_LIGHT.lerp(rim_tint, 0.25) if rim_tint != Color.WHITE else WOOD_LIGHT
@@ -78,6 +81,14 @@ static func _texture(kit_piece: String, rim_tint: Color, lit: bool) -> Texture2D
 				out = wood_dark.lerp(wood_light, clampf((lum - 0.12) / 0.55, 0.0, 1.0))
 			out.a = a
 			image.set_pixel(x, y, out)
+	# Wood grain: faint horizontal streaks on the rim so it reads as carved timber, not a flat slab.
+	for y: int in image.get_height():
+		for x: int in image.get_width():
+			var c2 := image.get_pixel(x, y)
+			if c2.a < 0.5 or _is_kept(c2) or c2.is_equal_approx(FACE_DARK): continue
+			var streak := sin(float(y) * 1.9 + sin(float(x) * 0.21) * 2.3) * 0.5 + 0.5
+			if c2.get_luminance() > 0.3 or c2.b > 0.28:
+				image.set_pixel(x, y, c2.lerp(Color.BLACK if streak < 0.35 else Color.WHITE, 0.07 if streak < 0.35 else 0.05))
 	var made := ImageTexture.create_from_image(image)
 	_cache[key] = made
 	return made

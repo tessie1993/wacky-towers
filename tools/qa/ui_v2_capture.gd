@@ -7,17 +7,42 @@ extends SceneTree
 const UI := preload("res://src/ui/game_ui.gd")
 const Kit := preload("res://src/ui/common/wt_storybook.gd")
 const REF := "res://assets/art/reference/style/"
-const REFS := {"title": "15_title_and_hud.png", "modes": "05_select_mode_a.jpg", "hud_level1": "15_title_and_hud.png", "hud_full": "15_title_and_hud.png"}
+const REFS := {"title": "15_title_and_hud.png", "modes": "05_select_mode_a.jpg", "real_level1": "15_title_and_hud.png", "hud_level1": "15_title_and_hud.png", "hud_full": "15_title_and_hud.png"}
 const PIECE_A := [Vector3i(0, 0, 0), Vector3i(1, 0, 0), Vector3i(0, 1, 0)]
 const PIECE_B := [Vector3i(0, 0, 0), Vector3i(1, 0, 0), Vector3i(2, 0, 0), Vector3i(1, 1, 0)]
 const PIECE_C := [Vector3i(0, 0, 0), Vector3i(1, 0, 0)]
 var _stage: CanvasLayer
 var _tag := "after"
 
+var _real := false
+var _size := Vector2i(720, 1280)
+
 func _initialize() -> void:
 	for a: String in OS.get_cmdline_user_args():
 		if a.begins_with("--tag="): _tag = a.trim_prefix("--tag=")
-	call_deferred("_run")
+		if a == "--real": _real = true
+		if a.begins_with("--size="):
+			var parts := a.trim_prefix("--size=").split("x")
+			_size = Vector2i(int(parts[0]), int(parts[1]))
+	call_deferred("_run_real" if _real else "_run")
+
+## Real WtStage capture: boots main.tscn, starts meadow_01 (the designed level 1) and freezes the sim.
+## Run once per orientation: `... -- --real --size=1280x720 --tag=after`.
+func _run_real() -> void:
+	root.size = _size
+	var main: Node = load("res://src/app/main.tscn").instantiate()
+	root.add_child(main)
+	for i in 20: await process_frame
+	var store: Object = main.get("_store")
+	if store.call("active_profile") == null: store.call("create", "QA HUD")
+	main.set("_smoke", true)
+	main.call("_start_level", &"meadow_01")
+	main.set_physics_process(false)
+	for i in 40: await process_frame
+	var output := ProjectSettings.globalize_path("res://production/qa/evidence/ui-v2")
+	await _capture(output, "real_level1", _size.x)
+	print("UI_V2_REAL_DONE ", _tag, " ", _size)
+	quit(0)
 
 func _run() -> void:
 	var ui := UI.new()

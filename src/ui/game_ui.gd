@@ -1264,15 +1264,14 @@ func _build_hud() -> void:
 	var row := _hbox(col, 10)
 	row.alignment = BoxContainer.ALIGNMENT_BEGIN
 	var pause := _play_button("Ⅱ", &"pause", {}, false)
-	pause.tooltip_text = "Pause"
-	pause.set("accessibility_name", "Pause")
-	pause.custom_minimum_size = Vector2(64, 64)
+	pause.tooltip_text = _t("HUD_PAUSE")
+	pause.set("accessibility_name", _t("HUD_PAUSE"))
+	pause.custom_minimum_size = Vector2(72, 72)
 	pause.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	pause.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	# Round purple gem with a gold rim (ref 15 pause). Focusable so pads and keys can reach it.
 	_gem_button(pause, true)
 	pause.add_theme_font_size_override("font_size", 26)
-	pause.focus_mode = Control.FOCUS_ALL
 	pause.visible = _hud_has("pause")
 	row.add_child(pause)
 	_hud_labels.pause = pause
@@ -1280,13 +1279,13 @@ func _build_hud() -> void:
 	# purple-wood plaque with vines.
 	var ribbon := PanelContainer.new()
 	ribbon.name = "GoalChip"
-	ribbon.add_theme_stylebox_override("panel", _pad(_chip_style(biome), 22, 10, 22, 14))
+	ribbon.add_theme_stylebox_override("panel", _pad(_chip_style(biome), 26, 12, 26, 16))
 	ribbon.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	ribbon.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	ribbon.visible = _hud_has("goal")
 	var goal := _vbox(ribbon, 0)
-	_hud_labels.level = _label("Meadow", 14, MUTED, true)
-	_hud_labels.goal = _label("0 / 1", 20, INK, true)
+	_hud_labels.level = _label("Meadow", 20, MUTED, true)
+	_hud_labels.goal = _label("0 / 1", 28, INK, true)
 	_hud_labels.goal.add_theme_font_override("font", Kit.font(true))
 	for l: Label in [_hud_labels.level, _hud_labels.goal]:
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1307,20 +1306,32 @@ func _build_hud() -> void:
 	_hud_labels.time.add_theme_font_override("font", Kit.font(true))
 	clock.add_child(_hud_labels.time)
 	_hud_labels.clock = clock
+	# Placeholder slot beside the goal plaque for the themed in-world timer (art director's design
+	# pending): the plain lozenge sits in it until then. Hidden unless the level lists `clock`.
+	var clock_slot := Control.new()
+	clock_slot.name = "ClockSlot"
+	clock_slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	clock_slot.custom_minimum_size = Vector2(110, 64)
+	clock_slot.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	clock_slot.visible = _hud_has("clock")
+	clock_slot.add_child(clock)
+	clock.set_anchors_and_offsets_preset(Control.PRESET_CENTER_LEFT)
+	row.add_child(clock_slot)
+	_hud_labels.clock_slot = clock_slot
 	# NEXT plaque: the upcoming piece drawn as isometric toy cubes.
 	var next_panel := PanelContainer.new()
 	next_panel.name = "NextChip"
 	next_panel.add_theme_stylebox_override("panel", _pad(_chip_style(biome), 16, 8, 16, 12))
 	next_panel.size_flags_horizontal = Control.SIZE_SHRINK_END
 	next_panel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	next_panel.custom_minimum_size.x = 112
+	next_panel.custom_minimum_size = Vector2(150, 130)
 	next_panel.visible = _hud_has("next")
 	var next := _vbox(next_panel, 0)
-	var next_caption := _label("NEXT", 14, Kit.GOLD, true)
+	var next_caption := _label(_t("HUD_NEXT"), 22, Kit.GOLD, true)
 	next_caption.add_theme_font_override("font", Kit.font(true))
 	next.add_child(next_caption)
 	_hud_labels.next_preview = WtPiecePreview.new()
-	_hud_labels.next_preview.custom_minimum_size = Vector2(72, 56)
+	_hud_labels.next_preview.custom_minimum_size = Vector2(96, 72)
 	_hud_labels.next_preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	next.add_child(_hud_labels.next_preview)
 	_hud_labels.next = _label("—", 12, MUTED, true)
@@ -1334,14 +1345,14 @@ func _build_hud() -> void:
 	var score_panel := PanelContainer.new()
 	score_panel.name = "ScoreChip"
 	score_panel.add_theme_stylebox_override("panel", _pad(_chip_style(biome), 18, 8, 18, 12))
-	score_panel.custom_minimum_size.x = 132
+	score_panel.custom_minimum_size = Vector2(170, 130)
 	score_panel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	score_panel.visible = _hud_has("score")
 	var score_col := _vbox(score_panel, 0)
-	var score_caption := _label("SCORE", 13, Kit.GOLD, true)
+	var score_caption := _label(_t("HUD_SCORE"), 22, Kit.GOLD, true)
 	score_caption.add_theme_font_override("font", Kit.font(true))
 	score_col.add_child(score_caption)
-	_hud_labels.score = _label("0", 24, INK, true)
+	_hud_labels.score = _label("0", 32, INK, true)
 	_hud_labels.score.autowrap_mode = TextServer.AUTOWRAP_OFF
 	_hud_labels.score.add_theme_font_override("font", Kit.font(true))
 	score_col.add_child(_hud_labels.score)
@@ -1349,7 +1360,7 @@ func _build_hud() -> void:
 	star_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	_hud_labels.stars = []
 	for i: int in 3:
-		var star := _label("★", 20, Kit.STAR_ON, true)
+		var star := _label("★", 24, Kit.STAR_ON, true)
 		star.autowrap_mode = TextServer.AUTOWRAP_OFF
 		star.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		star.add_theme_color_override("font_outline_color", Kit.GOLD_DEEP)
@@ -1361,13 +1372,15 @@ func _build_hud() -> void:
 	meter.name = "Meter"
 	meter.reduced_motion = _reduced_motion()
 	meter.color = Kit.biome_rim(biome)[1].lerp(Kit.LEAF_LIGHT, 0.4)
-	meter.custom_minimum_size = Vector2(200 if _portrait else 240, 48)
+	meter.custom_minimum_size = Vector2(300 if _portrait else 280, 68)
 	meter.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	var meter_def: Dictionary = (_hud_data.get("hud", {}) as Dictionary).get("meter", {}) if _hud_data.get("hud", {}) is Dictionary else {}
 	# A meter needs a level-defined label; levels with no `hud.meter` never show one.
 	meter.visible = _hud_has("meter") and not meter_def.is_empty()
 	var meter_key := str(meter_def.get("label_key", ""))
 	var meter_label := str(meter_def.get("label", "Progress"))
+	meter.pips = int(meter_def.get("pips", 0))
+	meter.hearth_icon = str(meter_def.get("icon", "")) == "hearth"
 	meter.caption = meter_label if meter_key.is_empty() or tr(meter_key) == meter_key else tr(meter_key)
 	_hud_labels.meter = meter
 	var spacer := Control.new()
@@ -1379,14 +1392,14 @@ func _build_hud() -> void:
 		info_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		info_row.add_child(meter)
 		info_row.add_child(score_panel)
-		info_row.add_child(clock)
+		ribbon.get_parent().move_child(clock_slot, ribbon.get_index() + 1)
 		_hud_labels.info_row = info_row
 	else:
 		ribbon.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 		ribbon.custom_minimum_size.x = 300
+		row.move_child(clock_slot, ribbon.get_index() + 1)
 		row.add_child(spacer)
 		row.add_child(meter)
-		row.add_child(clock)
 		row.add_child(score_panel)
 		row.move_child(next_panel, -1)
 	_hud_labels.rules = _label("", 16, MUTED, true)
@@ -1418,6 +1431,8 @@ func _build_hud() -> void:
 	# Landscape / classic: floating gem clusters at the screen edges, no backing panel.
 	var left := PanelContainer.new()
 	left.name = "MoveControls"
+	# Level 1 is touch-minimal: movement is the board gesture, so no d-pad cluster.
+	left.visible = _hud_has("view") or _hud_has("hold") or _hud_has("tools")
 	left.mouse_filter = Control.MOUSE_FILTER_PASS
 	left.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 	_hud.add_child(left)
@@ -1431,7 +1446,7 @@ func _build_hud() -> void:
 	left.add_child(lpad)
 	var lcol := _vbox(lpad, 8)
 	lcol.alignment = BoxContainer.ALIGNMENT_END
-	var move_caption := _label("MOVE", 13, Kit.GOLD, true)
+	var move_caption := _label(_t("HUD_MOVE"), 20, Kit.GOLD, true)
 	move_caption.add_theme_font_override("font", Kit.font(true))
 	lcol.add_child(move_caption)
 	var pad := GridContainer.new()
@@ -1461,7 +1476,6 @@ func _build_hud() -> void:
 	var hold_row := _hbox(lcol, 8)
 	var hold_button := _play_button("Hold", &"hold", {}, false)
 	hold_button.visible = _hud_has("hold")
-	hold_button.focus_mode = Control.FOCUS_ALL
 	hold_row.add_child(hold_button)
 	_hud_labels.hold_button = hold_button
 	_hud_labels.tools = _play_button("Tools", &"open_tools", {}, false)
@@ -1492,26 +1506,26 @@ func _build_hud() -> void:
 	rcol.alignment = BoxContainer.ALIGNMENT_END
 	var view := _hbox(rcol, 8)
 	view.visible = _hud_has("view")
-	view.add_child(_play_button("View ‹", &"view", {"direction": -1}, true))
-	view.add_child(_play_button("View ›", &"view", {"direction": 1}, true))
+	view.add_child(_play_button("◂ " + _t("HUD_LOOK"), &"view", {"direction": -1}, true))
+	view.add_child(_play_button(_t("HUD_LOOK") + " ▸", &"view", {"direction": 1}, true))
 	for axis in ["spin", "tilt", "roll"]:
 		if axis == "tilt" and (not bool(_hud_data.get("can_tilt", true)) or not _hud_has("flip")): continue
 		if axis == "roll" and (not bool(_hud_data.get("can_roll", true)) or not _hud_has("flip")): continue
 		var r := _hbox(rcol, 8)
-		var title: String = {"spin": "Turn", "tilt": "Flip", "roll": "Roll"}[axis]
+		var title: String = {"spin": _t("HUD_TURN"), "tilt": "Flip", "roll": "Roll"}[axis]
 		r.add_child(_play_button(title + " ‹", &"rotate", {"axis": StringName(axis), "direction": -1}, true))
 		r.add_child(_play_button(title + " ›", &"rotate", {"axis": StringName(axis), "direction": 1}, true))
 	var drop_row := _hbox(rcol, 8)
 	var soft := _fall_button()
 	soft.visible = _hud_has("fall")
 	drop_row.add_child(soft)
-	var drop := _play_button("DROP ↓", &"drop", {}, false)
+	var drop := _play_button(_t("HUD_DROP") + " ↓", &"drop", {}, false)
 	drop.custom_minimum_size.y = maxf(64.0, 64.0 * _control_factor)
 	_kit_button(drop, "btn_gold")
 	drop.add_theme_font_override("font", Kit.font(true))
 	drop_row.add_child(drop)
 	var help := _label("WASD move  ·  Q/E turn  ·  Space drop  ·  Z/C view", 13, MUTED, true)
-	help.visible = not _portrait
+	help.visible = not _portrait and _hud_has("view")
 	_hud.add_child(help)
 	help.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	help.offset_bottom = -20
@@ -1563,6 +1577,20 @@ func _slot_style(lit: bool = false) -> StyleBox:
 	var biome := str(_hud_data.get("biome", "meadow"))
 	var carved: StyleBoxTexture = WtCarved.plaque_box("tray_slot", Kit.biome_rim(biome)[0], lit)
 	return _pad(carved, 12, 10, 12, 12) if carved != null else _pad(Kit.slot_flat(biome, lit), 12, 8, 12, 10)
+
+## HUD strings by key. `_t()` asks the translation server first (key = HUD_*), then falls back to
+## this English default, so a catalog can be dropped in later without touching the layout code.
+const HUD_TEXT := {
+	"HUD_NEXT": "NEXT", "HUD_SCORE": "SCORE", "HUD_HOLD": "HOLD", "HUD_THEN": "THEN", "HUD_PAUSE": "Pause",
+	"HUD_TURN": "Turn", "HUD_DROP": "DROP", "HUD_FAST_FALL": "Fast fall", "HUD_LOOK_LEFT": "Look left", "HUD_LOOK_RIGHT": "Look right",
+	"HUD_LOOK": "Look", "HUD_MOVE": "MOVE", "HUD_TURN_PIECE": "Turn piece", "HUD_PROGRESS": "Progress",
+	"HUD_FAST_FALL_HINT": "Hold to fall faster", "HUD_HOLD_PIECE": "Hold piece",
+}
+
+## Localised HUD string for `key` (see HUD_TEXT); unknown keys return the key.
+func _t(key: String) -> String:
+	var translated := tr(key)
+	return str(HUD_TEXT.get(key, key)) if translated == key else translated
 
 ## Progressive-disclosure HUD elements a level's `hud.show` list may name. A level with no `hud`
 ## shows all of them. Move, Turn and Drop are core controls and are never hidden.
@@ -1617,12 +1645,14 @@ func _build_dock() -> void:
 	bar.add_theme_stylebox_override("panel", _pad(Kit.glass_box(0.78, 30), 8, 6, 8, 6))
 	dock.add_child(bar)
 	var bar_col := _vbox(bar, 6)
-	var rows: Array[HBoxContainer] = [_hbox(bar_col, 5)]
-	if _text_factor > 1.15: rows.append(_hbox(bar_col, 5))
+	var rows: Array[HBoxContainer] = [_hbox(bar_col, 6)]
+	if _gem_rows() > 1: rows.append(_hbox(bar_col, 6))
 	var gems: Array[Button] = []
 	var hidden: Array[Button] = []
-	var view_left := _play_button("⟲ View", &"view", {"direction": -1}, false)
-	var view_right := _play_button("View ⟳", &"view", {"direction": 1}, false)
+	var view_left := _play_button("◂ " + _t("HUD_LOOK"), &"view", {"direction": -1}, false)
+	var view_right := _play_button(_t("HUD_LOOK") + " ▸", &"view", {"direction": 1}, false)
+	view_left.tooltip_text = _t("HUD_LOOK_LEFT")
+	view_right.tooltip_text = _t("HUD_LOOK_RIGHT")
 	for b: Button in [view_left, view_right]: (gems if _hud_has("view") else hidden).append(b)
 	for axis: String in ["tilt", "roll"]:
 		if not bool(_hud_data.get("can_" + axis, false)) or not _hud_has("flip"): continue
@@ -1643,15 +1673,15 @@ func _build_dock() -> void:
 		bar.add_child(b)
 	for i: int in gems.size():
 		var b: Button = gems[i]
-		b.custom_minimum_size = Vector2(0, 52)
-		b.add_theme_font_size_override("font_size", roundi(13 * _text_factor))
+		b.custom_minimum_size = Vector2(0, 56)
+		b.add_theme_font_size_override("font_size", roundi(20 * _text_factor))
 		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_gem_button(b, false)
 		_tighten(b, 3.0)
 		rows[mini(i * rows.size() / gems.size(), rows.size() - 1)].add_child(b)
 	var tray_row := _hbox(dock, 8)
 	tray_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	var turn := _play_button("⟳\nTurn", &"rotate", {"axis": &"spin", "direction": 1}, true)
+	var turn := _play_button("⟳\n" + _t("HUD_TURN"), &"rotate", {"axis": &"spin", "direction": 1}, true)
 	turn.custom_minimum_size = Vector2(84, 84) * _control_factor
 	turn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	turn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -1676,9 +1706,9 @@ func _build_dock() -> void:
 	for i: int in 3:
 		var shown := _hud_has("hold") if i == 0 else _hud_has("queue")
 		var slot := Button.new()
-		slot.focus_mode = Control.FOCUS_ALL if i == 0 else Control.FOCUS_NONE
+		slot.focus_mode = Control.FOCUS_NONE
 		# The hold slot is a compact tap target (it is empty most of the time); the queue shares the rest.
-		slot.custom_minimum_size = Vector2(88 if i == 0 else 0, 84) * _control_factor
+		slot.custom_minimum_size = Vector2(96 if i == 0 else 0, 92) * _control_factor
 		slot.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN if i == 0 else Control.SIZE_EXPAND_FILL
 		slot.visible = shown
 		var face := _slot_style(i == 0)
@@ -1689,25 +1719,25 @@ func _build_dock() -> void:
 		preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		slot.add_child(preview)
 		preview.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		preview.offset_top = 28
+		preview.offset_top = 32
 		preview.offset_bottom = -10
 		preview.offset_left = 10
 		preview.offset_right = -10
-		var caption := _label("HOLD" if i == 0 else "THEN", 12, Kit.GOLD, true)
+		var caption := _label(_t("HUD_HOLD") if i == 0 else _t("HUD_THEN"), 20, Kit.GOLD, true)
 		caption.add_theme_font_override("font", Kit.font(true))
 		slot.add_child(caption)
 		caption.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
 		caption.offset_top = 8
-		caption.offset_bottom = 28
+		caption.offset_bottom = 32
 		if i == 0:
 			slot.tooltip_text = "Hold"
-			slot.set("accessibility_name", "Hold piece")
+			slot.set("accessibility_name", _t("HUD_HOLD_PIECE"))
 			slot.pressed.connect(func() -> void: intent.emit(&"hold", {}))
 		else:
 			slot.disabled = true
 		slots.add_child(slot)
 		_hud_labels.tray.append(preview)
-	var drop := _play_button("DROP\n↓", &"drop", {}, false)
+	var drop := _play_button(_t("HUD_DROP") + "\n↓", &"drop", {}, false)
 	drop.custom_minimum_size = Vector2(84, 84) * _control_factor
 	drop.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	drop.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -1727,19 +1757,28 @@ func _focus_box() -> StyleBox:
 
 ## "Fast fall": hold to drop faster, release to resume (replaces the unclear "Soft").
 func _fall_button() -> Button:
-	var soft := _play_button("▼ Fast fall", &"noop", {}, false)
-	soft.tooltip_text = "Hold to fall faster"
-	soft.set("accessibility_name", "Fast fall")
+	var soft := _play_button("▼ " + _t("HUD_FAST_FALL"), &"noop", {}, false)
+	soft.tooltip_text = _t("HUD_FAST_FALL_HINT")
+	soft.set("accessibility_name", _t("HUD_FAST_FALL"))
 	soft.pressed.disconnect(soft.pressed.get_connections()[0].callable)
 	soft.button_down.connect(func() -> void: intent.emit(&"soft", {"active": true}))
 	soft.button_up.connect(func() -> void: intent.emit(&"soft", {"active": false}))
 	return soft
 
+## Gem-bar rows: one for a handful of buttons, two (56 px targets, no cramped labels) when many.
+func _gem_rows() -> int:
+	var count := 0
+	if _hud_has("view"): count += 2
+	if _hud_has("flip"): count += (2 if bool(_hud_data.get("can_tilt", false)) else 0) + (2 if bool(_hud_data.get("can_roll", false)) else 0)
+	for id: String in ["fall", "tools", "skill", "potion"]:
+		if _hud_has(id): count += 1
+	return 2 if count > 3 or _text_factor > 1.15 else 1
+
 func _dock_height() -> float:
 	var gem_bar := _hud_has("view") or _hud_has("fall") or _hud_has("tools") or _hud_has("skill") or _hud_has("potion") or _hud_has("flip")
-	var bar_rows := (2.0 if _text_factor > 1.15 else 1.0) if gem_bar else 0.0
+	var bar_rows := float(_gem_rows()) if gem_bar else 0.0
 	var tray_h := (92.0 if (_hud_has("hold") or _hud_has("queue")) else 84.0) + 34.0
-	return bar_rows * 58.0 + (12.0 if gem_bar else 0.0) + 8.0 + tray_h * _control_factor + 24.0
+	return bar_rows * 62.0 + (12.0 if gem_bar else 0.0) + 8.0 + tray_h * _control_factor + 24.0
 
 ## Keeps the gesture pad over the board area only, below every HUD control.
 func _place_gesture_pad() -> void:
@@ -1820,7 +1859,7 @@ func _play_button(text: String, id: StringName, args: Dictionary, repeats: bool)
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	# In-level controls are purple gem lozenges with gold rims (ref 15 pause gem).
 	_gem_button(b, false)
-	b.add_theme_font_size_override("font_size", roundi(16 * _text_factor))
+	b.add_theme_font_size_override("font_size", roundi(20 * _text_factor))
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 	b.focus_mode = Control.FOCUS_NONE
 	if repeats:
@@ -1881,6 +1920,7 @@ func board_area() -> Rect2:
 		return Rect2(.02, top, .96, maxf(.15, bottom - top))
 	var cell := maxf(56.0, 56.0 * _control_factor)
 	var left := (maxf(maxf(272.0, 220.0 * _text_factor), cell * 3.0 + 40.0) + 28.0) / viewport_size.x
+	if not (_hud_has("view") or _hud_has("hold") or _hud_has("tools")): left = 0.06
 	var right := (maxf(maxf(248.0, 200.0 * _text_factor), cell * 2.0 + 44.0) + 28.0) / viewport_size.x
 	if bool(_prefs.get("left_hand", false)):
 		var swap := left
@@ -1978,7 +2018,9 @@ func update_hud(data: Dictionary) -> void:
 	if _hud_labels.has("meter"):
 		var meter_def: Variant = (_hud_data.get("hud", {}) as Dictionary).get("meter", {}) if _hud_data.get("hud", {}) is Dictionary else {}
 		var target_value := maxf(1.0, float(_hud_data.get("target", 1)))
-		(_hud_labels.meter as WtMeter).fill = float(_hud_data.get("progress", 0)) / target_value if str((meter_def as Dictionary).get("source", "goal_progress")) == "goal_progress" else 0.0
+		var from_goal := str((meter_def as Dictionary).get("source", "goal_progress")) == "goal_progress"
+		(_hud_labels.meter as WtMeter).fill = float(_hud_data.get("progress", 0)) / target_value if from_goal else 0.0
+		(_hud_labels.meter as WtMeter).value_text = "%d/%d" % [int(_hud_data.get("progress", 0)), int(target_value)] if from_goal else ""
 	_refresh_gem_bar()
 	var twist_names := PackedStringArray()
 	for twist in _hud_data.get("twists", []): twist_names.append(str(twist).replace("_", " ").capitalize())
@@ -1997,6 +2039,7 @@ func update_hud(data: Dictionary) -> void:
 
 ## Hides the gem bar (and the landscape rows) when none of their buttons has anything to show.
 func _refresh_gem_bar() -> void:
+	_apply_hud_focus.call_deferred()
 	var bar: Control = _hud_labels.get("gem_bar")
 	if is_instance_valid(bar):
 		var any := false
@@ -2736,7 +2779,46 @@ func _on_resize() -> void:
 		intent.emit(&"orientation_changed", {"portrait": _portrait})
 	elif current_screen != "profile_form": _restore_screen(current_screen, _snapshot)
 
+## True while a gamepad was the last device used. Only then do the play buttons take focus, so
+## arrow keys keep moving pieces for keyboard players (they use the action keys).
+var _pad_active: bool = false
+
+## Tracks the last-used input device; switches HUD focus on and off when it changes.
+func _track_device(event: InputEvent) -> void:
+	var pad := _pad_active
+	if event is InputEventJoypadButton and event.pressed: pad = true
+	elif event is InputEventJoypadMotion and absf(event.axis_value) > 0.6: pad = true
+	elif (event is InputEventKey and event.pressed) or (event is InputEventMouseButton and event.pressed) or (event is InputEventScreenTouch and event.pressed): pad = false
+	if pad == _pad_active: return
+	_pad_active = pad
+	_apply_hud_focus()
+
+## Focus map for the HUD play buttons: FOCUS_ALL with explicit left/right/up/down neighbours in
+## reading order while a pad is active, FOCUS_NONE otherwise. Grabs focus on the first button when
+## the pad takes over.
+func _apply_hud_focus() -> void:
+	if not is_instance_valid(_hud) or current_screen != "hud": return
+	var chain: Array[Button] = []
+	for node: Node in _hud.find_children("*", "Button", true, false):
+		var b := node as Button
+		if b.is_visible_in_tree() and not b.disabled: chain.append(b)
+	chain.sort_custom(func(a: Button, c: Button) -> bool:
+		var pa := a.get_global_rect().position
+		var pc := c.get_global_rect().position
+		return pa.y < pc.y - 8.0 or (absf(pa.y - pc.y) <= 8.0 and pa.x < pc.x))
+	for i: int in chain.size():
+		var b := chain[i]
+		b.focus_mode = Control.FOCUS_ALL if _pad_active else Control.FOCUS_NONE
+		var next := chain[(i + 1) % chain.size()].get_path()
+		var prev := chain[(i - 1 + chain.size()) % chain.size()].get_path()
+		for side: int in [SIDE_RIGHT, SIDE_BOTTOM]: b.set_focus_neighbor(side, next)
+		for side: int in [SIDE_LEFT, SIDE_TOP]: b.set_focus_neighbor(side, prev)
+		b.focus_next = next
+		b.focus_previous = prev
+	if _pad_active and not chain.is_empty() and get_viewport().gui_get_focus_owner() == null: chain[0].grab_focus()
+
 func _input(event: InputEvent) -> void:
+	_track_device(event)
 	if _remap_action.is_empty(): return
 	if event is InputEventKey and event.pressed and not event.echo:
 		var action := _remap_action

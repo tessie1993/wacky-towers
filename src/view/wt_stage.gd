@@ -537,7 +537,7 @@ func _build_light() -> void:
 ## Shared painted post-process quad on the camera + per-biome glow (biome_looks.json `post`).
 func _build_post() -> void:
 	_post = WtPostProcess.new()
-	_post.attach(_camera, _environment, _biome, _preference_flag("post", true))
+	_post.attach(_camera, _environment, _biome, _preference_flag("post", true), {"low": 0, "medium": 1}.get(str(_prefs.get("quality", "high")), 2))
 	_post.set_focus(CAMERA_DISTANCE)
 
 

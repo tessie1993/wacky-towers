@@ -39,6 +39,11 @@ uniform float shadow_lift : hint_range(0.0, 0.2) = 0.02;
 uniform float vignette_strength : hint_range(0.0, 1.0) = 0.25;
 uniform float vignette_radius : hint_range(0.3, 1.5) = 0.85;
 uniform vec3 vignette_color : source_color = vec3(0.2, 0.1, 0.25);
+/** Split-tone: cool violet pushed into the shadows, warm into the highlights (0 = off). */
+uniform vec3 shadow_tone : source_color = vec3(0.55, 0.5, 0.9);
+uniform vec3 highlight_tone : source_color = vec3(1.0, 0.92, 0.78);
+uniform float tone_amount : hint_range(0.0, 1.0) = 0.25;
+uniform float saturation : hint_range(0.0, 2.0) = 1.0;
 group_uniforms;
 
 // Linear view-space distance from the depth buffer. Works for the orthographic stage camera and
@@ -105,6 +110,12 @@ void fragment() {
 
 	// Warm grade: lift shadows, warm mids.
 	col = col * warm_tint + vec3(shadow_lift) * (1.0 - clamp(col, 0.0, 1.0));
+
+	// Split-tone grade: shadows lean cool violet, highlights lean warm (art review r2 #3).
+	float luma = dot(col, vec3(0.299, 0.587, 0.114));
+	vec3 tone = mix(shadow_tone * 1.6, highlight_tone, smoothstep(0.12, 0.7, luma));
+	col = mix(col, col * tone, tone_amount);
+	col = mix(vec3(luma), col, saturation);
 
 	// Vignette with a plum tint.
 	vec2 vc = (uv - 0.5) * vec2(1.0, 1.15);

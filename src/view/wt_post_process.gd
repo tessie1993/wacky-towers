@@ -15,6 +15,7 @@ const DEFAULTS := {
 	"haze_color": "#CCE0FA", "dof_strength": 2.0,
 	"warm_tint": "#FFF5E0", "shadow_lift": 0.02,
 	"vignette_strength": 0.25, "vignette_radius": 0.85, "vignette_color": "#3A2050",
+	"shadow_tone": "#8C80E6", "highlight_tone": "#FFEBC7", "tone_amount": 0.3, "saturation": 1.06,
 	"glow_intensity": 0.55, "glow_bloom": 0.04, "glow_hdr_threshold": 0.95,
 }
 
@@ -31,8 +32,14 @@ static func values_for(biome: StringName) -> Dictionary:
 
 
 ## Adds the full-screen quad under `camera` and tunes `env` glow. `enabled=false` only tunes glow.
-func attach(camera: Camera3D, env: Environment, biome: StringName, enabled: bool = true) -> void:
+## `quality` 0 = low (no depth-of-field, softer AO and bloom), 1 = medium, 2 = high.
+## The shader has no time-varying term, so reduced motion needs no extra handling.
+func attach(camera: Camera3D, env: Environment, biome: StringName, enabled: bool = true, quality: int = 2) -> void:
 	_values = values_for(biome)
+	if quality < 2:
+		_values["dof_strength"] = 0.0 if quality <= 0 else float(_values.dof_strength) * 0.5
+		_values["ao_strength"] = float(_values.ao_strength) * (0.6 if quality <= 0 else 0.85)
+		_values["bloom_strength"] = float(_values.bloom_strength) * (0.6 if quality <= 0 else 0.85)
 	if env != null:
 		env.glow_intensity = float(_values.glow_intensity)
 		env.glow_bloom = float(_values.glow_bloom)
@@ -41,7 +48,10 @@ func attach(camera: Camera3D, env: Environment, biome: StringName, enabled: bool
 		return
 	_material = ShaderMaterial.new()
 	_material.shader = load(SHADER) as Shader
-	_material.render_priority = 127
+	# Lowest priority: on Compatibility a screen-texture material sits in the transparent pass, and at 127 it was
+	# drawn LAST and painted over alpha-blended particles (sparkles, danger overlay). Drawn first, it grades the
+	# opaque scene and every blended transparent draws on top of it.
+	_material.render_priority = RenderingServer.MATERIAL_RENDER_PRIORITY_MIN
 	for key: String in _values:
 		if key.begins_with("glow_"): continue
 		_material.set_shader_parameter(StringName(key), _convert(_values[key]))

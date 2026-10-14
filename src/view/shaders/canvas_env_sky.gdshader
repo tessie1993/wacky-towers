@@ -207,7 +207,7 @@ void fragment() {
 	// Near puffy cloud bank in front of the cliffs: scalloped top, lit crown, shaded belly.
 	if (cloud_bank > 0.0) {
 		float bl = 0.54 - 0.04 * fbm(vec2(p.x * 2.0 + 4.0, 1.0)) - 0.03 * abs(sin(p.x * 9.0 + fbm(vec2(p.x * 2.5, 9.0)) * 4.0));
-		float bank = smoothstep(bl, bl + 0.006, uv.y) * (1.0 - smoothstep(0.66, 0.72, uv.y));
+		float bank = smoothstep(bl, bl + 0.006, uv.y) ;  // runs to the bottom edge: the old fade-out at y 0.66-0.72 left a hard seam above the cloud sea
 		vec3 bc = mix(cloud.rgb, cloud_shade.rgb, clamp((uv.y - bl) * 9.0, 0.0, 1.0) * 0.7);
 		col = mix(col, bc, bank * cloud_bank);
 	}
