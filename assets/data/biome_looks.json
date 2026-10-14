@@ -14,7 +14,8 @@
     "neon": 9,
     "celestial": 10,
     "carnival": 11,
-    "dune": 12
+    "dune": 12,
+    "pirate": 13
   },
   "biomes": {
     "meadow": {
@@ -33,18 +34,21 @@
         "topper_rate": 0.2,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
-        "piece_sat": 1.15,
-        "piece_value": 1.12,
-        "cap_hues": [
-          [
-            0.2,
-            0.46
-          ]
-        ],
+        "piece_sat": 1.0,
+        "piece_value": 1.0,
         "stone_value": 1.22,
         "stone_sat": 0.78,
-        "cap_body_mix": 0.9,
-        "stone_crack": 0.4
+        "cap_body_mix": 0.3,
+        "stone_crack": 0.4,
+        "palette": [
+          "#C8643C",
+          "#D9A441",
+          "#5C7FB5",
+          "#8FAE7A",
+          "#8A4A78",
+          "#3E9E94"
+        ],
+        "glyph_strength": 0.8
       },
       "sky": [
         "#4F94E6",
@@ -279,7 +283,7 @@
         "cap_drip": 0.13,
         "cap_lip": 0.03,
         "body_color": "#FF6E98",
-        "body_mix": 0.08,
+        "body_mix": 0.0,
         "gloss": 0.85,
         "rim": 0.3,
         "translucency": 0.35,
@@ -288,8 +292,18 @@
         "topper_rate": 0.15,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
-        "piece_sat": 1.25,
-        "piece_value": 1.08
+        "piece_sat": 1.0,
+        "piece_value": 1.0,
+        "palette": [
+          "#FF5F8F",
+          "#FF9A3C",
+          "#5FE0B0",
+          "#FFE45A",
+          "#B58CFF",
+          "#5FC8FF"
+        ],
+        "cap_tint": 0.18,
+        "glyph_strength": 0.8
       },
       "sky": [
         "#E79AD0",
@@ -435,25 +449,31 @@
       "block": {
         "style": "ice",
         "cap_color": "#F6FBFF",
-        "cap_depth": 0.0,
-        "cap_drip": 0.04,
+        "cap_depth": 0.12,
+        "cap_drip": 0.09,
         "cap_lip": 0.025,
         "body_color": "#7DB6EA",
-        "body_mix": 0.06,
+        "body_mix": 0.0,
         "gloss": 0.85,
         "rim": 0.4,
         "translucency": 0.6,
-        "topper": "",
-        "topper_rate": 0.0,
+        "topper": "snowflake",
+        "topper_rate": 0.15,
         "brightness": 1.0,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
-        "piece_hue_range": [
-          0.44,
-          0.95
+        "piece_sat": 1.0,
+        "piece_value": 1.0,
+        "palette": [
+          "#8EC8F4",
+          "#2FC4BC",
+          "#B6A2F2",
+          "#EAF4FF",
+          "#4A78D6",
+          "#F0A8CC"
         ],
-        "piece_sat": 1.3,
-        "piece_value": 1.3
+        "cap_tint": 0.1,
+        "glyph_strength": 0.8
       },
       "sky": [
         "#8A96E4",
@@ -659,16 +679,25 @@
         "style": "underwater",
         "cap_depth": 0.0,
         "body_color": "#2C33A0",
-        "body_mix": 0.55,
+        "body_mix": 0.1,
         "accent_color": "#7FD8FF",
         "gloss": 0.8,
         "rim": 0.4,
         "translucency": 0.25,
         "topper": "coral",
         "topper_rate": 0.15,
-        "brightness": 0.9,
+        "brightness": 1.0,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#3C6EF0",
+          "#8A4FE0",
+          "#19B8B0",
+          "#5BD6A0",
+          "#F0709A",
+          "#FFB84A"
+        ],
+        "glyph_strength": 0.8
       },
       "sky": [
         "#1E4C86",
@@ -809,16 +838,33 @@
         "style": "lava",
         "cap_depth": 0.0,
         "body_color": "#4A3E3E",
-        "body_mix": 0.8,
+        "body_mix": 0.3,
         "glow_color": "#FF5A14",
         "glow": 1.3,
         "gloss": 0.2,
         "rim": 0.08,
         "topper": "spike",
         "topper_rate": 0.12,
-        "brightness": 0.9,
+        "brightness": 1.0,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#5E4C4A",
+          "#8A4A38",
+          "#4C5E7E",
+          "#6A4468",
+          "#5E6A44",
+          "#7A6A58"
+        ],
+        "palette_accent": [
+          "#FF5A14",
+          "#FFC22A",
+          "#F02A2A",
+          "#FF3E9A",
+          "#FFD84A",
+          "#FF8A2A"
+        ],
+        "glyph_strength": 0.8
       },
       "sky": [
         "#2A1E3A",
@@ -970,14 +1016,23 @@
         "cap_depth": 0.0,
         "cap_drip": 0.12,
         "body_color": "#7A5232",
-        "body_mix": 0.7,
+        "body_mix": 0.35,
         "gloss": 0.12,
         "rim": 0.08,
-        "brightness": 0.95,
+        "brightness": 1.0,
         "topper": "leaf",
         "topper_rate": 0.15,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#8A5A34",
+          "#D8C8A8",
+          "#A8442E",
+          "#4A3A2C",
+          "#5E8A58",
+          "#7A5A8A"
+        ],
+        "glyph_strength": 0.8
       },
       "sky": [
         "#9CC8A8",
@@ -1126,16 +1181,33 @@
         "style": "cave",
         "cap_depth": 0.0,
         "body_color": "#686277",
-        "body_mix": 0.6,
+        "body_mix": 0.25,
         "accent_color": "#B07CF0",
         "glow": 0.6,
         "gloss": 0.3,
         "rim": 0.12,
         "topper": "crystal",
         "topper_rate": 0.15,
-        "brightness": 0.85,
+        "brightness": 1.0,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#7A7490",
+          "#A88A6E",
+          "#4E8C96",
+          "#B07C94",
+          "#6E8A64",
+          "#5A5A78"
+        ],
+        "palette_accent": [
+          "#B07CF0",
+          "#FFB84A",
+          "#5FE8F0",
+          "#FF8AC8",
+          "#7CF08A",
+          "#E8E8FF"
+        ],
+        "glyph_strength": 0.8
       },
       "sky": [
         "#2E2943",
@@ -1271,15 +1343,32 @@
         "style": "clockwork",
         "cap_depth": 0.0,
         "body_color": "#2E4170",
-        "body_mix": 0.55,
+        "body_mix": 0.2,
         "accent_color": "#A8792C",
         "gloss": 0.55,
         "rim": 0.15,
         "topper": "gear",
         "topper_rate": 0.12,
-        "brightness": 0.9,
+        "brightness": 1.0,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#2E4170",
+          "#1F7A7A",
+          "#7A2A4A",
+          "#2E6A4A",
+          "#5A3A8A",
+          "#6A7280"
+        ],
+        "palette_accent": [
+          "#C08A3A",
+          "#C8683C",
+          "#B8C4D0",
+          "#E8C24A",
+          "#E8A0A0",
+          "#8A6A3A"
+        ],
+        "glyph_strength": 0.8
       },
       "sky": [
         "#C9A57A",
@@ -1404,16 +1493,33 @@
         "style": "neon",
         "cap_depth": 0.0,
         "body_color": "#2A1E78",
-        "body_mix": 0.55,
+        "body_mix": 0.2,
         "glow_color": "#3FF2E0",
         "glow": 1.6,
         "gloss": 0.75,
         "rim": 0.3,
-        "topper": "",
-        "topper_rate": 0.0,
-        "brightness": 0.9,
+        "topper": "chip",
+        "topper_rate": 0.12,
+        "brightness": 1.0,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#2A1E78",
+          "#5A1E6E",
+          "#1E3E78",
+          "#1E5A4A",
+          "#6A4A1E",
+          "#6E1E3A"
+        ],
+        "palette_accent": [
+          "#3FF2E0",
+          "#FF3EC8",
+          "#4A9CFF",
+          "#A6F23A",
+          "#FFB020",
+          "#FF4A5A"
+        ],
+        "glyph_strength": 0.8
       },
       "sky": [
         "#140F33",
@@ -1557,16 +1663,33 @@
         "style": "celestial",
         "cap_depth": 0.0,
         "body_color": "#3B2A9E",
-        "body_mix": 0.6,
+        "body_mix": 0.15,
         "accent_color": "#B486F0",
         "glow": 1.2,
         "gloss": 0.6,
         "rim": 0.35,
         "topper": "star",
         "topper_rate": 0.15,
-        "brightness": 0.9,
+        "brightness": 1.0,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#4B3AC0",
+          "#2A6AD0",
+          "#B03AB0",
+          "#1E8F8A",
+          "#6A46E0",
+          "#C04A78"
+        ],
+        "palette_accent": [
+          "#C09CFF",
+          "#7CD8FF",
+          "#FF9CE0",
+          "#8AF0C8",
+          "#FFE08A",
+          "#FFA0B0"
+        ],
+        "glyph_strength": 0.8
       },
       "sky": [
         "#140F3A",
@@ -1718,15 +1841,24 @@
         "style": "carnival",
         "cap_depth": 0.0,
         "body_color": "#F06E96",
-        "body_mix": 0.6,
+        "body_mix": 0.0,
         "accent_color": "#F7E8CF",
         "gloss": 0.6,
         "rim": 0.2,
         "topper": "ticket",
         "topper_rate": 0.12,
-        "brightness": 0.9,
+        "brightness": 1.0,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#F06E96",
+          "#E8383A",
+          "#3A7AE8",
+          "#F2C230",
+          "#3AB86A",
+          "#8A4AE0"
+        ],
+        "glyph_strength": 0.8
       },
       "sky": [
         "#F7A97A",
@@ -1866,20 +1998,37 @@
     },
     "pirate": {
       "block": {
-        "style": "forest",
+        "style": "pirate",
         "cap_color": "#E6D3B0",
         "cap_depth": 0.0,
         "cap_drip": 0.0,
         "body_color": "#CDB48E",
-        "body_mix": 0.65,
+        "body_mix": 0.0,
         "accent_color": "#B88A4A",
         "gloss": 0.1,
         "rim": 0.08,
         "brightness": 1.0,
-        "topper": "dome",
-        "topper_rate": 0.1,
+        "topper": "rope",
+        "topper_rate": 0.12,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "palette": [
+          "#C8A878",
+          "#8E9AA0",
+          "#3E7A9E",
+          "#B8483E",
+          "#3E8E78",
+          "#D8A838"
+        ],
+        "palette_accent": [
+          "#C08A3A",
+          "#C08A3A",
+          "#C08A3A",
+          "#C08A3A",
+          "#C08A3A",
+          "#C08A3A"
+        ],
+        "glyph_strength": 0.8
       },
       "sky": [
         "#2FB5B0",
@@ -2158,5 +2307,5 @@
       }
     }
   },
-  "env_notes": "biomes.*.env (WtIslandBuilder, design/art/style-techniques.md §2/§5): light = cookbook preset (key/fill/back colour+energy, ambient, saturation/contrast/brightness, shadow_tint); sky = backdrop shader extras (cloud, cloud_shade, mountains, mountain_amount, mesa_amount, mesa_top, mesa_rock, mesa_falls, cloud_bank, stars, nebula, nebula_a/b, sun); haze = horizon colour for distant props; cap/body/strata/tile = island paint; inlay = gold ring round the board; rock_glow/glow_color = lava cracks; rim = [{kind, tint, weight, scale, glow, tall, edge (spill over the rim), spacing}] kinds: tuft clover flower_white|lilac|pink|yellow bush mound shrub tree tree_white pine rock rubble pillar pillar_broken star blob gumdrop lollipop basalt lava_pool crystal mushroom coral shell gear; hang = [{kind, tint, count, size, glow}] kinds: root strand icicle stalactite lava_drip crystal_down; far = up to 6 landmarks: trees waterfall pine castle arch pillars planet mountain volcano candy crystals basalt; far_cap/far_rock/far_accent/far_stone/planet = landmark colours; falls = waterfall colours. `sky` (top, horizon, low) and `frame` stay at biome level."
+  "env_notes": "biomes.*.env (WtIslandBuilder, design/art/style-techniques.md \u00a72/\u00a75): light = cookbook preset (key/fill/back colour+energy, ambient, saturation/contrast/brightness, shadow_tint); sky = backdrop shader extras (cloud, cloud_shade, mountains, mountain_amount, mesa_amount, mesa_top, mesa_rock, mesa_falls, cloud_bank, stars, nebula, nebula_a/b, sun); haze = horizon colour for distant props; cap/body/strata/tile = island paint; inlay = gold ring round the board; rock_glow/glow_color = lava cracks; rim = [{kind, tint, weight, scale, glow, tall, edge (spill over the rim), spacing}] kinds: tuft clover flower_white|lilac|pink|yellow bush mound shrub tree tree_white pine rock rubble pillar pillar_broken star blob gumdrop lollipop basalt lava_pool crystal mushroom coral shell gear; hang = [{kind, tint, count, size, glow}] kinds: root strand icicle stalactite lava_drip crystal_down; far = up to 6 landmarks: trees waterfall pine castle arch pillars planet mountain volcano candy crystals basalt; far_cap/far_rock/far_accent/far_stone/planet = landmark colours; falls = waterfall colours. `sky` (top, horizon, low) and `frame` stay at biome level."
 }

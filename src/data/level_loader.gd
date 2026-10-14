@@ -4,7 +4,7 @@ class_name LevelLoader extends RefCounted
 ## Usage: var r: LoadResult = LevelLoader.load_level("res://src/levels/meadow/meadow_01/meadow_01.json", catalog)
 
 const MAX_LEVEL_BYTES := 262144 # ADR-0005 untrusted level file cap (tunable)
-const KEYS_TOP: Array[String] = ["schema", "id", "biome", "tier", "name", "board", "pieces", "knobs", "goal", "rules", "stars", "story", "seed", "metadata", "music", "layout", "recipe", "variation"]
+const KEYS_TOP: Array[String] = ["schema", "id", "biome", "tier", "name", "board", "pieces", "knobs", "goal", "rules", "stars", "story", "seed", "metadata", "music", "layout", "recipe", "variation", "look"]
 const KEYS_REQUIRED: Array[String] = ["id", "board", "goal"]
 const BAG_MAX_KNOB := &"spawn.bag_max_size"
 const _LIMIT_FIELDS: Array[String] = ["min_side", "max_side", "min_height", "max_height", "max_cells", "max_errors", "min_active_per_layer"]

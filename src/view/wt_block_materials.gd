@@ -7,6 +7,8 @@ const LOOKS_PATH := "res://assets/data/biome_looks.json"
 const SHADER_PATH := "res://src/view/shaders/spatial_block_biome.gdshader"
 const GHOST_SHADER_PATH := "res://src/view/shaders/spatial_block_ghost.gdshader"
 
+const PALETTE_SLOTS := 8
+
 static var _looks: Dictionary = {}
 
 
@@ -30,7 +32,7 @@ static func for_biome(biome: StringName) -> ShaderMaterial:
 	for key: String in ["cap_color", "body_color", "accent_color", "glow_color"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), Color(String(record[key])))
-	for key: String in ["cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt", "translucency",
+	for key: String in ["glyph_strength", "seam_dark", "layer_dark", "cap_tint", "active_boost", "cap_depth", "cap_drip", "cap_lip", "body_mix", "glow", "gloss", "rim", "detail", "brightness", "bevel_light", "sculpt", "translucency",
 			"piece_sat", "piece_value", "piece_linear", "cap_hue_min_sat", "stone_value", "stone_sat", "stone_crack", "cap_body_mix", "side_shade", "shade_side_extra"]:
 		if record.has(key):
 			material.set_shader_parameter(StringName(key), float(record[key]))
@@ -43,6 +45,16 @@ static func for_biome(biome: StringName) -> ShaderMaterial:
 		var bands: Array = record["cap_hues"]
 		if not bands.is_empty() and bands[0] is Array:
 			material.set_shader_parameter(&"cap_hue_range", Vector2(float(bands[0][0]), float(bands[0][1])))
+	# Per-piece palette: authored sRGB hexes, padded to the shader's 8 slots. palette_accent is optional
+	# (lava veins, neon traces, gems, brass, nebula) and switches accent_vary on.
+	if record.has("palette"):
+		var pal: Array = record["palette"]
+		var n: int = mini(pal.size(), PALETTE_SLOTS)
+		material.set_shader_parameter(&"palette_size", n)
+		material.set_shader_parameter(&"palette", _color_array(pal, n))
+		if record.has("palette_accent"):
+			material.set_shader_parameter(&"palette_accent", _color_array(record["palette_accent"], n))
+			material.set_shader_parameter(&"accent_vary", 1.0)
 	# Sky-tinted rim and fake reflection: the biome's horizon colour, lifted toward white.
 	var sky: Array = look(biome).get("sky", [])
 	if record.has("rim_color"):
@@ -74,3 +86,10 @@ static func _table() -> Dictionary:
 		if parsed is Dictionary:
 			_looks = parsed
 	return _looks
+
+
+static func _color_array(hexes: Array, count: int) -> PackedColorArray:
+	var out := PackedColorArray()
+	for i: int in PALETTE_SLOTS:
+		out.append(Color(String(hexes[mini(i, count - 1)])) if count > 0 else Color.WHITE)
+	return out

@@ -136,6 +136,26 @@ static func _build(kind: StringName) -> ArrayMesh:
 				_prim(st, BoxMesh.new(), Transform3D(Basis(Vector3.BACK, a).scaled(Vector3(0.05, 0.05, 0.04)), Vector3(cos(a + PI * 0.5) * 0.115, 0.15 + sin(a + PI * 0.5) * 0.115, 0)), Color("c8923a"))
 			_prim(st, _cyl(0.035, 0.035, 0.06, 10), Transform3D(up, Vector3(0, 0.15, 0)), Color("8a5f22"))
 			_prim(st, BoxMesh.new(), Transform3D(Basis().scaled(Vector3(0.05, 0.06, 0.04)), Vector3(0, 0.03, 0)), Color("8a5f22"))
+		&"snowflake":
+			for k: int in 3:
+				var a: float = PI * k / 3.0
+				_prim(st, BoxMesh.new(), Transform3D(Basis(Vector3.UP, a).scaled(Vector3(0.3, 0.03, 0.045)), Vector3(0, 0.05, 0)), Color("f4fbff", 0.8))
+			_prim(st, _cyl(0.05, 0.05, 0.04, 6), Transform3D(Basis(), Vector3(0, 0.05, 0)), Color("c8ecff", 0.85))
+		&"chip":
+			_prim(st, BoxMesh.new(), Transform3D(Basis().scaled(Vector3(0.24, 0.05, 0.24)), Vector3(0, 0.025, 0)), Color("1c1a4a"))
+			_prim(st, BoxMesh.new(), Transform3D(Basis().scaled(Vector3(0.14, 0.02, 0.14)), Vector3(0, 0.055, 0)), Color("3ff2e0", 0.5))
+			for k: int in 4:
+				var a: float = PI * 0.5 * k
+				_prim(st, BoxMesh.new(), Transform3D(Basis().scaled(Vector3(0.05, 0.02, 0.02)), Vector3(cos(a) * 0.14, 0.03, sin(a) * 0.14)), Color("3ff2e0", 0.5))
+		&"rope":
+			var tor := TorusMesh.new()
+			tor.inner_radius = 0.07
+			tor.outer_radius = 0.12
+			tor.rings = 12
+			tor.ring_segments = 6
+			_prim(st, tor, Transform3D(Basis(), Vector3(0, 0.03, 0)), Color("d8bc82"))
+			_prim(st, tor, Transform3D(Basis().scaled(Vector3(0.8, 1, 0.8)), Vector3(0, 0.07, 0)), Color("b8985a"))
+			_prim(st, _cyl(0.02, 0.02, 0.03), Transform3D(Basis(), Vector3(0.1, 0.1, 0)), Color("c8923a"))
 		&"star":
 			_star(st, 0.13, 0.055, 0.05, Transform3D(Basis(), Vector3(0, 0.14, 0)), Color("ffe9a8", 0.75))
 		&"ticket":

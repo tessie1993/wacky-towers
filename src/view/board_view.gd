@@ -28,6 +28,12 @@ var _item_hidden: Dictionary = {}
 var _cell_default: float = 1.0
 var _stickers: int = 0
 var _custom_content: bool = false
+## Per-piece palette variation (biome material `palette`): piece uid -> palette index, stable for the
+## life of the view. Adjacent pieces never share an index when the palette allows it.
+var _variant_count: int = 0
+var _uid_variant: Dictionary = {}
+## Neighbour order = seam bit order read by spatial_block_biome.gdshader: axis * 2 + (positive ? 1 : 0).
+const _NEIGHBOURS: Array[Vector3i] = [Vector3i(-1, 0, 0), Vector3i(1, 0, 0), Vector3i(0, -1, 0), Vector3i(0, 1, 0), Vector3i(0, 0, -1), Vector3i(0, 0, 1)]
 
 
 ## Flat material with an inverted-hull outline pass. albedo is used when use_instance_color is false.
@@ -62,6 +68,7 @@ func bind(board: BoardState, art_set: ArtSet, palette: PaletteTable) -> void:
 		_mmi = MultiMeshInstance3D.new()
 		_mmi.name = "LockedBlocks"
 		add_child(_mmi)
+	_uid_variant.clear()
 	_plain_material = make_material(Color.WHITE, outline_color, outline_grow, true)
 	_mmi.material_override = _plain_material
 	_rebuild()
@@ -101,6 +108,7 @@ func apply_delta(delta: PackedInt32Array) -> void:
 				return
 			_:
 				pass # STATUS, OVERLAY: no status/fade/ripple yet (CH-056 out of scope)
+	_refresh_pieces()
 	_mm.visible_instance_count = _slots.filled()
 
 
@@ -192,7 +200,109 @@ func set_occlusion(mode: String, focus: Vector3, eye: Vector3) -> void:
 ## Uses a biome block material (same uniform contract as the pattern material) for every state.
 func set_biome_material(material: ShaderMaterial) -> void:
 	_biome_material = material
+	var size_param: Variant = material.get_shader_parameter(&"palette_size") if material != null else null
+	_variant_count = int(size_param) if size_param is int or size_param is float else 0
+	_refresh_pieces()
 	_update_presentation_material()
+
+
+## Number of per-piece colour variants of the current biome material (0 = none, pieces use the palette hue).
+func variant_count() -> int:
+	return _variant_count
+
+
+## Authored (sRGB) colour of palette variant v, for the ghost/active layers; Color.WHITE when out of range.
+func variant_color(v: int) -> Color:
+	if _biome_material == null or v < 0 or v >= _variant_count:
+		return Color.WHITE
+	var pal: Variant = _biome_material.get_shader_parameter(&"palette")
+	if pal is PackedColorArray and v < (pal as PackedColorArray).size():
+		return (pal as PackedColorArray)[v]
+	return Color.WHITE
+
+
+## Variant index for the falling piece (-1 = none). Chosen against the pieces around `cells` (its landing
+## cells), kept while it does not clash, and remembered so the piece keeps its colour when it locks.
+## Usage: var v: int = view.variant_for_active(sim.get_piece_uid(), ghost_cells)
+func variant_for_active(uid: int, cells: Array[Vector3i]) -> int:
+	if _variant_count <= 0 or uid <= 0 or _board == null:
+		return -1
+	var taken: Dictionary = {}
+	for c: Vector3i in cells:
+		_collect_neighbour_variants(c, uid, taken)
+	var cur: int = int(_uid_variant.get(uid, -1))
+	if cur < 0 or taken.has(cur):
+		cur = _pick_variant(uid, taken)
+		_uid_variant[uid] = cur
+	return cur
+
+
+func _pick_variant(uid: int, taken: Dictionary) -> int:
+	var h: int = (uid * 1103515245 + 12345) & 0x7fffffff
+	var start: int = (h >> 8) % _variant_count
+	for k: int in _variant_count:
+		var v: int = (start + k) % _variant_count
+		if not taken.has(v):
+			return v
+	return start
+
+
+func _collect_neighbour_variants(c: Vector3i, uid: int, taken: Dictionary) -> void:
+	for d: Vector3i in _NEIGHBOURS:
+		var n: Vector3i = c + d
+		if not _board.in_bounds(n):
+			continue
+		var ni: int = _board.index(n)
+		if _slots.slot_of(ni) == SlotMap.EMPTY:
+			continue
+		var nu: int = int(_board.get_record(ni).get("piece_instance_id", 0))
+		if nu != uid and _uid_variant.has(nu):
+			taken[int(_uid_variant[nu])] = true
+
+
+## Writes the per-piece channels of every locked instance: custom.g = palette variant + 1 (0 = none),
+## custom.b = (seam bitmask + 64 * depth layer) / 2048; a mask bit is set when that face's neighbour is ANOTHER piece.
+func _refresh_pieces() -> void:
+	if _mm == null or _board == null:
+		return
+	if _biome_material != null:
+		_biome_material.set_shader_parameter(&"layer_span", float(maxi(_board.layer_count(), 1)))
+	var count: int = _slots.filled()
+	var uid_of: Dictionary = {}
+	var cells_of: Dictionary = {}
+	for slot: int in count:
+		var cell: int = _slots.cell_at(slot)
+		var uid: int = int(_board.get_record(cell).get("piece_instance_id", 0))
+		uid_of[cell] = uid
+		if not cells_of.has(uid):
+			cells_of[uid] = []
+		(cells_of[uid] as Array).append(cell)
+	if _variant_count > 0:
+		var uids: Array = cells_of.keys()
+		uids.sort()
+		for uid: int in uids:
+			if uid <= 0 or _uid_variant.has(uid):
+				continue
+			var taken: Dictionary = {}
+			for cell: int in cells_of[uid]:
+				_collect_neighbour_variants(_board.cell(cell), uid, taken)
+			_uid_variant[uid] = _pick_variant(uid, taken)
+	for slot: int in count:
+		var cell: int = _slots.cell_at(slot)
+		var uid: int = int(uid_of[cell])
+		var mask: int = 0
+		var c: Vector3i = _board.cell(cell)
+		for bit: int in 6:
+			var n: Vector3i = c + _NEIGHBOURS[bit]
+			if _board.in_bounds(n):
+				var ni: int = _board.index(n)
+				if uid_of.has(ni) and int(uid_of[ni]) != uid:
+					mask |= 1 << bit
+		var custom: Color = _mm.get_instance_custom_data(slot)
+		var variant: int = int(_uid_variant.get(uid, -1)) if _variant_count > 0 and uid > 0 else -1
+		custom.g = float(variant + 1) / 16.0
+		custom.b = float(mask + 64 * clampi(_board.layer_of(cell), 0, 31)) / 2048.0
+		_mm.set_instance_custom_data(slot, custom)
 
 
 func _update_presentation_material() -> void:
@@ -285,6 +395,7 @@ func _rebuild() -> void:
 		if _board.is_active(i) and _board.get_kind(i) != ContentTypes.KIND_EMPTY:
 			_write(_slots.add(i), i)
 	mm.visible_instance_count = _slots.filled()
+	_refresh_pieces()
 
 
 func _write(slot: int, cell: int) -> void:

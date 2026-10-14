@@ -8,6 +8,10 @@
 // Look law: assets/art/reference/style/13_biome_blocks.png (design/art/art-bible.md section 6).
 // Per-biome values come from assets/data/biome_looks.json (biomes.<id>.block) via WtBlockMaterials.
 // Piece colour = instance COLOR; body_mix says how much of the biome body colour replaces it.
+// v4 (2026-10-14, block variation): per-piece palette. INSTANCE_CUSTOM.g = palette index + 1 (0 = none,
+// COLOR is used), .b = seam mask (bits 0-5, neighbour in -x,+x,-y,+y,-z,+z is ANOTHER piece) + 64 * depth layer.
+// Palette hue per piece, a per-variant glyph (colour-blind cue), piece seams, depth-layer darkening, an
+// active-piece boost (use_cell_alpha = false marks the falling piece) and a new pirate driftwood style (13).
 shader_type spatial;
 render_mode cull_back;
 
@@ -73,6 +77,28 @@ uniform float stone_sat : hint_range(0.3, 1.5) = 1.0;
 uniform float cap_body_mix : hint_range(-1.0, 1.0) = -1.0;
 uniform float stone_crack : hint_range(0.0, 1.0) = 0.22;
 group_uniforms;
+group_uniforms variation;
+/** Number of valid palette entries (0 = no per-piece palette, the instance COLOR is used). */
+uniform int palette_size = 0;
+/** Per-piece body colours, authored sRGB (padded to 8). Index = INSTANCE_CUSTOM.g * 16 - 1. */
+uniform vec4 palette[8];
+/** Per-piece accent colours (lava veins, neon traces, gems, brass, nebula), authored sRGB. */
+uniform vec4 palette_accent[8];
+/** 1 = accent_color and glow_color are replaced by the piece's palette_accent entry. */
+uniform float accent_vary : hint_range(0.0, 1.0) = 0.0;
+/** Strength of the per-variant glyph (secondary colour-blind cue, ref 13 topper-symbol idea). */
+uniform float glyph_strength : hint_range(0.0, 1.0) = 0.8;
+/** Darkening on edges shared with a different piece (piece seams). */
+uniform float seam_dark : hint_range(0.0, 1.0) = 0.5;
+/** Darkening of the deepest layer; the top layer stays untouched. */
+uniform float layer_dark : hint_range(0.0, 0.6) = 0.22;
+/** Number of layers in the board (set by BoardView). */
+uniform float layer_span : hint_range(1.0, 32.0) = 8.0;
+/** Tint of the cap (icing, snow) toward the piece colour. */
+uniform float cap_tint : hint_range(0.0, 0.6) = 0.0;
+/** Falling-piece boost: brightness, emission pulse and rim (applied when use_cell_alpha is false). */
+uniform float active_boost : hint_range(0.0, 1.0) = 0.6;
+group_uniforms;
 // Shared with the stage/BoardView accessibility and occlusion contract.
 uniform int stickers = 0;
 uniform bool patterns = false;
@@ -91,6 +117,10 @@ varying float cell_alpha;
 varying vec3 center;
 // 1 = this piece keeps the biome cap/dirt style, 0 = painted coloured stone (see cap_hue_range).
 varying float keep_cap;
+varying vec3 pcol;       // authored (sRGB) piece colour: palette entry or instance COLOR
+varying float v_variant; // palette index, -1 = none
+varying float v_mask;    // seam bitmask
+varying float v_layer;   // depth layer (0 = floor)
 
 vec3 rgb2hsv(vec3 c) {
 	vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
@@ -161,11 +191,34 @@ float cap_keep(vec3 c) {
 }
 float around(vec3 p) { return abs(p.x) > abs(p.z) ? (p.x > 0.0 ? 1.0 + p.z : 3.0 - p.z) : (p.z > 0.0 ? 2.0 - p.x : p.x); }
 
+// Glyph SDFs (unit space, negative inside): one silhouette per palette index so every hue has a shape cue.
+float glyph_sd(int id, vec2 q) {
+	if (id == 0) return length(q) - 0.85;                                                    // disc
+	if (id == 1) { vec2 t = vec2(q.x, q.y + 0.15); return max(abs(t.x) * 0.866 + t.y * 0.5, -t.y) - 0.62; } // triangle
+	if (id == 2) return (abs(q.x) + abs(q.y)) - 1.0;                                         // diamond
+	if (id == 3) return max(abs(q.x) - 0.95, abs(abs(q.y) - 0.5) - 0.22);                    // two bars
+	if (id == 4) return min(max(abs(q.x) - 0.95, abs(q.y) - 0.3), max(abs(q.x) - 0.3, abs(q.y) - 0.95)); // plus
+	if (id == 5) return abs(length(q) - 0.68) - 0.26;                                        // ring
+	return max(abs(q.x), abs(q.y)) - 0.78;                                                   // square
+}
+// 1 when the neighbour across direction d (model axis) belongs to another piece.
+float seam_bit(int mask, vec3 d) {
+	int idx = abs(d.x) > 0.5 ? (d.x > 0.0 ? 1 : 0) : (abs(d.y) > 0.5 ? (d.y > 0.0 ? 3 : 2) : (d.z > 0.0 ? 5 : 4));
+	return float((mask >> idx) & 1);
+}
+
 void vertex() {
 	lp = VERTEX; ln = NORMAL;
 	motif = INSTANCE_CUSTOM.r; cell_alpha = use_cell_alpha ? INSTANCE_CUSTOM.a : 1.0;
 	center = (MODEL_MATRIX * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
-	keep_cap = cap_keep(COLOR.rgb);
+	int vi = int(floor(INSTANCE_CUSTOM.g * 16.0 + 0.5)) - 1;
+	pcol = COLOR.rgb;
+	if (palette_size > 0 && vi >= 0) { vi = min(vi, palette_size - 1); pcol = palette[vi].rgb; } else { vi = -1; }
+	v_variant = float(vi);
+	int pk = int(floor(INSTANCE_CUSTOM.b * 2048.0 + 0.5));
+	v_mask = float(pk % 64);
+	v_layer = float(pk / 64);
+	keep_cap = cap_keep(pcol);
 	if (cap_depth > 0.0 && keep_cap > 0.5) {
 		// Overhanging cap: the top band swells outward with a ragged lip (grass, icing, snow).
 		float sd = hash31(floor(center * 1.01 + 0.5));
@@ -205,7 +258,16 @@ void fragment() {
 	vec2 vt = vec2(dot(VIEW, tu), dot(VIEW, tv));
 
 	// Piece colour: authored sRGB -> HSV push (hue squeeze, saturation, value) -> linear.
-	vec3 phsv = rgb2hsv(clamp(COLOR.rgb, 0.0, 1.0));
+	// Per-piece accent: lava veins, neon traces, gems, brass and nebula follow the piece's palette entry.
+	int vid = int(v_variant + 0.5);
+	vec3 acc = accent_color;
+	vec3 glw = glow_color;
+	if (vid >= 0 && accent_vary > 0.5) {
+		vec3 av = pow(clamp(palette_accent[vid].rgb, 0.0, 1.0), vec3(2.2));
+		acc = av; glw = av;
+	}
+	float is_active = use_cell_alpha ? 0.0 : 1.0;
+	vec3 phsv = rgb2hsv(clamp(pcol, 0.0, 1.0));
 	if (piece_hue_range.x < piece_hue_range.y) phsv.x = mix(piece_hue_range.x, piece_hue_range.y, phsv.x);
 	phsv.y = clamp(phsv.y * piece_sat, 0.0, 1.0);
 	phsv.z = clamp(phsv.z * piece_value, 0.0, 1.0);
@@ -289,7 +351,7 @@ void fragment() {
 		refl = 0.55;
 	} else if (style == 4) { // Underwater: faceted deep blue/violet glass, bubbles inside, sparkles.
 		vec2 fv = voronoi(suv * 2.6 + 11.0);
-		col = mix(col, col.r * vec3(2.2, 0.9, 1.0) + col.b * vec3(0.35, 0.1, 0.75), step(0.55, fv.y) * (0.3 + 0.35 * fv.y));
+		col = mix(col, col * vec3(1.3, 0.82, 1.3) + vec3(0.02, 0.0, 0.05), step(0.55, fv.y) * (0.25 + 0.3 * fv.y)); // facet shift keeps the piece hue
 		col = mix(col * 0.65, col * 1.15, inner * 0.6 + fbm(suv * 3.0) * 0.4);
 		col *= mix(0.8, 1.08, smoothstep(0.0, 0.08, fv.x));
 		col += vec3(0.25, 0.35, 0.6) * (1.0 - smoothstep(0.0, 0.03, fv.x)) * 0.5;
@@ -305,7 +367,7 @@ void fragment() {
 		col = mix(col, vec3(0.8, 0.92, 1.0), (ring * 0.55 + hi) * has * detail);
 		col = mix(col, col * 1.2, circle(bq, c, r) * has * 0.5);
 		float sp = step(0.9, hash21(floor(suv * 7.0))) * star4(fract(suv * 7.0) - 0.5, vec2(0.0), 0.12);
-		emit += vec3(0.8, 0.9, 1.0) * sp * 0.6 + accent_color * 0.05;
+		emit += vec3(0.8, 0.9, 1.0) * sp * 0.6 + acc * 0.05;
 		refl = 0.55;
 	} else if (style == 5) { // Lava: big chunky basalt plates, each a painted bevelled slab, wide glowing seams.
 		// Large Voronoi slabs (2-3 per face) with a noise-warped border so seams wander like paint.
@@ -324,10 +386,10 @@ void fragment() {
 		col *= mix(0.55, 1.0, smoothstep(0.05, 0.13, v.x));
 		g += tilt * 0.45 + (rdir(tilt) * 0.0);
 		g += (hnoise(suv * 9.0) - 0.5) * 0.12;
-		col += glow_color * halo * 0.1;
-		vec3 hot_col = mix(glow_color, vec3(1.0, 0.62, 0.25), hot * 0.6);
+		col += glw * halo * 0.1;
+		vec3 hot_col = mix(glw, vec3(1.0, 0.62, 0.25), hot * 0.6);
 		col = mix(col, hot_col, crack);
-		emit += glow_color * (crack * glow * 0.85 + halo * 0.12 * glow) + vec3(1.0, 0.6, 0.2) * hot * glow * 0.35;
+		emit += glw * (crack * glow * 0.85 + halo * 0.12 * glow) + vec3(1.0, 0.6, 0.2) * hot * glow * 0.35;
 		rough = mix(0.85, 0.4, crack);
 		refl = 0.08;
 	} else if (style == 6) { // Forest: chunky bark slabs, tree-ring end grain on some faces, moss patches.
@@ -335,7 +397,8 @@ void fragment() {
 		if (rings_face) {
 			float rr = length(uv * vec2(1.0, 1.08)) * 7.5 + fbm(suv * 1.6) * 0.8;
 			float ring_line = smoothstep(0.6, 0.8, fract(rr)) * (1.0 - smoothstep(0.85, 0.98, fract(rr)));
-			col = mix(vec3(0.86, 0.66, 0.42), vec3(0.62, 0.42, 0.24), ring_line * 0.85);
+			vec3 wood = mix(vec3(0.86, 0.66, 0.42), piece * 1.7 + vec3(0.05), 0.4);
+				col = mix(wood, wood * 0.68, ring_line * 0.85);
 			col *= 1.05 - length(uv) * 0.3;
 			g += normalize(uv + 0.0001) * (ring_line - 0.5) * 0.12;
 			// Thick bark collar with a lit inner lip.
@@ -372,10 +435,10 @@ void fragment() {
 		vec2 gc = fract(suv * 3.2) - 0.5;
 		float gid = step(0.78, hash21(floor(suv * 3.2)));
 		float gem = (1.0 - smoothstep(0.17, 0.2, abs(gc.x) * 1.5 + abs(gc.y) * 0.75)) * gid * detail;
-		vec3 gcol = accent_color * (gc.x < 0.0 ? 1.25 : 0.75) + vec3(0.25) * step(0.1, gc.y) * step(gc.x, 0.0);
+		vec3 gcol = acc * (gc.x < 0.0 ? 1.25 : 0.75) + vec3(0.25) * step(0.1, gc.y) * step(gc.x, 0.0);
 		col = mix(col, gcol, gem);
 		g += vec2(-sign(gc.x), 0.0) * 0.5 * gem;
-		emit += accent_color * gem * glow * 0.6;
+		emit += acc * gem * glow * 0.6;
 		refl = 0.08 + 0.4 * gem;
 		rough = mix(rough, 0.25, gem);
 	} else if (style == 8) { // Clockwork: navy panel in a bevelled brass frame, rivets, gear emboss.
@@ -384,7 +447,7 @@ void fragment() {
 		float rivet = circle(q, vec2(0.415), 0.035);
 		g += rdir(uv) * (bell(0.31, 0.35, face_edge) * 0.9 - bell(0.45, 0.5, face_edge) * 0.4);
 		g += (q - vec2(0.415)) * 14.0 * rivet * sign(uv);
-		vec3 brass = accent_color * (0.85 + 0.35 * hnoise(suv * 8.0));
+		vec3 brass = acc * (0.85 + 0.35 * hnoise(suv * 8.0));
 		brass = mix(brass, brass * 1.25 + 0.04, bell(0.33, 0.38, face_edge));
 		col *= mix(0.7, 1.08, inner);
 		col += vec3(0.05, 0.06, 0.1) * smoothstep(0.1, -0.25, uv.x - uv.y);
@@ -417,15 +480,15 @@ void fragment() {
 		}
 		float line = clamp(border * 0.6 + (trace + node) * detail * step(face_edge, 0.34) + diamond, 0.0, 1.0);
 		col = mix(col * 0.45, col * 0.95, inner * 0.6 + fbm(suv * 2.0) * 0.3);
-		col = mix(col, glow_color, line);
-		emit += glow_color * line * glow + glow_color * 0.05 * smoothstep(0.3, 0.45, face_edge);
+		col = mix(col, glw, line);
+		emit += glw * line * glow + glw * 0.05 * smoothstep(0.3, 0.45, face_edge);
 		g += rdir(uv) * bell(0.33, 0.39, face_edge) * 0.5;
 		rough = 0.15;
 		refl = 0.55;
 	} else if (style == 10) { // Celestial: purple galaxy window with nebula swirl and gold stars.
 		vec2 nuv = suv - vt * 0.12;
 		float neb = fbm(nuv * 1.8 + fbm(nuv * 1.2) * 1.8);
-		col = mix(col * 0.55, accent_color, smoothstep(0.42, 0.8, neb) * 0.85);
+		col = mix(col * 0.55, acc, smoothstep(0.42, 0.8, neb) * 0.85);
 		col += vec3(1.0, 0.7, 0.9) * smoothstep(0.68, 0.9, neb) * 0.35;
 		vec2 s2uv = suv - vt * 0.2;
 		vec2 cell = floor(s2uv * 3.0);
@@ -435,22 +498,53 @@ void fragment() {
 		float big = (side && fseed > 0.6) ? star4(uv, vec2(0.05, -0.05), 0.12) : 0.0;
 		float sm = max(max(s, big), s3 * 0.8);
 		col = mix(col, vec3(1.0, 0.88, 0.6), sm);
-		emit += vec3(1.0, 0.88, 0.6) * (max(s, big) * glow * 0.9 + s3 * 0.4) + accent_color * smoothstep(0.6, 0.9, neb) * 0.15 * glow;
+		emit += vec3(1.0, 0.88, 0.6) * (max(s, big) * glow * 0.9 + s3 * 0.4) + acc * smoothstep(0.6, 0.9, neb) * 0.15 * glow;
 		refl = 0.45;
 	} else if (style == 11) { // Tumble Fair: pink and cream vertical stripes, puffy, cream skirt on top.
 		float sx = (top ? (uv.x + uv.y) * 0.7 : uv.x) * 3.0 + 0.5;
 		float fs = fract(sx);
 		float s = step(0.5, fs);
-		col = mix(accent_color, col, s);
+		col = mix(acc, col, s);
 		g += vec2(sin(fs * 6.2832) * -0.12, 0.0);
 		col *= 1.0 - (1.0 - smoothstep(0.0, 0.05, min(abs(fs - 0.5), min(fs, 1.0 - fs)))) * 0.12;
 		rough = 0.3;
 		refl = 0.45;
+	} else if (style == 13) { // Pirate: painted driftwood planks, nail heads, a rope band, brass bolts.
+		float rows = 3.0;
+		float prow = (uv.y + 0.5) * rows + seed * 3.0;
+		float pr = floor(prow);
+		float pf = fract(prow);
+		float plank_seed = hash21(vec2(pr, seed * 13.0 + (top ? 1.0 : 0.0)));
+		float grain = vnoise(vec2(uv.x * 3.0 + plank_seed * 17.0, pr * 5.0) * vec2(1.0, 9.0) + vec2(0.0, fbm(suv * 3.0) * 1.5));
+		col *= 0.8 + 0.34 * plank_seed;
+		col *= 0.86 + 0.28 * smoothstep(0.2, 0.8, grain);
+		float gap = 1.0 - smoothstep(0.02, 0.075, min(pf, 1.0 - pf));
+		col *= 1.0 - gap * 0.62;
+		col = mix(col, col * 1.28 + vec3(0.03), bell(0.08, 0.2, pf) * 0.35);
+		g += vec2(0.0, (pf - 0.5) * 0.3 * (1.0 - gap) - gap * 0.2);
+		g += (hnoise(suv * vec2(2.0, 14.0)) - 0.5) * 0.25;
+		vec2 nq = vec2(abs(uv.x) - 0.31, (pf - 0.5) * 0.33);
+		float nail = circle(nq, vec2(0.0), 0.028) * step(0.3, plank_seed);
+		col = mix(col, vec3(0.2, 0.17, 0.15), nail * detail);
+		if (side && fseed > 0.5) { // rope band with a brass bolt beside it
+			float rb = abs(uv.y - 0.02);
+			float rope = 1.0 - smoothstep(0.065, 0.085, rb);
+			float tw = fract(uv.x * 5.5 + uv.y * 3.0 + 0.5);
+			vec3 rope_col = mix(vec3(0.86, 0.72, 0.46), vec3(0.58, 0.44, 0.24), smoothstep(0.35, 0.65, tw));
+			col = mix(col, rope_col, rope * detail);
+			g += vec2(0.0, -sign(uv.y - 0.02)) * bell(0.04, 0.09, rb) * 0.55;
+			float bolt = circle(uv, vec2(-0.27, 0.2), 0.04);
+			col = mix(col, acc * (0.9 + 0.3 * step(0.0, uv.y - 0.2 + uv.x + 0.27)), bolt * detail);
+			g += (uv - vec2(-0.27, 0.2)) * 14.0 * bolt;
+			rough = mix(rough, 0.45, bolt);
+			refl = mix(refl, 0.5, bolt);
+		}
+		rough = 0.9;
 	} else if (style == 12) { // Dune Bazaar: grainy sandstone, teal scalloped band, fleur inlay.
 		float grain = hnoise(suv * 22.0);
 		col *= 0.88 + 0.22 * fbm(suv * 6.0);
 		vec2 spk = fract(suv * 9.0) - 0.5;
-		col = mix(col, glow_color * 0.75, step(0.75, hash21(floor(suv * 9.0))) * circle(spk, vec2(0.0), 0.12 + 0.12 * hash21(floor(suv * 9.0) + 2.0)) * 0.7);
+		col = mix(col, glw * 0.75, step(0.75, hash21(floor(suv * 9.0))) * circle(spk, vec2(0.0), 0.12 + 0.12 * hash21(floor(suv * 9.0) + 2.0)) * 0.7);
 		g += vec2(hnoise((suv + vec2(0.02, 0.0)) * 22.0) - grain, hnoise((suv + vec2(0.0, 0.02)) * 22.0) - grain) * 0.6;
 		if (side) {
 			float wave = p.y - 0.2 + abs(sin(uv.x * 7.85)) * 0.06;
@@ -459,11 +553,11 @@ void fragment() {
 			float fleur = max(circle(fq, vec2(0.0, 0.03), 0.07), max(circle(fq, vec2(-0.09, -0.04), 0.05), circle(fq, vec2(0.09, -0.04), 0.05)));
 			fleur = max(fleur, (1.0 - smoothstep(0.02, 0.03, abs(fq.x))) * step(-0.19, fq.y) * step(fq.y, 0.0));
 			float m = max(band, fleur * step(0.35, fseed)) * detail;
-			col = mix(col, accent_color * (0.85 + 0.25 * vnoise(suv * 9.0)), m);
+			col = mix(col, acc * (0.85 + 0.25 * vnoise(suv * 9.0)), m);
 			g += vec2(0.0, -sign(wave)) * bell(0.06, 0.09, abs(wave)) * 0.4;
 			rough = mix(rough, 0.4, m);
 		}
-		col = mix(col, glow_color, smoothstep(0.43, 0.47, face_edge) * 0.5);
+		col = mix(col, glw, smoothstep(0.43, 0.47, face_edge) * 0.5);
 	}
 
 	// Biome cap: top face plus a ragged band down the sides (grass, frosting, snow).
@@ -529,9 +623,25 @@ void fragment() {
 		col *= 1.0 - below * 0.45;
 		col = mix(col, cc, cap);
 		emit *= 1.0 - cap;
+		cc = mix(cc, piece * 1.25 + vec3(0.04), cap_tint * (style == 1 || style == 6 ? 0.0 : 1.0));
 		rough = mix(rough, (style == 2 || style == 3) ? 0.3 : 0.9, cap);
 		refl = mix(refl, (style == 2 || style == 3) ? 0.35 : 0.0, cap);
 		g += vec2(0.0, 1.0) * cap_edge * 0.8;
+	}
+
+	// Per-piece secondary cue: a small embossed glyph (one silhouette per palette index) in the face corner.
+	if (vid >= 0 && glyph_strength > 0.0) {
+		vec2 gq = (uv - vec2(-0.235, -0.235)) / 0.085;
+		int gid = vid % 7;
+		float gd = glyph_sd(gid, gq);
+		float gm = 1.0 - smoothstep(-0.12, 0.12, gd);
+		float go = 1.0 - smoothstep(-0.12, 0.12, glyph_sd(gid, gq - vec2(-0.28, 0.28)));
+		float glum = dot(col, vec3(0.3, 0.59, 0.11));
+		vec3 gcol = glum > 0.1 ? col * 0.5 : col * 2.4 + vec3(0.07);
+		float gmask = gm * glyph_strength * float(!bottom);
+		col = mix(col, gcol, gmask * 0.85);
+		col += vec3(0.14) * clamp(gm - go, 0.0, 1.0) * glyph_strength; // lit lip on the upper-left
+		emit += (glum > 0.1 ? vec3(0.0) : col * 0.5) * gmask;
 	}
 
 	g *= sculpt;
@@ -555,6 +665,20 @@ void fragment() {
 	float e_mid = eap.x + eap.y + eap.z - e_hi - min(eap.x, min(eap.y, eap.z));
 	float crease_ao = smoothstep(0.8, 1.0, e_mid) * (1.0 - 0.7 * smoothstep(0.0, 0.5, p.y) * step(0.0, ln.y + 0.5));
 	col *= (1.0 - edge_ao * 0.5 * crease_ao * (1.0 + 0.8 * foot));
+
+	// Piece seams: a thin dark line on the edges shared with a different piece, plus a gentle per-layer
+	// darkening toward the floor so stacked layers separate. The falling piece skips both.
+	int smask = int(v_mask + 0.5);
+	if (smask > 0 && is_active < 0.5) {
+		float sm = 0.0;
+		sm = max(sm, seam_bit(smask, axu) * (1.0 - smoothstep(0.0, 0.09, 0.5 - uv.x)));
+		sm = max(sm, seam_bit(smask, -axu) * (1.0 - smoothstep(0.0, 0.09, 0.5 + uv.x)));
+		sm = max(sm, seam_bit(smask, axv) * (1.0 - smoothstep(0.0, 0.09, 0.5 - uv.y)));
+		sm = max(sm, seam_bit(smask, -axv) * (1.0 - smoothstep(0.0, 0.09, 0.5 + uv.y)));
+		col *= 1.0 - seam_dark * sm;
+	}
+	float layer_t = clamp(v_layer / max(layer_span - 1.0, 1.0), 0.0, 1.0);
+	col *= mix(1.0 - layer_dark, 1.0, mix(layer_t, 1.0, is_active));
 
 	float stripe = 0.0;
 	int code = int(floor(motif * 16.0 + 0.1));
@@ -587,6 +711,11 @@ void fragment() {
 	// Fake translucency: the body glows with its own colour, strongest in the face centre.
 	vec3 trans = col * translucency * (0.25 + 0.35 * inner);
 
+	// Falling piece: brighter body, pulsing emission and a strong sky-tinted rim so it never hides in the stack.
+	float pulse = 0.85 + 0.15 * sin(TIME * 5.0);
+	col *= 1.0 + 0.22 * active_boost * is_active;
+	emit += col * 0.35 * active_boost * is_active * pulse;
+	rim_col += (rim_color * 0.6 + vec3(0.3)) * fres * fres * 1.6 * active_boost * is_active;
 	ALBEDO = col * brightness;
 	ROUGHNESS = rough;
 	SPECULAR = 0.5;

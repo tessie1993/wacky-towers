@@ -657,15 +657,19 @@ func _update_piece(predicted: ActivePiece = null) -> void:
 	var piece_hue: int = p.hue_id
 	var hue: Color = _palette.color(piece_hue)
 	var cells: Array[Vector3i] = p.cells()
+	var ghost: Array[Vector3i] = _syrup_preview if not _syrup_preview.is_empty() else _sim.ghost_cells()
+	if predicted != null:
+		ghost = p.cells_at(p.orient, p.pivot + _board.down_vector() * Movement.drop_distance(p, _board))
+	# Biome palette variant (same one the piece keeps once locked); the ghost wears the same colour.
+	var variant: int = _locked.variant_for_active(_sim.get_piece_uid(), ghost if not ghost.is_empty() else cells)
+	if variant >= 0:
+		hue = _locked.variant_color(variant)
 	var scale_cube: float = _art.cube_scale() * 0.97
 	for i: int in mini(64, cells.size()):
 		_active.multimesh.set_instance_transform(i, Transform3D(Basis.from_scale(Vector3.ONE * scale_cube), BoardGeom.cell_center(cells[i], _size)))
 		_active.multimesh.set_instance_color(i, hue)
-		_active.multimesh.set_instance_custom_data(i, Color(float(_palette.pattern_code(piece_hue))/16.0, 0, 0, 0))
+		_active.multimesh.set_instance_custom_data(i, Color(float(_palette.pattern_code(piece_hue))/16.0, float(variant + 1)/16.0, 0, 0))
 	_active.multimesh.visible_instance_count = mini(64, cells.size())
-	var ghost: Array[Vector3i] = _syrup_preview if not _syrup_preview.is_empty() else _sim.ghost_cells()
-	if predicted != null:
-		ghost = p.cells_at(p.orient, p.pivot + _board.down_vector() * Movement.drop_distance(p, _board))
 	var columns: Dictionary = {}
 	for i: int in mini(64, ghost.size()):
 		_ghost.multimesh.set_instance_transform(i, Transform3D(Basis.from_scale(Vector3.ONE * .93), BoardGeom.cell_center(ghost[i], _size)))
