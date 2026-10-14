@@ -7,7 +7,7 @@
  "preview_window_mm": 14000,
  "preview_min_lead_ms": 8000,
  "on_loss": "checkpoint",
- "_notes": "142 s drive across the gorge. No arches and no road bumps: updrafts reward a tall LIGHT build with speed, gusts punish tall HEAVY builds, cloud bumps shake the hamper (cargo stress) more than they tip the lean. The kite lean limit is lower than the cart's.",
+ "_notes": "124 s drive across the gorge. No arches and no road bumps: updrafts reward a tall LIGHT build with speed, gusts punish tall HEAVY builds, cloud bumps shake the hamper (cargo stress) more than they tip the lean. The kite lean limit is lower than the cart's.",
  "segments": [
   {
    "id": "lift_off",

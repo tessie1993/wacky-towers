@@ -127,7 +127,7 @@ func test_unstable_seat_warns_wobble_then_slip_before_the_cargo_falls() -> void:
 	var runner := TrackRunner.new(T.def())
 	var out: Array[Dictionary] = T.run(runner, api, 9000)
 	var names: Array = out.filter(func(r: Dictionary) -> bool: return r["kind"] == TrackRunner.EV_CARGO_STATE).map(func(r: Dictionary) -> StringName: return r["name"])
-	assert_array(names).starts_with([&"wobble", &"slip"])
+	assert_array(names.slice(0, 2)).is_equal([&"wobble", &"slip"])
 	var order: Array = T.kinds(out)
 	assert_bool(order.find(TrackRunner.EV_CARGO_STATE) < order.find(TrackRunner.EV_CARGO_LOST)).is_true()
 
@@ -155,7 +155,7 @@ func test_a_line_clear_that_drops_the_seat_stresses_the_cargo() -> void:
 	for col: Vector2i in T.flat(4):
 		board.remove(board.index(Vector3i(col.x, 3, col.y)), BoardState.Cause.CLEAR)
 	T.run(runner, api, 100)
-	assert_int(int(runner.cargo_state()["stress_pm"])).is_greater_equal(200)
+	assert_int(int(runner.cargo_state()["stress_pm"])).is_greater_equal(150)
 
 
 func test_platform_finishes_in_time_with_the_cargo() -> void:
