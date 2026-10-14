@@ -5,7 +5,7 @@ extends Node
 ## Run: timeout 240 xvfb-run -a -s "-screen 0 1280x1280x24" godot --path . --rendering-driver opengl3 \
 ##   --resolution 720x1280 res://tools/qa/island_capture.tscn -- [--biomes=meadow,ice] [--tag=v1]
 var _stack: bool = false
-const OUT := "res://production/qa/evidence/islands-v2/"
+const OUT := "res://production/qa/evidence/blocks-v4/"
 const REF := "res://assets/art/reference/style/15_title_and_hud.png"
 const PANELS := {"meadow": Rect2i(424, 0, 414, 941), "ice": Rect2i(840, 0, 414, 941), "celestial": Rect2i(1256, 0, 416, 941)}
 
@@ -88,6 +88,7 @@ func _place_pieces(main: Node) -> void:
 			uid += 1
 		var sv: Object = stage.get("_locked")
 		if sv != null and sv.has_method("refresh"): sv.call("refresh")
+		if stage.has_method("_refresh_content_views"): stage.call("_refresh_content_views") # rebuilds the toppers
 		return
 	var cells: Array = [[2, 0, 3, 1], [3, 0, 3, 1], [3, 1, 3, 1], [3, 0, 4, 2], [4, 0, 4, 2], [4, 0, 5, 2],
 		[2, 0, 4, 3], [2, 0, 5, 3], [2, 1, 5, 3], [4, 1, 4, 4], [4, 2, 4, 4], [5, 0, 3, 5], [5, 0, 4, 5]]

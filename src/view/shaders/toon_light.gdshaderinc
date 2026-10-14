@@ -11,6 +11,7 @@
 // names) and two varyings the host may write in vertex() or fragment():
 //   toon_edge_v   float 0..1  bevel-edge glint mask (0 = none)
 //   toon_trans_v  vec3        translucency amount (0 = opaque); multiplied by ALBEDO by the engine
+// THE HOST MUST ASSIGN BOTH VARYINGS (in vertex() or fragment()): unassigned varyings render black.
 // Gloss comes from the host's ROUGHNESS (gloss = 1 - ROUGHNESS). Compatibility / Mobile / Forward+.
 // Budget: ~30 ALU per light, no texture reads, 2 pow().
 group_uniforms toon_light;

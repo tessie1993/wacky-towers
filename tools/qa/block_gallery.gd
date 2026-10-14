@@ -9,7 +9,7 @@ extends SceneTree
 ## v3: `-- s13` renders the 12-biome sheet like board 13 (per-piece hues) + sheet_vs_ref13.png.
 ## Optional user args after `--`: `tints` renders the palette-tint sheet, `ghost` the ghost sheet.
 
-const OUT_DIR := "res://production/qa/evidence/blocks-v3/"
+const OUT_DIR := "res://production/qa/evidence/blocks-v4/"
 const FONT_PATH := "res://prototypes/style_rnd/fonts/LilitaOne-Regular.ttf"
 const CELL := Vector2i(400, 400)
 const BG := Color("f6ead3")

@@ -25,20 +25,20 @@
         "cap_depth": 0.13,
         "cap_drip": 0.08,
         "cap_lip": 0.045,
-        "body_color": "#8E623E",
+        "body_color": "#B07A4E",
         "body_mix": 0.1,
         "gloss": 0.2,
         "rim": 0.12,
-        "brightness": 1.12,
+        "brightness": 1.22,
         "topper": "sprout",
-        "topper_rate": 0.2,
+        "topper_rate": 0.34,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
-        "piece_sat": 1.0,
-        "piece_value": 1.0,
+        "piece_sat": 1.1,
+        "piece_value": 1.08,
         "stone_value": 1.22,
         "stone_sat": 0.78,
-        "cap_body_mix": 0.3,
+        "cap_body_mix": 0.8,
         "stone_crack": 0.4,
         "palette": [
           "#C8643C",
@@ -304,9 +304,9 @@
         "gloss": 0.85,
         "rim": 0.3,
         "translucency": 0.35,
-        "brightness": 1.0,
+        "brightness": 1.08,
         "topper": "heart",
-        "topper_rate": 0.15,
+        "topper_rate": 0.34,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
         "piece_sat": 1.0,
@@ -491,8 +491,8 @@
         "rim": 0.4,
         "translucency": 0.6,
         "topper": "snowflake",
-        "topper_rate": 0.15,
-        "brightness": 1.0,
+        "topper_rate": 0.34,
+        "brightness": 1.08,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
         "piece_sat": 1.0,
@@ -725,7 +725,7 @@
     "underwater": {
       "block": {
         "style": "underwater",
-        "cap_depth": 0.0,
+        "cap_depth": 0.1,
         "body_color": "#2C33A0",
         "body_mix": 0.1,
         "accent_color": "#7FD8FF",
@@ -733,7 +733,7 @@
         "rim": 0.4,
         "translucency": 0.35,
         "topper": "coral",
-        "topper_rate": 0.15,
+        "topper_rate": 0.34,
         "brightness": 1.0,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
@@ -746,7 +746,11 @@
           "#FFB84A"
         ],
         "glyph_strength": 0.8,
-        "top_tint": 0.25
+        "top_tint": 0.25,
+        "cap_drip": 0.07,
+        "cap_color": "#E06AC0",
+        "cap_lip": 0.04,
+        "cap_tint": 0.35
       },
       "sky": [
         "#1E4C86",
@@ -901,25 +905,25 @@
         "gloss": 0.2,
         "rim": 0.08,
         "topper": "spike",
-        "topper_rate": 0.12,
+        "topper_rate": 0.34,
         "brightness": 1.1,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
         "palette": [
-          "#7A6462",
-          "#B05A40",
-          "#5C78A8",
-          "#8A5688",
-          "#6E8A4C",
-          "#A08A6A"
+          "#A8483C",
+          "#4E72B8",
+          "#8E4EAA",
+          "#4E9C5C",
+          "#C8963A",
+          "#B4B0B8"
         ],
         "palette_accent": [
           "#FF5A14",
+          "#FF9A2A",
           "#FFC22A",
-          "#F02A2A",
-          "#FF3E9A",
-          "#FFD84A",
-          "#FF8A2A"
+          "#FF6A3A",
+          "#FF4A1A",
+          "#FF8A3A"
         ],
         "glyph_strength": 0.8,
         "layer_dark": 0.12,
@@ -1087,9 +1091,9 @@
         "body_mix": 0.35,
         "gloss": 0.12,
         "rim": 0.08,
-        "brightness": 1.0,
+        "brightness": 1.35,
         "topper": "leaf",
-        "topper_rate": 0.15,
+        "topper_rate": 0.34,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
         "palette": [
@@ -1102,7 +1106,8 @@
         ],
         "glyph_strength": 0.8,
         "top_tint": 0.3,
-        "cap_lip": 0.04
+        "cap_lip": 0.04,
+        "piece_value": 1.1
       },
       "sky": [
         "#9CC8A8",
@@ -1258,7 +1263,7 @@
     "cave": {
       "block": {
         "style": "cave",
-        "cap_depth": 0.0,
+        "cap_depth": 0.1,
         "body_color": "#686277",
         "body_mix": 0.25,
         "accent_color": "#B07CF0",
@@ -1266,8 +1271,8 @@
         "gloss": 0.3,
         "rim": 0.12,
         "topper": "crystal",
-        "topper_rate": 0.15,
-        "brightness": 1.0,
+        "topper_rate": 0.34,
+        "brightness": 1.4,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
         "palette": [
@@ -1287,7 +1292,12 @@
           "#E8E8FF"
         ],
         "glyph_strength": 0.8,
-        "top_tint": 0.6
+        "top_tint": 0.6,
+        "cap_drip": 0.06,
+        "cap_color": "#9C92BC",
+        "cap_lip": 0.04,
+        "cap_tint": 0.3,
+        "piece_value": 1.15
       },
       "sky": [
         "#2E2943",
@@ -1437,8 +1447,8 @@
         "gloss": 0.55,
         "rim": 0.15,
         "topper": "gear",
-        "topper_rate": 0.12,
-        "brightness": 1.0,
+        "topper_rate": 0.34,
+        "brightness": 1.3,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
         "palette": [
@@ -1458,7 +1468,8 @@
           "#8A6A3A"
         ],
         "glyph_strength": 0.8,
-        "top_tint": 0.3
+        "top_tint": 0.3,
+        "piece_value": 1.1
       },
       "sky": [
         "#C9A57A",
@@ -1599,7 +1610,7 @@
         "gloss": 0.75,
         "rim": 0.3,
         "topper": "chip",
-        "topper_rate": 0.12,
+        "topper_rate": 0.34,
         "brightness": 1.0,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
@@ -1778,7 +1789,7 @@
         "gloss": 0.6,
         "rim": 0.35,
         "topper": "star",
-        "topper_rate": 0.15,
+        "topper_rate": 0.34,
         "brightness": 1.0,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
@@ -1964,8 +1975,8 @@
         "gloss": 0.6,
         "rim": 0.2,
         "topper": "ticket",
-        "topper_rate": 0.12,
-        "brightness": 1.0,
+        "topper_rate": 0.34,
+        "brightness": 1.08,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
         "palette": [
@@ -2140,7 +2151,7 @@
         "rim": 0.08,
         "brightness": 1.0,
         "topper": "rope",
-        "topper_rate": 0.12,
+        "topper_rate": 0.34,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
         "palette": [
@@ -2307,7 +2318,7 @@
     "dune": {
       "block": {
         "style": "dune",
-        "cap_depth": 0.0,
+        "cap_depth": 0.11,
         "body_color": "#D7A468",
         "body_mix": 0.6,
         "accent_color": "#2A9A96",
@@ -2315,10 +2326,14 @@
         "gloss": 0.3,
         "rim": 0.1,
         "topper": "dome",
-        "topper_rate": 0.12,
+        "topper_rate": 0.34,
         "brightness": 0.85,
         "side_shade": 0.9,
-        "shade_side_extra": 0.26
+        "shade_side_extra": 0.26,
+        "cap_drip": 0.06,
+        "cap_color": "#F3DDAE",
+        "cap_lip": 0.05,
+        "cap_tint": 0.1
       },
       "sky": [
         "#E9A86A",
@@ -2457,5 +2472,5 @@
       }
     }
   },
-  "env_notes": "biomes.*.env (WtIslandBuilder, design/art/style-techniques.md \u00a72/\u00a75): light = cookbook preset (key/fill/back colour+energy, ambient, saturation/contrast/brightness, shadow_tint); sky = backdrop shader extras (cloud, cloud_shade, mountains, mountain_amount, mesa_amount, mesa_top, mesa_rock, mesa_falls, cloud_bank, stars, nebula, nebula_a/b, sun); haze = horizon colour for distant props; cap/body/strata/tile = island paint; inlay = gold ring round the board; rock_glow/glow_color = lava cracks; rim = [{kind, tint, weight, scale, glow, tall, edge (spill over the rim), spacing}] kinds: tuft clover flower_white|lilac|pink|yellow bush mound shrub tree tree_white pine rock rubble pillar pillar_broken star blob gumdrop lollipop basalt lava_pool crystal mushroom coral shell gear; hang = [{kind, tint, count, size, glow}] kinds: root strand icicle stalactite lava_drip crystal_down; far = up to 6 landmarks: trees waterfall pine castle arch pillars planet mountain volcano candy crystals basalt; far_cap/far_rock/far_accent/far_stone/planet = landmark colours; falls = waterfall colours. `sky` (top, horizon, low) and `frame` stay at biome level."
+  "env_notes": "biomes.*.env (WtIslandBuilder, design/art/style-techniques.md §2/§5): light = cookbook preset (key/fill/back colour+energy, ambient, saturation/contrast/brightness, shadow_tint); sky = backdrop shader extras (cloud, cloud_shade, mountains, mountain_amount, mesa_amount, mesa_top, mesa_rock, mesa_falls, cloud_bank, stars, nebula, nebula_a/b, sun); haze = horizon colour for distant props; cap/body/strata/tile = island paint; inlay = gold ring round the board; rock_glow/glow_color = lava cracks; rim = [{kind, tint, weight, scale, glow, tall, edge (spill over the rim), spacing}] kinds: tuft clover flower_white|lilac|pink|yellow bush mound shrub tree tree_white pine rock rubble pillar pillar_broken star blob gumdrop lollipop basalt lava_pool crystal mushroom coral shell gear; hang = [{kind, tint, count, size, glow}] kinds: root strand icicle stalactite lava_drip crystal_down; far = up to 6 landmarks: trees waterfall pine castle arch pillars planet mountain volcano candy crystals basalt; far_cap/far_rock/far_accent/far_stone/planet = landmark colours; falls = waterfall colours. `sky` (top, horizon, low) and `frame` stay at biome level."
 }

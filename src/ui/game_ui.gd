@@ -1393,7 +1393,7 @@ func _build_hud() -> void:
 	meter.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
 	meter.offset_left = 18 + inset.x
 	meter.offset_right = meter.offset_left + meter.custom_minimum_size.x
-	meter.offset_bottom = -(18 + inset.w) - (84.0 * _control_factor + 20.0 if _portrait else 0.0)
+	meter.offset_bottom = -(18 + inset.w) - (_dock_height() - 4.0 if _storybook_dock() else 0.0)
 	meter.offset_top = meter.offset_bottom - meter.custom_minimum_size.y
 	var spacer := Control.new()
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
