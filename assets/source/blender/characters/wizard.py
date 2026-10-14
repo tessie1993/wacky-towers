@@ -453,8 +453,8 @@ def materials():
         "glint": principled("glint", "ffffff", rough=0.2, Emission_Color=lin("ffffff"), Emission_Strength=3.0),
         "mouth": principled("mouth", "mouth", rough=0.5),
         "tongue": principled("tongue", "tongue", rough=0.5),
-        "star": principled("wand_star", "fff1cf", rough=0.35, metal=0.0,
-                           Emission_Color=lin("ffe6a6"), Emission_Strength=0.35),
+        "star": principled("wand_star", "f3d99c", rough=0.35, metal=0.0,
+                           Emission_Color=lin("f8d488"), Emission_Strength=0.18),
     }
     return M
 
@@ -626,7 +626,7 @@ def build(pose_name, M):
         S, El, Wr = (Vector(p) for p in pose[side])
         d = (Wr - El).normalized()
         arm_dirs[side] = (Wr, d)
-        sl = skin_limb(f"W_sleeve{side}", [S, El, Wr, Wr + d * 0.035], [0.085, 0.10, 0.14, 0.165])
+        sl = skin_limb(f"W_sleeve{side}", [S, El, Wr, Wr + d * 0.035], [0.085, 0.10, 0.13, 0.148])
         sleeve_only[side] = sl.copy()
         sleeve_only[side].data = sl.data.copy()
         sleeves.append(sl)
@@ -640,7 +640,7 @@ def build(pose_name, M):
     # gold trim: cuffs and hem
     for side in ("R", "L"):
         Wr, d = arm_dirs[side]
-        cuff = trim_ring(f"W_cuff{side}", robe, Wr + d * 0.012, d, 0.018, M["band"], n=32, slab=0.008, maxr=0.13)
+        cuff = trim_ring(f"W_cuff{side}", robe, Wr + d * 0.012, d, 0.018, M["band"], n=32, slab=0.008, maxr=0.12)
         if cuff:
             W.append(cuff)
     for sl in sleeve_only.values():
@@ -721,14 +721,14 @@ def build(pose_name, M):
         a = 2 * math.pi * i / 72
         lip.append((0.385 * math.cos(a), 0.365 * math.sin(a) + 0.02, 1.095 + brim_z(a, 1.0) + 0.008))
     hat_parts.append(sweep("W_brimlip", lip, [0.026] * 72, ring=14, mat=M["hat"], closed=True))
-    hs = decal_star("W_hatstar", hat_parts[0], (0, -2, 1.25), (0, 1, 0), 0.075, 0.014, M["band"], offset=0.004)
+    hs = decal_star("W_hatstar", hat_parts[0], (0, -2, 1.31), (0, 1, 0), 0.08, 0.016, M["band"], offset=0.004)
     if hs:
         hat_parts.append(hs)
     for k, (x, z) in enumerate([]):
         s = decal_star(f"W_hatstar{k}", hat_parts[0], (x * 3, -2, z), (-x * 3, 2, 0), 0.026, 0.004, M["gold"])
         if s:
             hat_parts.append(s)
-    tilt = Matrix.Translation((0, 0.02, 1.175)) @ Matrix.Rotation(math.radians(-20), 4, "X") @ \
+    tilt = Matrix.Translation((0, 0.02, 1.145)) @ Matrix.Rotation(math.radians(-17), 4, "X") @ \
         Matrix.Rotation(math.radians(6), 4, "Y") @ Matrix.Translation((0, -0.02, -1.08))
     for o in hat_parts:
         o.data.transform(tilt)

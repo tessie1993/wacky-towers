@@ -39,7 +39,7 @@ uniform float bevel_light : hint_range(0.0, 1.0) = 0.45;
 uniform float sculpt : hint_range(0.0, 2.0) = 1.0;
 // Painted light response (prototype values): shadows go purple, never grey.
 uniform vec3 shadow_tint : source_color = vec3(0.42, 0.36, 0.62);
-uniform float wrap : hint_range(0.0, 1.0) = 0.45;
+uniform float wrap : hint_range(0.0, 1.0) = 0.3;
 uniform float band_soft : hint_range(0.01, 1.0) = 0.35;
 // Fake translucency: light glowing through the body (jelly, ice, glass).
 uniform float translucency : hint_range(0.0, 1.0) = 0.0;

@@ -22,7 +22,7 @@ float wt_fbm(vec2 p) { return wt_vn(p) * 0.5 + wt_vn(p * 2.1) * 0.3 + wt_vn(p * 
 
 void light() {
 	float ndl = dot(NORMAL, LIGHT);
-	float w = (ndl + 0.45) / 1.45;
+	float w = (ndl + 0.3) / 1.3; // v4: tighter wrap, stronger key/shade split (ref 15)
 	float band = smoothstep(0.0, 0.35, w) * 0.5 + clamp(ndl, 0.0, 1.0) * 0.5;
 	float lit = band * ATTENUATION;
 	vec3 diff = mix(shadow_tint * 0.18, vec3(1.0), lit);

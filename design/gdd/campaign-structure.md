@@ -16,6 +16,25 @@ The campaign is 10 biomes of 10 levels each (100 levels). Inside a biome, levels
 
 Campaign Structure orders the content Level Data defines and decides what unlocks when. The map is a chain of **biomes** (grass / meadow first; the rest are named when designed — references suggest ice, lava, forest, celestial, underwater, rune/neon). Each biome holds **10 levels**, and a level's **tier** is its position in the biome (1–10). Every biome follows the meadow template (Level Data rule 8): early tiers teach or re-teach, middle tiers introduce the biome's own twists and level mechanics one at a time, and tier 10 is the **biome finale** stacking two twists and a mechanic. Later biomes may call back one earlier twist per level. Base speed rises gently with biome and tier (F2). Finishing a level (1★) unlocks the next; a biome unlocks when the previous biome's finale is finished **and** at least 15 of its 30 stars are earned, so stars matter without blocking casual players for long. Levels can be replayed freely to improve stars. This serves *Variation Over Depth* (new ideas every level, new biome every 10) and *The Block Is the Constant* (every level is still blocks). All values are starting defaults.
 
+**Biome order (2026-10-14, user decision `design/decisions/2026-10-14-story-cast-decisions.md`).** The authored chain in `assets/data/campaign/catalog.json` (`biomes`) and `assets/data/meta/economy.json` (`biomes`, used for the star gate) is:
+
+| # | Biome id | Name | Notes |
+|---|---|---|---|
+| 1 | `meadow` | Meadow | |
+| 2 | `candy` | Candy | |
+| 3 | `ice` | Ice | |
+| 4 | `underwater` | Underwater | Finale gets the Crab King (Admiral Crab's claws) |
+| 5 | `pirate` | Pirate Cove | **New; the 11th main biome.** Fort Blast (09), Rainbow Kraken / Kraken Blockade finale (10), Treasure Hoard bonus. `fort_siege`, `siege_shot` and `boss_hp` levels run on existing-rule stand-ins until those modules exist (intent recorded in each level's `metadata.design_spec`) |
+| 6 | `lava` | Lava | |
+| 7 | `forest` | Forest | |
+| 8 | `cave` | Cave | |
+| 9 | `clockwork` | Clockwork | |
+| 10 | `neon` | Neon | |
+| 11 | `celestial` | Celestial | |
+| 12 | `carnival` | Tumble Fair | Side island in fiction; gated like a main biome in data |
+
+Eleven main biomes plus Tumble Fair gives 12 x 10 = **120 main-path levels**. Unlock rules are unchanged: Pirate Cove opens after the Underwater finale plus 15 Underwater stars, and Lava now follows Pirate Cove. Numeric shop `biome_open` requirements (values 2 to 4) still point at the same biomes because Pirate Cove is inserted at position 5. The Pirate Cove h1 to h3 bonus levels are not authored yet.
+
 ## Detailed Design
 
 ### Core Rules
