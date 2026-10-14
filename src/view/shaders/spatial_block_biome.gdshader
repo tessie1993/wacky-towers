@@ -32,6 +32,8 @@ uniform float rim : hint_range(0.0, 1.0) = 0.15;
 uniform float detail : hint_range(0.0, 1.0) = 1.0;
 uniform float brightness : hint_range(0.5, 1.6) = 1.0;
 // Sky tint used for the rim light and the fake reflection (set from the biome sky colours).
+// Additive: corner/edge crease darkening from local position (cheap stand-in for baked vertex AO).
+uniform float edge_ao : hint_range(0.0, 1.0) = 0.3;
 uniform vec3 rim_color : source_color = vec3(0.70, 0.85, 1.0);
 // Strength of the painted lit bevel along cube edges.
 uniform float bevel_light : hint_range(0.0, 1.0) = 0.45;
@@ -546,6 +548,13 @@ void fragment() {
 	float foot = 1.0 - smoothstep(-0.5, -0.15, p.y);
 	float ao = 1.0 - 0.35 * foot - cavity;
 	col *= clamp(ao, 0.35, 1.0);
+	// Edge/corner AO: the second-largest axis reaching the cube edge darkens vertical creases and
+	// the lower edges where blocks meet; upward-facing edges stay lit (painted lit bevel).
+	vec3 eap = abs(p) * 2.0;
+	float e_hi = max(eap.x, max(eap.y, eap.z));
+	float e_mid = eap.x + eap.y + eap.z - e_hi - min(eap.x, min(eap.y, eap.z));
+	float crease_ao = smoothstep(0.8, 1.0, e_mid) * (1.0 - 0.7 * smoothstep(0.0, 0.5, p.y) * step(0.0, ln.y + 0.5));
+	col *= (1.0 - edge_ao * 0.5 * crease_ao * (1.0 + 0.8 * foot));
 
 	float stripe = 0.0;
 	int code = int(floor(motif * 16.0 + 0.1));

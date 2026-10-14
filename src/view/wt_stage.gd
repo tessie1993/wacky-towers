@@ -1,4 +1,7 @@
 class_name WtStage extends Node3D
+
+## Orthographic camera distance from the board centre (also the post-process focus plane).
+const CAMERA_DISTANCE := 35.0
 ## Toy-box diorama. Simulation owns the board; this node only reads and presents it.
 ## Blocks use the repository's original bevelled GLB cube geometry and MultiMeshes.
 
@@ -42,6 +45,7 @@ var _boss: WtToyActor
 var _character_root: Node3D
 var _story_context: Dictionary = {}
 var _environment: Environment
+var _post: WtPostProcess
 var _key_light: DirectionalLight3D
 var _rig: Array[DirectionalLight3D] = []
 var _far: Node3D
@@ -76,6 +80,7 @@ var _danger: MeshInstance3D
 var _danger_mat: StandardMaterial3D
 var _fx: Array[Dictionary] = []
 var _confetti: MultiMeshInstance3D
+var _sparkles: WtSparkleFx
 var _fx_material: StandardMaterial3D
 var _last_piece_uid: int = -1
 var _last_piece_shape: StringName = &""
@@ -113,6 +118,7 @@ func setup(sim: BoardSim, biome: StringName, settings: Dictionary = {}) -> void:
 	_build_characters()
 	_build_props()
 	_build_camera()
+	_build_post()
 	_build_fx()
 	_audio = WtAudio.new()
 	add_child(_audio)
@@ -359,6 +365,9 @@ func apply_settings(settings: Dictionary) -> void:
 
 ## Visible celebratory particles, pooled in one MultiMesh (reduced motion disables them).
 func burst(origin: Vector3, tint: Color, count: int = 30) -> void:
+	if _sparkles != null:
+		_sparkles.sparkle(origin, tint, maxi(6, count / 2), 1.2 + float(count) * 0.02)
+		if count <= 20: _sparkles.dust(Vector3(origin.x, 0.1, origin.z), Color(1, 0.95, 0.85), 5)
 	for i: int in mini(count, 120 - _fx.size()):
 		var angle: float = float(i) * 2.399963
 		var speed: float = 1.4 + float(i % 7) * 0.23
@@ -383,6 +392,7 @@ func _process(delta: float) -> void:
 	if _danger.visible:
 		_danger_mat.albedo_color.a = 0.8 if _reduced() else 0.55 + 0.25 * sin(_time * 4.0)
 	_update_fx(delta)
+	if _sparkles != null: _sparkles.step(delta)
 	_update_marks()
 
 
@@ -438,6 +448,13 @@ func _build_light() -> void:
 	add_child(we)
 	_rig = builder.add_light_rig(self, _yaw)
 	_key_light = _rig[0]
+
+
+## Shared painted post-process quad on the camera + per-biome glow (biome_looks.json `post`).
+func _build_post() -> void:
+	_post = WtPostProcess.new()
+	_post.attach(_camera, _environment, _biome, _preference_flag("post", true))
+	_post.set_focus(CAMERA_DISTANCE)
 
 
 func _build_island() -> void:
@@ -708,7 +725,7 @@ func _update_camera() -> void:
 	var target := Vector3(0, _board.h_play() * .36, 0)
 	var yaw: float = deg_to_rad(_yaw)
 	var elev: float = deg_to_rad(_elevation)
-	_camera.position = target + Vector3(sin(yaw) * cos(elev), sin(elev), cos(yaw) * cos(elev)) * 35.0
+	_camera.position = target + Vector3(sin(yaw) * cos(elev), sin(elev), cos(yaw) * cos(elev)) * CAMERA_DISTANCE
 	_camera.look_at(target, Vector3.UP)
 	WtIslandBuilder.orient_rig(_rig, _yaw)
 	WtIslandBuilder.update_facing(_world, _yaw)
@@ -1076,6 +1093,8 @@ func _build_fx() -> void:
 	_fx_material = _mat(Color.WHITE,true)
 	_fx_material.vertex_color_use_as_albedo=true
 	_confetti=_multimesh(box,120,_fx_material)
+	_sparkles=WtSparkleFx.new()
+	add_child(_sparkles)
 	var ring := TorusMesh.new()
 	ring.inner_radius=.38;ring.outer_radius=.47;ring.rings=20;ring.ring_segments=6
 	var mark_material := _mat(Color.WHITE,true)

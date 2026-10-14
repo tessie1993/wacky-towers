@@ -255,6 +255,20 @@
           "light": "#A9E2FF",
           "foam": "#FFFFFF"
         }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#D6E8FA",
+        "warm_tint": "#FFF6E2",
+        "vignette_color": "#3A2A55",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "candy": {
@@ -399,6 +413,22 @@
           "light": "#FFC4DA",
           "foam": "#FFFFFF"
         }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#FFE0F0",
+        "warm_tint": "#FFF3EA",
+        "ao_tint": "#8A4A80",
+        "bloom_strength": 0.32,
+        "vignette_color": "#5A2A55",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "ice": {
@@ -605,6 +635,23 @@
           "light": "#DDF2FF",
           "foam": "#FFFFFF"
         }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#DCEBFF",
+        "warm_tint": "#F4F8FF",
+        "ao_tint": "#4A5E9A",
+        "outline_color": "#2E3A6A",
+        "bloom_strength": 0.3,
+        "vignette_color": "#2A3A6A",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "underwater": {
@@ -738,6 +785,23 @@
           "light": "#A9E2FF",
           "foam": "#FFFFFF"
         }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#7FD0E0",
+        "haze_strength": 0.35,
+        "warm_tint": "#F2FBFF",
+        "ao_tint": "#2A4A80",
+        "outline_color": "#1B3A5A",
+        "vignette_color": "#0E2A50",
+        "dof_strength": 2.6,
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "shadow_lift": 0.01
       }
     },
     "lava": {
@@ -875,6 +939,28 @@
           "foam": "#FFE08A",
           "emission": 2.0
         }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#7A3A30",
+        "haze_strength": 0.35,
+        "warm_tint": "#FFEBD0",
+        "ao_tint": "#4A2A40",
+        "outline_color": "#2A1020",
+        "bloom_strength": 0.55,
+        "bloom_threshold": 0.7,
+        "bloom_tint": "#FF9A4A",
+        "vignette_color": "#2A0A14",
+        "glow_intensity": 0.8,
+        "glow_bloom": 0.08,
+        "glow_hdr_threshold": 0.85,
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "shadow_lift": 0.01
       }
     },
     "forest": {
@@ -1017,6 +1103,22 @@
           "light": "#A9E2FF",
           "foam": "#FFFFFF"
         }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#BFE0C0",
+        "warm_tint": "#FFF4DA",
+        "ao_tint": "#3A5A50",
+        "outline_color": "#1E3A2A",
+        "vignette_color": "#1E3A30",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "cave": {
@@ -1145,6 +1247,23 @@
           "foam": "#FFE08A",
           "emission": 2.0
         }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#6A5A9A",
+        "haze_strength": 0.35,
+        "warm_tint": "#FFF0F8",
+        "ao_tint": "#3A2A6A",
+        "bloom_strength": 0.4,
+        "bloom_tint": "#C8A0FF",
+        "vignette_color": "#1A0E3A",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "shadow_lift": 0.01
       }
     },
     "clockwork": {
@@ -1262,6 +1381,22 @@
         "far_cap": "#B9A27C",
         "far_rock": "#8A7458",
         "planet": "#B87AD8"
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#D8C8A0",
+        "warm_tint": "#FFF0D0",
+        "ao_tint": "#4A3A50",
+        "outline_color": "#2A1E30",
+        "bloom_tint": "#FFD08A",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "neon": {
@@ -1393,6 +1528,28 @@
           "foam": "#FFE08A",
           "emission": 2.0
         }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#4A2A8A",
+        "haze_strength": 0.35,
+        "warm_tint": "#F8F0FF",
+        "ao_tint": "#2A1A6A",
+        "outline_color": "#120A2A",
+        "bloom_strength": 0.7,
+        "bloom_threshold": 0.6,
+        "bloom_tint": "#7AF0FF",
+        "vignette_color": "#0E0630",
+        "glow_intensity": 0.9,
+        "glow_bloom": 0.1,
+        "glow_hdr_threshold": 0.8,
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "shadow_lift": 0.01
       }
     },
     "celestial": {
@@ -1533,6 +1690,27 @@
         "far_cap": "#E9E3D6",
         "far_rock": "#CFC7B8",
         "planet": "#B87AD8"
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#B8A0F0",
+        "warm_tint": "#FFF2FF",
+        "ao_tint": "#4A3A9A",
+        "outline_color": "#2A1E5A",
+        "bloom_strength": 0.5,
+        "bloom_threshold": 0.7,
+        "bloom_tint": "#FFE8A0",
+        "vignette_color": "#1E1050",
+        "glow_intensity": 0.75,
+        "glow_hdr_threshold": 0.85,
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "carnival": {
@@ -1667,6 +1845,23 @@
           "light": "#FFC4DA",
           "foam": "#FFFFFF"
         }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#FFD8C0",
+        "warm_tint": "#FFF3DC",
+        "ao_tint": "#7A4A70",
+        "bloom_strength": 0.35,
+        "bloom_tint": "#FFC070",
+        "vignette_color": "#4A2040",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "pirate": {
@@ -1801,6 +1996,22 @@
           "light": "#9FF0EA",
           "foam": "#FFFFFF"
         }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#A8D0E0",
+        "warm_tint": "#FFF2DA",
+        "ao_tint": "#3A4A70",
+        "outline_color": "#2A1E24",
+        "vignette_color": "#1A2A4A",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "haze_strength": 0.35,
+        "shadow_lift": 0.01
       }
     },
     "dune": {
@@ -1927,6 +2138,23 @@
           "light": "#A9E2FF",
           "foam": "#FFFFFF"
         }
+      },
+      "post": {
+        "outline_strength": 0.55,
+        "ao_strength": 0.6,
+        "vignette_strength": 0.4,
+        "haze_color": "#FFE0B0",
+        "haze_strength": 0.35,
+        "warm_tint": "#FFF0D0",
+        "ao_tint": "#7A4A40",
+        "outline_color": "#4A2A20",
+        "bloom_tint": "#FFD090",
+        "vignette_color": "#5A2A20",
+        "outline_width": 1.6,
+        "outline_threshold": 0.3,
+        "ao_radius": 9.0,
+        "haze_start": 14.0,
+        "shadow_lift": 0.01
       }
     }
   },
