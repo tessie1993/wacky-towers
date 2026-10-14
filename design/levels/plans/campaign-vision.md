@@ -1,15 +1,12 @@
 # Campaign vision: Wacky Towers (phase 1 brief)
 
-Author: studio game director (creative-director). Date: 2026-10-14. Status: for the phase 1 gate.
-Inputs: `campaign-redo-plan.md`, `reference-quality-bar.md`, `art-bible.md`, reference boards 01, 02, 07
-(story) and 09-12 (minigame layout only), `catalog.json`, `progression.md`, `minigames.md`,
-`level-identity-spec.md`, the 2026-10-14 level/mechanics review (4.8/10) and level playtest, and
-`2026-10-14-story-cast-decisions.md`.
-User words: "all levels look the same", "make each level not just in art but also different in game play",
-"make the narrative first and get inspired by the story to make the levels", "pass grade must be 9.7".
-Decisions in force: 168 levels (12 biomes x 14); a FRESH story that keeps only the cast (Wizard mascot;
-heroes Dame Ada the knight, Bram the dwarf, Sif the elf; NPCs Lana, Boulder, Glim). Old panels S01-S20
-and `story-v2.md` are not binding.
+Author: studio game director. Date: 2026-10-14. For the phase 1 gate. Inputs: the redo plan, quality bar,
+art bible, reference boards, `catalog.json`, `progression.md`, `minigames.md`, `level-identity-spec.md`,
+the level/mechanics review (4.8/10) and the level playtest.
+User words: "all levels look the same", "different in game play", "narrative first", "pass grade must be 9.7".
+Decisions in force: 168 levels (12 biomes x 14); a FRESH story keeping only the cast (Wizard mascot; heroes
+Dame Ada the knight, Bram the dwarf, Sif the elf; NPCs Lana, Boulder, Glim). Old panels S01-S20 and
+`story-v2.md` are not binding.
 
 ## 1. Campaign fantasy
 
@@ -24,15 +21,12 @@ The player should feel clever, a little mischievous, and always looked after.
 
 ## 2. Three pillars
 
-Each pillar has a one-line test any reviewer can apply to a single level, cold, with the JSON, one
-start screenshot and one clear screenshot.
+Each pillar has a test a reviewer can apply to one level from its JSON and two screenshots.
 
 **P1. Every level is a scene, not a stage.** One place, one problem, one reason to stack, written as the
 level's `metadata.signature` and visible in the first 3 seconds with no text.
 - *Test (swap test):* reskin the level into another biome. If it still makes sense, it fails. The
   story event, the set piece and the goal must be tied to this place.
-- *Resolves:* a generic "clear 3 layers" slot vs a goal that is the story problem (build the bridge the
-  goat needs).
 
 **P2. The stack is the answer.** The goal is something the player builds or reveals, and the world
 visibly changes when it is done. The rule that makes the level different must be felt in the piece
@@ -40,7 +34,6 @@ physics or the board, not only in a pill of rule names.
 - *Test (change test):* name the world change the win causes (the bridge is crossed, the lamp lights,
   the door opens). Then name the one rule or shape that changes how the player drops pieces here. If
   either is missing, it fails.
-- *Resolves:* a boss that is a hit-point bar vs a boss the player beats by building (walls, ramps, bait).
 
 **P3. Cosy mischief, always fair.** Failure is funny and cheap, wins are generous, and nothing is
 mean. One new idea per level. The game never hides a rule, never spawns an unwinnable piece run, and
@@ -48,12 +41,8 @@ never needs a sentence to be understood.
 - *Test (kind-and-clear test):* (a) a first-time player can say what to do from the start frame alone;
   (b) a lost attempt shows a comic reaction and restarts in 2 seconds or less; (c) the level introduces at
   most one rule the biome has not already taught.
-- *Resolves:* an opener with four stacked rules (the current `ice_01`) vs a single clear idea.
 
 ## 3. Emotional arc (catalog order)
-
-Shape: wonder, then mischief, hush, strangeness, swagger, danger (the midpoint reversal), tangled warmth,
-isolation, tension, loneliness (the low point), awe, release. Each biome has a feel verb and a role.
 
 | # | Biome | Role in the arc | Feel the player leaves with |
 |---|---|---|---|
@@ -70,18 +59,17 @@ isolation, tension, loneliness (the low point), awe, release. Each biome has a f
 | 11 | Celestial | **Awe and gathering.** Above the weather. Everyone returns. The stakes are named. | Sublime calm, readiness |
 | 12 | Carnival | **Triumph and release.** The party of the whole cast. Every learned idea comes back as a game. | Joy, pride, "I built all of this" |
 
-Intensity runs as a sawtooth inside each biome (teach, twist, combine, finale, then a breather bonus)
-and as a stair across the campaign (the Lava danger and Neon low are the two deepest dips).
-Bonus levels are always the exhale. The hard track (h1-h3) is mastery, not story.
+Intensity is a sawtooth inside each biome (teach, twist, combine, finale, breather bonus) and a rising
+stair across the campaign, with Lava and Neon as the two deep dips. Hard levels (h1-h3) are mastery.
 
 ## 4. Tone rules
 
-**Voice.** Storybook-wacky: warm, a little silly, kind to everyone. Think a bedtime tale told by a
-cheerful uncle. Villains are mischievous or misunderstood, never cruel. Nobody dies. Peril is comic.
+**Voice.** Storybook-wacky: warm, a little silly, kind to everyone. Villains are mischievous or
+misunderstood, never cruel. Nobody dies. Peril is comic.
 
-**Wordless in-level moments.** Anything that happens during play (a hero waving, the goat bleating, a
-door opening) is shown through animation, sound and the set piece. No dialogue during a drop. No
-text over the board. Level intros and outros may use one short caption outside play.
+**Wordless in-level moments.** Anything during play (a hero waving, a door opening) is shown by animation,
+sound and the set piece. No dialogue during a drop, no text over the board. Intros and outros may carry
+one short caption outside play.
 
 **Text budget (live UI only, never baked into art).**
 - Story caption: one sentence, 14 words or fewer, on a title ribbon over a painted panel.
@@ -105,17 +93,12 @@ sarcasm, no mocking the player, no fourth-wall nagging, no toilet gags. Losing i
 
 ## 5. "Every level unique" as testable rules
 
-This extends `level-identity-spec.md` and keeps all its rules (shape and goal quotas, no `fixed_list`,
-`look` block, one signature). Every level must answer four questions with a distinct answer. A reviewer
-checks them from the level spec alone (phase 5) and from capture (phase 8).
+This extends `level-identity-spec.md` and keeps all its rules (quotas, no `fixed_list`, `look`, signature).
+Every level has four distinct facets: **story beat** (id `<biome>_<nn>`, who, what goes wrong, why stack),
+**place** (set piece and time of day), **way of playing** (unique goal, rule, shape triple plus signature)
+and **look** (start-frame silhouette: mask, set piece, sky, weather). Checked from specs (phase 5) and
+captures (phase 8).
 
-**Four facets per level.**
-1. **Story beat:** a beat id (`<biome>_<nn>`) with who is there, what goes wrong and why the player stacks.
-2. **Place:** a named spot on the island with a set piece (`look.set_piece`) and a `time_of_day`.
-3. **Way of playing:** a unique triple of (goal, main rule, board shape) plus one signature sentence.
-4. **Look:** a distinct silhouette on the start frame: board mask, set piece, sky and weather.
-
-**Rules (all machine- or reviewer-checkable).**
 - **U1 Beat first.** Every spec starts from its beat. A spec with no beat id and no reason to stack is rejected.
 - **U2 Swap test.** The beat, goal and set piece cannot move to another biome unchanged (P1).
 - **U3 Unique triple.** No two levels in the campaign share (goal type, main rule, board shape). Compare mask
@@ -148,105 +131,84 @@ checks them from the level spec alone (phase 5) and from capture (phase 8).
 why the player stacks, the world change on win, the wordless moment, an optional caption of 14 words or fewer.
 
 **The fresh story must achieve:**
-1. **A single through-line** a child can retell in two sentences, with one reason the heroes travel from
-   island 1 to island 12 and why the order matters (it fits section 3).
-2. **Stacking is canon.** Say why building holds the world together (the world rule in section 1), so each
-   chapter's problem is a stacking problem.
-3. **Twelve distinct chapters,** each with its own problem, local ally or villain (one-offs allowed), set pieces
-   and emotional beat from the arc table. Every biome has a boss face for its finale. Pirate is its own
-   chapter and does not copy Underwater.
-4. **The cast earns its place.** Each of Ada, Bram and Sif has an arc and a reason to be in at least 3 biomes.
-   Lana, Boulder and Glim are NPCs who help or hinder, with a clear role each. The Wizard has a flaw
-   (kind, forgetful, a bit vain) and a payoff.
-5. **14 beats per biome that vary by function:** teach (01-03), twist (04-06), combine (07-09), boss (10), a
-   bonus exhale, and three hard-track remixes that are "the same place, sillier or faster".
-6. **Designed for the screen:** every beat can be shown with no text in play, in one place, with one set piece.
-   Beats must be gameplay-neutral enough that phase 3 can assign mechanics (but not mechanics-first).
-7. **Resolve doc conflicts:** `tumble-fair.md` (a 5-level side island) is replaced by the 14-level Carnival
-   biome; the finale of the story is the Carnival.
-8. **Lean text:** the whole story must survive as 12 chapter captions plus the level names. A skimmer who
-   reads nothing else still gets the arc.
+1. **One through-line** a child can retell in two sentences, with a reason to travel island 1 to 12 in
+   this order (fits section 3).
+2. **Stacking is canon:** say why building holds the world together, so every chapter's problem is a stacking problem.
+3. **Twelve distinct chapters,** each with a problem, a local ally or villain (one-offs allowed), set pieces
+   and the arc-table emotion. Every biome has a boss face. Pirate is its own chapter, not Underwater's twin.
+4. **The cast earns its place.** Ada, Bram and Sif each have an arc and appear in 3+ biomes; Lana, Boulder
+   and Glim are NPCs with a clear role each; the Wizard has a flaw (kind, forgetful, a bit vain) and a payoff.
+5. **14 beats per biome by function:** teach (01-03), twist (04-06), combine (07-09), boss (10), bonus
+   exhale, three hard-track remixes ("same place, sillier or faster").
+6. **Built for the screen:** each beat shows with no text, in one place, with one set piece, and is
+   mechanics-neutral enough for phase 3 to assign rules.
+7. **Resolve doc conflicts:** `tumble-fair.md` (5-level side island) gives way to the 14-level Carnival biome.
+8. **Lean text:** the story must survive as 12 chapter captions plus level names.
 
 **Three candidate high concepts.** Each passes the "and also" test. The narrative lead chooses and may
 combine or replace them.
 
-- **A. "The Wobbling World."** A sneeze (the Wizard's) topples the Great Tower that pins the islands
-  together and scatters twelve Keystones. Each island starts to sag, drift or go odd in its own way, and the
-  trio rebuilds each island's piece. *It's a cosy island-hopper, and also the world is held together by what
-  you build.* Strength: stacking is literally the plot, and the finale is a refit party. Risk: the sneeze
-  can feel like a generic accident, so give the Wizard a real flaw.
-- **B. "The Grand Tumble Fair."** The Wizard sends invitations for a once-a-century Fair and the heroes
-  collect a ticket-stub from each island by solving its local mess, only to find the Fair's host is
-  secretly lonely. *It's a trip across twelve biomes, and also every island is a game at the Fair.* Strength:
-  the party tone and minigames fit, and the Carnival is the natural climax. Risk: a thin villain, and the
-  middle biomes can feel like errands.
-- **C. "The Lamplighters' Road."** The sky has gone dim because the twelve beacons on the islands are out. The
-  heroes light them by building each a base tall enough to reach the old light line. The final beacon is built
-  by every island's ally together. *It's a stacking puzzler, and also a quest to bring the light back.*
-  Strength: a clear visual payoff (each beacon lights, the sky brightens by biome), strong time-of-day and
-  `look` variety. Risk: a "quest for items" structure, and a need for a strong reason for the Neon low.
+- **A. "The Wobbling World."** The Wizard's sneeze topples the Great Tower that pins the islands together,
+  scattering twelve Keystones. Each island sags, drifts or goes odd in its own way, and the trio rebuilds
+  each one. *A cosy island-hopper, and also the world is held together by what you build.* Strength:
+  stacking is the plot; the finale is a refit party. Risk: the sneeze is a generic accident, so give the
+  Wizard a real flaw.
+- **B. "The Grand Tumble Fair."** The Wizard sends invitations to a once-a-century Fair; the heroes win a
+  ticket-stub on each island by fixing its local mess, then find the host is secretly lonely. *A trip across
+  twelve biomes, and also every island is a game at the Fair.* Strength: party tone, minigames and a natural
+  Carnival climax. Risk: a thin villain; middle biomes feel like errands.
+- **C. "The Lamplighters' Road."** The sky is dim because twelve beacons are out. The heroes light each by
+  building a base tall enough to reach the old light line; the last beacon is built by every ally together.
+  *A stacking puzzler, and also a quest to bring the light back.* Strength: a visual payoff per win and
+  strong time-of-day variety. Risk: an item-quest structure; the Neon low needs a strong reason.
 
-**Recommendation: A.** It makes P2 (the stack is the answer) the plot itself, and the Carnival's
-triumph (the world holds) has an earned payoff. It also gives every biome a simple problem to dress up
-(a sagging, drifting or humming island). I would borrow C's beacon-light payoff for the visual reward on each
-win. This is the narrative lead's call: if B or C produces better beats, take it and say why.
+**Recommendation: A.** It makes P2 the plot itself, gives every biome a simple problem to dress up (a
+sagging, drifting or humming island) and earns the Carnival payoff. Borrow C's beacon-light as the win
+reward. This is the narrative lead's call: if B or C yields better beats, take it and say why.
 
 ## 7. Brief for the systems designer (phase 3)
 
 **Output:** `design/levels/plans/mechanics-roster.md` and `progression.md` v2.
 
-1. **Mechanics follow the story.** Each biome gets one signature mechanic family that comes from its
-   chapter's problem (not from the old rule list). Re-use the 40-odd existing rules where they fit, and
-   list engine gaps explicitly (the plan names boss phases, the minigame phase runner, new goals and the
-   shape overlay).
-2. **Teach, twist, combine.** For each biome list: 1 new rule taught alone, 2 twists, 2 combines. At most
-   one new rule per level (U10). Show a dependency graph across biomes so no rule appears untaught.
+1. **Mechanics follow the story.** One signature mechanic family per biome, drawn from its chapter's
+   problem. Reuse existing rules where they fit; list engine gaps (boss phases, minigame phase runner,
+   new goals, shape overlay) with an owner.
+2. **Teach, twist, combine.** Per biome: 1 new rule taught alone, 2 twists, 2 combines, at most one new
+   rule per level (U10). Include a cross-biome dependency graph so no rule appears untaught.
 3. **Goal vocabulary.** Assign every level a goal from the full set (`height`, `shape`, `survive`,
-   `bonk_boss`, `rescue_all`, `dig_rescue`, `wind_keys`, `bake_oven`, `clear_n`, plus the span/climb/route
-   goals from the minigames). `clear_n` is the exception: at most 5 per biome.
-4. **Minigame blocks.** Keep the 16 modules and give each a debut level, a recall and a story reason
-   (which beat motivates it). No biome debuts more than 2. Define the phase runner contract.
-5. **Boss systems.** A phased boss for every tier 10, defeated by building. Define the 12 boss mechanics
-   and the arena change per phase. No hit-point bar that ignores board state.
-6. **Difficulty formulas.** Write `g0`, goal `n`, time stars and the hard track as formulas of tier and
-   biome index. Fix the review's faults: `g0` rises across the campaign and within each biome, the hard
-   track is faster than tier 10, finale `n` is not lower than tiers 07-09, stars depend on the rules.
-7. **Fairness spec.** No `fixed_list`. Opening sets for tier 01 of each biome, a spawn-safety rule and a
-   soft-lock warning for finite puzzles.
-8. **Unlock flow.** Keep the 15/30 star gate unless a case is made. Cover the minigame to tournament unlock
-   and the hard track gate.
-9. **First hour.** `meadow_01` must be winnable by a new player in under two minutes (the review found it
-   was a wall).
+   `bonk_boss`, `rescue_all`, `dig_rescue`, `wind_keys`, `bake_oven`, minigame goals); `clear_n` at most 5 per biome.
+4. **Minigame blocks.** Keep the 16 modules, each with a debut, a recall and the beat that motivates it;
+   at most 2 debuts per biome; define the phase runner contract.
+5. **Bosses.** A phased boss at every tier 10, beaten by building, with the arena change per phase.
+6. **Difficulty formulas.** `g0`, goal `n`, stars and the hard track as formulas of tier and biome index.
+   Fix the review faults: `g0` rises within and across biomes, hard track beats tier 10, finale `n` is
+   not below tiers 07-09, stars depend on the rules.
+7. **Fairness and flow.** No `fixed_list`; opening sets for each level 01; spawn safety; soft-lock
+   warning; keep the 15/30 star gate unless argued; `meadow_01` winnable in under two minutes.
 
 ## 8. Brief for the level design lead (phase 4)
 
-**Output:** `design/levels/plans/<biome>.md` v2 for all 12 biomes, run as 4 groups of 3 biomes in parallel.
+**Output:** `design/levels/plans/<biome>.md` v2 for all 12 biomes, in 4 parallel groups of 3 biomes.
 
-1. **Start from the beat.** Each level spec opens with the phase 2 beat id and a one-line restatement.
-2. **Required fields per level:** `id`, beat id, `metadata.signature`, board mask (ASCII grid or named
-   shape), goal (type and n), main rule and extras, minigame block if any, `look` block (all keys),
-   camera, `g0` and stars from the phase 3 formula, the role (teach, twist, combine, boss, bonus, hard),
-   the first-10-seconds event, the world-change on win, the comic fail reaction, and `callback_of` if used.
-3. **Check the unique rules.** Each biome file ends with a table that proves U3, U6, U7 and U12 (the
-   triple, the look spread, the shape and goal counts). A group lead checks cross-biome U3.
-4. **Shapes.** Use real masks (cross, ring, L, twin islands and bridge, terraces, diamond, U-bay, stepping
-   stones) up to 12x12, and make sure masks render as missing floor, not as a texture (C1 from the playtest).
-5. **Readability.** Targets (shape goals, keyholes, objectives) must be visible from frame 0 at 720x1280.
-   Make the active piece distinct from the stack, and the landing marker high contrast. Flag any spec that
-   needs engine support so phase 6 can build it first.
-6. **Level 01 of each biome** has one rule at most, an opening set and a gentle `g0`.
-7. **Bonus and hard levels.** The bonus is a relaxed set piece with a playful goal. Hard levels are
-   remixes of the biome's best ideas with a new look, not recolours.
-8. **No fixes to JSON in this phase.** Specs only.
+1. **Start from the beat.** Each spec opens with its phase 2 beat id.
+2. **Required fields per level:** `id`, beat id, `metadata.signature`, board mask (ASCII grid), goal and n,
+   main rule and extras, minigame block, full `look` block, camera, `g0` and stars from the phase 3 formula,
+   role (teach, twist, combine, boss, bonus, hard), first-10-seconds event, world change on win, comic fail
+   reaction, `callback_of` if any.
+3. **Prove uniqueness.** Each biome file ends with a table proving U3, U6, U7, U12; group leads check
+   cross-biome U3.
+4. **Shapes and readability.** Real masks up to 12x12 that render as missing floor; targets visible from
+   frame 0 at 720x1280; active piece distinct from the stack; high-contrast landing marker. Flag engine needs.
+5. **Level 01** has at most one rule, an opening set and a gentle `g0`. Bonus is a relaxed set piece;
+   hard levels are remixes with a new look, not recolours.
+6. Specs only. No JSON edits in this phase.
 
 ## 9. The 9.7 review rubric (phases 2, 3 and 4)
 
-**How scoring works.** Each reviewer scores every criterion from 1 to 10 and cites evidence (file and
-line, level ids). **A phase passes only if every criterion is at least 9.7 and the mean is at least 9.7.**
-Anchors: 10 means a stranger could not improve it; 9.7 means only nitpicks that do not change a player's
-experience; 9 means a clear fix is listed; 8 or lower means a real defect. Reviewers list ranked defects
-with an owner and a fix, and they instruct while makers fix. Reviewers must check the rules in sections
-4 and 5 and the cast and IP rules.
+**Scoring.** Each reviewer scores every criterion 1-10 and cites evidence (file, level ids). **A phase
+passes only if every criterion is at least 9.7.** Anchors: 10 = a stranger could not improve it; 9.7 =
+nitpicks only; 9 = a clear fix is listed; 8 or lower = a real defect. Reviewers list ranked defects with
+owner and fix; makers fix. Reviewers also check sections 4 and 5, the cast and the IP rules.
 
 ### Rubric N (phase 2: narrative)
 
@@ -290,9 +252,5 @@ with an owner and a fix, and they instruct while makers fix. Reviewers must chec
 - **L7 Completeness and buildability.** All required fields are present for every level; engine needs are
   flagged; the spec is concrete enough to build JSON without guessing.
 
-## 10. Validation: we will know this vision worked if
-
-- A new player can describe three different levels from different biomes by story, not by rules.
-- A reviewer shown any two start frames from one biome can say which is which with the HUD hidden.
-- The final review scores every criterion at 9.7 or higher, with the Lava dip and the Carnival payoff
-  noticed by playtesters without prompting.
+Success looks like: a new player describes three levels by story not rules, and a reviewer tells any two
+start frames in a biome apart with the HUD hidden.

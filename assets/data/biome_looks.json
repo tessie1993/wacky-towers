@@ -29,7 +29,7 @@
         "body_mix": 0.1,
         "gloss": 0.2,
         "rim": 0.12,
-        "brightness": 1.0,
+        "brightness": 1.12,
         "topper": "sprout",
         "topper_rate": 0.2,
         "side_shade": 0.9,
@@ -48,7 +48,8 @@
           "#8A4A78",
           "#3E9E94"
         ],
-        "glyph_strength": 0.8
+        "glyph_strength": 0.8,
+        "layer_dark": 0.1
       },
       "sky": [
         "#4F94E6",
@@ -838,23 +839,23 @@
         "style": "lava",
         "cap_depth": 0.0,
         "body_color": "#4A3E3E",
-        "body_mix": 0.3,
+        "body_mix": 0.2,
         "glow_color": "#FF5A14",
         "glow": 1.3,
         "gloss": 0.2,
         "rim": 0.08,
         "topper": "spike",
         "topper_rate": 0.12,
-        "brightness": 1.0,
+        "brightness": 1.1,
         "side_shade": 0.9,
         "shade_side_extra": 0.26,
         "palette": [
-          "#5E4C4A",
-          "#8A4A38",
-          "#4C5E7E",
-          "#6A4468",
-          "#5E6A44",
-          "#7A6A58"
+          "#7A6462",
+          "#B05A40",
+          "#5C78A8",
+          "#8A5688",
+          "#6E8A4C",
+          "#A08A6A"
         ],
         "palette_accent": [
           "#FF5A14",
@@ -864,7 +865,8 @@
           "#FFD84A",
           "#FF8A2A"
         ],
-        "glyph_strength": 0.8
+        "glyph_strength": 0.8,
+        "layer_dark": 0.12
       },
       "sky": [
         "#2A1E3A",
