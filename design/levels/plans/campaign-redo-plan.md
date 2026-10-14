@@ -15,7 +15,7 @@ reviewer scores the result at least 9.7/10 (`.claude/docs/reference-quality-bar.
 
 - The story so far: `design/gdd/narrative/story-v2.md`, `assets/data/story/captions.json` (S01–S20),
   and `design/decisions/2026-10-14-story-cast-decisions.md`. The cast is the Wizard, Dame Ada,
-  Bram and Sif; Pirate Cove is the 11th biome.
+  Bram and Sif; Pirate Cove is the 11th biome to be added; it sits 5th in catalog order.
 - The audit facts: 123/168 levels use `clear_n`, 163/168 are plain 8x8, every biome repeats the
   same tier template, and Pirate copies Underwater.
 - The plans layer 1 (`design/levels/plans/<biome>.md`), the minigames (16), progression.md and
@@ -59,7 +59,7 @@ owner revises and the gate re-runs. No phase starts before the one it depends on
 
 - Every level has a story beat, a `metadata.signature` and a `look`.
 - No two levels in the campaign share the same (goal, main rule, board shape).
-- At most 4 plain-square boards and at most 5 `clear_n` goals per biome.
+- At most 4 plain-square boards per biome. **No `clear_n` headline goals** (U15). At least 4 surprise endings per biome (U16).
 - Every tier-10 finale is a phased boss tied to its chapter villain. No `fixed_list` anywhere.
 - The difficulty curve rises: g0 increases within each biome, and the hard track is faster than tier 10.
 - The verifier reports 0 failures, CI is green, and the game boots (`ui_flow_smoke`).
