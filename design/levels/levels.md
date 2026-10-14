@@ -591,3 +591,13 @@ Each has a recommended option first.
    - Three bark knots (Recommended): you already chose it.
    - A continuous grip ring that loosens as the layer fills, as one reviewer suggested. No visible count of 3, about 1 more day of view work.
    - Both: knots plus a creaking ring between clears.
+
+## 7. User decisions (2026-10-14, after r2)
+
+- **Level 1 speed:** "Speed up over time." The fall speed rises with time played: a smooth ramp per minute, with no
+  countdown and no fail clock. The grip releases are the story beats and do not set the speed. Start gentle; tune
+  after measuring (G6).
+- **Stars, all levels without a clock:** "Neat play." Stars come from clean play: fewer rescues and fewer wasted
+  pieces. In races, stars come from the finishing position.
+- **Moving platform (G8):** "Start now, in parallel." Engine work begins alongside level 1, and level 3 lands last
+  among 01-10 if needed.
