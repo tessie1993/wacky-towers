@@ -65,8 +65,7 @@ reveals, and the world visibly changes when it is done.
 - *P3c rule budget (spec-time):* the level adds at most one new rule (U10).
 - *P3d winnable (build-time):* a solver (or a bot with unlimited time) wins at least 98% of 500 seeded runs;
   a loss counts against the level only if no legal winning line existed (otherwise it is a bot failure).
-- Peril (Lava, Neon) is comic and reversible. Accessibility: every cue is shape plus colour plus sound, and the
-  level reads with reduced motion on.
+- Peril (Lava, Neon) is comic and reversible. Every cue is shape plus colour plus sound; reduced motion is safe.
 
 ## 3. Emotional arc, stakes and ending
 
@@ -123,8 +122,7 @@ no mocking the player. Losing is a pratfall, not a shame.
   title on the reference boards (`assets/art/reference/index.md`) or in the `minigames.md` Naming fixes table
   (for example Bridge Bashers, Tumbling Towers, Fort Blast, Kraken Blockade, Molten Guardian, Maze Heist).
   A name-check script catches exact and near-match names against those two sources; reviewers catch
-  paraphrases (N5, L1). pirate_03, 09, 10, h1, h2 and the
-  `bridge_dash` title are renamed in phase 4. The art bible and plan quote board names as references only.
+  paraphrases (N5, L1). pirate_03, 09, 10, h1, h2 and the `bridge_dash` title are renamed in phase 4.
 - No beige or parchment UI: open purple-wood frames over a painted scene (board 05), plum glass planks.
 - **Cast.** Recurring named characters: the Wizard (mascot); heroes Dame Ada = art-bible Knight (silver and
   red), Bram = Dwarf (ginger and steel), Sif = Elf (green and tan); NPCs Lana, Boulder and Glim (proposed
@@ -143,8 +141,7 @@ and **look** (start-frame silhouette).
   whatever the parameters.
 - **Canonical mask:** the board mask normalised under the 8 rotations and reflections, compared as a string
   (the smallest of the 8). A **plain square** is a full rectangle with no holes and no notches, at any size.
-- **The pill:** the rule list shown on the level card.
-- **Beat id = level id** (`<biome>_01`..`_10`, `_bonus`, `_h1`..`_h3`).
+- **The pill:** the rule list on the level card. **Beat id = level id** (`<biome>_01`..`_10`, `_bonus`, `_h1`-`_h3`).
 - **Counter goal:** any goal whose only HUD readout is a bare number to reach or fill (rows, cells, seconds)
   with no story object.
 - **Script check:** `tools/qa/check_level_uniqueness.gd`. Owner: tools-programmer. Built in **phase 3**, so it
@@ -195,10 +192,9 @@ and **look** (start-frame silhouette).
 - **U16 Surprise quota.** At least 4 of the 14 levels in each biome use an `ending_pattern` other than `plain`
   (twist, reveal, guest, secret, story). **At least 3 of those 4 must be twist, reveal or guest** (the end
   is not predictable from frame 0); secret and story may fill only the 4th slot. No pattern is used more than
-  twice per biome. The spec field `ending_pattern` is written to `metadata.ending` in the level JSON. Each
-  one is telegraphed, fair, carries a comic fail reaction and keeps a clear opening objective. Tier 10 and
-  level 01 may not hide their goal. **Reconciliation:** P1 and P3a demand a clear opening problem; U16 lets
-  the ending change after it. Secret endings are optional extras, never required.
+  twice per biome. `ending_pattern` is written to `metadata.ending` in the JSON. Each is telegraphed, fair,
+  comic on failure and keeps a clear opening objective; tier 10 and level 01 may not hide their goal. P1 and
+  P3a demand a clear opening problem; U16 lets the ending change after it. Secret endings are optional.
 
 ## 6. Brief for the narrative lead (phase 2)
 
