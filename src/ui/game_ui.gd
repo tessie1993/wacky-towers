@@ -274,12 +274,15 @@ func _kit_button(button: Button, kit_name: String = "btn_cream") -> void:
 	button.add_theme_stylebox_override("pressed", pressed)
 	button.add_theme_stylebox_override("disabled", disabled)
 	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	var ink: Color = Kit.CREAM_PILL if kit_name == "sign_heading" else INK
+	# Cream lettering with a dark outline on wood; plum, unoutlined, on gold, cream and parchment.
+	# Every key is (re)set so restyling a button never inherits the previous piece's ink.
+	var wood := kit_name == "sign_heading"
+	var ink: Color = Kit.CREAM_PILL if wood else INK
 	for key: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
 		button.add_theme_color_override(key, ink)
-	if kit_name == "sign_heading":
-		button.add_theme_color_override("font_outline_color", Kit.WOOD_DARK)
-		button.add_theme_constant_override("outline_size", 6)
+	button.add_theme_color_override("font_disabled_color", Color(Kit.CREAM_PILL, 0.75) if wood else MUTED)
+	button.add_theme_color_override("font_outline_color", Kit.WOOD_DARK)
+	button.add_theme_constant_override("outline_size", 6 if wood else 0)
 
 ## Narrows the side padding of every state of a kit button (dense HUD rows).
 func _tighten(button: Button, side: float) -> void:
@@ -918,9 +921,10 @@ func _build_hud() -> void:
 	_hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	# Biome-tinted screen frame (ref 15): the HUD chip's rim (vines, frost or gold) as an open
 	# nine-patch around the whole screen. Centre not drawn, input ignored, board stays clear.
-	var rim: StyleBoxTexture = _kit(String(Kit.BIOME_CHIPS.get(str(_hud_data.get("biome", "meadow")), "chip_hud")), 1.3)
+	var rim: StyleBoxTexture = _kit(String(Kit.BIOME_CHIPS.get(str(_hud_data.get("biome", "meadow")), "chip_hud")), 0.9)
 	if rim != null:
 		rim.draw_center = false
+		rim.texture = _rim_only(rim.texture)
 		var screen_frame := Panel.new()
 		screen_frame.name = "BiomeFrame"
 		screen_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -1156,6 +1160,26 @@ func _build_hud() -> void:
 	_place_gesture_pad()
 	if is_instance_valid(_menu): _root.move_child(_menu, -1)
 	if is_instance_valid(_countdown): _root.move_child(_countdown, -1)
+
+## The HUD chip with its parchment keyed out (cream pixels more than 9 px inside the edge),
+## leaving the wooden rim, vines and blossoms: a biome screen frame with no cream band.
+static func _rim_only(texture: Texture2D) -> Texture2D:
+	var key := "rim:%d" % texture.get_instance_id()
+	if _kit_cache.has(key): return _kit_cache[key]
+	var image: Image = texture.get_image()
+	if image == null: return texture
+	image = image.duplicate() as Image
+	var w := image.get_width()
+	var h := image.get_height()
+	for y: int in h:
+		for x: int in w:
+			if mini(mini(x, w - 1 - x), mini(y, h - 1 - y)) <= 9: continue
+			var c := image.get_pixel(x, y)
+			if c.r > 0.78 and c.g > 0.66 and c.b > 0.45 and c.r - c.b < 0.45:
+				image.set_pixel(x, y, Color(c, 0.0))
+	var rim := ImageTexture.create_from_image(image)
+	_kit_cache[key] = rim
+	return rim
 
 ## Kit.sprite(), plus a fallback for art dropped into assets/art/ui before the editor has
 ## imported it (no .import yet): the PNG is decoded directly. Null when the file is absent.

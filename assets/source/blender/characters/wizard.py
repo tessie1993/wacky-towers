@@ -28,7 +28,7 @@ from mathutils import Matrix, Vector
 
 HEIGHT = 1.6           # final height of wizard + cloud, metres
 MB_SURFACE = 0.575     # an isolated metaball's surface radius / element radius (measured, 5.2.2)
-WIZ_SCALE = 1.18     # wizard size relative to the cloud
+WIZ_SCALE = 1.22     # wizard size relative to the cloud
 TRI_BUDGET_WIZARD = 7000
 TRI_BUDGET_CLOUD = 2500
 BAKE_SIZE = 1024
@@ -245,9 +245,8 @@ def puffy_star(name, ro, ri, depth, mat, location, facing):
     o = mesh_obj(name, bm, mat, smooth=False)
     bv = o.modifiers.new("bevel", "BEVEL")
     bv.width = depth * 0.45
-    bv.segments = 4
+    bv.segments = 3
     bv.limit_method = "NONE"
-    o.modifiers.new("sub", "SUBSURF").levels = 1
     o.matrix_world = Matrix.Translation(location) @ Vector(facing).normalized().to_track_quat("Z", "Y").to_matrix().to_4x4()
     return realize(o)
 
@@ -445,6 +444,7 @@ def materials():
         "robe": felt("robe", "robe", rough=0.85, sheen=0.55, bump=0.03),
         "hat": felt("hat", "hat", rough=0.9, sheen=0.25, bump=0.05),
         "trim": principled("trim", "trim", rough=0.38, metal=0.55),
+        "band": felt("band", "f6e2b8", rough=0.8, sheen=0.3, bump=0.03),
         "gold": principled("gold", "gold", rough=0.25, metal=0.8,
                            Emission_Color=lin("gold"), Emission_Strength=0.25),
         "wood": felt("wood", "wood", rough=0.6, sheen=0.0, bump=0.02),
@@ -453,8 +453,8 @@ def materials():
         "glint": principled("glint", "ffffff", rough=0.2, Emission_Color=lin("ffffff"), Emission_Strength=3.0),
         "mouth": principled("mouth", "mouth", rough=0.5),
         "tongue": principled("tongue", "tongue", rough=0.5),
-        "star": principled("wand_star", "gold", rough=0.25, metal=0.2,
-                           Emission_Color=lin("gold"), Emission_Strength=1.2),
+        "star": principled("wand_star", "gold", rough=0.3, metal=0.2,
+                           Emission_Color=lin("e9a21c"), Emission_Strength=0.55),
     }
     return M
 
@@ -463,18 +463,18 @@ def materials():
 POSES = {
     # arm = shoulder, elbow, wrist; hand kind; wand direction for the right hand.
     "idle": {
-        "R": [(-0.19, 0.02, 0.79), (-0.30, -0.04, 0.67), (-0.31, -0.18, 0.66)], "R_hand": "fist",
-        "L": [(0.19, 0.02, 0.79), (0.30, -0.04, 0.65), (0.27, -0.18, 0.58)], "L_hand": "rest",
+        "R": [(-0.22, 0.02, 0.79), (-0.33, -0.06, 0.68), (-0.35, -0.21, 0.67)], "R_hand": "fist",
+        "L": [(0.22, 0.02, 0.79), (0.33, -0.06, 0.65), (0.31, -0.21, 0.58)], "L_hand": "rest",
         "wand": (-0.6, -0.12, 1.0), "eyes": "closed", "mouth": False,
     },
     "cheer": {
-        "R": [(-0.19, 0.02, 0.81), (-0.33, -0.03, 0.95), (-0.40, -0.07, 1.11)], "R_hand": "fist",
-        "L": [(0.19, 0.02, 0.81), (0.35, -0.06, 0.86), (0.49, -0.12, 0.94)], "L_hand": "open",
+        "R": [(-0.22, 0.02, 0.81), (-0.33, -0.03, 0.95), (-0.40, -0.07, 1.11)], "R_hand": "fist",
+        "L": [(0.22, 0.02, 0.81), (0.35, -0.06, 0.86), (0.49, -0.12, 0.94)], "L_hand": "open",
         "wand": (-0.18, -0.08, 1.0), "eyes": "closed", "mouth": True,
     },
     "point": {
-        "R": [(-0.19, 0.02, 0.80), (-0.34, -0.06, 0.76), (-0.50, -0.16, 0.84)], "R_hand": "fist",
-        "L": [(0.19, 0.02, 0.79), (0.30, -0.04, 0.65), (0.27, -0.18, 0.58)], "L_hand": "rest",
+        "R": [(-0.22, 0.02, 0.80), (-0.34, -0.06, 0.76), (-0.50, -0.16, 0.84)], "R_hand": "fist",
+        "L": [(0.22, 0.02, 0.79), (0.33, -0.06, 0.65), (0.31, -0.21, 0.58)], "L_hand": "rest",
         "wand": (-0.85, -0.45, 0.35), "eyes": "open", "mouth": False,
     },
 }
@@ -501,7 +501,7 @@ def build(pose_name, M):
     for co, semi in puffs:
         g = bmesh.ops.create_uvsphere(bm, u_segments=32, v_segments=16, radius=1.0)
         bmesh.ops.transform(bm, matrix=Matrix.Translation(co) @ Matrix.Diagonal((*semi, 1.0)), verts=g["verts"])
-    bm.transform(Matrix.Diagonal((1.12, 1.05, 1.0, 1.0)))
+    bm.transform(Matrix.Diagonal((1.06, 0.96, 0.86, 1.0)))
     cloud = mesh_obj("C_cloud", bm, M["cloud"])
     add_mods(cloud, remesh=0.012, smooth=(0.8, 30))
     cloud = realize(cloud)
@@ -560,18 +560,18 @@ def build(pose_name, M):
             W.append(sweep(f"W_eye{sx}", pts, [0.0045, 0.0065, 0.0065, 0.0045], ring=10, n=24, mat=M["eye"]))
 
     # beard + hair (one soft white mass, recipe 4: curl metaballs at the tip)
-    els = [E((0, -0.12, 0.87), (0.20, 0.11, 0.13)), E((0, -0.18, 0.74), (0.18, 0.10, 0.14)),
-           B((-0.145, -0.15, 0.80), 0.095), B((0.145, -0.15, 0.80), 0.095),
-           B((-0.10, -0.21, 0.655), 0.085), B((0.10, -0.21, 0.655), 0.085), B((0, -0.225, 0.60), 0.08),
+    els = [E((0, -0.12, 0.875), (0.18, 0.10, 0.12)), E((0, -0.19, 0.76), (0.145, 0.09, 0.12)),
+           B((-0.12, -0.16, 0.81), 0.08), B((0.12, -0.16, 0.81), 0.08),
+           B((-0.075, -0.22, 0.68), 0.07), B((0.075, -0.22, 0.68), 0.07), B((0, -0.235, 0.63), 0.068),
            B((-0.165, -0.09, 0.925), 0.08), B((0.165, -0.09, 0.925), 0.08),
            B((-0.18, 0.03, 1.0), 0.078), B((0.18, 0.03, 1.0), 0.078),
            B((-0.16, 0.10, 0.92), 0.085), B((0.16, 0.10, 0.92), 0.085), E((0, 0.13, 0.96), (0.17, 0.075, 0.11))]
-    cx, cz = 0.06, 0.52
+    cx, cz = 0.05, 0.575
     for i in range(16):
         t = i / 15
         phi = math.pi + t * 1.7 * math.pi
-        rr = 0.065 * (1 - 0.75 * t)
-        els.append(B((cx + rr * math.cos(phi), -0.235 + 0.01 * t, cz + rr * math.sin(phi)), 0.064 - 0.036 * t))
+        rr = 0.055 * (1 - 0.75 * t)
+        els.append(B((cx + rr * math.cos(phi), -0.25 + 0.01 * t, cz + rr * math.sin(phi)), 0.054 - 0.03 * t))
     beard = realize(metaball("mb_beard", els, res=0.011), "W_beard", M["beard"])
     add_mods(beard, remesh=0.008, smooth=(0.6, 14))
     beard = realize(beard)
@@ -607,8 +607,8 @@ def build(pose_name, M):
 
     # ---- robe: torso metaballs + skin-modifier sleeves -> join -> voxel remesh -> smooth -> folds
     torso = realize(metaball("mb_torso", [
-        E((0, 0.03, 0.66), (0.20, 0.17, 0.19)), E((0, -0.06, 0.53), (0.29, 0.27, 0.1)),
-        E((0, 0.02, 0.80), (0.19, 0.15, 0.08)), B((-0.15, -0.2, 0.52), 0.11), B((0.15, -0.2, 0.52), 0.11)],
+        E((0, 0.03, 0.66), (0.245, 0.20, 0.20)), E((0, -0.06, 0.53), (0.33, 0.29, 0.11)),
+        E((0, 0.02, 0.80), (0.235, 0.17, 0.09)), B((-0.17, -0.21, 0.52), 0.12), B((0.17, -0.21, 0.52), 0.12)],
         res=0.014), "W_robe")
     sleeves = []
     sleeve_only = {}
@@ -641,7 +641,7 @@ def build(pose_name, M):
         W.append(hem)
 
     # robe stars
-    for k, (az, el) in enumerate([(-35, 10), (30, -5), (-70, -20), (75, 15), (150, 5), (-150, -10), (180, 25),
+    for k, (az, el) in enumerate([(-48, 10), (45, -5), (-70, -20), (75, 15), (150, 5), (-150, -10), (180, 25),
                                   (110, -25), (-110, 20), (5, -35)]):
         a, e = math.radians(az - 90), math.radians(el)
         d = Vector((math.cos(a) * math.cos(e), math.sin(a) * math.cos(e), math.sin(e)))
@@ -674,11 +674,15 @@ def build(pose_name, M):
             W.append(sweep("W_wand", [a, (a + b) / 2, b], [0.014, 0.012, 0.009], ring=12, n=12, mat=M["wood"]))
             W.append(ellipsoid("W_wandknob", a, (0.017,) * 3, M["wood"], seg=16))
             star = puffy_star("wand_star", 0.075, 0.034, 0.03, M["star"], b + wd * 0.06, (-0.45, -1.0, 0.15))
+            glow = bpy.data.lights.new("star_glow", "POINT")      # render-only warm halo, not exported
+            glow.color, glow.energy, glow.shadow_soft_size = lin("ffcf5a")[:3], 10.0, 0.05
+            glow_o = link(bpy.data.objects.new("star_glow", glow))
+            glow_o.location = b + wd * 0.06 + Vector((0, -0.06, 0))
 
     # boots
     for sx in (-1, 1):
         rot = Matrix.Rotation(math.radians(sx * -14), 4, "Z")
-        W.append(ellipsoid(f"W_boot{sx}", (sx * 0.12, -0.33, 0.5), (0.058, 0.08, 0.05), M["boot"], rot=rot))
+        W.append(ellipsoid(f"W_boot{sx}", (sx * 0.14, -0.39, 0.49), (0.06, 0.085, 0.052), M["boot"], rot=rot))
 
     # ---- hat: bent swept cone + floppy brim with a rolled lip + big gold star; tilted back
     hat_parts = []
@@ -704,7 +708,9 @@ def build(pose_name, M):
         a = 2 * math.pi * i / 72
         lip.append((0.38 * math.cos(a), 0.36 * math.sin(a) + 0.02, 1.095 + brim_z(a, 1.0)))
     hat_parts.append(sweep("W_brimlip", lip, [0.026] * 72, ring=14, mat=M["hat"], closed=True))
-    hs = decal_star("W_hatstar", hat_parts[0], (0, -2, 1.24), (0, 1, 0), 0.06, 0.012, M["trim"], offset=0.004)
+    hat_parts.append(sweep("W_hatband", [(0, 0.022, 1.125), (0, 0.024, 1.16), (0, 0.027, 1.195)],
+                           [0.214, 0.205, 0.196], ring=36, n=6, mat=M["band"], cap=False, wobble=0.03))
+    hs = decal_star("W_hatstar", hat_parts[0], (0, -2, 1.255), (0, 1, 0), 0.06, 0.012, M["trim"], offset=0.004)
     if hs:
         hat_parts.append(hs)
     for k, (x, z) in enumerate([(0.1, 1.33), (-0.09, 1.18)]):
@@ -718,9 +724,10 @@ def build(pose_name, M):
     W += hat_parts
 
     # ---- the wizard is chunky relative to his cloud: scale him about his seat and sink him in
-    S = Matrix.Translation((0, -0.05, 0.43)) @ Matrix.Scale(WIZ_SCALE, 4) @ Matrix.Translation((0, 0.05, -0.47))
+    S = Matrix.Translation((0, -0.05, 0.36)) @ Matrix.Scale(WIZ_SCALE, 4) @ Matrix.Translation((0, 0.05, -0.47))
     for o in W + [star]:
         o.data.transform(S)
+    glow_o.location = S @ glow_o.location
 
     # ---- normalise: base at z = 0, total height HEIGHT
     allo = W + C + [star]
@@ -736,6 +743,7 @@ def build(pose_name, M):
     for o in allo:
         o.data.transform(N)
         o.data.update()
+    glow_o.location = N @ glow_o.location
     return {"wizard": W, "cloud": C, "star": star}
 
 
