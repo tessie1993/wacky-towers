@@ -1,5 +1,7 @@
 # Reference Minigame Catalogue
 
+**Coverage: complete. All 68 reference images were read. 101 unique minigames (see the merge note before Part A).**
+
 Scope: minigames spotted in `assets/art/reference/`. Total spotted: **83** (M01-M83). Every name below is for tracing only. Each entry gives an original working name ("Our name"). No logos, names or IP are to be copied.
 
 ## 0. Honest coverage note (read first)
@@ -362,3 +364,300 @@ NOT rendered (all returned "media removed: request limit"; no minigames verified
 - style/: 01_story_flow, 02_story_beats, 03_choose_mode_library, 04_settings_wide, 05_select_mode_a, 06_select_mode_b, 07_story_tutorial_beats, 08_settings_options_tall, 09_minigames_a, 10_minigames_b, 11_minigames_c, 12_minigames_d, 13_biome_blocks, 14_tournament_flow, 15_title_and_hud, 16_settings_wizard_peek (16 files). style/09-12 are indexed as the same four-up boards as mockups 01, 02, 04, 03, so M01-M16 are covered by name through them.
 
 Re-scan needed for the 31 unrendered files, especially party_minigames, party_modes, party_versus, tournament_flow, screens_flow, style/01, 02, 07, 14 (story beats and tournament flow likely hint at extra minigames).
+
+---
+
+# Part A: party, flow, title and biome sheets (15 images, all read)
+
+Duplicates across parts: M92 = M207 (Clear Race), M93 = M208 (Highest Tower), M94 = M209 (Largest Footprint).
+Unique total after merge: 83 (M01-M83) + 8 (M84-M91) + 10 (M200-M209) = **101 minigames** from all 68 images.
+
+
+Continues `reference-minigames-catalog.md` (M01-M83). Scope: the 15 top-level images in `assets/art/reference/` that the first scan never saw. All 15 rendered and were read once each at display size. No crops were needed. Names shown are for tracing only; each entry has an original working name. No logos, names or IP are to be copied. Two party boards (party_biome_islands_ref) carry third-party characters and names, so those are recorded only as layout and rules.
+
+Marks: [E] exists, [P] partial, [N] new. Checked by name against `assets/data/rules/*.json`, `src/mechanics/**` (goal scripts: height, clear_n, shape, survive, rescue_all, dig_rescue, bonk_boss, wind_keys, colour_target, endless) and `assets/data/tournament/templates.json` (versus templates clear_race, build_race, shape_race, survival; mg01-mg29+). A grep for footprint, territory and claim in `assets/data` found no such goal or rule, so those are [N].
+
+Confidence: A = rules visible on screen. B = layout visible, rules inferred. C = hinted only (a map node, mascot or background), rules are a proposal for design to confirm.
+
+## 1. New entries
+
+| ID | Name (as shown) | Source | One-line | Players | Mechanics | Conf |
+|---|---|---|---|---|---|---|
+| M84 | Wobble Builders / Wonky Builders | party_minigames TL-R, party_modes L, party_versus M | Stack tetromino cubes on a spring-mounted island; stability meter; height race | V (2) | E wobble, E tilt_plate, P spring base | A |
+| M85 | Battle Arena: Candy Clash | party_modes R | Two avatars on one shared candy-tile board place pieces | V (2) | P fill_shape, N shared board | B |
+| M86 | Island Claim Battle | party_versus R | Pieces colour tiles on a shared tropical island; territory bar | V (2) | N territory claim, P fill_shape | A |
+| M87 | Lava Keep grid | party_biome_islands TR, BL | Fill a stone grid with fire holes and flaming pieces; boss statue | V (2) | E ember, P rock_obstacle, P fill_shape | B |
+| M88 | Beat Drop | party_minigames BR (Space Disco node), biome_screens BL (DJ octopus) | Rhythm drop on a disco or DJ-deck board (hinted) | V | E mg16 Rhythm Blocks, P | C |
+| M89 | Party Tower Finale | party_minigames BR (centre landmark) | Tour finale: stack the central tower (hinted) | V / C | E height_goal, P | C |
+| M90 | Hoard Guard | biome_screens TR | Lava dragon guards a crystal stack; cavemen and fire sprite around it (hinted) | V / C | P pest, P squirrel_heist | C |
+| M91 | Tray Tower | screens_flow_ref (3 gameplay phones), title_variants_ref | Solo puzzle: pick one of 3 tray pieces, place on a floating island, 3 stars | S | P items / jumbled_queue, E height_goal | A |
+| M92 | Clear Race | tournament_flow_ref panel 2 and 3 | Clear the highlighted ghost blocks first; progress 6/12 | V (4) | E clear_race, E clear_n_goal | A |
+| M93 | Highest Tower | tournament_flow_ref panel 2 | Round mode on the wheel: tallest tower wins | V (4) | E height_goal | A |
+| M94 | Largest Footprint | tournament_flow_ref panel 2 | Round mode on the wheel: cover the most ground area | V (4) | N footprint goal | A |
+
+## 2. Entries
+
+**M84 Wobble Builders.** Our name: Spring Stack. Source: party_minigames_ref TL-right ("Wobbler Builders", 15m v 12m, wizard v alien), party_modes_ref L (0:50), party_versus_ref M (24m v 26m, 0:25, wizard v penguin).
+What it is: a height duel on two small grass islands, each standing on a big coil spring.
+How it plays: blocks are tetrominoes that fall into each player's half; you place them to build the tallest stack. The spring tilts and bounces as weight is added, shown by a Stability Meter (red to green) under each side. If the stack topples the height drops; most metres at 0:25 to 0:50 wins. Lose by collapse or by a lower height at the bell.
+Platform and scene: a floating or spring-mounted platform, side-on meadow, split screen (party_minigames, party_versus) or a portrait three-quarter view (party_modes).
+HUD: Height Xm each side, Stability Meter with a lightning icon each side, timer, Next Block slots (party_modes), player avatar plates.
+Players: versus, 2 (portrait), 3 shown with a second player card in party_modes.
+Mechanics: wobble [E wobble], tilt [E tilt_plate], spring bounce on the base [P bounce_pad is a cousin; a spring base is not a rule], height goal [E height_goal], stability meter [P].
+Fit: Meadow, early campaign. Closest existing cousins M14 Seesaw Stack and M69 Wonky Stack; this one adds the spring and the bar.
+
+**M85 Battle Arena: Candy Clash.** Our name: Sweet Board Brawl. Source: party_modes_ref R (0:38, penguin v alien).
+What it is: two characters stand on one shared iso board made of candy tiles (jelly, striped mint, sugar) among giant lollipops and candy canes.
+How it plays: blocks (tetrominoes and single cubes) fall onto the one shared grid; both players drop pieces onto it. Win and lose are not shown: likely most tiles covered, or blocking the rival from fitting. Both Next Block slots are shown (red S, green T).
+Platform and scene: one still candy board with raised tile cubes, three-quarter view.
+HUD: player cards 1 and 2, timer, Next Block x2 (two slots, one each).
+Players: versus, 2.
+Mechanics: shared board with two droppers [N], fill_shape [P], frosting [E] for the candy tile skin.
+Fit: Candy. Different from M77 and M72, which are two separate islands.
+
+**M86 Island Claim Battle.** Our name: Tile Claim. Source: party_versus_ref R (Party Mode, P1 1500 v P2 1450).
+What it is: a shared tropical island floor of blue and red tiles. Each player's pieces turn the tiles they land on to their colour, and the colours are blended in the middle.
+How it plays: blocks fall from a Next Block slot each; place to claim ground; a tug-of-war bar (blue v red, VS) shows who holds more. Win: larger share at the timer (timer not shown).
+Platform and scene: one floating sand island with palms, tiki, fruit and drinks, still.
+HUD: P1 and P2 scores, Next Block x2 plus a second queued piece on each side, tug bar.
+Players: versus, 2.
+Mechanics: territory ownership per tile [N], shared board [N], tug bar [N], fill_shape [P], colour_target [P].
+Fit: Tropical beach (a Party Tour node) or Meadow. Strong candidate for a new goal "most tiles owned".
+
+**M87 Lava Keep Grid.** Our name: Ember Keep. Source: party_biome_islands_ref TR and BL (two panels, same scene: 900 v 950, 00:35). Third-party characters; ignore.
+What it is: a grey stone grid with burning holes in it, a stone boss statue and angry stone-face crushers in the corners, lava falling off the island edges.
+How it plays: tetrominoes drop onto the grid; some are fiery pieces (the Next Block slot shows a flame-edged piece) and some cells are open fire pits. Fill the board while avoiding or plugging fire cells; fire pieces burn adjacent blocks (not shown, inferred). Win: higher score at 00:35.
+Platform and scene: floating volcanic island, dark, lava glow.
+HUD: two score cards, Next Block, timer, Party Mode ribbon.
+Players: versus, 2.
+Mechanics: ember [E ember], fire pit holes [P rock_obstacle], lava edge [E lava_rise, lava_lid], burn spread [P goo_spread], fill_shape [P].
+Fit: Volcanic. Extra source for M45 and M68 as the same biome, but a distinct grid-with-holes game.
+
+**M88 Beat Drop.** Our name: Disco Drop (hint only). Source: party_minigames_ref BR (Space Disco map node), biome_screens_ref BL (octopus on a DJ deck among glowing jellyfish).
+What it is: nothing but the name and a DJ booth is shown. Proposed: blocks fall to a beat, and you place on the beat for a combo.
+How it plays: proposal. Place on the beat to build a streak, off beat breaks it. Win: best combo score.
+Platform and scene: glowing tile board on a seabed or a space dance floor.
+HUD: not shown.
+Players: not shown, propose versus.
+Mechanics: rhythm timing [P mg16 Rhythm Blocks exists], beat-sync cue [N].
+Fit: Cosmic (Space Disco) and Underwater. Low confidence; confirm with design before building.
+
+**M89 Party Tower Finale.** Our name: Landmark Climb (hint only). Source: party_minigames_ref BR (Party Tower at the centre of the Party Tour map, circled by the path).
+What it is: a stone tower in the middle of the map, ringed by the route to every biome. Nothing about its rules is shown.
+How it plays: proposal. A last stage after the biome nodes: stack the landmark tower, or a boss round. Win: reach the top.
+Platform and scene: a floating meadow island with a tower.
+HUD: map shows Level 12/20 style progress, coins, hearts, gems (that is metagame HUD, not a minigame HUD).
+Players: not shown.
+Mechanics: height goal [E height_goal], boss [E bonk_boss_goal, climber_boss].
+Fit: Finale of the Party Tour. Low confidence.
+
+**M90 Hoard Guard.** Our name: Dragon's Stack (hint only). Source: biome_screens_ref TR (a cartoon dragon wearing a party cone hat beside a stack of crystal and lava cubes, two cavemen, a fire sprite).
+What it is: a title panel for the lava biome, no HUD.
+How it plays: proposal. A guardian creature roams the board and burns or steals cubes; you place fast and fill before it acts. A sleeping dragon could echo M07 Key Vault.
+Platform and scene: lava island, still.
+HUD: none.
+Players: versus or co-op.
+Mechanics: pest [E pest], steal [P squirrel_heist], ember [E ember], defend_core [E].
+Fit: Volcanic. Low confidence.
+
+**M91 Tray Tower.** Our name: Pick Three. Source: screens_flow_ref panels 2-4 (Score 1,250 / 3,470 / 7,320 with stars; meadow, ice, celestial); title_variants_ref (candy 1,500 and underwater 3,800 phones).
+What it is: the solo core mode: a tray of three pieces sits under a floating island; you choose one and place it on the grid.
+How it plays: pick a piece from the tray, set it down; the NEXT slot shows the upcoming piece; stars fill with the score (1 to 3). Corner icons on the celestial tray (a cyan and a pink round button) suggest rotate and swap or undo. Win: reach the star score. Lose: no space (not shown).
+Platform and scene: a floating stone-tile island per biome, with a sprout on top of each cube.
+HUD: pause, Score with three stars, Next slot, three-piece tray.
+Players: solo.
+Mechanics: three-piece choice tray [P items, jumbled_queue; the tray itself is not a rule], undo [E undo_reset], sprout skin [E sprouts], height or fill goals [E].
+Fit: every biome; the base solo mode.
+
+**M92 Clear Race.** Our name: Ghost Clear. Source: tournament_flow_ref panel 3 ("Mode: Clear Race. Be the first to clear the highlighted blocks!") and panel 2 (wheel).
+What it is: four players each own a small floating island with a built stack that has translucent highlighted cubes.
+How it plays: pieces are used to clear the highlighted cubes; each side has progress 6/12, 4/12, 8/12, 3/12; first to finish wins.
+Platform and scene: four islands in a 2x2 layout, fair-night ambience.
+HUD: player badges (circle, triangle, square, star), progress bars with x/12 each, mode banner.
+Players: versus, 4.
+Mechanics: [E clear_race template, E clear_n_goal]. Already built; extra source only for the clear-race template, not in M01-M83.
+Fit: any biome; Tumble Fair.
+
+**M93 Highest Tower.** Our name: Tall Wins. Source: tournament_flow_ref panel 2 (a wheel segment).
+What it is: round mode picked by the spin wheel. Rules not shown beyond the name and a tower icon.
+How it plays: tallest stack at the end wins.
+Mechanics: [E height_goal]. Players: versus, up to 4. Fit: any biome.
+
+**M94 Largest Footprint.** Our name: Wide Load. Source: tournament_flow_ref panel 2 (a wheel segment, icon of two broad blocks).
+What it is: round mode; rules not shown beyond the name.
+How it plays: proposal. Cover the largest area of the island floor with placed blocks at the end.
+Mechanics: [N footprint or area-covered goal] (no footprint goal found in assets/data or goal scripts); related to [P shape_goal, E fill_shape].
+Players: versus, up to 4. Fit: any biome.
+
+## 3. Extra sources for existing entries
+
+| Existing | Extra source | What it adds |
+|---|---|---|
+| M65 Bridge Builders | party_minigames_ref TL (Block Bridge Dash, 0:18, 25 v 28); party_modes_ref M (Block Bridge Race, 0:09, 3 players, wizard and tiki on a lava canyon); party_versus_ref L (Block Bridge Dash, 0:45, 15m v 12m) | 2-3 player split-screen tetromino bridge over lava with checkered flags at the far side |
+| M05 Bridge Dash | party_versus_ref L (side view: penguin on one cliff, tiki on the other, bridge cubes over lava, Speed Boost item and Stability Meters) | Avatar on the cliff plus a Speed Boost power-up on the same bridge game |
+| M76 Ruin Blocks | party_minigames_ref BL (Speed Stack Challenge: two grid islands, 450 v 320) | A plain 2-island grid placement race with Next Block per side |
+| M69 Wonky Stack | party_biome_islands_ref TL (meadow grid island with pipes and mascots, 1200 v 1150, 00:35) | Same Party Mode grid fill; third-party characters, ignore names |
+| M79 Pad Station | party_biome_islands_ref BR (neon glass grid among rainbow roads, 1400 v 1350, 00:53, outline-style pieces) | Space-glass grid with four spectators and outline Next Block pieces |
+| M77 Candy Castle | biome_screens_ref TL (waffle-tile grid, candy castle, gummy bears, gingerbread wizard) | Candy biome skin: waffle floor tiles |
+| M78 Reef Cubes | biome_screens_ref BL (glowing tile grid on a reef, shell tiles, mermaid, diver) | Shell-marked cells on the reef grid |
+| M64 Hex Defender (weak) | biome_screens_ref BR (neon circuit board, robot wizard tower, two heroes, arcade cabinets) | A tower with two defenders on a neon grid, hinted only |
+
+## 4. Non-minigame content seen (for the record)
+
+- party_modes_ref and party_minigames_ref BR: the Party Tour map (Tropical Beach, Candy Kingdom, Space Disco, Lava Keep, Party Tower; coins, hearts, level 12/20, gems) is the metagame; its nodes are biome hints (M88, M89).
+- tournament_flow_ref: Tumble Fair setup (3/5/7/13 rounds, First to 3 wins, Normal or Mixed, Items on or off), spin wheel with a Reroll (1) button, round play, standings with Match point, tournament win with round history. Not minigames; they are existing tournament flow.
+- title_screen_ref, title_variants_ref (biome picker Meadow, Candy, Lava, Crystal Cave, Neon, Dune Bazaar), biome_block_materials_ref (12 block materials: Meadow, Candy, Ice, Underwater, Lava, Forest, Crystal Cave, Clockwork, Neon, Celestial, Tumble Fair, Dune Bazaar), underwater and volcanic biome sheets, wizard_turnaround_ref (four hat shapes: circle, triangle, diamond, club), logo_ref and logo_master (identical): no minigames. The 12 materials give the full biome list for fit mapping; Forest, Ice, Dune Bazaar and Tumble Fair have no entry above yet.
+
+## 5. Image coverage
+
+All 15 images were read once each and all rendered: party_minigames_ref.jpg, party_modes_ref.jpg, party_versus_ref.jpg, party_biome_islands_ref.jpg, biome_screens_ref.jpg, screens_flow_ref.png, tournament_flow_ref.png, title_screen_ref.png, title_variants_ref.jpg, underwater_biome_sheet_ref.png, volcanic_biome_sheet_ref.png, wizard_turnaround_ref.png, biome_block_materials_ref.png, logo_ref.jpg, logo_master.jpg. No crops were made. Images remaining unread: none.
+
+---
+
+# Part B: style boards 01-16 (all read)
+
+
+Scope: the 16 style boards `assets/art/reference/style/01_story_flow.jpg` to `16_settings_wizard_peek.jpg`. All 16 were opened once each and rendered. No crops were needed (no Python/PIL used). Companion to `design/levels/plans/reference-minigames-catalog.md` (M01-M83), which is NOT edited. Numbering starts at M200 to avoid clashing with the other scanner. Names are original working names; no logos, names or IP copied.
+
+Marks: [E] exists, [P] partial or close cousin, [N] new. Checked by name against `assets/data/rules/*.json`, `src/mechanics/**` (goal scripts: height, clear_n, shape, survive, rescue_all, dig_rescue, bonk_boss, wind_keys, colour_target, endless), and `assets/data/tournament/templates.json` (clear_race, build_race, shape_race, survival, mg01-mg36).
+
+Players: V = versus (3-4), C = co-op, S = solo, 2P = two.
+
+## 1. Board verdicts
+
+| Board | Content | Minigames? |
+|---|---|---|
+| 01_story_flow | 4 story panels: intro, Learn to Stack tutorial, Explore the Biomes (heroes on a block cart), The Tournament (cannons and catapults vs block towers) | M205 new; extra sources for M13, M15, M04 |
+| 02_story_beats | 6 beats: Tutorial, Lost Tomes, Canopy Chaos, Forge Boss, Cosmic Gateway, Grand Finale | M200, M201, M204 new; extra source M83, M40 |
+| 03_choose_mode_library | Mode cards Campaign, Story, Tournament, Arcade, Biomes; star and coin counters | M206 hint (Arcade card) |
+| 04_settings_wide | Settings screen | None |
+| 05_select_mode_a | Mode cards, Level 15 campaign, Tournament "LIVE NOW", hearts (lives) HUD | Extra source M206 |
+| 06_select_mode_b | Same five cards, Arcade card has a stopwatch | Extra source M206 |
+| 07_story_tutorial_beats | Story intro, First Steps, Balance and physics, Goblins' ambush, Molten Guardian, Cosmic Nexus | M202, M203 new; extra sources M201, M205, M14, M31 |
+| 08_settings_options_tall | Settings and Options (grid helpers, camera shake, speed slider, control style tap and drag or swipe) | None (accessibility hints only, see section 4) |
+| 09-12 minigames a-d | Verified: identical to mockups 01, 02, 04, 03 | Nothing new, see section 3 |
+| 13_biome_blocks | 12 biome block swatches: Meadow, Candy, Ice, Underwater, Lava, Forest, Crystal Cave, Clockwork, Neon, Celestial, Tumble Fair, Dune Bazaar | Biome hints only, see section 4 |
+| 14_tournament_flow | Tumble Fair: lobby, round pick wheel, round play, standings, tournament win | M207, M208, M209 |
+| 15_title_and_hud | Title screen; HUD in Meadow, Ice and Celestial with Score, 3 stars, Next, 3-piece tray | None new (see section 4) |
+| 16_settings_wizard_peek | Settings screen | None |
+
+## 2. New entries
+
+**M200 Canopy Chaos.** Our name: Jungle Haul. Source: 02_story_beats panel 3 ("Canopy Chaos: Story Quest").
+What it is: a knight and a pirate drive an off-road buggy through a jungle track with a tall mossy stone stack lashed to the roof, while monkeys throw acorns and loose blocks fall onto the path.
+How it plays: the blocks are the cargo. Catch or place the falling pieces onto the stack on the moving buggy and keep it balanced over bumps and ruins; the stack height at the finish is the score. Win: the tallest intact stack at the finish. Lose: the stack topples off or the buggy stalls.
+Platform and scene: a moving buggy platform on a scrolling side-on road, waterfall, vines and ruins, parallax jungle.
+HUD: not shown; infer Stack Height and a Next Block slot.
+Players: V (2 rivals visible, a second buggy behind) or C.
+Mechanics: stack on a moving plate [P wobble, side_travel]; thrown hazards [P squirrel_heist, woodpecker_knock]; vehicle drive-along [N]; height goal [E height_goal]. Fit: Forest/Jungle, mid campaign. Relates to M13 and M36.
+
+**M201 Molten Guardian.** Our name: Cooling Pillars. Sources: 02_story_beats panel 4 ("The Forge Boss: Advanced Event"), 07_story_tutorial_beats panel 5 ("The Molten Guardian: Boss Battle", extra source for the same game).
+What it is: two builders (astronaut and dwarf/inventor) on stone platforms in a lava cavern raise block pillars toward a huge lava golem; the golem smashes and splashes, and ice and gear blocks cool the lava ones.
+How it plays: blocks build a pillar that reaches a goal marker and blocks the golem's fists. A temperature gauge (shown 45 and -35 degrees) and a Boss Level bar frame the fight: ice blocks drop the heat, lava blocks raise it. Win: reach the goal height, or drain the Boss Level bar by completing rows. Lose: a pillar is smashed or the heat gauge tops out.
+Platform and scene: two or three small flat platforms in a lava lake, boss in the backdrop, a mine cart on a rail at the base.
+HUD: two player cards (Alien 395, Inventor 5), Boss Level bar top centre, vertical thermometer left.
+Players: C or V (cards show two competing scores plus one boss bar, so co-op with a score).
+Mechanics: boss bar [E bonk_boss_goal]; heat/ember [E ember, pressure_cooker per M39]; lava hazards [E lava_rise, lava_rock_spawn]; mixed biome blocks [P event_card]; temperature gauge cooling by material [N]. Fit: Forge/Volcanic boss, late game. Relates to M47, M08, M10.
+
+**M202 Goblin Gate.** Our name: Fort Hold. Source: 07_story_tutorial_beats panel 4 ("Story: The Goblins' ambush! Defend the Fort!").
+What it is: a knight on top of a stone tower with a cannon builds the fort from wood and stone blocks while goblins hurl rocks from the forest edge.
+How it plays: blocks are the fort. Place walls and a battlement to absorb incoming rocks; the cannon fires back at goblins when a gap is closed. Win: survive N waves with the tower standing. Lose: the tower's core row breaks.
+Platform and scene: one stone tower on a forest clearing, still; goblins at the left and right edges, dust and impact sparks.
+HUD: not shown; infer Tower HP and Wave count.
+Players: C (one fort).
+Mechanics: survive goal [E survive_goal]; defend a core [P defend_core per M10/M25]; thrown rocks [P gumdrop_hail, snowball]; goblin raiders [N]; cannon return fire [N projectile]. Fit: Forest/Castle, early-mid story. Relates to M43, M04.
+
+**M203 Portal Relay.** Our name: Wormhole Passing. Source: 07_story_tutorial_beats panel 6 ("Advanced: The Cosmic Nexus. An Epic Ending!"; 02_story_beats panel 5 shares the setting).
+What it is: two astronaut-and-robot builders on separate floating space platforms pass glowing cubes through twin black-hole portals to each other.
+How it plays: a cube launched into one portal comes out at the partner's platform on a curved trail; each player must place the received cube onto their own stack in time, so the stacks only grow when both cooperate. Win: both stacks reach the target. Lose: a missed cube falls into the void.
+Platform and scene: two small hex-tile platforms in a starfield, one portal ring on each side.
+HUD: not shown; infer Next Block and a shared progress bar.
+Players: C or 2P.
+Mechanics: portal and pass [N]; magnet_pull catch [E]; radial pull [N, shared with M27]; fall-off [E lose_top_out]. Fit: Cosmic/Celestial, finale. Relates to M27, M46.
+
+**M204 Drag & Match.** Our name: Match Drop. Source: 02_story_beats panel 1 ("The Tutorial", speech bubble "Drag & Match!").
+What it is: a wizard on a cloud teaches the first puzzle: drag an ice cube onto the cube of the matching colour on a small island; a hand cursor shows the drag.
+How it plays: the blocks are coloured cubes that must be paired with their match; finish pairs to clear. Win: all pairs matched. Lose: none (tutorial), timers off.
+Platform and scene: a small still floating island on a cloud sky.
+HUD: wizard speech bubble and drag hint only.
+Players: S.
+Mechanics: colour match goal [E colour_target_goal, colour_pop]; drag hint [E mascot_hint]. Fit: Meadow, onboarding. Relates to M70.
+
+**M205 Ghost Footprint.** Our name: Rotate and Drop. Sources: 01_story_flow panel 2 ("Learn to Stack", TUTORIAL: Tap to rotate, drag to drop!) and 07_story_tutorial_beats panel 2 ("Tutorial: First Steps", Tap and place the block).
+What it is: the core placement lesson: a translucent ghost shows where the dragged piece will land on a grid island; a Rotate button turns the piece.
+How it plays: pick a piece, rotate, drop it on the dotted footprint; build a small tower. Win: fill the marked footprint or reach the target height. Lose: none, tutorial.
+Platform and scene: a still floating grass island with a checker grid.
+HUD: Rotate button, speech bubble, hand pointer.
+Players: S.
+Mechanics: fill the marked shape [E fill_shape, shape_goal]; ghost preview [E preview in the player's grid helpers]. Fit: Meadow, tutorial. Relates to M71, M83.
+
+**M206 Arcade Rush.** Our name: Beat the Clock. Sources: 03_choose_mode_library (Arcade card), 05_select_mode_a and 06_select_mode_b (Arcade card with stopwatch).
+What it is: the Arcade card shows a storm of coloured cubes, coins and stars around a stopwatch: a timed score mode.
+How it plays (inferred, the card shows no rules): blocks fall in a timed run; chain rows to earn coins and stars; the clock is the limit. Win: highest score before time out. Lose: stack tops out first.
+Platform and scene: not shown (card art only).
+HUD: stopwatch icon; star and coin counters on the mode screens.
+Players: S.
+Mechanics: timed endless score [E endless_goal, stopwatch]. Fit: any biome, repeatable arcade mode.
+
+**M207 Clear Race.** Our name: Highlight Sweep. Source: 14_tournament_flow panel 3 ("Round Play", Mode: Clear Race. "Be the first to clear the highlighted blocks!").
+What it is: four players each have their own island of cubes with a set of translucent highlighted target cubes; clear them before the others. Score chips show 6/12, 4/12, 8/12, 3/12.
+How it plays: place falling pieces so the highlighted cubes complete rows and clear; each clear ticks the counter. Win: first to 12/12. Lose: topping out, or a slower count at the timer.
+Platform and scene: four islands in a fair at dusk, still.
+HUD: four player chips (circle, triangle, square, star) with progress bars and counts, a mode banner.
+Players: V (4).
+Mechanics: [E] templates.json `clear_race` ("first to clear two layers"), clear_n_goal; highlighted-target variant [P colour_target_goal]. Fit: Tumble Fair and every biome. Matches the existing template; the highlighted-block marker is the only difference.
+
+**M208 Highest Tower.** Our name: Sky Count. Source: 14_tournament_flow panel 2 ("Round Pick" wheel, wedge icon of stacked towers).
+What it is: a wheel wedge naming a round mode in which the tallest tower wins.
+How it plays (inferred from the icon): stack as high as you can in the time; the highest column wins the round. Win: tallest. Lose: toppled or shorter.
+Platform and scene: not shown beyond the wheel.
+HUD: the wheel with a Reroll (1) button and a Starting in... 3 countdown.
+Players: V.
+Mechanics: [E height_goal]; closest template [P build_race, "build to the line while clears are off"]. Fit: Tumble Fair.
+
+**M209 Largest Footprint.** Our name: Sprawl Score. Source: 14_tournament_flow panel 2 (wheel wedge icon of an L-shaped footprint).
+What it is: a wheel wedge naming a round mode in which the widest layout wins rather than the tallest.
+How it plays (inferred): spread blocks to cover the most floor tiles on the island; extra height does not count. Win: most tiles covered. Lose: fewer tiles.
+Platform and scene: not shown.
+HUD: as M208.
+Players: V.
+Mechanics: floor area count [N, a new goal; closest is shape_goal] and [P fill_shape]. Fit: Tumble Fair, meadow.
+
+## 3. Extra sources for existing entries
+
+| Existing | Extra source | What it adds |
+|---|---|---|
+| M01 Bridge Bashers | style/09 TL | Identical to mockup_01 TL |
+| M02 Avalanche Ascent | style/09 TR | Identical to mockup_01 TR |
+| M03 Rubble Rumble | style/09 BL | Identical to mockup_01 BL |
+| M04 Fort Frenzy | style/09 BR; 01_story_flow panel 4 | Panel 4 shows catapults and cannons flinging blocks into three coloured towers with climbers on top, in a crowd arena: also suits a tournament Tower Pelt round |
+| M05 Bridge Dash | style/10 TL | Identical to mockup_02 TL |
+| M06 Fort Blast | style/10 TR | Identical to mockup_02 TR |
+| M07 Maze Heist | style/10 BL | Identical to mockup_02 BL |
+| M08 Summit Scramble | style/10 BR | Identical to mockup_02 BR |
+| M09 Clockwork Conveyor | style/11 TL | Identical to mockup_04 TL |
+| M10 Kraken Blockade | style/11 TR | Identical to mockup_04 TR |
+| M11 Digging Frenzy | style/11 BL | Identical to mockup_04 BL |
+| M12 Chroma Sky Climb | style/11 BR | Identical to mockup_04 BR |
+| M13 Rolling Rumble | style/12 TL; 01_story_flow panel 3 | Panel 3 shows three heroes riding a block-loaded cart along a path: a story-mode kart bridge |
+| M14 Tumbling Towers | style/12 TR; 07_story_tutorial_beats panel 3 | Panel 3 teaches it: balance gauge marked Danger, wind arrows and a pirate on a tilting platter |
+| M15 Shatter Shootout | style/12 BL; 01_story_flow panel 4 | As in M04 row |
+| M16 Frenzy Footholds | style/12 BR | Identical to mockup_03 BR |
+| M31 Kraken Keep | 07_story_tutorial_beats panel 3 | Wind and balance read as the teaching form of its gust and wobble |
+| M40 Nebula Laser Hack | 02_story_beats panel 5 | Laser-beam hackers on the crystal tower board |
+| M83 Quantum Spire | 02_story_beats panel 5 ("The Cosmic Gateway: Late Game") | Same glowing hex board, crystal spire and two hackers; adds portal swirl and a Hacker v Hacker-Heroes score card (255 and a second card) |
+| M08/M47 family | 02 panel 4 | See new M201 |
+
+Verification of boards 09-12: all 16 panels match the existing M01-M16 entries panel by panel (names, HUD, characters). Differences found: none. The existing catalogue's M13 lists "Next Hazard" and "Next Black" (a typo for Next Block in the image); no change needed.
+
+## 4. Hints that are not minigames (for the other owners)
+
+- Biome list on 13_biome_blocks has 12 biomes. Two are not in the existing catalogue's fit column: **Tumble Fair** (pink and cream striped fair blocks with a ticket topper; also the tournament venue) and **Dune Bazaar** (patterned sand-and-teal desert blocks with a golden dome topper, a natural home for M29 Pyramid Climber). Also named: Forest (wood rings and leaf), Crystal Cave, Clockwork, Neon, Celestial.
+- 15_title_and_hud shows the core in-level HUD on every biome: pause button top-left, Score with 3 star slots, Next piece tile, and a 3-piece tray at the bottom (two small circular power buttons on the Celestial board, one cyan one pink). This looks like a core stacking mode, not a separate minigame. It is the baseline for every entry above.
+- 05_select_mode_a shows a hearts (lives) counter and a "LIVE NOW" badge on Tournament: a lives economy and live-event hint, a systems matter for game-designer.
+- 08_settings_options_tall lists Grid Helpers, Camera Shake, Speed Slider and Control Style (Tap & Drag or Swipe): relevant to M205 and M206 input design.
+- 14_tournament_flow lobby: rounds 3, 5, 7, 13; match rule "First to 3 wins"; game mode Normal or Mixed; Items on or off; a spin wheel with Reroll (1); standings with a "Match point!" status; round history. All of it maps onto existing tournament templates and the mode randomizer, not new minigames.
+
+## 5. Coverage
+
+All 16 images were opened once and rendered; none were skipped or limited. No crops were made (text was legible at display size). Unread images: none.
