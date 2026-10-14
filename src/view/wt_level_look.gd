@@ -463,7 +463,7 @@ static func _texture(kind: String) -> Texture2D:
 					a = smoothstep(0.7, 0.88, d) * (1.0 - smoothstep(0.9, 1.0, d)) * 0.95
 					a += (1.0 - smoothstep(0.0, 0.9, d)) * 0.07
 					var h: float = sqrt((nx + 0.38) * (nx + 0.38) + (ny + 0.38) * (ny + 0.38))
-					a += (1.0 - smoothstep(0.08, 0.2, h)) * 0.9 * step(d, 0.85)
+					a += (1.0 - smoothstep(0.08, 0.2, h)) * 0.9 * (1.0 if d <= 0.85 else 0.0)
 				"streak":
 					a = pow(clampf(1.0 - absf(nx), 0.0, 1.0), 2.0) * sin(clampf((ny + 1.0) * 0.5, 0.0, 1.0) * PI)
 				"star":

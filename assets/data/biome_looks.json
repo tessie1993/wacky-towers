@@ -892,7 +892,7 @@
         ],
         "glyph_strength": 0.8,
         "layer_dark": 0.12,
-        "top_tint": 0.4
+        "top_tint": 0.65
       },
       "sky": [
         "#2A1E3A",
@@ -1237,7 +1237,7 @@
           "#E8E8FF"
         ],
         "glyph_strength": 0.8,
-        "top_tint": 0.4
+        "top_tint": 0.6
       },
       "sky": [
         "#2E2943",
@@ -1722,7 +1722,7 @@
           "#FFA0B0"
         ],
         "glyph_strength": 0.8,
-        "top_tint": 0.35
+        "top_tint": 0.6
       },
       "sky": [
         "#140F3A",
