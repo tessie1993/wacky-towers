@@ -34,7 +34,7 @@ TRI_BUDGET_CLOUD = 2500
 BAKE_SIZE = 1024
 
 PAL = {
-    "skin": "f7c9a8", "blush": "f29a9a", "nose": "f5ae98",
+    "skin": "f7c9a8", "blush": "f29a9a", "nose": "f39a8c",
     "beard": "fff6f0", "lilac": "9d8cc8", "cloud_line": "d9ccef",
     "robe": "7a52b0", "hat": "4a2270", "trim": "f2cf6a",
     "gold": "f8c840", "glint": "fff3b0", "wood": "8a5a34", "boot": "5a3a2a",
@@ -453,8 +453,8 @@ def materials():
         "glint": principled("glint", "ffffff", rough=0.2, Emission_Color=lin("ffffff"), Emission_Strength=3.0),
         "mouth": principled("mouth", "mouth", rough=0.5),
         "tongue": principled("tongue", "tongue", rough=0.5),
-        "star": principled("wand_star", "gold", rough=0.3, metal=0.2,
-                           Emission_Color=lin("e9a21c"), Emission_Strength=0.55),
+        "star": principled("wand_star", "fff1cf", rough=0.35, metal=0.0,
+                           Emission_Color=lin("ffe6a6"), Emission_Strength=0.35),
     }
     return M
 
@@ -465,17 +465,22 @@ POSES = {
     "idle": {
         "R": [(-0.22, 0.02, 0.79), (-0.33, -0.06, 0.68), (-0.35, -0.21, 0.67)], "R_hand": "fist",
         "L": [(0.22, 0.02, 0.79), (0.33, -0.06, 0.65), (0.31, -0.21, 0.58)], "L_hand": "rest",
-        "wand": (-0.6, -0.12, 1.0), "eyes": "closed", "mouth": False,
+        "wand": (-0.6, -0.12, 1.0), "eyes": "open", "mouth": False,
     },
     "cheer": {
         "R": [(-0.22, 0.02, 0.81), (-0.33, -0.03, 0.95), (-0.40, -0.07, 1.11)], "R_hand": "fist",
         "L": [(0.22, 0.02, 0.81), (0.35, -0.06, 0.86), (0.49, -0.12, 0.94)], "L_hand": "open",
-        "wand": (-0.18, -0.08, 1.0), "eyes": "closed", "mouth": True,
+        "wand": (-0.18, -0.08, 1.0), "eyes": "closed", "mouth": "smile",
     },
     "point": {
         "R": [(-0.22, 0.02, 0.80), (-0.34, -0.06, 0.76), (-0.50, -0.16, 0.84)], "R_hand": "fist",
         "L": [(0.22, 0.02, 0.79), (0.33, -0.06, 0.65), (0.31, -0.21, 0.58)], "L_hand": "rest",
         "wand": (-0.85, -0.45, 0.35), "eyes": "open", "mouth": False,
+    },
+    "oops": {
+        "R": [(-0.22, 0.02, 0.80), (-0.37, -0.05, 0.86), (-0.47, -0.10, 0.97)], "R_hand": "fist",
+        "L": [(0.22, 0.02, 0.80), (0.31, -0.13, 0.84), (0.25, -0.26, 0.93)], "L_hand": "open",
+        "wand": (-0.35, -0.1, 1.0), "eyes": "open", "mouth": "o",
     },
 }
 
@@ -525,7 +530,7 @@ def build(pose_name, M):
         C.append(sweep(f"C_swirl{k}", pts, rad, ring=8, n=60, mat=M["cloud_line"]))
 
     # ---- head (skin metaball) + blush vertex colours
-    head = realize(metaball("mb_head", [E((0, -0.02, 0.985), (0.182, 0.165, 0.178))], res=0.01), "W_head", M["skin"])
+    head = realize(metaball("mb_head", [E((0, -0.02, 0.99), (0.20, 0.17, 0.185))], res=0.01), "W_head", M["skin"])
     me = head.data
     attr = me.color_attributes.new("blush", "FLOAT_COLOR", "POINT")
     for v in me.vertices:
@@ -541,16 +546,16 @@ def build(pose_name, M):
 
     # nose
     ny = fy(0, 0.965)
-    W.append(ellipsoid("W_nose", (0, ny - 0.028, 0.962), (0.056, 0.05, 0.05), M["nose"]))
+    W.append(ellipsoid("W_nose", (0, ny - 0.03, 0.958), (0.062, 0.056, 0.056), M["nose"]))
 
     # eyes
     for sx in (-1, 1):
-        ex, ez = sx * 0.064, 1.008
+        ex, ez = sx * 0.07, 1.012
         ey = fy(ex, ez)
         if pose["eyes"] == "open":
-            W.append(ellipsoid(f"W_eye{sx}", (ex, ey + 0.005, ez), (0.024, 0.014, 0.034), M["eye"]))
-            W.append(ellipsoid(f"W_glint{sx}a", (ex - 0.007, ey - 0.008, ez + 0.012), (0.008,) * 3, M["glint"], seg=12))
-            W.append(ellipsoid(f"W_glint{sx}b", (ex + 0.007, ey - 0.007, ez - 0.012), (0.0042,) * 3, M["glint"], seg=10))
+            W.append(ellipsoid(f"W_eye{sx}", (ex, ey + 0.006, ez), (0.029, 0.016, 0.041), M["eye"]))
+            W.append(ellipsoid(f"W_glint{sx}a", (ex - 0.008, ey - 0.009, ez + 0.015), (0.0105,) * 3, M["glint"], seg=12))
+            W.append(ellipsoid(f"W_glint{sx}b", (ex + 0.009, ey - 0.008, ez - 0.014), (0.005,) * 3, M["glint"], seg=10))
         else:
             pts = []
             for i in range(9):
@@ -563,15 +568,16 @@ def build(pose_name, M):
     els = [E((0, -0.12, 0.875), (0.18, 0.10, 0.12)), E((0, -0.19, 0.76), (0.145, 0.09, 0.12)),
            B((-0.12, -0.16, 0.81), 0.08), B((0.12, -0.16, 0.81), 0.08),
            B((-0.075, -0.22, 0.68), 0.07), B((0.075, -0.22, 0.68), 0.07), B((0, -0.235, 0.63), 0.068),
+           B((0.0, -0.245, 0.58), 0.06),
            B((-0.165, -0.09, 0.925), 0.08), B((0.165, -0.09, 0.925), 0.08),
            B((-0.18, 0.03, 1.0), 0.078), B((0.18, 0.03, 1.0), 0.078),
            B((-0.16, 0.10, 0.92), 0.085), B((0.16, 0.10, 0.92), 0.085), E((0, 0.13, 0.96), (0.17, 0.075, 0.11))]
-    cx, cz = 0.05, 0.575
+    cx, cz = 0.05, 0.53
     for i in range(16):
         t = i / 15
         phi = math.pi + t * 1.7 * math.pi
-        rr = 0.055 * (1 - 0.75 * t)
-        els.append(B((cx + rr * math.cos(phi), -0.25 + 0.01 * t, cz + rr * math.sin(phi)), 0.054 - 0.03 * t))
+        rr = 0.065 * (1 - 0.75 * t)
+        els.append(B((cx + rr * math.cos(phi), -0.26 + 0.01 * t, cz + rr * math.sin(phi)), 0.056 - 0.03 * t))
     beard = realize(metaball("mb_beard", els, res=0.011), "W_beard", M["beard"])
     add_mods(beard, remesh=0.008, smooth=(0.6, 14))
     beard = realize(beard)
@@ -585,7 +591,7 @@ def build(pose_name, M):
             x = sx * (0.02 + 0.14 * t)
             z = 0.928 - 0.022 * math.sin(math.pi * t) + 0.05 * t ** 3
             y0 = front_y(beard, x, z) or -0.2
-            els.append(B((x, y0 + 0.014 - 0.01 * t, z), 0.045 - 0.019 * t))
+            els.append(B((x, y0 - 0.006 - 0.008 * t, z), 0.048 - 0.02 * t))
     stache = realize(metaball("mb_stache", els, res=0.008), "W_stache", M["beard"])
     W.append(stache)
 
@@ -594,16 +600,19 @@ def build(pose_name, M):
     for sx in (-1, 1):
         for i in range(6):
             t = i / 5
-            x = sx * (0.035 + 0.085 * t)
-            z = 1.052 + 0.01 * math.sin(math.pi * t) - 0.022 * t ** 2
-            els.append(B((x, fy(x, z) - 0.006, z), 0.026 - 0.008 * t))
+            x = sx * (0.035 + 0.1 * t)
+            z = 1.078 + 0.012 * math.sin(math.pi * t) - 0.026 * t ** 2
+            els.append(B((x, fy(x, z) - 0.008, z), 0.033 - 0.01 * t))
     W.append(realize(metaball("mb_brows", els, res=0.006), "W_brows", M["beard"]))
 
     # mouth (cheer): open smile under the moustache
-    if pose["mouth"]:
+    if pose["mouth"] == "smile":
         my = front_y(beard, 0, 0.885) or -0.22
         W.append(ellipsoid("W_mouth", (0, my + 0.012, 0.888), (0.042, 0.02, 0.026), M["mouth"]))
         W.append(ellipsoid("W_tongue", (0, my + 0.006, 0.875), (0.024, 0.012, 0.012), M["tongue"], seg=16))
+    elif pose["mouth"] == "o":
+        my = front_y(beard, 0, 0.875) or -0.22
+        W.append(ellipsoid("W_mouth", (0, my + 0.008, 0.875), (0.022, 0.014, 0.026), M["mouth"]))
 
     # ---- robe: torso metaballs + skin-modifier sleeves -> join -> voxel remesh -> smooth -> folds
     torso = realize(metaball("mb_torso", [
@@ -617,7 +626,7 @@ def build(pose_name, M):
         S, El, Wr = (Vector(p) for p in pose[side])
         d = (Wr - El).normalized()
         arm_dirs[side] = (Wr, d)
-        sl = skin_limb(f"W_sleeve{side}", [S, El, Wr, Wr + d * 0.035], [0.085, 0.095, 0.12, 0.135])
+        sl = skin_limb(f"W_sleeve{side}", [S, El, Wr, Wr + d * 0.035], [0.085, 0.10, 0.14, 0.165])
         sleeve_only[side] = sl.copy()
         sleeve_only[side].data = sl.data.copy()
         sleeves.append(sl)
@@ -631,12 +640,12 @@ def build(pose_name, M):
     # gold trim: cuffs and hem
     for side in ("R", "L"):
         Wr, d = arm_dirs[side]
-        cuff = trim_ring(f"W_cuff{side}", robe, Wr + d * 0.01, d, 0.015, M["trim"], n=28, slab=0.008, maxr=0.1)
+        cuff = trim_ring(f"W_cuff{side}", robe, Wr + d * 0.012, d, 0.018, M["band"], n=32, slab=0.008, maxr=0.13)
         if cuff:
             W.append(cuff)
     for sl in sleeve_only.values():
         bpy.data.meshes.remove(sl.data)
-    hem = trim_ring("W_hem", robe, (0, -0.05, 0.49), (0, 0, 1), 0.013, M["trim"], n=56, slab=0.008)
+    hem = trim_ring("W_hem", robe, (0, -0.05, 0.455), (0, 0, 1), 0.018, M["band"], n=56, slab=0.008)
     if hem:
         W.append(hem)
 
@@ -675,26 +684,30 @@ def build(pose_name, M):
             W.append(ellipsoid("W_wandknob", a, (0.017,) * 3, M["wood"], seg=16))
             star = puffy_star("wand_star", 0.075, 0.034, 0.03, M["star"], b + wd * 0.06, (-0.45, -1.0, 0.15))
             glow = bpy.data.lights.new("star_glow", "POINT")      # render-only warm halo, not exported
-            glow.color, glow.energy, glow.shadow_soft_size = lin("ffcf5a")[:3], 10.0, 0.05
+            glow.color, glow.energy, glow.shadow_soft_size = lin("ffdf9a")[:3], 6.0, 0.05
             glow_o = link(bpy.data.objects.new("star_glow", glow))
             glow_o.location = b + wd * 0.06 + Vector((0, -0.06, 0))
 
     # boots
-    for sx in (-1, 1):
-        rot = Matrix.Rotation(math.radians(sx * -14), 4, "Z")
-        W.append(ellipsoid(f"W_boot{sx}", (sx * 0.14, -0.39, 0.49), (0.06, 0.085, 0.052), M["boot"], rot=rot))
+    for sx in (-1, 1):   # robed legs stick forward off the cloud, cream cuff, chunky boot
+        k0, k1 = Vector((sx * 0.14, -0.22, 0.52)), Vector((sx * 0.19, -0.44, 0.47))
+        W.append(sweep(f"W_leg{sx}", [k0, (k0 + k1) / 2, k1], [0.075, 0.07, 0.068], ring=20, n=10, mat=M["robe"]))
+        W.append(sweep(f"W_legcuff{sx}", [k1 - (k1 - k0).normalized() * 0.012, k1 + (k1 - k0).normalized() * 0.012],
+                       [0.074, 0.074], ring=20, n=4, mat=M["band"]))
+        rot = Matrix.Rotation(math.radians(sx * -12), 4, "Z") @ Matrix.Rotation(math.radians(-15), 4, "X")
+        W.append(ellipsoid(f"W_boot{sx}", (sx * 0.2, -0.5, 0.465), (0.062, 0.09, 0.058), M["boot"], rot=rot))
 
     # ---- hat: bent swept cone + floppy brim with a rolled lip + big gold star; tilted back
     hat_parts = []
     spine = [(0, 0.02, 1.06), (0, 0.03, 1.22), (0.01, 0.06, 1.36), (0.05, 0.10, 1.47),
-             (0.13, 0.14, 1.53), (0.21, 0.16, 1.50), (0.26, 0.16, 1.42)]
-    radii = [0.22, 0.18, 0.13, 0.092, 0.064, 0.042, 0.02]
+             (0.13, 0.14, 1.54), (0.22, 0.16, 1.53), (0.28, 0.15, 1.45), (0.29, 0.12, 1.37), (0.33, 0.10, 1.34)]
+    radii = [0.22, 0.18, 0.13, 0.092, 0.066, 0.05, 0.038, 0.026, 0.016]
     cone = sweep("W_hat", spine, radii, ring=36, n=70, mat=M["hat"], wobble=0.03)
     add_mods(cone, smooth=None, displace=(0.06, 0.01))
     hat_parts.append(realize(cone))
 
     def brim_z(a, r):
-        return (0.016 * math.sin(3 * a + 0.4) - 0.035 * math.cos(a) ** 2 + 0.012 * max(0.0, -math.sin(a))) * r
+        return (0.016 * math.sin(3 * a + 0.4) - 0.03 * math.cos(a) ** 2 + 0.012 * max(0.0, -math.sin(a))) * r + 0.022 * r ** 6
 
     bm = bmesh.new()
     bmesh.ops.create_uvsphere(bm, u_segments=64, v_segments=16, radius=1.0)
@@ -706,18 +719,16 @@ def build(pose_name, M):
     lip = []
     for i in range(72):
         a = 2 * math.pi * i / 72
-        lip.append((0.38 * math.cos(a), 0.36 * math.sin(a) + 0.02, 1.095 + brim_z(a, 1.0)))
+        lip.append((0.385 * math.cos(a), 0.365 * math.sin(a) + 0.02, 1.095 + brim_z(a, 1.0) + 0.008))
     hat_parts.append(sweep("W_brimlip", lip, [0.026] * 72, ring=14, mat=M["hat"], closed=True))
-    hat_parts.append(sweep("W_hatband", [(0, 0.022, 1.125), (0, 0.024, 1.16), (0, 0.027, 1.195)],
-                           [0.236, 0.226, 0.216], ring=48, n=6, mat=M["band"], cap=False, wobble=0.0))
-    hs = decal_star("W_hatstar", hat_parts[0], (0, -2, 1.255), (0, 1, 0), 0.06, 0.012, M["trim"], offset=0.004)
+    hs = decal_star("W_hatstar", hat_parts[0], (0, -2, 1.25), (0, 1, 0), 0.075, 0.014, M["band"], offset=0.004)
     if hs:
         hat_parts.append(hs)
-    for k, (x, z) in enumerate([(0.1, 1.33), (-0.09, 1.18)]):
+    for k, (x, z) in enumerate([]):
         s = decal_star(f"W_hatstar{k}", hat_parts[0], (x * 3, -2, z), (-x * 3, 2, 0), 0.026, 0.004, M["gold"])
         if s:
             hat_parts.append(s)
-    tilt = Matrix.Translation((0, 0.02, 1.115)) @ Matrix.Rotation(math.radians(-14), 4, "X") @ \
+    tilt = Matrix.Translation((0, 0.02, 1.175)) @ Matrix.Rotation(math.radians(-20), 4, "X") @ \
         Matrix.Rotation(math.radians(6), 4, "Y") @ Matrix.Translation((0, -0.02, -1.08))
     for o in hat_parts:
         o.data.transform(tilt)
@@ -947,7 +958,7 @@ def main():
     ap.add_argument("--stage", default="all")
     ap.add_argument("--samples", type=int, default=32)
     ap.add_argument("--root", default=os.getcwd())
-    ap.add_argument("--poses", default="cheer,idle,point")
+    ap.add_argument("--poses", default="cheer,idle,oops,point")
     a = ap.parse_args(argv)
     ev = os.path.join(a.root, "production/qa/evidence/wizard-v2")
     stages = {"ui", "turn", "glb"} if a.stage == "all" else set(a.stage.split(","))

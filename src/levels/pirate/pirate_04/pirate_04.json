@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "id": "pirate_04",
+  "biome": "pirate",
+  "tier": 4,
+  "name": "LVL_PIRATE_04_TITLE",
+  "board": {
+    "width": 8,
+    "depth": 8,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 0.95
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "crab_claw",
+      "params": {
+        "claw_start_layers": 2,
+        "claw_every_ms": 22000,
+        "claw_jitter_ms": 4000,
+        "claw_warn_ms": 2500,
+        "claw_grab": 1,
+        "counter": "clear"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 435000,
+    "t3": 305000
+  },
+  "music": "mus_underwater_default",
+  "seed": null,
+  "metadata": {
+    "level_type": "defender",
+    "theme": "kraken tentacles",
+    "display_name": "Tentacle Tickle",
+    "source": "design/levels/mockup-alignment.md (section 2.3 Pirate Cove defender hook)",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "premise": "A shy baby tentacle pokes up from the shallows and pinches a cube off the stack; clears shoo it away. Foreshadows the Rainbow Kraken.",
+      "intended_modules": [],
+      "stand_in": "crab_claw reskinned as a small rainbow tentacle",
+      "skin_needed": ["tentacle skin for crab_claw"]
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "tuning": "Softer than underwater_10 (longer interval and warning); no playtest medians"
+  }
+}

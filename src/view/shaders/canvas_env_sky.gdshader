@@ -28,6 +28,21 @@ uniform vec4 mesa_top : source_color = vec4(0.42, 0.68, 0.29, 1.0);
 uniform vec4 mesa_rock : source_color = vec4(0.66, 0.5, 0.35, 1.0);
 /** Chance a mesa carries a waterfall streak (0 = none). */
 uniform float mesa_falls : hint_range(0.0, 1.0) = 0.6;
+/** 0 = flat-topped mesas, 1 = rounded painterly hills (ref 15 meadow) with grass caps. */
+uniform float mesa_round : hint_range(0.0, 1.0) = 0.0;
+group_uniforms peaks;
+/** Sharp snowy peak ridge behind the layers (ref 15 ice). 0 = none. */
+uniform float peaks : hint_range(0.0, 1.0) = 0.0;
+uniform vec4 peak_rock : source_color = vec4(0.62, 0.62, 0.86, 1.0);
+uniform vec4 peak_snow : source_color = vec4(0.97, 0.97, 1.0, 1.0);
+group_uniforms castle;
+/** Distant castle silhouette on the ridge (ref 15 ice). 0 = none. */
+uniform float castle : hint_range(0.0, 1.0) = 0.0;
+uniform vec4 castle_color : source_color = vec4(0.72, 0.74, 0.95, 1.0);
+uniform vec4 castle_roof : source_color = vec4(0.45, 0.55, 0.9, 1.0);
+/** Castle centre (uv.x) and base height (uv.y). */
+uniform vec2 castle_pos = vec2(0.2, 0.37);
+group_uniforms layers;
 /** Near puffy cloud bank in front of the mesas (0 = none). */
 uniform float cloud_bank : hint_range(0.0, 1.0) = 0.0;
 group_uniforms night;
@@ -86,6 +101,52 @@ void fragment() {
 		col = mix(col, near_c * (0.94 + 0.1 * fbm(p * 7.0 + 3.0)), m2 * mountain_amount);
 		col = mix(col, mix(horizon.rgb, low.rgb, 0.5), smoothstep(0.4, 0.8, uv.y) * 0.6 * m1);
 	}
+	// Snowy peaks: two jagged ridges of triangular mountains, snow on the upper slopes, the
+	// right flank (away from the top-left sun) shaded. Hazier for the far ridge.
+	if (peaks > 0.0) {
+		for (int r = 0; r < 2; r++) {
+			float fr = float(r);
+			float k = p.x * mix(2.4, 3.6, fr) + fr * 3.7 + 0.4;
+			float kc = floor(k);
+			float kf = fract(k);
+			float ph = mix(0.55, 1.0, h21(vec2(kc, 31.0 + fr)));
+			float off = (h21(vec2(kc, 37.0 + fr)) - 0.5) * 0.3;
+			float tri = clamp(1.0 - abs(kf - 0.5 - off) * 2.0 / (1.0 - abs(off) * 2.0 + 0.3), 0.0, 1.0);
+			float base = mix(0.34, 0.39, fr);
+			float rp = base - mix(0.17, 0.11, fr) * ph * pow(tri, 1.25) - 0.012 * fbm(vec2(p.x * 14.0, fr * 5.0));
+			float inside = smoothstep(rp, rp + 0.002, uv.y);
+			float snowl = rp + (0.03 + 0.05 * ph) * (0.75 + 0.5 * vn(vec2(p.x * 24.0, fr)));
+			float shade = smoothstep(0.48, 0.56, kf - off);
+			vec3 rock = peak_rock.rgb * mix(1.0, 0.8, shade) * (0.94 + 0.1 * fbm(p * 18.0));
+			vec3 snow = peak_snow.rgb * mix(1.0, 0.86, shade);
+			vec3 pc = mix(snow, rock, smoothstep(snowl, snowl + 0.008, uv.y));
+			pc = mix(pc, horizon.rgb, mix(0.5, 0.22, fr) + smoothstep(rp + 0.04, rp + 0.2, uv.y) * 0.4);
+			col = mix(col, pc, inside * peaks);
+		}
+	}
+	// Castle silhouette: wall + five towers with cone roofs, painted pale like distant ice.
+	if (castle > 0.0) {
+		vec2 cq = vec2((uv.x - castle_pos.x) * aspect, castle_pos.y - uv.y);
+		float body = step(abs(cq.x), 0.085) * step(cq.y, 0.045) * step(-0.06, cq.y);
+		float roof = 0.0;
+		float shade_c = 0.0;
+		for (int i = 0; i < 5; i++) {
+			float fi = float(i);
+			float tx = (fi - 2.0) * 0.042;
+			float th = mix(0.075, 0.15, 1.0 - abs(fi - 2.0) / 2.0);
+			float tw = mix(0.011, 0.017, 1.0 - abs(fi - 2.0) / 2.0);
+			float tower = step(abs(cq.x - tx), tw) * step(cq.y, th) * step(-0.06, cq.y);
+			float cone = step(abs(cq.x - tx), (tw + 0.004) * (1.0 - (cq.y - th) / 0.05)) * step(th, cq.y) * step(cq.y, th + 0.05);
+			body = max(body, tower);
+			roof = max(roof, cone);
+			shade_c = max(shade_c, tower * step(tx + tw * 0.2, cq.x));
+		}
+		vec3 cc = castle_color.rgb * mix(1.0, 0.86, shade_c);
+		float win = step(0.6, h21(floor(cq * vec2(90.0, 60.0)))) * body * step(0.02, cq.y) * 0.25;
+		cc = mix(cc, castle_roof.rgb, win);
+		col = mix(col, cc, body * castle);
+		col = mix(col, castle_roof.rgb * mix(1.0, 0.8, step(0.0, cq.x - floor((cq.x + 0.021) / 0.042) * 0.042)), roof * castle);
+	}
 	// Painted mesa cliffs, two layers: far = hazier/smaller, mid = saturated. Each cell of the
 	// strip may hold a flat-topped cliff (cap + striated rock, shade side right) with an optional
 	// waterfall streak; everything fades into the horizon haze toward its foot.
@@ -102,9 +163,37 @@ void fragment() {
 			float edge = abs(fx - 0.5) - half_w - (uv.y - topy) * 1.4 - 0.06 * vn(vec2(uv.y * 60.0, cell));
 			float inside = present * step(edge, 0.0) * step(topy, uv.y);
 			float cap = 1.0 - step(topy + 0.016 + 0.012 * vn(vec2(fx * 18.0, cell)), uv.y);
+			float shade_x = smoothstep(0.48, 0.62, fx);
+			if (mesa_round > 0.5) {
+				// Rounded hills: the dome of this cell or a neighbour, whichever is in front
+				// (higher). Domes are wide and soft so they overlap into a rolling range.
+				float best = 9.0; float bdx = 0.0; float bw = 1.0; float bcell = cell;
+				for (int nb = -1; nb <= 1; nb++) {
+					float c = cell + float(nb);
+					float pres = step(0.22, h21(vec2(c, 3.0 + fl)));
+					float cx = c + 0.5 + (h21(vec2(c, 5.0 + fl)) - 0.5) * 0.5;
+					float w = mix(0.75, 1.25, h21(vec2(c, 11.0 + fl)));
+					float dx = qx - cx;
+					float ty = mix(0.26, 0.4, h21(vec2(c, 7.0 + fl))) + fl * 0.07;
+					float ys = ty + 0.2 * pow(abs(dx) / w, 1.7) + 0.01 * vn(vec2(qx * 4.0, fl + 2.0));
+					ys = mix(9.0, ys, pres);
+					if (ys < best) { best = ys; bdx = dx; bw = w; bcell = c; }
+				}
+				topy = best;
+				inside = step(best, uv.y);
+				fx = clamp(0.5 + bdx / (bw * 2.0), 0.0, 1.0);
+				cell = bcell;
+				float grass_l = best + 0.035 + 0.05 * vn(vec2(qx * 3.0, 9.0 + fl)) + 0.02 * vn(vec2(qx * 14.0, fl));
+				cap = 1.0 - smoothstep(grass_l - 0.004, grass_l + 0.004, uv.y);
+				// Grass ledges further down the slope (terraces).
+				float terr = step(0.5, vn(vec2(qx * 2.0, floor((uv.y - best) * 14.0) + fl * 3.0)));
+				cap = max(cap, terr * (1.0 - smoothstep(0.0, 0.012, fract((uv.y - best) * 14.0))) * 0.9);
+				shade_x = smoothstep(-0.1, 0.5, bdx / bw) * 0.9;
+			}
 			vec3 rockc = mesa_rock.rgb * (0.82 + 0.3 * vn(vec2(fx * 16.0 + cell, uv.y * 20.0)));
-			rockc *= mix(1.0, 0.74, smoothstep(0.48, 0.62, fx));
-			vec3 mc = mix(rockc, mesa_top.rgb * mix(1.08, 0.86, smoothstep(0.45, 0.65, fx)), cap);
+			rockc *= mix(1.0, 0.74, shade_x);
+			vec3 grassc = mesa_top.rgb * mix(1.08, 0.82, shade_x) * (0.92 + 0.14 * vn(vec2(qx * 9.0, uv.y * 40.0)));
+			vec3 mc = mix(rockc, grassc, cap);
 			float fall_x = 0.5 + 0.18 * (h21(vec2(cell, 23.0 + fl)) - 0.5);
 			float fall = step(1.0 - mesa_falls, h21(vec2(cell, 19.0 + fl))) * (1.0 - smoothstep(0.05, 0.09, abs(fx - fall_x))) * step(topy + 0.012, uv.y);
 			mc = mix(mc, vec3(0.92, 0.97, 1.0) * (0.9 + 0.1 * vn(vec2(fx * 30.0, uv.y * 80.0 - t * 2.0))), fall * 0.9);

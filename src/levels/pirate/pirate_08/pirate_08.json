@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "pirate_08",
+  "biome": "pirate",
+  "tier": 8,
+  "name": "LVL_PIRATE_08_TITLE",
+  "board": {
+    "width": 8,
+    "depth": 8,
+    "h_play": 8
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.05,
+    "fall.ramp_per_min": 0.1
+  },
+  "goal": {
+    "type": "survive",
+    "T": 150,
+    "t_ms": 150000
+  },
+  "rules": [
+    {
+      "id": "rising_silt",
+      "params": {
+        "silt_every_locks": 10,
+        "silt_gaps": 3,
+        "silt_warn_locks": 1
+      }
+    }
+  ],
+  "stars": {
+    "s2": 1,
+    "s3": 2
+  },
+  "music": "mus_underwater_default",
+  "seed": null,
+  "metadata": {
+    "level_type": "defender",
+    "theme": "sinking ship deck",
+    "display_name": "Sinking Deck",
+    "source": "design/levels/mockup-alignment.md (section 2.3 Pirate Cove)",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "premise": "The tide floods the leaky deck from below; keep stacking above the waterline until the rescue boat arrives.",
+      "intended_modules": [],
+      "stand_in": "rising_silt reskinned as rising tide water (params from underwater_08)",
+      "skin_needed": ["seawater layer skin for rising_silt"]
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "tuning": "Initial estimates copied from underwater_08; no playtest medians"
+  }
+}

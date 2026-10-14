@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "pirate_bonus",
+  "biome": "pirate",
+  "tier": 11,
+  "name": "LVL_PIRATE_BONUS_TITLE",
+  "board": {
+    "width": 8,
+    "depth": 8,
+    "h_play": 10
+  },
+  "pieces": {
+    "shapes": ["i", "o", "t", "l", "s", "tripod", "screw_left", "screw_right"]
+  },
+  "knobs": {
+    "fall.g0": 1.1,
+    "goal.warnings_max": 1,
+    "goal.top_out": "rescue"
+  },
+  "goal": {
+    "type": "clear_n",
+    "n": 3
+  },
+  "rules": [
+    {
+      "id": "golden_row",
+      "params": {
+        "start_layer": 1,
+        "bonus": 200,
+        "goal_counter": "gold"
+      }
+    }
+  ],
+  "stars": {
+    "t2": 400000,
+    "t3": 285000
+  },
+  "music": "mus_underwater_default",
+  "seed": null,
+  "metadata": {
+    "level_type": "completing",
+    "theme": "treasure",
+    "display_name": "Treasure Hoard",
+    "source": "design/levels/mockup-alignment.md (section 2.3 Pirate Cove bonus)",
+    "status": "Authored; awaiting playtest",
+    "design_spec": {
+      "premise": "Fill the glittering treasure layer in the chest to bank the gold. A bonus after the Kraken.",
+      "intended_modules": ["fort_siege (target: shared_tower) for Shatter Shootout vs a bot ship"],
+      "stand_in": "golden_row treasure layer with clear_n",
+      "skin_needed": ["treasure chest gold row skin"]
+    },
+    "unsupported": [],
+    "blocking_gameplay": [],
+    "tuning": "Initial estimates; no playtest medians"
+  }
+}

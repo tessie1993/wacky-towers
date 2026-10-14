@@ -17,6 +17,11 @@ const SLAB_DEPTH := 0.9
 const SLAB_RADIUS := 0.35
 const TILE_SIZE := Vector3(0.96, 0.22, 0.96)
 const TILE_RADIUS := 0.07
+## Board ledge stones (ref 15 raised stone rim): unit stone size (length, height, width),
+## corner radius and how far the stone top stands above the tile tops (tile top = 0).
+const LEDGE_SIZE := Vector3(0.6, 0.26, 0.3)
+const LEDGE_RADIUS := 0.07
+const LEDGE_RISE := 0.08
 ## Rim dressing keeps this far from the board edge (low props) so nothing overlaps a tile.
 const LOW_CLEAR := 0.3
 const TALL_CLEAR := 0.5
@@ -123,8 +128,8 @@ func add_light_rig(parent: Node, cam_yaw_deg: float) -> Array[DirectionalLight3D
 		parent.add_child(l)
 	var key: DirectionalLight3D = rig[0]
 	key.shadow_enabled = true
-	key.shadow_opacity = 0.7
-	key.shadow_blur = 1.5
+	key.shadow_opacity = float(p.get("shadow_opacity", 0.86))
+	key.shadow_blur = 2.2
 	key.shadow_bias = 0.08
 	key.shadow_normal_bias = 2.5
 	key.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
@@ -161,10 +166,13 @@ func build_sky(owner: Node, environment: Environment) -> CanvasLayer:
 	mat.set_shader_parameter(&"low", Color(String(sky[2])))
 	for key: String in ["cloud", "cloud_shade", "mountains", "nebula_a", "nebula_b"]:
 		if spec.has(key): mat.set_shader_parameter(StringName(key), Color(String(spec[key])))
-	for key: String in ["mesa_top", "mesa_rock"]:
+	for key: String in ["mesa_top", "mesa_rock", "peak_rock", "peak_snow", "castle_color", "castle_roof"]:
 		if spec.has(key): mat.set_shader_parameter(StringName(key), Color(String(spec[key])))
-	for key: String in ["cloud_amount", "mountain_amount", "stars", "nebula", "sun", "sea_line", "mesa_amount", "mesa_falls", "cloud_bank"]:
+	for key: String in ["cloud_amount", "mountain_amount", "stars", "nebula", "sun", "sea_line", "mesa_amount", "mesa_falls", "cloud_bank", "mesa_round", "peaks", "castle"]:
 		if spec.has(key): mat.set_shader_parameter(StringName(key), float(spec[key]))
+	if spec.has("castle_pos"):
+		var cp: Array = spec["castle_pos"]
+		mat.set_shader_parameter(&"castle_pos", Vector2(float(cp[0]), float(cp[1])))
 	mat.set_shader_parameter(&"motion", motion)
 	rect.material = mat
 	layer.add_child(rect)
@@ -503,10 +511,13 @@ func _build_tiles(parent: Node3D, board: Vector3i, active: Callable) -> void:
 			if active.call(x, z): cells.append(Vector3(x - board.x * 0.5 + 0.5, -TILE_SIZE.y * 0.5, z - board.z * 0.5 + 0.5))
 	mm.instance_count = cells.size()
 	var jitter: float = float(tile.get("jitter", 0.04))
+	# Per-tile colour variation (ref 15): value jitter plus a drift toward `tile.alt`.
+	var alt: Color = Color(String(tile.get("alt", tile.get("color", "#BDB2A2"))))
 	for i: int in cells.size():
 		mm.set_instance_transform(i, Transform3D(Basis.IDENTITY, cells[i]))
 		var v: float = _rng.randf_range(-jitter, jitter)
-		mm.set_instance_color(i, base.lightened(v) if v > 0.0 else base.darkened(-v))
+		var c: Color = base.lerp(alt, _rng.randf() * 0.6)
+		mm.set_instance_color(i, c.lightened(v) if v > 0.0 else c.darkened(-v))
 	var node := MultiMeshInstance3D.new()
 	node.name = "BoardTiles"
 	node.multimesh = mm
@@ -521,6 +532,57 @@ func _build_tiles(parent: Node3D, board: Vector3i, active: Callable) -> void:
 		mat.set_shader_parameter(&"edge_glow", 1.4)
 	node.material_override = mat
 	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	parent.add_child(node)
+	_build_ledge(parent, board, tile)
+
+
+## Chunky raised stone ledge around the tile grid (ref 15): one MultiMesh of rounded stones,
+## LEDGE_SIZE.z wide, standing LEDGE_RISE proud of the tiles, per-stone value jitter. Uses the
+## tile shader so the board reads as one material. 1 draw call. Off with env.tile.ledge = "".
+func _build_ledge(parent: Node3D, board: Vector3i, tile: Dictionary) -> void:
+	var hex: String = String(tile.get("ledge", Color(String(tile.get("color", "#BDB2A2"))).darkened(0.12).to_html(false)))
+	if hex.is_empty(): return
+	var base: Color = Color(hex)
+	var xfs: Array[Transform3D] = []
+	var cols: Array[Color] = []
+	var w: float = LEDGE_SIZE.z
+	var y: float = LEDGE_RISE - LEDGE_SIZE.y * 0.5
+	for side: int in 4:
+		var along_x: bool = side < 2
+		var length: float = float(board.x if along_x else board.z)
+		var extra: float = w if along_x else 0.0
+		var off: float = (float(board.z if along_x else board.x) * 0.5 + w * 0.5 + 0.01) * (1.0 if side % 2 == 0 else -1.0)
+		var t: float = -length * 0.5 - extra
+		while t < length * 0.5 + extra - 0.12:
+			var seg: float = minf(_rng.randf_range(0.5, 0.78), length * 0.5 + extra - t)
+			var mid: float = t + seg * 0.5
+			var pos := Vector3(mid, y + _rng.randf_range(-0.012, 0.012), off) if along_x else Vector3(off, y + _rng.randf_range(-0.012, 0.012), mid)
+			var yaw: float = (0.0 if along_x else PI * 0.5) + _rng.randf_range(-0.035, 0.035)
+			var basis := Basis(Vector3.UP, yaw).scaled_local(Vector3((seg - 0.035) / LEDGE_SIZE.x, 1.0, 1.0))
+			xfs.append(Transform3D(basis, pos))
+			var v: float = _rng.randf_range(-0.07, 0.07)
+			cols.append(base.lightened(v) if v > 0.0 else base.darkened(-v))
+			t += seg
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
+	mm.mesh = _cached("ledge", func() -> Mesh: return rounded_box(LEDGE_SIZE, LEDGE_RADIUS, 4))
+	mm.instance_count = xfs.size()
+	for i: int in xfs.size():
+		mm.set_instance_transform(i, xfs[i])
+		mm.set_instance_color(i, cols[i])
+	var node := MultiMeshInstance3D.new()
+	node.name = "BoardLedge"
+	node.multimesh = mm
+	var mat := ShaderMaterial.new()
+	mat.shader = load(TILE_SHADER) as Shader
+	mat.set_shader_parameter(&"tile_half", LEDGE_SIZE * 0.5)
+	mat.set_shader_parameter(&"tile_radius", LEDGE_RADIUS)
+	mat.set_shader_parameter(&"shadow_tint", Color(String(preset().shadow_tint)))
+	mat.set_shader_parameter(&"edge_light", 0.6)
+	mat.set_shader_parameter(&"gloss", 0.15)
+	node.material_override = mat
+	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	parent.add_child(node)
 
 
@@ -805,16 +867,22 @@ func _recipe(st: SurfaceTool, kind: String, x: Transform3D) -> void:
 				var a: float = k * TAU / 7.0 + 0.3
 				_prim(st, _cyl(0.0, 0.045, 0.26, 4), x * _tr(Vector3(cos(a) * 0.06, 0.11, sin(a) * 0.06), Vector3.ONE, Vector3(sin(a) * 0.5, 0, -cos(a) * 0.5)), _n(1.0 if k % 2 == 0 else 0.78))
 		"clover":
+			# Three heart-shaped leaves (two lobes each), tilted up, lighter at the tips, on a stem.
 			for k: int in 3:
-				var a: float = TAU * k / 3.0
-				_prim(st, _sph(0.5, 8, 4), x * _tr(Vector3(cos(a) * 0.13, 0.08, sin(a) * 0.13), Vector3(0.28, 0.07, 0.28)), _n(1.0))
-			_prim(st, _sph(0.05, 6, 3), x * _tr(Vector3(0, 0.09, 0)), _n(0.7))
+				var a: float = TAU * k / 3.0 + 0.5
+				for lobe: int in 2:
+					var la: float = a + (0.32 if lobe == 0 else -0.32)
+					_prim(st, _sph(0.5, 8, 4), x * _tr(Vector3(cos(la) * 0.12, 0.14 + 0.02 * k, sin(la) * 0.12), Vector3(0.2, 0.06, 0.15), Vector3(0, -la, 0.3)), _n(1.0 if k != 1 else 0.86))
+			_prim(st, _cyl(0.012, 0.018, 0.14, 4), x * _tr(Vector3(0, 0.07, 0)), _n(0.65))
+			_prim(st, _sph(0.04, 6, 3), x * _tr(Vector3(0, 0.15, 0)), _n(0.7))
 		"flower_white", "flower_lilac", "flower_pink", "flower_yellow":
 			var petal: Color = _fx({"flower_white": "#FFF6F0", "flower_lilac": "#B99CF2", "flower_pink": "#F6A8C8", "flower_yellow": "#FFE27A"}[kind])
 			for k: int in 5:
 				var a: float = TAU * k / 5.0
-				_prim(st, _sph(0.5, 8, 4), x * _tr(Vector3(cos(a) * 0.15, 0.08, sin(a) * 0.15), Vector3(0.26, 0.08, 0.17), Vector3(0, -a, 0)), petal)
-			_prim(st, _sph(0.075, 8, 4), x * _tr(Vector3(0, 0.11, 0)), _fx("#FFC93A"))
+				# Cupped daisy: petals tilt up at the tips so they read as a flower, not a disc.
+				_prim(st, _sph(0.5, 8, 4), x * _tr(Vector3(cos(a) * 0.15, 0.1, sin(a) * 0.15), Vector3(0.27, 0.075, 0.17), Vector3(0, -a, 0.32)), petal)
+			_prim(st, _sph(0.075, 8, 4), x * _tr(Vector3(0, 0.13, 0), Vector3(1, 0.7, 1)), _fx("#FFC93A"))
+			_prim(st, _cyl(0.015, 0.02, 0.1, 4), x * _tr(Vector3(0, 0.05, 0)), _fx("#4E9A3A"))
 			for k: int in 2:
 				var a: float = k * PI + 0.8
 				_prim(st, _sph(0.5, 6, 3), x * _tr(Vector3(cos(a) * 0.2, 0.04, sin(a) * 0.2), Vector3(0.22, 0.05, 0.12), Vector3(0, -a, 0)), _fx("#4E9A3A"))
