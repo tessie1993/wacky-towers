@@ -388,12 +388,17 @@ def cloud(name, loc, s=1.0, seed=0, n=7, stretch=1.0):
     return wz.realize(o, mat=M("cloud"))
 
 
+def top_z(r):
+    """Height of an island's walkable top above its origin (cap profile below)."""
+    return 0.1 * r
+
+
 def island(name, loc, r, depth, top="grass", under="dirt", seed=0, dress=True, flowers=True):
     """Floating island: grass (or snow/rock) cap with an overhanging lip, chunky rock cone below."""
     t = 0.2 * r
     rnd = random.Random(seed)
-    objs = [lathe(name + "_cap", [(0.96 * r, -t * 0.7), (1.05 * r, -t * 0.3), (1.05 * r, 0.0), (0.93 * r, t * 0.35),
-                                  (0.6 * r, t * 0.5), (0.2 * r, t * 0.55)], M(top), seg=40, jit=0.05, seed=seed, subsurf=1),
+    objs = [lathe(name + "_cap", [(0.96 * r, -t * 0.7), (1.05 * r, -t * 0.3), (1.05 * r, 0.0), (0.93 * r, t * 0.42),
+                                  (0.6 * r, t * 0.5), (0.2 * r, t * 0.5)], M(top), seg=40, jit=0.05, seed=seed, subsurf=1),
             lathe(name + "_under", [(0.06 * r, -depth), (0.3 * r, -0.82 * depth), (0.58 * r, -0.58 * depth),
                                     (0.82 * r, -0.33 * depth), (0.97 * r, -0.12 * depth), (0.99 * r, -t * 0.3)],
                   M(under), seg=28, jit=0.14, seed=seed + 7, subsurf=1)]
@@ -806,15 +811,12 @@ def cart(name, load=True, seed=0):
             objs.append(hub)
     objs.append(rbox(name + "_band", (1.54, 0.99, 0.05), (0, 0, 0.78), M("steel"), 0.3))
     if load:
-        cols = TOY_ORDER
         k = 0
         for ix in range(3):
             for iy in range(2):
-                for iz in range(1 if ix < 2 else 2):
-                    if ix < 1 or iz >= 0:
-                        objs.append(block(f"{name}_ld{k}", ((ix - 1) * 0.44 + 0.0, (iy - 0.5) * 0.42, 0.7 + iz * 0.42),
-                                          "toy", cols[k % len(cols)], 0.4, rot=(0, 0, random.Random(k).uniform(-6, 6))))
-                        k += 1
+                objs.append(block(f"{name}_ld{k}", ((ix - 1) * 0.46, (iy - 0.5) * 0.43, 0.69), "toy",
+                                  TOY_ORDER[k % 8], 0.42, rot=(0, 0, random.Random(k).uniform(-5, 5))))
+                k += 1
     return objs
 
 
@@ -825,16 +827,11 @@ def chest(name, s=1.0):
         objs.append(rbox(f"{name}_band{x}", (0.1 * s, 0.79 * s, 0.64 * s), (x * s, 0, 0.3 * s), M("gold"), 0.3))
     objs.append(rbox(name + "_rim", (1.24 * s, 0.79 * s, 0.08 * s), (0, 0, 0.6 * s), M("gold"), 0.3))
     objs.append(rbox(name + "_lock", (0.18 * s, 0.06 * s, 0.22 * s), (0, -0.4 * s, 0.48 * s), M("gold"), 0.3))
-    lid = [lathe(name + "_lidc", [(0.38 * s, -0.6 * s), (0.38 * s, 0.6 * s)], pw, seg=24, squash=(1, 1)),
-           lathe(name + "_lidb1", [(0.4 * s, -0.47 * s), (0.4 * s, -0.37 * s)], M("gold"), seg=24),
-           lathe(name + "_lidb2", [(0.4 * s, 0.37 * s), (0.4 * s, 0.47 * s)], M("gold"), seg=24)]
-    for o in lid:
-        o.rotation_euler = (0, math.radians(90), 0)
-        o.scale = (1, 1, 1)
-    # half cylinder: squash it flat to a lid by scaling, hinge at back
-    lg = group(name + "_lid", lid, (0, 0.38 * s, 0.62 * s), rot=(-110, 0, 0))
-    lg.scale = (1.0, 0.95, 0.5)
-    objs.append(lg)
+    lid = [rbox(name + "_lidb", (1.24 * s, 0.79 * s, 0.16 * s), (0, -0.395 * s, 0.08 * s), pw, 0.2),
+           wz.ellipsoid(name + "_lidd", (0, -0.395 * s, 0.15 * s), (0.6 * s, 0.38 * s, 0.14 * s), pw)]
+    for x in (-0.42, 0.42):
+        lid.append(rbox(f"{name}_lband{x}", (0.1 * s, 0.82 * s, 0.2 * s), (x * s, -0.395 * s, 0.12 * s), M("gold"), 0.3))
+    objs.append(group(name + "_lid", lid, (0, 0.38 * s, 0.62 * s), rot=(-112, 0, 0)))
     # treasure heap
     rnd = random.Random(11)
     gems = ["e0483c", "4cc04a", "4aa8e8", "b48ad8", "ff8ac8", "4ad8d8"]
@@ -952,18 +949,18 @@ def s02(a):
     island("isC", (5.2, 10, 3.0), 1.2, 1.8, seed=3)
     rnd = random.Random(2)
     kinds = [("meadow", "")] + [("toy", c) for c in TOY_ORDER]
-    tower_stack("tA", (1.0, 3.0, 0.38), kinds[:4], 0.5, lean=10, seed=1)
+    tower_stack("tA", (1.0, 3.0, 0.21), kinds[:4], 0.5, lean=10, seed=1)
     # broken upper half tumbling right and down
     for i in range(6):
         p = (1.9 + i * 0.55 + rnd.uniform(-0.2, 0.2), 3.0 + rnd.uniform(-0.4, 0.4), 2.6 - i * 0.75 + rnd.uniform(-0.2, 0.2))
         block(f"fallA{i}", p, "toy", TOY_ORDER[(i + 3) % 8], 0.5, rot=(rnd.uniform(-60, 60), rnd.uniform(-60, 60), rnd.uniform(0, 90)))
         cloud(f"dustA{i}", Vector(p) + Vector((-0.35, 0.2, 0.25)), 0.18, 50 + i, n=4)
-    tower_stack("tB", (-3.6, 7.5, 1.9), [("meadow", "")] + [("toy", c) for c in ("pink", "yellow", "green", "blue")], 0.45,
+    tower_stack("tB", (-3.6, 7.5, 1.74), [("meadow", "")] + [("toy", c) for c in ("pink", "yellow", "green", "blue")], 0.45,
                 lean=-28, drift=(-0.9, 0), seed=2)
     for i in range(4):
         block(f"fallB{i}", (-4.8 - i * 0.4, 7.2, 2.6 - i * 1.0), "toy", TOY_ORDER[(i + 5) % 8], 0.45,
               rot=(rnd.uniform(-60, 60), rnd.uniform(-60, 60), rnd.uniform(0, 90)))
-    tower_stack("tC", (5.2, 10, 3.25), [("meadow", ""), ("toy", "red")], 0.45, lean=6, seed=3)
+    tower_stack("tC", (5.2, 10, 3.12), [("meadow", ""), ("toy", "red")], 0.45, lean=6, seed=3)
     for i in range(3):
         block(f"fallC{i}", (5.9 + i * 0.3, 9.8, 3.0 - i * 1.1), "toy", TOY_ORDER[i + 1], 0.45, rot=(i * 30, 40, i * 20))
     sparkle_field("spk", (0.5, 4.0, 1.5), (5.0, 2.0, 2.2), 40, 3)
@@ -984,11 +981,11 @@ def s03(a):
     island("isA", (2.6, 8, 2.6), 1.3, 1.8, seed=4)
     island("isB", (5.6, 13, 4.6), 1.1, 1.5, seed=5)
     island("isC", (-1.5, 14, 5.2), 1.0, 1.4, seed=6)
-    tree("trA", (2.9, 8.2, 2.85), 0.8, 1)
-    tree("trC", (-1.3, 14, 5.4), 0.6, 2)
+    tree("trA", (2.9, 8.2, 2.73), 0.8, 1)
+    tree("trC", (-1.3, 14, 5.3), 0.6, 2)
     # foreground ledge of the library tower
     island("ledge", (-2.6, 0.6, 0.0), 1.9, 2.4, seed=7)
-    tower_stack("libt", (-3.6, 1.2, 0.3), [("meadow", "")] + [("toy", c) for c in ("purple", "blue", "purple")], 0.55, seed=4)
+    tower_stack("libt", (-3.6, 1.2, 0.19), [("meadow", "")] + [("toy", c) for c in ("purple", "blue", "purple")], 0.55, seed=4)
     cast_member("wizard", "oops", (-1.9, 0.1, 0.38), 28)
     # the tomes flee in a sweeping arc toward the islands
     rnd = random.Random(8)
@@ -1015,32 +1012,34 @@ def s04(a):
     f, r = camera(sc, (0.2, -8.6, 3.0), (0.2, 3.0, 1.5), 30)
     rig(f, r, key=("fff0d6", 3.2), fill=("b8c4ff", 0.8), rim=("ffe0a8", 2.4))
     island("ground", (0.4, 1.6, 0), 4.6, 3.0, seed=11)
-    path = [(-0.6, -2.4, 0.95), (0.6, -1.0, 0.95), (-0.4, 0.8, 0.95), (0.8, 2.6, 0.92), (0.4, 4.4, 0.85), (1.2, 5.6, 0.7)]
+    gz = top_z(4.6)
+    path = [(-3.4, -1.0, gz), (0.0, -0.9, gz), (2.4, 0.2, gz), (1.0, 2.2, gz), (-0.6, 3.6, gz), (0.4, 5.2, gz), (1.2, 6.0, gz)]
     ribbon("path", path, 1.3, M("path"))
-    g = cart("cart")
-    cg = group("cart_g", g, (0.15, -0.6, 0.93), -24)
-    for i, (hero, x) in enumerate((("knight", -0.42), ("dwarf", 0.0), ("elf", 0.42))):
-        cast_member(hero, "cheer" if hero != "dwarf" else "idle", (0.15 + x * 0.9 + 0.1, -0.6 + x * 0.4 + 0.45, 1.25), -24 + (i - 1) * 8, 0.95)
-    fence = [(-1.6 + 0.5 * i, -2.0 + 0.9 * i, 0.95) for i in range(5)]
+    cyaw, cpos = 12.0, Vector((0.0, -0.9, gz))
+    group("cart_g", cart("cart"), cpos, cyaw)
+    Rz = Matrix.Rotation(math.radians(cyaw), 3, "Z")
+    for i, (hero, lx) in enumerate((("knight", -0.46), ("dwarf", 0.0), ("elf", 0.46))):
+        cast_member(hero, "cheer" if hero != "dwarf" else "idle", cpos + Rz @ Vector((lx, 0.0, 0.9)), cyaw + (1 - i) * 10, 0.92)
+    fence = [(-3.2 + 0.45 * i, 0.6 + 0.5 * i, gz) for i in range(5)]
     for i, p in enumerate(fence):
-        rbox(f"post{i}", (0.1, 0.1, 0.5), (p[0] - 1.0, p[1], 1.2), M("fence"), 0.3)
+        rbox(f"post{i}", (0.1, 0.1, 0.5), (p[0], p[1], gz + 0.22), M("fence"), 0.3)
     for i in range(4):
         a_, b_ = fence[i], fence[i + 1]
-        mid = ((a_[0] + b_[0]) / 2 - 1.0, (a_[1] + b_[1]) / 2, 1.32)
+        mid = ((a_[0] + b_[0]) / 2, (a_[1] + b_[1]) / 2, gz + 0.34)
         ang = math.degrees(math.atan2(b_[1] - a_[1], b_[0] - a_[0]))
         rbox(f"rail{i}", (1.03, 0.06, 0.06), mid, M("fence"), 0.3, rot=(0, 0, ang))
-    tree("tree1", (-3.2, 2.0, 0.95), 1.1, 3)
-    tree("tree2", (3.6, 1.0, 0.95), 0.95, 4)
-    tree("tree3", (2.6, 4.4, 0.9), 0.8, 5)
+    tree("tree1", (-2.6, 3.0, gz - 0.04), 1.1, 3)
+    tree("tree2", (3.6, 0.9, gz - 0.06), 0.95, 4)
+    tree("tree3", (2.6, 4.4, gz - 0.06), 0.8, 5)
     # biomes in the distance
     island("iceI", (-5.4, 9.0, 2.6), 1.9, 2.2, top="snow", under="ice_rock", seed=12, dress=False)
-    ice_castle("castle", (-5.4, 9.2, 3.0), 1.0)
+    ice_castle("castle", (-5.4, 9.2, 2.6 + top_z(1.9)), 1.0)
     for i, (x, y) in enumerate(((-6.6, 8.4), (-4.3, 8.3), (-6.3, 9.9))):
-        pine(f"pine{i}", (x, y, 2.95), 0.7, snow=True)
+        pine(f"pine{i}", (x, y, 2.6 + top_z(1.9)), 0.7, snow=True)
     island("volI", (1.5, 16.0, 3.2), 2.4, 2.4, under="dark_rock", seed=13, flowers=False)
-    volcano("volcano", (1.5, 16.2, 3.5), 1.5)
+    volcano("volcano", (1.5, 16.2, 3.2 + top_z(2.4)), 1.5)
     island("neonI", (6.0, 10.5, 2.6), 1.9, 2.2, top="neon_ground", under="dark_rock", seed=14, dress=False)
-    neon_city("city", (6.0, 10.5, 2.95), 1.0)
+    neon_city("city", (6.0, 10.5, 2.6 + top_z(1.9)), 1.0)
     for i in range(8):
         cloud(f"sea{i}", (-8 + i * 2.4, 9 + (i % 3) * 3.0, -1.0 - (i % 2) * 0.5), 1.7, 30 + i, n=7, stretch=1.4)
     sky_clouds([((-3, 24, 9), 2.4, 5), ((8, 22, 10.5), 2.0, 6), ((-9, 18, 7.5), 1.6, 7)])
@@ -1052,7 +1051,8 @@ def s10(a):
     f, r = camera(sc, (0, -8.2, 2.6), (0, 1.0, 1.25), 33)
     rig(f, r, key=("fff0d6", 3.2), fill=("b8c4ff", 0.8), rim=("ffe0a8", 2.6))
     island("main", (0, 1.2, 0), 3.0, 2.8, seed=21)
-    group("chest_g", chest("chest", 1.0), (0, 1.5, 0.55), 0)
+    gz = top_z(3.0)
+    group("chest_g", chest("chest", 1.0), (0, 1.5, gz), 0)
     rnd = random.Random(21)
     for i in range(7):
         p = (rnd.uniform(-1.0, 1.0), 1.4 + rnd.uniform(-0.2, 0.2), 1.9 + rnd.uniform(0, 1.2))
@@ -1061,21 +1061,21 @@ def s10(a):
         else:
             star(f"flys{i}", p, 0.13, (rnd.uniform(-0.3, 0.3), -1, 0.2))
     for i in range(6):
-        p = (rnd.uniform(-1.1, 1.1), rnd.uniform(0.3, 0.8), 0.62)
+        p = (rnd.uniform(-1.1, 1.1), rnd.uniform(0.3, 0.8), gz + 0.06)
         bm = bmesh.new()
         ico(bm, p, 0.09, 1)
         c = ["e0483c", "4cc04a", "4aa8e8", "b48ad8", "ff8ac8", "4ad8d8"][i]
         wz.mesh_obj(f"spill{i}", bm, glassy("gem_" + c, c, 0.8, 0.3), smooth=False)
-    cast_member("wizard", "cheer", (-2.0, 1.0, 0.6), 22)
-    cast_member("knight", "cheer", (2.0, 1.0, 0.6), -24)
-    cast_member("elf", "cheer", (-1.1, -0.2, 0.6), 14)
-    cast_member("dwarf", "cheer", (1.15, -0.25, 0.6), -14)
+    cast_member("wizard", "cheer", (-2.0, 1.0, gz), 22)
+    cast_member("knight", "cheer", (2.0, 1.0, gz), -24)
+    cast_member("elf", "cheer", (-1.1, -0.2, gz), 14)
+    cast_member("dwarf", "cheer", (1.15, -0.25, gz), -14)
     # restored towers in the distance, crowned with stars
     for i, (x, y, z, n) in enumerate(((-5.5, 11, 1.5, 6), (5.6, 12, 2.0, 7), (-1.8, 16, 3.5, 5))):
         island(f"far{i}", (x, y, z), 1.2, 1.6, seed=30 + i)
-        tower_stack(f"ft{i}", (x, y, z + 0.25), [("meadow", "")] + [("toy", TOY_ORDER[(k + i) % 8]) for k in range(n - 1)], 0.42,
+        tower_stack(f"ft{i}", (x, y, z + top_z(1.2)), [("meadow", "")] + [("toy", TOY_ORDER[(k + i) % 8]) for k in range(n - 1)], 0.42,
                     seed=i)
-        star(f"fstar{i}", (x, y - 0.1, z + 0.25 + n * 0.43 + 0.35), 0.22)
+        star(f"fstar{i}", (x, y - 0.1, z + top_z(1.2) + n * 0.425 + 0.3), 0.22)
     confetti("conf", (0, 1.0, 2.4), (3.8, 1.5, 1.8), 210, 3)
     firework("fw1", (-4.2, 6, 5.6), 1.4, "ff8ac8", 1)
     firework("fw2", (4.4, 6, 5.4), 1.2, "ffd860", 2)
@@ -1092,23 +1092,24 @@ def s11(a):
     f, r = camera(sc, (0, -8.0, 2.3), (0.3, 1.0, 1.25), 34)
     rig(f, r, key=("fff0d6", 3.2), fill=("b8c4ff", 0.8), rim=("ffe0a8", 2.4))
     island("tut", (1.3, 1.3, 0), 2.1, 2.4, seed=41)
-    tree("tutTree", (2.6, 2.3, 0.4), 0.8, 6)
+    gz = top_z(2.1)
+    tree("tutTree", (2.6, 2.3, gz - 0.03), 0.8, 6)
     for i, (x, y, c) in enumerate(((0.5, 0.9, "blue"), (0.95, 0.9, "blue"), (2.0, 1.1, "pink"), (2.0, 1.55, "yellow"),
                                    (1.6, 1.9, "green"))):
-        block(f"tb{i}", (x, y, 0.62), "toy", c, 0.44, rot=(0, 0, random.Random(i).uniform(-4, 4)))
-    block("tb_up", (2.0, 1.1, 1.07), "toy", "purple", 0.44)
+        block(f"tb{i}", (x, y, gz + 0.22), "toy", c, 0.44, rot=(0, 0, random.Random(i).uniform(-4, 4)))
+    block("tb_up", (2.0, 1.1, gz + 0.66), "toy", "purple", 0.44)
     # target slot + ghost + the block being placed
     tx, ty = 1.4, 0.55
     for k, (dx, dy, sx, sy) in enumerate(((0, -0.24, 0.5, 0.04), (0, 0.24, 0.5, 0.04), (-0.24, 0, 0.04, 0.5), (0.24, 0, 0.04, 0.5))):
-        rbox(f"slot{k}", (sx, sy, 0.03), (tx + dx, ty + dy, 0.43), emit_mat("slot", "fff2a0", 6.0), 0.3)
-    block("ghost", (tx, ty, 0.62), "ghost", "", 0.44)
-    block("placing", (tx - 0.05, ty - 0.05, 1.7), "toy", "orange", 0.44, rot=(8, -10, 12))
-    path_pts = arc((-1.4, 0.2, 2.6), (tx - 0.1, ty, 1.95), 0.6, 16)
+        rbox(f"slot{k}", (sx, sy, 0.03), (tx + dx, ty + dy, gz + 0.02), emit_mat("slot", "fff2a0", 6.0), 0.3)
+    block("ghost", (tx, ty, gz + 0.22), "ghost", "", 0.44)
+    block("placing", (tx - 0.05, ty - 0.05, 1.5), "toy", "orange", 0.44, rot=(8, -10, 12))
+    path_pts = arc((-1.4, 0.2, 2.6), (tx - 0.1, ty, 1.8), 0.6, 16)
     motes("wandpath", path_pts, [0.03] * len(path_pts), M("mote_gold"))
-    motes("dots", [Vector((tx, ty, 1.35 - 0.15 * k)) for k in range(4)], [0.03] * 4, M("mote_white"))
-    sparkle_field("spk", (tx, ty, 1.7), (0.5, 0.3, 0.4), 18, 7)
-    point_light("place_glow", (tx, ty - 0.4, 1.6), "fff0b0", 60, 0.2)
-    cast_member("wizard", "point", (-2.1, -0.2, 1.55), -22, 1.0, mirror=True)
+    motes("dots", [Vector((tx, ty, 1.15 - 0.15 * k)) for k in range(4)], [0.03] * 4, M("mote_white"))
+    sparkle_field("spk", (tx, ty, 1.5), (0.5, 0.3, 0.4), 18, 7)
+    point_light("place_glow", (tx, ty - 0.4, 1.4), "fff0b0", 60, 0.2)
+    cast_member("wizard", "point", (-2.1, -0.2, 1.55), 22, 1.0, mirror=True)
     for i in range(7):
         cloud(f"sea{i}", (-7 + i * 2.3, 5 + (i % 3) * 2.5, -2.2), 1.6, 50 + i, n=7, stretch=1.4)
     sky_clouds([((-6, 16, 5), 2.0, 10), ((6.5, 17, 6.5), 2.4, 11), ((1, 22, 8.5), 1.8, 12)])
@@ -1145,7 +1146,7 @@ def save_px(a, path):
 
 
 def _integ(a):
-    s = a.cumsum(0).cumsum(1)
+    s = a.astype(np.float64).cumsum(0).cumsum(1)
     pad = [(1, 0), (1, 0)] + [(0, 0)] * (a.ndim - 2)
     return np.pad(s, pad)
 
@@ -1153,10 +1154,10 @@ def _integ(a):
 def box_blur(a, r):
     H_, W_ = a.shape[:2]
     p = np.pad(a, [(r + 1, r), (r + 1, r)] + [(0, 0)] * (a.ndim - 2), mode="edge")
-    S = p.cumsum(0).cumsum(1)
+    S = p.astype(np.float64).cumsum(0).cumsum(1)
     k = 2 * r + 1
     out = S[k:k + H_, k:k + W_] - S[0:H_, k:k + W_] - S[k:k + H_, 0:W_] + S[0:H_, 0:W_]
-    return out / (k * k)
+    return (out / (k * k)).astype(np.float32)
 
 
 def kuwahara(rgb, r):
@@ -1175,7 +1176,7 @@ def kuwahara(rgb, r):
             def win(I):
                 return I[dy + k:dy + k + H_, dx + k:dx + k + W_] - I[dy:dy + H_, dx + k:dx + k + W_] \
                     - I[dy + k:dy + k + H_, dx:dx + W_] + I[dy:dy + H_, dx:dx + W_]
-            m = win(S) / n
+            m = (win(S) / n).astype(np.float32)
             ml = win(SL) / n
             v = win(SL2) / n - ml * ml
             sel = v < best
