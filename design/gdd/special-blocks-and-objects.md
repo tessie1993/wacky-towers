@@ -983,7 +983,12 @@ These are the level actors and props named in `levels.md` that do not exist yet,
 
 **OB-31* cargo (picnic basket, hamper, treasure chest)**
 - **What.** The thing on the moving platform you must not lose.
-- **Rule.** Gap G8 (`levels.md:549`). A cargo item sits on a marked cell of the platform. A track bump shakes loose any block that is not supported, and it also pushes cargo one cell; an arch sweeps anything taller than its gap off the top, which includes cargo placed on a tall stack. The cargo is knocked off if it is pushed off the edge or swept. Fill: cargo is a cell with `fills_layer` false (it adds no layer fill) and counts as height. Rescue: a rescue never moves cargo. Top-out: cargo above the arch gap is swept (this is a fail trigger).
+- **Rule (r2, matched to `levels.md` section 8, `:613-614`).** The cargo RIDES ON THE HIGHEST BLOCK of the player's build. It is not on a marked platform cell. Each resolve, it moves to the top surface cell of the tallest column nearest the platform centre (ties: lowest x, then z). The player must build "a stable, level seat" for it. Gap G8 (`levels.md:549`).
+  - **Lean and topple:** a lean meter shows the platform tipping to its heavy side; bumps and wind add to the lean (`levels.md:610-612`). Past the limit, the top blocks spill off. Building on the light side rights it.
+  - **Wobble warning:** when the cargo's seat is unstable (the cargo's cell has an unsupported cube beside it, or the lean passes `warn_at`), the cargo wobbles and a sound plays one lock before it can fall, so the player has a chance to save it (`levels.md:614`).
+  - **Bump and gate events:** a bump pushes the cargo one cell and shakes loose unsupported cubes. A low gate (OB-32) sweeps everything above `gate_gap` layers, cargo included, so the cargo's height is a build-height test, not a placement test.
+  - **Fill:** the cargo is not a cube. It is a prop on the top cell and does not change layer fill. **Rescue:** a rescue wipes the bottom planes only, so the cargo is re-seated on the new highest block, never deleted. **Top-out:** cargo above the gate gap is swept (a defined fail path).
+  - It is the `goal_object` of the level: the blocks under it carry `blast_safe` only if the level says so (3.1b).
 - **Look.** A wicker basket with a checked cloth, bouncing on bumps; glows gold when safe at the end.
 - **Audio.** `SFX_SP_CARGO_BUMP`, `SFX_SP_CARGO_LOST` (proposals).
 - **Fits.** meadow_03 Brook Run, meadow_bonus (hamper), pirate (chest), clockwork.
@@ -992,12 +997,12 @@ These are the level actors and props named in `levels.md` that do not exist yet,
 - **Engine.** NEW. Part of the 12 to 15 day G8 work.
 - **Source.** The treasure chest hanging on a crane in `mockup_03.jpg` (Tumbling Towers), the cargo and chests on ships in `mockup_08.jpg`, `mockup_13.jpg`.
 
-**OB-32* track events (bump, low arch, updraft, crosswind, cloud bump)**
-- **What.** Things on a moving track. All are known ahead on the preview strip.
-- **Rule.** Gap G8. Each event has a position on the track and an effect on the platform when it arrives: bump (shake loose unsupported cubes, shove cargo), low arch (sweep cubes above `arch_gap` layers), updraft (lift the platform, which raises its progress rate), crosswind (slide loose blocks one cell sideways), cloud bump (small shake). All are scheduled data in the level file. Fill and clears: sweeps are not clears. Rescue: the rescue wipe resets the shake. Top-out: arch sweeps are a defined loss path.
+**OB-32* track events (bump, low gate, updraft, crosswind, cloud bump)**
+- **What.** Things on a moving track. All are known ahead on the preview strip. (r2: the "low arch" is renamed "low gate", because "arch" is already the hollow piece SH-02.)
+- **Rule.** Gap G8. Each event has a position on the track and an effect on the platform when it arrives: bump (shake loose unsupported cubes, shove cargo), low gate (sweep cubes above `gate_gap` layers), updraft (lift the platform, which raises its progress rate), crosswind (slide loose blocks one cell sideways), cloud bump (small shake). All are scheduled data in the level file. Fill and clears: sweeps are not clears. Rescue: the rescue wipe resets the shake. Top-out: arch sweeps are a defined loss path.
 - **Look.** Icons on the strip in a fixed shape language: round bump, rainbow arch, up-arrow wind, side-arrow wind, small cloud.
 - **Audio.** `SFX_EV_TRACK_BUMP`, `SFX_EV_ARCH_SWEEP`, `SFX_EV_UPDRAFT` (proposals).
-- **Fits.** meadow_03 (bump, arch), meadow_bonus (updraft, crosswind, cloud bump).
+- **Fits.** meadow_03 (bump, low gate), meadow_bonus (updraft, crosswind, cloud bump; the same track package, so not a new special for the bonus, F1).
 - **Intro and teach.** One event type at a time in meadow_03.
 - **Fairness.** Preview 8 s ahead (knob `track_preview_s`).
 - **Engine.** NEW. Part of G8 (events 3 days, preview strip 2 days).
