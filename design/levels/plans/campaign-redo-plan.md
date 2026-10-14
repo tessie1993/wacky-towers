@@ -97,3 +97,7 @@ owner revises and the gate re-runs. No phase starts before the one it depends on
   of loss before the comeback. They stay kid-safe, with no on-screen harm (user).
 - 2026-10-14: **the ending** is the Carnival boss plus a bonus celebration. The hard levels (h1–h3) in
   each biome are an optional epilogue, "the villain strikes back" (user).
+- 2026-10-14: **Pirate Cove plays 11th** (user). The campaign order becomes: meadow, candy, ice,
+  underwater, lava, forest, cave, clockwork, neon, celestial, **pirate**, carnival. The story, the
+  emotional arc and the progression use this order. The catalog and unlock order change in phase 6
+  (build).

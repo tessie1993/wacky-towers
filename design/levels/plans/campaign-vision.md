@@ -1,6 +1,7 @@
-# Campaign vision: Wacky Towers (phase 1 brief, revision 2)
+# Campaign vision: Wacky Towers (phase 1 brief, revision 3)
 
-Author: studio game director. 2026-10-14. Revised after `production/qa/quality-review/2026-10-14-plan-vision.md`.
+Author: studio game director. 2026-10-14. Revised after the r1 and r2 plan-vision reviews in
+`production/qa/quality-review/`.
 Inputs: the redo plan, quality bar, art bible, reference boards, `catalog.json`, `progression.md`,
 `minigames.md`, `level-identity-spec.md` (including its later user rules), the 4.8/10 level review (source of
 the "tier 05 is `build_race` + height in 11 of 12 biomes" figure) and the level playtest.
@@ -10,15 +11,17 @@ Decisions in force: 168 levels (12 biomes x 14); a FRESH story keeping only the 
 mechanics handbook is written before any art or code (plan decisions log).
 
 **Biome order is catalog order:** 1 meadow, 2 candy, 3 ice, 4 underwater, 5 pirate, 6 lava, 7 forest, 8 cave,
-9 clockwork, 10 neon, 11 celestial, 12 carnival. Pirate was the 11th biome *added* (the user's word, and the
-plan's wording) but plays 5th. Dune Bazaar is dropped from the art bible's 12. Needed art-bible changes: a
-Pirate block row (user decision), removal of Dune Bazaar, and section 5 rows for Lana, Boulder and Glim.
+9 clockwork, 10 neon, 11 celestial, 12 carnival. Dune Bazaar is dropped from the art bible's 12. Needed
+art-bible changes: a Pirate block row (user decision), removal of Dune Bazaar, and section 5 rows for Lana,
+Boulder and Glim.
 
 **Open decisions for the user (everything marked "proposed" below is not decided):**
 (1) concept A is only a recommendation; (2) `tumble-fair.md` is replaced by the 14-level Carnival biome
 (proposed; phase 2 resolves it); (3) how scary is comic peril in Lava and Neon (proposed: always comic and
 reversible, a hero is never shown hurt); (4) the plan acceptance line "at most 5 `clear_n` goals" is
-superseded by U15 (the coordinator updates the plan).
+superseded by U15 (updated in the plan); (5) Pirate plays 5th in `catalog.json`, while the user's decision
+says "11th main biome, after Underwater": confirm 5th; (6) the plan task list needs a phase 3 task for the
+uniqueness script (owner tools-programmer, see section 5).
 
 ## 1. Campaign fantasy
 
@@ -27,10 +30,10 @@ world answers back.
 
 You are the Wizard's trusted builder in a sky of twelve floating islands. You drop, turn and slot chunky
 blocks. Each stack is an answer: a bridge a goat can cross, a wall that shelters the heroes, a lookout that
-spots the ship. Stacking matters because in this world **built things hold the sky together**. Clearing a
-layer is a cheer and a pay-out: it charges, mends or drains something in the story, never just a counter.
-Dame Ada, Bram and Sif are your party: their perks (Stitch, Smash and Redraw, kept from the old design) are
-tools you choose before a level, and they react in the scene to what you build. Minigame blocks are the
+spots the ship. Stacking matters because in this world **built things hold the sky together**. A cleared
+layer pays out something in the story: it charges a beacon, mends a floor or drains a flood.
+Dame Ada, Bram and Sif are your party: their perks (Stitch, Smash and Redraw, kept from the old design;
+proposed as tools you choose before a level) and they react in the scene to what you build. Minigame blocks are the
 island's own games, the hard track (h1-h3) is the mastery epilogue, and stars are the Wizard's thanks. The
 player feels clever, a bit mischievous, and rooted for: someone always cheers when a piece lands well.
 
