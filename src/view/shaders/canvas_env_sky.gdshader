@@ -195,7 +195,7 @@ void fragment() {
 			vec3 grassc = mesa_top.rgb * mix(1.08, 0.82, shade_x) * (0.92 + 0.14 * vn(vec2(qx * 9.0, uv.y * 40.0)));
 			vec3 mc = mix(rockc, grassc, cap);
 			float fall_x = 0.5 + 0.18 * (h21(vec2(cell, 23.0 + fl)) - 0.5);
-			float fall = step(1.0 - mesa_falls, h21(vec2(cell, 19.0 + fl))) * (1.0 - smoothstep(0.05, 0.09, abs(fx - fall_x))) * step(topy + 0.012, uv.y);
+			float fall = step(1.0 - mesa_falls, h21(vec2(cell, 19.0 + fl))) * (1.0 - smoothstep(mix(0.05, 0.012, mesa_round), mix(0.09, 0.026, mesa_round), abs(fx - fall_x))) * step(topy + 0.012, uv.y);
 			mc = mix(mc, vec3(0.92, 0.97, 1.0) * (0.9 + 0.1 * vn(vec2(fx * 30.0, uv.y * 80.0 - t * 2.0))), fall * 0.9);
 			float hz = mix(mix(0.38, 0.06, fl), mix(0.3, 0.02, fl), mesa_round) + smoothstep(topy + 0.08, topy + 0.32, uv.y) * mix(0.4, 0.3, mesa_round);
 			mc = mix(mc, horizon.rgb, clamp(hz, 0.0, 1.0));
