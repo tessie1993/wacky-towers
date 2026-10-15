@@ -31,6 +31,8 @@ var _official_stage: LevelStage
 var _pending_item: String = ""
 var _warning: String = ""
 var _hint: String = ""
+var _grips_released: int = 0 ## grip_release progress for the HUD meter (hud.meter.source = "stump_grip")
+var _banner_before_shown: bool = false
 var _wobble: Dictionary = {}
 var _preview_level: bool = false
 var _pending_results: Dictionary = {}
@@ -109,6 +111,7 @@ func _physics_process(_delta: float) -> void:
 		_bots[i].update(_rivals[i])
 		_rivals[i].step()
 	_refresh_hud()
+	_maybe_banner_before()
 	if not _result_shown:
 		if _mode == &"tournament":
 			_check_round()
@@ -518,6 +521,8 @@ func _clear_session() -> void:
 	_pending_results.clear()
 	_warning = ""
 	_hint = ""
+	_grips_released = 0
+	_banner_before_shown = false
 	_wobble.clear()
 	_network_sims.clear()
 	if _stage != null:
@@ -621,11 +626,27 @@ func _back() -> void:
 	elif _ui.current_screen == "title": _ui.confirm_quit()
 	else: _show_title()
 
+## Story banner line shown once at story.banner_before_ms of play time (level data, localised key).
+func _maybe_banner_before() -> void:
+	if _banner_before_shown or _level == null or _mode != &"campaign" or _sim == null: return
+	var key: String = String(_level.story.get("banner_before_key", ""))
+	if key.is_empty(): return
+	if _sim.get_phase() == BoardSim.Phase.COUNTDOWN or _sim.elapsed_ms() < int(_level.story.get("banner_before_ms", 2000)): return
+	_banner_before_shown = true
+	_ui.show_toast(tr(key), 5.0)
+
 func _finish_level() -> void:
 	_result_shown = true
 	_paused = true
 	var result: LevelResult = _sim.result()
 	if result == null: return
+	var after_key: String = String(_level.story.get("banner_after_key", "")) if _level != null and _mode == &"campaign" else ""
+	if result.is_won() and not after_key.is_empty():
+		# Win beat: the after-line shows banner_after_delay_ms after the win, and the result card with it.
+		var sim_ref := _sim
+		await get_tree().create_timer(float(_level.story.get("banner_after_delay_ms", 3000)) / 1000.0).timeout
+		if _sim != sim_ref or _sim == null: return
+		_ui.show_toast(tr(after_key), 5.0)
 	_architecture.lifecycle(&"session_end", {"mode": _mode, "won": result.is_won()})
 	var earned: Dictionary = {}
 	_store.set_playing(false)
@@ -699,7 +720,7 @@ func _hud_snapshot() -> Dictionary:
 		"held_shape": String(_sim.held_shape()) if _sim.knobs().flag(&"spawn.hold_enabled") else "Disabled",
 		"selected_potion": String(_store.get_setting("selected_potion", "")) if _mode in [&"campaign", &"arcade"] else "",
 		"potion_count": int(_store.progress().get("inventory", {}).get("potions", {}).get(String(_store.get_setting("selected_potion", "")), 0)) if _mode in [&"campaign", &"arcade"] else 0,
-		"warning": _warning, "hint": _hint, "wobble": _wobble,
+		"warning": _warning, "hint": _hint, "wobble": _wobble, "rule_progress": {"stump_grip": _grips_released},
 		"next_shapes": _preview_shapes(next_ids), "held_cells": _preview_shapes([_sim.held_shape()]) if _sim.held_shape() != &"" else [],
 		"hud": _level.hud if _level != null and _mode == &"campaign" else {}, "star_pace": _star_pace(), "biome": String(_level.biome) if _level != null else "meadow"}
 
@@ -1029,6 +1050,7 @@ func _route_events(events: Array[SimEvent]) -> void:
 			&"warning", &"rule_warning", &"gust_warning", &"flip_warning", &"conveyor_warning", &"mushroom_warning": _warning = String(event.data.get("message", event.data.get("text", "Watch the next twist!")))
 			&"placement_hint", &"mascot_hint": _hint = "A safe landing is marked on the board."
 			SimEvents.PIECE_SPAWNED: _hint = ""
+			&"grip_released": _grips_released = int(event.data.get("grip", _grips_released))
 
 func _arcade_best() -> int:
 	var best: int = 0

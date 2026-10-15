@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "grip_release",
+  "name_key": "RULE_GRIP_RELEASE",
+  "layer": "mechanic",
+  "icon": "stump",
+  "behaviour": "grip_release",
+  "params": {
+    "stages": { "type": "structure" },
+    "ramp_per_release_mult": { "type": "number", "min": 1, "max": 2 }
+  },
+  "incompatible_with": []
+}

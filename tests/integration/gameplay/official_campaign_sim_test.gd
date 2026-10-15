@@ -49,8 +49,8 @@ func test_official_meadow_fixed_point_gravity_is_not_converted_twice() -> void:
 	var catalog: GameCatalog = content.load_catalog()
 	var level: LevelData = content.level("meadow_01")
 	var sim := BoardSim.new(level, 1, catalog)
-	assert_int(level.knobs[&"fall.g0"]).is_equal(600)
-	assert_int(sim.knobs().int_value(&"fall.g0")).is_equal(600)
+	assert_int(level.knobs[&"fall.g0"]).is_equal(1200)
+	assert_int(sim.knobs().int_value(&"fall.g0")).is_equal(1200)
 	assert_array(Array(sim.knobs().errors())).is_empty()
 	assert_bool(level.pieces.get("fixed_list", PackedStringArray()).is_empty()).is_true()
 	for tick: int in 181:

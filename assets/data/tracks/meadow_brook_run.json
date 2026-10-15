@@ -1,13 +1,10 @@
 {
- "schema": 2,
+ "schema": 3,
  "id": "meadow_brook_run",
  "tick_ms": 50,
- "time_limit_ms": 190000,
- "restart_penalty_ms": 8000,
  "preview_window_mm": 14000,
  "preview_min_lead_ms": 8000,
- "on_loss": "checkpoint",
- "_notes": "150 s drive in 4 sections (40+40+40+30 s). Sawtooth: each section opens calm, climbs, and ends in a hard cluster. Finale combines crosswind+bump, two arches, then a final wind+bump. Limit = drive time + 40 s so a restart (8 s penalty) is affordable once or twice. Numbers: see docs/architecture/moving-platform.md tuning table.",
+ "_notes": "150 s drive, 4 sections, sawtooth event density, combined finale. No clock: 3 hearts. Stars from stack height at the finish (3 needs 5 layers and at most 1 heart lost). Tuned for the 8x8x10 board of meadow_03; a centred stack never topples from one event (caps stay below the lean limit), a lopsided one does.",
  "segments": [
   {
    "id": "meadow_path",
@@ -48,9 +45,8 @@
   "danger_pm": 550,
   "limit_pm": 800,
   "relax_pm_per_s": 60,
-  "spill_cells": 4,
-  "spill_relief_pm": 300,
-  "hysteresis_pm": 80
+  "hysteresis_pm": 80,
+  "dwell_ms": 2500
  },
  "cargo": {
   "id": "picnic_basket",
@@ -59,6 +55,7 @@
   "level_tolerance_layers": 1,
   "wobble_pm": 300,
   "slip_pm": 650,
+  "lost_pm": 1000,
   "rise_pm_per_s": 140,
   "recover_pm_per_s": 220,
   "lean_stress_pm_per_s": 160,
@@ -180,10 +177,12 @@
  "effects": {
   "bump": {
    "impulse_pm_per_force": 120,
+   "impulse_cap_pm": 360,
    "cargo_stress_pm_per_force": 90
   },
   "crosswind": {
-   "impulse_pm_per_layer_strength": 30,
+   "impulse_pm_per_layer_strength": 25,
+   "impulse_cap_pm": 450,
    "cargo_stress_pm_per_strength": 100
   },
   "arch": {}
@@ -219,5 +218,11 @@
    0,
    -200
   ]
- ]
+ ],
+ "hearts": 3,
+ "stars": {
+  "height_2": 3,
+  "height_3": 5,
+  "max_hearts_lost_for_3": 1
+ }
 }

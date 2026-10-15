@@ -16,6 +16,8 @@ const ROUND_MS := 5000
 static func rate(stars: Dictionary, result: LevelResult, relaxed: bool, scale_milli: int = DEFAULT_RELAXED_SCALE_MILLI) -> int:
 	if not result.is_won():
 		return 0
+	if stars.has("n3_pieces_max") or stars.has("n2_pieces_max"):
+		return _neat(stars, result)
 	if stars.has("s2") or stars.has("s3"):
 		var score_stars: int = 1
 		var metric: String = String(stars.get("metric", "layers_cleared"))
@@ -32,6 +34,18 @@ static func rate(stars: Dictionary, result: LevelResult, relaxed: bool, scale_mi
 	if t.y != NO_TIME and result.level_ms <= t.y and result.warnings_used == 0 and result.cells_trimmed == 0:
 		n = 3
 	return _clean_metrics(stars, result, n)
+
+## Neat-play stars (no clock, meadow_01): 3 = rescues <= n3_rescues_max and pieces <= n3_pieces_max;
+## 2 = rescues <= n2_rescues_max AND pieces <= n2_pieces_max; 1 = any win. A missing bound never matches.
+static func _neat(stars: Dictionary, result: LevelResult) -> int:
+	var rescues: int = result.warnings_used
+	var pieces: int = result.pieces_placed
+	if stars.has("n3_rescues_max") and stars.has("n3_pieces_max") and rescues <= int(stars["n3_rescues_max"]) and pieces <= int(stars["n3_pieces_max"]):
+		return 3
+	if stars.has("n2_rescues_max") and stars.has("n2_pieces_max") and rescues <= int(stars["n2_rescues_max"]) and pieces <= int(stars["n2_pieces_max"]):
+		return 2
+	return 1
+
 
 static func _clean_metrics(stars: Dictionary, result: LevelResult, count: int) -> int:
 	if count == 3:

@@ -28,7 +28,7 @@ func _run() -> void:
 	await process_frame
 	var output := ProjectSettings.globalize_path("res://production/qa/evidence/full-build/ui")
 	DirAccess.make_dir_recursive_absolute(output)
-	var profile := {"has_profile":true,"profile_name":"Clover","stars":42,"wallet":18,"continue_level_name":"Meadow · First Sprout"}
+	var profile := {"has_profile":true,"profile_name":"Clover","stars":42,"wallet":18,"continue_level_name":"Meadow · Stump Day"}
 	var shapes := [{"cells": PIECE_A, "tint": Color("4aa8e8")}, {"cells": PIECE_B, "tint": Color("ee6aa0")}, {"cells": PIECE_C, "tint": Color("f8c840")}]
 	for viewport_size: Vector2i in [Vector2i(1280, 720), Vector2i(720, 1280)]:
 		root.size = viewport_size

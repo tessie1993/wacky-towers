@@ -157,6 +157,45 @@ func _update_process() -> void:
 	set_process(_piece != null and not _reduced and _piece.has_meta(&"anims") and not (_piece.get_meta(&"anims") as Array).is_empty())
 
 
+## Moves the day grade to a time_of_day preset id (dawn, golden, dusk...) over `seconds` (0 = snap).
+## Lights, ambient, sky colours and env adjustments crossfade; the set piece and weather stay as built.
+func set_grade(tod: String, seconds: float) -> void:
+	if _base.is_empty() or not presets().get("time_of_day", {}).has(tod): return
+	var before: Dictionary = _grade_state()
+	_apply_time_of_day(tod)
+	var after: Dictionary = _grade_state()
+	if seconds <= 0.0 or not is_inside_tree():
+		return
+	_set_grade_state(before, after, 0.0)
+	create_tween().tween_method(func(t: float) -> void: _set_grade_state(before, after, t), 0.0, 1.0, seconds)
+
+
+func _grade_state() -> Dictionary:
+	var d: Dictionary = {"key_c": _rig[0].light_color, "key_e": _rig[0].light_energy, "fill_c": _rig[1].light_color, "fill_e": _rig[1].light_energy,
+		"back_e": _rig[2].light_energy, "amb_c": _env.ambient_light_color, "amb_e": _env.ambient_light_energy,
+		"sat": _env.adjustment_saturation, "bri": _env.adjustment_brightness, "glow": _env.glow_intensity}
+	if _sky_mat != null:
+		for key: String in ["top", "horizon", "low"]: d["sky_" + key] = _sky_param(key, Color.WHITE)
+	return d
+
+
+func _set_grade_state(a: Dictionary, b: Dictionary, t: float) -> void:
+	if _rig.size() < 3 or not is_instance_valid(_rig[0]): return
+	_rig[0].light_color = (a["key_c"] as Color).lerp(b["key_c"], t)
+	_rig[0].light_energy = lerpf(a["key_e"], b["key_e"], t)
+	_rig[1].light_color = (a["fill_c"] as Color).lerp(b["fill_c"], t)
+	_rig[1].light_energy = lerpf(a["fill_e"], b["fill_e"], t)
+	_rig[2].light_energy = lerpf(a["back_e"], b["back_e"], t)
+	_env.ambient_light_color = (a["amb_c"] as Color).lerp(b["amb_c"], t)
+	_env.ambient_light_energy = lerpf(a["amb_e"], b["amb_e"], t)
+	_env.adjustment_saturation = lerpf(a["sat"], b["sat"], t)
+	_env.adjustment_brightness = lerpf(a["bri"], b["bri"], t)
+	_env.glow_intensity = lerpf(a["glow"], b["glow"], t)
+	if _sky_mat != null:
+		for key: String in ["top", "horizon", "low"]:
+			_sky_mat.set_shader_parameter(StringName(key), (a["sky_" + key] as Color).lerp(b["sky_" + key], t))
+
+
 # ------------------------------------------------------------------ biome snapshot and restore
 
 func _snapshot() -> void:

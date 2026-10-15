@@ -1,0 +1,40 @@
+{
+ "schema_version": 1,
+ "notes": "Per-level presentation beats (view side only). Consumed by WtLevelBeats via WtStage. Sky names come from the level's look.sky list; sky_step N selects entry N. Cue ids are cues.json ids; ids with gap=true are logged by AudioDirector until a file exists.",
+ "levels": {
+  "meadow_01": {
+   "sky_grades": {"dawn": "dawn", "gold": "golden", "sunset": "dusk"},
+   "sky_seconds": 1.6,
+   "camera_by_step": ["high_three_quarter", "pit_6_wide", "pit_8_wide", "stump_win"],
+   "camera_seconds": 1.1,
+   "lock": {
+    "cues": ["SFX_M01_LOCK_HUM"],
+    "ring": {"color": "#f8c840", "radius": 1.6, "seconds": 0.55, "alpha": 0.8}
+   },
+   "layer_clear": {
+    "ring": {"color": "#fff1b8", "radius_per_width": 0.9, "seconds": 0.6, "alpha": 0.95}
+   },
+   "release": {
+    "shake": {"amp": 0.012, "seconds": 0.3},
+    "glow": {"color": "#fff1b8", "alpha": 0.32, "seconds": 0.5},
+    "cues": ["SFX_M01_STUMP_GROAN"],
+    "cues_by_stage": {"left_roots": ["SFX_M01_ROOT_TWANG"], "right_stones": ["SFX_M01_STONE_RUMBLE"]},
+    "burst": {"color": "#fff1b8", "count": 40}
+   },
+   "rescue": {
+    "cues": ["SFX_UI_WHOOSH", "SFX_M01_CLOUD_GIGGLE"],
+    "swoop_seconds": 1.3,
+    "cloud_color": "#d9c8ff"
+   },
+   "win": {
+    "cues": ["SFX_M01_BELL"],
+    "glow": {"color": "#4cc04a", "alpha": 0.3, "seconds": 1.4},
+    "rings": {"color": "#4cc04a", "count": 3, "stagger_seconds": 0.25, "radius": 7.5, "seconds": 1.2, "alpha": 0.9},
+    "burst": {"color": "#8be07a", "count": 60}
+   },
+   "lose": {
+    "cues": ["SFX_M01_STUMP_YAWN"]
+   }
+  }
+ }
+}

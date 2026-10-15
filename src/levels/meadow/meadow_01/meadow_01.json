@@ -8,134 +8,191 @@
     "width": 8,
     "depth": 8,
     "h_play": 8,
-    "down_axis": "-y"
+    "down_axis": "-y",
+    "mask": [
+      "........",
+      "........",
+      "..####..",
+      "..####..",
+      "..####..",
+      "..####..",
+      "........",
+      "........"
+    ]
   },
   "pieces": {
     "shapes": [
+      "o",
       "i",
-      "o",
-      "t",
-      "l",
-      "s"
-    ],
-    "opening_set": [
-      "o",
-      "i"
-    ],
-    "opening_count": 2
+      "l"
+    ]
   },
   "knobs": {
-    "fall.g0": 0.6,
+    "fall.g0": 1.2,
+    "fall.lock_delay_ms": 900,
+    "fall.lock_resets_max": 15,
+    "fall.entry_delay_ms": 300,
+    "spawn.preview_count": 1,
+    "spawn.hold_enabled": false,
+    "spawn.randomizer": "bag",
     "control.rotation_axes_enabled": [
       "spin"
     ],
     "goal.top_out": "rescue",
-    "goal.warnings_max": 2
+    "goal.warnings_max": 3,
+    "rescue.layers": 3
   },
   "goal": {
     "type": "clear_n",
-    "n": 2
+    "n": 3
   },
   "rules": [
     {
-      "id": "balloon",
+      "id": "grip_release",
       "params": {
-        "balloon_per_bag": 1,
-        "balloon_g_mult": 0.7,
-        "balloon_drift_ms": 4000
+        "stages": [
+          {
+            "id": "left_roots",
+            "rects": [
+              {
+                "x": [
+                  0,
+                  1
+                ],
+                "z": [
+                  2,
+                  5
+                ]
+              }
+            ]
+          },
+          {
+            "id": "right_stones",
+            "rects": [
+              {
+                "x": [
+                  6,
+                  7
+                ],
+                "z": [
+                  2,
+                  5
+                ]
+              }
+            ]
+          },
+          {
+            "id": "rim",
+            "rects": [
+              {
+                "x": [
+                  2,
+                  5
+                ],
+                "z": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "x": [
+                  1,
+                  6
+                ],
+                "z": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "x": [
+                  1,
+                  6
+                ],
+                "z": [
+                  6,
+                  6
+                ]
+              },
+              {
+                "x": [
+                  2,
+                  5
+                ],
+                "z": [
+                  7,
+                  7
+                ]
+              }
+            ]
+          }
+        ],
+        "ramp_per_release_mult": 1.25
       }
     }
   ],
   "stars": {
-    "t2": 290000,
-    "t3": 210000
+    "n3_rescues_max": 0,
+    "n3_pieces_max": 22,
+    "n2_rescues_max": 1,
+    "n2_pieces_max": 28,
+    "status": "TO BE MEASURED (neat play, no clock; design/levels/meadow/meadow_01.md section 3)"
   },
-  "hud": {"show": ["pause", "goal", "next", "meter", "clock"], "objective": "Free the Hearth Stump before sunset.", "meter": {"label": "Hearth Hum", "label_key": "HUD_METER_HEARTH_HUM", "source": "goal_progress", "pips": 3, "icon": "hearth"}},
+  "hud": {
+    "show": [
+      "pause",
+      "goal",
+      "next",
+      "meter"
+    ],
+    "objective": "Free the Hearth Stump.",
+    "objective_key": "LVL_MEADOW_01_OBJECTIVE",
+    "meter": {
+      "label": "Stump Grip",
+      "label_key": "HUD_METER_STUMP_GRIP",
+      "source": "stump_grip",
+      "pips": 3,
+      "icon": "stump"
+    },
+    "hide_rules": true
+  },
   "story": {
     "title_key": "LVL_MEADOW_01_TITLE",
     "premise_key": "LVL_MEADOW_01_PREMISE",
+    "objective_key": "LVL_MEADOW_01_OBJECTIVE",
     "mascot_role": "helper",
-    "icon": "sprout"
+    "icon": "sprout",
+    "banner_before_key": "LVL_MEADOW_01_BANNER_BEFORE",
+    "banner_before_ms": 2000,
+    "banner_after_key": "LVL_MEADOW_01_BANNER_AFTER",
+    "banner_after_delay_ms": 3000
+  },
+  "look": {
+    "sky": [
+      "dawn",
+      "gold",
+      "gold",
+      "sunset"
+    ],
+    "camera": "high_three_quarter"
   },
   "metadata": {
     "source": "production/levels/meadow/data/meadow_01.json",
-    "status": "Authored; awaiting playtest",
-    "design_spec": {
-      "schema": 1,
-      "id": "meadow_01",
-      "biome": "meadow",
-      "tier": 1,
-      "name": "LVL_MEADOW_01_TITLE",
-      "board": {
-        "width": 4,
-        "depth": 4,
-        "h_play": 8,
-        "down_axis": "-y"
-      },
-      "pieces": {
-        "shapes": [
-          "i",
-          "o",
-          "t",
-          "l",
-          "s"
-        ],
-        "opening_set": [
-          "o",
-          "i"
-        ],
-        "opening_count": 2
-      },
-      "knobs": {
-        "fall.g0": 0.6,
-        "control.rotation_axes_enabled": [
-          "spin"
-        ],
-        "goal.top_out": "rescue",
-        "goal.warnings_max": 2
-      },
-      "goal": {
-        "type": "clear_n",
-        "n": 4
-      },
-      "rules": [
-        {
-          "id": "balloon",
-          "params": {
-            "balloon_per_bag": 1,
-            "balloon_g_mult": 0.7,
-            "balloon_drift_ms": 4000
-          }
-        }
-      ],
-      "stars": {
-        "t2": 145000,
-        "t3": 105000
-      },
-      "story": {
-        "title_key": "LVL_MEADOW_01_TITLE",
-        "premise_key": "LVL_MEADOW_01_PREMISE",
-        "mascot_role": "helper",
-        "icon": "sprout"
+    "status": "Spec r1",
+    "level_type": "funny",
+    "scene": {
+      "terrain": "stump_top",
+      "set_piece": "hearth_stump",
+      "action": "grip_release",
+      "cast": {
+        "wizard": "point"
       }
     },
-    "unsupported": [],
-    "blocking_gameplay": [],
-    "nonblocking_notes": [],
-    "tuning": "Initial estimates; no playtest medians",
-    "canonical_rule_mapping": [],
-    "design_amendments": [
-      {
-        "date": "2026-10-13",
-        "source": "user decision: single-board levels are 8x8 or bigger",
-        "change": "Board 4x4 -> 8x8 (offset x2 z2); clear_n 4 -> 2; time stars x2.00"
-      },
-      {
-        "date": "2026-10-13",
-        "source": "user request: no standard rules; level type mix",
-        "change": "Added gentle balloon twist (1 per bag, g x0.7, drift 4000 ms); level_type funny"
-      }
+    "pit_widths": [
+      4,
+      6,
+      8
     ],
-    "level_type": "funny"
+    "tuning": "fall.g0 1.2 and ramp 1.25 per release TO BE MEASURED (G6)"
   }
 }

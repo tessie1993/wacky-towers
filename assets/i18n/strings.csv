@@ -1,3 +1,8 @@
 keys,en
 UI_PLAY,Play
 UI_QUIT,Quit
+LVL_MEADOW_01_TITLE,Stump Day
+LVL_MEADOW_01_OBJECTIVE,Free the Hearth Stump.
+HUD_METER_STUMP_GRIP,Stump Grip
+LVL_MEADOW_01_BANNER_BEFORE,"Wizard: ""Old stump is stuck! Stack it up and give it a good pull."""
+LVL_MEADOW_01_BANNER_AFTER,"Wizard: ""There! The old stump is free. Hear that bell?"""

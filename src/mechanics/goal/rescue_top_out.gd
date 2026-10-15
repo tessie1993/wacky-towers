@@ -6,6 +6,8 @@ const PLUGIN_ID := &"rescue"
 ## Knob id and fallback (assets/data/knobs/goals.json goal.rescue_margin, default 2).
 const MARGIN_KNOB := &"goal.rescue_margin"
 const DEFAULT_MARGIN := 2
+## Knob id: fixed layers a rescue wipes (meadow_01 `rescue.layers` = 3); 0 or absent = F3 formula.
+const LAYERS_KNOB := &"rescue.layers"
 
 var _margin: int
 
@@ -31,7 +33,10 @@ func resolve_top_out(board: BoardState, state: GoalState, api: RuleApi) -> int:
 		var knob: Variant = api.knob(MARGIN_KNOB) if api != null else null
 		margin = knob if typeof(knob) == TYPE_INT else DEFAULT_MARGIN
 	# s = stack_height() (highest solid layer index), as in the ticket example (s=9 -> k=4 -> stack 5).
+	var fixed: Variant = api.knob(LAYERS_KNOB) if api != null else null
 	var k: int = mini(wipe_size(board.stack_height(), board.limit_layer(), margin), board.layer_count())
+	if typeof(fixed) == TYPE_INT and int(fixed) > 0:
+		k = mini(int(fixed), board.layer_count())
 	state.warnings_left -= 1
 	var removed: int = board.wipe_bottom(k)
 	if api != null:

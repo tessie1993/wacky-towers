@@ -100,6 +100,17 @@
       "note": "Room after a rescue (F3); inert when warnings_max = 0"
     },
     {
+      "id": "rescue.layers",
+      "type": "count",
+      "default": 0,
+      "min": 0,
+      "max": 8,
+      "allows_zero": true,
+      "rule_adjustable": false,
+      "source": "design/levels/meadow/meadow_01.md#3-mechanics",
+      "note": "Layers a rescue wipes from the bottom; 0 = use the goal.rescue_margin formula (F3). TO BE MEASURED"
+    },
+    {
       "id": "goal.star2_share",
       "type": "scalar",
       "default": 0.85,
