@@ -19,7 +19,7 @@
       "id": "meadow_01",
       "biome": "meadow",
       "tier": 1,
-      "name": "First Sprout",
+      "name": "Stump Day",
       "name_key": "LVL_MEADOW_01_TITLE",
       "json": "res://src/levels/meadow/meadow_01/meadow_01.json",
       "scene": "res://src/levels/meadow/meadow_01/meadow_01.tscn",

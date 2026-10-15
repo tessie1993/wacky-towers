@@ -35,6 +35,11 @@ var value_text: String = "":
 	set(value):
 		value_text = value
 		queue_redraw()
+## Bark-knot mode (no numbers): `pips` knots on the trough; each knot turns green and drops off as the fill passes it.
+var knots: bool = false:
+	set(value):
+		knots = value
+		queue_redraw()
 ## When true the fill snaps instead of easing (reduced motion).
 var reduced_motion: bool = false
 
@@ -79,7 +84,9 @@ func _draw() -> void:
 	var inner := trough.grow_individual(-7, -7, -7, -9)
 	inner.position.x += icon_w * 0.5
 	inner.size.x -= icon_w * 0.5
-	if inner.size.x > 4.0:
+	if knots and pips > 0:
+		_draw_knots(trough)
+	elif inner.size.x > 4.0:
 		if pips > 0:
 			var gap := 5.0
 			var seg := (inner.size.x - gap * (pips - 1)) / pips
@@ -123,3 +130,21 @@ func _flame(center: Vector2, h: float, lit: bool) -> void:
 	draw_colored_polygon(outer, Color("ff9a3c") if lit else Color("c08a58"))
 	var inner := PackedVector2Array([center + Vector2(0, -h * 0.12), center + Vector2(h * 0.14, h * 0.16), center + Vector2(0, h * 0.34), center + Vector2(-h * 0.14, h * 0.16)])
 	draw_colored_polygon(inner, WtStorybook.GOLD_GLINT if lit else Color("e8c89a"))
+
+
+## Bark knots in a row: brown while tight, green as they loosen (first 40% of the drop), then they fall away.
+func _draw_knots(trough: Rect2) -> void:
+	var r := trough.size.y * 0.36
+	var step := trough.size.x / float(pips)
+	for i: int in pips:
+		var t := clampf(_shown * pips - i, 0.0, 1.0)
+		var c := Vector2(trough.position.x + step * (i + 0.5), trough.position.y + trough.size.y * 0.5)
+		var fall := clampf((t - 0.4) / 0.6, 0.0, 1.0)
+		c.y += fall * trough.size.y * 0.9
+		var body := Color("7a4a2a").lerp(Color("4cc04a"), clampf(t / 0.4, 0.0, 1.0))
+		body.a = 1.0 - fall
+		if body.a <= 0.01: continue
+		draw_circle(c, r + 3.0, Color(0.14, 0.08, 0.22, body.a))
+		draw_circle(c, r, body)
+		draw_arc(c, r * 0.55, 0.3, 4.2, 14, Color(body.darkened(0.35), body.a), 3.0, true)
+		draw_circle(c + Vector2(-r * 0.3, -r * 0.35), r * 0.2, Color(1, 1, 1, 0.35 * body.a))

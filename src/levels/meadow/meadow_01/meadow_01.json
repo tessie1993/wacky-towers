@@ -39,7 +39,8 @@
       "spin"
     ],
     "goal.top_out": "rescue",
-    "goal.warnings_max": 3
+    "goal.warnings_max": 3,
+    "rescue.layers": 3
   },
   "goal": {
     "type": "clear_n",
@@ -131,7 +132,13 @@
       }
     }
   ],
-  "stars": {},
+  "stars": {
+    "n3_rescues_max": 0,
+    "n3_pieces_max": 22,
+    "n2_rescues_max": 1,
+    "n2_pieces_max": 28,
+    "status": "TO BE MEASURED (neat play, no clock; design/levels/meadow/meadow_01.md section 3)"
+  },
   "hud": {
     "show": [
       "pause",
@@ -144,17 +151,22 @@
     "meter": {
       "label": "Stump Grip",
       "label_key": "HUD_METER_STUMP_GRIP",
-      "source": "goal_progress",
+      "source": "stump_grip",
       "pips": 3,
       "icon": "stump"
-    }
+    },
+    "hide_rules": true
   },
   "story": {
     "title_key": "LVL_MEADOW_01_TITLE",
     "premise_key": "LVL_MEADOW_01_PREMISE",
     "objective_key": "LVL_MEADOW_01_OBJECTIVE",
     "mascot_role": "helper",
-    "icon": "sprout"
+    "icon": "sprout",
+    "banner_before_key": "LVL_MEADOW_01_BANNER_BEFORE",
+    "banner_before_ms": 2000,
+    "banner_after_key": "LVL_MEADOW_01_BANNER_AFTER",
+    "banner_after_delay_ms": 3000
   },
   "look": {
     "sky": [

@@ -1386,6 +1386,7 @@ func _build_hud() -> void:
 	var meter_label := str(meter_def.get("label", "Progress"))
 	meter.pips = int(meter_def.get("pips", 0))
 	meter.hearth_icon = str(meter_def.get("icon", "")) == "hearth"
+	meter.knots = str(meter_def.get("source", "")) == "stump_grip"
 	meter.caption = meter_label if meter_key.is_empty() or tr(meter_key) == meter_key else tr(meter_key)
 	_hud_labels.meter = meter
 	# Meter sits bottom-left (portrait: just above the Turn button).
@@ -2031,8 +2032,15 @@ func update_hud(data: Dictionary) -> void:
 		var meter_def: Variant = (_hud_data.get("hud", {}) as Dictionary).get("meter", {}) if _hud_data.get("hud", {}) is Dictionary else {}
 		var target_value := maxf(1.0, float(_hud_data.get("target", 1)))
 		var from_goal := str((meter_def as Dictionary).get("source", "goal_progress")) == "goal_progress"
-		(_hud_labels.meter as WtMeter).fill = float(_hud_data.get("progress", 0)) / target_value if from_goal else 0.0
-		(_hud_labels.meter as WtMeter).value_text = "%d/%d" % [int(_hud_data.get("progress", 0)), int(target_value)] if from_goal else ""
+		var meter_ctl := _hud_labels.meter as WtMeter
+		if str((meter_def as Dictionary).get("source", "")) == "stump_grip":
+			# Data-driven source: grip_release progress (grips let go / stages), shown as knots, no numbers.
+			var released: Dictionary = _hud_data.get("rule_progress", {}) if _hud_data.get("rule_progress", {}) is Dictionary else {}
+			meter_ctl.fill = float(released.get("stump_grip", 0)) / maxf(1.0, float(meter_ctl.pips))
+			meter_ctl.value_text = ""
+		else:
+			meter_ctl.fill = float(_hud_data.get("progress", 0)) / target_value if from_goal else 0.0
+			meter_ctl.value_text = "%d/%d" % [int(_hud_data.get("progress", 0)), int(target_value)] if from_goal else ""
 	_refresh_gem_bar()
 	var twist_names := PackedStringArray()
 	for twist in _hud_data.get("twists", []): twist_names.append(str(twist).replace("_", " ").capitalize())
@@ -2046,7 +2054,9 @@ func update_hud(data: Dictionary) -> void:
 		_hud_labels.rules.text = "!  Stack is getting tall  !"
 		_hud_labels.rules.add_theme_color_override("font_color", Color("ff9a86"))
 	else: _hud_labels.rules.add_theme_color_override("font_color", TEXT_SOFT)
-	_hud_labels.rules_panel.visible = not _hud_labels.rules.text.strip_edges().is_empty()
+	var hud_def: Variant = _hud_data.get("hud", {})
+	var hide_rules: bool = hud_def is Dictionary and bool((hud_def as Dictionary).get("hide_rules", false))
+	_hud_labels.rules_panel.visible = not hide_rules and not _hud_labels.rules.text.strip_edges().is_empty()
 	if int(_hud_data.get("round", 0)) > 0: _hud_labels.level.text += "  ·  Round %s" % str(_hud_data.round)
 
 ## Hides the gem bar (and the landscape rows) when none of their buttons has anything to show.
@@ -2235,7 +2245,7 @@ func clear_overlay() -> void:
 	if is_instance_valid(_hud): _hud.show()
 	current_screen = "hud"
 
-func show_toast(message: String) -> void:
+func show_toast(message: String, seconds: float = 3.5) -> void:
 	_toast_generation += 1
 	var generation := _toast_generation
 	if is_instance_valid(_toast):
@@ -2253,7 +2263,7 @@ func show_toast(message: String) -> void:
 	var text := _label(message, 18, CREAM, true)
 	text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_toast.add_child(text)
-	await get_tree().create_timer(3.5).timeout
+	await get_tree().create_timer(seconds).timeout
 	if generation == _toast_generation and is_instance_valid(_toast): _toast.hide()
 
 func show_settings(data: Dictionary = {}) -> void:

@@ -1,7 +1,7 @@
 {
   "biome": "Meadow",
   "nodes": [
-    { "id": "meadow_01", "name": "First Sprout", "pos": [0.12, 0.86] },
+    { "id": "meadow_01", "name": "Stump Day", "pos": [0.12, 0.86] },
     { "id": "meadow_02", "name": "Tilt & Roll", "pos": [0.30, 0.78] },
     { "id": "meadow_03", "name": "Breezy Hill", "pos": [0.50, 0.88] },
     { "id": "meadow_04", "name": "Mushroom Ring", "pos": [0.72, 0.80] },
