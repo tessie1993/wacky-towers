@@ -34,7 +34,7 @@ static func validate(level: LevelData, catalog: GameCatalog) -> Array[Validation
 	if positive > int(catalog.knob_defs.def(&"spawn.bag_max_size").get("default", 32)):
 		issues.append(ValidationIssue.error(id, "pieces.weights", &"bag_cap", "normalized bag exceeds cap"))
 	var goal: String = str(level.goal.get("type", ""))
-	if goal not in ["clear_n", "height", "shape", "survive", "endless", "rescue_all", "bonk_boss", "dig_rescue", "wind_keys", "bake_oven"]:
+	if goal not in ["clear_n", "height", "shape", "survive", "endless", "rescue_all", "bonk_boss", "dig_rescue", "wind_keys", "bake_oven", "track_race"]:
 		issues.append(ValidationIssue.error(id, "goal.type", &"unknown_goal", "unsupported goal '%s'" % goal))
 	if goal == "clear_n" and (JsonNum.whole_int(level.goal.get("n")) == null or int(level.goal.get("n", 0)) < 1):
 		issues.append(ValidationIssue.error(id, "goal.n", &"goal_target", "clear count must be a positive integer"))
