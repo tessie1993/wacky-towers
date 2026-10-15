@@ -219,3 +219,4 @@ assets/third_party/*/extracted/Models/DAE format/
 assets/third_party/*/extracted/Models/FBX format/
 assets/third_party/*/extracted/Models/OBJ format/
 assets/third_party/*/extracted/Models/STL format/
+*.blend1
