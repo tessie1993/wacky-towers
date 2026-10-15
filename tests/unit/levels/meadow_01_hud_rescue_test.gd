@@ -65,7 +65,9 @@ func test_neat_stars() -> void:
 	var stars: Dictionary = _raw()["stars"]
 	assert_int(StarRater.rate(stars, _result(true, 0, 22), false)).is_equal(3)
 	assert_int(StarRater.rate(stars, _result(true, 0, 23), false)).is_equal(2)
-	assert_int(StarRater.rate(stars, _result(true, 1, 40), false)).is_equal(2)
+	# 2 stars needs rescues <= 1 AND pieces <= 28 (not OR).
+	assert_int(StarRater.rate(stars, _result(true, 1, 28), false)).is_equal(2)
+	assert_int(StarRater.rate(stars, _result(true, 1, 40), false)).is_equal(1)
+	assert_int(StarRater.rate(stars, _result(true, 2, 28), false)).is_equal(1)
 	assert_int(StarRater.rate(stars, _result(true, 2, 40), false)).is_equal(1)
-	assert_int(StarRater.rate(stars, _result(true, 2, 28), false)).is_equal(2)
 	assert_int(StarRater.rate(stars, _result(false, 0, 10), false)).is_equal(0)

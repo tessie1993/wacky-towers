@@ -7,8 +7,7 @@
   "behaviour": "grip_release",
   "params": {
     "stages": { "type": "structure" },
-    "ramp_per_release_mult": { "type": "number", "min": 1, "max": 2 },
-    "ramp_cap_mult": { "type": "number", "min": 1, "max": 4 }
+    "ramp_per_release_mult": { "type": "number", "min": 1, "max": 2 }
   },
   "incompatible_with": []
 }

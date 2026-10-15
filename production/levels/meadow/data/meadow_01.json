@@ -127,8 +127,7 @@
             ]
           }
         ],
-        "ramp_per_release_mult": 1.25,
-        "ramp_cap_mult": 3.0
+        "ramp_per_release_mult": 1.25
       }
     }
   ],

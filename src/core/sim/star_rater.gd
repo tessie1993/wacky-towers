@@ -36,13 +36,13 @@ static func rate(stars: Dictionary, result: LevelResult, relaxed: bool, scale_mi
 	return _clean_metrics(stars, result, n)
 
 ## Neat-play stars (no clock, meadow_01): 3 = rescues <= n3_rescues_max and pieces <= n3_pieces_max;
-## 2 = rescues <= n2_rescues_max or pieces <= n2_pieces_max; 1 = any win. A missing bound never matches.
+## 2 = rescues <= n2_rescues_max AND pieces <= n2_pieces_max; 1 = any win. A missing bound never matches.
 static func _neat(stars: Dictionary, result: LevelResult) -> int:
 	var rescues: int = result.warnings_used
 	var pieces: int = result.pieces_placed
 	if stars.has("n3_rescues_max") and stars.has("n3_pieces_max") and rescues <= int(stars["n3_rescues_max"]) and pieces <= int(stars["n3_pieces_max"]):
 		return 3
-	if (stars.has("n2_rescues_max") and rescues <= int(stars["n2_rescues_max"])) or (stars.has("n2_pieces_max") and pieces <= int(stars["n2_pieces_max"])):
+	if stars.has("n2_rescues_max") and stars.has("n2_pieces_max") and rescues <= int(stars["n2_rescues_max"]) and pieces <= int(stars["n2_pieces_max"]):
 		return 2
 	return 1
 
