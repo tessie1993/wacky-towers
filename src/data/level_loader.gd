@@ -256,7 +256,7 @@ static func _parse_rules_stars(raw: Dictionary, level: LevelData, id: StringName
 		issues.append(ValidationIssue.error(id, "stars", &"wrong_type", "must be an object"))
 		return
 	for k: Variant in stars:
-		if str(k) == "metric":
+		if str(k) == "metric" or str(k) == "status":
 			level.stars[str(k)] = str(stars[k])
 			continue
 		if str(k) == "three_star_zero_metrics" and stars[k] is Array:
