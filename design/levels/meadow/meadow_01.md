@@ -12,7 +12,7 @@ Level 1 is a block-stacking puzzle where full layers are a lever. An old Hearth 
 You drop O, I and L blocks into a small 4x4 pit on top of it. Each full layer makes the stump shake and one grip lets go.
 The pit grows 4x4, 6x4, 8x4, then the whole round stump shows, glows green and rings its bell. That is the win.
 Nothing can run out. The pieces only fall faster. The sky goes from dawn to gold to sunset as the grips go.
-Play time: about 2 to 4 minutes. Role: teach. Level type: twist. Ending: plain.
+Play time: about 2 to 4 minutes. Role: teach. Level type: funny. Ending: plain.
 
 ## 2. Walkthrough
 
@@ -235,9 +235,9 @@ Negative: text, letters, labels, logos, watermark, photorealistic, flat vector, 
 14. No Nintendo IP, no "Tetris" in player text, no board logos.
 15. A tester can win with one finger using toggle soft drop and repeat off (ACC-16).
 
-## Open questions
+## Decisions (2026-10-15)
 
-1. Speed ramp: per minute (levels.md section 7, the later decision) or x1.25 per release (levels.md line 87 and table)? Draft uses per minute, with per-release as a data switch.
-2. Ada: wordless cameo in meadow_01 (beats file lists her) or Wizard alone (frame text)?
-3. Rescue count: 2 (current data) or 3 (old spec)? To be measured.
-4. `level_type`: the mix file calls meadow_01 funny. Setting twist leaves meadow without a main-level funny. Game designer to decide.
+1. Speed: steps x1.25 per grip release (not per minute). The per-minute ramp is removed (`ramp_per_release_mult 1.25`, cap 3x).
+2. Ada: dropped. Only the Wizard appears.
+3. Soft rescues: 3 (`goal.warnings_max = 3`).
+4. `level_type`: "funny".
