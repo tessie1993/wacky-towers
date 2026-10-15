@@ -1425,7 +1425,7 @@ Biome order and ids come from `assets/data/campaign/catalog.json:3-16` and `desi
 
 | # | Biome | New specials by slot (one per level) | Recalled from earlier biomes | Banned in this biome | Block skin |
 |---|---|---|---|---|---|
-| 1 | meadow | 01 OB-37 cage; 02 OB-01 core with OB-02 wind; 03 OB-31, OB-32, OB-33 track package; 04 OB-27, OB-28, BK-39 herd package; 05 OB-03, OB-29 stone package; 06 fill goal (no special); 07 OB-06 fog; 08 BK-05 pad with OB-30 lamb; 09 OB-04 tilt; 10 recall only; bonus recall track; h1 BK-02 sprout; h2 BK-01 mushroom; h3 BK-03 egg | none | all items, shells, hollow shapes, rival | sheet skin exists |
+| 1 | meadow | 01 OB-37 cage; 02 OB-01 core with OB-02 wind; 03 OB-31, OB-32, OB-33 track package; 04 OB-27, OB-28, BK-39 herd package; 05 OB-03, OB-29 stone package; 06 fill goal (no special); 07 core objects only (no special; user decision 2026-10-14: fog OB-06 moves to a hard level); 08 core objects only (no special; bounce pad BK-05 with OB-30 lamb moves to a hard level); 09 OB-04 tilt; 10 recall only; bonus recall track; h1 BK-02 sprout; h2 BK-01 mushroom; h3 BK-03 egg; OB-06 fog and BK-05 pad with OB-30 lamb: placed in h1 to h3 by the level designers (OPEN, see 8.1 note) | none | all items, shells, hollow shapes, rival | sheet skin exists |
 | 2 | candy | 02 BK-09 gumdrop hail; 03 OB-21 syrup band; 04 BK-31 jelly; 05 BK-10/11 frosting (with BK-12 sponge); 06 BK-14 moody; 07 BK-29 rainbow; 08 BK-07 goo; 09 BK-15 candy bomb; 10 BK-17 climber boss; bonus SH-01/02/03 hollow shapes with BK-40 peg and the `ring_toss` goal (lollipop pegs); h1 BK-16 countdown bomb; h2 BK-13 licorice; h3 OB-22 speed bump | BK-05 pad, BK-03 egg | fog, tilt | sheet skin exists |
 | 3 | ice | 02 OB-20 ice slide; 03 BK-06 snowball; 04 OB-19 thin ice; 05 BK-35 ice cube; 06 BK-23a frozen; bonus OB-27 penguins (recall herd) | OB-02 gust, BK-05 | goo, fire | sheet skin exists |
 | 4 | underwater | 01 BK-27 bubble; 02 OB-12 crab claw; 03 SH-06 claw piece with a current; 04 BK-05 pad as jellyfish (recall); 06 BK-33 pearl gems; 07 OB-06 fog (recall, ink cloud); 09 OB-08 turntable (whirlpool); 10 OB-01 core (clam) with OB-12 | BK-26 balloon | fire, snowball | sheet skin exists |
@@ -1615,7 +1615,7 @@ All values are starting defaults. Each knob lives in a data file (section 7). Ta
 | E_min | int | 2 to 5 | Hard floor; default 3; must be at most E0 |
 | E | int | E_min to E0 | Locks between spawns (used as `spawn_every_locks`, `ant_every_locks`, `every_locks`, `thrown_every_locks`) |
 
-**Output range.** 3 to 6 at defaults. The warning always comes one lock before the spawn, so E of 3 still leaves 2 free locks (`mushroom_popup.gd:26`: spawn happens when `locks % every == every - 1` marks, `== 0` fires; the engine clamps E to at least 2). **Example.** Biome 1 (meadow), level 5: 6 - 0.4 x 4 - 0 = 4.4, so E = 4. Biome 5 (lava), level 5: 6 - 1.6 - 1.0 = 3.4, so E = 3. Biome 12, level 10: 6 - 3.6 - 2.75 = -0.35, clamped to 3. **Note.** `countdown_bomb` already ships `thrown_every_locks` 8 and `cd_start` 8 (`countdown_bomb.gd:22,25`). Those are calm starter values and stay as the Candy defaults. F2 applies to hazards without a stated default.
+**Output range.** 3 to 6 at defaults. The warning always comes one lock before the spawn, so E of 3 still leaves 2 free locks (`mushroom_popup.gd:26`: spawn happens when `locks % every == every - 1` marks, `== 0` fires; the engine clamps E to at least 2). **Example.** Biome 1 (meadow), level 5: 6 - 0.4 x 4 - 0 = 4.4, so E = 4. Biome 5 (pirate), level 5: 6 - 1.6 - 1.0 = 3.4, so E = 3 (lava, biome 6, level 5 gives 6 - 1.6 - 1.25 = 3.15, also 3). Biome 12, level 10: 6 - 3.6 - 2.75 = -0.35, clamped to 3. **Note (r3, one source of truth).** `countdown_bomb` ships `thrown_every_locks` 8 and `cd_start` 8 in the engine (`countdown_bomb.gd:22,25`), but F6b shows that pair makes the stack rise (junk_rate 0.089 above c 0.083). The campaign default is therefore 12 and 10 (F6b, BK-16, knob table). 8 and 8 are engine fallbacks only, never used in a shipped level. F2 applies to hazards without a stated default.
 
 ### F3. Pressure check for lock-timed hazards (rewritten in r2, the r1 version was inverted)
 
@@ -1626,16 +1626,16 @@ All values are starting defaults. Each knob lives in a data file (section 7). Ta
 | Symbol | Type | Range | Description |
 |---|---|---|---|
 | E | int | 2 to 10 | Locks between spawns (F2) |
-| c_adj | float | 0.02 to 0.2 | Chance per lock that a clear removes or washes a given hazard (see F6 for its derivation) |
+| c_adj | float | 0.02 to 0.167 | Chance per lock that a clear removes or washes a given hazard (F6 derivation; F6 derives down to 0.0104, the validator rejects under 0.02) |
 | objects_max | int | 1 to 8 | Cap on live hazard objects, shared across the kinds one rule spawns (hail: gumdrop, icing, frosting share 6, `gumdrop_hail.gd:36-38`) |
 | H_eq | float | 0 to objects_max | Expected live hazards at steady state |
 | cells_blocked | float | 1 to 3 | Cells one hazard takes out of play (1 for a cube, up to 3 for a goo cell that also blocks its layer) |
-| free_cells | int | 10 to 120 | Free cells in the level's playable volume |
+| free_cells | int | 40 to 400 | Free cells in the level's playable volume (r3: range widened to cover the 300-cell worked example; the 4x4 pit below has about 48) |
 | k_free | float | 0.05 to 0.2 | Share of free cells hazards may hold; default 0.1 |
 | P_eff | float | 6 to 24 | Pieces to fill one layer for the level's piece set and footprint (`piece-set.md`; 12 on 6x6 with the 8 standard shapes) |
 | E_floor | int | 2 to 6 | Smallest allowed `E`: the player must be able to place about 4 pieces between spawns of a layer's worth of work |
 
-**Output range.** `H_eq` is between 0 and `objects_max`. **Direction check.** Lowering `E` or raising `objects_max` raises `H_eq`, so the check gets harder to pass, as it must. **Example.** Mushrooms: E = 5, `c_adj` 0.042 (F6): `(1/5)/0.042 = 4.8`, capped at `objects_max` 4, so `H_eq` = 4. 8x8 board, 6 layers: free cells about 300, so `k_free x free_cells` = 30 and 4 x 1 = 4 passes. `E_floor(12) = ceil(12/4) = 3`, E = 5 passes. A level with E = 2 fails (`E < E_floor`). A level with `objects_max` 4 and E = 3 passes the floor but `H_eq` = 4 still passes only if the board is big enough; on a 4x4 pit (about 48 free cells, limit 4.8) it passes narrowly. A level that fails is fixed by RAISING `E` or LOWERING `objects_max`, never by raising the cap.
+**Output range.** `H_eq` is between 0 and `objects_max`. **Direction check.** Lowering `E` or raising `objects_max` raises `H_eq`, so the check gets harder to pass, as it must. **Example.** Mushrooms: E = 5, `c_adj` 0.042 (F6): `(1/5)/0.042 = 4.8`, capped at `objects_max` 4, so `H_eq` = 4. 8x8 board, 6 layers: free cells about 300, so `k_free x free_cells` = 30 and 4 x 1 = 4 passes. `E_floor(12) = ceil(12/4) = 3`, E = 5 passes. A level with E = 2 fails (`E < E_floor`). A level with `objects_max` 4 and E = 3 passes the floor but `H_eq` = 4 still passes only if the board is big enough; on a 4x4 pit (about 48 free cells, limit 4.8) it passes narrowly. A level that fails is fixed by RAISING `E` or LOWERING `objects_max`, never by raising the cap. **Goo reconciliation (r3).** Goo takes `cells_blocked` 3, so the global `goo_max` 12 would break the limit at the defaults (12 x 3 = 36 against `k_free x free_cells` = 30 on a 300-cell board). So the cap in force is `goo_max_eff = clamp(floor(k_free x free_cells / 3), 0, goo_max)`. On 300 free cells that is 10; on the 48-cell pit it is 1. F5 uses `goo_max_eff` as its cap, and the validator rejects a goo level with `goo_max_eff < G0 + 1`. At the defaults on 300 cells: 10 x 3 = 30 <= 30 passes.
 
 ### F3b. Fairness check for millisecond-scheduled hazards (hidden timer, Appendix E)
 
@@ -1668,7 +1668,7 @@ All values are starting defaults. Each knob lives in a data file (section 7). Ta
 | D_b | int | 1 to 5 | Total cells moved: rise plus one sideways. The sideways step is also blocked when the cell is taken, so D_b can be rise only |
 | n | int | 1 to 14 | Level index |
 
-**Output range.** 1 to 5 cells; the lamb flung by a pad uses the same `bounce_h` as its flight length. Never negative. **Why.** `levels.md:311`: meadow_08 gets "stronger bounces" as it goes. **Example.** meadow_08 is n = 8: 2 + floor(7/4) = 3, so a pad lifts a piece 3 cells and moves it 1 sideways (4 cells of travel). The first pad of the level is set to `bounce_h` 2 for teaching (level data override).
+**Output range.** 1 to 5 cells; the lamb flung by a pad uses the same `bounce_h` as its flight length. Never negative. **Why.** `levels.md:311`: meadow_08 gets "stronger bounces" as it goes. **Example (r3).** The pad now first appears in a Meadow hard level (n = 12 to 14, slot OPEN, 8.1 note). At n = 13: 2 + floor(12/4) = 5, clamped to 4, so a pad lifts a piece 4 cells and moves it 1 sideways (5 cells of travel). At n = 8 (the old meadow_08 slot) the value would be 3. The first pad of its level is set to `bounce_h` 2 for teaching (level data override).
 
 ### F5. Goo expected growth
 
@@ -1680,10 +1680,10 @@ All values are starting defaults. Each knob lives in a data file (section 7). Ta
 | g | int | 1 to 2 | `per_lock`, new goo cells per quiet lock (default 1) |
 | c | float | 0 to 0.5 | Clear chance per lock. About 1 / P_eff for steady play: 0.083 at P_eff = 12 |
 | k | int | 0 to 100 | Locks played |
-| G_max | int | 4 to 20 | NEW cap `goo_max` (the engine has none today); default 12 |
-| G | float | G0 to G_max | Expected goo count |
+| G_max | int | 1 to 20 | Cap in force: `goo_max_eff = clamp(floor(k_free x free_cells / 3), 0, goo_max)` (F3 goo reconciliation). `goo_max` is the NEW global ceiling (4 to 20, default 12; the engine has none today). At the defaults on 300 free cells G_max = 10 |
+| G | float | 0 to G_max | Expected goo count (r3: a wash lowers G below G0, down to 0) |
 
-**Output range.** 0 to G_max (the recurrence is clamped, so it cannot go negative: the wash term only applies to existing goo). **Steady state.** With `c = 0.083`, `g = 1`, `w = 0.25`, the fixed point is `G* = (1 - c) * g / (c * w) = 0.917 / 0.0208 = 44`, far above the cap, so without the cap goo still fills the board slowly. With a skilled player who aims clears at goo (`w` 0.5, `c` 0.12): `G* = 0.88 / 0.06 = 14.7`, still above the cap 12. So `goo_max` 12 is the real limit and the wash is the player's tool for lowering it below the cap. **Example.** G0 = 2: after 10 quiet locks G = 2 + 10 = 12 (cap). A player who clears the layer under the goo once (c = 1 for that lock, washing `w x G` = 3 cells) drops it to 9. The old r1 line "the cap, not the cancel, bounds goo" stands, but goo is now a real threat because it blocks its layer (BK-07), not free fill. **Tied to progression:** `G0` = 0 in the introducing level, 2 in later levels, never above 3 (a level with goo reads its cap in the level data).
+**Output range (r3 corrected).** 0 to G_max. The lower bound is 0, not G0, because a wash removes `w x G` cells (the example below drops 12 to 9, under any G0). The recurrence is clamped at both ends, so it cannot go negative: the wash term only applies to existing goo. **Steady state.** With `c = 0.083`, `g = 1`, `w = 0.25`, the fixed point is `G* = (1 - c) * g / (c * w) = 0.917 / 0.0208 = 44`, far above the cap, so without the cap goo still fills the board slowly. With a skilled player who aims clears at goo (`w` 0.5, `c` 0.12): `G* = 0.88 / 0.06 = 14.7`, still above the cap (12 at most, 10 on a 300-cell board). So `goo_max_eff` is the real limit and the wash is the player's tool for lowering it below the cap. **Example (a board whose cap in force is 12, i.e. 360 free cells or more).** G0 = 2: after 10 quiet locks G = 2 + 10 = 12 (cap). A player who clears the layer under the goo once (c = 1 for that lock, washing `w x G` = 3 cells) drops it to 9. The old r1 line "the cap, not the cancel, bounds goo" stands, but goo is now a real threat because it blocks its layer (BK-07), not free fill. **Tied to progression:** `G0` = 0 in the introducing level, 2 in later levels, never above 3 (a level with goo reads its cap in the level data).
 
 ### F6. Countdown defuse chance and frosting peel time
 
@@ -1691,13 +1691,13 @@ All values are starting defaults. Each knob lives in a data file (section 7). Ta
 
 | Symbol | Type | Range | Description |
 |---|---|---|---|
-| cd_start | int | 3 to 12 | Locks on the bomb (default 8) |
-| c_adj | float | 0.02 to 0.2 | Chance a lock produces a clear on or face-adjacent to the object. Derived (r2): `c_adj = c x min(1, 3 / L_s)`, where `c = 1 / P_eff` is the chance a lock clears a layer and `L_s` is the stack height in layers. A clear of layer k touches layers k-1, k and k+1, so an object in a random layer is reached with chance `3 / L_s`. At `P_eff` 12 and `L_s` 6: 0.083 x 0.5 = 0.042 |
-| p_def | float | 0 to 1 | Chance of a natural defuse with no aiming |
+| cd_start | int | 4 to 12 | Locks on the bomb (campaign default 10, F6b; engine fallback 8) |
+| c_adj | float | 0.0104 to 0.167 derived; validator floor 0.02 | Chance a lock produces a clear on or face-adjacent to the object. Derived range (r3): minimum at `P_eff` 24 and `L_s` 12 is 0.0417 x 0.25 = 0.0104; maximum at `P_eff` 6 and `L_s` 3 or less is 0.167. A level whose derived value is under 0.02 is rejected (a hazard that clears too rarely is a hazard that never goes away). Derived (r2): `c_adj = c x min(1, 3 / L_s)`, where `c = 1 / P_eff` is the chance a lock clears a layer and `L_s` is the stack height in layers. A clear of layer k touches layers k-1, k and k+1, so an object in a random layer is reached with chance `3 / L_s`. At `P_eff` 12 and `L_s` 6: 0.083 x 0.5 = 0.042 |
+| p_def | float | 0.078 to 0.89 | Chance of a natural defuse with no aiming (r3: bounds are `cd_start` 4 with c_adj 0.02, and `cd_start` 12 with c_adj 0.167) |
 | coats | int | 1 to 3 | Frosting coats (2 or 3, `frosting.gd:10`) |
-| L_peel | float | 5 to 150 | Expected locks to peel with no aiming |
+| L_peel | float | 6 to 150 | Expected locks to peel with no aiming (r3: 1 / 0.167 = 6 at the minimum; 3 / 0.02 = 150 at the validator floor) |
 
-**Output range.** p_def 0 to 1; L_peel unbounded as c_adj goes to 0 (a hazard that can never clear is banned by the validator: c_adj must be at least 0.02). **Example.** cd_start 8, c = 0.083: p_def (any clear) = 1 - 0.917^8 = 0.50. With the adjacency factor, c_adj = 0.042: p_def = 1 - 0.958^8 = 0.29. So about 7 of 10 bombs need the player to aim a clear at them. That is the intended skill test. A 3-coat frosting at c_adj 0.042 needs 3 / 0.042 = 71 locks unaimed, so frosting is only fair when the player aims (and it ships with a visible coat count).
+**Output range.** p_def 0.078 to 0.89 and L_peel 6 to 150 inside the validator floor `c_adj >= 0.02`; L_peel would be unbounded as c_adj goes to 0, which is why the validator bans c_adj under 0.02. **Example.** cd_start 8, c = 0.083: p_def (any clear) = 1 - 0.917^8 = 0.50. With the adjacency factor, c_adj = 0.042: p_def = 1 - 0.958^8 = 0.29. (Those are the engine-fallback numbers, `cd_start` 8. At the campaign default 10: p_def = 0.35, F6b.) So about 6 to 7 of 10 bombs need the player to aim a clear at them. That is the intended skill test. A 3-coat frosting at c_adj 0.042 needs 3 / 0.042 = 71 locks unaimed, so frosting is only fair when the player aims (and it ships with a visible coat count).
 
 ### F6b. Countdown bomb balance (r2, from the r1 panel)
 
@@ -1743,7 +1743,7 @@ All values are starting defaults. Each knob lives in a data file (section 7). Ta
 
 ### F9. Gem and pickup count
 
-`Gems(n) = min(Gem_cap, g0 + floor(n / 2))`, placed only in layers `1 .. gem_max_layer`, `gem_max_layer = floor(f * H_play)`
+`Gems(n) = min(Gem_cap, g0 + floor(n / 2))`, placed only in layers `1 .. gem_max_layer`, `gem_max_layer = min(floor(f * H_play), H_play - 4)` (r3: the `H_play - 4` term is the bound, so the validator and the formula cannot disagree)
 
 | Symbol | Type | Range | Description |
 |---|---|---|---|
@@ -1752,9 +1752,9 @@ All values are starting defaults. Each knob lives in a data file (section 7). Ta
 | H_play | int | 6 to 12 | Playable layers (`piece-set.md` F3) |
 | f | float | 0.3 to 0.7 | Share of the stack height where gems may sit; default 0.5 |
 | gem_max_layer | int | 1 to 8 | Highest layer index a gem may occupy (r2: range corrected, `floor(0.3 x 6)` = 1 up to `floor(0.7 x 12)` = 8) |
-| Gems | int | 3 to 8 | Gems in the level |
+| Gems | int | g0 to 8 | Gems in the level (3 to 8 at the default g0 3; 1 to 8 over the g0 range) |
 
-**Output range.** 3 to 8 gems, in layers 1 to `gem_max_layer`. **Derivation of `f` (r2).** A gem in layer j is collected only when layer j clears, which needs the stack to reach about `j + 1` layers. The level's stack runs to `H_play - margin` before top-out (`goal.rescue_margin` 2). So `gem_max_layer <= H_play - margin - 2` keeps every gem collectable before the stack tops out. At `H_play` 8, margin 2: layer 4, which equals `floor(0.5 x 8)`. So `f` 0.5 is the default and the validator checks `gem_max_layer <= H_play - 4`. **Example.** n = 7, H_play = 8: 3 + 3 = 6 gems in layers 1 to 4.
+**Output range.** 1 to 8 gems over the full ranges (3 to 8 at the defaults), in layers 1 to `gem_max_layer`. **Check at H_play 6 (r3).** `floor(0.5 x 6)` = 3 would break `gem_max_layer <= H_play - 4` = 2, so the formula takes the min and gives 2. At H_play 7: min(3, 3) = 3. At H_play 8: min(4, 4) = 4. At f 0.7 and H_play 12: min(8, 8) = 8. At f 0.7 and H_play 10: min(7, 6) = 6. **Derivation of `f` (r2).** A gem in layer j is collected only when layer j clears, which needs the stack to reach about `j + 1` layers. The level's stack runs to `H_play - margin` before top-out (`goal.rescue_margin` 2). So `gem_max_layer <= H_play - margin - 2` keeps every gem collectable before the stack tops out. At `H_play` 8, margin 2: layer 4, which equals `floor(0.5 x 8)`. So `f` 0.5 is the default and the validator checks `gem_max_layer <= H_play - 4`. **Example.** n = 7, H_play = 8: 3 + 3 = 6 gems in layers 1 to 4.
 
 ### F10. Special-shape bag weight
 
@@ -1794,18 +1794,18 @@ Each case states what happens. "Rescue" means the soft top-out rescue that wipes
 6. **Frosting peeled by two clears in one resolve.** At most one coat per resolve (`_peeled`, `frosting.gd:17-18`). A double clear does not double-peel.
 7. **Moody cube next to a rainbow cube.** Resolved from code: it does NOT match today. `moody_cube.gd:15,23` compares colours only, and the rainbow wildcard is read only by the shape goal (`candy_cells.gd:47`). The moody cube stays grumpy and blocks its layer. Making rainbow a match is a 0.25 day change (BK-14).
 8. **Sprout growing into a cell a mushroom was about to claim.** The mushroom's marked cell is no longer free at its due lock, so the spawn is cancelled (`mushroom_popup.gd:19-25`). The sprout wins by being first.
-9. **Hook hang expires while a piece rests on it.** The status is removed. The cube is a normal cube; it does not fall unless a slice collapse moves it.
+9. **Hook hang expires while a piece rests on it.** `hung` and `hung_left` are removed and the rule calls `request_settle()` (3.1b rule 3). The cube is a normal cube again and falls with the cells it was holding up, if air is beneath it. If a floor is under it, nothing moves. (This is the same statement as edge 32.)
 
 **Specials at the top-out line**
 10. **A hazard spawns in the danger band.** Spawners already restrict cells: the mushroom needs `layer < layer_count - 4` (`mushroom_popup.gd:30`); goo needs `layer < limit_layer` (`goo_spread.gd:27`); pests need `layer < limit_layer` (`pest.gd:49`). Rule for every NEW spawner: never place into the top 4 layers.
 11. **A special cube sits in the danger band after a rescue lifts the stack.** It counts as height like any cube, except `static_geometry` cells (rock, shelf, masked columns), which add none (README line 20, `levels.md:34`).
-12. **A bomb or Smash is the only way out of a top-out.** Allowed. Removing cubes lowers height. A bomb blast does not count as a layer clear for the goal counter (it uses cause DAMAGE and fires no `on_clear`, `board_sim.gd:1422`), so it cannot complete a layer-clear-driven goal.
-13. **A critter or gem is in the planes a rescue wipes.** Engine fact (3.1b): a plain cube, a gem, an egg, a chick and a mole are all wiped (`Cause.RESCUE`, `board_state.gd:608`). Only `fixed` and `anchored` cells survive. `anchored` cannot be used for protection, because it blocks clears (so a gem could never be collected). Rule: a level sets the NEW `rescue_safe` flag on goal objects (as part of `goal_object`, 3.1b). The wipe skips them and the stack settles around them. Without the flag the goal object is wiped and not collected. This is a proposal for the user to confirm (Appendix B, decision 3).
+12. **A bomb or Smash is the only way out of a top-out.** Allowed. Removing cubes lowers height. A blast itself is not a layer clear (it uses cause DAMAGE and fires no `on_clear`, `board_sim.gd:1422`), so the blast cells alone never count toward a layer-clear goal. But if the removal leaves a layer full, that layer clears in the one extra pass allowed by R-7 and that clear does count (CLEAR cause, `on_clear` fires). So a blast can complete a layer-clear goal only through the extra pass, never directly.
+13. **A critter or gem is in the planes a rescue wipes.** Engine fact (3.1b): a plain cube, a gem, an egg, a chick and a mole are all wiped (`Cause.RESCUE`, `board_state.gd:608`). Only `fixed` and `anchored` cells survive. `anchored` cannot be used for protection, because it blocks clears (so a gem could never be collected). Rule (DECIDED, Appendix B decision 5): a level sets `goal_object` (which includes `rescue_safe`, 3.1b) on goal objects. `wipe_bottom` retains the layers that hold such a cell (3.1b rule 6) and the stack settles around them. Without the flag the goal object is wiped and not collected. Note the `emptied = 0` case: if every wiped layer holds a `rescue_safe` cell, no layer is emptied and the rescue lowers nothing. The rescue warning is still spent and the top-out line is re-tested; if the stack is still over the line, the rescue is reported as failed and the normal top-out loss applies. Level data should avoid goal objects in the lowest `k` layers at rescue time (F9 `gem_max_layer` already keeps them low, so the validator must also check that no level places goal objects in every one of the lowest `k` layers).
 14. **A growing sprout reaches the danger line.** Growth stops (`api.is_free(above)` fails, `sprouts.gd:45`) because the cell above the top is not free or not active. It never causes a top-out by itself.
 15. **A pest escapes over the rim (`rim_escape`).** It removes one cube with it and counts `worms_escaped` (`pest.gd:71-76`). If the goal wants the pests gone this is a loss path, not a win.
 
 **Specials inside masks and moving platforms**
-16. **Specials on masked cells.** A special is never placed on an inactive cell. A mask change (`request_mask`, gap G1) that deactivates a cell under a special moves the special to the nearest active free cell above, or removes it as displaced if none exists. Anchored cells are never deactivated.
+16. **Specials on masked cells.** A special is never placed on an inactive cell. A mask change (`request_mask`, gap G1) that deactivates a cell under a special moves the special to the nearest active free cell above, or removes it as displaced if none exists. MASKED is the one cause that removes `fixed` and `anchored` cells too (3.1b, `board_state.gd:683-684`), so a mask change can deactivate an anchored cell. A `goal_object` is also removed by MASKED (3.1b table); the validator must not place a mask change over a live goal object.
 17. **Terraced masks (different mask per layer).** Pads, goo and pests treat an inactive cell as a wall. A bounce hop that would end over an inactive cell is blocked for that cell (same as any blocked translate).
 18. **Moving platform bump.** A bump shakes loose cubes that are not supported (G8). A bump moves cells with a displacement, so `fixed`, `anchored`, `locked` and `hung` cells resist it (they cannot move or be displaced, 3.1b); plain cubes with no support are shaken loose. The cargo rides the highest block (OB-31) and wobbles before it can fall. A critter on the cart is moved to the nearest safe cell, never deleted.
 19. **Arch sweep.** Anything above `arch_gap` layers is swept. The sweep removes with DISPLACED. A plain cube, egg or chick above the gap is swept; a `goal_object` (gem, key, critter cube, cargo) is immune (3.1b), so no `arch_safe` flag exists. The sweep is a NEW rule (no code today).
@@ -1823,12 +1823,12 @@ Each case states what happens. "Rescue" means the soft top-out rescue that wipes
 27. **A special piece (ghost, balloon, bubble) is held.** The piece keeps its tag and flags through hold (`items.gd:109-113` shows the rule for item cubes). The ghost flag is re-evaluated on respawn.
 28. **Reduced motion.** Idle animations become static badges. Warnings stay visible as static outlines plus the same sound. No information is lost (`accessibility` rules; the weather layer is already skipped under reduced motion, `level-identity-spec.md:46`).
 29. **Colour-blind play.** Every special has a badge shape that is unique across the set (section 3.1 convention 1). Hazard rims also differ by pulse pattern: warn is a slow pulse, due is a fast pulse.
-31. **Unsupported goo (r2).** Today goo can spread into a cell with nothing below it (`goo_spread.gd:25-27` has no support check). R-13 makes the target cell need a cube or the floor below it, so goo never floats. A goo cell that loses its support (the cell below is washed or cleared) falls with the normal settle, as any plain cube.
-32. **A hung cube with a cleared floor (r2).** `hung` blocks moves (3.1b), so if the layers below clear, the hung cube stays in place for the rest of its `hung_locks`, then the rule requests a settle and it falls. During that time it can be cleared in a full layer, blasted or wiped.
-33. **Two statuses on one cell (r2).** A cell holds one status record. `hung`, `blast_safe` and `rescue_safe` are fields inside that record and combine with each other and with `fixed`, `anchored`, `clear_protected`, `locked` and `vined` (they are flags, not a replaced shell). A shell (frozen, burning and so on, BK-22 and BK-23) replaces another shell by the priority rule of `block-status-effects.md`, but never removes a flag.
-34. **A hidden-timer hazard fires during a pause, a rescue animation or the intro (r2).** Its timer is suspended (framework "Suspended") and resumes with the same remaining warning. It never fires while the player cannot act.
-35. **A locked cube in a full layer (r2).** It unlocks from its clearing neighbours and clears in the same resolve (BK-20). No deadlock.
-30. **Determinism.** Every random choice uses the rule's own stream (`api.rng()`), is ordered canonically, and a one-candidate choice draws nothing (README line 61). New rules must do the same, or replays diverge.
+30. **Unsupported goo (r2).** Today goo can spread into a cell with nothing below it (`goo_spread.gd:25-27` has no support check). R-13 makes the target cell need a cube or the floor below it, so goo never floats. A goo cell that loses its support (the cell below is washed or cleared) falls with the normal settle, as any plain cube.
+31. **A hung cube with a cleared floor (r2).** `hung` blocks moves (3.1b), so if the layers below clear, the hung cube stays in place as a chamber bottom for the rest of its `hung_left` locks (3.1b rule 3), then the rule requests a settle and it falls. During that time it can be cleared in a full layer, blasted or wiped. Same statement as edge 9.
+32. **Two statuses on one cell (r2).** A cell holds one status record. `hung`, `hung_left`, `blast_safe`, `rescue_safe` and `goal_object` are the PERSIST keys inside that record and combine with each other and with `fixed`, `anchored`, `clear_protected`, `locked` and `vined` (they are flags, not a replaced shell). A shell (frozen, burning and so on, BK-22 and BK-23) replaces another shell by the priority rule of `block-status-effects.md`, but never removes a PERSIST key, because `set_status` merges them (3.1b rule 7). Tests: AC19d (combined rows), AC19e (merge).
+33. **A hidden-timer hazard fires during a pause, a rescue animation or the intro (r2).** Its timer is suspended (framework "Suspended") and resumes with the same remaining warning. It never fires while the player cannot act.
+34. **A locked cube in a full layer (r2).** The `on_clear` unlock hook runs BEFORE the removal test (3.1b rule 5, `board_sim.gd:1421-1430`), and the unlock writes the new record at once, so the clear loop's `can_remove(CLEAR)` sees the unlocked cell and removes it in the same resolve. If a build queues the unlock instead of applying it, the cube survives until the next resolve; AC19f tests the order.
+35. **Determinism.** Every random choice uses the rule's own stream (`api.rng()`), is ordered canonically, and a one-candidate choice draws nothing (README line 61). New rules must do the same, or replays diverge.
 
 ## 6. Dependencies
 
@@ -1860,7 +1860,7 @@ This catalogue reads from the systems below and must be listed in each as a depe
 
 | Knob id | File | Default | Safe range | Affects |
 |---|---|---|---|---|
-| `spawn_every_locks` (mushroom, hail) | level `rules[].params` (`mushroom_popup`, `gumdrop_hail`) | 5 and 4 | 2 to 10 (engine min 2) | Hazard pace, F2, F3 |
+| `spawn_every_locks` (mushroom, hail) | level `rules[].params` (`mushroom_popup`, `gumdrop_hail`) | 5 and 4 | `E_floor` to 10, where `E_floor = ceil(P_eff / 4)` (3 at P_eff 12; engine min 2 is not allowed by F3) | Hazard pace, F2, F3 |
 | `objects_max` | level params | mushroom 4, hail 6, geyser 3 | 1 to 8 | Board clutter, F3 |
 | `place_mode` | level params | random | random, lowest | Where objects land |
 | `hatch_locks` / `egg_bonus` | level params (`hatching_eggs`) | 6 / 25 | 3 to 10 / 0 to 100 | Egg tension |
@@ -1868,46 +1868,47 @@ This catalogue reads from the systems below and must be listed in each as a depe
 | `bounce_h` / `dir_mode` / `bounce_dir` | level params (`bounce_pad`) | 2 / last_move / +x | 1 to 4 | Bounce travel, F4. `bounce_dir` is read by the code (`bounce_pad.gd:38`) but is NOT declared in `assets/data/rules/bounce_pad.json:8-15` (only `bounce_h`, `dir_mode`); add it to the schema (D9) |
 | `roll_locks` / `snow_max` / `balls_max` / `respawn_locks` / `slope_dir` | level params (`snowball`) | 2 / 3 / n.a. / 8 / -x | 1 to 4 / 1 to 4 / 1 to 3 / 4 to 16 | Snowball threat |
 | `per_lock` / `cancel_on_clear` | level params (`goo_spread`) | 1 / true | 1 to 2 / true | Goo growth, F5 |
-| `goo_max` | `assets/data/knobs/specials.json` NEW | 12 | 4 to 20 | Caps goo, F5 |
-| `ant_every_locks` / `ant_starve_acts` / `ant_shoo_bonus` / `rim_escape` / `late_spawn_s` | level params (`pest`) | 3 / 3 / 50 / false / 0 | 2 to 6 / 2 to 5 / 0 to 200 | Pest pressure |
-| `thrown_every_locks` / `cd_start` / `blast_layers` | level params (`countdown_bomb`) | 8 / 8 / 1 | 5 to 16 / 4 to 12 / 1 to 2 | Bomb pressure, F6 |
+| `goo_max` | `assets/data/knobs/specials.json` NEW | 12 | 4 to 20 | Global goo ceiling; the cap in force is `goo_max_eff` (F3 reconciliation, F5) |
+| `ant_every_locks` / `ant_starve_acts` / `ant_shoo_bonus` / `rim_escape` / `late_spawn_s` | level params (`pest`) | 3 / 3 / 50 / false / 0 | `E_floor` (3 at P_eff 12) to 6 / 2 to 5 / 0 to 200 | Pest pressure, F3 |
+| `blast_layers` | level params (`countdown_bomb`) | 1 | 1 to 2 | Junk per blast, F6b |
 | `bomb_at` | level params (`earned_specials`) | 7 | 0 (off) or 5 to 12 | How often a candy bomb is earned |
 | `bomb_chain_passes` | `knobs/specials.json` NEW | 1 | 0 to 2 | Chain depth, R-7 |
 | `bomb_radius` / `bomb_rock_damage` | `knobs/specials.json` NEW (from `buffs-debuffs.md`) | 1 / 2 | 1 to 2 / 1 to 3 | Item bomb size |
 | `frosting_layers` | level start, set by kind | 2 or 3 | 2 to 3 | Peel time, F6 |
 | `hits_left` / `hard_hits` (geyser rock) | level params (`lava_rock_spawn`) | 2 | 1 to 8 | Rock toughness |
-| `pull_warn_ms` / `magnet_range` | level params (`magnet_pull`, new magnet kind) | 600 / 2 | 300 to 1500 / 1 to 3 | Magnet fairness |
+| `pull_warn_ms` / `magnet_range` | level params (`magnet_pull`, new magnet kind) | 1200 / 2 | `T_warn_min` (1110, F3b) to 3000 / 1 to 3 | Magnet fairness. r3: default raised from 600 to 1200, because 600 failed F3b |
 | `balloon_per_bag` / `balloon_g_mult` / `balloon_drift_ms` | level params (`balloon`) | 1 / 0.5 / 3000 | 0 to 2 / 0.3 to 0.8 / 1500 to 5000 | Balloon feel |
 | `key_per_bag` / `keys_needed` / `keyholes` | level params (`key_stamp`, goal `wind_keys`) | 2 / 4 / authored | 1 to 3 / 1 to 8 | Key hunt |
 | `drill_depth` (ember) | level params | 1 | 1 to 3 | Melt depth |
 | `every` (anvil) / `max_crush` | level params (`anvil_drop`) | 6 / 3 (`anvil_drop.gd:37`) | 3 to 12 / 1 to 3 | Crush rate |
 | `slip_threshold` / `warn_at` / `slip_count` / `slip_after_resolves` / `fixed_kinds` | level params (`tilt_plate`) | 0.6 / 0.7 / n.a. / n.a. / ["rock"] | 0.3 to 0.8 / 0.5 to 0.9 | Balance difficulty; meadow_09 goes 0.7 to 0.5 (`levels.md:343`) |
 | `heavy_weight` | `knobs/specials.json` NEW | 2 | 1 to 3 | Heavy shapes, F7 |
-| `core_hp` / `attack_every_ms` / `warn_ms` / `core_damage` | level params (`defend_core`) | 3 / n.a. / 2000 / n.a. | 1 to 5 / 3000 to 12000 / 1000 to 3000 | Defender pressure |
+| `core_hp` / `attack_every_ms` / `warn_ms` / `core_damage` | level params (`defend_core`) | 3 / n.a. / 2000 / n.a. | 1 to 5 / 3000 to 12000 / 1110 to 3000 (`T_warn_min`, F3b) | Defender pressure |
 | `rival_rate` / `rival_warn_pct` / head start / rubber band | level params (`race_rival`) | n.a. | 0.9 to 1.1 of player pace (`levels.md:408`) | Race tension |
 | `heist_every_locks` / `heist_warn_locks` / `heist_min_fill` | level params (`squirrel_heist`) | 6 / 1 / 0.5 | 3 to 12 / 1 to 3 / 0.3 to 0.8 | Thief pace |
-| `claw_start_layers` / `claw_warn_ms` / `claw_grab` | level params (`crab_claw`) | 2 / 2000 / 1 | 0 to 5 / 1000 to 3000 / 0 or 1 | Claw pressure |
+| `claw_start_layers` / `claw_warn_ms` / `claw_grab` | level params (`crab_claw`) | 2 / 2000 / 1 | 0 to 5 / 1110 to 3000 (`T_warn_min`, F3b) / 0 or 1 | Claw pressure |
 | `melt_every_s` / `melt_max` / `melt_warn_ms` | level params (`lava_rise`) | 35 / 3 / 3000 | 20 to 60 / 0 to 4 / 2000 to 5000 | Lava pressure. Millisecond schedule with a hidden clock (Appendix E); checked by F3b |
 | `assist.hazard_slow` | `assets/data/meta/settings.json` NEW | 1.0 (off) | 1.0 or 1.5 | Multiplies hazard intervals by the value and warnings by 1.25 (accessibility) |
 | `p_item` by biome | `items` rule params, per level | 0, 0.06 to 0.12 | 0 to 0.5 (engine clamp) | Item yield from Chapter 2 (3.4c, F8) |
-| `thrown_every_locks` / `cd_start` (re-tuned) | level params (`countdown_bomb`) | 12 / 10 | 6 to 20 / 4 to 12 | F6b: `junk_rate < c` |
+| `thrown_every_locks` / `cd_start` | level params (`countdown_bomb`) | 12 / 10 (engine fallback 8 / 8, never shipped) | 6 to 20 / 4 to 12 | Bomb pressure, F6 and F6b: the validator rejects any pair with `junk_rate >= c` |
 | `fit_points` / `pegs_needed` | level params (`ring_toss` goal) | 150 / authored | 0 to 500 / 1 to 6 | Ring toss stakes (SH-01) |
 | `hung_locks` | `knobs/specials.json` NEW | hook 4, claw 2, jack 3 | 2 to 8 | Hold duration (3.1b) |
 | `lamb_phase_switch` | level params (`sprouts`, h1) NEW | half the lambs | 1 to lambs | F11 |
 | `lid_first_s` / `lid_max` / `lid_push_per_clear` | level params (`lava_lid`) | 60 / 2 / 1 | 30 to 120 / 0 to 3 / 1 to 2 | Lid pressure |
-| `quake_warn_ms` / `quake_max_cubes` / `active_after_clears` | level params (`quake`) | 2000 / 6 / 0 | 1000 to 3000 / 2 to 10 / 0 to 5 | Quake pressure |
+| `quake_warn_ms` / `quake_max_cubes` / `active_after_clears` | level params (`quake`) | 2000 / 6 / 0 | 1110 to 3000 (`T_warn_min`, F3b) / 2 to 10 / 0 to 5 | Quake pressure |
 | `slide_cells` / `slide_dir` / `start_after_clears` | level params (`ice_slide`) | 1 / +x / 0 | 1 to 2 | Ice slide |
 | `p_item` | `items` rule params (`items.gd:115`) | 0.12 | 0 to 0.5 (engine clamp) | Item frequency, F8 |
 | item `weight` and `bias` | `assets/data/items/starter.json` | table | weight 0 to 20, bias -1 to +2 | Item mix |
 | `item.slots` | `knobs/rules.json` | 2 | 1 to 3 | Hoarding |
 | `calm_*`, `stitch_duration_ms`, `smash_size`, `smash_depth`, `redraw_pieces`, `charge_layer_milli` | `abilities_runtime.json` | 250 / 10000 / 3 / 3 / 3 / 125 | per `skills.md` tuning | Skill power |
 | `skill.charge_rate` | `knobs/rules.json` | 1.0 | 0.5 to 1.5 | Skill frequency |
-| `A_cap`, `E0`, `d_lvl`, `d_bio`, `E_min`, `k_fair` | `knobs/specials.json` NEW | 3, 6, 0.4, 0.25, 3, 1.5 | see F1 to F3 | Progression of specials |
+| `A_cap`, `E0`, `d_lvl`, `d_bio`, `E_min`, `k_free` | `knobs/specials.json` NEW | 3, 6, 0.4, 0.25, 3, 0.1 | see F1 to F3 (r3: `k_fair` removed, no formula used it; F3 uses `k_free`) | Progression of specials |
 | `gem_points` / `g0` / `Gem_cap` / `f` | `knobs/specials.json` NEW | 100 / 3 / 8 / 0.5 | 0 to 500 / 1 to 5 / 3 to 12 / 0.3 to 0.7 | Gems, F9 |
 | `ring_weight` / `giant_weight` / `giant_max_height_frac` | level `spawn` params NEW | 0.5 / 0.25 / 0.5 | 0 to 2 / 0 to 1 / 0.3 to 0.7 | Special-shape frequency, F10 |
-| `hang_locks` | `knobs/specials.json` NEW | 4 | 2 to 8 | Hook hold time |
 | `fall.g0`, `fall.ramp_per_clear`, `fall.ramp_per_min`, `fall.gravity_scale` | `knobs/fall.json` | 1.0 / 0.05 / 0.0 / 1.0 | see file | Speed ramp. Specials never change the ramp. They multiply gravity only through items and balloons |
 | `clear.chain_max` | `knobs/clearing.json` | 10 | 1 to 20 (inert in slice mode) | Chain safety |
+
+**Derived minima (r3).** Every `*_warn_ms` range above has 1110 ms as its lower bound, which is `T_warn_min` at the defaults of F3b (`T_react` 600 + `repeat_delay` 240 + 3 x `repeat_interval` 90). The validator must COMPUTE the minimum from `special.t_react_ms`, `control.repeat_delay_ms`, `control.repeat_interval_ms` and the board width (d = W / 2), not copy 1110, so a controls change moves the floor. `melt_warn_ms` (2000 to 5000) and `lid_warn_ms` already sit above 1110. Lock-timed spawn intervals have the lower bound `E_floor(P_eff)`, also computed.
 
 **Enforcement note (r2).** The rule JSONs under `assets/data/rules/` declare a param type only, no `min` or `max` (for example `bounce_pad.json:8-15`). So every "safe range" column above is documentation, not enforcement. The validator (`tools/qa/verify_campaign_biomes.gd`) must read this table and reject out-of-range values; that check is part of acceptance 23 to 27. The registry format of `knobs/*.json` (`id, type, default, min, max, allows_zero, rule_adjustable, source, note`) does enforce min and max for registered knobs, so cross-level knobs go there.
 
@@ -1918,7 +1919,9 @@ This catalogue reads from the systems below and must be listed in each as a depe
     {"id": "special.a_cap", "type": "count", "default": 3, "min": 1, "max": 4, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/special-blocks-and-objects.md#f1", "note": "Packages active at once"},
     {"id": "special.goo_max", "type": "count", "default": 12, "min": 4, "max": 20, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/special-blocks-and-objects.md#f5", "note": "Cap on goo cells"},
     {"id": "special.heavy_weight", "type": "count", "default": 2, "min": 1, "max": 3, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/special-blocks-and-objects.md#f7", "note": "Tilt weight per heavy cube"},
-    {"id": "special.hung_locks", "type": "count", "default": 4, "min": 2, "max": 8, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/special-blocks-and-objects.md#sh-05", "note": "Hold time of a hung piece"},
+    {"id": "special.hung_locks", "type": "map_count", "default": {"hook": 4, "claw": 2, "jack": 3}, "min": 2, "max": 8, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/special-blocks-and-objects.md#31b", "note": "Per-shape hold time in piece locks; min and max apply to every value; keys are hook, claw, jack"},
+    {"id": "special.k_int", "type": "scalar", "default": 2, "min": 2, "max": 4, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/special-blocks-and-objects.md#f3b", "note": "Pieces between two ms hazards"},
+    {"id": "special.t_react_ms", "type": "count", "default": 600, "min": 400, "max": 800, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/special-blocks-and-objects.md#f3b", "note": "Human react time; sets T_warn_min"},
     {"id": "assist.hazard_slow", "type": "scalar", "default": 1.0, "min": 1.0, "max": 1.5, "allows_zero": false, "rule_adjustable": false, "source": "design/gdd/special-blocks-and-objects.md#3-1b", "note": "Accessibility multiplier on hazard intervals"}
   ]
 }
@@ -1931,6 +1934,8 @@ Only `rule_adjustable: false` knobs are fixed per level, so a level cannot loose
 - Neutral: pads, ice, magnets (displacement only).
 
 ## 8. Acceptance Criteria
+
+**NOT ASSESSED (r3, applies to every [V] gate below: 20b, 20c, 23, 24, 24b, 24c, 25, 26, 27).** Each validator gate reports one of PASS, FAIL or NOT ASSESSED, and it names the reason. NOT ASSESSED is reported, never PASS, when a required input is missing: the tiling solver (G5) is not built, the `goal_object` marking is absent from level data, the pirate or other block skin is absent from `biome_looks.json`, `specials.json` or `catalog.json` cannot be read, the controls knobs needed to compute `T_warn_min` are absent, or a table row the gate must read is unparseable. NOT ASSESSED outranks PASS and ranks below FAIL; a known FAIL is shown first. A gate skipped for any reason prints its own name in the report.
 
 **[U]** automated unit test (gdUnit4, `tests/unit/mechanics/` for rules, `tests/unit/specials/` NEW for this doc). **[V]** validator check in `tools/qa/verify_campaign_biomes.gd`. **[M]** manual or screenshot check, evidence in `production/qa/evidence/`. Existing tests today: `tests/unit/mechanics/wave3_mechanics_test.gd`, `wave4_rules_test.gd`.
 
@@ -1954,11 +1959,20 @@ Only `rule_adjustable: false` knobs are fixed per level, so a level cannot loose
 13. [U] R-2: GIVEN a piece lands on a pad above ice, THEN only the bounce fires and total travel is at most `bounce_h + 1`.
 14. [U] R-7: GIVEN two bombs adjacent, THEN a blast removes the second without detonating it; the number of blasts in one lock is at most 2.
 15. [U] F7: with W = 6, five normal cubes at x = 1,1,2,3,3 and one heavy cube at x = 5, tau = 142; with three heavy cubes at x = 5, tau = 454 (integer division, `tilt_plate.gd:81-82`).
-16. [U] F5: goo count never exceeds `goo_max` over 200 quiet locks.
+16. [U] F5: goo count never exceeds `goo_max_eff` over 200 quiet locks (300 free cells gives 10; 48 free cells gives 1).
+16b. [U] F2: `E(b, n)` returns 4 for (1, 5), 3 for (5, 5), 3 for (12, 10) and never leaves E_min to E0; E0 below E_min is rejected.
+16c. [U] F6b: (E_t 8, cd_start 8, c_adj 0.042) gives junk_rate 0.089 and FAILS against c 0.083; (E_t 12, cd_start 10) gives 0.054 and passes. A level with `junk_rate >= c` is rejected. F6: p_def for cd_start 8 is 0.29, for 10 is 0.35.
+16d. [U] F9: `gem_max_layer` is 2 at H_play 6 and f 0.5 (not 3), 3 at H_play 7, 4 at H_play 8, 6 at H_play 10 and f 0.7; Gems for n = 7, g0 3 is 6; Gems never exceeds `Gem_cap`.
+16e. [U] F10: 8 standard shapes at weight 1 plus a ring at 0.5 gives share 0.5 / 8.5 = 0.0588; a giant ring with a failed gate gives 0 and the remaining shares sum to 1.
+16f. [U] F11: with `lamb_phase_switch` at half the lambs, 6 locks in phase A (E 2) and 4 in phase B (E 1) give 3 + 4 = 7 capped at `grow_max` 4; the step changes on the lamb-rescued event, not on a lock count.
 17. [U] F3 (r2, corrected direction): a level with E 2 and P_eff 12 FAILS (`E < E_floor` = 3); a level with E 5, c_adj 0.042 and `objects_max` 4 passes; raising `objects_max` for the same E never turns a failing level into a passing one.
-18. [U] Gem (r2): a gem with `rescue_safe` and `blast_safe` is NOT removed by `wipe_bottom` (RESCUE) or a blast (DAMAGE), and IS removed by a layer clear (CLEAR), which collects it (+`gem_points`, +1 `gems`). A gem without the flags is removed by a rescue wipe or a blast and is not collected. A gem never carries `anchored`.
-19. [U] Hang (r2): a hook piece that locks beside a `hang` point gets `hung` for exactly `hang_locks` locks. During that time `can_remove` is false for DISPLACED and TRIM, `can_move` is false, and `can_remove` is true for CLEAR, DAMAGE and RESCUE (3.1b). After the counter ends `hung` is gone and a settle is requested.
+18. [U] Gem (r3, wipe_bottom rework): run the FULL `wipe_bottom(k)` pipeline (pass 1 RESCUE, then `shift_layers` on the retained list, 3.1b rule 6), not just `can_remove(RESCUE)`. Fixture: k = 3, a gem with `goal_object` in layer 1, plain cubes in layers 0 to 2. Assert: (a) the gem cell still exists after the wipe, with its overlay (rule 6.5); (b) layer 1 is not in the `shift_layers` list; (c) layers 0 and 2 are emptied, so `emptied` = 2 and the gem drops by the emptied layers beneath it (1); (d) the other cubes of layer 1 are gone (ragged layer); (e) no `gems` count and no `gem_points` were awarded by the wipe; (f) a blast (DAMAGE) does not remove it; (g) a real layer clear of its layer DOES remove it and awards +`gem_points`, +1 `gems`. Control: the same fixture with an unflagged gem loses the gem and awards nothing. Failing-first: on the unmodified engine (a) fails because `shift_layers` removes the gem with CLEAR. A gem never carries `anchored`. Edge case: a fixture where all k layers hold a flagged cell gives `emptied` = 0 (edge 13).
+19. [U] Hang (r2): a hook piece that locks beside a `hang` point gets `hung` and `hung_left` = `hung_locks[hook]` (4), decremented once per piece lock (not per cell). During that time `can_remove` is false for DISPLACED and TRIM, `can_move` is false, and `can_remove` is true for CLEAR, DAMAGE and RESCUE (3.1b). After `hung_left` reaches 0 both keys are gone and a settle is requested. Repeat for claw (2) and jack (3).
 19b. [U] Status by cause (r2): for every row of the 3.1b table, `can_remove` returns exactly the Y and N values listed, for each of the six causes (copy of `board_state.gd:681-695`).
+19c. [U] Hung under slice collapse (3.1b rule 3): column of cells A (top), H (hung), then 2 plain layers below H; clear the 2 lower layers. Assert: H does not move; A does not pass through H; plain cells in other columns of H's layer drop 2; H's layer is not full; after `hung_left` reaches 0, `request_settle` is called and H and A fall. A second fixture: H's layer is full while hung, and it clears (CLEAR allowed) and takes the keys with it.
+19d. [U] Combined flags (3.1b rule 8): for `locked`+`rescue_safe`, `clear_protected`+`blast_safe`, `hung`+`goal_object`, `anchored`+`rescue_safe` and `goal_object`+`locked`, `can_remove` for all six causes and `can_move` equal the logical OR of the single-flag rows. `remove(force=true)` bypasses `hung`, `blast_safe`, `rescue_safe`, `goal_object`, but never `fixed` or `locked`.
+19e. [U] Status merge (3.1b rule 7): on a cell with `hung`, `hung_left` 3, `goal_object`, call `set_status` with a frozen shell, then a burning shell, then `{}`. Assert all PERSIST keys are intact after each and `hung_left` is still 3; the record is erased only after `clear_flag` removes the last PERSIST key; a snapshot taken, restored and compared is equal; a snapshot without the keys loads as no flags.
+19f. [U] Order test (edge 34): a `locked` cube in a full layer unlocks in `on_clear` and is removed by CLEAR in the same resolve.
 20. [U] Ring fit: a hollow piece may overlap a peg cell only when its hole axis aligns; any other piece is blocked.
 20b. [V] Hollow gating (user decision after r2): GIVEN any level whose bag holds SH-01 to SH-04 and has no `ring_toss` goal with at least one peg, THEN validation fails; the first level that passes is the candy bonus.
 20c. [V] Pirate skin (user decision after r2): GIVEN a level with biome `pirate`, THEN validation reports NOT ASSESSED for art until the pirate block skin exists in `biome_looks.json` and the block gallery; it never reports pass.
@@ -1968,7 +1982,7 @@ Only `rule_adjustable: false` knobs are fixed per level, so a level cannot loose
 
 **Fairness**
 23. [V] Every hazard has a warning and an answer. Lock-timed hazards (mushroom, hail, geyser, goo, countdown bomb) warn at least 1 lock ahead. Millisecond-timed hazards (lava rise, lid, quake, claw, stone throw, laser, swing ball, defend-core shots) warn at least `T_warn_min` (F3b, 1110 ms at the defaults) ahead, with an actor tell AND a sound, and show no HUD countdown (Appendix E). Each has a clear-based or placement-based answer.
-23b. [U] Hidden timer (Appendix E): GIVEN a level with a ms hazard, THEN the HUD snapshot contains no countdown for it; the hazard's timer is suspended during pause, rescue animation and intro (edge case 34).
+23b. [U] Hidden timer (Appendix E): GIVEN a level with a ms hazard, THEN the HUD snapshot contains no countdown for it; the hazard's timer is suspended during pause, rescue animation and intro (edge case 33).
 24. [V] F1 (r2): no level has more active packages than `A_max(n)`, more than 1 new package, more than `rules.max_level_mechanics` (1) mechanic-layer packages, or more than `rules.max_twists` (2) twist-layer packages. Run against the 12 levels of 8.1 it passes; the 8.1 table is the test fixture.
 24b. [V] Item gating (Appendix E): GIVEN any Chapter 1 (meadow) level, THEN the `items` rule is off and no item appears; GIVEN a level of biome 2 to 12, THEN only the items listed for that biome and earlier in 3.4c can drop, and `p_item` equals the 3.4c value.
 24c. [V] Biome list: every `Fits` and every row of 3.4a uses only the 12 ids of `catalog.json:3-16`; pirate is accepted, desert is rejected.
@@ -1976,7 +1990,7 @@ Only `rule_adjustable: false` knobs are fixed per level, so a level cannot loose
 26. [V] No gem, key, critter or cargo is placed in a pocket or above `gem_max_layer`, and every gem, key, critter cube and cargo carries `goal_object` while a goal needs it. Outcome NOT ASSESSED when the level data has no `goal_object` marking or the pocket test input (the tiling solver, G5) is not built; never pass.
 27. [V] The tiling solver (gap G5) passes with every special shape in the level's bag, 1-lookahead bot, no hold.
 28. [U] Determinism: two runs with the same seed give identical snapshots for every new rule (`snapshot()` equal).
-29. [U] Rescue (r2): GIVEN a goal object with `rescue_safe`, THEN `wipe_bottom` skips it; without the flag it is wiped (the engine does this today for plain cubes) and no item is collected. `fixed` and `anchored` cells are never wiped (3.1b). DECIDED by the user (Appendix B, decision 5): the flag is approved. Test both cases: a `rescue_safe` gem, egg, mole and cargo survive a wipe and settle; an unflagged plain cube is wiped.
+29. [U] Rescue (r3, wipe_bottom rework): through the full `wipe_bottom` pipeline (as AC18), a `goal_object` gem, key, critter cube and cargo each survive with status and overlay, settle by the emptied layers beneath them, and collect nothing; an unflagged egg, mole or plain cube in the same fixture is wiped. `fixed` and `anchored` cells are never wiped (3.1b). A real `shift_layers` clear (not a rescue) still removes and collects a flagged gem. The test asserts survival, not only `can_remove(RESCUE)`, and fails on the unmodified engine. Also: `emptied` is `k - retained` for k = 3 with 0, 1 and 3 flagged layers (3, 2, 0). DECIDED by the user (Appendix B, decision 5).
 29b. [U] Matrix cells (r2): each `[C]` cell of Matrices A, B and C has a test that reproduces the cited line; each `[G n]` cell has a test written FIRST (expected to fail) that becomes the acceptance test of the NEW rule R-n.
 29c. [U] Goo (r2): a goo cell blocks its layer (`layer_full` false while goo is present), is removed by a clear of a face-adjacent cell once per resolve, never spreads into an unsupported cell, and never exceeds `goo_max`; a piece resting on goo locks at once (R-12).
 
@@ -2000,14 +2014,16 @@ Source of truth for the levels is `design/levels/levels.md` (frame, revision 2).
 | meadow_04 Sheep on the Run (4) | OB-27 herd animals, OB-28 pen, BK-39 gates (one herd package) | none | mechanic `herd` NEW | 1 / 1 | 1 | i, l, o, tri_straight, duo | Straight and L pieces make lanes and fences |
 | meadow_05 Gnome Hedge (5) | OB-03 stone throw, OB-29 hedge wall with peeking sheep, gnome prop (one stone package) | none | twist `storm_bolt`; hedge wall is placed cells | 1 / 1 | 1 | o, l, tri_corner, duo, mono | Small fitting pieces patch holes |
 | meadow_06 Blanket Patch (6) | `fill_shape` package with terraces (per-layer masks, BK-37 holes) | none | mechanic `fill_shape` | 1 / 2 | 1 | pento_flat family and helpers; T only if solved (`levels.md:248`) | `piece-set.md` lists pento_flat for Fill Target Shape. NO item (r2: IT-15 removed) |
-| meadow_07 Fog Frolic (7) | OB-06 fog | none | twist `fog` | 1 / 2 | 1 | i, o, l, tall_corner, tripod | Tall pieces build height. NO shelf, NO ghost piece (r2) |
-| meadow_08 Bouncy Lambs (8) | BK-05 bounce pad with OB-30 lamb walker (one span package) | none | content `bounce_pad` | 1 / 2 | 1 | pole (6-long bridge, SH-08), plank, slab, i, duo | Long pieces span gaps between pads. Secret hoop is G15 |
+| meadow_07 Fog Frolic (7) | none (r3: fog moved to a hard level by user decision 2026-10-14; core objects only) | none | core objects only | 0 / 2 | 0 | i, o, l, tall_corner, tripod | Tall pieces build height. NO fog, NO shelf, NO ghost piece. Level designers redesign the slot's hook with core objects |
+| meadow_08 Bouncy Lambs (8) | none (r3: bounce pad and lamb walker moved to a hard level by user decision 2026-10-14; core objects only) | none | core objects only | 0 / 2 | 0 | plank, slab, i, duo (pole stays for the hard-level pad level) | NO pad, NO lamb walker. Secret hoop (G15) is dropped from this slot |
 | meadow_09 Tilting Hill (9) | OB-04 tilt plate with gauge | OB-02 gust (the sails) | twist `tilt_plate`, twist `gust` (2 twists = `rules.max_twists`) | 2 / 2 | 1 | slab, o, l, i, with plain 1-weight pieces | No heavy shapes here (r2). Players balance with ordinary blocks |
 | meadow_10 Gert's Whirl (10) | none | phase 1 OB-01 and gust; phase 2 OB-27, OB-28; phase 3 OB-04 and gust | per phase as above | 1, 1, 2 per phase / 2 | 0 | union of 02, 04, 09 sets | Boss recalls the first third |
 | meadow_bonus Kite Day (11) | none (the new wind lanes, updraft and cloud bump are event types of the track package, taught one at a time like 03) | OB-31, OB-32, OB-33 | mechanic `moving_platform` | 1 / 2 | 0 | o, i, l, slab | NO rival (r2, `levels.md:607-609`). NO balloon, rocket, boost pad or vent: core objects only |
 | meadow_h1 Beanstalk Rescue (12) | BK-02 sprouts (F11) | OB-30 lamb walker (span package) | content `sprouts` | 2 / 3 | 1 | pole, pento_i, plank, i, duo | Long pieces make rope bridges. Secret golden lamb is G15 |
 | meadow_h2 (13) | one existing kind as a remix: BK-01 mushroom (sparkle, one lock warning) | the h2 base level's own packages (the h2 frame is not written yet; assume at most 2) | content `mushroom_popup` (layer twist, `mushroom_popup.json:5`) | at most 3 / 3 | 1 | i, l, o and helpers | Needs no new engine work. The remix is on top of the base, so the base plus 1 must stay within 1 mechanic and 2 twists |
 | meadow_h3 (14) | one existing kind as a remix: BK-03 egg (its chick is the egg's output) | the h3 base level's own packages (assume at most 2) | content `hatching_eggs` | at most 3 / 3 | 1 | i, l, o, plus `dented_cube` as a plain shape | Egg is one existing kind. The dent has no rule (SH-11) |
+
+**OPEN after the 2026-10-14 decision (r3).** Fog (OB-06) and the bounce pad with the lamb walker (BK-05, OB-30) now belong to the Meadow hard levels, but the hard levels already take sprout (h1, new), mushroom (h2) and egg (h3), and F1 allows one new package per level. Five packages for three slots does not fit. The level designers and the user must choose: (a) fog replaces the h2 mushroom and pad+lamb replaces the h3 egg (mushroom and egg then first appear in candy, which already recalls the egg), or (b) an F1 waiver for hard levels (`new <= 2`), or (c) add a hard level. Until chosen, h2 and h3 stay as written above and fog and the pad have no Meadow slot; their later biomes (underwater recall of fog and pad, candy recall of pad) are unaffected as recalls. Teach levels 01 to 10 are final: core objects only, so `meadow_07` and `meadow_08` hold no special and the A / A_max check passes (0 new).
 
 **Budget check (r2, now true).** Every row has `A <= A_max(n)` and `new <= 1`. meadow_09 is the only Chapter 1 level with two twists, which equals `rules.max_twists` 2 (`knobs/rules.json:7`), and no mechanic-layer package. meadow_02 has one mechanic and one twist. meadow_06 has one mechanic. No Chapter 1 level has more than 1 mechanic. The claim "All within F1" of r1 is replaced by this table, which acceptance 24 runs.
 
@@ -2106,9 +2122,9 @@ Every image below was opened with Read. Each line lists what special blocks or o
 | `goo_max` | constant | 12 | this doc, F5 |
 | `A_cap` | constant | 3 | this doc, F1 |
 | `E0`, `d_lvl`, `d_bio`, `E_min` | constants | 6, 0.4, 0.25, 3 | this doc, F2 |
-| `k_fair` | constant | 1.5 | this doc, F3 |
+| `k_free` | constant | 0.1 | this doc, F3 (r3: replaces the unused `k_fair`) |
 | `bomb_chain_passes` | constant | 1 | this doc, R-7 |
-| `hang_locks` | constant | 4 | this doc, SH-05 |
+| `hung_locks` | per-shape map | hook 4, claw 2, jack 3 | this doc, 3.1b and SH-05 to SH-07 |
 | gem, magnet, ice, fire tile, switch, gate, peg, hang point | proposed kinds | next `kind_id` from 25 | this doc, BK-33 to BK-42 |
 | `hung`, `blast_safe`, `rescue_safe` (and `goal_object` = both safes) | proposed status flags | see 3.1b | this doc, 3.1b |
 | `ring_toss`, `tiles_owned` | proposed goal evaluators | SH-01, OB-43 | this doc |
@@ -2140,6 +2156,7 @@ Status: E = exists, P = partial, N = new.
 
 - **Chapter 1 specials:** "Remix in hard levels." Each of meadow_h2 and meadow_h3 adds one existing special kind as a
   remix. The teach levels 01-10 keep the core objects only.
+- **Meadow 01 to 10 core objects only (2026-10-14, later decision):** the bounce pad (meadow_08) and fog (meadow_07) move to the Meadow hard levels. Meadow 01 to 10 keep core objects only. 3.4a and 8.1 agree; the hard-level slot choice is OPEN (8.1 note).
 - **Clock-based hazards on Tetris-variant levels:** "Hidden timer." Millisecond schedules stay, but no countdown is shown
   on the HUD. Telegraphs (an actor tell plus a sound) still warn before every hazard.
 - **Items in the campaign:** "From Chapter 2." Starter items and new items unlock in the campaign from Chapter 2 on.
