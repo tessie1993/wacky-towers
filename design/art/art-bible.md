@@ -369,3 +369,7 @@ and an emissive for lava, neon and celestial. Small toppers are separate instanc
 - [ ] No board logo (TETRO PARTY DIMENSIONS, WACKY PARTY, PARTY QUEST) and no "Tetris" naming.
 - [ ] Characters: 2.5 heads tall, one colour key, readable at 64 px.
 - [ ] HUD pieces use the 5b tokens and never overlap the play area.
+
+## Asset sourcing rule (user, 2026-10-15)
+
+Don't reinvent the wheel. Before modelling, search for an existing CC0 mesh, model or texture (PolyHaven, free CC0 BlenderKit, and what the repo already has in `assets/models/env_v3/` and `assets/third_party/`), then modify and restyle it. Keep every downloaded original, unmodified, in `assets/library/<models|textures|hdri>/<source>/<asset_name>/` with a `LICENSE.txt` (source URL and licence), so it can be reused. The restyled game version goes to the level's own folder, and every third-party source is credited in `assets/third_party/CREDITS.md`.
