@@ -209,6 +209,22 @@
   "close": {
    "elevation_deg": 32.0,
    "zoom": 0.93
+  },
+  "high_three_quarter": {
+   "elevation_deg": 44.0,
+   "zoom": 0.8
+  },
+  "pit_6_wide": {
+   "elevation_deg": 42.0,
+   "zoom": 0.92
+  },
+  "pit_8_wide": {
+   "elevation_deg": 40.0,
+   "zoom": 1.02
+  },
+  "stump_win": {
+   "elevation_deg": 48.0,
+   "zoom": 1.26
   }
  },
  "dressing": {

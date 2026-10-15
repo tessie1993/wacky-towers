@@ -108,6 +108,12 @@ var _marks: Dictionary = {}
 var _secrets: Dictionary = {}
 var _look: WtLevelLook ## Optional per-level `look` (time of day, weather, set piece, camera); null when a level has none.
 var _look_zoom: float = 1.0
+var _beats: WtLevelBeats ## Optional per-level feedback beats (assets/data/presentation/level_beats.json).
+var _beat_fx: WtBeatFx
+var _shake_t: float = 0.0
+var _shake_dur: float = 0.0
+var _shake_amp: float = 0.0
+var _shake_applied: Vector2 = Vector2.ZERO
 
 
 ## Binds one authoritative simulation and constructs a biome's original diorama.
@@ -152,6 +158,7 @@ func sync(events: Array[SimEvent]) -> void:
 	_syrup_preview.clear()
 	var changed: bool = false
 	for ev: SimEvent in events:
+		if _beats != null: _beats.handle(ev)
 		match ev.kind:
 			&"fit_spots":
 				_show_fit_spots(ev.data.get("spots",[]))
@@ -479,6 +486,7 @@ func _process(delta: float) -> void:
 			if cab is Node3D and cab.has_meta("gondola"):(cab as Node3D).rotation.z=-_ferris.rotation.z
 	if _danger.visible:
 		_danger_mat.albedo_color.a = 0.8 if _reduced() else 0.55 + 0.25 * sin(_time * 4.0)
+	_update_shake(delta)
 	_update_fx(delta)
 	if _sparkles != null: _sparkles.step(delta)
 	_update_marks()
@@ -823,6 +831,9 @@ func _frame_camera() -> void:
 
 func _update_camera() -> void:
 	if _camera == null: return
+	_camera.h_offset -= _shake_applied.x
+	_camera.v_offset -= _shake_applied.y
+	_shake_applied = Vector2.ZERO
 	var target := Vector3(0, _board.h_play() * .36, 0)
 	var drift: float = _turn.update_drift(_yaw, get_process_delta_time() if is_inside_tree() else 0.0)
 	if _sky_mat != null: _sky_mat.set_shader_parameter(&"view_shift", _turn.sky_shift())
@@ -862,6 +873,7 @@ func set_story_context(context: Dictionary) -> void:
 		_key_light.light_energy=float(base.key_energy)*float(lighting.key_energy)/.65
 		set_meta("authored_time_of_day",lighting.time)
 	apply_level_look(WtLevelLook.read_level_look(_biome, str(context.get("level_id", ""))))
+	_bind_beats(str(context.get("level_id", "")))
 
 
 ## Applies the optional level `look` block over the biome look (see WtLevelLook). A level without
@@ -1417,3 +1429,57 @@ func attach_track(def: TrackDef) -> void:
 func set_track_progress(mm: int) -> void:
 	if _track_follower != null:
 		_track_follower.set_progress(mm)
+
+
+## Creates the level's feedback-beat consumer when level_beats.json has an entry for it.
+func _bind_beats(level_id: String) -> void:
+	_beats = null
+	var cfg: Dictionary = WtLevelBeats.read(level_id)
+	if cfg.is_empty() or _look == null: return
+	if _beat_fx == null:
+		_beat_fx = WtBeatFx.new()
+		add_child(_beat_fx)
+	_beat_fx.board_size = _size
+	_beat_fx.reduced = _reduced()
+	var sky: Array = WtLevelLook.read_level_look(_biome, level_id).get("sky", [])
+	_beats = WtLevelBeats.new()
+	_beats.setup(cfg, sky, _size, {
+		&"sky": func(grade: String, secs: float) -> void: _look.set_grade(grade, 0.0 if _reduced() else secs),
+		&"camera": set_camera_preset,
+		&"shake": func(amp: float, secs: float) -> void: if not _reduced(): _shake_amp = amp; _shake_dur = secs; _shake_t = secs,
+		&"glow": _beat_fx.glow, &"ring": _beat_fx.ring, &"swoop": _beat_fx.swoop,
+		&"burst": func(c: Color, n: int) -> void: if not _reduced(): burst(Vector3(0, 1.2, 0), c, n),
+		&"cue": func(id: StringName) -> void: _audio.cue(id)})
+	_beats.start()
+
+
+## Eases the camera to a look_presets.json camera preset (elevation and zoom).
+func set_camera_preset(preset: String, seconds: float) -> void:
+	var cam: Dictionary = WtLevelLook.presets().get("camera", {}).get(preset, {})
+	if cam.is_empty(): return
+	var e0: float = _elevation
+	var z0: float = _look_zoom
+	var e1: float = float(cam.get("elevation_deg", e0))
+	var z1: float = float(cam.get("zoom", z0))
+	if seconds <= 0.0 or not is_inside_tree():
+		_elevation = e1
+		_look_zoom = z1
+		_frame_camera()
+		return
+	create_tween().tween_method(func(t: float) -> void:
+		_elevation = lerpf(e0, e1, t)
+		_look_zoom = lerpf(z0, z1, t)
+		_frame_camera(), 0.0, 1.0, seconds).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+
+
+## Decaying camera-offset shake (visual only; skipped under reduced motion).
+func _update_shake(delta: float) -> void:
+	if _camera == null or (_shake_t <= 0.0 and _shake_applied == Vector2.ZERO): return
+	_camera.h_offset -= _shake_applied.x
+	_camera.v_offset -= _shake_applied.y
+	_shake_t = maxf(_shake_t - delta, 0.0)
+	var k: float = _shake_t / maxf(_shake_dur, 0.001)
+	var amp: float = _shake_amp * k * k * _camera.size
+	_shake_applied = Vector2(sin(_time * 63.0), sin(_time * 79.0 + 1.3)) * amp if _shake_t > 0.0 else Vector2.ZERO
+	_camera.h_offset += _shake_applied.x
+	_camera.v_offset += _shake_applied.y
