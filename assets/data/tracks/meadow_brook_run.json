@@ -55,6 +55,7 @@
   "level_tolerance_layers": 1,
   "wobble_pm": 300,
   "slip_pm": 650,
+  "lost_pm": 1000,
   "rise_pm_per_s": 140,
   "recover_pm_per_s": 220,
   "lean_stress_pm_per_s": 160,

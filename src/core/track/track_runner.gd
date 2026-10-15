@@ -32,6 +32,8 @@ const METRIC_ALTITUDE_PM := &"track_altitude_pm"
 const METRIC_FINISH_HEIGHT := &"track_finish_height"
 const METRIC_STARS := &"track_stars"
 const METRIC_FALL_PCT := &"track_fall_pct"
+## fail_reason() of a runner built from a malformed track.
+const FAIL_INVALID_TRACK := &"invalid_track"
 ## Cargo states, in order of danger.
 const CARGO_STABLE := 0
 const CARGO_WOBBLE := 1
@@ -71,16 +73,26 @@ var _finish_height: int = 0
 var _stars: int = 0
 
 
-## Creates a runner. `def` must be valid.
+## Creates a runner. A null or invalid `def` never runs: it push_errors with every validation error and the runner
+## starts failed (is_failed(), fail_reason() == FAIL_INVALID_TRACK); begin() then only reports the failure.
 func _init(def: TrackDef) -> void:
-	assert(def != null and def.is_valid(), "TrackRunner needs a valid TrackDef")
-	_def = def
+	_def = def if def != null else TrackDef.new()
+	if def == null or not def.is_valid():
+		var why: String = "no track" if def == null else ", ".join(def.errors)
+		push_error("TrackRunner: malformed track '%s': %s" % [_def.id, why])
+		_failed = true
+		_fail_reason = FAIL_INVALID_TRACK
+		return
 	_hearts_left = def.hearts
 	_alt_u = int(def.altitude.get("start_pm", 0)) * 1000
 
 
 ## Announces the track and sets the first fall speed. Call once from on_level_start.
 func begin(api: RuleApi) -> void:
+	if _fail_reason == FAIL_INVALID_TRACK:
+		api.goal_metric(METRIC_FAILED, 1)
+		api.request_fail(FAIL_INVALID_TRACK)
+		return
 	announce(api)
 	_set_fall(api)
 	_publish(api)
@@ -226,8 +238,9 @@ func snapshot() -> Dictionary:
 		"finish_height": _finish_height, "stars": _stars}
 
 
-## Restores a snapshot taken by snapshot().
-func restore(s: Dictionary) -> void:
+## Restores a snapshot taken by snapshot(). With `api` it re-emits track_started so listeners (HUD, preview) resync;
+## without one the caller must call announce() itself.
+func restore(s: Dictionary, api: RuleApi = null) -> void:
 	_pos_um = int(s["pos_um"])
 	_acc_ms = int(s["acc_ms"])
 	_tick = int(s["tick"])
@@ -256,6 +269,8 @@ func restore(s: Dictionary) -> void:
 	_fall_sent = int(s["fall_sent"])
 	_finish_height = int(s["finish_height"])
 	_stars = int(s["stars"])
+	if api != null and _fail_reason != FAIL_INVALID_TRACK:
+		announce(api)
 
 
 # --- tick ---------------------------------------------------------------------------------------------
@@ -331,7 +346,7 @@ func _eval_cargo(api: RuleApi, fx: TrackEffects, out: Array[Dictionary], lean_to
 func _update_cargo_state(api: RuleApi, out: Array[Dictionary]) -> void:
 	var pm: int = _stress_u / 1000
 	var target: int = CARGO_STABLE
-	if pm >= 1000:  # full scale of the stress meter
+	if pm >= int(_def.cargo["lost_pm"]):
 		target = CARGO_LOST
 	elif pm >= int(_def.cargo["slip_pm"]):
 		target = CARGO_SLIP

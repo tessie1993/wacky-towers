@@ -258,3 +258,44 @@ func test_path_point_follows_arc_length() -> void:
 	var def: TrackDef = T.def([], [], {"path": [[0, 0, 0], [0, 0, -10], [10, 0, -10]]})
 	assert_vector(def.path_point(5000)).is_equal(Vector3(0, 0, -10))
 	assert_vector(def.path_point(10000)).is_equal(Vector3(10, 0, -10))
+
+
+func test_malformed_track_fails_loudly_and_never_runs() -> void:
+	var bad_defs: Array[TrackDef] = [
+		T.def([], [], {"segments": []}),  # no points to drive
+		T.def([], [], {"segments": [{"id": "s", "length_mm": 10000, "speed_mm_s": "fast", "fall_pct": 100}]}),  # non-numeric speed
+		T.def([{"kind": "tornado", "at_mm": 100}]),  # unknown effect id
+	]
+	for def: TrackDef in bad_defs:
+		assert_bool(def.is_valid()).is_false()
+		var api: RuleApi = F.api(T.board())
+		var runner := TrackRunner.new(def)
+		assert_bool(runner.is_failed()).is_true()
+		assert_str(String(runner.fail_reason())).is_equal("invalid_track")
+		assert_bool(runner.is_finished()).is_false()
+		runner.begin(api)
+		assert_array(T.run(runner, api, 2000)).is_empty()
+		assert_int(runner.tick_count()).is_equal(0)
+		assert_int(runner.position_mm()).is_equal(0)
+		var events: Array[Dictionary] = api.take_events()
+		assert_bool(events.any(func(e: Dictionary) -> bool: return e["kind"] == TrackRunner.EV_STARTED)).is_false()
+		assert_bool(api.take_requests().any(func(r: Dictionary) -> bool: return r["op"] == &"fail")).is_true()
+
+
+func test_a_null_track_fails_the_same_way() -> void:
+	var runner := TrackRunner.new(null)
+	assert_bool(runner.is_failed()).is_true()
+	assert_str(String(runner.fail_reason())).is_equal("invalid_track")
+
+
+func test_restore_re_emits_track_started_for_listeners() -> void:
+	var a := TrackRunner.new(T.def())
+	var api_a: RuleApi = F.api(T.board())
+	T.run(a, api_a, 2000)
+	var b := TrackRunner.new(T.def())
+	var api_b: RuleApi = F.api(T.board())
+	b.restore(a.snapshot(), api_b)
+	var started: Array[Dictionary] = api_b.take_events().filter(func(e: Dictionary) -> bool: return e["kind"] == TrackRunner.EV_STARTED)
+	assert_int(started.size()).is_equal(1)
+	assert_int(int(started[0]["data"]["at_mm"])).is_equal(a.position_mm())
+	assert_int(int(started[0]["data"]["hearts"])).is_equal(a.hearts_left())

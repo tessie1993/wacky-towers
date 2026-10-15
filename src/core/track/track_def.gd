@@ -26,7 +26,7 @@ const EFFECT_KEYS: Dictionary = {
 	&"gust": ["impulse_pm_per_layer_fill", "impulse_cap_pm", "cargo_stress_pm_per_strength"],
 	&"updraft": ["lift_pm_per_s", "heavy_cells", "min_lightness_pct"]}
 const LEAN_KEYS: Array[String] = ["danger_pm", "limit_pm", "relax_pm_per_s", "dwell_ms", "hysteresis_pm"]
-const CARGO_KEYS: Array[String] = ["height_layers", "min_support_cells", "level_tolerance_layers", "wobble_pm", "slip_pm",
+const CARGO_KEYS: Array[String] = ["height_layers", "min_support_cells", "level_tolerance_layers", "wobble_pm", "slip_pm", "lost_pm",
 	"rise_pm_per_s", "recover_pm_per_s", "lean_stress_pm_per_s", "drop_stress_pm_per_layer", "top_out_stress_pm_per_s"]
 const STARS_KEYS: Array[String] = ["height_2", "height_3", "max_hearts_lost_for_3"]
 const ALTITUDE_KEYS: Array[String] = ["start_pm", "sink_pm_per_s"]
@@ -351,8 +351,8 @@ func _validate_ranges() -> void:
 		errors.append("lean needs 0 < danger_pm < limit_pm <= 1000")
 	if int(lean["dwell_ms"]) < 0 or int(lean["relax_pm_per_s"]) < 0 or int(lean["hysteresis_pm"]) < 0:
 		errors.append("lean dwell_ms, relax_pm_per_s and hysteresis_pm must not be negative")
-	if not (0 < int(cargo["wobble_pm"]) and int(cargo["wobble_pm"]) < int(cargo["slip_pm"]) and int(cargo["slip_pm"]) < 1000):
-		errors.append("cargo needs 0 < wobble_pm < slip_pm < 1000")
+	if not (0 < int(cargo["wobble_pm"]) and int(cargo["wobble_pm"]) < int(cargo["slip_pm"]) and int(cargo["slip_pm"]) < int(cargo["lost_pm"]) and int(cargo["lost_pm"]) <= 1000):
+		errors.append("cargo needs 0 < wobble_pm < slip_pm < lost_pm <= 1000")
 	if int(cargo["min_support_cells"]) < 1 or int(cargo["min_support_cells"]) > 9 or int(cargo["height_layers"]) < 1:
 		errors.append("cargo needs 1 <= min_support_cells <= 9 and height_layers >= 1")
 	for key: String in ["rise_pm_per_s", "recover_pm_per_s", "lean_stress_pm_per_s", "drop_stress_pm_per_layer", "top_out_stress_pm_per_s"]:
